@@ -1,0 +1,88 @@
+﻿.first-step,
+.third-step {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    min-width: 1085px;
+    height: 550px;
+    background: #eeeeee;
+    background-size: auto 100%;
+    background-position: 50%;
+}
+
+.first-step,
+.second-step,
+.third-step,
+.fourth-step {
+    padding: 3%;
+}
+div.txt {
+    margin: 4%;
+}
+
+.first-step .registered-info,
+.second-step .top-up-info,
+.third-step .invest-info,
+.fourth-step .withdrawal-info {
+    display: inline-block;
+    text-align: left;
+}
+
+.first-step .registered-info,
+.third-step .invest-info,
+.second-step img,
+.fourth-step img {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.first-step img,
+.third-step img,
+.second-step .top-up-info,
+.fourth-step .withdrawal-info {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.registered-info span,
+.top-up-info span,
+.invest-info span,
+.withdrawal-info span {
+    font-size: 40px;
+}
+
+.registered-info p:first-child,
+.top-up-info p:first-child,
+.invest-info p:first-child,
+.withdrawal-info p:first-child {
+    font-size: 30px;
+    color: #1fabdc;
+}
+
+.info-txt-style {
+    color: #666;
+    font-size: 21px;
+}
+
+p.info-txt-style span {
+    color: #1fabdc;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.second-step,
+.fourth-step {
+    position: relative;
+    width: 100%;
+    min-width: 1085px;
+    height: 550px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.fourth-step .invest-btn {
+    display: block;
+    width: 208px;
+    height: 46px;
+}

@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ESMRootService</name>
+    </assembly>
+    <members>
+        <member name="T:ESMRootService.ESMRootSendService.ESMSendService">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.#ctor">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.HelloWorld">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.HelloWorldAsync">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.HelloWorldAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendMsg(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendMsgAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendMsgAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendPlanMsg(System.String,System.String,System.String,System.String,System.String,System.DateTime)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendPlanMsgAsync(System.String,System.String,System.String,System.String,System.String,System.DateTime)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SendPlanMsgAsync(System.String,System.String,System.String,System.String,System.String,System.DateTime,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SeachMsgState(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SeachMsgStateAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.SeachMsgStateAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSeachMsgState(System.String,System.String,System.String[])">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSeachMsgStateAsync(System.String,System.String,System.String[])">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSeachMsgStateAsync(System.String,System.String,System.String[],System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendMsg(System.String,System.String,System.String,System.String[],System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendMsgAsync(System.String,System.String,System.String,System.String[],System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendMsgAsync(System.String,System.String,System.String,System.String[],System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendPlanMsg(System.String,System.String,System.String,System.String[],System.String,System.DateTime)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendPlanMsgAsync(System.String,System.String,System.String,System.String[],System.String,System.DateTime)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.BatchSendPlanMsgAsync(System.String,System.String,System.String,System.String[],System.String,System.DateTime,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.GetCompanyESMCount(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.GetCompanyESMCountAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.GetCompanyESMCountAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMRootSendService.ESMSendService.CancelAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.HelloWorldCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.SendMsgCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.SendPlanMsgCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.SeachMsgStateCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.BatchSeachMsgStateCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.BatchSendMsgCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.BatchSendPlanMsgCompleted">
+            <remarks/>
+        </member>
+        <member name="E:ESMRootService.ESMRootSendService.ESMSendService.GetCompanyESMCountCompleted">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.HelloWorldCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.HelloWorldCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.HelloWorldCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SendMsgCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SendMsgCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.SendMsgCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SendPlanMsgCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SendPlanMsgCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.SendPlanMsgCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SeachMsgStateCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.SeachMsgStateCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.SeachMsgStateCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSeachMsgStateCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSeachMsgStateCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.BatchSeachMsgStateCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSendMsgCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSendMsgCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.BatchSendMsgCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSendPlanMsgCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.BatchSendPlanMsgCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.BatchSendPlanMsgCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.GetCompanyESMCountCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:ESMRootService.ESMRootSendService.GetCompanyESMCountCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:ESMRootService.ESMRootSendService.GetCompanyESMCountCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="M:ESMRootService.ESMService.SendMsg(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            即时消息发送
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="pswd"></param>
+            <param name="mob"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.SendPlanMsg(System.String,System.String,System.String,System.String,System.String,System.DateTime)">
+            <summary>
+            计划消息发送
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="pswd"></param>
+            <param name="mob"></param>
+            <param name="msg"></param>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.SeachMsgState(System.String,System.String,System.String)">
+            <summary>
+            单个消息发送状态查询
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.BatchSeachMsgState(System.String,System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            批量查询消息发送状态
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.BatchSendMsg(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            批量发送即时短信
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="pswd"></param>
+            <param name="mobs"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.BatchSendPlanMsg(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.String,System.DateTime)">
+            <summary>
+            批量发送计划短信
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="pswd"></param>
+            <param name="mobs"></param>
+            <param name="msg"></param>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ESMRootService.ESMService.GetCompanyESMCount(System.String,System.String,System.String)">
+            <summary>
+            得到短信余额
+            </summary>
+            <param name="comCode"></param>
+            <param name="loginName"></param>
+            <param name="pswd"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

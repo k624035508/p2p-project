@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>找回密码</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/forgot-psw.css">
+    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script>
+        /*rem的相对单位定义*/
+        var viewportWidth = $(window).width();
+        var fontSizeUnit = viewportWidth * 0.9 / 20;
+        $("html").css("font-size", fontSizeUnit);
+
+        window.alert = $.dialog.alert;
+        /*切换验证码*/
+        function ToggleCode(obj, codeurl) {
+            $(obj).attr("src", codeurl + "?time=" + Math.random());
+            return false;
+        }
+
+        $(function () {
+            $("#btnGetVerifyCode").click(function () {
+                var mobile = $("#txtMobile").val();
+                var picCode = $("input#picCode").val();
+                if ($.trim(mobile) === "") {
+                    alert("请先输入手机号码");
+                    return;
+                } else if ($.trim(picCode) === "") {
+                    alert("请先输入图形验证码");
+                    return;
+                }
+                
+                var sendingBtn = $(this);
+                var originalText = sendingBtn.text();
+                sendingBtn.text("正在发送…").attr('disabled', 'disabled');
+                $.getJSON('/tools/mobile_verify.ashx?act=sendCodeForResetPwd&session_id_hash={GetSessionIDHash()}&mobile=' + mobile + '&picCode=' + picCode, function (data) {
+                    sendingBtn.removeAttr('disabled').text(originalText);
+                    alert(data.msg);
+                }).fail(function (jqXHR) {
+                    sendingBtn.removeAttr('disabled').text(originalText);
+                    alert(jqXHR.responseJSON.msg);
+                });
+            });
+            $("#btnSubmit").click(function() {
+                var verifyCode = $("#verifyCode").val();
+                var newPwd = $("#newPwd").val();
+                var newPwd2 = $("#newPwd2").val();
+                if (newPwd !== newPwd2) {
+                    alert("两次输入的密码不一致");
+                    return;
+                }
+
+                var submitBtn = $(this);
+                var originalText = submitBtn.text();
+                submitBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
+
+                $.post("/tools/mobile_verify.ashx?act=verifyForResetPwd&verify_code=" + verifyCode, { newPwd: newPwd }).done(function(data) {
+                    submitBtn.removeAttr('disabled').removeAttr('style').text(originalText);
+                    alert(data.msg, function() {
+                        location.href = '/login.html'; // 重置密码成功，回首页
+                    });
+                }).fail(function(jqXHR) {
+                    submitBtn.removeAttr('disabled').removeAttr('style').text(originalText);
+                    alert(jqXHR.responseJSON.msg);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="forgot-psw-page">
+        <form id="reset-form">
+            <div class="account-wrap">
+                <input type="text" id="txtMobile" class="input-l" placeholder="请输入手机号码">
+            </div>
+            <div class="pic-code-wrap">
+                <input type="text" id="picCode" class="input-s" placeholder="请输入图形验证码">
+                <span class="pic-code-span flex flex-center-wrapper" style="float: right">
+                    <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
+                </span>
+            </div>
+            <div class="auth-code-wrap">
+                <input type="text" id="verifyCode" class="input-s" placeholder="请输入短信验证码">
+                <button type="button" id="btnGetVerifyCode" class="button-s">获 取</button>
+            </div>
+            <div class="new-psw-wrap">
+                <input type="password" id="newPwd" class="input-l" placeholder="请输入新密码">
+            </div>
+            <div class="new-psw2-wrap">
+                <input type="password" id="newPwd2" class="input-l" placeholder="请再次输入新密码">
+            </div>
+            <div class="submit-btn-wrap">
+                <button type="button" id="btnSubmit" class="button-l">确认提交</button>
+            </div>
+        </form>
+        <div class="login-now-wrap">已有账号？ <a href="login.html">马上登录</a></div>
+    </div>
+</body>
+</html>

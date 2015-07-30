@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>资讯中心--关于我们</title>
+    <!--js-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script> 
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+    <!--自定义样式-->
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+    <link rel="stylesheet" href="<%templateskin%>/css/information-center.css"/>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        $(function () {
+            $("div.nav-btns button.cid{category_id}").addClass('selected');
+        });
+    </script>
+    <style>
+        body { padding-top: 1em; }
+    </style>
+</head>
+<body>
+
+<div class="mainbox">
+    <div class="nav-btns">
+        <button type="button" class="cid43" onclick="location.href='<%linkurl("information_center",43)%>'">网站公告</button>
+        <button type="button" class="cid42" onclick="location.href='<%linkurl("information_center",42)%>'">公司动态</button>
+        <button type="button" class="cid44" onclick="location.href='<%linkurl("information_center",44)%>'">媒体报道</button>
+    </div>
+    <%if(category_id==43)%>
+    <!--网站公告-->
+    <div>
+        <%set DataTable article_list = get_article_list("content",category_id,page,"",out totalcount,out pagelist,"information_center",category_id, "__id__")%><!--取得一个分页DataTable-->
+        <%foreach(DataRow dr in article_list.Rows)%>
+        <div class="list-box">
+            <div class="date">{dr[add_time]}</div>
+            <div class="list-info">
+                <h3><a href="<%linkurl("article_content_show",{dr[id]},{category_id})%>" target="_blank">{dr[title]}</a></h3>
+
+                <p>{dr[zhaiyao]}</p>
+            </div>
+        </div>
+        <%/foreach%>
+        <div class="flickr">{pagelist}</div><!--放置页码列表-->
+    </div>
+    <%else%>
+    <!--公司动态/媒体报道-->
+    <div>
+        <%set DataTable article_list = get_article_list("content",category_id,page,"",out totalcount,out pagelist,"information_center",category_id, "__id__")%><!--取得一个分页DataTable-->
+        <%foreach(DataRow dr in article_list.Rows)%>
+        <div class="dy-list-box">
+            <div class="imgbox">
+                <img src="{dr[img_url]}"/>
+            </div>
+            <div class="dy-list-info">
+                <div class="info-th"><a href="<%linkurl("article_content_show",{dr[id]},{category_id})%>" target="_blank">{dr[title]}</a></div>
+                <div class="author-date">
+                    <span class="author">作者：金汇丰</span>
+                    <span class="date">发布日期：{dr[add_time]}</span>
+                </div>
+                <div style="clear: both"></div>
+                <p>{dr[zhaiyao]}</p>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <%/foreach%>
+        <div class="flickr">{pagelist}</div><!--放置页码列表-->
+    </div>
+    <%/if%>
+</div>
+
+</body>
+</html>

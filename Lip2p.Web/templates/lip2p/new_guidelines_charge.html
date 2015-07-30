@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="金汇丰理财平台致力于为各位投资人提供安全、有担保、高收益的互联网理财服务，通过新手指引栏目帮助您如何在金汇丰p2p平台投资理财。">
+    <meta name="keywords" content="收费标准,新手指引,金汇丰">
+    <title>收费标准_新手指引 – 【金汇丰】</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/finance.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_charge.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script>
+        //    top-title-btns点击样式
+        var selected = $(function () {
+            var btn = $(".top-title-btns button");
+            btn.click(function () {
+                btn.removeClass("btn-selected");
+                $(this).addClass("btn-selected");
+            });
+        });
+    </script>
+</head>
+<body style="min-width:1100px">
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <!--页面小导航-->
+    <!--页面内容部分-->
+    <div class="top-title">
+        <div class="guidelines-title" style="font-family:SimHei">新手指引</div>
+        <div class="top-title-btns">
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines")%>'">
+                新手指南</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_demo")%>'">
+                操作演示</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_charge")%>'" class="btn-selected">
+                收费标准</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_mortgage")%>'" style="display: none;">
+                抵押查询</button>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="charge-th">
+            金汇丰收费标准</div>
+        <div class="top-up-free">
+            <p class="font25">
+                1、充值免费：</p>
+            <p class="font20 padding30">
+                网上银行充值和快捷支付充值免费。</p>
+        </div>
+        <div class="">
+            <p class="font25">
+                2、利息管理费：</p>
+            <p class="font20 padding30">
+                我们向投资人收取投资收益的10%作为利息管理费（暂免）。</p>
+        </div>
+        <div>
+            <p class="font25">
+                3、VIP会员年费：
+            </p>
+            <p class="font20 padding30">
+                金汇丰现阶段免收VIP会员年费。</p>
+            <p class="font20">
+                金汇丰将推进VIP会员等级管理计划，实行差异化服务，具体规则及收费另行制订。</p>
+        </div>
+        <div>
+            <p class="font25">
+                4、提现费用：
+            </p>
+            <p class="font20 padding30">
+                充值后未投标部分提现，收取提现金额0.6%的手续费。</p>
+            <p class="font20">
+                单笔提现100元起，提现限额5万元/笔，每天提现笔数无限制。</p>
+            <p class="font20">
+                第三方支付平台收取提现费用1元/笔。</p>
+        </div>
+        <div class="withdrawal-rules">
+            <p class="padding30">
+                提现规则：
+            </p>
+            <p class="font20">
+                正常工作曰周一至周五：每天中午12点前的提现申请，下一工作日12点前处理；12点以后的提现申请，</p>
+            <p class="font20">
+                第二个工作日进行处理。</p>
+            <p class="font20">
+                周六、日及一般法定节假日的提现申请，顺延至下一工作日处理，具体到账时间以银行的到账时间为准。</p>
+            <p class="font20">
+                国庆、春节等重大节假日：有关提现公告将提前3天对外公布。</p>
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="金汇丰理财平台致力于为各位投资人提供安全、有担保、高收益的互联网理财服务，通过新手指引栏目帮助您如何在金汇丰p2p平台投资理财。">
+    <meta name="keywords" content="新手指南,新手指引,金汇丰">
+    <title>新手指南_新手指引 – 【金汇丰】</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/finance.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script>
+        //    top-title-btns点击样式
+        var selected = $(function () {
+            var btn = $(".top-title-btns button");
+            btn.click(function () {
+                btn.removeClass("btn-selected");
+                $(this).addClass("btn-selected");
+            });
+        });
+    </script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <!--页面小导航-->
+    <div class="top-title">
+        <div class="guidelines-title" style="font-family:SimHei">新手指引</div>
+        <div class="top-title-btns">
+            <button type="button" class="btn-selected" onclick="location.href='<%linkurl("new_guidelines")%>'">
+                新手指南</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_demo")%>'">
+                操作演示</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_charge")%>'">
+                收费标准</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_mortgage")%>'" style="display: none;">
+                抵押查询</button>
+        </div>
+    </div>
+    <!--页面内容部分-->
+    <div class="introduction">
+        <div class="introduction-th">
+            平台简介</div>
+        <img src="<%templateskin%>/images/guide/introduction.png" />
+        <div class="introduction-info">
+            <span>金汇丰理财平台——佛山市第一家引进战略风投，</span> <span>英国一桥资本联合亚洲陶瓷控股（英国上市公司）1500万英镑</span> <span>
+                的PE战略投资，</span> <span>私募基金FDS中国资本1个亿人民币的投资协议。</span> <span>专注于房产、汽车借贷业务的平台，</span>
+            <span>创立于2014年12月，</span> <span>注册资金3000万元人民币。</span> <span>金汇丰理财平台是P2P互联网金融创新型平台，</span>
+            <span>为借款人融资提供服务，</span> <span>同时为投资人提供投资渠道。</span> <span>平台经营管理团队由银行、担保、IT、电子商务等领域资深专业</span>
+            <span>人士组成</span> <span>总部设在佛山市中心商务区。</span>
+        </div>
+    </div>
+    <div class="advantage">
+        <div class="advantage-th">
+            平台优势</div>
+        <div class="high-earnings">
+            <img src="<%templateskin%>/images/guide/high-earnings.png" />
+            <p>
+                低门槛高收益</p>
+            <span>100元起投</span> <span>15%~18%预期年化收益</span>
+        </div>
+        <!--<div class="company-bg">
+            <img src="<%templateskin%>/images/guide/company-bg.png" />
+            <p>
+                上市公司背景</p>
+            <span>实力产业股东</span> <span>FDS中国资本战略投资</span>
+        </div>-->
+        <div class="security">
+            <img src="<%templateskin%>/images/guide/security.png" />
+            <p>
+                安全保障</p>
+            <span>纯抵押项目</span> <span>100%本息保障</span>
+        </div>
+        <div class="regulatory">
+            <img src="<%templateskin%>/images/guide/regulatory.png" />
+            <p>
+                严格监管</p>
+            <span>第三方支付平台</span> <span>银行级别风控系统</span>
+        </div>
+    </div>
+    <div class="service">
+        <div class="service-th">
+            产品服务</div>
+        <div class="golden-house">
+            <img src="<%templateskin%>/images/guide/golden-house.png" />
+            <div class="golden-house-info">
+                <span>金屋子</span> <span>专注于优质客户的本地房产抵押，包括房屋与商铺抵押。为避免房</span> <span>产下行趋势，房屋抵押率最高7成、商铺抵押率最高5成。</span>
+            </div>
+        </div>
+        <div class="cars-invest">
+            <img src="<%templateskin%>/images/guide/cars-invest.png" />
+            <div class="cars-invest-info">
+                <span>丰车赚</span> <span>专注于车辆的质押或汽车登记证抵押，车辆抵押率最高7成，为</span> <span>车辆购买全额保险、安装GPS全球定位系统，车辆有快速变现能力。</span>
+            </div>
+        </div>
+    </div>
+    <div class="constrast">
+        <div class="constrast-th">
+            收益对比</div>
+        <img src="<%templateskin%>/images/guide/constrast.png" />
+        <div class="constrast-info">
+            <div class="top-part">
+                <p>
+                    <span>o</span>存款：收益太低；</p>
+                <p>
+                    <span>o</span>银行理财：门槛较高，收益率相对低；</p>
+                <p>
+                    <span>o</span>余额宝：灵活，收益虽然比银行存款高，但也只会越来越低；</p>
+                <p>
+                    <span>o</span>基金：筛选好基金经理困难，时间成本高，收益看天吃饭不够稳定；</p>
+                <p>
+                    <span>o</span>股票：95%的失败者来衬托5%的成功者，且时间成本高；</p>
+                <p>
+                    <span>o</span>信托：门槛太高，灵活性差，收益一般。</p>
+            </div>
+            <div class="bottom-part">
+                <p>
+                    金汇丰理财平台年化收益率 <span class="multiple">15-18%</span> ，是银行理财的 <span class="multiple">3.5</span>
+                    倍，是余额宝的 <span class="multiple">4.5</span> 倍，定期存款的 <span class="multiple">6</span> 倍，活期存款的
+                    <span class="multiple">52</span> 倍。</p>
+            </div>
+        </div>
+    </div>
+    <div class="process">
+        <div class="process-th">
+            投资流程</div>
+        <div class="process-box">
+        </div>
+        <div class="btn-container">
+            <button class="registered-btn" type="button" onclick="location.href='register.html'">
+                立即注册</button>
+        </div>
+        <div class="vip-members">
+            1分钟成为金汇丰会员，轻松开始理财</div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

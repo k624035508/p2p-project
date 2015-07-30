@@ -1,0 +1,155 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>抵押查询 - 新手指引</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/finance.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_mortgage.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script>
+        function switchPage(btn, pageId) {
+            var jBtn = $(btn);
+            $('div.query-way p:first-child').text('佛山市' + jBtn.text() + '抵押查询途径');
+            $(".btnsbox button").removeClass("btn-selected");
+            jBtn.addClass("btn-selected");
+            $('#chancheng, #shunde, #gaoming').hide();
+            $(pageId).show();
+        }
+    </script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <!--页面导航-->
+    <div class="top-title">
+        <div class="top-title-btns">
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines")%>'">
+                新手指南</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_demo")%>'">
+                操作演示</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_charge")%>'">
+                收费标准</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_mortgage")%>'" class="btn-selected">
+                抵押查询</button>
+        </div>
+    </div>
+    <!--页面内容-->
+    <div class="mainbox">
+        <div class="query-way">
+            <p>
+                佛山市禅城区抵押查询途径</p>
+            <p class="font18">
+                金屋子与丰车赚都属于纯抵押类投资项目，</p>
+            <p class="font18">
+                凡是做了抵押登记的，都能在国土房管局登记备案，投资者可上网查询抵押情况。</p>
+        </div>
+        <div class="btnsbox">
+            <button type="button" class="btn-selected" onclick="switchPage(this, '#chancheng')">
+                禅城区</button>——<!--
+        -->——
+            <button type="button" onclick="switchPage(this, '#shunde')">
+                顺德区</button>——<!--
+        -->——
+            <button type="button" onclick="switchPage(this, '#gaoming')">
+                高明区</button>
+        </div>
+        <div id="chancheng">
+            <div class="first-step">
+                <p class="font40">
+                    第一步：</p>
+                <p>
+                    <a class="font18" href="http://www.fsccjys.gov.cn/" target="_blank">点击进入禅城区土地房产交易中心网站</a></p>
+                <img src="<%templateskin%>/images/guide/chancheng.png" />
+            </div>
+            <div class="second-step">
+                <p class="font40">
+                    第二步:</p>
+                <p class="font18">
+                    输入标书图片《房产抵押受理回执单》的“收文编号”</p>
+                <img src="<%templateskin%>/images/guide/chancheng.png">
+            </div>
+        </div>
+        <div id="shunde" style="display: none">
+            <div class="first-step">
+                <p class="font40">
+                    第一步：</p>
+                <p>
+                    <a class="font18" href="http://djjy.shunde.gov.cn/?Aid=030201" target="_blank">点击进入顺德区土地房产交易中心网站</a></p>
+                <img src="<%templateskin%>/images/guide/shunde.png" />
+            </div>
+            <div class="second-step">
+                <p class="font40">
+                    第二步:</p>
+                <p class="font18">
+                    输入标书图片《房产抵押受理回执单》的“收文编号”</p>
+                <img src="<%templateskin%>/images/guide/shunde.png">
+            </div>
+        </div>
+        <div id="gaoming" style="display: none">
+            <div class="first-step">
+                <p class="font40">
+                    第一步：</p>
+                <p>
+                    <a class="font18" href="http://gt.gaoming.gov.cn/" target="_blank">点击进入高明区土地房产交易中心网站</a></p>
+                <img src="<%templateskin%>/images/guide/gaoming.png" />
+            </div>
+            <div class="second-step">
+                <p class="font40">
+                    第二步:</p>
+                <p class="font18">
+                    输入标书图片《房产抵押受理回执单》的“收文编号”</p>
+                <img src="<%templateskin%>/images/guide/gaoming.png">
+            </div>
+        </div>
+        <div class="supplement">
+            <p>
+                补充说明：</p>
+            <p style="text-indent: 2em">
+                佛山市南海区与三水区暂未开通房产抵押业务的网上查询通道，若对上述两区域的房产抵</p>
+            <p>
+                押业务进行核实，金汇丰工作人员可与投资者一同前往房产管理登记部门进行现场核实。</p>
+        </div>
+        <div class="nanhai-guotu">
+            <p>
+                南海区国土城建和水务局</p>
+            <p>
+                网址：http://guotu.nanhai.gov.cn/cms/html/nh_gtcj/index.html</p>
+            <p>
+                地址：广东省佛山市南海区桂城南海大道北28号</p>
+            <p>
+                电话：0757-86369906</p>
+            <p>
+                传真：0757-86369905</p>
+        </div>
+        <div class="sanshui-guotu">
+            <p>
+                南海区国土城建和水务局</p>
+            <p>
+                网址：http://guotu.nanhai.gov.cn/cms/html/nh_gtcj/index.html</p>
+            <p>
+                地址：广东省佛山市南海区桂城南海大道北28号</p>
+            <p>
+                电话：0757-86369906</p>
+            <p>
+                传真：0757-86369905</p>
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

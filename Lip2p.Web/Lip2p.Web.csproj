@@ -1,0 +1,2432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6DB1BDD3-4EE3-4259-B459-62F54591995E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lip2p.Web</RootNamespace>
+    <AssemblyName>Lip2p.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LitJson">
+      <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP, Version=4.11.2.31351, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\dialog\dialog_mortgage_setting.aspx" />
+    <Content Include="admin\dialog\dialog_picture.aspx" />
+    <Content Include="admin\js\common.js" />
+    <Content Include="admin\js\jquery.skygqOneDblClick.1.1.js" />
+    <Content Include="admin\js\layindex.js" />
+    <Content Include="admin\js\laymain.js" />
+    <Content Include="admin\js\uploader.js" />
+    <Content Include="admin\loaner\creditor_edit.aspx" />
+    <Content Include="admin\loaner\creditor_list.aspx" />
+    <Content Include="admin\loaner\loaner_edit.aspx" />
+    <Content Include="admin\loaner\mortgage_edit.aspx" />
+    <Content Include="admin\manager\department_edit.aspx" />
+    <Content Include="admin\manager\department_list.aspx" />
+    <Content Include="admin\manager\department_select_member.aspx" />
+    <Content Include="admin\popularize\financing_edit.aspx" />
+    <Content Include="admin\popularize\financing_list.aspx" />
+    <Content Include="admin\popularize\companyContent_edit.aspx" />
+    <Content Include="admin\popularize\companyContent_list.aspx" />
+    <Content Include="admin\popularize\help_edit.aspx" />
+    <Content Include="admin\popularize\help_list.aspx" />
+    <Content Include="admin\center.aspx" />
+    <Content Include="admin\dialog\dialog_attach.aspx" />
+    <Content Include="admin\article\category_edit.aspx" />
+    <Content Include="admin\article\category_list.aspx" />
+    <Content Include="admin\article\article_edit.aspx" />
+    <Content Include="admin\article\article_list.aspx" />
+    <Content Include="admin\article\comment_edit.aspx" />
+    <Content Include="admin\article\comment_list.aspx" />
+    <Content Include="admin\channel\attribute_field_edit.aspx" />
+    <Content Include="admin\channel\attribute_field_list.aspx" />
+    <Content Include="admin\channel\category_edit.aspx" />
+    <Content Include="admin\channel\category_list.aspx" />
+    <Content Include="admin\channel\channel_edit.aspx" />
+    <Content Include="admin\channel\channel_list.aspx" />
+    <Content Include="admin\dialog\dialog_channel.aspx" />
+    <Content Include="admin\dialog\dialog_rewrite.aspx" />
+    <Content Include="admin\ie6update.html" />
+    <Content Include="admin\index.aspx" />
+    <Content Include="admin\js\layout.js" />
+    <Content Include="admin\js\pinyin.js" />
+    <Content Include="admin\loaner\loaner_list.aspx" />
+    <Content Include="admin\login.aspx" />
+    <Content Include="admin\manager\manager_edit.aspx" />
+    <Content Include="admin\manager\manager_list.aspx" />
+    <Content Include="admin\manager\manager_log.aspx" />
+    <Content Include="admin\manager\manager_pwd.aspx" />
+    <Content Include="admin\manager\role_edit.aspx" />
+    <Content Include="admin\manager\role_list.aspx" />
+    <Content Include="admin\dialog\dialog_accept.aspx" />
+    <Content Include="admin\dialog\dialog_express.aspx" />
+    <Content Include="admin\dialog\dialog_print.aspx" />
+    <Content Include="admin\order\express_edit.aspx" />
+    <Content Include="admin\order\express_list.aspx" />
+    <Content Include="admin\order\order_config.aspx" />
+    <Content Include="admin\order\order_confirm.aspx" />
+    <Content Include="admin\order\order_edit.aspx" />
+    <Content Include="admin\order\order_list.aspx" />
+    <Content Include="admin\order\payment_edit.aspx" />
+    <Content Include="admin\order\payment_list.aspx" />
+    <Content Include="admin\popularize\projectContent_edit.aspx" />
+    <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\project\project_edit_publish.aspx" />
+    <Content Include="admin\project\project_list_approval.aspx" />
+    <Content Include="admin\project\project_list_publish.aspx" />
+    <Content Include="admin\project\project_edit_approval.aspx" />
+    <Content Include="admin\project\project_list_audit.aspx" />
+    <Content Include="admin\project\project_edit_audit.aspx" />
+    <Content Include="admin\project\project_edit_reset.aspx" />
+    <Content Include="admin\settings\builder_html.aspx" />
+    <Content Include="admin\settings\nav_edit.aspx" />
+    <Content Include="admin\settings\nav_list.aspx" />
+    <Content Include="admin\settings\plugin_list.aspx" />
+    <Content Include="admin\settings\sys_config.aspx" />
+    <Content Include="admin\settings\templet_file_edit.aspx" />
+    <Content Include="admin\settings\templet_file_list.aspx" />
+    <Content Include="admin\settings\templet_list.aspx" />
+    <Content Include="admin\settings\url_rewrite_edit.aspx" />
+    <Content Include="admin\settings\url_rewrite_list.aspx" />
+    <Content Include="admin\skin\base.css" />
+    <Content Include="admin\skin\default\icon_tips.png" />
+    <Content Include="admin\skin\default\ie_update.jpg" />
+    <Content Include="admin\skin\default\loadimg.gif" />
+    <Content Include="admin\skin\default\login_logo.png" />
+    <Content Include="admin\skin\default\login_tit.png" />
+    <Content Include="admin\skin\default\logo.png" />
+    <Content Include="admin\skin\default\icon_onload.gif" />
+    <Content Include="admin\skin\default\order_speed.gif" />
+    <Content Include="admin\skin\default\skin_icons.png" />
+    <Content Include="admin\skin\default\style.css" />
+    <Content Include="admin\skin\default\valid_icons.png" />
+    <Content Include="admin\skin\layout.css" />
+    <Content Include="admin\statistic\daily_project_ticket_usages.aspx" />
+    <Content Include="admin\statistic\investor_invest_detail.aspx" />
+    <Content Include="admin\statistic\project_repay_detail.aspx" />
+    <Content Include="admin\statistic\project_repay_task.aspx" />
+    <Content Include="admin\statistic\project_investor_detail.aspx" />
+    <Content Include="admin\statistic\investment_rank_list.aspx" />
+    <Content Include="admin\transact\bank_account_edit.aspx" />
+    <Content Include="admin\transact\bank_account_list.aspx" />
+    <Content Include="admin\transact\bank_transaction_charge.aspx" />
+    <Content Include="admin\transact\bank_transaction_list_account.aspx" />
+    <Content Include="admin\transact\bank_transaction_withdraw.aspx" />
+    <Content Include="admin\transact\project_investment_list.aspx" />
+    <Content Include="admin\transact\project_list.aspx" />
+    <Content Include="admin\transact\project_recently_repay_list.aspx" />
+    <Content Include="admin\transact\project_repayment_list.aspx" />
+    <Content Include="admin\transact\project_investment_edit.aspx" />
+    <Content Include="admin\transact\project_profiting_list.aspx" />
+    <Content Include="admin\statistic\wallet_list.aspx" />
+    <Content Include="admin\statistic\wallet_history_list.aspx" />
+    <Content Include="admin\audit\bank_transaction_withdrawing_list.aspx" />
+    <Content Include="admin\transact\bank_users_charge_withdraw.aspx" />
+    <Content Include="admin\transact\bank_transaction_list_all.aspx" />
+    <Content Include="admin\audit\bank_transaction_charging_list.aspx" />
+    <Content Include="admin\users\amount_log.aspx" />
+    <Content Include="admin\users\batch_switch_group.aspx" />
+    <Content Include="admin\users\ChoiceUser.aspx" />
+    <Content Include="admin\users\group_edit.aspx" />
+    <Content Include="admin\users\group_list.aspx" />
+    <Content Include="admin\users\user_group_access_key_settings.aspx" />
+    <Content Include="admin\users\mail_template_edit.aspx" />
+    <Content Include="admin\users\mail_template_list.aspx" />
+    <Content Include="admin\users\message_edit.aspx" />
+    <Content Include="admin\users\message_list.aspx" />
+    <Content Include="admin\users\oauth_app_edit.aspx" />
+    <Content Include="admin\users\oauth_app_list.aspx" />
+    <Content Include="admin\users\oauth_list.aspx" />
+    <Content Include="admin\users\point_log.aspx" />
+    <Content Include="admin\users\sms_template_edit.aspx" />
+    <Content Include="admin\users\sms_template_list.aspx" />
+    <Content Include="admin\users\user_audit.aspx" />
+    <Content Include="admin\users\user_edit.aspx" />
+    <Content Include="admin\users\user_list.aspx" />
+    <Content Include="admin\users\user_config.aspx" />
+    <Content Include="admin\users\user_sms.aspx" />
+    <Content Include="admin\loaner\mortgage_list.aspx" />
+    <Content Include="admin\weixin\account_edit.aspx" />
+    <Content Include="admin\weixin\account_list.aspx" />
+    <Content Include="admin\weixin\menu_edit.aspx" />
+    <Content Include="admin\weixin\menu_list.aspx" />
+    <Content Include="admin\weixin\picture_edit.aspx" />
+    <Content Include="admin\weixin\picture_list.aspx" />
+    <Content Include="admin\weixin\response_list.aspx" />
+    <Content Include="admin\weixin\sound_edit.aspx" />
+    <Content Include="admin\weixin\sound_list.aspx" />
+    <Content Include="admin\weixin\subscribe_edit.aspx" />
+    <Content Include="admin\weixin\text_edit.aspx" />
+    <Content Include="admin\weixin\text_list.aspx" />
+    <Content Include="api\oauth\feixin\index.aspx" />
+    <Content Include="api\oauth\feixin\result_json.aspx" />
+    <Content Include="api\oauth\feixin\return_url.aspx" />
+    <Content Include="api\oauth\kaixin\index.aspx" />
+    <Content Include="api\oauth\kaixin\result_json.aspx" />
+    <Content Include="api\oauth\kaixin\return_url.aspx" />
+    <Content Include="api\oauth\qq\index.aspx" />
+    <Content Include="api\oauth\qq\result_json.aspx" />
+    <Content Include="api\oauth\qq\return_url.aspx" />
+    <Content Include="api\oauth\renren\index.aspx" />
+    <Content Include="api\oauth\renren\result_json.aspx" />
+    <Content Include="api\oauth\renren\return_url.aspx" />
+    <Content Include="api\oauth\sina\index.aspx" />
+    <Content Include="api\oauth\sina\result_json.aspx" />
+    <Content Include="api\oauth\sina\return_url.aspx" />
+    <Content Include="api\oauth\taobao\index.aspx" />
+    <Content Include="api\oauth\taobao\result_json.aspx" />
+    <Content Include="api\oauth\taobao\return_url.aspx" />
+    <Content Include="api\payment\alipay\index.aspx" />
+    <Content Include="api\payment\alipay\notify_url.aspx" />
+    <Content Include="api\payment\alipay\return_url.aspx" />
+    <Content Include="api\payment\balance\index.aspx" />
+    <Content Include="api\payment\baofoo\index.aspx" />
+    <Content Include="api\payment\baofoo\notify_url.aspx" />
+    <Content Include="api\payment\baofoo\return_url.aspx" />
+    <Content Include="api\payment\baofoo\pay_test.aspx" />
+    <Content Include="api\payment\chinabank\index.aspx" />
+    <Content Include="api\payment\chinabank\notify_url.aspx" />
+    <Content Include="api\payment\chinabank\return_url.aspx" />
+    <Content Include="api\payment\lianlianpay\index.aspx" />
+    <Content Include="api\payment\lianlianpay\infoQuery.aspx" />
+    <Content Include="api\payment\lianlianpay\notify_url.aspx" />
+    <Content Include="api\payment\lianlianpay\prepositPay.aspx" />
+    <Content Include="api\payment\lianlianpay\urlReturn.aspx" />
+    <Content Include="api\payment\tenpay\index.aspx" />
+    <Content Include="api\payment\tenpay\notify_url.aspx" />
+    <Content Include="api\payment\tenpay\return_url.aspx" />
+    <Content Include="api\payment\ecpss\index.aspx" />
+    <Content Include="api\payment\ecpss\return_url.aspx" />
+    <Content Include="api\payment\ecpss\pay_test.aspx" />
+    <Content Include="api\payment\ecpss\notify_url.aspx" />
+    <Content Include="api\weixin\wx.aspx" />
+    <Content Include="css\image1.gif" />
+    <Content Include="css\image2.gif" />
+    <Content Include="css\jcrop.gif" />
+    <Content Include="css\jquery.jcrop.css" />
+    <Content Include="css\meneame.jpg" />
+    <Content Include="css\pagination.css" />
+    <Content Include="css\validate.css" />
+    <Content Include="css\valid_icons.png" />
+    <Content Include="editor\kindeditor-min.js" />
+    <Content Include="editor\kindeditor.js" />
+    <Content Include="editor\lang\ar.js" />
+    <Content Include="editor\lang\en.js" />
+    <Content Include="editor\lang\ko.js" />
+    <Content Include="editor\lang\zh_CN.js" />
+    <Content Include="editor\lang\zh_TW.js" />
+    <Content Include="editor\plugins\anchor\anchor.js" />
+    <Content Include="editor\plugins\autoheight\autoheight.js" />
+    <Content Include="editor\plugins\baidumap\baidumap.js" />
+    <Content Include="editor\plugins\baidumap\index.html" />
+    <Content Include="editor\plugins\baidumap\map.html" />
+    <Content Include="editor\plugins\clearhtml\clearhtml.js" />
+    <Content Include="editor\plugins\code\code.js" />
+    <Content Include="editor\plugins\code\prettify.css" />
+    <Content Include="editor\plugins\code\prettify.js" />
+    <Content Include="editor\plugins\emoticons\emoticons.js" />
+    <Content Include="editor\plugins\emoticons\images\0.gif" />
+    <Content Include="editor\plugins\emoticons\images\1.gif" />
+    <Content Include="editor\plugins\emoticons\images\10.gif" />
+    <Content Include="editor\plugins\emoticons\images\100.gif" />
+    <Content Include="editor\plugins\emoticons\images\101.gif" />
+    <Content Include="editor\plugins\emoticons\images\102.gif" />
+    <Content Include="editor\plugins\emoticons\images\103.gif" />
+    <Content Include="editor\plugins\emoticons\images\104.gif" />
+    <Content Include="editor\plugins\emoticons\images\105.gif" />
+    <Content Include="editor\plugins\emoticons\images\106.gif" />
+    <Content Include="editor\plugins\emoticons\images\107.gif" />
+    <Content Include="editor\plugins\emoticons\images\108.gif" />
+    <Content Include="editor\plugins\emoticons\images\109.gif" />
+    <Content Include="editor\plugins\emoticons\images\11.gif" />
+    <Content Include="editor\plugins\emoticons\images\110.gif" />
+    <Content Include="editor\plugins\emoticons\images\111.gif" />
+    <Content Include="editor\plugins\emoticons\images\112.gif" />
+    <Content Include="editor\plugins\emoticons\images\113.gif" />
+    <Content Include="editor\plugins\emoticons\images\114.gif" />
+    <Content Include="editor\plugins\emoticons\images\115.gif" />
+    <Content Include="editor\plugins\emoticons\images\116.gif" />
+    <Content Include="editor\plugins\emoticons\images\117.gif" />
+    <Content Include="editor\plugins\emoticons\images\118.gif" />
+    <Content Include="editor\plugins\emoticons\images\119.gif" />
+    <Content Include="editor\plugins\emoticons\images\12.gif" />
+    <Content Include="editor\plugins\emoticons\images\120.gif" />
+    <Content Include="editor\plugins\emoticons\images\121.gif" />
+    <Content Include="editor\plugins\emoticons\images\122.gif" />
+    <Content Include="editor\plugins\emoticons\images\123.gif" />
+    <Content Include="editor\plugins\emoticons\images\124.gif" />
+    <Content Include="editor\plugins\emoticons\images\125.gif" />
+    <Content Include="editor\plugins\emoticons\images\126.gif" />
+    <Content Include="editor\plugins\emoticons\images\127.gif" />
+    <Content Include="editor\plugins\emoticons\images\128.gif" />
+    <Content Include="editor\plugins\emoticons\images\129.gif" />
+    <Content Include="editor\plugins\emoticons\images\13.gif" />
+    <Content Include="editor\plugins\emoticons\images\130.gif" />
+    <Content Include="editor\plugins\emoticons\images\131.gif" />
+    <Content Include="editor\plugins\emoticons\images\132.gif" />
+    <Content Include="editor\plugins\emoticons\images\133.gif" />
+    <Content Include="editor\plugins\emoticons\images\134.gif" />
+    <Content Include="editor\plugins\emoticons\images\14.gif" />
+    <Content Include="editor\plugins\emoticons\images\15.gif" />
+    <Content Include="editor\plugins\emoticons\images\16.gif" />
+    <Content Include="editor\plugins\emoticons\images\17.gif" />
+    <Content Include="editor\plugins\emoticons\images\18.gif" />
+    <Content Include="editor\plugins\emoticons\images\19.gif" />
+    <Content Include="editor\plugins\emoticons\images\2.gif" />
+    <Content Include="editor\plugins\emoticons\images\20.gif" />
+    <Content Include="editor\plugins\emoticons\images\21.gif" />
+    <Content Include="editor\plugins\emoticons\images\22.gif" />
+    <Content Include="editor\plugins\emoticons\images\23.gif" />
+    <Content Include="editor\plugins\emoticons\images\24.gif" />
+    <Content Include="editor\plugins\emoticons\images\25.gif" />
+    <Content Include="editor\plugins\emoticons\images\26.gif" />
+    <Content Include="editor\plugins\emoticons\images\27.gif" />
+    <Content Include="editor\plugins\emoticons\images\28.gif" />
+    <Content Include="editor\plugins\emoticons\images\29.gif" />
+    <Content Include="editor\plugins\emoticons\images\3.gif" />
+    <Content Include="editor\plugins\emoticons\images\30.gif" />
+    <Content Include="editor\plugins\emoticons\images\31.gif" />
+    <Content Include="editor\plugins\emoticons\images\32.gif" />
+    <Content Include="editor\plugins\emoticons\images\33.gif" />
+    <Content Include="editor\plugins\emoticons\images\34.gif" />
+    <Content Include="editor\plugins\emoticons\images\35.gif" />
+    <Content Include="editor\plugins\emoticons\images\36.gif" />
+    <Content Include="editor\plugins\emoticons\images\37.gif" />
+    <Content Include="editor\plugins\emoticons\images\38.gif" />
+    <Content Include="editor\plugins\emoticons\images\39.gif" />
+    <Content Include="editor\plugins\emoticons\images\4.gif" />
+    <Content Include="editor\plugins\emoticons\images\40.gif" />
+    <Content Include="editor\plugins\emoticons\images\41.gif" />
+    <Content Include="editor\plugins\emoticons\images\42.gif" />
+    <Content Include="editor\plugins\emoticons\images\43.gif" />
+    <Content Include="editor\plugins\emoticons\images\44.gif" />
+    <Content Include="editor\plugins\emoticons\images\45.gif" />
+    <Content Include="editor\plugins\emoticons\images\46.gif" />
+    <Content Include="editor\plugins\emoticons\images\47.gif" />
+    <Content Include="editor\plugins\emoticons\images\48.gif" />
+    <Content Include="editor\plugins\emoticons\images\49.gif" />
+    <Content Include="editor\plugins\emoticons\images\5.gif" />
+    <Content Include="editor\plugins\emoticons\images\50.gif" />
+    <Content Include="editor\plugins\emoticons\images\51.gif" />
+    <Content Include="editor\plugins\emoticons\images\52.gif" />
+    <Content Include="editor\plugins\emoticons\images\53.gif" />
+    <Content Include="editor\plugins\emoticons\images\54.gif" />
+    <Content Include="editor\plugins\emoticons\images\55.gif" />
+    <Content Include="editor\plugins\emoticons\images\56.gif" />
+    <Content Include="editor\plugins\emoticons\images\57.gif" />
+    <Content Include="editor\plugins\emoticons\images\58.gif" />
+    <Content Include="editor\plugins\emoticons\images\59.gif" />
+    <Content Include="editor\plugins\emoticons\images\6.gif" />
+    <Content Include="editor\plugins\emoticons\images\60.gif" />
+    <Content Include="editor\plugins\emoticons\images\61.gif" />
+    <Content Include="editor\plugins\emoticons\images\62.gif" />
+    <Content Include="editor\plugins\emoticons\images\63.gif" />
+    <Content Include="editor\plugins\emoticons\images\64.gif" />
+    <Content Include="editor\plugins\emoticons\images\65.gif" />
+    <Content Include="editor\plugins\emoticons\images\66.gif" />
+    <Content Include="editor\plugins\emoticons\images\67.gif" />
+    <Content Include="editor\plugins\emoticons\images\68.gif" />
+    <Content Include="editor\plugins\emoticons\images\69.gif" />
+    <Content Include="editor\plugins\emoticons\images\7.gif" />
+    <Content Include="editor\plugins\emoticons\images\70.gif" />
+    <Content Include="editor\plugins\emoticons\images\71.gif" />
+    <Content Include="editor\plugins\emoticons\images\72.gif" />
+    <Content Include="editor\plugins\emoticons\images\73.gif" />
+    <Content Include="editor\plugins\emoticons\images\74.gif" />
+    <Content Include="editor\plugins\emoticons\images\75.gif" />
+    <Content Include="editor\plugins\emoticons\images\76.gif" />
+    <Content Include="editor\plugins\emoticons\images\77.gif" />
+    <Content Include="editor\plugins\emoticons\images\78.gif" />
+    <Content Include="editor\plugins\emoticons\images\79.gif" />
+    <Content Include="editor\plugins\emoticons\images\8.gif" />
+    <Content Include="editor\plugins\emoticons\images\80.gif" />
+    <Content Include="editor\plugins\emoticons\images\81.gif" />
+    <Content Include="editor\plugins\emoticons\images\82.gif" />
+    <Content Include="editor\plugins\emoticons\images\83.gif" />
+    <Content Include="editor\plugins\emoticons\images\84.gif" />
+    <Content Include="editor\plugins\emoticons\images\85.gif" />
+    <Content Include="editor\plugins\emoticons\images\86.gif" />
+    <Content Include="editor\plugins\emoticons\images\87.gif" />
+    <Content Include="editor\plugins\emoticons\images\88.gif" />
+    <Content Include="editor\plugins\emoticons\images\89.gif" />
+    <Content Include="editor\plugins\emoticons\images\9.gif" />
+    <Content Include="editor\plugins\emoticons\images\90.gif" />
+    <Content Include="editor\plugins\emoticons\images\91.gif" />
+    <Content Include="editor\plugins\emoticons\images\92.gif" />
+    <Content Include="editor\plugins\emoticons\images\93.gif" />
+    <Content Include="editor\plugins\emoticons\images\94.gif" />
+    <Content Include="editor\plugins\emoticons\images\95.gif" />
+    <Content Include="editor\plugins\emoticons\images\96.gif" />
+    <Content Include="editor\plugins\emoticons\images\97.gif" />
+    <Content Include="editor\plugins\emoticons\images\98.gif" />
+    <Content Include="editor\plugins\emoticons\images\99.gif" />
+    <Content Include="editor\plugins\emoticons\images\static.gif" />
+    <Content Include="editor\plugins\filemanager\filemanager.js" />
+    <Content Include="editor\plugins\filemanager\images\file-16.gif" />
+    <Content Include="editor\plugins\filemanager\images\file-64.gif" />
+    <Content Include="editor\plugins\filemanager\images\folder-16.gif" />
+    <Content Include="editor\plugins\filemanager\images\folder-64.gif" />
+    <Content Include="editor\plugins\filemanager\images\go-up.gif" />
+    <Content Include="editor\plugins\flash\flash.js" />
+    <Content Include="editor\plugins\image\image.js" />
+    <Content Include="editor\plugins\image\images\align_left.gif" />
+    <Content Include="editor\plugins\image\images\align_right.gif" />
+    <Content Include="editor\plugins\image\images\align_top.gif" />
+    <Content Include="editor\plugins\image\images\refresh.png" />
+    <Content Include="editor\plugins\insertfile\insertfile.js" />
+    <Content Include="editor\plugins\lineheight\lineheight.js" />
+    <Content Include="editor\plugins\link\link.js" />
+    <Content Include="editor\plugins\map\map.html" />
+    <Content Include="editor\plugins\map\map.js" />
+    <Content Include="editor\plugins\media\media.js" />
+    <Content Include="editor\plugins\multiimage\images\image.png" />
+    <Content Include="editor\plugins\multiimage\images\select-files-en.png" />
+    <Content Include="editor\plugins\multiimage\images\select-files-zh_CN.png" />
+    <Content Include="editor\plugins\multiimage\images\swfupload.swf" />
+    <Content Include="editor\plugins\multiimage\multiimage.js" />
+    <Content Include="editor\plugins\pagebreak\pagebreak.js" />
+    <Content Include="editor\plugins\plainpaste\plainpaste.js" />
+    <Content Include="editor\plugins\preview\preview.js" />
+    <Content Include="editor\plugins\quickformat\quickformat.js" />
+    <Content Include="editor\plugins\table\table.js" />
+    <Content Include="editor\plugins\template\html\1.html" />
+    <Content Include="editor\plugins\template\html\2.html" />
+    <Content Include="editor\plugins\template\html\3.html" />
+    <Content Include="editor\plugins\template\template.js" />
+    <Content Include="editor\plugins\wordpaste\wordpaste.js" />
+    <Content Include="editor\themes\common\anchor.gif" />
+    <Content Include="editor\themes\common\blank.gif" />
+    <Content Include="editor\themes\common\flash.gif" />
+    <Content Include="editor\themes\common\loading.gif" />
+    <Content Include="editor\themes\common\media.gif" />
+    <Content Include="editor\themes\common\rm.gif" />
+    <Content Include="editor\themes\default\background.png" />
+    <Content Include="editor\themes\default\default.css" />
+    <Content Include="editor\themes\default\default.png" />
+    <Content Include="editor\themes\qq\editor.gif" />
+    <Content Include="editor\themes\qq\qq.css" />
+    <Content Include="editor\themes\simple\simple.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="index.aspx" />
+    <Content Include="install\css\styles.css" />
+    <Content Include="install\db.sql" />
+    <Content Include="install\images\error.gif" />
+    <Content Include="install\images\logo.jpg" />
+    <Content Include="install\images\ok.gif" />
+    <Content Include="install\images\succeed.jpg" />
+    <Content Include="install\index.aspx" />
+    <Content Include="install\step1.aspx" />
+    <Content Include="install\step2.aspx" />
+    <Content Include="scripts\artdialog\dialog-min.js" />
+    <Content Include="scripts\artdialog\dialog-plus-min.js" />
+    <Content Include="scripts\artdialog\ui-dialog.css" />
+    <Content Include="scripts\calendar.js" />
+    <Content Include="scripts\datepicker\calendar.js" />
+    <Content Include="scripts\datepicker\lang\en.js" />
+    <Content Include="scripts\datepicker\lang\zh-cn.js" />
+    <Content Include="scripts\datepicker\lang\zh-tw.js" />
+    <Content Include="scripts\datepicker\skin\datePicker.gif" />
+    <Content Include="scripts\datepicker\skin\default\datepicker.css" />
+    <Content Include="scripts\datepicker\skin\default\img.gif" />
+    <Content Include="scripts\datepicker\skin\WdatePicker.css" />
+    <Content Include="scripts\datepicker\skin\whyGreen\bg.jpg" />
+    <Content Include="scripts\datepicker\skin\whyGreen\datepicker.css" />
+    <Content Include="scripts\datepicker\skin\whyGreen\img.gif" />
+    <Content Include="scripts\datepicker\WdatePicker.js" />
+    <Content Include="scripts\fullpage\jquery.fullPage.css" />
+    <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
+    <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
+    <Content Include="scripts\jquery\jquery-1.10.2.min.js" />
+    <Content Include="scripts\jquery\jquery-1.11.2.min.js" />
+    <Content Include="scripts\jquery\jquery.form.min.js" />
+    <Content Include="scripts\jquery\jquery.jcrop.min.js" />
+    <Content Include="scripts\jquery\jquery.jqzoom.js" />
+    <Content Include="scripts\jquery\jquery.KinSlideshow-1.2.1.min.js" />
+    <Content Include="scripts\jquery\jquery.lazyload.min.js" />
+    <Content Include="scripts\jquery\jquery.nicescroll.js" />
+    <Content Include="scripts\jquery\jquery.pagination.js" />
+    <Content Include="scripts\tablesorter\asc.gif" />
+    <Content Include="scripts\tablesorter\bg.gif" />
+    <Content Include="scripts\tablesorter\desc.gif" />
+    <Content Include="scripts\tablesorter\jquery.tablesorter.min.js" />
+    <Content Include="scripts\jquery\PCASClass.js" />
+    <Content Include="scripts\jquery\Validform_v5.3.2_min.js" />
+    <Content Include="scripts\lhgdialog\lhgdialog.js" />
+    <Content Include="scripts\lhgdialog\skins\blue.css" />
+    <Content Include="scripts\lhgdialog\skins\blue\blue_s.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\blue_s2.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\blue_titbtn.gif" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_b.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_l.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_lb.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_lt.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_lt2.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_r.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_rb.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_rt.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_rt2.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_t.png" />
+    <Content Include="scripts\lhgdialog\skins\blue\ie6\ui_t2.png" />
+    <Content Include="scripts\lhgdialog\skins\chrome.css" />
+    <Content Include="scripts\lhgdialog\skins\chrome\chrome_s.gif" />
+    <Content Include="scripts\lhgdialog\skins\chrome\chrome_s2.gif" />
+    <Content Include="scripts\lhgdialog\skins\chrome\chrome_s3.gif" />
+    <Content Include="scripts\lhgdialog\skins\default.css" />
+    <Content Include="scripts\lhgdialog\skins\discuz.css" />
+    <Content Include="scripts\lhgdialog\skins\iblack.css" />
+    <Content Include="scripts\lhgdialog\skins\iblack\iblack_s.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\iblack_s2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_b.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_l.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_lb.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_lt.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_lt2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_r.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_rb.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_rt.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_rt2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_t.png" />
+    <Content Include="scripts\lhgdialog\skins\iblack\ie6\ui_t2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue.css" />
+    <Content Include="scripts\lhgdialog\skins\iblue\iblue_s.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\iblue_s2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_b.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_l.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_lb.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_lt.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_lt2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_r.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_rb.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_rt.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_rt2.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_t.png" />
+    <Content Include="scripts\lhgdialog\skins\iblue\ie6\ui_t2.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\32X32\fail.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\32X32\hits.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\32X32\i.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\32X32\succ.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\alert.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\confirm.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\discuz_bg.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\error.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\face-sad.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\face-smile.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\gb_tip_layer.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\gb_tip_layer_ie6.png" />
+    <Content Include="scripts\lhgdialog\skins\icons\lhgcore.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\loading.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\prompt.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\success.gif" />
+    <Content Include="scripts\lhgdialog\skins\icons\tips.gif" />
+    <Content Include="scripts\lhgdialog\skins\idialog.css" />
+    <Content Include="scripts\lhgdialog\skins\idialog\idialog_s.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\idialog_s2.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_b.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_close.hover.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_close.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_l.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_lb.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_lt.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_r.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_rb.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_rt.png" />
+    <Content Include="scripts\lhgdialog\skins\idialog\ie6\ui_t.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen.css" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_b.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_l.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_lb.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_lt.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_r.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_rb.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_rt.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\ie6\ui_t.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\igreen_s.png" />
+    <Content Include="scripts\lhgdialog\skins\igreen\igreen_s2.png" />
+    <Content Include="scripts\lhgdialog\skins\jtop.css" />
+    <Content Include="scripts\lhgdialog\skins\mac.css" />
+    <Content Include="scripts\swfupload\swfupload.handlers.js" />
+    <Content Include="scripts\swfupload\swfupload.js" />
+    <Content Include="scripts\swfupload\swfupload.swf" />
+    <Content Include="scripts\tablesorter\table-sorter-style.css" />
+    <Content Include="scripts\underscore-min.js" />
+    <Content Include="scripts\webuploader\uploader.swf" />
+    <Content Include="scripts\webuploader\webuploader.min.js" />
+    <Content Include="templates\lip2p\404.aspx" />
+    <Content Include="templates\lip2p\about.xml" />
+    <Content Include="templates\lip2p\aboutus.html" />
+    <Content Include="templates\lip2p\activities-millions.html" />
+    <Content Include="templates\lip2p\activities.html" />
+    <Content Include="templates\lip2p\contactus.html" />
+    <Content Include="templates\lip2p\css\aboutus.css" />
+    <Content Include="templates\lip2p\css\bootstrap-datetimepicker.css" />
+    <Content Include="templates\lip2p\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="templates\lip2p\css\bootstrap-theme.css" />
+    <Content Include="templates\lip2p\css\bootstrap-theme.min.css" />
+    <Content Include="templates\lip2p\css\bootstrap.css" />
+    <Content Include="templates\lip2p\css\bootstrap.min.css" />
+    <Content Include="templates\lip2p\css\buttons.css" />
+    <Content Include="templates\lip2p\css\circle.css" />
+    <Content Include="templates\lip2p\css\common.css" />
+    <Content Include="templates\lip2p\css\finance.css" />
+    <Content Include="templates\lip2p\css\floating_window.css" />
+    <Content Include="templates\lip2p\css\index.css" />
+    <Content Include="templates\lip2p\css\information-center.css" />
+    <Content Include="templates\lip2p\css\invest_list.css" />
+    <Content Include="templates\lip2p\css\layout.css" />
+    <Content Include="templates\lip2p\css\item-detail.css" />
+    <Content Include="templates\lip2p\css\item-list.css" />
+    <Content Include="templates\lip2p\css\layoutnew.css" />
+    <Content Include="templates\lip2p\css\location.css" />
+    <Content Include="templates\lip2p\css\mylottery.css" />
+    <Content Include="templates\lip2p\css\mynews.css" />
+    <Content Include="templates\lip2p\css\myreward.css" />
+    <Content Include="templates\lip2p\css\recruitment.css" />
+    <Content Include="templates\lip2p\css\register.css" />
+    <Content Include="templates\lip2p\css\reglog.css" />
+    <Content Include="templates\lip2p\css\safe.css" />
+    <Content Include="templates\lip2p\css\safeie.css" />
+    <Content Include="templates\lip2p\css\reports-common.css" />
+    <Content Include="templates\lip2p\css\select2.css" />
+    <Content Include="templates\lip2p\css\site-map.css" />
+    <Content Include="templates\lip2p\css\style.css" />
+    <Content Include="templates\lip2p\css\team-show.css" />
+    <Content Include="templates\lip2p\css\uclifen.css" />
+    <Content Include="templates\lip2p\css\usercenter.css" />
+    <Content Include="templates\lip2p\css\validform.css" />
+    <Content Include="templates\lip2p\css\whoweare.css" />
+    <Content Include="templates\lip2p\css\xinshouzhiyin.css" />
+    <Content Include="templates\lip2p\css\xinshouzhiyin_charge.css" />
+    <Content Include="templates\lip2p\css\xinshouzhiyin_common.css" />
+    <Content Include="templates\lip2p\css\xinshouzhiyin_demo.css" />
+    <Content Include="templates\lip2p\css\xinshouzhiyin_mortgage.css" />
+    <Content Include="templates\lip2p\article_content_show.html" />
+    <Content Include="templates\lip2p\error.html" />
+    <Content Include="templates\lip2p\flowplayer\embed.min.js" />
+    <Content Include="templates\lip2p\flowplayer\flowplayer.js" />
+    <Content Include="templates\lip2p\flowplayer\flowplayer.min.js" />
+    <Content Include="templates\lip2p\flowplayer\flowplayer.swf" />
+    <Content Include="templates\lip2p\flowplayer\flowplayerhls.swf" />
+    <Content Include="templates\lip2p\flowplayer\index.html" />
+    <Content Include="templates\lip2p\flowplayer\skin\all-skins.css" />
+    <Content Include="templates\lip2p\flowplayer\skin\fonts\fpicons.svg" />
+    <Content Include="templates\lip2p\flowplayer\skin\functional.css" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\black%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\black.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\black_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\black_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\flowplayer%402x.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\flowplayer.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_black%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_black.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_black_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_black_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_white%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_white.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_white_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\playful_white_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_black%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_black.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_black_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_black_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_white%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_white.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_white_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\play_white_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\white%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\white.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\white_rtl%40x2.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\img\white_rtl.png" />
+    <Content Include="templates\lip2p\flowplayer\skin\minimalist.css" />
+    <Content Include="templates\lip2p\flowplayer\skin\playful.css" />
+    <Content Include="templates\lip2p\images\2dcode.png" />
+    <Content Include="templates\lip2p\images\2dcode_big.jpg" />
+    <Content Include="templates\lip2p\images\aboutus\contact-logo.png" />
+    <Content Include="templates\lip2p\images\aboutus\dynamic_1.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_1.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_10.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_2.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_3.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_4.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_5.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_6.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_7.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_8.png" />
+    <Content Include="templates\lip2p\images\aboutus\environment\envi_9.png" />
+    <Content Include="templates\lip2p\images\aboutus\map-logo.png" />
+    <Content Include="templates\lip2p\images\aboutus\map.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\reports-1.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\reports-2.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\reports-3.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\reports-4.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\reports-5.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-1.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-2.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-3.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-4.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-5.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-6.png" />
+    <Content Include="templates\lip2p\images\aboutus\reports\right-7.png" />
+    <Content Include="templates\lip2p\images\aboutus\slash.jpg" />
+    <Content Include="templates\lip2p\images\aboutus\team\ajie.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\ajieQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\awen.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\awenQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\business-license.JPG" />
+    <Content Include="templates\lip2p\images\aboutus\team\caiwu.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\fengkong.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\guanli.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\heganjie.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\hejunrong-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\hejunrong.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\huangjian-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\huangjian.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\jingjing.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\jingjingQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\kefu.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\liaoguiqing-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\liaoguiqing.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\liuxiaojie.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\lixiaoli.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\luomingxing.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\meizi.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\meiziQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\pudingxin-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\pudingxin.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\qinfei.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\qiqi.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\qiqiQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\renshi.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\suxi.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\tangbeidi.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\wing.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\wingQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\xiaofen.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\xiaofenQQ.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\xuanjinghui-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\xuanjinghui.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\xushufen.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\yanfa.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\yangqixing-info.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\yangqixing.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\yunying.png" />
+    <Content Include="templates\lip2p\images\aboutus\team\zhengyujun.png" />
+    <Content Include="templates\lip2p\images\aboutus\touxiang.png" />
+    <Content Include="templates\lip2p\images\activities.jpg" />
+    <Content Include="templates\lip2p\images\back.png" />
+    <Content Include="templates\lip2p\images\calculator.png" />
+    <Content Include="templates\lip2p\images\error.png" />
+    <Content Include="templates\lip2p\images\finance\biaoshu_03.png" />
+    <Content Include="templates\lip2p\images\finance\bscar.png" />
+    <Content Include="templates\lip2p\images\finance\bsfull.png" />
+    <Content Include="templates\lip2p\images\finance\bshouse.png" />
+    <Content Include="templates\lip2p\images\finance\bsselling.png" />
+    <Content Include="templates\lip2p\images\finance\car.png" />
+    <Content Include="templates\lip2p\images\finance\house.png" />
+    <Content Include="templates\lip2p\images\finance\pics\1.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\1.png" />
+    <Content Include="templates\lip2p\images\finance\pics\2.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\2.png" />
+    <Content Include="templates\lip2p\images\finance\pics\3.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\3.png" />
+    <Content Include="templates\lip2p\images\finance\pics\4.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\4.png" />
+    <Content Include="templates\lip2p\images\finance\pics\5.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\5.png" />
+    <Content Include="templates\lip2p\images\finance\pics\6.jpg" />
+    <Content Include="templates\lip2p\images\finance\pics\DSCN0467.jpg" />
+    <Content Include="templates\lip2p\images\finance\right-code.png" />
+    <Content Include="templates\lip2p\images\gethongbao.png" />
+    <Content Include="templates\lip2p\images\guide\cars-invest.png" />
+    <Content Include="templates\lip2p\images\guide\chancheng.png" />
+    <Content Include="templates\lip2p\images\guide\company-bg.png" />
+    <Content Include="templates\lip2p\images\guide\constrast.png" />
+    <Content Include="templates\lip2p\images\guide\first-step-bg.png" />
+    <Content Include="templates\lip2p\images\guide\first-step.png" />
+    <Content Include="templates\lip2p\images\guide\fourth-step.png" />
+    <Content Include="templates\lip2p\images\guide\gaoming.png" />
+    <Content Include="templates\lip2p\images\guide\golden-house.png" />
+    <Content Include="templates\lip2p\images\guide\high-earnings.png" />
+    <Content Include="templates\lip2p\images\guide\introduction.png" />
+    <Content Include="templates\lip2p\images\guide\process.png" />
+    <Content Include="templates\lip2p\images\guide\regulatory.png" />
+    <Content Include="templates\lip2p\images\guide\second-step.png" />
+    <Content Include="templates\lip2p\images\guide\security.png" />
+    <Content Include="templates\lip2p\images\guide\shunde.png" />
+    <Content Include="templates\lip2p\images\guide\third-step.png" />
+    <Content Include="templates\lip2p\images\guide\top-title.jpg" />
+    <Content Include="templates\lip2p\images\home.png" />
+    <Content Include="templates\lip2p\images\img_noting_car.png" />
+    <Content Include="templates\lip2p\images\img_noting_house.png" />
+    <Content Include="templates\lip2p\images\index\active-line.png" />
+    <Content Include="templates\lip2p\images\index\activities-icon.png" />
+    <Content Include="templates\lip2p\images\index\auth.png" />
+    <Content Include="templates\lip2p\images\index\authimg.jpg" />
+    <Content Include="templates\lip2p\images\index\banner\banner_3.jpg" />
+    <Content Include="templates\lip2p\images\index\banner\banner_4.jpg" />
+    <Content Include="templates\lip2p\images\index\banner\banner_5.jpg" />
+    <Content Include="templates\lip2p\images\index\banner\banner_6.jpg" />
+    <Content Include="templates\lip2p\images\index\banner\banner_7.jpg" />
+    <Content Include="templates\lip2p\images\index\bid.png" />
+    <Content Include="templates\lip2p\images\index\bidtime.png" />
+    <Content Include="templates\lip2p\images\index\car.png" />
+    <Content Include="templates\lip2p\images\index\circle.png" />
+    <Content Include="templates\lip2p\images\index\duang-gif.gif" />
+    <Content Include="templates\lip2p\images\index\enterVIP.png" />
+    <Content Include="templates\lip2p\images\index\for-details-8.png" />
+    <Content Include="templates\lip2p\images\index\for-details.png" />
+    <Content Include="templates\lip2p\images\index\hongbao-btn.png" />
+    <Content Include="templates\lip2p\images\index\house.png" />
+    <Content Include="templates\lip2p\images\index\media-cover.png" />
+    <Content Include="templates\lip2p\images\index\pick-money-8.png" />
+    <Content Include="templates\lip2p\images\index\pick-money.png" />
+    <Content Include="templates\lip2p\images\index\pwd.png" />
+    <Content Include="templates\lip2p\images\index\time.png" />
+    <Content Include="templates\lip2p\images\index\user.png" />
+    <Content Include="templates\lip2p\images\invest-icon.png" />
+    <Content Include="templates\lip2p\images\invest-now.png" />
+    <Content Include="templates\lip2p\images\invest.png" />
+    <Content Include="templates\lip2p\images\invest\bluetick.png" />
+    <Content Include="templates\lip2p\images\kefuQQ.png" />
+    <Content Include="templates\lip2p\images\link_04.png" />
+    <Content Include="templates\lip2p\images\link_06.png" />
+    <Content Include="templates\lip2p\images\link_09.png" />
+    <Content Include="templates\lip2p\images\logo.png" />
+    <Content Include="templates\lip2p\images\map\aboutus.png" />
+    <Content Include="templates\lip2p\images\map\else.png" />
+    <Content Include="templates\lip2p\images\map\guide.png" />
+    <Content Include="templates\lip2p\images\map\invest.png" />
+    <Content Include="templates\lip2p\images\map\regi-login.png" />
+    <Content Include="templates\lip2p\images\map\security.png" />
+    <Content Include="templates\lip2p\images\millions-bg.jpg" />
+    <Content Include="templates\lip2p\images\percent.png" />
+    <Content Include="templates\lip2p\images\phone.png" />
+    <Content Include="templates\lip2p\images\QQ.png" />
+    <Content Include="templates\lip2p\images\qqgroup.png" />
+    <Content Include="templates\lip2p\images\QQqun.png" />
+    <Content Include="templates\lip2p\images\ranking.png" />
+    <Content Include="templates\lip2p\images\recommend-now.png" />
+    <Content Include="templates\lip2p\images\recommend.png" />
+    <Content Include="templates\lip2p\images\recruitment\customer-service.png" />
+    <Content Include="templates\lip2p\images\recruitment\invest-manager.png" />
+    <Content Include="templates\lip2p\images\recruitment\manger-name.png" />
+    <Content Include="templates\lip2p\images\recruitment\rec-top.png" />
+    <Content Include="templates\lip2p\images\recruitment\send-email.png" />
+    <Content Include="templates\lip2p\images\recruitment\wenzi.png" />
+    <Content Include="templates\lip2p\images\register\big-gold-bg.png" />
+    <Content Include="templates\lip2p\images\register\code.png" />
+    <Content Include="templates\lip2p\images\register\gold.png" />
+    <Content Include="templates\lip2p\images\register\intruduce.png" />
+    <Content Include="templates\lip2p\images\register\login-bg.png" />
+    <Content Include="templates\lip2p\images\register\logo.png" />
+    <Content Include="templates\lip2p\images\register\pwd.png" />
+    <Content Include="templates\lip2p\images\register\register-bg.png" />
+    <Content Include="templates\lip2p\images\register\user.png" />
+    <Content Include="templates\lip2p\images\safe\2_01_ie.png" />
+    <Content Include="templates\lip2p\images\safe\2_02_ie.png" />
+    <Content Include="templates\lip2p\images\safe\2_ct.png" />
+    <Content Include="templates\lip2p\images\safe\2_title.png" />
+    <Content Include="templates\lip2p\images\safe\2_title3.png" />
+    <Content Include="templates\lip2p\images\safe\3_01.png" />
+    <Content Include="templates\lip2p\images\safe\3_01_left.png" />
+    <Content Include="templates\lip2p\images\safe\3_02.png" />
+    <Content Include="templates\lip2p\images\safe\3_02_ltop.png" />
+    <Content Include="templates\lip2p\images\safe\3_03.png" />
+    <Content Include="templates\lip2p\images\safe\3_03_rbottom.png" />
+    <Content Include="templates\lip2p\images\safe\4-01.png" />
+    <Content Include="templates\lip2p\images\safe\4-05.png" />
+    <Content Include="templates\lip2p\images\safe\4-06.png" />
+    <Content Include="templates\lip2p\images\safe\4_05_ie.png" />
+    <Content Include="templates\lip2p\images\safe\4_06_ie.png" />
+    <Content Include="templates\lip2p\images\safe\5-01.png" />
+    <Content Include="templates\lip2p\images\safe\5-02.png" />
+    <Content Include="templates\lip2p\images\safe\5-03.png" />
+    <Content Include="templates\lip2p\images\safe\6-01.png" />
+    <Content Include="templates\lip2p\images\safe\6-02.png" />
+    <Content Include="templates\lip2p\images\safe\6-03.png" />
+    <Content Include="templates\lip2p\images\safe\6-04.png" />
+    <Content Include="templates\lip2p\images\safe\6-05.png" />
+    <Content Include="templates\lip2p\images\safe\7-01.png" />
+    <Content Include="templates\lip2p\images\safe\7-02.png" />
+    <Content Include="templates\lip2p\images\safe\7-03.png" />
+    <Content Include="templates\lip2p\images\safe\7_01_ie.png" />
+    <Content Include="templates\lip2p\images\safe\7_02_ie.png" />
+    <Content Include="templates\lip2p\images\safe\7_03_ie.png" />
+    <Content Include="templates\lip2p\images\safe\8-01.png" />
+    <Content Include="templates\lip2p\images\safe\8-02.png" />
+    <Content Include="templates\lip2p\images\safe\arrowdown.png" />
+    <Content Include="templates\lip2p\images\safe\big.png" />
+    <Content Include="templates\lip2p\images\safe\big_ie.png" />
+    <Content Include="templates\lip2p\images\safe\five.png" />
+    <Content Include="templates\lip2p\images\safe\s1_text.png" />
+    <Content Include="templates\lip2p\images\safe\yuan1.png" />
+    <Content Include="templates\lip2p\images\safe\yuan2.png" />
+    <Content Include="templates\lip2p\images\trip.jpg" />
+    <Content Include="templates\lip2p\images\usercenter\arrow-left.png" />
+    <Content Include="templates\lip2p\images\usercenter\arrow-right.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\abc.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\boc.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\bpay.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\ccb.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\ceb.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\cib.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\cmb.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\cmbc.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\gdb.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\huaxia.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\icbc.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\jiaotong.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\lianlianpay.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\pingan.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\post.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\pufa.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\zhongxin.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\温馨提示.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\蓝框.png" />
+    <Content Include="templates\lip2p\images\usercenter\banklogo\蓝框2.png" />
+    <Content Include="templates\lip2p\images\usercenter\cd.png" />
+    <Content Include="templates\lip2p\images\usercenter\cd_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\datepick.png" />
+    <Content Include="templates\lip2p\images\usercenter\email.png" />
+    <Content Include="templates\lip2p\images\usercenter\email_t_b.png" />
+    <Content Include="templates\lip2p\images\usercenter\email_t_g.png" />
+    <Content Include="templates\lip2p\images\usercenter\idcard.png" />
+    <Content Include="templates\lip2p\images\usercenter\idcard_t_b.png" />
+    <Content Include="templates\lip2p\images\usercenter\idcard_t_g.png" />
+    <Content Include="templates\lip2p\images\usercenter\il.png" />
+    <Content Include="templates\lip2p\images\usercenter\il_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\logpwd.png" />
+    <Content Include="templates\lip2p\images\usercenter\logpwd_t_b.png" />
+    <Content Include="templates\lip2p\images\usercenter\logpwd_t_g.png" />
+    <Content Include="templates\lip2p\images\usercenter\lt.png" />
+    <Content Include="templates\lip2p\images\usercenter\lt_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\mobile.png" />
+    <Content Include="templates\lip2p\images\usercenter\mobile_t_b.png" />
+    <Content Include="templates\lip2p\images\usercenter\mobile_t_g.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\basic-info-grey.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\basic-info-white.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\drop-down-icon.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\headshot.jpg" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\modify-btn.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\myinfo-icon.png" />
+    <Content Include="templates\lip2p\images\usercenter\myinfo\select2.png" />
+    <Content Include="templates\lip2p\images\usercenter\mylottery\lotterybg-grey.png" />
+    <Content Include="templates\lip2p\images\usercenter\mylottery\lotterybg-red.png" />
+    <Content Include="templates\lip2p\images\usercenter\mylottery\lotterybg.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\add.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\QQ.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\QQkj.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\sinaweibo.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\tencentweibo.png" />
+    <Content Include="templates\lip2p\images\usercenter\myreward\wechat.png" />
+    <Content Include="templates\lip2p\images\usercenter\news.png" />
+    <Content Include="templates\lip2p\images\usercenter\news_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\qpseleced.png" />
+    <Content Include="templates\lip2p\images\usercenter\receiveplan.png" />
+    <Content Include="templates\lip2p\images\usercenter\receiveplan_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\rw.png" />
+    <Content Include="templates\lip2p\images\usercenter\rw_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\selected.png" />
+    <Content Include="templates\lip2p\images\usercenter\sf.png" />
+    <Content Include="templates\lip2p\images\usercenter\sf_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\td.png" />
+    <Content Include="templates\lip2p\images\usercenter\td_w.png" />
+    <Content Include="templates\lip2p\images\usercenter\tips.png" />
+    <Content Include="templates\lip2p\images\usercenter\tradepwd.png" />
+    <Content Include="templates\lip2p\images\usercenter\tradepwd_t_b.png" />
+    <Content Include="templates\lip2p\images\usercenter\tradepwd_t_g.png" />
+    <Content Include="templates\lip2p\images\usercenter\usr.png" />
+    <Content Include="templates\lip2p\images\usercenter\zl.png" />
+    <Content Include="templates\lip2p\images\usercenter\zl_w.png" />
+    <Content Include="templates\lip2p\images\validate\arrow1.gif" />
+    <Content Include="templates\lip2p\images\validate\arrow2.gif" />
+    <Content Include="templates\lip2p\images\validate\error.png" />
+    <Content Include="templates\lip2p\images\validate\header-bg.gif" />
+    <Content Include="templates\lip2p\images\validate\navbg.gif" />
+    <Content Include="templates\lip2p\images\validate\onLoad.gif" />
+    <Content Include="templates\lip2p\images\validate\right.png" />
+    <Content Include="templates\lip2p\images\validate\totop.png" />
+    <Content Include="templates\lip2p\images\wechat.png" />
+    <Content Include="templates\lip2p\images\weibo.png" />
+    <Content Include="templates\lip2p\images\weixin.jpg" />
+    <Content Include="templates\lip2p\images\weixin2.png" />
+    <Content Include="templates\lip2p\index.html" />
+    <Content Include="templates\lip2p\information_center.html" />
+    <Content Include="templates\lip2p\invest.html" />
+    <Content Include="templates\lip2p\invest_detail.html" />
+    <Content Include="templates\lip2p\invest_list.html" />
+    <Content Include="templates\lip2p\article_invest_show.html" />
+    <Content Include="templates\lip2p\article_invest_list.html" />
+    <Content Include="templates\lip2p\js\area.js" />
+    <Content Include="templates\lip2p\js\base.js" />
+    <Content Include="templates\lip2p\js\bootstrap-datetimepicker.js" />
+    <Content Include="templates\lip2p\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="templates\lip2p\js\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="templates\lip2p\js\bootstrap.js" />
+    <Content Include="templates\lip2p\js\bootstrap.min.js" />
+    <Content Include="templates\lip2p\js\city.min.js" />
+    <Content Include="templates\lip2p\js\delayed.js" />
+    <Content Include="templates\lip2p\js\digitsroll.js" />
+    <Content Include="templates\lip2p\js\html5shiv.min.js" />
+    <Content Include="templates\lip2p\js\index.js" />
+    <Content Include="templates\lip2p\js\jquery-1.11.2.min.js" />
+    <Content Include="templates\lip2p\js\jquery.circliful.min.js" />
+    <Content Include="templates\lip2p\js\jquery.cityselect.js" />
+    <Content Include="templates\lip2p\js\jquery.marquee.js" />
+    <Content Include="templates\lip2p\js\jquery.marquee.min.js" />
+    <Content Include="templates\lip2p\js\jquery.zclip.js" />
+    <Content Include="templates\lip2p\js\jquery.zclip.min.js" />
+    <Content Include="templates\lip2p\js\location.js" />
+    <Content Include="templates\lip2p\js\login_validate.js" />
+    <Content Include="templates\lip2p\js\modernizr.custom.23425.js" />
+    <Content Include="templates\lip2p\js\register_validate.js" />
+    <Content Include="templates\lip2p\js\respond.min.js" />
+    <Content Include="templates\lip2p\js\safe.js" />
+    <Content Include="templates\lip2p\js\safeie.js" />
+    <Content Include="templates\lip2p\js\select2.js" />
+    <Content Include="templates\lip2p\js\select2_locale_zh-CN.js" />
+    <Content Include="templates\lip2p\js\submenu.js" />
+    <Content Include="templates\lip2p\js\Validform_v5.3.2.js" />
+    <Content Include="templates\lip2p\js\Validform_v5.3.2_min.js" />
+    <Content Include="templates\lip2p\js\Validform_v5.3.2_ncr_min.js" />
+    <Content Include="templates\lip2p\js\ZeroClipboard.swf" />
+    <Content Include="templates\lip2p\licenses.html" />
+    <Content Include="templates\lip2p\login.html" />
+    <Content Include="templates\lip2p\myinformation.html" />
+    <Content Include="templates\lip2p\mynews.html" />
+    <Content Include="templates\lip2p\myreceiveplan.html" />
+    <Content Include="templates\lip2p\office_environment.html" />
+    <Content Include="templates\lip2p\recharge.html" />
+    <Content Include="templates\lip2p\mycard.html" />
+    <Content Include="templates\lip2p\myinvest.html" />
+    <Content Include="templates\lip2p\mylottery.html" />
+    <Content Include="templates\lip2p\myreward.html" />
+    <Content Include="templates\lip2p\mytrade.html" />
+    <Content Include="templates\lip2p\recruitment.html" />
+    <Content Include="templates\lip2p\register.html" />
+    <Content Include="templates\lip2p\repassword.html" />
+    <Content Include="templates\lip2p\safe.html" />
+    <Content Include="templates\lip2p\safedefence.html" />
+    <Content Include="templates\lip2p\safe_ie.html" />
+    <Content Include="templates\lip2p\sitemap.html" />
+    <Content Include="templates\lip2p\team_show.html" />
+    <Content Include="templates\lip2p\trip.html" />
+    <Content Include="templates\lip2p\usercenter.html" />
+    <Content Include="templates\lip2p\mynews_show.html" />
+    <Content Include="templates\lip2p\whoweare.html" />
+    <Content Include="templates\lip2p\withdraw.html" />
+    <Content Include="templates\lip2p\new_guidelines.html" />
+    <Content Include="templates\lip2p\new_guidelines_charge.html" />
+    <Content Include="templates\lip2p\new_guidelines_demo.html" />
+    <Content Include="templates\lip2p\new_guidelines_mortgage.html" />
+    <Content Include="templates\lip2p\_footer.html" />
+    <Content Include="templates\lip2p\_footerMini.html" />
+    <Content Include="templates\lip2p\_header.html" />
+    <Content Include="templates\lip2p\_footerSmall.html" />
+    <Content Include="templates\lip2p\_usercenter_agree_contract.html" />
+    <Content Include="templates\lip2p\_usercenter_left.html" />
+    <Content Include="templates\lip2p\_usercenter_top.html" />
+    <Content Include="templates\lip2p\_usercenter_add_card.html" />
+    <Content Include="templates\weChat\about.xml" />
+    <Content Include="templates\weChat\aboutus.html" />
+    <Content Include="templates\weChat\city-selecter.htm" />
+    <Content Include="templates\weChat\css\aboutus.css" />
+    <Content Include="templates\weChat\css\card-select.css" />
+    <Content Include="templates\weChat\css\claims-photos.css" />
+    <Content Include="templates\weChat\css\cards-list.css" />
+    <Content Include="templates\weChat\css\common.css" />
+    <Content Include="templates\weChat\css\myinvest.css" />
+    <Content Include="templates\weChat\css\mylottery.css" />
+    <Content Include="templates\weChat\css\mynews.css" />
+    <Content Include="templates\weChat\css\project-detail.css" />
+    <Content Include="templates\weChat\css\receive-plan-detail.css" />
+    <Content Include="templates\weChat\css\receive-plan.css" />
+    <Content Include="templates\weChat\css\safe-center.css" />
+    <Content Include="templates\weChat\css\set-up.css" />
+    <Content Include="templates\weChat\imgs\banner\banner-1.png" />
+    <Content Include="templates\weChat\imgs\banner\banner-2.png" />
+    <Content Include="templates\weChat\imgs\banner\banner-3.png" />
+    <Content Include="templates\weChat\imgs\binding-cards-icon.png" />
+    <Content Include="templates\weChat\imgs\contrast.png" />
+    <Content Include="templates\weChat\imgs\empty-box.png" />
+    <Content Include="templates\weChat\imgs\headshot.png" />
+    <Content Include="templates\weChat\imgs\invest-detail-car.png" />
+    <Content Include="templates\weChat\imgs\invest-detail-house.png" />
+    <Content Include="templates\weChat\imgs\logo.png" />
+    <Content Include="templates\weChat\imgs\receiveplan-car.png" />
+    <Content Include="templates\weChat\imgs\receiveplan-house.png" />
+    <Content Include="templates\weChat\imgs\safe-center-icon.png" />
+    <Content Include="templates\weChat\imgs\set-up-icon.png" />
+    <Content Include="templates\weChat\js\touchscroll.js" />
+    <Content Include="templates\weChat\mycard.html" />
+    <Content Include="templates\weChat\mylottery.html" />
+    <Content Include="templates\weChat\mynews.html" />
+    <Content Include="templates\weChat\mynews_show.html" />
+    <Content Include="templates\weChat\recharge.html" />
+    <Content Include="templates\weChat\css\binding-cards.css" />
+    <Content Include="templates\weChat\css\bootstrap.min.css" />
+    <Content Include="templates\weChat\css\charge.css" />
+    <Content Include="templates\weChat\css\footer.css" />
+    <Content Include="templates\weChat\css\forgot-psw.css" />
+    <Content Include="templates\weChat\css\index.css" />
+    <Content Include="templates\weChat\css\invest-detail.css" />
+    <Content Include="templates\weChat\css\invest-list.css" />
+    <Content Include="templates\weChat\css\invest-success.css" />
+    <Content Include="templates\weChat\css\invest.css" />
+    <Content Include="templates\weChat\css\jquery.mobile-1.4.5.min.css" />
+    <Content Include="templates\weChat\css\login.css" />
+    <Content Include="templates\weChat\css\myaccount.css" />
+    <Content Include="templates\weChat\css\register.css" />
+    <Content Include="templates\weChat\css\trade-record.css" />
+    <Content Include="templates\weChat\css\verified.css" />
+    <Content Include="templates\weChat\css\withdrawals.css" />
+    <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="templates\weChat\forgot_pwd.html" />
+    <Content Include="templates\weChat\imgs\banks-icon.png" />
+    <Content Include="templates\weChat\imgs\charge-icon.png" />
+    <Content Include="templates\weChat\imgs\footer-icon-active.png" />
+    <Content Include="templates\weChat\imgs\footer-icon.png" />
+    <Content Include="templates\weChat\imgs\icon-tick.png" />
+    <Content Include="templates\weChat\imgs\jinhuifeng.png" />
+    <Content Include="templates\weChat\imgs\login-icon.png" />
+    <Content Include="templates\weChat\imgs\myaccount-icon.png" />
+    <Content Include="templates\weChat\imgs\verified-icon.png" />
+    <Content Include="templates\weChat\index.html" />
+    <Content Include="templates\weChat\invest_detail.html" />
+    <Content Include="templates\weChat\invest-success.html" />
+    <Content Include="templates\weChat\invest_list.html" />
+    <Content Include="templates\weChat\js\bootstrap.min.js" />
+    <Content Include="templates\weChat\js\jquery-2.1.4.min.js" />
+    <Content Include="templates\weChat\js\jquery.mobile-1.4.5.min.js" />
+    <Content Include="templates\weChat\js\login_validate.js" />
+    <Content Include="templates\weChat\js\radialIndicator.min.js" />
+    <Content Include="templates\weChat\js\register_validate.js" />
+    <Content Include="templates\weChat\login.html" />
+    <Content Include="templates\weChat\myreceiveplan.html" />
+    <Content Include="templates\weChat\safe.html" />
+    <Content Include="templates\weChat\settings.html" />
+    <Content Include="templates\weChat\usercenter.html" />
+    <Content Include="templates\weChat\myinvest.html" />
+    <Content Include="templates\weChat\register.html" />
+    <Content Include="templates\weChat\mytrade.html" />
+    <Content Include="templates\weChat\verified.html" />
+    <Content Include="templates\weChat\withdraw.html" />
+    <Content Include="templates\weChat\_footer.html" />
+    <Content Include="tools\download.ashx" />
+    <Content Include="tools\submit_ajax.ashx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="admin\dialog\dialog_mortgage_setting.aspx.cs">
+      <DependentUpon>dialog_mortgage_setting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_mortgage_setting.aspx.designer.cs">
+      <DependentUpon>dialog_mortgage_setting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_picture.aspx.cs">
+      <DependentUpon>dialog_picture.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\creditor_edit.aspx.cs">
+      <DependentUpon>creditor_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\creditor_edit.aspx.designer.cs">
+      <DependentUpon>creditor_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\creditor_list.aspx.cs">
+      <DependentUpon>creditor_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\creditor_list.aspx.designer.cs">
+      <DependentUpon>creditor_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\loaner_edit.aspx.cs">
+      <DependentUpon>loaner_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\loaner_edit.aspx.designer.cs">
+      <DependentUpon>loaner_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_edit.aspx.cs">
+      <DependentUpon>mortgage_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_edit.aspx.designer.cs">
+      <DependentUpon>mortgage_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\department_edit.aspx.cs">
+      <DependentUpon>department_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\department_edit.aspx.designer.cs">
+      <DependentUpon>department_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\department_list.aspx.cs">
+      <DependentUpon>department_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\department_list.aspx.designer.cs">
+      <DependentUpon>department_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\department_select_member.aspx.cs">
+      <DependentUpon>department_select_member.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\department_select_member.aspx.designer.cs">
+      <DependentUpon>department_select_member.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\financing_edit.aspx.cs">
+      <DependentUpon>financing_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\financing_edit.aspx.designer.cs">
+      <DependentUpon>financing_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\financing_list.aspx.cs">
+      <DependentUpon>financing_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\financing_list.aspx.designer.cs">
+      <DependentUpon>financing_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\companyContent_edit.aspx.cs">
+      <DependentUpon>companyContent_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\companyContent_edit.aspx.designer.cs">
+      <DependentUpon>companyContent_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\companyContent_list.aspx.cs">
+      <DependentUpon>companyContent_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\companyContent_list.aspx.designer.cs">
+      <DependentUpon>companyContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\help_edit.aspx.cs">
+      <DependentUpon>help_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\help_edit.aspx.designer.cs">
+      <DependentUpon>help_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\help_list.aspx.cs">
+      <DependentUpon>help_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\help_list.aspx.designer.cs">
+      <DependentUpon>help_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\center.aspx.cs">
+      <DependentUpon>center.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\center.aspx.designer.cs">
+      <DependentUpon>center.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_attach.aspx.cs">
+      <DependentUpon>dialog_attach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\category_edit.aspx.cs">
+      <DependentUpon>category_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\category_edit.aspx.designer.cs">
+      <DependentUpon>category_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\article\category_list.aspx.cs">
+      <DependentUpon>category_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\category_list.aspx.designer.cs">
+      <DependentUpon>category_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\article\article_edit.aspx.cs">
+      <DependentUpon>article_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\article_edit.aspx.designer.cs">
+      <DependentUpon>article_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\article\article_list.aspx.cs">
+      <DependentUpon>article_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\article_list.aspx.designer.cs">
+      <DependentUpon>article_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\article\comment_edit.aspx.cs">
+      <DependentUpon>comment_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\comment_edit.aspx.designer.cs">
+      <DependentUpon>comment_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\article\comment_list.aspx.cs">
+      <DependentUpon>comment_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\article\comment_list.aspx.designer.cs">
+      <DependentUpon>comment_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\attribute_field_edit.aspx.cs">
+      <DependentUpon>attribute_field_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\attribute_field_edit.aspx.designer.cs">
+      <DependentUpon>attribute_field_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\attribute_field_list.aspx.cs">
+      <DependentUpon>attribute_field_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\attribute_field_list.aspx.designer.cs">
+      <DependentUpon>attribute_field_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\category_edit.aspx.cs">
+      <DependentUpon>category_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\category_edit.aspx.designer.cs">
+      <DependentUpon>category_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\category_list.aspx.cs">
+      <DependentUpon>category_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\category_list.aspx.designer.cs">
+      <DependentUpon>category_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\channel_edit.aspx.cs">
+      <DependentUpon>channel_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\channel_edit.aspx.designer.cs">
+      <DependentUpon>channel_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\channel\channel_list.aspx.cs">
+      <DependentUpon>channel_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\channel\channel_list.aspx.designer.cs">
+      <DependentUpon>channel_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_channel.aspx.cs">
+      <DependentUpon>dialog_channel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_rewrite.aspx.cs">
+      <DependentUpon>dialog_rewrite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\loaner_list.aspx.cs">
+      <DependentUpon>loaner_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\loaner_list.aspx.designer.cs">
+      <DependentUpon>loaner_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\manager_edit.aspx.cs">
+      <DependentUpon>manager_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\manager_edit.aspx.designer.cs">
+      <DependentUpon>manager_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\manager_list.aspx.cs">
+      <DependentUpon>manager_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\manager_list.aspx.designer.cs">
+      <DependentUpon>manager_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\manager_log.aspx.cs">
+      <DependentUpon>manager_log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\manager_log.aspx.designer.cs">
+      <DependentUpon>manager_log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\manager_pwd.aspx.cs">
+      <DependentUpon>manager_pwd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\manager_pwd.aspx.designer.cs">
+      <DependentUpon>manager_pwd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\role_edit.aspx.cs">
+      <DependentUpon>role_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\role_edit.aspx.designer.cs">
+      <DependentUpon>role_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\manager\role_list.aspx.cs">
+      <DependentUpon>role_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manager\role_list.aspx.designer.cs">
+      <DependentUpon>role_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_accept.aspx.cs">
+      <DependentUpon>dialog_accept.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_express.aspx.cs">
+      <DependentUpon>dialog_express.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_express.aspx.designer.cs">
+      <DependentUpon>dialog_express.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_print.aspx.cs">
+      <DependentUpon>dialog_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\dialog\dialog_print.aspx.designer.cs">
+      <DependentUpon>dialog_print.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\express_edit.aspx.cs">
+      <DependentUpon>express_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\express_edit.aspx.designer.cs">
+      <DependentUpon>express_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\express_list.aspx.cs">
+      <DependentUpon>express_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\express_list.aspx.designer.cs">
+      <DependentUpon>express_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_config.aspx.cs">
+      <DependentUpon>order_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_config.aspx.designer.cs">
+      <DependentUpon>order_config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_confirm.aspx.cs">
+      <DependentUpon>order_confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_confirm.aspx.designer.cs">
+      <DependentUpon>order_confirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_edit.aspx.cs">
+      <DependentUpon>order_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_edit.aspx.designer.cs">
+      <DependentUpon>order_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_list.aspx.cs">
+      <DependentUpon>order_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_list.aspx.designer.cs">
+      <DependentUpon>order_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\payment_edit.aspx.cs">
+      <DependentUpon>payment_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\payment_edit.aspx.designer.cs">
+      <DependentUpon>payment_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\payment_list.aspx.cs">
+      <DependentUpon>payment_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\payment_list.aspx.designer.cs">
+      <DependentUpon>payment_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\projectContent_edit.aspx.cs">
+      <DependentUpon>projectContent_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\projectContent_edit.aspx.designer.cs">
+      <DependentUpon>projectContent_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\projectContent_list.aspx.cs">
+      <DependentUpon>projectContent_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
+      <DependentUpon>projectContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\project_edit_publish.aspx.cs">
+      <DependentUpon>project_edit_publish.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_list.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_list.designer.cs">
+      <DependentUpon>project_list.cs</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\project_list_approval.aspx.cs">
+      <DependentUpon>project_list_approval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_list_publish.aspx.cs">
+      <DependentUpon>project_list_publish.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_edit_approval.aspx.cs">
+      <DependentUpon>project_edit_approval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_edit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_edit.designer.cs">
+      <DependentUpon>project_edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\project_list_audit.aspx.cs">
+      <DependentUpon>project_list_audit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_edit_audit.aspx.cs">
+      <DependentUpon>project_edit_audit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\project_edit_reset.aspx.cs">
+      <DependentUpon>project_edit_reset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\builder_html.aspx.cs">
+      <DependentUpon>builder_html.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\builder_html.aspx.designer.cs">
+      <DependentUpon>builder_html.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\nav_edit.aspx.cs">
+      <DependentUpon>nav_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\nav_edit.aspx.designer.cs">
+      <DependentUpon>nav_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\nav_list.aspx.cs">
+      <DependentUpon>nav_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\nav_list.aspx.designer.cs">
+      <DependentUpon>nav_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\plugin_list.aspx.cs">
+      <DependentUpon>plugin_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\plugin_list.aspx.designer.cs">
+      <DependentUpon>plugin_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\sys_config.aspx.cs">
+      <DependentUpon>sys_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\sys_config.aspx.designer.cs">
+      <DependentUpon>sys_config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\templet_file_edit.aspx.cs">
+      <DependentUpon>templet_file_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\templet_file_edit.aspx.designer.cs">
+      <DependentUpon>templet_file_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\templet_file_list.aspx.cs">
+      <DependentUpon>templet_file_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\templet_file_list.aspx.designer.cs">
+      <DependentUpon>templet_file_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\templet_list.aspx.cs">
+      <DependentUpon>templet_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\templet_list.aspx.designer.cs">
+      <DependentUpon>templet_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\url_rewrite_edit.aspx.cs">
+      <DependentUpon>url_rewrite_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\url_rewrite_edit.aspx.designer.cs">
+      <DependentUpon>url_rewrite_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\url_rewrite_list.aspx.cs">
+      <DependentUpon>url_rewrite_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\url_rewrite_list.aspx.designer.cs">
+      <DependentUpon>url_rewrite_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\daily_project_ticket_usages.aspx.cs">
+      <DependentUpon>daily_project_ticket_usages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\daily_project_ticket_usages.aspx.designer.cs">
+      <DependentUpon>daily_project_ticket_usages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\investor_invest_detail.aspx.cs">
+      <DependentUpon>investor_invest_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\investor_invest_detail.aspx.designer.cs">
+      <DependentUpon>investor_invest_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\project_repay_detail.aspx.cs">
+      <DependentUpon>project_repay_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\project_repay_detail.aspx.designer.cs">
+      <DependentUpon>project_repay_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\project_repay_task.aspx.cs">
+      <DependentUpon>project_repay_task.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\project_repay_task.aspx.designer.cs">
+      <DependentUpon>project_repay_task.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\project_investor_detail.aspx.cs">
+      <DependentUpon>project_investor_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\project_investor_detail.aspx.designer.cs">
+      <DependentUpon>project_investor_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\investment_rank_list.aspx.cs">
+      <DependentUpon>investment_rank_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\investment_rank_list.aspx.designer.cs">
+      <DependentUpon>investment_rank_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_account_edit.aspx.cs">
+      <DependentUpon>bank_account_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_account_edit.aspx.designer.cs">
+      <DependentUpon>bank_account_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_account_list.aspx.cs">
+      <DependentUpon>bank_account_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_account_list.aspx.designer.cs">
+      <DependentUpon>bank_account_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_charge.aspx.cs">
+      <DependentUpon>bank_transaction_charge.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_charge.aspx.designer.cs">
+      <DependentUpon>bank_transaction_charge.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_list_account.aspx.cs">
+      <DependentUpon>bank_transaction_list_account.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_list_account.aspx.designer.cs">
+      <DependentUpon>bank_transaction_list_account.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_withdraw.aspx.cs">
+      <DependentUpon>bank_transaction_withdraw.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_withdraw.aspx.designer.cs">
+      <DependentUpon>bank_transaction_withdraw.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_investment_list.aspx.cs">
+      <DependentUpon>project_investment_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_investment_list.aspx.designer.cs">
+      <DependentUpon>project_investment_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_list.aspx.cs">
+      <DependentUpon>project_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_list.aspx.designer.cs">
+      <DependentUpon>project_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_recently_repay_list.aspx.cs">
+      <DependentUpon>project_recently_repay_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_recently_repay_list.aspx.designer.cs">
+      <DependentUpon>project_recently_repay_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_repayment_list.aspx.cs">
+      <DependentUpon>project_repayment_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_repayment_list.aspx.designer.cs">
+      <DependentUpon>project_repayment_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_investment_edit.aspx.cs">
+      <DependentUpon>project_investment_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_investment_edit.aspx.designer.cs">
+      <DependentUpon>project_investment_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\project_profiting_list.aspx.cs">
+      <DependentUpon>project_profiting_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\project_profiting_list.aspx.designer.cs">
+      <DependentUpon>project_profiting_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\wallet_list.aspx.cs">
+      <DependentUpon>wallet_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\wallet_list.aspx.designer.cs">
+      <DependentUpon>wallet_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\wallet_history_list.aspx.cs">
+      <DependentUpon>wallet_history_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\wallet_history_list.aspx.designer.cs">
+      <DependentUpon>wallet_history_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\audit\bank_transaction_withdrawing_list.aspx.cs">
+      <DependentUpon>bank_transaction_withdrawing_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\audit\bank_transaction_withdrawing_list.aspx.designer.cs">
+      <DependentUpon>bank_transaction_withdrawing_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_users_charge_withdraw.aspx.cs">
+      <DependentUpon>bank_users_charge_withdraw.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_users_charge_withdraw.aspx.designer.cs">
+      <DependentUpon>bank_users_charge_withdraw.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_list_all.aspx.cs">
+      <DependentUpon>bank_transaction_list_all.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\bank_transaction_list_all.aspx.designer.cs">
+      <DependentUpon>bank_transaction_list_all.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\audit\bank_transaction_charging_list.aspx.cs">
+      <DependentUpon>bank_transaction_charging_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\audit\bank_transaction_charging_list.aspx.designer.cs">
+      <DependentUpon>bank_transaction_charging_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\amount_log.aspx.cs">
+      <DependentUpon>amount_log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\amount_log.aspx.designer.cs">
+      <DependentUpon>amount_log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\batch_switch_group.aspx.cs">
+      <DependentUpon>batch_switch_group.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\batch_switch_group.aspx.designer.cs">
+      <DependentUpon>batch_switch_group.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\ChoiceUser.aspx.cs">
+      <DependentUpon>ChoiceUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\ChoiceUser.aspx.designer.cs">
+      <DependentUpon>ChoiceUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\group_edit.aspx.cs">
+      <DependentUpon>group_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\group_edit.aspx.designer.cs">
+      <DependentUpon>group_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\group_list.aspx.cs">
+      <DependentUpon>group_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\group_list.aspx.designer.cs">
+      <DependentUpon>group_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_group_access_key_settings.aspx.cs">
+      <DependentUpon>user_group_access_key_settings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_group_access_key_settings.aspx.designer.cs">
+      <DependentUpon>user_group_access_key_settings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\mail_template_edit.aspx.cs">
+      <DependentUpon>mail_template_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\mail_template_edit.aspx.designer.cs">
+      <DependentUpon>mail_template_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\mail_template_list.aspx.cs">
+      <DependentUpon>mail_template_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\mail_template_list.aspx.designer.cs">
+      <DependentUpon>mail_template_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\message_edit.aspx.cs">
+      <DependentUpon>message_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\message_edit.aspx.designer.cs">
+      <DependentUpon>message_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\message_list.aspx.cs">
+      <DependentUpon>message_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\message_list.aspx.designer.cs">
+      <DependentUpon>message_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\oauth_app_edit.aspx.cs">
+      <DependentUpon>oauth_app_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\oauth_app_edit.aspx.designer.cs">
+      <DependentUpon>oauth_app_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\oauth_app_list.aspx.cs">
+      <DependentUpon>oauth_app_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\oauth_app_list.aspx.designer.cs">
+      <DependentUpon>oauth_app_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\oauth_list.aspx.cs">
+      <DependentUpon>oauth_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\oauth_list.aspx.designer.cs">
+      <DependentUpon>oauth_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\point_log.aspx.cs">
+      <DependentUpon>point_log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\point_log.aspx.designer.cs">
+      <DependentUpon>point_log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\sms_template_edit.aspx.cs">
+      <DependentUpon>sms_template_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\sms_template_edit.aspx.designer.cs">
+      <DependentUpon>sms_template_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\sms_template_list.aspx.cs">
+      <DependentUpon>sms_template_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\sms_template_list.aspx.designer.cs">
+      <DependentUpon>sms_template_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_audit.aspx.cs">
+      <DependentUpon>user_audit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_audit.aspx.designer.cs">
+      <DependentUpon>user_audit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_edit.aspx.cs">
+      <DependentUpon>user_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_edit.aspx.designer.cs">
+      <DependentUpon>user_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_list.aspx.cs">
+      <DependentUpon>user_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_list.aspx.designer.cs">
+      <DependentUpon>user_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_config.aspx.cs">
+      <DependentUpon>user_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_config.aspx.designer.cs">
+      <DependentUpon>user_config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_sms.aspx.cs">
+      <DependentUpon>user_sms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_sms.aspx.designer.cs">
+      <DependentUpon>user_sms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_list.aspx.cs">
+      <DependentUpon>mortgage_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_list.aspx.designer.cs">
+      <DependentUpon>mortgage_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\account_edit.aspx.cs">
+      <DependentUpon>account_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\account_edit.aspx.designer.cs">
+      <DependentUpon>account_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\account_list.aspx.cs">
+      <DependentUpon>account_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\account_list.aspx.designer.cs">
+      <DependentUpon>account_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\menu_edit.aspx.cs">
+      <DependentUpon>menu_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\menu_edit.aspx.designer.cs">
+      <DependentUpon>menu_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\menu_list.aspx.cs">
+      <DependentUpon>menu_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\menu_list.aspx.designer.cs">
+      <DependentUpon>menu_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\picture_edit.aspx.cs">
+      <DependentUpon>picture_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\picture_edit.aspx.designer.cs">
+      <DependentUpon>picture_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\picture_list.aspx.cs">
+      <DependentUpon>picture_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\picture_list.aspx.designer.cs">
+      <DependentUpon>picture_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\response_list.aspx.cs">
+      <DependentUpon>response_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\response_list.aspx.designer.cs">
+      <DependentUpon>response_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\sound_edit.aspx.cs">
+      <DependentUpon>sound_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\sound_edit.aspx.designer.cs">
+      <DependentUpon>sound_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\sound_list.aspx.cs">
+      <DependentUpon>sound_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\sound_list.aspx.designer.cs">
+      <DependentUpon>sound_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\subscribe_edit.aspx.cs">
+      <DependentUpon>subscribe_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\subscribe_edit.aspx.designer.cs">
+      <DependentUpon>subscribe_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\text_edit.aspx.cs">
+      <DependentUpon>text_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\text_edit.aspx.designer.cs">
+      <DependentUpon>text_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\weixin\text_list.aspx.cs">
+      <DependentUpon>text_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\weixin\text_list.aspx.designer.cs">
+      <DependentUpon>text_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="api\oauth\feixin\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\feixin\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\feixin\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\kaixin\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\kaixin\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\kaixin\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\qq\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\qq\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\qq\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\renren\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\renren\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\renren\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\sina\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\sina\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\sina\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\taobao\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\taobao\result_json.aspx.cs">
+      <DependentUpon>result_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\oauth\taobao\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\alipay\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\alipay\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\alipay\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\balance\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\baofoo\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\baofoo\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\baofoo\notify_url.aspx.designer.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="api\payment\baofoo\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\baofoo\pay_test.aspx.cs">
+      <DependentUpon>pay_test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\chinabank\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\chinabank\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\chinabank\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\ecpss\RechargeComplete.cs" />
+    <Compile Include="api\payment\lianlianpay\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\lianlianpay\infoQuery.aspx.cs">
+      <DependentUpon>infoQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\lianlianpay\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\lianlianpay\prepositPay.aspx.cs">
+      <DependentUpon>prepositPay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\lianlianpay\urlReturn.aspx.cs">
+      <DependentUpon>urlReturn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\tenpay\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\tenpay\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\tenpay\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\ecpss\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\ecpss\return_url.aspx.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\ecpss\return_url.aspx.designer.cs">
+      <DependentUpon>return_url.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="api\payment\ecpss\pay_test.aspx.cs">
+      <DependentUpon>pay_test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\ecpss\notify_url.aspx.cs">
+      <DependentUpon>notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\weixin\wx.aspx.cs">
+      <DependentUpon>wx.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\weixin\wx.aspx.designer.cs">
+      <DependentUpon>wx.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="install\step1.aspx.cs">
+      <DependentUpon>step1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\step1.aspx.designer.cs">
+      <DependentUpon>step1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="install\step2.aspx.cs">
+      <DependentUpon>step2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\step2.aspx.designer.cs">
+      <DependentUpon>step2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="templates\lip2p\404.aspx.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="templates\lip2p\404.aspx.designer.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\admin_ajax.ashx.cs">
+      <DependentUpon>admin_ajax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\browser_redirect.ashx.cs">
+      <DependentUpon>browser_redirect.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\calc_stand_guard_fee.ashx.cs">
+      <DependentUpon>calc_stand_guard_fee.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\download.ashx.cs">
+      <DependentUpon>download.ashx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tools\submit_ajax.ashx.cs">
+      <DependentUpon>submit_ajax.ashx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tools\upload_ajax.ashx.cs">
+      <DependentUpon>upload_ajax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\verify_code.ashx.cs">
+      <DependentUpon>verify_code.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\email_verify.ashx.cs">
+      <DependentUpon>email_verify.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\mobile_verify.ashx.cs">
+      <DependentUpon>mobile_verify.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="tools\trade_pwd.ashx.cs">
+      <DependentUpon>trade_pwd.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lip2p.API\Lip2p.API.csproj">
+      <Project>{E824FFCC-705E-4CF6-8710-142395937FCB}</Project>
+      <Name>Lip2p.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.BLL\Lip2p.BLL.csproj">
+      <Project>{EC27BBA4-030C-4853-9FB2-A075654B28FA}</Project>
+      <Name>Lip2p.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Common\Lip2p.Common.csproj">
+      <Project>{20908989-7773-493B-B1BD-764BE322A935}</Project>
+      <Name>Lip2p.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Core\Lip2p.Core.csproj">
+      <Project>{D13BC3EC-928C-4086-AB16-EC62A86FEB85}</Project>
+      <Name>Lip2p.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Linq2SQL\Lip2p.Linq2SQL.csproj">
+      <Project>{D02BF08D-240F-4233-9B83-B22429E5F3A0}</Project>
+      <Name>Lip2p.Linq2SQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Model\Lip2p.Model.csproj">
+      <Project>{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}</Project>
+      <Name>Lip2p.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Web.UI\Lip2p.Web.UI.csproj">
+      <Project>{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}</Project>
+      <Name>Lip2p.Web.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="aspx\main\" />
+    <Folder Include="aspx\mobile\" />
+    <Folder Include="aspx\plugin\" />
+    <Folder Include="html\" />
+    <Folder Include="images\" />
+    <Folder Include="plugins\" />
+    <Folder Include="upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\admin_ajax.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmlconfig\urls.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\upload_ajax.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmlconfig\alipay.config" />
+    <Content Include="xmlconfig\tenpay.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmlconfig\chinabank.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmlconfig\user.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xmlconfig\order.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\verify_code.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\browser_redirect.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\lip2p.pubxml" />
+    <None Include="templates\lip2p\css\bootstrap-theme.css.map" />
+    <None Include="templates\lip2p\css\bootstrap.css.map" />
+    <Content Include="tools\calc_stand_guard_fee.ashx" />
+    <None Include="templates\lip2p\flowplayer\LICENSE.md" />
+    <None Include="templates\lip2p\flowplayer\skin\fonts\fpicons.eot" />
+    <None Include="templates\lip2p\flowplayer\skin\fonts\fpicons.ttf" />
+    <None Include="templates\lip2p\flowplayer\skin\fonts\fpicons.woff" />
+    <None Include="templates\lip2p\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="templates\lip2p\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="templates\lip2p\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="templates\lip2p\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="templates\lip2p\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="templates\lip2p\images\jhf_invest_agree.pdf" />
+    <Content Include="tools\email_verify.ashx" />
+    <Content Include="tools\mobile_verify.ashx" />
+    <Content Include="tools\trade_pwd.ashx" />
+    <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>1810</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://www.dtcms.com/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://www.dtcms.com</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

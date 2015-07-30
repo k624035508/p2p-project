@@ -1,0 +1,140 @@
+<%namespace "Lip2p.Linq2SQL"%><!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <link rel="icon" href="logo.ico">
+
+    <title>奢华游 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <script src="<%templateskin%>/js/jquery-1.10.2.min.js"></script>
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+
+    <script src="<%templateskin%>/js/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!--页面内容样式-->
+    <style>
+        div.activities-wrapper {
+            background: url('<%templateskin%>/images/trip.jpg') no-repeat;
+            background-position: 50% 0;
+            height: 3084px;
+            position: relative;
+            text-align: center;
+        }
+
+        div.activities-wrapper > a {
+            position: relative;
+            top: 970px;
+        }
+
+        div.tables {
+            position: relative;
+            width: auto;
+            top: 2150px;
+        }
+
+        div.tables > table {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        table.money tr > th,
+        table.people tr > th {
+            padding: 6px 30px;
+            text-align: center;
+            font-size: 16px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #dedede;
+        }
+
+        table.money tr > td,
+        table.people tr > td {
+            text-align: center;
+            padding: 6px 30px;
+            font-size: 14px;
+        }
+
+        table.people {
+            margin-left: 200px;
+        }
+    </style>
+    <script>
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        }
+        $(function () {
+            if (getUrlParameter('act') === '4') {
+                scrollTo(0, 1250);
+            } else {
+                scrollTo(0, 500);
+            }
+        });
+    </script>
+</head>
+<body>
+<%template src="_header.html"%>
+<div class="activities-wrapper">
+    <a href="<%linkurl("myreward","myreward")%>"><img src="<%templateskin%>/images/recommend-now.png"/></a>
+    <div class="tables">
+        <table class="money">
+            <tr>
+                <th>排名</th>
+                <th>用户名</th>
+                <th>邀请人数</th>
+            </tr>
+            <%set var maps=get_inviter_invitation_ranking_list()%>
+            <%for(int i=0;i<maps.Count;i++)%>
+            <%set var m=maps[i]%>
+            <tr>
+                <td>NO.{i+1}</td>
+                <td><%=m["inviter"]%></td>
+                <td><%=m["invitationCount"]%></td>
+            </tr>
+            <%/for%>
+            <%if(maps.Count<1)%>
+                <tr><td align="center" colspan="3">暂无记录</td></tr>
+            <%/if%>
+        </table>
+        <table class="people">
+            <tr>
+                <th>排名</th>
+                <th>用户名</th>
+                <th>投资金额</th>
+            </tr>
+            <%set var maps2=get_inviter_bonus_ranking_list()%>
+            <%for(int i=0;i<maps2.Count;i++)%>
+            <%set var m=maps2[i]%>
+            <tr>
+                <td>NO.{i+1}</td>
+                <td><%=m["inviter"]%></td>
+                <td><%=m["inviteesInvestmentSum"]%></td>
+            </tr>
+            <%/for%>
+            <%if(maps2.Count<1)%>
+                <tr><td align="center" colspan="3">暂无记录</td></tr>
+            <%/if%>
+        </table>
+    </div>
+</div>
+<%template src="_footerSmall.html"%>
+</body>
+</html>
+

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{model.seo_description}">
+    <meta name="keywords" content="{model.seo_keywords}">
+    <title>{model.seo_title}</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/item-detail.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="itemdisplay-container">
+        <div class="sur-nav">
+            <a href="/">金汇丰</a> <span>&gt;</span> <a href="<%linkurl("article_invest_list",category_id)%>"><%=category_id==55?"借款项目展示":"发标公告"%></a>
+        </div>
+        <div class="itemdisplay-body">
+            <div class="neibu">
+                <div class="title">
+                    <h3>
+                        {model.title}</h3>
+                    <span>作者：{article_attr.author}</span> <span>发布时间：{model.add_time}</span>
+                </div>
+                <div id="article_content">{model.content}</div>
+            </div>
+        </div>
+    </div>
+    <div class="cle">
+    </div>
+    <%template src="_footerSmall.html"%>
+</body>
+</html>

@@ -1,0 +1,83 @@
+body {
+    background-color: #f7f7f8;
+    padding-bottom: 3.6rem;
+}
+
+div.header {
+    height: 4.2667rem;
+    padding: 0 5%;
+    background-color: #fff;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+span.picture img {
+    width: 2.8rem;
+}
+
+span.account {
+    margin-left: 0.6rem;
+    font-size: 1.3em;
+}
+
+div.nav-bars,
+div.bottom-bars {
+    padding: 0 5%;
+    margin-top: 1rem;
+    border-top: 1px solid #e8e8ea;
+    border-bottom: 1px solid #e8e8ea;
+    background-color: #fff;
+}
+
+div.my-news,
+div.my-lottery,
+div.safe-center,
+div.about-us {
+    height: 3.2rem;
+    border-bottom: 1px solid #e8e8ea;
+}
+
+div.cards-binding,
+div.exit {height: 3.2rem;}
+
+.glyphicon-menu-right {
+    color: #ccc;
+    line-height: 3.2rem;
+}
+
+.title-style {
+    margin-left: 0.6rem;
+    font-size: 1.2em;
+}
+
+.sprite {
+    width: 2rem;
+    height: 2rem;
+    background-image: url("../imgs/set-up-icon.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    background-size: 820%;
+}
+
+.sprite-aboutus {
+    background-position: -0.4rem -0.4rem;
+}
+
+.sprite-cards {
+    background-position: -3.16rem -0.4rem;
+}
+
+.sprite-lottery {
+    background-position: -8.6rem -0.4rem;
+}
+
+.sprite-news {
+    background-position: -11.4rem -0.4rem;
+}
+
+.sprite-safe {
+    background-position: -14.1rem -0.4rem;
+}
+
+.sprite-exit {
+    background-position: -5.9rem -0.4rem;
+}

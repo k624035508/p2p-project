@@ -1,0 +1,128 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="金汇丰理财平台致力于为各位投资人提供安全、有担保、高收益的互联网理财服务，通过新手指引栏目帮助您如何在金汇丰p2p平台投资理财。">
+    <meta name="keywords" content="操作演示,新手指引,金汇丰">
+    <title>操作演示_新手指引 – 【金汇丰】</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/finance.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/xinshouzhiyin_demo.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script>
+        //    top-title-btns点击样式
+        var selected = $(function () {
+            var btn = $(".top-title-btns button");
+            btn.click(function () {
+                btn.removeClass("btn-selected");
+                $(this).addClass("btn-selected");
+            });
+        });
+    </script>
+</head>
+<body style="min-width:1085px">
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <!--页面内容部分-->
+    <div class="top-title">
+        <div class="guidelines-title" style="font-family:SimHei">新手指引</div>
+        <div class="top-title-btns">
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines")%>'">
+                新手指南</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_demo")%>'" class="btn-selected">
+                操作演示</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_charge")%>'">
+                收费标准</button>
+            <button type="button" onclick="location.href='<%linkurl("new_guidelines_mortgage")%>'" style="display: none;">
+                抵押查询</button>
+        </div>
+    </div>
+    <div class="first-step">
+        <img src="<%templateskin%>/images/guide/first-step.png" />
+        <div class="registered-info txt">
+            <p>
+                <span>第</span>一步&nbsp;&nbsp;注册</p>
+            <p class="info-txt-style">
+                <span>O</span>进入金汇丰首页，点击右上角“注册”按钮。</p>
+            <p class="info-txt-style">
+                <span>O</span>进入注册页面填写资料。</p>
+            <p class="info-txt-style">
+                <span>O</span>手机验证码将通过手机短信的方式发送到登记<br />
+                &nbsp;&nbsp;的手机上。</p>
+            <p class="info-txt-style">
+                <span>O</span>正确输入验证码即可注册成功。</p>
+        </div>
+    </div>
+    <div class="second-step">
+        <div class="top-up-info txt">
+            <p>
+                <span>第</span>二步&nbsp&nbsp充值</p>
+            <p class="info-txt-style">
+                <span>O</span>登陆金汇丰网站，登陆账号，进入会员中<br />
+                &nbsp&nbsp心，点击“充值”按钮。</p>
+            <p class="info-txt-style">
+                <span>O</span>进入充值画面，选择银行，再选择第三方<br />
+                &nbsp&nbsp支付平台，填写充值金额，点击“确认充<br />
+                &nbsp&nbsp值”按钮。</p>
+            <p class="info-txt-style">
+                <span>O</span>系统将会自动跳转至您所选择的第三方支<br />
+                &nbsp&nbsp付平台进行操作。</p>
+            <p class="info-txt-style">
+                <span>O</span>充值成功后，进入个人中心——交易记录<br />
+                &nbsp&nbsp即可查询充值记录。</p>
+        </div>
+        <img src="<%templateskin%>/images/guide/second-step.png" />
+    </div>
+    <div class="third-step">
+        <img src="<%templateskin%>/images/guide/third-step.png" />
+        <div class="invest-info txt">
+            <p>
+                <span>第</span>三步&nbsp&nbsp投资</p>
+            <p class="info-txt-style">
+                <span>O</span>进入金汇丰首页后，点击右上角“我要理财”。</p>
+            <p class="info-txt-style">
+                <span>O</span>选择自己喜欢的项目，点击“立刻投标”，进入<br />
+                &nbsp&nbsp标书界面。</p>
+            <p class="info-txt-style">
+                <span>O</span>详细查看标书详情后，输入金额，点击“投标”<br />
+                &nbsp&nbsp按钮。</p>
+        </div>
+    </div>
+    <div class="fourth-step">
+        <div class="withdrawal-info txt">
+            <p>
+                <span>第</span>四步&nbsp&nbsp提现</p>
+            <p class="info-txt-style">
+                <span>O</span>登陆金汇丰网站，登陆账号，进入会员中心，<br />
+                &nbsp&nbsp点击左边菜单安全中心——实名认证。</p>
+            <p class="info-txt-style">
+                <span>O</span>按照要求输入，上传身份证正反两面。</p>
+            <p class="info-txt-style">
+                <span>O</span>返回账户总览，点击“提现”按钮。</p>
+            <p class="info-txt-style">
+                <span>O</span>进入提现界面，填写提现金额和交易密码。</p>
+            <p class="info-txt-style">
+                <span>O</span>等待手机验证后输入验证码。</p>
+        </div>
+        <img src="<%templateskin%>/images/guide/fourth-step.png" />
+    </div>
+    <div class="btn-container">
+        <button class="invest-btn" type="button" onclick="location.href='<%linkurl("invest")%>'">
+            立即投资</button>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

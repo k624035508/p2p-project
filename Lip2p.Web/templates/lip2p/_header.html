@@ -1,0 +1,71 @@
+    <script type="text/javascript" src="{config.webpath}tools/browser_redirect.ashx"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+    <!--以下css代码用以解决IE浏览器中滚动条覆盖页面内容的问题-->
+    <style>
+        @-ms-viewport {
+            width: auto !important;
+        }
+        body {
+            min-width: 1030px;
+        }
+    </style>
+    <header>
+    <!-- jquery -->    
+      <div class="headerTop">
+        <div class="container">
+          <div class="pull-left">
+              <span class="hotline">客服电话：400-6262-062</span>
+          </div>
+          <!--<div class="qqqun pull-left">
+						<a href="http://jq.qq.com/?_wv=1027&amp;k=Xi3maF" target="_blank">官方服务群</a>
+          </div>-->
+          <div class="pull-right" id="headerTopRight">
+            <ul id="menu" class="list-inline">
+                <script type="text/javascript">
+                    $.ajax({
+                        type: "POST",
+                        url: "{config.webpath}tools/submit_ajax.ashx?action=user_check_login",
+                        dataType: "json",
+                        timeout: 20000,
+                        success: function (data, textStatus) {
+                            if (data.status == 1) {
+                                $("#menu").append('<li><a href="<%linkurl("usercenter","index")%>">您好，'+data.username+'</a></li><li>|</li>');
+                                $("#menu").append('<li><a href="<%linkurl("usercenter","exit")%>">退出</a></li>');
+                            } else {
+                                $("#menu").append('<li><a href="<%linkurl("login")%>" rel="nofollow">登录</a></li><li>|</li>');
+                                $("#menu").append('<li><a href="<%linkurl("register")%>" rel="nofollow">注册</a></li>');
+                            }
+                            $("#menu").append('<li class="uclink"><a href="<%linkurl("usercenter","index")%>">会员中心<span class="glyphicon glyphicon-play playicon"></span></a></li>');
+                        }
+                    });
+                </script>                          
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!--导航栏start-->
+    <nav id="navbarTop">
+    	<div class="container">
+        <div class="navbar-header pull-left" >
+        	<a  href="/" ><img src="<%templateskin%>/images/logo.png"></a><span class="navfont">互联网金融增值管理专家</span>
+        </div>
+                
+        <div class="pull-right" id="navRight">
+          <ul class="list-inline">
+            <li><a href="/">首页</a></li>
+            <li class="dropdown">
+            	<a class="dropdown-toggle" data-toggle="dropdown" href="<%linkurl("invest")%>" role="button" aria-expanded="false">我要理财<span class="caret"></span></a>
+            	<ul class="dropdown-menu submenu" role="menu">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%linkurl("invest_list",33,0,0,0)%>">金屋子</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<%linkurl("invest_list",34,0,0,0)%>">丰车赚</a></li>
+              </ul>
+            </li>
+            <li><a href="<%linkurl("safedefence")%>">安全保障</a></li>
+            <li><a href="<%linkurl("new_guidelines")%>">新手指引</a></li>
+            <li><a href="<%linkurl("about")%>">关于我们</a></li>
+          </ul>
+        </div>	 
+    	</div>           
+    </nav>
+    <!--导航栏end-->

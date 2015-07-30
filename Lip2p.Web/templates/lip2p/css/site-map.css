@@ -1,0 +1,90 @@
+﻿*{
+    font-family: "Microsoft YaHei", "微软雅黑";
+}
+
+body {
+    background-color: #f2f2f2;
+}
+
+div.main-container {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+div.nav-bar {
+    margin-bottom: 25px;
+}
+
+div.nav-bar a,
+div.nav-bar span {
+    color: #00375a;
+    font-size: 19px;
+}
+
+div.content-box {
+    background-color: #fff;
+    padding: 35px 30px 55px 30px;
+    margin-bottom: 48px;
+}
+
+span.empty-line {
+    width: 90%;
+}
+
+div.content-list > div {
+    display: inline-block;
+}
+
+.font30-style {
+    color: #00b9f5;
+    font-size: 30px;
+}
+
+div.btn-th {
+    color: #000;
+    font-size: 25px;
+}
+
+div.right-wrap {
+    text-align: left;
+    margin-left: 55px;
+}
+
+div.left-block > div,
+div.right-block > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.content-list > div {
+    vertical-align: top;
+}
+
+div.left-block {
+    margin-right: 100px;
+}
+
+div.content-th {
+    margin-bottom: 58px;
+}
+
+div.map-btns a {
+    color: #666;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+div.map-btns {
+    margin-top: 8px;
+}
+
+div.map-btns > div {
+    margin-top: 8px;
+}
+
+div.content-list {
+    padding-top: 28px;
+    margin-bottom: 45px;
+}

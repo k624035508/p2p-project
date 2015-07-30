@@ -1,0 +1,214 @@
+<%namespace "Lip2p.Linq2SQL"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>会员中心 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!--时间选择控件样式-->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap-datetimepicker.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/uclifen.css">
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function() {
+            setTimeout(function() {
+                var wh = $(window).height();
+                var dh = $('html').height();
+                if (dh < wh) {
+                    var scaleBox = $('div.content');
+                    scaleBox.height(scaleBox.height() + (wh - dh));
+                }
+            }, 300);
+
+            var wh = $(window).height();
+            //alert(wh);
+            $(".modal-content").css("height",wh-70);
+
+            var selectedInvestmentType = {investment_type};
+            $($('.my_gift_li')[selectedInvestmentType]).addClass('selected');
+            var startAtCtrl = $("#startdate");
+            var endAtCtrl = $("#enddate");
+
+            // 根据 url 初始化控件
+            var startTime = {time_span_start};
+            var endTime = {time_span_end};
+            if (startTime != 0) {
+                startAtCtrl.val(new Date(startTime).toJSON().slice(0, 10));
+            }
+            if (endTime != 0) {
+                endAtCtrl.val(new Date(endTime).toJSON().slice(0, 10));
+            }
+
+            $(".my_gift_li").click(function() {
+                $(this).addClass("selected").siblings().removeClass("selected");
+                location.href = 'myinvest-' + this.value + '-0-0-0.html';
+            });
+            $('.search-btn').click(function() {
+                var startAt = startAtCtrl.val();
+                var endAt = endAtCtrl.val();
+                startAt = startAt ? Date.parse(startAt) : "0";
+                endAt = endAt ? Date.parse(endAt) : "0";
+
+                location.href = 'myinvest-' + selectedInvestmentType + '-0-' + startAt + '-' + endAt + '.html';
+            });
+
+            $("#startdate").add("#enddate").datetimepicker({
+                language: 'zh-CN',
+                weekStart: 1,
+                autoclose: true,
+                todayBtn: true,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                autoclose: 1,
+                minView: 2
+            });
+
+            var height = $('.list-unstyled').height();
+            $('.traddetail').attr('style', 'min-height: ' + height + 'px');
+
+            $('th.prev').html('<');
+            $('th.next').html('>');
+
+        });
+
+        function ShowAgreeContract(id,projectId) {
+            $.ajax({
+                type: "post",
+                url: "{config.webpath}tools/submit_ajax.ashx?action=user_agree_contract_show",
+                data: {
+                    "id":id,"projectId": projectId
+                },
+                dataType: "json",
+                beforeSend: function (XMLHttpRequest) {
+                    //发送前动作
+                },
+                success: function (data, textStatus) {
+                    if (data.status == 1) {
+                        $(".modal-body").html(data.body);
+                        $('#myModal').modal('show');
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("状态：" + textStatus + "；出错提示：" + errorThrown);
+                },
+                timeout: 20000
+            });
+        }
+    </script>
+    <style>
+        td.money { text-align: right !important; }
+        .flickr { padding: 1em !important; }
+        .traddetail_table tbody td {line-height:28px !important;}
+        .modal-header .close {margin-top: -9px !important;}
+    </style>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+<div class="content ctbgcolor">
+    <div class="breadcrumb container">
+        <li><a href="/">金汇丰</a></li>
+        <li><a href="#">会员中心</a></li>
+    </div>
+    <div class="container">
+        <!--uc_left-->
+        <%template src="_usercenter_left.html"%>
+        <!--/uc_left-->
+        <div class="pull-left" id="rightcontent">
+            <!--uc_top-->
+            <%template src="_usercenter_top.html"%>
+            <!--/uc_top-->
+            <!--traddetail start-->
+            <div class="traddetail">
+                <div class="trad-top">
+                    <ul>
+                        <%set IEnumerable<Lip2pEnums.MyInvestRadioBtnTypeEnum> vals=Enumerable.Range(0, 4).Cast<Lip2pEnums.MyInvestRadioBtnTypeEnum>()%>
+                        <%foreach(Lip2pEnums.MyInvestRadioBtnTypeEnum val in vals)%>
+                        <li class="my_gift_li" value="{(int)val}">{Utils.GetLip2pEnumDes(val)}</li>
+                        <%/foreach%>
+                    </ul>
+                    <form action="#" method="get">
+                        <span class="pull-right">
+                            <input type="text" class="date" size="10" name="startdate" id="startdate" data-date-format="yyyy-mm-dd" />
+                            到
+                            <input type="text" class="date" size="10" name="enddate" id="enddate" data-date-format="yyyy-mm-dd" />
+                            <input type="button" value="搜索" class="search-btn"/>
+                        </span>
+                    </form>
+                </div>
+                <div class="trad-cen">
+                    <table class="traddetail_table">
+                        <thead>
+                        <tr>
+                            <!--<th style="width: 7%">序号</th>-->
+                            <th style="width: 20%; text-align: left;">项目名称</th>
+                            <th style="width: 6%;">年利率</th>
+                            <th style="width: 8%;">期限</th>
+                            <th style="width: 12%; text-align: center">投资金额</th>
+                            <th style="width: 10%; text-align: center">利息</th>
+                            <th style="width: 8%;">进度</th>
+                            <th style="width: 10%">投标日期</th>
+                            <th style="width: 10%">投资协议</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%set int totalCount=0%>
+                        <%set List<li_project_transactions> trs=query_investment({userModel.id},{(Lip2pEnums.MyInvestRadioBtnTypeEnum)investment_type},{page-1},{JsTimeToDotNetTime(time_span_start)},{JsTimeToDotNetTime(time_span_end)},{PageSize},out totalCount)%>
+                        <%for(int i=0;i<trs.Count;i++)%>
+                        <%set li_project_transactions t=trs[i]%>
+                        <tr>
+                            <!--<td>{(PageSize*(page-1))+i+1}</td>-->
+                            <td style="text-align: left"><%= t.li_projects.title%></td>
+                            <td><%= t.li_projects.profit_rate_year%>%</td>
+                            <td><%= t.li_projects.repayment_term_span_count+Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTermSpanEnum)t.li_projects.repayment_term_span)%></td>
+                            <td><%= t.value.ToString("c")%></td>
+                            <td><%= Math.Round(t.value*t.li_projects.profit_rate, 2).ToString("c")%></td>
+                            <td><%= (t.li_projects.investment_amount/t.li_projects.financing_amount).ToString("P0")%></td>
+                            <td><%=t.create_time.ToString("yy/MM/dd HH:mm")%></td>
+                            <td><%=t.li_projects.status==(int)Lip2pEnums.ProjectStatusEnum.ManBiao ? t.agree_no==null?"": "<a onclick='ShowAgreeContract(" + t.id + "," + t.project + "); ' href='javascript:;'>查看</a>" :""%></td>
+                        </tr>
+                        <%/for%>
+                        <%if(totalCount<1)%>
+                        <tr><td align="center" colspan="8">暂无记录</td></tr>
+                        <%/if%>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flickr"><%= get_page_link(PageSize,page,totalCount,linkurl("myinvest","myinvest",investment_type,"__id__",time_span_start,time_span_end))%></div> <!--放置页码列表-->
+            </div>
+            <!--traddetail end-->
+        </div>
+    </div>
+    <div class="authresult" style="min-height: 20px;">
+    </div>
+</div>
+    <!--显示协议合同内容-->
+    <%template src="_usercenter_agree_contract.html"%>
+    <!--显示协议合同内容end-->
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

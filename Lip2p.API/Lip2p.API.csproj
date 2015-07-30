@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E824FFCC-705E-4CF6-8710-142395937FCB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lip2p.API</RootNamespace>
+    <AssemblyName>Lip2p.API</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LitJson">
+      <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\DLL\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OAuth\feixin_helper.cs" />
+    <Compile Include="OAuth\kaixin_helper.cs" />
+    <Compile Include="OAuth\oauth_config.cs" />
+    <Compile Include="OAuth\oauth_helper.cs" />
+    <Compile Include="OAuth\qq_helper.cs" />
+    <Compile Include="OAuth\renren_helper.cs" />
+    <Compile Include="OAuth\sina_helper.cs" />
+    <Compile Include="OAuth\taobao_helper.cs" />
+    <Compile Include="Payment\Alipay\AlipayConfig.cs" />
+    <Compile Include="Payment\Alipay\AlipayCore.cs" />
+    <Compile Include="Payment\Alipay\AlipayNotify.cs" />
+    <Compile Include="Payment\Alipay\AlipayService.cs" />
+    <Compile Include="Payment\Alipay\AlipaySubmit.cs" />
+    <Compile Include="Payment\Baofoo\Helper.cs" />
+    <Compile Include="Payment\Chinabank\Config.cs" />
+    <Compile Include="Payment\Baofoo\Service.cs" />
+    <Compile Include="Payment\Lianlianpay\LianlianpayService.cs" />
+    <Compile Include="Payment\Lianlianpay\Md5Algorithm.cs" />
+    <Compile Include="Payment\Lianlianpay\PartnerConfig.cs" />
+    <Compile Include="Payment\Lianlianpay\ResourceConfig.cs" />
+    <Compile Include="Payment\Lianlianpay\RSA.cs" />
+    <Compile Include="Payment\Lianlianpay\ServerURLConfig.cs" />
+    <Compile Include="Payment\Lianlianpay\SignTypeEnum.cs" />
+    <Compile Include="Payment\Lianlianpay\YinTongUtil.cs" />
+    <Compile Include="Payment\Tenpay\ClientResponseHandler.cs" />
+    <Compile Include="Payment\Tenpay\MD5Util.cs" />
+    <Compile Include="Payment\Tenpay\RequestHandler.cs" />
+    <Compile Include="Payment\Tenpay\ResponseHandler.cs" />
+    <Compile Include="Payment\Tenpay\TenpayHttpClient.cs" />
+    <Compile Include="Payment\Tenpay\TenpayUtil.cs" />
+    <Compile Include="Payment\Baofoo\Config.cs" />
+    <Compile Include="Payment\Chinabank\Service.cs" />
+    <Compile Include="Payment\Ecpss\Config.cs" />
+    <Compile Include="Payment\Ecpss\Helper.cs" />
+    <Compile Include="Payment\Ecpss\Service.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Weixin\Common\CRMComm.cs" />
+    <Compile Include="Weixin\Common\LocationService.cs" />
+    <Compile Include="Weixin\Common\MenuMgr.cs" />
+    <Compile Include="Weixin\Common\MessageFunction.cs" />
+    <Compile Include="Weixin\Handler\CustomMessageContext.cs" />
+    <Compile Include="Weixin\Handler\CustomMessageHandler.cs" />
+    <Compile Include="Weixin\Handler\CustomMessageHandler_Events.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lip2p.BLL\Lip2p.BLL.csproj">
+      <Project>{EC27BBA4-030C-4853-9FB2-A075654B28FA}</Project>
+      <Name>Lip2p.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Common\Lip2p.Common.csproj">
+      <Project>{20908989-7773-493B-B1BD-764BE322A935}</Project>
+      <Name>Lip2p.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Model\Lip2p.Model.csproj">
+      <Project>{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}</Project>
+      <Name>Lip2p.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

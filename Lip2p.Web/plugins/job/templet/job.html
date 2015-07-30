@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>求职招聘 - {config.webname}</title>
+<link rel="stylesheet" href="{config.webpath}scripts/ui/skins/Aqua/css/ligerui-all.css" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" href="<%templateskin="green"%>/css/style.css" />
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/ui/js/ligerBuild.min.js"></script>
+<script type="text/javascript" src="<%templateskin="green"%>/js/base.js"></script>
+</head>
+<body>
+<!--页面头部-->
+<!--顶部导航条-->
+<%template skin="green" src="_header.html"%>
+<!--/顶部导航条-->
+
+<!--页面内容-->
+<div>
+  <div style="float:left; width:260px;">
+    <!--栏目导航-->
+ 
+    <!--/栏目导航-->
+  </div>
+  <!--招聘列表-->
+  <div class="grid_8">
+   <div class="comment_box" style="padding-top:0; border:0; ">
+     <div class="comment_list"> 
+       <ul>
+         <%set (DataTable){plist}=new Lip2p.Web.Plugin.Job.job().get_job_list(10, page, "", out totalcount)%>
+	     <%set (string){pagelist}=get_page_link(10, page, totalcount, "job1", "__id__")%>
+         <%loop list plist%>
+         <li>
+           <div  style="float:left; width:30%"><span>{list[add_time]}</span>职位：{list[title]} （需求{list[number]}人）</div>
+           <div style="float:left; width:65%">
+             职位描述：{list[Content]}
+             
+             <span style=" float:right;">
+             <a href="<%linkurl("job_post",{list[id]})%>">立即应聘</a>&nbsp;&nbsp;
+             <a href="<%linkurl("job_show",{list[id]})%>">查看详情</a></span>  
+             <div class="line10"></div>
+           </div>
+          
+         </li>
+         <%/loop%>
+       </ul>
+       <div class="line10"></div>
+       <div class="flickr">{pagelist}</div> <!--放置页码列表-->
+     </div>
+   </div>
+  </div>
+  <!--/招聘列表-->
+</div>
+<!--/页面内容-->
+
+<!--页面底部-->
+<div>
+  <p>版权所有 动力启航软件工作室 粤ICP备11064298号 © Copyright 2009 - 2011. It134.cn. All Rights Reserved. </p>
+</div>
+<!--/页面底部-->
+</body>
+</html>

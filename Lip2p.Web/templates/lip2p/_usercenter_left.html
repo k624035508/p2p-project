@@ -1,0 +1,37 @@
+<div class="pull-left" id="leftmenu">
+    <div class="acounttotal">
+        <p>
+            <span class="digits"><%=GetTotalMoney()%></span><span class="units"> 元</span></p>
+        <p>
+            帐户总额</p>
+    </div>
+    <ul class="list-unstyled">
+        <li><a id="menu_index" href="<%linkurl("usercenter","index")%>" class="acountzl">帐户总览</a></li>
+        <li><a id="menu_mytrade" href="<%linkurl("mytrade","mytrade")%>" class="trade">交易明细</a></li>
+        <li><a id="menu_myinvest" href="<%linkurl("myinvest","myinvest")%>" class="invest">投资列表</a></li>
+        <li><a id="menu_myreceiveplan" href="<%linkurl("myreceiveplan","myreceiveplan",1,0,0,0)%>" class="receiveplan">回款计划</a></li>
+        <li><a id="menu_safe" href="<%linkurl("safe","safe")%>" class="safe">安全中心</a></li>
+        <li><a id="menu_mycard" href="<%linkurl("mycard","mycard")%>" class="card">银行卡管理</a></li>
+        <li><a id="menu_mylottery" href="<%linkurl("mylottery","mylottery",1)%>" class="lottery">我的奖券<span class="badge" style="margin-left: 10px; display: none;">1</span></a></li>
+        <li><a id="menu_myreward" href="<%linkurl("myreward","myreward")%>?protocol=http" class="reward">推荐奖励</a></li>
+        <li><a id="menu_mynews" href="<%linkurl("mynews","mynews")%>" class="news">我的消息</a></li>
+        <li><a id="menu_myinformation" href="<%linkurl("myinformation","myinformation")%>" class="info">我的资料</a></li>
+        <span class="glyphicon glyphicon-triangle-left pull-right" style="line-height: 42px;
+            color: #fff; font-size: 18px; position: absolute;" id="sanjiao"></span>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        //菜单选择样式
+        if("{action}" != ""){
+            $("#menu_{action}").addClass("selected");        
+            $("#sanjiao").appendTo($("#leftmenu .selected")).css("right", "-5px");
+        }
+        else $("#sanjiao").hide();
+        var unusedLottery = <%=QueryUnusedLottery(userModel.id)%>;
+        if (0 < unusedLottery) {
+            $('.badge').show().text(unusedLottery);
+        }
+    });
+
+</script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="用户登陆,互联网理财平台">
+    <meta name="description" content="金汇丰p2p理财平台拥有稳健的风控体系和专业的管理团队，为投资者提供100%本息保障的金汇丰理财产品，实现15%-18%的年化收益率。">
+    <link rel="icon" href="logo.ico">
+    <title>用户登陆 – 【金汇丰】</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/reglog.css">
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="<%templateskin%>/js/login_validate.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->    
+
+    <script>
+        $(function () {
+            var winHeight = $(window).innerHeight();
+            var winWidth = $(window).innerWidth();
+            var headHeight = $("#navbarTop").outerHeight() + $("header").outerHeight();
+            var footHeight = $("footer").outerHeight();
+            var bgHeight = winHeight - headHeight - footHeight;
+            if (winWidth > 1000) {
+                setTimeout(function () {
+                    $("div.bg").css("height", bgHeight);
+                }, 300);
+            }
+        });
+    </script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="login-bg">
+        <div class="container bgdiv">
+            <div class="login roundconer5">
+                <p class="h1">
+                    <img src="<%templateskin%>/images/register/logo.png">
+                 </p>
+                <form id="loginform" name="loginform" url="{config.webpath}tools/submit_ajax.ashx?action=user_login">
+                <div>
+                    <span>*</span>
+                    <div class="required">
+                        <label for="txtUserName" class="user">
+                            请输入用户名</label>
+                        <input type="text" name="txtUserName" id="txtUserName" class="user"/>
+                    </div>
+                </div>
+                <div>
+                    <span>*</span>
+                    <div class="required">
+                        <label for="txtPassword1" class="passw">
+                            请输入密码</label>
+                        <input type="password" name="txtPassword" id="txtPassword" class="passw"/>
+                    </div>
+                </div>
+                <div class="remember-user">
+                    <input type="checkbox" id="chkRemember" checked />
+                    记住用户名
+                    <a href="<%linkurl("repassword","confirm")%>" target="_blank">忘记密码</a>
+                </div>
+                <div class="logbtn-box">
+                    <button id="btnSubmit" name="btnSubmit" type="submit" class="regbtn roundconer4">立即登录</button>
+                </div>
+                <dl id="msgtips">
+                    <dt></dt>
+                    <dd>
+                    </dd>
+                </dl>
+                <input id="turl" name="turl" type="hidden" value="{turl}" />
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('input').focus(function () {
+                        $(this).css('background-color', 'white');
+                    }).blur(function () {
+                        if ($.trim($(this).val()) == '') {
+                            $(this).css('background-color', 'transparent').val('');
+                        } else {
+                            $(this).css('background-color', 'white');
+                        }
+                    }).blur();
+                });
+            </script>
+            <div class="biggold-log">
+            </div>
+            <div class="logmask roundconer5">
+            </div>
+            <div class="cloud">
+            </div>
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerMini.html"%>
+    <!--网站尾部-->
+</body>
+</html>

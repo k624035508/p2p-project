@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <link rel="icon" href="logo.ico">
+
+    <title>免费送商品 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <script src="<%templateskin%>/js/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!--页面内容样式-->
+    <style>
+        div.activities-wrapper {
+            background: url('<%templateskin%>/images/activities.jpg') no-repeat;
+            background-position: 50% 0;
+            height: 2729px;
+
+            position: relative;
+            text-align: center;
+        }
+        div.activities-wrapper > a {
+            position: relative;
+            top: 1015px;
+        }
+        div.activities-wrapper > div {
+            position: relative;
+            top: 2130px;
+        }
+    </style>
+    <script src="<%templateskin%>/js/jquery-1.10.2.min.js"></script>
+    <script>
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        }
+        $(function () {
+            if (getUrlParameter('act') === '2') {
+                scrollTo(0, 1300);
+            } else {
+                scrollTo(0, 570);
+            }
+        });
+    </script>
+</head>
+<body>
+<%template src="_header.html"%>
+<div class="activities-wrapper">
+    <a href="<%linkurl("mylottery","mylottery",1)%>"><img src="<%templateskin%>/images/gethongbao.png"/></a>
+    <div>
+        <a href="/#house"><img src="<%templateskin%>/images/invest-now.png"/></a>
+        <a href="<%linkurl("trip")%>" style="margin-left: 150px"><img src="<%templateskin%>/images/recommend.png"/></a>
+    </div>
+</div>
+<%template src="_footerSmall.html"%>
+</body>
+</html>
+

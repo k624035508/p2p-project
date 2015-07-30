@@ -1,0 +1,105 @@
+* {
+    font-family: 'Microsoft YaHei', '微软雅黑';
+}
+
+body {
+    padding-top: 18px;
+}
+
+div.guanli-team,
+div.fengkong-team,
+div.yunying-team,
+div.kefu-team,
+div.yanfa-team,
+div.caiwu-team,
+div.renshi-team {
+    margin-top: 60px;
+    margin-bottom: 55px;
+}
+
+div.guanli-team > div,
+div.fengkong-team > div,
+div.yunying-team > div,
+div.kefu-team > div,
+div.yanfa-team > div,
+div.caiwu-team > div,
+div.renshi-team > div {
+    display: inline-block;
+    text-align: center;
+}
+
+div.liaoguiqing,
+div.huangjian {
+    margin-right: 97px;
+}
+
+div.xuanjinghui,
+div.suxi,
+div.ajie,
+div.luomingxing,
+div.heganjie,
+div.xushufen,
+div.qinfei,
+div.xiaofen {
+    margin-right: 97px;
+}
+
+div.qiqi,
+div.awen {
+    margin-right: 91px;
+    padding-bottom: 60px;
+}
+
+.name-style {
+    color: #00375d;
+    font-size: 35px;
+    font-weight: bold;
+    line-height: 60px;
+}
+
+.position-style {
+    color: #666;
+    font-size: 18px;
+    line-height: 15px;
+}
+
+.slogan-style {
+    color: #000;
+    font-size: 15px;
+    line-height: 50px;
+}
+
+.popover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1010;
+    display: none;
+    max-width: 600px;
+    padding: 1px;
+    text-align: left;
+    white-space: normal;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+
+.img-info-style {
+    width: 500px;
+    height: 351px;
+}
+
+div.suxi,
+div.liuxiaojie
+{
+    vertical-align:top;
+}

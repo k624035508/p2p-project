@@ -1,0 +1,165 @@
+﻿<%namespace "Lip2p.Linq2SQL"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>会员中心 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/uclifen.css">
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="<%templateskin%>/js/base.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $($('.my_gift_li')[{message_status}]).addClass('selected');
+            var startAtCtrl = $("#startdate");
+            var endAtCtrl = $("#enddate");
+
+            $(".my_gift_li").click(function (e) {
+                $(this).addClass("selected").siblings().removeClass("selected");
+                location.href = 'mynews-' + this.value + '-0.html';
+            });
+
+            var height = $('.list-unstyled').height();
+            $('.traddetail').attr('style', 'min-height: ' + height + 'px');
+
+            setTimeout(function() {
+                var wh = $(window).height();
+                var dh = $('html').height();
+                if (dh < wh) {
+                    var scaleBox = $('div.content');
+                    scaleBox.height(scaleBox.height() + (wh - dh));
+                }
+            }, 300);
+        });
+
+        function ExecPostBack(checkValue) {
+            if (checkValue!="") {
+                ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_message_delete', checkValue, 'turl');
+            } else {
+                var valueArr = '';
+                $("input[name='checkbox']:checked").each(function (i) {
+                    valueArr += $(this).val();
+                    if (i < $("input[name='checkbox']:checked").length - 1) {
+                        valueArr += ","
+                    }
+                });
+                if(valueArr != "")
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_message_delete', valueArr, 'turl');
+                else
+                    $.dialog.alert("请至少选择一条消息！");
+            }
+        }
+        //全选取消
+        function checkAll(chkobj) {
+            if ($(chkobj).text() == "全选") {
+                $(chkobj).text("取消");
+                $("input.checkall").prop("checked", true);
+            } else {
+                $(chkobj).text("全选");
+                $("input.checkall").prop("checked", false);
+            }
+        }
+        //
+   </script>
+    <style>
+        td.money { text-align: right !important; }
+        .flickr { padding: 1em !important; }
+    </style>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="content ctbgcolor">
+        <div class="breadcrumb container">
+            <li><a href="/">金汇丰</a></li>
+            <li><a href="#">会员中心</a></li>
+        </div>
+        <div class="container">
+            <!--uc_left-->
+            <%template src="_usercenter_left.html"%>
+            <!--/uc_left-->
+            <div class="pull-left" id="rightcontent">
+                <!--uc_top-->
+                <%template src="_usercenter_top.html"%>
+                <!--/uc_top-->
+                <div class="traddetail">
+                    <div class="trad-top">
+                        <ul>
+                            <li class="my_gift_li" value="0">全部</li>
+                            <li class="my_gift_li" value="1">已读</li>
+                            <li class="my_gift_li" value="2">未读</li>                        
+                        </ul>
+                        <ul class="read-del"> 
+                            <!--<li class="read"><a href="">标为已读</a></li>-->
+                            <li class="read del"><a href="javascript:;" onclick="ExecPostBack('');">全部删除</a></li>
+                        </ul>
+                    </div>
+                    <div class="trad-cen">
+                        <table class="traddetail_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%"><a href="javascript:;" onclick="checkAll(this);">全选</a></th>
+                                    <th style="width: 15%">状态</th>
+                                    <th style="width: 50%">标题</th>
+                                    <th style="width: 20%">时间</th>
+                                    <th style="width: 10%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%set string pagelist1=get_page_link(10, page, totalcount, linkurl("mynews","mynews",{message_status},"__id__"))%> <!--取得分页页码列表-->
+                                <%loop dr messageDt%>
+                                <tr>
+                                <td>
+                                    <input type="checkbox" name="checkbox" class="checkall" value="{dr[id]}" />
+                                    </td>       
+                                <td align="center">
+                                    <%if({dr[is_read]}=="1")%>
+                                    已读
+                                    <%else%>
+                                    未读
+                                    <%/if%>
+                                </td>
+                                <td align="left"><a href="<%linkurl("mynews_show",{message_status},{dr[id]})%>">{dr[title]}</a></td>
+                                <td>{dr[post_time]}</td>
+                                <td><a onclick="ExecPostBack('{dr[id]}');" href="javascript:;">删除</a></td>
+                                </tr>
+                                <%/loop%>
+                                <%if(totalcount<1)%>
+                                <tr><td align="center" colspan="5">暂无记录</td></tr>
+                                <%/if%>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flickr">{pagelist1}</div> <!--放置页码列表-->
+                </div>
+                <input id="turl" type="hidden" value="<%linkurl("mynews","mynews",{message_status},{page})%>" />
+            </div>
+        </div>
+        <div class="authresult" style="min-height: 20px;">
+        </div>
+        </div>
+        <!--网站尾部-->
+        <%template src="_footerSmall.html"%>
+        <!--网站尾部-->
+</body>
+</html>

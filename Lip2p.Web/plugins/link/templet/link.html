@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>友情链接 - {config.webname}</title>
+<link rel="stylesheet" href="{config.webpath}css/validate.css" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" href="<%templateskin="green"%>/css/style.css" />
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+<script type="text/javascript" src="<%templateskin="green"%>/js/base.js"></script>
+<script type="text/javascript">
+$(function(){
+	//初始化表单
+	AjaxInitForm('link_form', 'btnSubmit', 1);
+});
+</script>
+</head>
+
+<body>
+<!--Header-->
+<%template skin="green" src="_header.html"%>
+<!--/Header-->
+
+<div class="boxwrap">
+  <div class="left710">
+   <!--Content-->
+    <div class="content">
+      <div class="meta">
+        <h1 class="meta-tit">友情链接</h1>
+      </div>
+      
+      <div class="line20"></div>
+      <!--Link-->
+      <div class="links">
+        <ul class="img">
+          <%set DataTable imgList=new Lip2p.Web.Plugin.Link.link().get_link_list(0, "is_image=1")%>
+          <%loop list1 imgList%>
+          <li><a target="_blank" href="{list1[site_url]}" title="{list1[title]}"><img src="{list1[img_url]}" width="88" height="31" /></a></li>
+          <%/loop%>
+        </ul>
+        <ul class="txt">
+          <%set DataTable txtList=new Lip2p.Web.Plugin.Link.link().get_link_list(0, "is_image=0")%>
+          <%loop list2 txtList%>
+          <a target="_blank" href="{list2[site_url]}" title="{list2[title]}">{list2[title]}</a> | 
+          <%/loop%>
+        </ul>
+      </div>
+      <!--/Link-->
+      <div class="line10"></div>
+     
+      <h3 class="base_tit">申请链接<a name="Add" id="Add"></a></h3>
+      <div class="line10"></div>
+      <form id="link_form" name="link_form" url="{config.webpath}plugins/link/ajax.ashx?action=add">
+     <div class="form_box">
+       <dl>
+         <dt>网站名称：</dt>
+         <dd><input id="txtTitle" name="txtTitle" type="text" class="input txt" datatype="*" sucmsg=" " /><span class="Validform_checktip">*需要申请友情链接的网站标题</span></dd>
+       </dl>
+       
+       <dl>
+         <dt>联系人：</dt>
+         <dd><input id="txtUserName" name="txtUserName" type="text" class="input txt" datatype="*" sucmsg=" " /><span class="Validform_checktip">*该网站联系人的姓名</span></dd>
+       </dl>
+       <dl>
+         <dt>联系电话：</dt>
+         <dd><input id="txtUserTel" name="txtUserTel" type="text" class="input txt" /></dd>
+       </dl>
+       <dl>
+         <dt>电子邮箱：</dt>
+         <dd><input id="txtEmail" name="txtEmail" type="text" class="input txt" /></dd>
+       </dl>
+       <dl>
+         <dt>链接网址：</dt>
+         <dd><input id="txtSiteUrl" name="txtSiteUrl" type="text" class="input txt" datatype="url" sucmsg=" " /><span class="Validform_checktip">*申请友情链接的网址</span></dd>
+       </dl>
+       <dl>
+         <dt>LOGO图片：</dt>
+         <dd><input id="txtImgUrl" name="txtImgUrl" type="text" class="input txt" /><span class="Validform_checktip">网站链接的LOGO图片地址</span></dd>
+       </dl>
+       <dl>
+         <dt>验证码：</dt>
+         <dd>
+           <input id="txtCode" name="txtCode" type="text" class="input small" datatype="*" sucmsg=" " />
+           <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;"><img src="{config.webpath}tools/verify_code.ashx" width="80" height="22" align="absmiddle" /> 看不清楚？</a>
+           <span class="Validform_checktip"></span>
+         </dd>
+       </dl>
+       <dl>
+         <dt></dt>
+         <dd>
+           <input name="btnSubmit" type="submit" value="申请链接" class="btn_submit" />
+         </dd>
+       </dl>
+     </div>
+     <div class="clear"></div>
+     </form>
+     
+    </div>
+    <!--/Content-->
+  </div>
+  
+  <div class="left264">
+    <!--Sidebar-->
+    <div class="sidebar">
+      <h3>栏目导航</h3>
+      <ul>
+        <%set DataTable contentlist=get_article_list("content", 0, 0, "status=0")%>
+        <%loop cdr contentlist%>
+        <li><a title="{cdr[title]}" href="<%linkurl("content",{cdr[call_index]})%>">{cdr[title]}</a></li>
+        <%/loop%>
+        <li><a href="<%linkurl("feedback")%>">留言反馈</a></li>
+        <li><a href="<%linkurl("link")%>">友情链接</a></li>
+      </ul>
+      <h3>客户服务</h3>
+      <div class="section">
+        <p>电话：13800138000</p>
+        <p>在线QQ：400830000</p>
+        <p>E-mail：info@dtcms.net</p>
+        <p>新浪微博：http://weibo.com/dtcms</p>
+      </div>
+    </div>
+    <!--/Sidebar-->
+    
+  </div>
+</div>
+
+<div class="clear"></div>
+
+<!--Footer-->
+<%template skin="green" src="_footer.html"%>
+<!--/Footer-->
+</body>
+</html>

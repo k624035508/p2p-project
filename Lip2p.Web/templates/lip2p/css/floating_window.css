@@ -1,0 +1,114 @@
+﻿@-ms-viewport {
+    width: auto !important;
+}
+
+div.floating-window {
+    position: fixed;
+    top: 60%;
+    right: 0;
+    z-index: 999;
+}
+
+div.floating-window ul li {
+    list-style-type: none;
+    margin-bottom: 12px;
+}
+
+div.floating-window ul li a {
+    text-decoration: none;
+}
+
+div.floating-window ul > li div {
+    text-align: center;
+}
+
+/*计算器*/
+
+div.calculator-box {
+    position: fixed;
+    width: 1903px;
+    height: 181px;
+    top: 69%;
+    right: -1620px;
+}
+
+div.calculator {
+    display: inline-block;
+    vertical-align: middle;
+    width: 12%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    background-color: #fff;
+    z-index: 8;
+}
+
+div.calculator input {
+    height: 21px;
+    width: 100px;
+}
+
+div.calculator td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.first-td-style {
+    text-align: right;
+}
+
+td.btn-td {
+    text-align: center;
+}
+
+div.calculator a {
+    color: #fff;
+    border-radius: 3px;
+    padding: 5px 30px;
+    border:none;
+    background-color: #176fa7;
+}
+
+div.calculator a:link,
+div.calculator a:hover,
+div.calculator a:visited {
+    text-decoration: none;
+}
+
+div.pointers {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    left: -6px;
+    top: 38px;
+}
+
+div.pointers > div {
+    display: inline-block;
+    position: relative;
+}
+
+div.pointer-bottom {
+     width: 0;
+     height: 0;
+     border-top: 18px solid transparent;
+     border-bottom: 18px solid transparent;
+     border-left: 18px solid rgba(0,0,0,.2);
+    z-index: 9;
+    top: 2.5px;
+    margin-left: -20px;
+ }
+
+div.pointer-above {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 16px solid #fff;
+    z-index: 10;
+}
+
+div.calculator table {
+    margin-left: 7px;
+}

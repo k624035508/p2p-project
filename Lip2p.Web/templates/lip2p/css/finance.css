@@ -1,0 +1,674 @@
+﻿@charset "utf-8";
+
+.product {
+	width:460px;
+	padding:20px;
+	margin:20px 0;
+	background-color:#fff;
+	border:solid 3px #dedede;
+}
+
+.proheader {
+	font-size: 28px;
+	color: #fff;
+	padding: 20px 0 10px 185px;
+	background-repeat: no-repeat;
+	background-position: 125px;
+}
+
+.product .house {
+	background-color: #fec435;
+	background-image: url(../images/finance/house.png);
+}
+
+.product .car {
+	background-color: #92ca4b;
+	background-image: url(../images/finance/car.png);
+}
+
+.product p {
+	margin:30px;
+	text-indent:2.2em;
+	line-height:30px;
+	letter-spacing:2px;
+	color:#00375a;
+	font-size:16px;
+}
+
+.product ul li:before {
+	content: url(../images/index/bid01.png);
+	margin-right:5px;
+}
+
+.product ul li {
+	letter-spacing:2px;
+	font-size:16px;
+	color:#00b9f5;
+	margin:10px 0;
+}
+
+.product ul {
+	padding-left:30px;
+	padding-bottom:50px;
+	border-bottom:dotted 1px #dedede;
+}
+
+.product .btns {
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	width:240px;
+	display:block;
+	margin:24px auto;
+}
+
+.houselorn .btns:hover {
+	background-color:#ffab35;
+	border-color:#fad57c;
+	text-decoration:none !important;
+	color:#fff !important;
+}
+
+.carlorn .btns:hover {
+	background-color:#6dc200;
+	border-color:#78d500;
+	text-decoration:none !important;
+	color:#fff !important;
+}
+
+.pages a {
+	font-size:12px;
+	color:#737373;
+	padding:5px;
+	margin:0 2px;
+	border:solid 1px #dedede;
+}
+
+.pages {
+	margin:20px 0;
+	text-align:center;
+}
+
+.pages a:first-child {
+	margin-left:10px;
+}
+
+.bsinfo {
+	width:675px;
+	padding: 12px;
+	color:#00375a;
+	font-size:14px;
+	min-height:400px;
+	position:relative;
+	border:solid 1px #dfdfdf;
+	background-color:#fff;
+}
+
+.bsinfo ul {
+	margin-bottom:10px;
+	font-size:0;
+}
+
+.bsinfo ul li {
+	width:215px;
+	padding:15px;
+	color:#fff;
+	border:solid 1px #fff;
+	border-right:none;
+    vertical-align: top;
+}
+
+.bsinfo .box1 {
+	background-color:#00aeff;
+}
+
+.bsinfo .box2 {
+	background-color:#00beff;
+}
+
+.bsinfo .box3 {
+	background-color:#00ccff;
+}
+
+.bsinfo .box4 {
+	border-top:none;
+	background-color:#ff9124;
+}
+
+.bsinfo .box5 {
+	border-top:none;
+	background-color:#fda34a;
+}
+
+.bsinfo .box6 {
+	border-top:none;
+	background-color:#fdb34a;
+    height: 80px;
+}
+
+.bsinfo .digits {
+	font-size:32px;
+	display: inline-block;
+    vertical-align: middle;
+}
+
+.bsinfo ul li p {
+	text-align:center ;
+}
+
+.bsinfo .units {
+	margin-left:5px;
+	font-size:25px;
+	display: inline-block;
+    vertical-align: middle;
+}
+
+.bsinfo .top {
+	padding:10px 0;
+}
+
+.bsinfo .bottom {
+	padding:0;
+	margin-top:0;
+	margin-bottom:10px;
+}
+
+.bsinfo img {
+	position:absolute;
+	right:5px;
+	bottom:5px;
+}
+
+.bsinfo .box4 p , .bsinfo .box5 p , .bsinfo .box6 p {
+	text-align:left;
+	margin-bottom:0;
+}
+
+.bsinfo .list-inline {
+	margin-left:0;
+}
+
+.bsinfo .sold , .bsinfo .time {
+	margin-top:10px;
+}
+
+.bstitle {
+	color:#00375a;
+	padding-left:70px;
+	padding-top:12px;
+	margin-top:0;
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: 20px;
+}
+
+.bscar {
+	background-image:url(../images/finance/bscar.png);
+}
+
+.bshouse {
+	background-image:url(../images/finance/bshouse.png);
+}
+
+.bslogin , .bsinvest {
+	width:300px;
+	min-height:400px;
+	padding:5px 12px;
+	background-color:#fff;
+	border:solid 1px #dfdfdf;
+	box-sizing:border-box;
+}
+
+.title {
+	padding-left:15px;
+	color:#00375a;
+	padding-bottom:24px;
+	border-bottom:dotted 1px #dfdfdf;
+}
+
+.bslogin > p, .bsinvest > p {
+	font-size:15px;
+	color:#737373;
+	padding-left:15px;
+}
+
+
+/*.bslogin .canbuy {
+	margin-top:50px;
+	margin-bottom:30px;
+}*/
+
+.bslogin .canbuy,
+.bsinvest .canbuy {
+	margin-top:30px;
+	margin-bottom:40px;
+}
+
+.empty-invest 
+{
+    display: none;
+}
+
+.bslogin a:link,
+.bslogin a:hover,
+.bslogin a:visited{text-decoration: none;}
+
+.bsinvest a:link,
+.bsinvest a:hover,
+.bsinvest a:visited{text-decoration: none;}
+
+.canbuy > div {
+    display: block;
+    margin-left: 17px;
+    font-size: 18px;
+    color: #666666;
+}
+
+
+.canbuy .amount-details {
+    
+    
+}
+
+#frminvest > p {
+	font-size:14px;
+	padding-right:10px;
+}
+
+.canbuy .digits {
+	/*width:150px;*/   /*金额显示框自适应*/
+	display:inline-block;
+	text-align:right;
+	font-size:28px;
+	color:#ffab35;
+	margin-top: 17px;
+}
+
+#amount-chongzhi {
+    /*padding-left: 115px;*/
+    float: right;
+    color: #2ea7e1;
+}
+
+
+.regbtn {
+	padding:0 15px;
+	margin-top:26px;
+}
+
+.empty-btn {
+    padding:0 15px;
+	width:100%;
+	height:40px;
+	color: #666666 !important;
+	line-height:40px;
+	font-size: 18px;
+	text-align: center;
+	text-decoration: none;
+	border: 1px solid #d2d2d2;
+}
+
+#frminvest .regbtn {
+	margin-top:10px;
+}
+
+.regbtn .btns {
+	width:100%;
+	height:40px;
+	line-height:38px;
+	background-color:#6dc200;
+	border-color:#78d500;
+	text-decoration:none ;
+	color:#fff;
+}
+
+.delaybtn .btns {
+	width:100%;
+	height:40px;
+	line-height:38px;
+	background-color:#666666;
+	border-color:#d2d2d2;
+	text-decoration:none ;
+	color:#fff;
+}
+
+.login {
+	text-align:center;
+	font-size:12px !important;
+}
+
+.login a ,.agreement a {
+	color:#00b9f5;
+}
+
+.bsdetails {
+	margin-top:40px;
+	background-color:#fff;
+}
+
+
+.tabheader {
+	background-color:#f2f2f2;
+}
+
+.tabcontent {
+	font-size:14px;
+	margin-top:-1px;
+	background-color:#fff;
+	padding:0 15px;
+	border:solid 1px #dfdfdf;
+}
+
+.tabheader ul {
+	font-size:0;
+	border-bottom:0;
+	padding:0;
+}
+
+.tabheader ul li ,.pstitle {
+	height:45px;
+	width:145px;
+	font-size:18px;
+	font-weight:500;
+	color:#00b9f5;
+	text-align:center;
+	display:inline-block;
+	line-height:38px;
+	box-sizing:border-box;
+	border-top:solid 4px transparent;
+}
+
+.tabselected {
+	background-color:#fff;
+	border:solid 1px #dfdfdf;
+	border-bottom-color:transparent;
+	border-top:solid 4px #00b9f5 !important;
+}
+
+#projdetail table , #projdetail p {
+	margin-left:18px;
+}
+
+#projdetail p ,.dangercontrol ol {
+	margin-top:25px;
+	margin-bottom:0;
+}
+
+.borrowinfo th , .diyainfo th {
+	font-weight:normal;
+	padding-top:25px;
+	color:#00b9f5;
+	text-align:right;
+}
+
+.borrowinfo td , .diyainfo td {
+	color:#00375a;
+	padding-top:25px;
+	text-align:left;
+}
+
+.borrowinfo , .lendinfo , .diyainfo ,.dangercontrol , .livepic {
+	padding-top:25px;
+	padding-bottom:25px;
+	border-bottom:dotted 1px #dfdfdf;
+}
+
+.infotitle {
+	color:#00375a;
+	font-size:18px;
+	background-image: url(../images/finance/biaoshu_03.png);
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left: 18px;
+}
+
+.dangercontrol ol li {
+	line-height:30px;
+}
+
+#buyrecord , #repayplain {
+	padding:30px 25px;
+}
+
+#buyrecord th , #repayplain th {
+	color:#fff;
+	background-color:#7ad5f4;
+	height:40px;
+	vertical-align:middle;
+	text-align:center;
+}
+
+#buyrecord td , #repayplain td {
+	color:#00375a;
+	background-color:#e3e3e3;
+	height:40px;
+	vertical-align:middle;
+	text-align:center;
+}
+
+#buyrecord tr:nth-child(even) td {
+	background-color:#f4f4f4;
+}
+
+#buyrecord tr td:nth-child(2) {
+	color:#01b9f5;
+}
+
+#repayplain td {
+	background-color:#f4f4f4;
+}
+
+.picshow {
+	margin-top:40px;
+}
+
+.thumbnail {
+	border:none;
+	margin-bottom:0;
+	padding:0px;
+}
+
+.thumbnail p {
+	text-align:center;
+}
+.thumbnail .caption {padding:0}
+
+#carousel li {
+	margin:0;
+}
+
+.livepic ul {
+	margin-left:0;
+}
+
+.imgct {
+	width:180px;
+	height:120px;
+	position:relative;
+}
+
+.imgct img 
+{
+    width:150px;
+	height:100px;
+	left:11px;
+	top:8px;
+	position:absolute;
+}
+
+.modal-dialog {
+	width:800px;
+	min-height:600px;
+	top:0;
+	left:0;
+}
+
+.bigpic {
+	width:80%;
+	text-align:center;
+	margin:auto;
+}
+
+.bigpic img {
+	width:100%;
+	height:60%;
+}
+
+.carousel-control.left , .carousel-control.right {
+	background-image:none;
+}
+
+#shaixuan ul li {
+	margin-left:60px;
+	line-height:28px;
+	text-align:right;
+}
+
+#shaixuan .control-label {
+	color:#01b9f5;
+	padding:0 10px;
+	font-size: 16px;
+}
+
+#shaixuan select {
+	width:120px;
+	height:30px;
+}
+
+
+/*投标确认弹出框*/
+.affirm-dialog {
+	position: fixed;
+	z-index: 999;
+	width: 600px;
+	/*height: 600px;*/
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -300px;
+	/*border: 1px  solid #d2d2d2;*/
+	background-color: #fff;
+}
+
+.affirm-dialog-th {
+	position: relative;
+	width: 100%;
+	height: 50px;
+	font-size: 30px;
+	color: #666;
+	text-align: center;
+	line-height: 50px;
+	background-color: #f3f3f3;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+.affirm-dialog-tb {
+	padding-top: 1px;
+	padding-left: 20px;
+	padding-bottom: 16px;
+	border-bottom: 1px dashed #666;
+}
+
+.affirm-dialog-tb table td{
+	padding-right: 50px;
+	padding-bottom: 11px;
+}
+
+#annual-rate {
+	color: #2ea7e1;
+}
+
+.affirm-dialog-earnings > span {
+	display: inline-block;
+	margin-right: 50px;
+}
+
+.affirm-dialog-earnings {
+	padding-top: 25px;
+	padding-bottom: 25px;
+	border-bottom: 1px dashed #666;
+}
+
+.affirm-dialog .paybox {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.paybox-psword input {
+	margin-left: 35px;
+}
+
+.paybox-code input {
+	margin-left: 48px;
+}
+
+.paybox-code img {
+	margin-left: 5px;
+}
+
+.paybox .paybox-code {
+	margin-top: 20px;
+}
+
+.affirm-dialog-tb,
+.affirm-dialog-earnings,
+.paybox { padding-left: 20px;}
+
+.affirm-dialog-tb table td,
+.affirm-dialog-earnings > span,
+.affirm-dialog-earnings > span,
+.paybox > div,
+.agreement,
+.agreement a {font-size: 16px;}
+
+.affirm-dialog .agreement {
+	text-align: center;
+	margin-top: 24px;
+}
+
+.agreement a {
+	color: #2ea7e1;
+}
+
+.affirm-dialog-btns > button {
+	width: 68px;
+	height: 28px;
+	border: none;
+}
+
+.affirm-dialog-btns {
+	text-align: center;
+	margin-top: 22px;
+	margin-bottom: 30px;
+}
+
+.affirm-dialog-btns .confirmbtn {
+	background-color: #2ea7e1;
+	color: #fff;
+	font-size: 16px;
+	margin-right: 50px;
+}
+
+.affirm-dialog-btns .cancelbtn {
+	color: #666;
+	font-size: 16px;
+	background-color: #fff;
+}
+
+.paybox-code .code-change:link,
+.paybox-code .code-change:visited {
+	color: #2ea7e1;
+}
+
+
+a.no-text-decoration:hover
+{
+    text-decoration: none;
+}
+
+span.pic-describe {
+    position: relative;
+    top: 15px;
+    left: 44%;
+}

@@ -1,0 +1,119 @@
+<%namespace "Lip2p.Common"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="金汇丰，中国领先的互联网理财平台，提供优质的金屋子、丰车赚理财项目，让投资者在这里享受金汇丰p2p理财的安全稳健高收益。">
+    <meta name="keywords" content="公司简介,联系我们,关于我们">
+    <title>关于我们 – 【金汇丰】</title>
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/aboutus.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+            return null;
+        }
+        function fitHeight() {
+            var wh = $(window).height();
+            var dh = $('html').height();
+            if (dh < wh) {
+                var scaleBox = $('iframe[name=main-frame]');
+                scaleBox.height(scaleBox.height() + (wh - dh));
+            }
+        }
+        function resizeIframe(obj) {
+            if (!obj) obj = document.getElementsByName('main-frame')[0];
+            obj.style.height = 0;
+            obj.style.height = (obj.contentWindow.document.body.scrollHeight + 100) + 'px';
+            fitHeight();
+        }
+        $(function () {
+            var btns = $(".left-nav ul li a");
+            var height = $(".left-nav").height();
+            $("div.main-container iframe").css("min-height", height);
+            btns.click(function () {
+                $(".left-nav ul li a.selected").removeClass("selected");
+                $(this).addClass("selected");
+                $(".little-nav .switchbtn").text($(this).text());
+            });
+
+            // 适配咨询中心的 tab 连接
+            var subTabIndex = getUrlParameter('subtab');
+            if (subTabIndex && subTabIndex != '0') {
+                // 更改 infomation_center 的 href
+                var categoryId = subTabIndex == 1 ? '42' : '44';
+                btns[4].href = btns[4].href.replace('43', categoryId);
+            }
+
+            // 根据参数直接跳转到 tab
+            var tabIndex = getUrlParameter('tab');
+            if (tabIndex) btns[Number(tabIndex)].click();
+            else btns[0].click();
+
+            setTimeout(fitHeight, 300);
+        });
+        var httpsAvailable = <%=Utils.IsDebugging()?"false":"true"%>;
+        function forceHttps(link, tabIndex) { // 判断是否 https，是则在 iframe 中打开连接，否则清除父页 param (protocol=http)
+            if (httpsAvailable && window.location.protocol !== "https:") {
+                window.location.href = window.location.href.split("?")[0] + "?tab=" + tabIndex;
+            } else {
+                document.getElementsByName('main-frame')[0].src = link;
+            }
+            return false;
+        }
+        function forceHttp(link, tabIndex) { // 判断是否 https，是则本页转到 http 并且后面加上参数，否则在 iframe 中打开连接
+            if (httpsAvailable && window.location.protocol !== "http:") {
+                var httpLink = "http:" + window.location.href.substring(window.location.protocol.length);
+                window.location.href = httpLink.split("?")[0] + "?protocol=http&tab=" + tabIndex;
+            } else {
+                document.getElementsByName('main-frame')[0].src = link + '?protocol=http';
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="main-container">
+        <div class="little-nav">
+            <a href="/">金汇丰</a> <span>> </span><a href="about.html">关于我们</a> <span>>
+            </span><a class="switchbtn">我们是谁</a>
+        </div>
+        <div class="left-nav">
+            <ul class="nav nav-stacked">
+                <li role="presentation"><a id="whoweare" class="selected" href="javascript:;" onclick="javascript:forceHttps('<%linkurl("whoweare")%>', 0)" target="main-frame">我们是谁</a></li>
+                <li role="presentation"><a href="javascript:;" onclick="javascript:forceHttps('<%linkurl("licenses")%>', 1)" target="main-frame">证照资质</a></li>
+                <!--<li role="presentation"><a href="#">股东介绍</a></li>-->
+                <li role="presentation"><a href="javascript:;" onclick="javascript:forceHttps('<%linkurl("team_show")%>', 2)" target="main-frame">团队展示</a></li>
+                <li role="presentation"><a href="javascript:;" onclick="javascript:forceHttps('<%linkurl("office_environment")%>', 3)" target="main-frame">办公环境</a></li>
+                <li role="presentation"><a href="javascript:;" onclick="javascript:forceHttps('<%linkurl("information_center",43)%>', 4)" target="main-frame">资讯中心</a></li>
+                <li role="presentation"><a href="javascript:;" onclick="javascript:forceHttp('<%linkurl("contactus")%>', 5);" target="main-frame">联系我们</a></li>
+            </ul>
+        </div>
+        <iframe name="main-frame" scrolling="no" onload='resizeIframe(this);' marginheight="0" marginwidth="0" frameborder="0"></iframe>
+        <div style="clear: both">
+        </div>
+    </div>
+    <%template src="_footerSmall.html"%>
+</body>
+</html>

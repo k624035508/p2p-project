@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7437214A-CFED-4BA0-814B-26AB98081CEE}"
+	ProjectSection(SolutionItems) = preProject
+		Lip2p.vsmdi = Lip2p.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Common", "Lip2p.Common\Lip2p.Common.csproj", "{20908989-7773-493B-B1BD-764BE322A935}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Linq2SQL", "Lip2p.Linq2SQL\Lip2p.Linq2SQL.csproj", "{D02BF08D-240F-4233-9B83-B22429E5F3A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.REST", "Lip2p.REST\Lip2p.REST.csproj", "{D458E91F-B150-4454-98FA-14CCE67DFEE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Core", "Lip2p.Core\Lip2p.Core.csproj", "{D13BC3EC-928C-4086-AB16-EC62A86FEB85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20908989-7773-493B-B1BD-764BE322A935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D458E91F-B150-4454-98FA-14CCE67DFEE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D458E91F-B150-4454-98FA-14CCE67DFEE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D458E91F-B150-4454-98FA-14CCE67DFEE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D458E91F-B150-4454-98FA-14CCE67DFEE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13BC3EC-928C-4086-AB16-EC62A86FEB85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13BC3EC-928C-4086-AB16-EC62A86FEB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13BC3EC-928C-4086-AB16-EC62A86FEB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13BC3EC-928C-4086-AB16-EC62A86FEB85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Lip2p.vsmdi
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

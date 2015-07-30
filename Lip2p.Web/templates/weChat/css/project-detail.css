@@ -1,0 +1,90 @@
+body {
+    padding-bottom: 50px;
+}
+
+div.project-detail-page,
+div.borrower-info,
+div.borrower-remark,
+div.pawn-info,
+div.pawn-remark,
+div.creditor-info,
+div.guarantee,
+div.credit-use,
+div.repayment {
+    padding: 0 5%;
+}
+
+.project-detail-title {margin:0.8rem 0;}
+
+span.title-icon, span.title-orange {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+span.blue-mark,
+span.orange-mark {
+    display: block;
+    width: 8px;
+    height: 10px;
+}
+
+span.blue-mark {
+    background-color: #01b9f5;
+}
+
+span.orange-mark {
+    background-color: #ffac36;
+}
+
+.title-orange {
+    margin-left: 0.5rem;
+    font-size: 1.3em;
+    color: #ff8d4f;
+}
+
+div.borrower-info > ul,
+div.pawn-info  ul {
+    display: inline-block;
+    vertical-align: top;
+    list-style: none;
+    padding: 0;
+    line-height: 8vw;
+}
+
+.remark-style {
+    color: #80cf95;
+}
+
+div.borrower-remark,
+div.pawn-remark,
+div.credit-use,
+div.repayment {
+    margin-top: 20px;
+}
+
+div.pawn,
+div.creditor,
+div.risk-control {
+    margin-top: 40px;
+}
+
+div.risk-control-info {
+    padding: 0 5%;
+}
+
+div.risk-control-info p {margin-bottom:0.7rem !important;}
+
+div.risk-control-info strong {
+    color: #80cf95;
+    font-weight: normal;
+}
+
+div.guarantee ol {
+    padding: 0 0 0 6vw;
+}
+
+div.guarantee ol li {
+    padding: 2vw 0;
+}
+
+

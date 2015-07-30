@@ -1,0 +1,133 @@
+* {
+    font-family:"Microsoft YaHei", "微软雅黑";
+}
+
+/*网站公告样式*/
+div.mainbox {
+    width: 100%;
+}
+
+.nav-btns {
+    width: 100%;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #d2d2d2;
+}
+
+div.nav-btns > button {
+    width: 17.15%;
+    height: 30px;
+    font-size: 20px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
+    border-right: 1px solid #d2d2d2;
+    border-bottom: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    outline: none;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.selected {
+    color: #fff;
+    background-color: #00375a !important;
+}
+
+div.list-box {
+    width: 100%;
+    height: 96px;
+    margin-bottom: 14px;
+    background: url("../images/aboutus/slash.jpg") no-repeat;
+}
+
+div.list-box > div {
+    float: left;
+}
+
+div.date {
+    width: 12%;
+    font-size: 14px;
+    padding-top: 12px;
+    padding-left: 12px;
+}
+
+div.list-info {
+    position: absolute;
+    width: 80.2%;
+    font-size: 14px;
+    margin-left: 180px;
+}
+
+div.list-info h3 a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #00b9f5;
+    line-height: 3px;
+    font-weight: normal;
+}
+
+div.list-info p 
+{
+    position: relative;
+    margin-top: -5px;
+    width: 546px;
+    line-height: 16px;
+}
+
+/*公司动态、媒体报道样式*/
+div.dy-list-box,
+div.rp-list-box {
+    padding-bottom: 28px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #d2d2d2;
+}
+
+div.imgbox {
+    display: inline-block;
+    float: left;
+    max-width: 37.2%;
+}
+
+div.imgbox img {
+    max-width: 100%;
+}
+
+div.dy-list-info {
+    display: inline-block;
+    float: right;
+    width: 59.5%;
+    vertical-align: top;
+}
+
+div.info-th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #666;
+}
+
+div.info-th a {
+    text-decoration: none;
+    color: #00b9f5;
+    font-size: 20px;
+}
+
+span.author, span.date {
+    color: #666;
+    font-size: 14px;
+}
+
+span.author {
+    float: left;
+}
+
+span.date {
+    float: right;
+}
+
+div.dy-list-info p {
+    text-indent: 2em;
+    color: #666;
+    font-size: 15px;
+}

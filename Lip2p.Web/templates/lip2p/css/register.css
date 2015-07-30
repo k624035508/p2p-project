@@ -1,0 +1,103 @@
+﻿@charset "utf-8";
+/* CSS Document */
+body {
+	background-color:#f2f2f2;
+}
+
+#top {
+	background-color: #fafcfb;
+	color: #737373;
+	height: 38px;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 38px;	
+	border: solid 1px #a0a0a0;
+	border-bottom:1px solid #e6e6e6;
+	position:relative;
+}
+
+#top div {
+	color: #737373;
+	font-size:18px;
+	width:150px;
+	border-bottom:2px solid #1c9fdd;
+	padding-left: 50px;
+	z-index:99;
+	position:absolute;
+	height:38px;
+}
+
+#content {
+	background-color:#fff;
+	margin-bottom: 75px;
+	padding: 20px 30px;
+	border:1px solid #a0a0a0;
+	border-top:1px solid #e6e6e6;
+}
+
+#ctright p {
+	text-align: center;
+}
+
+.custominput {
+	height: 30px;
+	width: 280px;
+	border-radius:0;
+}
+
+.formdivider {
+	margin-bottom:25px;
+}
+
+#authimg {
+	vertical-align:middle;
+}
+
+#authimg p {
+	background-image:url(../images/register/authcode.jpg);
+	height:20px ;
+	width:60px ;
+	text-align:center;
+	margin:8px 5px 0 -20px;;
+}
+
+#authimg p,#authimg span {
+	display:inline-block;
+}
+
+.btnctright {
+	height:28px;
+	border-radius:0;
+	width:180px;
+	background-color:#1d9fdd;
+	font-weight:500;
+	font-size:16px;
+	color:#fff;
+	line-height:28px;
+	margin-bottom:30px;
+}
+
+.btn {
+	padding:0;
+}
+
+.metion ,.control-label {
+	color:#323232;
+	font-size:14px;
+}
+
+.control-label {
+	font-size:12px;
+	font-weight:500;
+} 
+
+#register a {
+	color:#1c9fdd;
+	text-decoration:none;
+	font-size:12px;
+}
+
+#register {
+	border-right: solid 1px #d9d9d9;
+	min-height:400px;
+}

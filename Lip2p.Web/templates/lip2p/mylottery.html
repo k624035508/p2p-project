@@ -1,0 +1,114 @@
+﻿<%namespace "Lip2p.Linq2SQL"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>我的奖券 - 会员中心</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/mylottery.css">
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var statusBtns = $(".status-btns a");
+            statusBtns.click(function() {
+                statusBtns.removeClass("status-selected");
+                $(this).addClass("status-selected");
+            });
+            $(statusBtns[{lottery_status}]).addClass("status-selected");
+
+            var height = $(".list-unstyled").height();
+            $(".mainnav").attr("style", "min-height: " + height + "px");
+
+            setTimeout(function() {
+                var wh = $(window).height();
+                var dh = $("html").height();
+                if (dh < wh) {
+                    var scaleBox = $("div.content");
+                    scaleBox.height(scaleBox.height() + (wh - dh));
+                }
+            }, 300);
+        });
+    </script>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="content ctbgcolor">
+        <div class="breadcrumb container">
+            <li><a href="/">金汇丰</a></li>
+            <li><a href="#">会员中心</a></li>
+        </div>
+        <div class="container">
+            <!--uc_left-->
+            <%template src="_usercenter_left.html"%>
+            <!--/uc_left-->
+            <div class="pull-left" id="rightcontent">
+                <!--uc_top-->
+                <%template src="_usercenter_top.html"%>
+                <!--/uc_top-->
+                <div class="mainnav">
+                    <div class="maintop">
+                        <div class="status-btns">
+                            <!--
+                            <%set IEnumerable<Lip2pEnums.MyLotteryRadioBtnTypeEnum> vals=Enumerable.Range(0, 4).Cast<Lip2pEnums.MyLotteryRadioBtnTypeEnum>()%>
+                            <%foreach(Lip2pEnums.MyLotteryRadioBtnTypeEnum val in vals)%>
+                            --><a href="mylottery-{(int)val}.html">{Utils.GetLip2pEnumDes(val)}</a><!--
+                            <%/foreach%>
+                            -->
+                        </div>
+                        <!--<a class="rules" href="#">查看优惠券使用规则</a>-->
+                    </div>
+                    <div class="maincenter">                        
+                        <%set var trs=QueryLottery()%>
+                        <%for(int i=0;i<trs.Count;i++)%>
+                        <%set var t=trs[i]%>
+                        <div class="lottery-item">
+                            <div class='<%=t["lottery-face-class"]%>'>
+                                <div class="lottery-face-inner">
+                                    <span class="lottery-value"><%=t["lottery-value"]%></span>
+                                    <span class="lottery-spec"><%=t["lottery-spec"]%></span>
+                                </div>
+                            </div>
+                            <div class="lottery-hint">
+                                <span>红包来源：<%=t["lottery-source"]%></span>
+                                <span>使用条件：<%=t["lottery-condition"]%></span>
+                                <span>有效时间：<%=t["lottery-valid-time"]%></span>
+                            </div>
+                        </div>
+                        <%/for%>
+                        <%if(trs.Count()==0)%>
+                        <div style="text-align: center; border: 1px dashed gray; line-height: 3em; font-size: 1.5em;">暂无内容</div>
+                        <%/if%>
+                    </div>
+                    <div class="mainbottom txtstyle">
+                        <div class="img-box">
+                            <img src="<%templateskin%>/images/usercenter/tips.png" />
+                        </div>
+                        <div class="tips-txt">
+                            <span class="span-style">温馨提示：</span><span class="span-style width-style">1.每笔投资优先匹配金额较大的红包，如果金额相同，则优先匹配快到期的红包。</span> 
+                            <span class="second-span">2.更多规则参见活动页面或咨询客服。</span>
+                         </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

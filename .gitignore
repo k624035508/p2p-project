@@ -1,0 +1,15 @@
+Lip2p.Web/upload/
+Lip2p.Web/aspx/
+.idea/
+bin/
+obj/
+TestResults/
+*.suo
+*.user
+*.Publish.xml
+video/
+packages/
+*.pubxml
+.nuget/
+*site.config
+*applicationhost.config

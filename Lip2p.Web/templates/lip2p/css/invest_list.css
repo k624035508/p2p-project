@@ -1,0 +1,368 @@
+﻿@charset "utf-8";
+/* CSS Document */
+.regframe {
+    position:relative;
+    height:0;
+}
+
+.quicksign {
+    box-sizing:content-box;
+    width:270px;
+    height:325px;
+    background-color:#fff;
+    opacity:0.95;
+    position:absolute;
+    top:30px;
+    right:5px;
+    z-index:99;
+    border:solid 3px #e5eaeb;
+}
+
+.qstitle {
+    font-size:30px;
+    color:#00375a;
+    margin-left:12px;
+    margin-right:12px;
+    border-bottom: dashed 1px #00375a;
+    text-align:center;
+    padding-bottom:10px;
+}
+
+.qsinput {
+    width: 246px;
+    height: 34px;
+    padding-left: 40px;
+    border: solid 1px #e5eaeb;
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.qsuser {
+    background-image:url(../images/index/user.png);
+}
+
+.qspwd {
+    background-image:url(../images/index/pwd.png);
+}
+
+.qscode {
+    width:130px;
+    background-image:url(../images/index/auth.png);
+}
+
+.quicksign p {
+    padding:0 12px;
+}
+
+.qsbtn {
+    color:#fff;
+    font-size:16px;
+    letter-spacing:3px;
+    border:none;
+    padding:5px 20px;
+    background-color:#ffab35;
+}
+
+.eachrow {
+    padding:20px 0;
+}
+
+.divwithtitle {
+    position:relative;
+    border-radius:5px;
+    border:solid 1px #dfdfdf;
+}
+
+.divtitle {
+    color:#fff;
+    height:28px;
+    font-size:18px;
+    line-height:28px;
+    padding:0 5px;
+    background-color:#00b9f5;
+    position:absolute;
+    left:-5px;
+    top:10px;
+}
+
+.bidmemo {
+    min-height:282px;
+    width:315px;
+    padding:10px 5px;
+}
+
+.bidmemo ul li a , .memos ul li a {
+    color:#737373;
+    font-size:14px;
+}
+
+.bidmemo ul li a:hover {
+    color:#00b9f5;
+    text-decoration:none;
+}
+
+.bidmemo ul li {
+    padding:12px 0 ;
+    border-bottom:solid 1px #dfdfdf;
+}
+
+.bidmemo ul {
+    margin-left:0px;
+    padding:0 5px;
+}
+
+.bidmemo ul li:last-child {
+    border:none;
+}
+
+.bidmemo ul li:before{
+    content:url(../images/index/bid02.png);
+    margin-right:5px;
+}
+
+.bidmemo ul li:hover:before {
+    content: url(../images/index/bid01.png);
+    margin-right:5px;
+}
+
+.rtdata {
+    min-height:282px;
+    width:650px;
+}
+
+.datalist {
+    padding:65px 40px;
+    padding-bottom:0;
+}
+
+.datalist ul li {
+    width:210px;
+    display:inline-block;
+}
+
+.datalist dt {
+    color:#737373;
+    margin-bottom:25px;
+}
+
+.datalist dd {
+    color:#00b9f5;
+    margin-bottom:25px;
+}
+
+.digits {
+    font-size:20px;
+    font-weight:bold;
+}
+
+.shorterli {
+    width:120px !important;
+}
+
+.fightbid {
+    width:100%;
+    height:160px;
+    padding:15px 15px 40px 80px;
+    background-color:#f2fbfe;
+    border-color:#00b9f5;
+}
+
+.bidtime {
+    color:#3598db;
+    padding-top:10px;
+    background-image: url(../images/index/time.png);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 20px;
+}
+
+.bigfont {
+    font-size:55px;
+    color:#00b9f5;
+    font-weight:900;
+    text-shadow: 5px 3px 3px #cbd0d2;
+}
+
+.bigfont2 {
+    font-size:50px;
+    color:#00375a;
+    margin-left:130px;
+    font-weight:500;
+}
+
+.unitfont {
+    font-size:18px;
+    color:#00375a;
+}
+
+.house {
+    background-image: url(../images/index/house.png);
+}
+
+.car {
+    background-image: url(../images/index/car.png) !important;
+}
+
+.listtitle {
+    height:38px;
+    border-bottom:solid 1px #00b9f5;
+}
+
+.titleleft {
+    background-color:#00b9f5;
+    color:#fff;
+    font-size:18px;
+    padding-top:10px;
+    padding-left:50px;
+    background-image: url(../images/index/house.png);
+    background-repeat: no-repeat;
+    background-position: 12px center;
+    height: 38px;
+    width: 125px;
+}
+
+.listblock {
+    min-height:110px;
+    padding:23px 12px;
+    border-bottom:solid 1px #dfdfdf;
+}
+
+.listblock img {
+    width:185px;
+    height:132px;
+    border-radius:5px;
+    box-shadow:3px 2px 3px #aaaaaa;
+}
+
+.listblock .digits {
+    font-size: 34px;
+}
+
+.listblock dl dt {
+    color:#00375a;
+}
+
+.listblock .units {
+    font-size:20px;
+}
+
+.listblock h5 {
+    font-size:15px;
+    color: #00375a;
+    padding-left:28px;
+    padding-right:30px;
+    margin:0;
+    margin-bottom:50px;
+}
+
+.listblock dd ,.listblock dt {
+    text-align:center;
+}
+
+.listblock:last-child {
+    border-bottom:none;
+}
+
+.listblock:hover {
+    background-color:#f2fbfe;
+}
+
+.selltime {
+    font-size: 15px;
+    color: #00375a;
+    line-height:19px;
+    background-image: url(../images/index/bidtime.png);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 30px;
+}
+
+.profit {
+    width:98px;
+    min-height:74px;
+    color:#fff;
+    background-color:#7fdcfb;
+}
+
+.profit .digits {
+    color:#fff;
+}
+
+.profit p {
+    text-align:center;
+    margin-bottom:0px;
+}
+
+.memos ul {
+    width: 90%;
+    background-image: url(../images/index/3.png);
+    background-repeat: no-repeat;
+    background-position: left 5px;
+    padding-left: 15px;
+}
+
+.memos ul li {
+    margin:15px 0;
+    margin-left:-15px;
+}
+
+.memos ul li a {
+    padding:0 15px;
+}
+
+.memos ul li:before{
+    content:url(../images/index/2.png);
+}
+
+.memos ul li:hover:before {
+    content: url(../images/index/1.png);
+}
+
+.memos ul li a:hover {
+    color:#3598db;
+}
+
+
+/*标已满与还款中按钮样式*/
+.empty-btn {
+    width: 98px;
+    height: 32px;
+    line-height: 33px;
+    font-size: 18px;
+    text-align: center;
+    color: #fff !important;
+    display: inline-block;
+    background-color: #d2d2d2;
+    border: solid 1px #d2d2d2;
+    border-radius: 3px;
+}
+
+.empty-btn:link,
+.empty-btn:hover,
+.empty-btn:visited {
+    text-decoration: none;
+}
+
+/*待发标按钮样式*/
+.delay-btn {
+    width: 98px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 18px;
+    text-align: center;
+    color: #fff !important;
+    display: inline-block;
+    background-color: #EC7824;
+    border: solid 1px #EC7824;
+    border-radius: 3px;
+}
+
+.delay-btn:link,
+.delay-btn:hover,
+.delay-btn:visited {
+    text-decoration: none;
+}
+
+div.media-bode a {
+    text-decoration:none;
+}

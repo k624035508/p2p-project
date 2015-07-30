@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>留言反馈 - {config.webname}</title>
+<link rel="stylesheet" type="text/css" href="<%templateskin="mobile2"%>/css/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin="mobile2"%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin="mobile2"%>/js/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin="mobile2"%>/js/base.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(e) {
+        $(".page-list a").attr("data-ajax", false);
+		//初始化发表评论表单
+		AjaxInitForm('#feedback_form', '#btnSubmit', 1);
+    });
+</script>
+</head>
+
+<body>
+<div id="mainpage" data-role="page">
+  <!--页面头部-->
+  <div data-role="header">
+    <div class="header-wrap">
+      <a href="javascript:;" onclick="history.back(-1);" class="icon-back"></a>
+      <h2>在线留言</h2>
+      <div class="right">
+        <a href="#menupanel">
+          <span class="icon-menu"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!--/页面头部-->
+  
+  <!--页面内容-->
+  <div data-role="content">
+    <div class="comment-wrap" style="margin:-1em -1em 0 -1em;">
+      <ol class="comment-list unline">
+        <%set DataTable list=new Lip2p.Web.Plugin.Feedback.feedback().get_feedback_list(10, page, "", out totalcount)%>
+        <%set string pagelist=get_page_link(10, page, totalcount, "mfeedback", "__id__")%>
+        <%foreach(DataRow dr in list.Rows)%>
+        <li>
+          <div class="inner">
+            <p>{dr[content]}</p>
+            <div class="meta">
+              <span class="blue">{dr[user_name]}</span>
+              <span class="time">{dr[add_time]}</span>
+            </div>
+          </div>
+          <%if({dr[reply_content]}!="")%>
+          <div class="answer">
+            <div class="meta">
+              <span class="time">{dr[reply_time]}</span>
+              <span class="blue">管理员回复：</span>
+            </div>
+            <p>{dr[reply_content]}</p>
+          </div>
+          <%/if%>
+        </li>
+        <%/foreach%>
+        <%if(list.Rows.Count<1)%>
+        <div class="nodata">暂无留言信息！</div>
+        <%/if%>
+      </ol>
+    </div>
+    
+    <!--分页页码-->
+    <div class="page-list">{pagelist}</div>
+    <!--/分页页码-->
+    
+    <!--版权信息-->
+    <%template skin="mobile2" src="_copyright.html"%>
+    <!--/版权信息-->
+    
+  </div>
+  <!--/页面内容-->
+  
+  <!--底部工具栏-->
+  <div data-role="footer" data-position="fixed">
+    <div class="sidebar">
+      <div class="col-2">
+        <a href="#mainpage" class="icon-book selected">留言反馈</a>
+      </div>
+      <div class="col-2">
+        <a href="#addpage" class="icon-pencil">发表留言</a>
+      </div>
+    </div>
+  </div>
+  <!--/底部工具栏-->
+  
+  <!--页面左侧导航-->
+  <%template skin="mobile2" src="_nav.html"%>
+  <!--页面左侧导航-->
+
+</div>
+
+<div id="addpage" data-role="page">
+  <!--页面头部-->
+  <div data-role="header">
+    <div class="header-wrap">
+      <a href="javascript:;" data-rel="back" class="icon-back"></a>
+      <h2>发表留言</h2>
+    </div>
+  </div>
+  <!--/页面头部-->
+  
+  <!--页面内容-->
+  <div data-role="content">
+    <div class="box-wrap" style="padding-top:0.5em;">
+      <form id="feedback_form" name="feedback_form" url="{config.webpath}plugins/feedback/ajax.ashx?action=add">
+        <div class="form-box">
+          <input data-role="none" id="txtUserName" name="txtUserName" type="text" placeholder="输入用户昵称"  datatype="*" nullmsg="请输入用户昵称" sucmsg=" " />
+        </div>
+        <div class="form-box">
+          <input data-role="none" id="txtUserTel" name="txtUserTel" type="text" placeholder="输入联系电话" datatype="*0-20" sucmsg=" " />
+        </div>
+        <div class="form-box">
+          <input data-role="none" id="txtUserQQ" name="txtUserQQ" type="text" placeholder="输入联系QQ" datatype="*0-20" sucmsg=" " />
+        </div>
+        <div class="form-box">
+          <input data-role="none" id="txtUserEmail" name="txtUserEmail" type="text" placeholder="邮箱地址" />
+        </div>
+        <div class="form-box">
+          <input data-role="none" id="txtTitle" name="txtTitle" type="text" placeholder="输入留言标题" datatype="*2-100" nullmsg="请填写留言标题" sucmsg=" " />
+        </div>
+        <div class="form-box">
+          <textarea data-role="none" id="txtContent" name="txtContent" rows="3" placeholder="输入您要反馈的留言内容" datatype="*" nullmsg="请填写留言内容" sucmsg=" "></textarea>
+        </div>
+        <div class="form-box code">
+          <input data-role="none" id="txtCode" name="txtCode" type="text" placeholder="验证码" datatype="s4-4" nullmsg="请填写验证码" errormsg="请填写4位验证码" sucmsg=" " />
+          <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+            <img src="{config.webpath}tools/verify_code.ashx" /> 看不清楚？
+          </a>
+        </div>
+        <div class="form-box">
+          <input data-role="none" id="btnSubmit" name="btnSubmit" type="submit" value="发表留言" class="btn orange full" />
+        </div>
+      </form>
+    </div>
+    <!--版权信息-->
+    <%template skin="mobile2" src="_copyright.html"%>
+    <!--/版权信息-->
+    
+  </div>
+  <!--/页面内容-->
+  
+  <!--底部工具栏-->
+  <div data-role="footer" data-position="fixed">
+    <div class="sidebar">
+      <div class="col-2">
+        <a href="#mainpage" class="icon-book">留言反馈</a>
+      </div>
+      <div class="col-2">
+        <a href="#addpage" class="icon-pencil selected">发表留言</a>
+      </div>
+    </div>
+  </div>
+  <!--/底部工具栏-->
+</div>
+
+</body>
+</html>

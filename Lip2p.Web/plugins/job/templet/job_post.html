@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <%csharp%>
+ Lip2p.Web.Plugin.Job.Model.job model=new Lip2p.Web.Plugin.Job.BLL.job().GetModel(Convert.ToInt32(Request["id"]));
+<%/csharp%>
+<title>投递简历 - {config.webname}</title>
+<link rel="stylesheet" href="{config.webpath}css/validate.css" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" href="<%templateskin="green"%>/css/style.css" />
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+<script type="text/javascript" src="<%templateskin="green"%>/js/base.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //初始化表单
+        AjaxInitForm('comment_form', 'btnSubmit', 1);
+    });
+</script>
+</head>
+<body>
+
+<!--Header-->
+<%template skin="green" src="_header.html"%>
+<!--/Header-->
+
+
+
+<div class="boxwrap">
+  <div class="left710">
+   <!--Content-->
+    <div class="content">
+      
+      
+    
+      <!--Link-->
+
+      <!--/Link-->
+      <div class="line10"></div>
+     
+      <h3 class="base_tit">申请职位<a name="Add" id="Add"></a></h3>
+      <div class="line10"></div>
+   
+     <form id="comment_form" name="comment_form" action="{config.webpath}plugins/job/ajax.ashx?action=add&job_id={model.id}">
+      <div class="form_box">
+  <dl>
+	<dt>应聘岗位：</dt>
+	<dd> {model.title}</dd>
+  </dl>
+
+ <dl>
+	<dt>学历：</dt>
+	<dd><select id="Degree" name="Degree" class="select2 required"><option value="" selected="selected">请选择学历</option><option value="初中">初中</option><option value="高中">高中</option><option value="中技">中技</option><option value="中专">中专</option><option value="大专">大专</option><option value="本科">本科</option><option value="MBA">MBA</option><option value="硕士">硕士</option><option value="博士">博士</option><option value="其他">其他</option></select>
+    <label>*</label> </dd>
+  </dl>
+ <dl>
+	<dt>姓名：</dt>
+	<dd> <input id="txtRealName" name="txtRealName" type="text" class="text normal required" /><label>*</label> </dd>
+  </dl>
+   <dl>
+	<dt>性别：</dt>
+	<dd> <select id="txtSex" name="txtSex" class=" select2 nomal">
+            <option value="男" selected="selected">男</option>
+            <option value="女">女</option>
+        </select>
+     </dd>
+  </dl>
+   <dl>
+	<dt>出生日期：</dt>
+	<dd><input id="txtBirth" name="txtBirth" type="text" class="text normal" /></dd>
+  </dl>	
+   <dl>
+	<dt>婚姻状况：</dt>
+	<dd><select id="txtMarital" name="txtMarital" class=" select2 nomal">
+            <option value="已婚">已婚</option>
+            <option value="未婚" selected="selected">未婚</option>
+        </select></dd>
+  </dl>	
+  <dl>
+	<dt>籍贯：</dt>
+	<dd><input id="txtOrigin" name="txtOrigin" type="text" class="text normal" /></dd>
+  </dl>	
+  <dl>
+	<dt>爱好：</dt>
+	<dd><input id="txtHobby" name="txtHobby" type="text" class="text normal" /></dd>
+  </dl>	
+   <dl>
+	<dt>毕业院校：</dt>
+	<dd> <input id="txtSchool" name="txtSchool" type="text" class="text normal" /></dd>
+  </dl>		
+   <dl>
+	<dt>所学专业：</dt>
+	<dd> <input id="txtProfess" name="txtProfess" type="text" class="text normal" /></dd>
+  </dl>	
+     <dl>
+	<dt>身份证号：</dt>
+	<dd> <input id="txtIDNum" name="txtIDNum" type="text" class="text normal" /></dd>
+  </dl>				
+   <dl>
+	<dt>联系电话：</dt>
+	<dd><input id="txtTel" name="txtTel" type="text" class="text normal required" /><label>*</label> </dd>
+  </dl>					
+   <dl>
+	<dt>联系地址：</dt>
+	<dd><input id="txtAddress" name="txtAddress" type="text" class="text normal" /></dd>
+  </dl>		
+   <dl>
+	<dt>电子邮件：</dt>
+	<dd><input id="txtEmail" name="txtEmail" type="text" class="text normal" /></dd>
+  </dl>	
+     <dl>
+	<dt>期望薪资：</dt>
+	<dd><input id="txtSalary" name="txtSalary" type="text" class="text normal" /></dd>
+  </dl>	
+   <dl>
+	<dt>专业特长：</dt>
+	<dd><input id="txttechang" name="txttechang" class="text"></input></dd>
+  </dl>		
+  <dl>
+	<dt>教育经历：</dt>
+	<dd><textarea id="txtEducationExperience" name="txtEducationExperience" class="text"></textarea></dd>
+  </dl>	
+  <dl>
+	<dt>工作经历：</dt>
+	<dd><textarea id="txtWorkExperience" name="txtWorkExperience" class="text"></textarea></dd>
+  </dl>				
+  <dl>
+	<dt>自我介绍：</dt>
+	<dd><textarea id="txtSelfContent" name="txtSelfContent" class="text"></textarea></dd>
+  </dl>
+       <dl>
+         <dt></dt>
+         <dd>
+           <span class="fright"><input name="btnSubmit" type="submit" value="投递简历" class="submit" /></span>
+         </dd>
+       </dl>
+       </div>
+        <input type="hidden" id="turl" value="<%linkurl("job","")%>" />
+</form>
+     
+    </div>
+    <!--/Content-->
+  </div>
+  
+  <div class="left264">
+    <!--Sidebar-->
+    <div class="sidebar">
+      <h3>栏目导航</h3>
+      <ul>
+        <%set DataTable contentlist=get_article_list("content", 0, 0, "status=0")%>
+        <%loop cdr contentlist%>
+        <li><a title="{cdr[title]}" href="<%linkurl("content",{cdr[call_index]})%>">{cdr[title]}</a></li>
+        <%/loop%>
+        <li><a href="<%linkurl("feedback")%>">留言反馈</a></li>
+        <li><a href="<%linkurl("link")%>">友情链接</a></li>
+      </ul>
+      <h3>客户服务</h3>
+      <div class="section">
+        <p>电话：13800138000</p>
+        <p>在线QQ：400830000</p>
+        <p>E-mail：info@dtcms.net</p>
+        <p>新浪微博：http://weibo.com/dtcms</p>
+      </div>
+    </div>
+    <!--/Sidebar-->
+    
+  </div>
+</div>
+
+
+<!--Footer-->
+<%template skin="green" src="_footer.html"%>
+<!--/Footer-->
+</body>
+</html>

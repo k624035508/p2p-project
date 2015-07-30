@@ -1,0 +1,187 @@
+<%namespace "Lip2p.Linq2SQL"%>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <link rel="icon" href="logo.ico">
+    <title>会员中心 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!--时间选择控件样式-->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap-datetimepicker.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/uclifen.css">
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+      <style>
+          td.income { color: red; }
+          td.outcome { color: green; }
+          td.money { text-align: right !important; }
+          .flickr { padding: 1em !important; }
+      </style>
+      <script>
+          $(function() {
+              setTimeout(function () {
+                  var wh = $(window).height();
+                  var dh = $('html').height();
+                  if (dh < wh) {
+                      var scaleBox = $('div.content');
+                      scaleBox.height(scaleBox.height() + (wh - dh));
+                  }
+              }, 300);
+
+              $('th.prev').html('<');
+              $('th.next').html('>');
+
+              $(".collapse-toggle_tr").click(function() {
+                  $(this).find("td").eq(5).find("span.toggle-icon").toggleClass("glyphicon-triangle-top");
+                  //$("span.toggle-icon").toggleClass("glyphicon-triangle-top");
+              });
+          });
+      </script>
+  </head>
+  
+  <body>
+  <!--Header-->
+<%template src="_header.html"%>
+  <!--/Header-->
+  <div class="content ctbgcolor">
+    <div class="breadcrumb container">
+      <li><a href="/">金汇丰</a></li>
+      <li><a href="#">会员中心</a></li>
+    </div>
+  <div class="container">
+  	<!--左侧导航start-->
+    <%template src="_usercenter_left.html"%>
+    <!--左侧导航end-->
+    <div class="pull-left" id="rightcontent">
+      <!--uc_top-->
+      <%template src="_usercenter_top.html"%>
+      <!--/uc_top-->
+      <!--traddetail start-->
+      <div class="traddetail">
+        <div class="trad-top">
+          <form action="#" method="get">
+            <select name=""  class="sel">
+              <%set IEnumerable<Lip2pEnums.TransactionDetailsDropDownListEnum> vals=Enumerable.Range(0, 6).Cast<Lip2pEnums.TransactionDetailsDropDownListEnum>()%>
+              <%foreach(Lip2pEnums.TransactionDetailsDropDownListEnum val in vals)%>
+                  <option value="{(int)val}">{Utils.GetLip2pEnumDes(val)}</option>
+              <%/foreach%>
+            </select>
+            <span class="pull-right">
+            <input type="text" class="date" size="10" name="startdate" id="startdate" data-date-format="yyyy-mm-dd" />
+            到
+            <input type="text" class="date" size="10" name="enddate" id="enddate" data-date-format="yyyy-mm-dd"  />
+            <input class="search-btn" type="button" value="搜索" />
+            </span>
+          </form>
+        </div>
+        <div class="trad-cen">
+          <table class="traddetail_table">
+            <thead>
+              <tr>
+                <!--<th style="width:6%">序号</th>-->
+                <th style="width: 13%; text-align: left; text-indent: 1em;">交易类型</th>
+                <th style="width:15%;text-align:center">收入(元)</th>
+                <th style="width:15%;text-align:center">支出(元)</th>
+                <th style="width:15%;text-align:center">余额(元)</th>
+                <th style="width:15%">时间</th>
+                <th style="width:10%">备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%set int totalCount=0%>
+              <%set List<li_wallet_histories> his=query_transaction_history({userModel.id},{(Lip2pEnums.TransactionDetailsDropDownListEnum)transaction_type},{page-1},{JsTimeToDotNetTime(time_span_start)},{JsTimeToDotNetTime(time_span_end)},{PageSize},out totalCount)%>
+              <%for(int i=0;i<his.Count;i++)%>
+              <%set li_wallet_histories h=his[i]%>
+              <tr data-toggle="collapse" data-target="#traddetail-remark{(PageSize*(page-1))+i+1}" class="collapse-toggle_tr" style="cursor: pointer;">
+                <!--<td>{(PageSize*(page-1))+i+1}</td>-->
+                <td style="text-align: left; text-indent: 1em; ">{Utils.GetLip2pEnumDes((Lip2pEnums.WalletHistoryTypeEnum)h.action_type)}</td>
+                <td>{QueryTransactionIncome(h)}</td>
+                <td>{QueryTransactionOutcome(h)}</td>
+                <td><%= h.idle_money.ToString("c")%></td>
+                <td><%=h.create_time.ToString("yyyy/MM/dd HH:mm")%></td>
+                <td style="cursor: pointer;">详情<span class="glyphicon glyphicon-triangle-bottom toggle-icon" data-toggle="collapse" data-target="#traddetail-remark{(PageSize*(page-1))+i+1}"></span></td>
+              </tr>
+              <tr id="traddetail-remark{(PageSize*(page-1))+i+1}" class="collapse" style="text-indent: 1em;"><td colspan="6" style="text-align:left">备注：{QueryRemark(h)}</td></tr>
+              <%/for%>
+              <%if(totalCount<1)%>
+              <tr><td align="center" colspan="6">暂无记录</td></tr>
+              <%/if%>
+            </tbody>
+          </table>
+        </div>
+        <div class="flickr"><%= get_page_link(PageSize,page,totalCount,linkurl("mytrade","mytrade",transaction_type,"__id__",time_span_start,time_span_end))%></div> <!--放置页码列表-->
+      </div>
+      <!--traddetail end-->
+    </div>
+  </div>
+  <div class="authresult" style="min-height:20px;"></div>
+  </div>
+    <!--footer-->
+    <%template src="_footerSmall.html"%>
+    <!--/footer-->
+      <script>
+          $(document).ready(function(e) {
+              var select = $('.sel');
+              var startAtCtrl = $("#startdate");
+              var endAtCtrl = $("#enddate");
+
+              // 根据 url 初始化控件
+              select.val({transaction_type});
+              var startTime = {time_span_start};
+              var endTime = {time_span_end};
+              if (startTime != 0) {
+                  startAtCtrl.val(new Date(startTime).toJSON().slice(0, 10));
+              }
+              if (endTime != 0) {
+                  endAtCtrl.val(new Date(endTime).toJSON().slice(0, 10));
+              }
+
+              // 初始化事件
+              select.change(function(e) {
+                  location.href = 'mytrade-' + this.value + '-0-0-0.html';
+              });
+              $('.search-btn').click(function() {
+                  //var currentPage = $('span.current').text() || 0; // 只有一页时不存在 span.current
+                  var startAt = startAtCtrl.val();
+                  var endAt = endAtCtrl.val();
+                  startAt = startAt ? Date.parse(startAt) : "0";
+                  endAt = endAt ? Date.parse(endAt) : "0";
+
+                  location.href = 'mytrade-' + select.val() + '-0-' + startAt + '-' + endAt + '.html';
+              });
+
+              var height = $('.list-unstyled').height();
+              $('.traddetail').attr('style', 'min-height: ' + height + 'px');
+          });
+
+          $("#startdate").add("#enddate").datetimepicker({
+              language: 'zh-CN',
+              weekStart: 1,
+              autoclose: true,
+              todayBtn: true,
+              todayHighlight: 1,
+              startView: 2,
+              forceParse: 0,
+              showMeridian: 1,
+              autoclose: 1,
+              minView: 2
+          });
+      </script>
+  </body>
+</html>

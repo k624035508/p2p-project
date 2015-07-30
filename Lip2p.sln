@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.API", "Lip2p.API\Lip2p.API.csproj", "{E824FFCC-705E-4CF6-8710-142395937FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.BLL", "Lip2p.BLL\Lip2p.BLL.csproj", "{EC27BBA4-030C-4853-9FB2-A075654B28FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Common", "Lip2p.Common\Lip2p.Common.csproj", "{20908989-7773-493B-B1BD-764BE322A935}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.DAL", "Lip2p.DAL\Lip2p.DAL.csproj", "{A587C7B0-981B-4BBE-8B8E-462D477C48E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.DBUtility", "Lip2p.DBUtility\Lip2p.DBUtility.csproj", "{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Model", "Lip2p.Model\Lip2p.Model.csproj", "{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web", "Lip2p.Web\Lip2p.Web.csproj", "{6DB1BDD3-4EE3-4259-B459-62F54591995E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web.UI", "Lip2p.Web.UI\Lip2p.Web.UI.csproj", "{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web.Plugin.Advert", "Lip2p.Web\plugins\advert\Lip2p.Web.Plugin.Advert.csproj", "{572E3093-A353-4C12-BC4B-18C4EDB27591}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Linq2SQL", "Lip2p.Linq2SQL\Lip2p.Linq2SQL.csproj", "{D02BF08D-240F-4233-9B83-B22429E5F3A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Test", "Lip2p.Test\Lip2p.Test.csproj", "{76AB003E-2D1D-437B-85B2-5ABC8AE2B34A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7437214A-CFED-4BA0-814B-26AB98081CEE}"
+	ProjectSection(SolutionItems) = preProject
+		Lip2p.vsmdi = Lip2p.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Lip2p.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E824FFCC-705E-4CF6-8710-142395937FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E824FFCC-705E-4CF6-8710-142395937FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E824FFCC-705E-4CF6-8710-142395937FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E824FFCC-705E-4CF6-8710-142395937FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC27BBA4-030C-4853-9FB2-A075654B28FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC27BBA4-030C-4853-9FB2-A075654B28FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC27BBA4-030C-4853-9FB2-A075654B28FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC27BBA4-030C-4853-9FB2-A075654B28FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20908989-7773-493B-B1BD-764BE322A935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A587C7B0-981B-4BBE-8B8E-462D477C48E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A587C7B0-981B-4BBE-8B8E-462D477C48E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A587C7B0-981B-4BBE-8B8E-462D477C48E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A587C7B0-981B-4BBE-8B8E-462D477C48E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DB1BDD3-4EE3-4259-B459-62F54591995E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB1BDD3-4EE3-4259-B459-62F54591995E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB1BDD3-4EE3-4259-B459-62F54591995E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB1BDD3-4EE3-4259-B459-62F54591995E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76AB003E-2D1D-437B-85B2-5ABC8AE2B34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76AB003E-2D1D-437B-85B2-5ABC8AE2B34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76AB003E-2D1D-437B-85B2-5ABC8AE2B34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76AB003E-2D1D-437B-85B2-5ABC8AE2B34A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

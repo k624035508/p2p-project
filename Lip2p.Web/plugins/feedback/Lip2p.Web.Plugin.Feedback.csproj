@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A32411D0-1B69-47A9-AC5C-E7E31D5C297B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lip2p.Web.Plugin.Feedback</RootNamespace>
+    <AssemblyName>Lip2p.Web.Plugin.Feedback</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="admin\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\index.aspx.designer.cs">
+      <DependentUpon>index.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="admin\reply.aspx.cs">
+      <DependentUpon>reply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\reply.aspx.designer.cs">
+      <DependentUpon>reply.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ajax.ashx.cs">
+      <DependentUpon>ajax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="bll.cs" />
+    <Compile Include="dal.cs" />
+    <Compile Include="feedback.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="model.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ajax.ashx" />
+    <Content Include="templet\mfeedback.html" />
+    <None Include="plugin.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DTcms.BLL\Lip2p.BLL.csproj">
+      <Project>{EC27BBA4-030C-4853-9FB2-A075654B28FA}</Project>
+      <Name>Lip2p.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DTcms.Common\Lip2p.Common.csproj">
+      <Project>{20908989-7773-493B-B1BD-764BE322A935}</Project>
+      <Name>Lip2p.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DTcms.DBUtility\Lip2p.DBUtility.csproj">
+      <Project>{2CFDFCA0-A3FC-4DDE-8448-1769A6E24825}</Project>
+      <Name>Lip2p.DBUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DTcms.Model\Lip2p.Model.csproj">
+      <Project>{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}</Project>
+      <Name>Lip2p.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DTcms.Web.UI\Lip2p.Web.UI.csproj">
+      <Project>{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}</Project>
+      <Name>Lip2p.Web.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\index.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="admin\reply.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="templet\feedback.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,35 @@
+﻿@charset "utf-8";
+
+.demo{width:600px; margin:40px auto 0 auto; min-height:500px;}
+.demo div{float:left; width:300px; margin:20px;}
+.demo p{line-height:42px; font-size:16px}
+
+.circliful {
+    position: relative; 
+}
+
+.circle-text, .circle-info, .circle-text-half, .circle-info-half {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    display: inline-block;
+}
+
+.circle-text {
+	color:black;
+}
+
+.circle-info, .circle-info-half {
+	color: #999;
+}
+
+.circliful .fa {
+	margin: -10px 3px 0 3px;
+	position: relative;
+	bottom: 4px;
+}
+
+
+.table tbody tr td {
+	vertical-align:middle;
+}

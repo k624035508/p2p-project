@@ -1,0 +1,156 @@
+<%namespace "Lip2p.Linq2SQL"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>会员中心 - 推荐奖励</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/myreward.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/uclifen.css">
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <!-- JiaThis Button BEGIN -->
+    <script src="http://v2.jiathis.com/code/jiathis_r.js?move=0"></script>
+    <script>
+        var jiathis_config = {
+            url: "",
+            title: "金汇丰理财平台",
+            summary: "推荐奖励"
+        }
+        $(function() {
+            jiathis_config.url = $('input.myrewardt_txtstyle').val();
+        });
+    </script>
+    <!-- JiaThis Button END -->
+    <style>
+        input[type="text"] 
+        {
+            height: 17px;
+        } 
+        
+        input[type="text"]:focus 
+        {
+            outline: none;
+        }
+        
+        div.jiathis_style > div 
+        {
+            border: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="content ctbgcolor">
+        <div class="breadcrumb container">
+            <li><a href="/">金汇丰</a></li>
+            <li><a href="#">会员中心</a></li>
+        </div>
+        <div class="container">
+            <!--uc_left-->
+            <%template src="_usercenter_left.html"%>
+            <!--/uc_left-->
+            <div class="pull-left" id="rightcontent">
+                <!--uc_top-->
+                <%template src="_usercenter_top.html"%>
+                <!--/uc_top-->
+                <div class="mainnav">
+                    <div class="maintop">
+                        <%set string invite_code=get_invite_code()%>
+                        <p class="txtstyle">
+                            我的链接：复制并发给好友（您的推荐号码为：<span class="phonenum">{invite_code}</span>，快把它发给您的小伙伴们吧！）</p>
+                        <input class="myrewardt_txtstyle" value="http://<%=HttpContext.Current.Request.Url.Authority.ToLower()%>/register.html?invite_code={invite_code}"
+                            readonly="true" />
+                        <!--<a href="#" class="btns newbtn btnorange">复制</a>-->
+                        <div class="share">
+                            <span class="txtstyle">或分享到：</span>
+                            <!-- JiaThis Button BEGIN -->
+                            <div class="jiathis_style_24x24 share_box">
+                                <a class="jiathis_button_weixin"></a><a class="jiathis_button_cqq"></a><a class="jiathis_button_qzone">
+                                </a><a class="jiathis_button_tsina"></a><a class="jiathis_button_tqq"></a><a href="http://www.jiathis.com/share"
+                                    class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+                            </div>
+                            <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+                            <!-- JiaThis Button END -->
+                        </div>
+                    </div>
+                    <div class="trad-cen">
+                        <span class="txtstyle">已邀请的好友</span>
+                        <table class="traddetail_table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        编号
+                                    </th>
+                                    <th>
+                                        用户名
+                                    </th>
+                                    <th>
+                                        首次投标金额(元)
+                                    </th>
+                                    <th>
+                                        收益奖励(元)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%for(int i=0;i<invitations.Count;i++)%>
+                                <tr>
+                                    <td>
+                                        {i+1}
+                                    </td>
+                                    <td align="left">
+                                        <%=get_be_inviter_name(invitations[i])%>
+                                    </td>
+                                    <td>
+                                        <%=getFirstInvestAmount(invitations[i])%>
+                                    </td>
+                                    <td>
+                                        <%=getMyReward(invitations[i])%>
+                                    </td>
+                                </tr>
+                                <%/for%>
+                                <%if(totalCount<1)%>
+                                <tr>
+                                    <td align="center" colspan="4">
+                                        暂无记录
+                                    </td>
+                                </tr>
+                                <%/if%>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flickr" style="padding-right: 20px">
+                        <%=get_page_link(pageSize,page,totalCount,linkurl("myreward","myreward","__id__"))%></div>
+                    <!--放置页码列表-->
+                    <div class="mainbottom txtstyle">
+                        <div class="img-box">
+                            <img src="<%templateskin%>/images/usercenter/tips.png" />
+                        </div>
+                        <div class="tips-txt">
+                            <span class="span-style">温馨提示：</span><span class="span-style width-style">已邀请好友的理财交易金额，需等到满标复审后方可显示。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

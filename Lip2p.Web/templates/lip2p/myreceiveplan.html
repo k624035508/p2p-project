@@ -1,0 +1,192 @@
+<%namespace "Lip2p.Linq2SQL"%>
+<%namespace "Lip2p.Common"%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <title>会员中心 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!--时间选择控件样式-->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap-datetimepicker.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/uclifen.css">
+    <link rel="stylesheet" href="{config.webpath}css/pagination.css" />
+
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="<%templateskin%>/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function() {
+            setTimeout(function() {
+                var wh = $(window).height();
+                var dh = $('html').height();
+                if (dh < wh) {
+                    var scaleBox = $('div.content');
+                    scaleBox.height(scaleBox.height() + (wh - dh));
+                }
+            }, 300);
+
+            var selectedInvestmentType = {investment_type};
+            $($('.my_gift_li')[selectedInvestmentType]).addClass('selected');
+            
+            var startAtCtrl = $("#startdate");
+            var endAtCtrl = $("#enddate");
+
+            // 根据 url 初始化控件
+            var startTime = {time_span_start};
+            var endTime = {time_span_end};
+            if (startTime != 0) {
+                startAtCtrl.val(new Date(startTime).toJSON().slice(0, 10));
+            }
+            if (endTime != 0) {
+                endAtCtrl.val(new Date(endTime).toJSON().slice(0, 10));
+            }
+
+            $(".my_gift_li").click(function() {
+                $(this).addClass("selected").siblings().removeClass("selected");
+                location.href = 'myreceiveplan-' + this.value + '-0-0-0.html';
+            });
+            $('.search-btn').click(function() {
+                var startAt = startAtCtrl.val();
+                var endAt = endAtCtrl.val();
+                startAt = startAt ? Date.parse(startAt) : "0";
+                endAt = endAt ? Date.parse(endAt) : "0";
+
+                location.href = 'myreceiveplan-' + selectedInvestmentType + '-0-' + startAt + '-' + endAt + '.html';
+            });
+
+            $("#startdate").add("#enddate").datetimepicker({
+                language: 'zh-CN',
+                weekStart: 1,
+                autoclose: true,
+                todayBtn: true,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                autoclose: 1,
+                minView: 2
+            });
+
+            var height = $('.list-unstyled').height();
+            $('.traddetail').attr('style', 'min-height: ' + height + 'px');
+
+            $('th.prev').html('<');
+            $('th.next').html('>');
+        });
+    </script>
+    <style>
+        td.money {text-align: right !important;}
+        .flickr {padding: 1em !important;}
+    </style>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="content ctbgcolor">
+        <div class="breadcrumb container">
+            <li><a href="/">金汇丰</a></li>
+            <li><a href="#">会员中心</a></li>
+        </div>
+        <div class="container">
+            <!--uc_left-->
+            <%template src="_usercenter_left.html"%>
+            <!--/uc_left-->
+            <div class="pull-left" id="rightcontent">
+                <!--uc_top-->
+                <%template src="_usercenter_top.html"%>
+                <!--/uc_top-->
+                <!--traddetail start-->
+                <div class="traddetail">
+                    <div class="trad-list">
+                        <div class="list-1">
+                            <p class="p1">总收益</p>
+                            <p class="p2"><%=string.Format("{0:N}",wallet.total_profit+wallet.profiting_money)%>元</p>
+                        </div>
+                        <div class="list-2">
+                            <ul>
+                                <li>已回款笔数：<span><%=QueryMyRepaymentsCount(Lip2pEnums.RepaymentStatusEnum.ManualPaid)%>笔</span></li>
+                                <li>待回款笔数：<span><%=QueryMyRepaymentsCount(Lip2pEnums.RepaymentStatusEnum.Unpaid)%>笔</span></li>
+                            </ul>
+                        </div>
+                        <div class="list-3">
+                            <ul>
+                                <li>已回款本息：<span><%=string.Format("{0:N}",wallet.total_investment==0?wallet.total_profit:wallet.total_investment-wallet.investing_money+wallet.total_profit)%>元<!--<span style="color: #737373">/</span><%=string.Format("{0:N}",wallet.total_profit)%>元--></span></li>
+                                <li>待回款本息：<span><%=string.Format("{0:N}",wallet.investing_money+wallet.profiting_money)%>元<!--<span style="color: #737373">/</span><%=string.Format("{0:N}",wallet.profiting_money)%>元--></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="trad-top" style="width: 92%; margin: 25px auto; padding: 0;">
+                        <ul>
+                            <li class="my_gift_li" value="0" style="display: none;">全部</li>
+                            <li class="my_gift_li" value="1">未回款</li>
+                            <li class="my_gift_li" value="2">已回款</li>
+                        </ul>
+                        <form action="#" method="get">
+                            <span class="pull-right">
+                                <input type="text" class="date" size="10" name="startdate" id="startdate" data-date-format="yyyy-mm-dd" />
+                                到
+                                <input type="text" class="date" size="10" name="enddate" id="enddate" data-date-format="yyyy-mm-dd" />
+                                <input type="button" value="搜索" class="search-btn" style="margin: 0;" />
+                            </span>
+                        </form>
+                    </div>
+                    <div class="trad-cen">
+                        <table class="traddetail_table">
+                            <thead>
+                            <tr>
+                                <th style="width: 28%; text-align: left">项目名称</th>
+                                <th style="width: 6%">年利率</th>
+                                <th style="width: 15%;">投资金额</th>
+                                <th style="width: 12%">回款日期</th>
+                                <th style="width: 12%">支付本金</th>
+                                <th style="width: 10%;">支付利息</th>
+                                <th style="width: 10%">期数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%set int totalCount=0%>
+                            <%set List<MyRepayment> trs=query_investment({userModel.id},{(Lip2pEnums.RepaymentStatusEnum)investment_type},{page-1},{JsTimeToDotNetTime(time_span_start)},{JsTimeToDotNetTime(time_span_end)},{PageSize},out totalCount)%>
+                            <%for(int i=0;i<trs.Count;i++)%>
+                            <tr>
+                                <td style="text-align: left"><%= trs[i].Project==null?"":trs[i].Project.Name%></td>
+                                <td><%= trs[i].Project==null?"":trs[i].Project.ProfitRateYear%><%= trs[i].Project==null?"":'%'%></td>
+                                <td><%= trs[i].Project == null ? "" : Convert.ToDecimal(trs[i].Project.InvestValue).ToString("c")%></td>
+                                <td><%=Convert.ToDateTime(trs[i].ShouldRepayDay).ToString("yyyy-MM-dd")%></td>
+                                <td><%=Convert.ToDecimal(trs[i].RepayPrincipal).ToString("c")%></td>
+                                <td><%= Convert.ToDecimal(trs[i].RepayInterest).ToString("c")%></td>
+                                <td><%= trs[i].Term==null?"":trs[i].Term%></td>
+                            </tr>
+                            <%/for%>
+                            <%if(totalCount<1)%>
+                            <tr><td align="center" colspan="8">暂无记录</td></tr>
+                            <%/if%>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flickr"><%= get_page_link(PageSize,page,totalCount,linkurl("myreceiveplan","myreceiveplan",investment_type,"__id__",time_span_start,time_span_end))%></div> <!--放置页码列表-->
+                </div>
+                <!--traddetail end-->
+            </div>
+        </div>
+        <div class="authresult" style="min-height: 20px;">
+        </div>
+    </div>
+    <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+</body>
+</html>

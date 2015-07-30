@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>招贤纳士 – 【金汇丰】</title>
+
+    <!-- JQ & Bootstrap -->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/recruitment.css"/>
+
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        $(function() {
+            var winWidth = $(window).innerWidth();
+            if (winWidth < 1030) {
+                $(".recr-body-top img").attr("width", "1030px");
+            }
+        });
+    </script>
+</head>
+<body>
+<!--Header-->
+<%template src="_header.html"%>
+<!--/Header-->
+<div class="recruitment-container">
+    <div class="recr-body-top">
+        <img src="<%templateskin%>/images/recruitment/rec-top.png"/>
+    </div>
+
+    <div class="recr-body-details">
+        <div class="body-detail-nb">
+            <div class="introduce">
+                <div class="describe">
+                    <div class="invest-manager">
+                        <img src="<%templateskin%>/images/recruitment/manger-name.png" />
+                        <ul>
+                            <li>你需要做的事</li>
+                            <li>基本只有4件事</li>
+                            <li>想找客户、爱找客户、能找客户、会找客户。</li>
+                        </ul>
+                    </div>
+                    <div class="requirement">
+                        <h3>小小要求：</h3>
+                        <ul>
+                            <li>证券/银行/保险/基金/信托/期货/投资/P2P/房地产这些高大上的圈子摸爬滚打过</li>
+                            <li>拥有一大批忠实粉丝尤佳，没有也可，后期可积累</li>
+                            <li>最重要是拥有无限热情和无敌找客户欲望</li>
+                            <li>Open性格，侃侃而谈，嘘寒问暖，做个甜蜜小情人~~</li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="picture pic">
+                    <img src="<%templateskin%>/images/recruitment/invest-manager.png"/>
+                </div>
+            </div>
+            <div class="cle"></div>
+            <div class="introduce">
+                <div class="picture">
+                    <img src="<%templateskin%>/images/recruitment/customer-service.png"/>
+                </div>
+                <div class="describe">
+                    <div class="introduce">
+                        <div class="customer-service">
+                            <ul>
+                                <li>强烈鄙视那些说顾客是上帝，忽悠上帝是没商量的。</li>
+                                <li>好朋友、好产品才能推荐给朋友。</li>
+                                <li>名额：不限</li>
+                            </ul>
+                        </div>
+                        <div class="requirement">
+                            <h3>小小要求</h3>
+                            <ul>
+                                <li>喜欢分享，善解人意。</li>
+                                <li>接受各种客户各种投资咨询甚至今天天气如何的答疑解惑。</li>
+                                <li>抗压，能够创造和承受各种刺激，刺激客户包括被客户刺激，仍可保持充分的热情。</li>
+                                <li>大专以上学历，如果再有点儿金融行业客服工作经验那就非你莫属了！</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cle"></div>
+
+            <div class="bottom">
+                <div class="bot-wenben">
+                    我们给少数人一个惊喜，让多数人来羡慕，现在你心动了吧？马上发简历至<span style="color:red;font-size:25px">3115292362@qq.com</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--网站尾部-->
+<%template src="_footerSmall.html"%>
+<!--网站尾部-->
+</body>
+</html>

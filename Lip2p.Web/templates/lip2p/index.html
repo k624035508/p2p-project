@@ -1,0 +1,482 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="金汇丰，中国领先的互联网理财平台，为有个人理财、p2p网贷理财需求的投资者提供金屋子、丰车赚等优质理财产品，金汇丰p2p平台拥有稳健的风控体系和专业的管理团队，为您的资金安全保驾护航。">
+    <meta name="keywords" content="金汇丰,p2p网贷理财,互联网理财平台,投资理财平台,网贷投资理财">
+    <title>金汇丰_p2p理财平台_金汇丰理财平台</title>
+    <!--jQuery-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/index.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/floating_window.css">
+    <!--自定义脚本-->
+    <script src="<%templateskin%>/js/index.js"></script>    
+    <!--scroll text side-to-side-->
+    <script type="text/javascript" src="<%templateskin%>/js/jquery.marquee.min.js"></script>
+    <script type="text/javascript" src="<%templateskin%>/js/jquery.marquee.js"></script>
+    <!-- flowplayer -->
+    <script src="<%templateskin%>/flowplayer/flowplayer.min.js"></script>
+    <link rel="stylesheet" href="<%templateskin%>/flowplayer/skin/minimalist.css">
+    <script src="<%templateskin%>/js/delayed.js"></script>
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        /*修复了宽度改变时 banner 高度缩小的问题*/
+        div#banner {
+            overflow-x: hidden;
+        }
+        div#banner #carouselpannel {
+                min-width: 1900px;
+                left: 50%;
+                transform: translate(-50%, 0);
+                -ms-transform: translate(-50%, 0); /*ie9*/
+                -webkit-transform: translate(-50%, 0);
+       }
+        .carousel-control.left, .carousel-control.right {background-image:none !important;}
+    </style>
+</head>
+<body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <!--banner-->
+    <div id="banner">
+        <div class="container regframe">
+            <div class="quicksign roundconer5">
+                <h2 class="qstitle">
+                    金汇丰年化收益率</h2>
+                <div class="quicksign-percent">
+                    <img src="<%templateskin%>/images/percent.png" />
+                    <span>最高</span>
+                </div>
+                <div class="percentage">
+                    <span class="percentage-num">18</span> <span class="percentage-symbol">%</span>
+                </div>
+                <div class="quicksign-tips">
+                    专注于优质房产、汽车抵押项目</div>
+                <div class="btn-box">
+                    <%if(!IsUserLogin())%>
+                    <a href="register.html">
+                        <img src="<%templateskin%>/images/index/hongbao-btn.png"></a>
+                    <div class="landing-tips">
+                        已有账号，<a href="login.html">立即登录</a></div>
+                    <%else %>
+                    <a href="<%linkurl("usercenter","index")%>">
+                        <img src="<%templateskin%>/images/index/enterVIP.png"></a>
+                    <%/if%>
+                </div>
+            </div>
+        </div>
+        <div id="carouselpannel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselpannel" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselpannel" data-slide-to="1"></li>
+                <li data-target="#carouselpannel" data-slide-to="2"></li>
+                <!--<li data-target="#carouselpannel" data-slide-to="3"></li>
+                <li data-target="#carouselpannel" data-slide-to="4"></li>-->
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a href="<%linkurl("activities-millions")%>" target="_blank"><img src="<%templateskin%>/images/index/banner/banner_7.jpg" /></a>
+                </div>
+                <div class="item">
+                    <a href="<%linkurl("trip")%>" target="_blank"><img src="<%templateskin%>/images/index/banner/banner_3.jpg" /></a>
+                </div>
+                <div class="item">
+                    <a href="<%linkurl("trip")%>?act=4" target="_blank"><img src="<%templateskin%>/images/index/banner/banner_4.jpg" /></a>
+                </div>
+                <!--<div class="item">
+                    <a href="<%linkurl("new_guidelines")%>" target="_blank"><img src="<%templateskin%>/images/index/banner/banner_5.jpg" /></a>
+                </div>
+                <div class="item">
+                    <a href="<%linkurl("new_guidelines")%>" target="_blank"><img src="<%templateskin%>/images/index/banner/banner_6.jpg" /></a>
+                </div>-->
+            </div>
+            <a class="left carousel-control" role="button" href="#carouselpannel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="sr-only">
+                    Previous</span> </a><a class="right carousel-control" role="button" href="#carouselpannel"
+                        data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true">
+                        </span><span class="sr-only">Next</span> </a>
+        </div>
+    </div>
+    <!--banner end-->
+<div class="content">
+    <!--实时数据start-->
+    <div class="notice-box">
+        <div class="notice-left">
+            <span class="txt-red">实时数据</span> <span class="line-style">|</span>
+        </div>
+        <div class="data-box pull-right">
+            <%set DataTable statisticsDt=get_statistics_data()%>
+            <span class="txt-grey">累计注册：</span><span class="margin-right80"><%=statisticsDt.Rows[0]["userCount"]%>人</span>
+            <span class="txt-grey">累计赚取：</span><span class="margin-right80"><%=string.Format("{0:0.00}", statisticsDt.Rows[0]["totalProfit"])%>万元</span>
+            <span class="txt-grey">累计投资：</span><span class="margin-right80"><%=string.Format("{0:0.00}", statisticsDt.Rows[0]["totalInvested"])%>万元</span>
+            <!--<span class="txt-grey">累计待收：</span><span class="margin-right80"><%=string.Format("{0:0.00}", statisticsDt.Rows[0]["totalInvesting"])%>万元</span>-->
+            <span class="txt-grey">运营时间：</span><span class="margin-right80"><%=statisticsDt.Rows[0]["totalDays"]%>天</span>
+        </div>
+    </div>
+    <!--实时数据end-->
+    <!--发标公告与公司视频start-->
+    <div class="container eachrow">
+        <div class="introduce pull-right flowplayer" data-swf="<%templateskin%>/flowplayer/flowplayer.swf" data-ratio="0.5625" style="width: 400px">
+            <video width="400" poster="<%templateskin%>/images/index/media-cover.png">
+                <source src="/upload/jinhuifeng.mp4" type="video/mp4"></source>
+            </video>
+        </div>
+        <div class="divwithtitle bidmemo pull-left">
+            <div class="notice-head">
+                <div class="divtitle">
+                    发标公告
+                </div>
+                <div class="pull-right"><a href="<%linkurl("article_invest_list",54)%>" class="newlink" style="padding-right:5px">
+                        更多</a>
+                </div>
+            </div>
+            <%set DataTable content_fabiao_dt=get_article_list("content_project", 54, 4, "")%>
+            <ul class="list-unstyled">
+                <%foreach(DataRow dr in content_fabiao_dt.Rows)%>
+                <li><a href="<%linkurl("article_invest_show",{dr[id]},{dr[category_id]})%>" target="_blank">
+                    <%=dr["title"].ToString().Length>30?dr["title"].ToString().Substring(0, 30)+"...":dr["title"].ToString()%><span
+                            class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%><span style="margin-left: 20px"><%=string.Format("{0:HH:mm}", dr["add_time"])%></span></span></a></li>
+                <%/foreach%>
+            </ul>
+        </div>
+    </div>
+    <!--发标公告与公司视频end-->
+    <!--活动列表start-->
+    <%set var trialProj=QueryFirstTrialProject()%>
+    <!--<%set var dailyProj=QueryFirstDailyProject()%>-->
+    <%if(trialProj!=null)%>
+<div class="activities-list">
+    <div class="invest-list">活动列表</div>
+    <div class="activities-detail">
+        <ul>
+            <%if(trialProj!=null)%>
+            <li class="for-new">
+                <span class="col-md-5 txt-style-1 txt-center"><i class="activities-icon icon-for-new"></i>体验金专用，无需充值，收益可提现</span>
+                <span class="col-md-2 txt-center txt-style-2 top-5"><%=trialProj.profit_rate_year.ToString("F1")%><span class="txt-style-2-1"> %年化</span></span>
+                <span class="col-md-1 txt-right txt-style-3 top-5"><%=trialProj.repayment_term_span_count%><span class="txt-style-3-1"> <%=Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTermSpanEnum)trialProj.repayment_term_span)%></span></span>
+                <span class="col-md-2 txt-center txt-style-3 top-5"><%=(trialProj.financing_amount/10000).ToString("F1")%><span class="txt-style-3-1"> 万元</span></span>
+                <span class="col-md-2 txt-center top-5"><button onclick="location.href='<%linkurl("invest_detail",trialProj.id)%>'"
+                    class="activities-btn <%=trialProj.status==(int) Lip2pEnums.ProjectStatusEnum.FaBiao?"":"invest-completed"%>">
+                    <%=trialProj.status==(int) Lip2pEnums.ProjectStatusEnum.FaBiao?"立即投资":"已抢完"%></button></span>
+            </li>
+            <%/if%>
+            <!--<%if(dailyProj!=null)%>
+            <li class="days-invest">
+                <span class="col-md-5 txt-style-1" style="padding-left: 24px"><i class="activities-icon icon-days-invest"></i>天标券专用，每日刷新，收益归您</span>
+                <span class="col-md-2 txt-center txt-style-2 top-5"><%=dailyProj.profit_rate_year.ToString("F1")%><span class="txt-style-2-1"> %年化</span></span>
+                <span class="col-md-1 txt-right txt-style-3 top-5"><%=dailyProj.repayment_term_span_count%><span class="txt-style-3-1"> <%=Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTermSpanEnum)dailyProj.repayment_term_span)%></span></span>
+                <span class="col-md-2 txt-center txt-style-3 top-5"><%=(dailyProj.financing_amount/10000).ToString("F1")%><span class="txt-style-3-1"> 万元</span></span>
+                <span class="col-md-2 txt-center top-5"><button onclick="location.href='<%linkurl("invest_detail",dailyProj.id)%>'"
+                    class="activities-btn <%=dailyProj.status==(int) Lip2pEnums.ProjectStatusEnum.FaBiao?"":"invest-completed"%>">
+                    <%=dailyProj.status==(int) Lip2pEnums.ProjectStatusEnum.FaBiao?"立即抢标":"明日请早"%></button></span>
+           </li>
+           <%/if%>-->
+        </ul>
+    </div>
+</div>
+    <%/if%>
+    <!--活动列表end-->
+    <!--投资列表start-->
+<div class="container eachrow">
+    <div id="house">
+        <div class="listtitle">
+            <a href="<%linkurl("invest")%>">
+                <div class="invest-list house">
+                    投资列表
+                </div>
+            </a>
+            <!--<div class="pull-right">
+                <a href="<%linkurl("invest_list",33,0,0,0)%>" class="newlink">更多</a></div>-->
+        </div>
+        <%set DataTable projectList=get_project_list(5,0,0,0,0)%>
+        <%foreach(DataRow dr in projectList.Rows)%>
+        <div class="listblock">
+            <input id="HidStatus" type="hidden" value="{dr[status]}" publishtime="{dr[add_time]}" pid="{dr[id]}" class="statustime"/>
+            <div class="media">
+                <div class="media-left"><img src="{dr[img_url]}" style="cursor: pointer" onclick=" location.href = '<%linkurl("invest_detail",{dr[id]})%>'">
+                </div>
+                <div class="media-body">
+                    <a href="<%linkurl("invest_detail",{dr[id]})%>">
+                        <h5>
+                            {dr[title]}
+                            <%if(dr["tag"].ToString()=="1")%>
+                            <i class="invest-icon icon-order"></i>
+                            <%else if(dr["tag"].ToString()=="2")%>
+                            <i class="invest-icon icon-hot"></i>
+                            <%/if%>
+                            <%if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.DelayFaBiao) %>
+                            <span class="selltime pull-right">待发标时间：{dr[add_time]}</span>
+                            <%else%>
+                            <span class="selltime pull-right">发标时间：{dr[add_time]}</span>
+                            <%/if%>
+                        </h5>
+                    </a>
+                    <div class="row" style="padding: 0 28px">
+                        <div class="col-xs-3 col-sm-3">
+                            <dl>
+                                <dt style="color: #00b9f5;"><span class="digits">{dr[project_amount_str]}</span><span class="units">万元</span></dt>
+                                <dd>金额</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-3">
+                            <dl>
+                                <dt><span class="digits">{dr[repayment_number]}</span><span class="units">{dr[repayment_term]}</span></dt>
+                                <dd>期限</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-3">
+                            <dl>
+                                <dt><span class="digits">{dr[project_investment_count]}</span><span class="units">人</span></dt>
+                                <dd>投资人数</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-3">
+                            <dl>
+                                <dt style="min-height: 48px; padding-top: 14px;">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="{dr[project_investment_progress]}"
+                                             aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}% ; ">
+                                        </div>
+                                    </div>
+                                </dt>
+                                <dd style="width: 200px; text-align: left">剩余金额：{dr[project_investment_balance]}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-right">
+                    <div class="profit roundconer4">
+                        <p><span class="digits">{dr[profit_rate_year]}</span><span class="units">%</span></p>
+                        <p>年化收益</p>
+                    </div>
+                    <div style="padding-top: 20px;">
+                        <%if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.DelayFaBiao) %>
+                        <a id="delaytime" class="delay-btn" href="<%linkurl("invest_detail",{dr[id]})%>">待发标</a>
+                        <div id="clock{dr[id]}" style="height: 25px; line-height: 25px; font-size: 14px; overflow: hidden; text-align: center;"></div>
+                        <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FaBiao) %>
+                        <a class="btns roundconer4 btngreen" href="<%linkurl("invest_detail",{dr[id]})%>">立即投资</a>
+                        <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.ManBiao||(int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.JieBiao) %>
+                        <a id="be-empty" class="empty-btn" href="<%linkurl("invest_detail",{dr[id]})%>">还款中</a>
+                        <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.WanCheng) %>
+                        <a id="returning" class="empty-btn" href="<%linkurl("invest_detail",{dr[id]})%>">已完成</a>
+                        <%/if%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%/foreach%>
+        <div class="read-more">
+            <a href="<%linkurl("invest")%>" class="read-more-link">查看更多投资理财项目</a>
+        </div>
+    </div>
+</div>
+<dl>
+    <dt></dt>
+    <dt>
+        <dd></dd>
+    </dt>
+</dl>
+    <!--投资列表end-->
+
+    <!--借款项目展示、公告与动态、媒体报道start-->
+    <div class="container eachrow">
+        <div class="row memos">
+            <div class="tabs-box">
+                <div class="tab-nav">
+                    <a href="<%linkurl("about")%>?tab=4" target="_blank" id="dynamic" class="col-md-4">公告与动态</a>
+                    <a href="<%linkurl("article_invest_list",55)%>" target="_blank" id="loan" class="col-md-4">借款项目展示</a>
+                    <a href="<%linkurl("about")%>?tab=4" target="_blank" id="report" class="col-md-4">媒体报道</a>
+                </div>
+                <div><img src="<%templateskin%>/images/index/active-line.png" id="active-line" class="line-left"/></div>
+                <!--公告与动态-->
+                <div class="content1">
+                    <ul class="list-unstyled">
+                        <%set DataTable content_dt=get_article_list("content", 5, "(category_id=42 or category_id=43)")%>
+                        <%foreach(DataRow dr in content_dt.Rows)%>
+                        <li><i class="bid bid-grey"></i><a href="<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>" target="_blank">
+                            <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%><span
+                                    class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></li>
+                        <%/foreach%>
+                    </ul>    
+                </div>
+                <!--借款项目展示内容-->
+                <div class="content2">
+                    <ul class="list-unstyled">
+                        <%set DataTable content_publicity_dt=get_article_list("content_project", 55, 5, "")%>
+                        <%foreach(DataRow dr in content_publicity_dt.Rows)%>
+                        <li><i class="bid bid-grey"></i><a href="<%linkurl("article_invest_show",{dr[id]},{dr[category_id]})%>" target="_blank">
+                            <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%><span
+                                    class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+                <!--媒体报道-->
+                <div class="content3">
+                    <ul class="list-unstyled">
+                        <%set DataTable media_dt=get_article_list("content", 44, 5, "")%>
+                        <%foreach(DataRow dr in media_dt.Rows)%>
+                        <li><i class="bid bid-grey"></i><a href="<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>" target="_blank">
+                            <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%><span
+                                    class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <!--借款项目展示、公告与动态、媒体报道end-->
+            <div class="imgs-box">
+                <div id="report-carousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#report-carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#report-carousel" data-slide-to="1"></li>
+                        <li data-target="#report-carousel" data-slide-to="2"></li>
+                        <li data-target="#report-carousel" data-slide-to="3"></li>
+                        <li data-target="#report-carousel" data-slide-to="4"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner carousel-mini" role="listbox">
+                        <%set DataTable media_dt2=get_article_list("content", 42, 5, "")%>
+                        <%for(int i=0;i<media_dt2.Rows.Count;i++)%>
+                        <%set var dr=media_dt2.Rows[i]%>
+                        <div class="item <%=i==0?"active":""%>">
+                            <img src="{dr[img_url]}"/>
+                            <p>{dr[title]}</p>
+                        </div>
+                        <%/for%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+    <!--客服浮窗start-->
+    <div class="floating-window">
+        <ul>
+            <li><a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=4006262062&amp;aty=1&amp;a=0&amp;curl=&amp;ty=1"
+                class="right_qq" target="_blank">
+                <div>
+                    <img style="display: block" src="<%templateskin%>/images/kefuQQ.png" />
+                    客服</div>
+            </a></li>
+            <!--<li><a href="http://jq.qq.com/?_wv=1027&amp;k=Xi3maF" target="_blank">
+                <div>
+                    <img style="display: block" src="<%templateskin%>/images/qqgroup.png" />
+                    QQ群</div>
+            </a></li>-->
+            <li><a href="javascript:void(0);">
+                <div data-toggle="popover" data-placement="left" data-content="<img class='img-info-style' src='<%templateskin%>/images/weixin.png' />">
+                    <img style="display: block" src="<%templateskin%>/images/wechat.png" />
+                    微信
+                </div>
+            </a></li>
+            <li><a style="cursor: pointer" onclick="javascript:$('.calculator-box').toggle();">
+                <div style="text-align: center">
+                    <div>
+                        <img src="<%templateskin%>/images/calculator.png" /></div>
+                    <span>计算器</span>
+                </div>
+            </a></li>
+        </ul>
+    </div>
+    <!--客服浮窗end-->
+    <!--计算器-->
+    <div class="calculator-box" style="display: none">
+        <div class="calculator">
+            <form autocomplete="off">
+            <table>
+                <tr>
+                    <td class="first-td-style">
+                        投资金额：
+                    </td>
+                    <td>
+                        <input id="amount">元
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first-td-style">
+                        年化利率：
+                    </td>
+                    <td>
+                        <input id="rate">
+                        %
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first-td-style">
+                        投资期限：
+                    </td>
+                    <td>
+                        <input id="time">月
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first-td-style">
+                        可获收益：
+                    </td>
+                    <td>
+                        <input id="sum" readonly="readonly">元
+                    </td>
+                </tr>
+                <tr>
+                    <td class="btn-td" colspan="2" style="padding-top: 12px">
+                        <a href="javascript:;" onclick="calculate()">计算</a>
+                    </td>
+                </tr>
+            </table>
+            <script>
+                function calculate() {
+                    var amount = $("#amount").val();
+                    var rate = $("#rate").val();
+                    var time = $("#time").val();
+                    var sum = amount * rate / 12 / 100 * time;
+                    $("#sum").val(sum);
+                    return false;
+                }
+            </script>
+            </form>
+        </div>
+        <div class="pointers">
+            <div class="pointer-above">
+            </div>
+            <div class="pointer-bottom">
+            </div>
+        </div>
+    </div>
+    <!--计算器end-->
+    <!--Header-->
+    <%template src="_footer.html"%>
+    <!--/Header-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).off('click.bs.dropdown.data-api');
+            dropdownOpen();
+
+            $("span.glyphicon-remove").click(function(){
+                $("div.git-span-box").hide();
+            });
+        });
+        function dropdownOpen() {
+            var $dropdownLi = $('li.dropdown');
+
+            $dropdownLi.mouseover(function () {
+                $(this).addClass('open');
+            }).mouseout(function () {
+                $(this).removeClass('open');
+            });
+        }
+    </script>
+</body>
+</html>

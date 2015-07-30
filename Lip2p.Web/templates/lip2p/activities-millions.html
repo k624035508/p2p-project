@@ -1,0 +1,63 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <link rel="icon" href="logo.ico">
+
+    <title>百万体验金天天等你拿 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link rel="stylesheet" href="<%templateskin%>/css/usercenter.css">
+    <script src="<%templateskin%>/js/jquery-1.10.2.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/submenu.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+
+    <!--页面内容样式-->
+    <style>
+        div.activities-wrapper {
+            background: url('<%templateskin%>/images/millions-bg.jpg') no-repeat;
+            background-position: 50% 0;
+            height: 2009px;
+
+            position: relative;
+            text-align: center;
+        }
+        div.pick-money-btn {
+            position: relative;
+            top: 840px;
+        }
+
+        div.for-money-btn1 {
+            position: relative;
+            top: 1665px;
+            padding-left: 580px;
+        }
+
+        div.for-money-btn2 {
+            position: relative;
+            top: 1770px;
+            padding-left: 580px;
+        }
+    </style>
+</head>
+<body>
+<%template src="_header.html"%>
+<div class="activities-wrapper">
+    <div class="pick-money-btn"><a href="<%linkurl("mylottery","mylottery",1)%>"><img src="<%templateskin%>/images/index/pick-money.png"></a></div>
+    <div class="for-money-btn1"><a href="<%linkurl("trip")%>" target="_blank"><img src="<%templateskin%>/images/index/for-details.png"></a></div>
+    <div class="for-money-btn2"><a href="<%linkurl("trip")%>?act=4" target="_blank"><img src="<%templateskin%>/images/index/for-details.png"></a></div>
+</div>
+<%template src="_footerSmall.html"%>
+</body>
+</html>
+

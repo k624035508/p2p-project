@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{config.webdescription}">
+    <meta name="keywords" content="{config.webkeyword}">
+    <link rel="icon" href="logo.ico">
+    
+    <title>安全保障 - 金汇丰</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="<%templateskin%>/css/common.css">   
+    <link rel="stylesheet" href="<%templateskin%>/css/safeie.css">     
+    <!--[if lt IE 9]>
+      <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+      <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.10.2.min.js"></script>
+  </head>
+  <body>
+    <!--Header-->
+    <%template src="_header.html"%>
+    <!--/Header-->
+    <div class="ctbgcolor" id="content">
+    	<!--第一屏开始-->
+      <div id="section-1">
+        <div class="middlepic aligncenter"></div>
+        <div class="circlein aligncenter"></div>
+        <div class="circleout aligncenter"></div>
+        <div class="cttext aligncenter"></div>
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg1" class="rollImg pic" target="section-2"></div>
+        </div>
+      </div>
+      <!--第一屏结束-->
+      
+      <!--第二屏开始-->
+      <div id="section-2">
+        <div class="title aligncenter"></div>
+        <div class="content aligncenter"></div>
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg2" class="rollImg pic" target="section-3"></div>
+        </div>
+      </div>
+      <!--第二屏结束-->
+      
+      <!--第三屏开始-->
+      <div id="section-3">
+        <div class="leftpic alignleft"></div>
+        <div class="rtoppic alignright" data-left="leftpic"></div>
+        <div class="rbottompic alignright" data-top="rtoppic"></div>    
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg3" class="rollImg pic" target="section-4"></div>
+        </div>    
+      </div>
+      <!--第三屏结束-->
+      
+      <!--第四屏开始-->
+      <div id="section-4">
+        <div class="title aligncenter"></div>
+        <div class="ctmiddle aligncenter"></div>
+        <div class="ctleft aligncenter" data-right="ctmiddle"></div>
+        <div class="ctright aligncenter" data-left="ctmiddle"></div>
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg4" class="rollImg pic" target="section-5"></div>
+        </div>
+      </div>
+      <!--第四屏结束-->
+      
+      <!--第五屏开始-->
+      <div id="section-5">
+      	<div class="title aligncenter"></div>
+        <div class="ctcentral aligncenter" data-parent="5"></div>
+        <div class="pleft aligncenter" data-right="ctmiddle"></div>
+        <div class="pright aligncenter" data-left="ctmiddle"></div>
+        <div class="pbottom aligncenter" data-top="ctmiddle"></div>
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg5" class="rollImg pic" target="section-6"></div>
+        </div>
+      </div>
+      <!--第五屏结束-->
+      
+      <!--第六屏开始-->
+      <div id="section-6">
+        <div class="leftpic alignleft"></div>
+        <div class="rtoppic alignright" data-left="leftpic"></div>
+        <div class="rbottompic alignright" data-top="rtoppic"></div>
+        <div class="roll aligncenter">
+          <div class="rollText">点击看下一页</div>
+          <div id="rollImg6" class="rollImg pic" target="section-7"></div>
+        </div>
+      </div>
+      <!--第六屏结束-->
+      
+      <!--第七屏开始-->
+      <div id="section-7" style="height:900px">
+        <div class="pictop aligncenter" data-parent="7"></div>
+        <div class="picmiddle aligncenter"></div>
+        <div class="picbottom aligncenter" data-parent="8" onClick="window.location.href='register.html';"></div>
+      </div>
+      <!--第七屏结束-->
+    </div>
+       <!--网站尾部-->
+    <%template src="_footerSmall.html"%>
+    <!--网站尾部-->
+    <div class="side_container">
+      <ul id="side_btn_ul">
+        <li class="active" index="1" id="l1"><span></span></li>
+        <li index="2" id="l2"><span></span></li>
+        <li index="3" id="l3"><span></span></li>
+        <li index="4" id="l4"><span></span></li>
+       <!-- <li index="5" id="l5"><span></span></li>-->
+        <li index="5" id="l5"><span></span></li>
+        <li index="6" id="l6"><span></span></li>
+        <li index="7" id="l7"><span></span></li>
+      </ul>
+    </div>    
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script src="<%templateskin%>/js/safeie.js"></script>
+	</body>
+</html>
+
