@@ -97,6 +97,7 @@
     <Content Include="admin\loaner\creditor_list.aspx" />
     <Content Include="admin\loaner\loaner_edit.aspx" />
     <Content Include="admin\loaner\mortgage_edit.aspx" />
+    <Content Include="admin\loaner\mortgage_type_list.aspx" />
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
@@ -1241,6 +1242,13 @@
     </Compile>
     <Compile Include="admin\loaner\mortgage_edit.aspx.designer.cs">
       <DependentUpon>mortgage_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_type_list.aspx.cs">
+      <DependentUpon>mortgage_type_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\mortgage_type_list.aspx.designer.cs">
+      <DependentUpon>mortgage_type_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\manager\department_edit.aspx.cs">
       <DependentUpon>department_edit.aspx</DependentUpon>

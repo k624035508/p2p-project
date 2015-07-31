@@ -133,28 +133,6 @@ namespace Lip2p.Common
         }
 
         /// <summary>
-        /// 标的物类型
-        /// </summary>
-        public enum MortgageTypeEnum
-        {
-            /// <summary>
-            /// 车辆
-            /// </summary>
-            [Description("车辆")]
-            Car = 1,
-            /// <summary>
-            /// 房产
-            /// </summary>
-            [Description("房产")]
-            House = 2,
-            /// <summary>
-            /// 商业
-            /// </summary>
-            [Description("商业")]
-            Business = 3
-        }
-
-        /// <summary>
         /// 还款期限单位
         /// </summary>
         public enum ProjectRepaymentTermSpanEnum

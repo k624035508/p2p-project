@@ -1,4 +1,4 @@
-<%namespace "Lip2p.Linq2SQL"%>
+﻿<%namespace "Lip2p.Linq2SQL"%>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -445,7 +445,7 @@
                             <table width="100%">
                                 <tbody>
                                     <%foreach(li_mortgages mortgage in mortgages)%>
-                                    <%if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.House || mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Business)%>
+                                    <%if(mortgage.li_mortgage_types.name=="房产" || mortgage.li_mortgage_types.name=="商业")%>
                                     <tr>
                                         <th width="10%">
                                             房屋地址：
@@ -484,7 +484,7 @@
                                         <td>
                                         </td>
                                     </tr>
-                                    <%else if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Car)%>
+                                    <%else if(mortgage.li_mortgage_types.name=="车辆")%>
                                     <tr>
                                         <th width="10%">
                                             车品牌：

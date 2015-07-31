@@ -57,7 +57,7 @@
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
     <td><%# Eval("name")%></td>
-    <td><%# Utils.GetLip2pEnumDes((Lip2pEnums.MortgageTypeEnum) Convert.ToByte(Eval("type")))%></td>
+    <td><%# Eval("typeName")%></td>
     <td><%# Eval("valuation")%></td>
     <td title="<%# QueryUsingProject(((MortgageItem) Container.DataItem).id)%>"><%# Utils.GetLip2pEnumDes((Lip2pEnums.MortgageStatusEnum)Convert.ToByte(Eval("status")))%></td>
   </tr>

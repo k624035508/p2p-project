@@ -123,6 +123,9 @@ namespace Lip2p.Linq2SQL
     partial void Insertli_mortgages(li_mortgages instance);
     partial void Updateli_mortgages(li_mortgages instance);
     partial void Deleteli_mortgages(li_mortgages instance);
+    partial void Insertli_mortgage_types(li_mortgage_types instance);
+    partial void Updateli_mortgage_types(li_mortgage_types instance);
+    partial void Deleteli_mortgage_types(li_mortgage_types instance);
     #endregion
 		
 		public Lip2pDataContext(string connection) : 
@@ -402,6 +405,14 @@ namespace Lip2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_mortgages>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_mortgage_types> li_mortgage_types
+		{
+			get
+			{
+				return this.GetTable<li_mortgage_types>();
 			}
 		}
 	}
@@ -11605,7 +11616,7 @@ namespace Lip2p.Linq2SQL
 		
 		private string _name;
 		
-		private byte _type;
+		private int _type;
 		
 		private int _owner;
 		
@@ -11635,6 +11646,8 @@ namespace Lip2p.Linq2SQL
 		
 		private EntityRef<li_loaners> _li_loaners;
 		
+		private EntityRef<li_mortgage_types> _li_mortgage_types;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -11643,7 +11656,7 @@ namespace Lip2p.Linq2SQL
     partial void OnidChanged();
     partial void OnnameChanging(string value);
     partial void OnnameChanged();
-    partial void OntypeChanging(byte value);
+    partial void OntypeChanging(int value);
     partial void OntypeChanged();
     partial void OnownerChanging(int value);
     partial void OnownerChanged();
@@ -11674,6 +11687,7 @@ namespace Lip2p.Linq2SQL
 			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_risk_mortgage = new EntitySet<li_risk_mortgage>(new Action<li_risk_mortgage>(this.attach_li_risk_mortgage), new Action<li_risk_mortgage>(this.detach_li_risk_mortgage));
 			this._li_loaners = default(EntityRef<li_loaners>);
+			this._li_mortgage_types = default(EntityRef<li_mortgage_types>);
 			OnCreated();
 		}
 		
@@ -11717,8 +11731,8 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
-		public byte type
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="Int NOT NULL")]
+		public int type
 		{
 			get
 			{
@@ -11728,6 +11742,10 @@ namespace Lip2p.Linq2SQL
 			{
 				if ((this._type != value))
 				{
+					if (this._li_mortgage_types.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OntypeChanging(value);
 					this.SendPropertyChanging();
 					this._type = value;
@@ -12021,6 +12039,40 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgage_types_li_mortgages", Storage="_li_mortgage_types", ThisKey="type", OtherKey="id", IsForeignKey=true)]
+		public li_mortgage_types li_mortgage_types
+		{
+			get
+			{
+				return this._li_mortgage_types.Entity;
+			}
+			set
+			{
+				li_mortgage_types previousValue = this._li_mortgage_types.Entity;
+				if (((previousValue != value) 
+							|| (this._li_mortgage_types.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_mortgage_types.Entity = null;
+						previousValue.li_mortgages.Remove(this);
+					}
+					this._li_mortgage_types.Entity = value;
+					if ((value != null))
+					{
+						value.li_mortgages.Add(this);
+						this._type = value.id;
+					}
+					else
+					{
+						this._type = default(int);
+					}
+					this.SendPropertyChanged("li_mortgage_types");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -12063,6 +12115,168 @@ namespace Lip2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_mortgages = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_mortgage_types")]
+	public partial class li_mortgage_types : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _name;
+		
+		private string _scheme;
+		
+		private System.DateTime _last_update_time;
+		
+		private EntitySet<li_mortgages> _li_mortgages;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnschemeChanging(string value);
+    partial void OnschemeChanged();
+    partial void Onlast_update_timeChanging(System.DateTime value);
+    partial void Onlast_update_timeChanged();
+    #endregion
+		
+		public li_mortgage_types()
+		{
+			this._li_mortgages = new EntitySet<li_mortgages>(new Action<li_mortgages>(this.attach_li_mortgages), new Action<li_mortgages>(this.detach_li_mortgages));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_scheme", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string scheme
+		{
+			get
+			{
+				return this._scheme;
+			}
+			set
+			{
+				if ((this._scheme != value))
+				{
+					this.OnschemeChanging(value);
+					this.SendPropertyChanging();
+					this._scheme = value;
+					this.SendPropertyChanged("scheme");
+					this.OnschemeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_last_update_time", DbType="DateTime NOT NULL")]
+		public System.DateTime last_update_time
+		{
+			get
+			{
+				return this._last_update_time;
+			}
+			set
+			{
+				if ((this._last_update_time != value))
+				{
+					this.Onlast_update_timeChanging(value);
+					this.SendPropertyChanging();
+					this._last_update_time = value;
+					this.SendPropertyChanged("last_update_time");
+					this.Onlast_update_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgage_types_li_mortgages", Storage="_li_mortgages", ThisKey="id", OtherKey="type")]
+		public EntitySet<li_mortgages> li_mortgages
+		{
+			get
+			{
+				return this._li_mortgages;
+			}
+			set
+			{
+				this._li_mortgages.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_li_mortgages(li_mortgages entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_mortgage_types = this;
+		}
+		
+		private void detach_li_mortgages(li_mortgages entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_mortgage_types = null;
 		}
 	}
 }

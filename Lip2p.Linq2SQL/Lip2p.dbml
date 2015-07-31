@@ -512,7 +512,7 @@
     <Type Name="li_mortgages">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="car_brand" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="car_model" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
@@ -527,6 +527,16 @@
       <Association Name="li_mortgages_li_albums" Member="li_albums" ThisKey="id" OtherKey="mortgage" Type="li_albums" />
       <Association Name="li_mortgages_li_risk_mortgage" Member="li_risk_mortgage" ThisKey="id" OtherKey="mortgage" Type="li_risk_mortgage" />
       <Association Name="li_loaners_li_mortgages" Member="li_loaners" ThisKey="owner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
+      <Association Name="li_mortgage_types_li_mortgages" Member="li_mortgage_types" ThisKey="type" OtherKey="id" Type="li_mortgage_types" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_mortgage_types" Member="li_mortgage_types">
+    <Type Name="li_mortgage_types">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="scheme" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_mortgage_types_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="type" Type="li_mortgages" />
     </Type>
   </Table>
 </Database>

@@ -10,6 +10,7 @@ using Lip2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Lip2p.Core.AutoLogic;
+using Newtonsoft.Json.Linq;
 
 namespace Lip2p.Test
 {
@@ -71,7 +72,7 @@ namespace Lip2p.Test
 
         }
 
-        private static readonly string str = "server=192.168.1.71;uid=sa;pwd=123456;database=DTcmsdb3;";
+        private static readonly string str = "server=192.168.5.108;uid=sa;pwd=a123456;database=DTcmsdb3;";
 
         // 投满标
         [TestMethod]
@@ -697,13 +698,39 @@ namespace Lip2p.Test
             context.SubmitChanges();
         }
 
-        //[TestMethod]
-        //public void AutoSendRepayNotice()
-        //{
-        //    var context = new Lip2pDataContext(str);
-        //    var shouldRepayTask = context.li_repayment_tasks.Where(r => r.li_projects.add_time.Date == DateTime.Today).ToList();
-        //    if (shouldRepayTask.Any())            
-        //        AutoRepay.SendRepayNotice(shouldRepayTask, context);
-        //}
+        /*[TestMethod]
+        public void AutoSendRepayNotice()
+        {
+            var context = new Lip2pDataContext(str);
+            var shouldRepayTask = context.li_repayment_tasks.Where(r => r.li_projects.add_time.Date == DateTime.Today).ToList();
+            if (shouldRepayTask.Any())            
+                AutoRepay.SendRepayNotice(shouldRepayTask, context);
+        }*/
+
+        [TestMethod]
+        public void MortgagesFieldPack()
+        {
+            var context = new Lip2pDataContext(str);
+            context.li_mortgages.ForEach(m =>
+            {
+                var obj = new JObject();
+                if (!string.IsNullOrWhiteSpace(m.car_brand))
+                    obj["brand"] = m.car_brand;
+                if (!string.IsNullOrWhiteSpace(m.car_model))
+                    obj["model"] = m.car_model;
+
+                if (!string.IsNullOrWhiteSpace(m.property_addr))
+                    obj["addr"] = m.property_addr;
+                if (!string.IsNullOrWhiteSpace(m.property_age))
+                    obj["age"] = m.property_age;
+                if (!string.IsNullOrWhiteSpace(m.property_size))
+                    obj["size"] = m.property_size;
+                if (!string.IsNullOrWhiteSpace(m.property_uses))
+                    obj["uses"] = m.property_uses;
+
+                m.properties = obj.ToString(Formatting.None);
+            });
+            context.SubmitChanges();
+        }
     }
 }

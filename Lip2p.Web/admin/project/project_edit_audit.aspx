@@ -364,8 +364,7 @@
         <dl>
             <dt>标的物信息</dt>
             <dd>
-                <%foreach (Lip2p.Linq2SQL.li_mortgages mortgage in mortgages)
-                  {%>
+                <%foreach (var mortgage in mortgages) {%>
                 <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
                     <tr>
                         <th width="20%">
@@ -385,12 +384,11 @@
                         <td>
                             <div class="position">
                                 <span>
-                                    <%=Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.MortgageTypeEnum)mortgage.type)%></span>
+                                    <%=mortgage.li_mortgage_types.name%></span>
                             </div>
                         </td>
                     </tr>
-                    <%if (mortgage.type == (int)Lip2p.Common.Lip2pEnums.MortgageTypeEnum.Car)
-                      {%>
+                    <%if (mortgage.li_mortgage_types.name == "车辆") {%>
                     <tr>
                         <th width="20%">
                             车品牌
