@@ -697,7 +697,7 @@ namespace Lip2p.Test
             context.SubmitChanges();
         }
 
-        [TestMethod]
+        //[TestMethod]
         //public void AutoSendRepayNotice()
         //{
         //    var context = new Lip2pDataContext(str);

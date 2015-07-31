@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Lip2p.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Lip2p.designer.cs</LastGenOutput>
