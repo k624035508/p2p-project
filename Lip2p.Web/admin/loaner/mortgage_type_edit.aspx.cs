@@ -118,7 +118,7 @@ namespace Lip2p.Web.admin.loaner
                     JscriptMsg("保存过程中发生错误！", "", "Error");
                     return;
                 }
-                JscriptMsg("修改抵押物类型成功！", "mortgage_type_edit.aspx", "Success");
+                JscriptMsg("修改抵押物类型成功！", "mortgage_list.aspx", "Success");
             }
             else //添加
             {
@@ -128,7 +128,7 @@ namespace Lip2p.Web.admin.loaner
                     JscriptMsg("保存过程中发生错误！", "", "Error");
                     return;
                 }
-                JscriptMsg("添加抵押物类型成功！", "mortgage_type_edit.aspx", "Success");
+                JscriptMsg("添加抵押物类型成功！", "mortgage_list.aspx", "Success");
             }
         }
     }

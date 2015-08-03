@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="mortgage_list.aspx.cs" Inherits="Lip2p.Web.admin.loaner.mortgage_list" %>
 <%@ Import namespace="Lip2p.Common" %>
+<%@ Import Namespace="Lip2p.Linq2SQL" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -29,12 +30,15 @@
 <!--工具栏-->
 <div class="toolbar-wrap">
   <div id="floatHead" class="toolbar">
-    <div class="l-list">
+    <div class="l-list" style="width: 50%">
       <ul class="icon-list">
         <li><a class="add" href="mortgage_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>&owner_id=<%=loaner_id %>"><i></i><span>新增</span></a></li>
         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
         <li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>
       </ul>
+      <div class="rule-multi-radio" style="margin-left: 1em">
+          <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblMortgageType_OnSelectedIndexChanged"/>
+      </div>
     </div>
     <div class="r-list">
       <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"/>
@@ -51,13 +55,9 @@
   <tr>
     <th width="5%">选择</th>
     <th align="left">名称</th>
-    <th align="left" width="5%">类型</th>
-    <th align="left" width="5%">所有者</th>
-    <th align="left" width="10%">抵押物（车）品牌</th>
-    <th align="left" width="10%">抵押物（车）型号</th>
-    <th align="left" width="10%">抵押物（物业）位置</th>
-    <th align="left" width="10%">抵押物（物业）面积</th>
-    <th align="left" width="10%">抵押物（物业）楼龄</th>
+    <th align="left" width="10%">类型</th>
+    <th align="left" width="10%">所有者</th>
+    <%= GenerateDynamicTableHead() %>
     <th align="left" width="10%">估值</th>
   </tr>
 </HeaderTemplate>
@@ -70,11 +70,7 @@
     <td><a href="mortgage_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
     <td><%# Eval("li_mortgage_types.name") %></td>
     <td><%# QueryOwnerNameById(Eval("owner"))%></td>
-    <td><%# Eval("car_brand")%></td>
-    <td><%# Eval("car_model")%></td>
-    <td><%# Eval("property_addr")%></td>
-    <td><%# Eval("property_size")%></td>
-    <td><%# Eval("property_age")%></td>
+    <%# GenerateDynamicTableData((li_mortgages) Container.DataItem) %>
     <td><%# Eval("valuation")%></td>
   </tr>
 </ItemTemplate>
