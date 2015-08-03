@@ -1,4 +1,7 @@
 ﻿<%namespace "Lip2p.Linq2SQL"%>
+<%namespace "System.Collections.Generic"%>
+<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -444,68 +447,28 @@
                                 抵押物信息</div>
                             <table width="100%">
                                 <tbody>
-                                    <%foreach(li_mortgages mortgage in mortgages)%>
-                                    <%if(mortgage.li_mortgage_types.name=="房产" || mortgage.li_mortgage_types.name=="商业")%>
+                                    <%foreach(var mortgage in mortgages)%>
+
+                                    <%csharp%>
+                                    var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
+                                    var kv = (JObject)JsonConvert.DeserializeObject(mortgage.properties);
+
+                                    var propertiesGroup = schemeObj.Cast<KeyValuePair<string, JToken>>().Select(p => new Tuple<string,string>(p.Value.ToString(), kv[p.Key].ToString()))
+                                        .Concat(new [] {new Tuple<string,string>("市场价值",mortgage.valuation.ToString("c")) }).Partition(3).ToList();
+
+                                    foreach (var properties in propertiesGroup) {
+                                    <%/csharp%>
                                     <tr>
-                                        <th width="10%">
-                                            房屋地址：
-                                        </th>
-                                        <td width="30%">
-                                            {mortgage.property_addr}
-                                        </td>
-                                        <th width="10%">
-                                            房屋面积：
-                                        </th>
-                                        <td width="20%">
-                                            {mortgage.property_size}
-                                        </td>
-                                        <th width="10%">
-                                            房屋楼龄：
-                                        </th>
-                                        <td width="20%">
-                                            {mortgage.property_age}
-                                        </td>
+
+                                    <%csharp%>
+                                        foreach (var p in properties) {
+                                    <%/csharp%>
+                                        <th width="10%"><%=p.Item1%>：</th>
+                                        <td><%=p.Item2%></td>
+                                    <%csharp%> } <%/csharp%>
+
                                     </tr>
-                                    <tr>
-                                        <th>
-                                            市场价值：
-                                        </th>
-                                        <td>
-                                            <%=string.Format("{0:c}", mortgage.valuation)%>
-                                        </td>
-                                        <th>
-                                            房屋用途：
-                                        </th>
-                                        <td>
-                                            {mortgage.property_uses}
-                                        </td>
-                                        <th>
-                                        </th>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                    <%else if(mortgage.li_mortgage_types.name=="车辆")%>
-                                    <tr>
-                                        <th width="10%">
-                                            车品牌：
-                                        </th>
-                                        <td width="25%">
-                                            {mortgage.car_brand}
-                                        </td>
-                                        <th width="10%">
-                                            车型号：
-                                        </th>
-                                        <td width="20%">
-                                            {mortgage.car_model}
-                                        </td>
-                                        <th width="10%">
-                                            市场价值：
-                                        </th>
-                                        <td width="25%">
-                                            <%=string.Format("{0:c}", mortgage.valuation)%>
-                                        </td>
-                                    </tr>
-                                    <%/if%>
+                                    <%csharp%> } <%/csharp%>
                                     <tr>
                                         <th>
                                             备注：

@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="project_edit_approval.aspx.cs"
     Inherits="Lip2p.Web.admin.project.project_edit_approval" ValidateRequest="false" %>
+<%@ Import Namespace="Newtonsoft.Json.Linq" %>
+<%@ Import Namespace="Newtonsoft.Json" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -363,86 +365,38 @@
                 <%foreach (var mortgage in mortgages) {%>
                 <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
                     <tr>
-                        <th width="20%">
-                            名称
-                        </th>
+                        <th width="20%">名称</th>
                         <td>
                             <div class="position">
-                                <span>
-                                    <%=mortgage.name%></span>
+                                <span><%=mortgage.name%></span>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <th width="20%">
-                            类型
-                        </th>
+                        <th width="20%">类型</th>
                         <td>
                             <div class="position">
-                                <span>
-                                    <%=mortgage.li_mortgage_types.name%></span>
+                                <span><%=mortgage.li_mortgage_types.name%></span>
                             </div>
                         </td>
                     </tr>
-                    <%if (mortgage.li_mortgage_types.name == "车辆") {%>
+                    <% var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
+                       var kv = (JObject)JsonConvert.DeserializeObject(mortgage.properties);
+                       foreach (var p in schemeObj) { %>
                     <tr>
-                        <th width="20%">
-                            车品牌
-                        </th>
+                        <th width="20%"><%=p.Value %></th>
                         <td>
                             <div class="position">
-                                <span>
-                                    <%=mortgage.car_brand%></span>
+                                <span><%=kv[p.Key]%></span>
                             </div>
                         </td>
                     </tr>
+                    <% } %>
                     <tr>
-                        <th width="20%">
-                            车型号
-                        </th>
+                        <th width="20%">估值</th>
                         <td>
                             <div class="position">
-                                <span>
-                                    <%=mortgage.car_model%></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <% 
-                        }
-                      else
-                      {%>
-                    <tr>
-                        <th width="20%">
-                            物业位置
-                        </th>
-                        <td>
-                            <div class="position">
-                                <span>
-                                    <%=mortgage.property_addr%></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th width="20%">
-                            物业面积
-                        </th>
-                        <td>
-                            <div class="position">
-                                <span>
-                                    <%=mortgage.property_size%></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <%  
-                        }%>
-                    <tr>
-                        <th width="20%">
-                            估值
-                        </th>
-                        <td>
-                            <div class="position">
-                                <span>
-                                    <%=mortgage.valuation%></span>
+                                <span><%=mortgage.valuation%></span>
                             </div>
                         </td>
                     </tr>

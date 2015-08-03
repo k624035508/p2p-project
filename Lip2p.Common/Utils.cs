@@ -1678,6 +1678,12 @@ namespace Lip2p.Common
                 act(e);
         }
 
+        public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> en, int len)
+        {
+            return en.Select((x, i) => new {Group = i/len, Value = x})
+                .GroupBy(item => item.Group, g => g.Value);
+        }
+
         /// <summary>
         /// 遍历枚举的所有值
         /// </summary>
