@@ -706,31 +706,5 @@ namespace Lip2p.Test
             if (shouldRepayTask.Any())            
                 AutoRepay.SendRepayNotice(shouldRepayTask, context);
         }*/
-
-        [TestMethod]
-        public void MortgagesFieldPack()
-        {
-            var context = new Lip2pDataContext(str);
-            context.li_mortgages.ForEach(m =>
-            {
-                var obj = new JObject();
-                if (!string.IsNullOrWhiteSpace(m.car_brand))
-                    obj["brand"] = m.car_brand;
-                if (!string.IsNullOrWhiteSpace(m.car_model))
-                    obj["model"] = m.car_model;
-
-                if (!string.IsNullOrWhiteSpace(m.property_addr))
-                    obj["addr"] = m.property_addr;
-                if (!string.IsNullOrWhiteSpace(m.property_age))
-                    obj["age"] = m.property_age;
-                if (!string.IsNullOrWhiteSpace(m.property_size))
-                    obj["size"] = m.property_size;
-                if (!string.IsNullOrWhiteSpace(m.property_uses))
-                    obj["uses"] = m.property_uses;
-
-                m.properties = obj.ToString(Formatting.None);
-            });
-            context.SubmitChanges();
-        }
     }
 }

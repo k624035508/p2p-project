@@ -63,7 +63,9 @@ namespace Lip2p.Web.admin.loaner
             var mortgageTypeses = context.li_mortgage_types.ToList();
             var listItems = mortgageTypeses.Select(c => new ListItem(c.name, c.id.ToString())).ToArray();
             rblMortgageType.Items.AddRange(listItems);
+            // default value
             rblMortgageType.SelectedValue = rblMortgageType.Items[0].Value;
+            txtScheme.Value = mortgageTypeses.First().scheme;
         }
 
         private void InitOwnerLbl()
@@ -79,14 +81,10 @@ namespace Lip2p.Web.admin.loaner
             txtName.Text = model.name;
             lblOwner.Text = model.li_loaners.name;
             rblMortgageType.SelectedValue = model.type.ToString();
-            txtBrand.Text = model.car_brand;
-            txtModel.Text = model.car_model;
-            txtAddr.Text = model.property_addr;
-            txtAge.Text = model.property_age;
-            txtSize.Text = model.property_size;
             txtValuation.Text = model.valuation.ToString("0.##");
             txtRemark.Text = model.remark;
-            txtUses.Text = model.property_uses;
+            txtScheme.Value = model.li_mortgage_types.scheme;
+            txtProperties.Value = model.properties;
 
             rptPictures.DataSource = model.li_albums.Where(a => a.mortgage == id && a.type == (int) Lip2pEnums.AlbumTypeEnum.Pictures);
             rptPictures.DataBind();
@@ -112,14 +110,9 @@ namespace Lip2p.Web.admin.loaner
                 name = txtName.Text.Trim(),
                 owner = Convert.ToInt32(owner_id),
                 type = Convert.ToByte(rblMortgageType.SelectedValue),
-                car_brand = txtBrand.Text.Trim(),
-                car_model = txtModel.Text.Trim(),
-                property_addr = txtAddr.Text.Trim(),
-                property_age = txtAge.Text.Trim(),
-                property_size = txtSize.Text.Trim(),
                 valuation = Convert.ToDecimal(txtValuation.Text.Trim()),
                 remark = txtRemark.Text.Trim(),
-                property_uses = txtUses.Text.Trim(),
+                properties = txtProperties.Value,
                 last_update_time = DateTime.Now
             };
 
@@ -212,15 +205,10 @@ namespace Lip2p.Web.admin.loaner
             model.name = txtName.Text.Trim();
             model.owner = Convert.ToInt32(owner_id);
             model.type = Convert.ToByte(rblMortgageType.SelectedValue);
-            model.car_brand = txtBrand.Text.Trim();
-            model.car_model = txtModel.Text.Trim();
-            model.property_addr = txtAddr.Text.Trim();
-            model.property_age = txtAge.Text.Trim();
-            model.property_size = txtSize.Text.Trim();
             model.valuation = Convert.ToDecimal(txtValuation.Text.Trim());
             model.last_update_time = DateTime.Now;
             model.remark = txtRemark.Text.Trim();
-            model.property_uses = txtUses.Text.Trim();
+            model.properties = txtProperties.Value;
 
             LoadAlbum(model, Lip2pEnums.AlbumTypeEnum.Pictures, 0);
             LoadAlbum(model, Lip2pEnums.AlbumTypeEnum.PropertyCertificate, 1);
@@ -261,6 +249,20 @@ namespace Lip2p.Web.admin.loaner
                     return;
                 }
                 JscriptMsg("添加标的物信息成功！", Utils.CombUrlTxt("mortgage_list.aspx", "loaner_id={0}", owner_id), "Success");
+            }
+        }
+
+        protected void rblMortgageType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            var model = context.li_mortgages.SingleOrDefault(q => q.id == id);
+            if (model != null)
+            {
+                model.type = Convert.ToInt32(rblMortgageType.SelectedValue);
+                ShowInfo(id);
+            }
+            else
+            {
+                txtScheme.Value = context.li_mortgage_types.Single(t => t.id == Convert.ToInt32(rblMortgageType.SelectedValue)).scheme;
             }
         }
     }

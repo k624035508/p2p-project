@@ -49,58 +49,22 @@ namespace Lip2p.Web.admin.loaner {
         protected global::System.Web.UI.WebControls.TextBox txtName;
         
         /// <summary>
-        /// txtBrand 控件。
+        /// txtScheme 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBrand;
+        protected global::System.Web.UI.WebControls.HiddenField txtScheme;
         
         /// <summary>
-        /// txtModel 控件。
+        /// txtProperties 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtModel;
-        
-        /// <summary>
-        /// txtAddr 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddr;
-        
-        /// <summary>
-        /// txtSize 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSize;
-        
-        /// <summary>
-        /// txtAge 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAge;
-        
-        /// <summary>
-        /// txtUses 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUses;
+        protected global::System.Web.UI.WebControls.HiddenField txtProperties;
         
         /// <summary>
         /// txtValuation 控件。

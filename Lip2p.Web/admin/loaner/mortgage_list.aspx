@@ -30,7 +30,7 @@
 <!--工具栏-->
 <div class="toolbar-wrap">
   <div id="floatHead" class="toolbar">
-    <div class="l-list" style="width: 50%">
+    <div class="l-list" style="width: 80%">
       <ul class="icon-list">
         <li><a class="add" href="mortgage_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>&owner_id=<%=loaner_id %>"><i></i><span>新增</span></a></li>
         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>

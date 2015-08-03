@@ -15,6 +15,29 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
+    function initFields(scheme, data) {
+        var schemeObj = JSON.parse(scheme || "{}");
+        var obj = JSON.parse(data || "{}");
+
+        var firstTime = true;
+        for (var property in schemeObj) {
+            if (schemeObj.hasOwnProperty(property)) {
+                var container = firstTime ? $(".fieldTemplate") : $(".fieldTemplate:last").clone().insertBefore("#txtProperties");
+                container.find(".fieldName").text(schemeObj[property]);
+                container.find(".fieldValue").val(obj[property]).attr("data-fieldName", property);
+                firstTime = false;
+            }
+        }
+    }
+    function saveFields() {
+        var obj = {};
+        var $fields = $(".fieldValue");
+        $fields.each(function (index, elem) {
+            obj[elem.getAttribute("data-fieldName")] = elem.value;
+        });
+        $("#txtProperties").val(JSON.stringify(obj));
+        return true;
+    }
     $(function () {
         //初始化表单验证
         $("#form1").initValidform();
@@ -24,6 +47,7 @@
                 thumbnail: true, filesize: "<%=siteConfig.imgsize %>", sendurl: "../../tools/upload_ajax.ashx",
                 flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpeg;*.png;*.gif;" });
         });
+        initFields($("#txtScheme").val(), $("#txtProperties").val());
     });
 </script>
 </head>
@@ -64,38 +88,20 @@
     <dt>类别</dt>
     <dd>
       <div class="rule-multi-radio">
-          <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"/>
+          <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblMortgageType_OnSelectedIndexChanged"/>
       </div>
     </dd>
   </dl>
   <dl>
     <dt>名称</dt>
-    <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" datatype="/^\S.+$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>
+    <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>
   </dl>
-  <dl>
-    <dt>抵押物（车）品牌</dt>
-    <dd><asp:TextBox ID="txtBrand" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+  <asp:HiddenField runat="server" ID="txtScheme"/>
+  <dl class="fieldTemplate">
+    <dt class="fieldName"></dt>
+    <dd><input class="fieldValue input normal" datatype="/^\S+$/"/><span class="Validform_checktip">*</span></dd>
   </dl>
-  <dl>
-    <dt>抵押物（车）型号</dt>
-    <dd><asp:TextBox ID="txtModel" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-  </dl>
-  <dl>
-    <dt>抵押物（物业）位置</dt>
-    <dd><asp:TextBox ID="txtAddr" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-  </dl>
-  <dl>
-    <dt>抵押物（物业）面积</dt>
-    <dd><asp:TextBox ID="txtSize" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-  </dl>
-  <dl>
-    <dt>抵押物（物业）楼龄</dt>
-    <dd><asp:TextBox ID="txtAge" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-  </dl>
-  <dl>
-    <dt>抵押物（物业）用途</dt>
-    <dd><asp:TextBox ID="txtUses" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-  </dl>
+  <asp:HiddenField runat="server" ID="txtProperties"/>
   <dl>
     <dt>抵押物估价</dt>
     <dd><asp:TextBox ID="txtValuation" runat="server" CssClass="input normal" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>
@@ -165,7 +171,7 @@
 <!--工具栏-->
 <div class="page-footer">
   <div class="btn-list">
-    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" />
+    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" OnClientClick="return saveFields()"/>
     <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
   </div>
   <div class="clear"></div>

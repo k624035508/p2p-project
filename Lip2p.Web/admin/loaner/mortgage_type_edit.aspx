@@ -17,7 +17,7 @@
 }
 </style>
 <script type="text/javascript">
-    function beforeSubmit() {
+    function saveFields() {
         var obj = {};
         var $ids = $(".txtFieldId");
         var $names = $(".txtFieldName");
@@ -25,7 +25,7 @@
             obj[elem.value] = $names[index].value;
         });
         $("#txtScheme").val(JSON.stringify(obj));
-        this.submit();
+        return true;
     }
     function cloneFieldScheme() {
         $(".fieldSchemeContainer:last").clone().insertBefore("#btnAppendField").find("input.normal").val("");
@@ -36,7 +36,7 @@
         $(btn).closest(".fieldSchemeContainer").remove();
     }
     function initFields(data) {
-        var obj = JSON.parse(data);
+        var obj = JSON.parse(data || "{}");
         var firstTime = true;
         for (var property in obj) {
             if (obj.hasOwnProperty(property)) {
@@ -59,7 +59,7 @@
 </head>
 
 <body class="mainbody">
-<form id="form1" runat="server" onsubmit="return beforeSubmit()">
+<form id="form1" runat="server">
 <!--导航栏-->
 <div class="location">
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回列表页</span></a>
@@ -91,6 +91,7 @@
   <dl>
       <dt>字段</dt>
       <dd>
+          注：删除字段或更改“字段标识”可能会导致数据丢失，如要修改请咨询开发人员
           <asp:HiddenField id="txtScheme" runat="server"/>
           <div class="fieldSchemeContainer">
               字段标识 <input class="txtFieldId input normal" datatype="/^\S+$/"/>
@@ -110,7 +111,7 @@
 <!--工具栏-->
 <div class="page-footer">
   <div class="btn-list">
-    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" />
+    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" OnClientClick="return saveFields()"/>
     <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
   </div>
   <div class="clear"></div>
