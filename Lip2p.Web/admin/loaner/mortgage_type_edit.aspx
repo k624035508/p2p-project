@@ -91,7 +91,7 @@
   <dl>
       <dt>字段</dt>
       <dd>
-          注：删除字段或更改“字段标识”可能会导致数据丢失，如要修改请咨询开发人员
+          注：删除字段或更改“字段标识”可能会导致抵押物属性数据丢失，如要修改请咨询开发人员
           <asp:HiddenField id="txtScheme" runat="server"/>
           <div class="fieldSchemeContainer">
               字段标识 <input class="txtFieldId input normal" datatype="/^\S+$/"/>

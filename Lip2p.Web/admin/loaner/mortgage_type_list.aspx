@@ -11,6 +11,13 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+<script>
+    $(function() {
+        $(".pre-format").each(function(index, elem) {
+            elem.innerText = elem.innerText.replace(/[\"\{\}]/g, " ");
+        });
+    });
+</script>
 </head>
 
 <body class="mainbody">
@@ -60,7 +67,7 @@
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
     <td><a href="mortgage_type_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
-    <td><%# Eval("scheme") %></td>
+    <td class="pre-format"><%# Eval("scheme") %></td>
     <td><%# Eval("last_update_time")%></td>
   </tr>
 </ItemTemplate>
