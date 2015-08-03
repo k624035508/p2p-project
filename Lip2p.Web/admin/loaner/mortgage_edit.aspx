@@ -64,11 +64,7 @@
     <dt>类别</dt>
     <dd>
       <div class="rule-multi-radio">
-        <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-        <asp:ListItem Value="1" Selected="True">车辆</asp:ListItem>
-        <asp:ListItem Value="2">房产</asp:ListItem>
-        <asp:ListItem Value="3">商铺</asp:ListItem>
-        </asp:RadioButtonList>
+          <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"/>
       </div>
     </dd>
   </dl>

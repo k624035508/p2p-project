@@ -159,13 +159,11 @@ namespace Lip2p.Web.admin.loaner
         protected string GenerateDynamicTableHead()
         {
             var mortgageType = context.li_mortgage_types.Single(t => t.id == Convert.ToInt32(rblMortgageType.SelectedValue));
-            var schemeObj = JsonConvert.DeserializeObject(mortgageType.scheme) as JObject;
+            var schemeObj = (JObject)JsonConvert.DeserializeObject(mortgageType.scheme);
 
-            return schemeObj.Cast<KeyValuePair<string, JToken>>().Aggregate(new StringBuilder(), (sb, p) =>
-            {
-                sb.AppendLine($"<th align='left' width='10%'>{p.Value}</th>");
-                return sb;
-            }).ToString();
+            return schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Aggregate(new StringBuilder(), (sb, p) => sb.AppendLine($"<th align='left' width='10%'>{p.Value}</th>"))
+                    .ToString();
         }
 
         protected string GenerateDynamicTableData(li_mortgages dataItem)
@@ -173,11 +171,9 @@ namespace Lip2p.Web.admin.loaner
             var schemeObj = (JObject)JsonConvert.DeserializeObject(dataItem.li_mortgage_types.scheme);
             var kv = (JObject)JsonConvert.DeserializeObject(dataItem.properties);
 
-            return schemeObj.Cast<KeyValuePair<string, JToken>>().Aggregate(new StringBuilder(), (sb, p) =>
-            {
-                sb.AppendLine($"<td>{kv[p.Key]}</td>");
-                return sb;
-            }).ToString();
+            return schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Aggregate(new StringBuilder(), (sb, p) => sb.AppendLine($"<td>{kv[p.Key]}</td>"))
+                    .ToString();
         }
     }
 }

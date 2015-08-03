@@ -45,6 +45,7 @@ namespace Lip2p.Web.admin.loaner
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_mortgages", DTEnums.ActionEnum.View.ToString()); //检查权限
+                InitMortgageTypes();
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
                 {
                     ShowInfo(id);
@@ -54,6 +55,15 @@ namespace Lip2p.Web.admin.loaner
                     InitOwnerLbl();
                 }
             }
+        }
+
+        private void InitMortgageTypes()
+        {
+            rblMortgageType.Items.Clear();
+            var mortgageTypeses = context.li_mortgage_types.ToList();
+            var listItems = mortgageTypeses.Select(c => new ListItem(c.name, c.id.ToString())).ToArray();
+            rblMortgageType.Items.AddRange(listItems);
+            rblMortgageType.SelectedValue = rblMortgageType.Items[0].Value;
         }
 
         private void InitOwnerLbl()
