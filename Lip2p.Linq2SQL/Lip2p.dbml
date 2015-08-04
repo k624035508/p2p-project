@@ -524,10 +524,9 @@
       <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="valuation" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
-      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="property_uses" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="remark" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="properties" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="li_mortgages_li_albums" Member="li_albums" ThisKey="id" OtherKey="mortgage" Type="li_albums" />
       <Association Name="li_mortgages_li_risk_mortgage" Member="li_risk_mortgage" ThisKey="id" OtherKey="mortgage" Type="li_risk_mortgage" />
       <Association Name="li_mortgage_types_li_mortgages" Member="li_mortgage_types" ThisKey="type" OtherKey="id" Type="li_mortgage_types" IsForeignKey="true" />

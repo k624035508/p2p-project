@@ -11784,13 +11784,11 @@ namespace Lip2p.Linq2SQL
 		
 		private decimal _valuation;
 		
-		private System.DateTime _last_update_time;
-		
-		private string _property_uses;
-		
 		private string _remark;
 		
 		private string _properties;
+		
+		private System.DateTime _last_update_time;
 		
 		private EntitySet<li_albums> _li_albums;
 		
@@ -11814,14 +11812,12 @@ namespace Lip2p.Linq2SQL
     partial void OnownerChanged();
     partial void OnvaluationChanging(decimal value);
     partial void OnvaluationChanged();
-    partial void Onlast_update_timeChanging(System.DateTime value);
-    partial void Onlast_update_timeChanged();
-    partial void Onproperty_usesChanging(string value);
-    partial void Onproperty_usesChanged();
     partial void OnremarkChanging(string value);
     partial void OnremarkChanged();
     partial void OnpropertiesChanging(string value);
     partial void OnpropertiesChanged();
+    partial void Onlast_update_timeChanging(System.DateTime value);
+    partial void Onlast_update_timeChanged();
     #endregion
 		
 		public li_mortgages()
@@ -11941,46 +11937,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_last_update_time", DbType="DateTime NOT NULL")]
-		public System.DateTime last_update_time
-		{
-			get
-			{
-				return this._last_update_time;
-			}
-			set
-			{
-				if ((this._last_update_time != value))
-				{
-					this.Onlast_update_timeChanging(value);
-					this.SendPropertyChanging();
-					this._last_update_time = value;
-					this.SendPropertyChanged("last_update_time");
-					this.Onlast_update_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_property_uses", DbType="NVarChar(10)")]
-		public string property_uses
-		{
-			get
-			{
-				return this._property_uses;
-			}
-			set
-			{
-				if ((this._property_uses != value))
-				{
-					this.Onproperty_usesChanging(value);
-					this.SendPropertyChanging();
-					this._property_uses = value;
-					this.SendPropertyChanged("property_uses");
-					this.Onproperty_usesChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(100)")]
 		public string remark
 		{
@@ -12017,6 +11973,26 @@ namespace Lip2p.Linq2SQL
 					this._properties = value;
 					this.SendPropertyChanged("properties");
 					this.OnpropertiesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_last_update_time", DbType="DateTime NOT NULL")]
+		public System.DateTime last_update_time
+		{
+			get
+			{
+				return this._last_update_time;
+			}
+			set
+			{
+				if ((this._last_update_time != value))
+				{
+					this.Onlast_update_timeChanging(value);
+					this.SendPropertyChanging();
+					this._last_update_time = value;
+					this.SendPropertyChanged("last_update_time");
+					this.Onlast_update_timeChanged();
 				}
 			}
 		}
