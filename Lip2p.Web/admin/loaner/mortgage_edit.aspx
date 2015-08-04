@@ -33,7 +33,7 @@
         var obj = {};
         var $fields = $(".fieldValue");
         $fields.each(function (index, elem) {
-            obj[elem.getAttribute("data-fieldName")] = elem.value;
+            obj[elem.getAttribute("data-fieldName")] = $.trim(elem.value);
         });
         $("#txtProperties").val(JSON.stringify(obj));
         return true;

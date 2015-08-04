@@ -9,6 +9,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Lip2p.Common;
 using Lip2p.Linq2SQL;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Lip2p.Web.admin.loaner
 {
@@ -89,7 +91,29 @@ namespace Lip2p.Web.admin.loaner
         private bool DoEdit(int id)
         {
             var model = context.li_mortgage_types.First(q => q.id == id);
+            // 如果修改了某个字段的标识，则更新抵押物字段
+            var originalValMapKey = ((JObject) JsonConvert.DeserializeObject(model.scheme)).Cast<KeyValuePair<string, JToken>>()
+                    .ToDictionary(p => p.Value, p => p.Key);
 
+            var changedKeys = ((JObject) JsonConvert.DeserializeObject(txtScheme.Value)).Cast<KeyValuePair<string, JToken>>()
+                .Where(p => originalValMapKey.ContainsKey(p.Value) && originalValMapKey[p.Value] != p.Key)
+                .Select(p => new {originalKey = originalValMapKey[p.Value], currentKey = p.Key}).ToList();
+
+            if (changedKeys.Any())
+            {
+                model.li_mortgages.ForEach(m =>
+                {
+                    var ps = (JObject) JsonConvert.DeserializeObject(m.properties);
+                    changedKeys.ForEach(c =>
+                    {
+                        ps[c.currentKey] = ps[c.originalKey];
+                        ps.Remove(c.originalKey);
+                    });
+                    m.properties = ps.ToString(Formatting.None);
+                });
+            }
+
+            // 修改类型信息
             model.name = txtTypeName.Text.Trim();
             model.scheme = txtScheme.Value;
             model.last_update_time = DateTime.Now;

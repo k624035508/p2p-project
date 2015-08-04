@@ -18,13 +18,21 @@
 </style>
 <script type="text/javascript">
     function saveFields() {
-        var obj = {};
-        var $ids = $(".txtFieldId");
-        var $names = $(".txtFieldName");
-        $ids.each(function(index, elem) {
-            obj[elem.value] = $names[index].value;
-        });
-        $("#txtScheme").val(JSON.stringify(obj));
+        try {
+            var obj = {};
+            var $ids = $(".txtFieldId");
+            var $names = $(".txtFieldName");
+            $ids.each(function (index, elem) {
+                if (obj.hasOwnProperty($.trim(elem.value))) {
+                    throw "字段标识不能重复";
+                }
+                obj[$.trim(elem.value)] = $.trim($names[index].value);
+            });
+            $("#txtScheme").val(JSON.stringify(obj));
+        } catch (e) {
+            alert(e);
+            return false;
+        }
         return true;
     }
     function cloneFieldScheme() {
