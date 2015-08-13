@@ -477,8 +477,6 @@ namespace Lip2p.Linq2SQL
 		
 		private string _openid;
 		
-		private EntityRef<dt_users> _dt_users2;
-		
 		private EntitySet<li_activity_transactions> _li_activity_transactions;
 		
 		private EntitySet<li_albums> _li_albums;
@@ -504,8 +502,6 @@ namespace Lip2p.Linq2SQL
 		private EntityRef<li_wallets> _li_wallets;
 		
 		private EntitySet<dt_user_login_log> _dt_user_login_log;
-		
-		private EntityRef<dt_users> _dt_users1;
 		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
@@ -571,7 +567,6 @@ namespace Lip2p.Linq2SQL
 		
 		public dt_users()
 		{
-			this._dt_users2 = default(EntityRef<dt_users>);
 			this._li_activity_transactions = new EntitySet<li_activity_transactions>(new Action<li_activity_transactions>(this.attach_li_activity_transactions), new Action<li_activity_transactions>(this.detach_li_activity_transactions));
 			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_bank_accounts = new EntitySet<li_bank_accounts>(new Action<li_bank_accounts>(this.attach_li_bank_accounts), new Action<li_bank_accounts>(this.detach_li_bank_accounts));
@@ -585,7 +580,6 @@ namespace Lip2p.Linq2SQL
 			this._li_user_group_servers = default(EntityRef<li_user_group_servers>);
 			this._li_wallets = default(EntityRef<li_wallets>);
 			this._dt_user_login_log = new EntitySet<dt_user_login_log>(new Action<dt_user_login_log>(this.attach_dt_user_login_log), new Action<dt_user_login_log>(this.detach_dt_user_login_log));
-			this._dt_users1 = default(EntityRef<dt_users>);
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -601,10 +595,6 @@ namespace Lip2p.Linq2SQL
 			{
 				if ((this._id != value))
 				{
-					if (this._dt_users1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnidChanging(value);
 					this.SendPropertyChanging();
 					this._id = value;
@@ -1138,35 +1128,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_users", Storage="_dt_users2", ThisKey="id", OtherKey="id", IsUnique=true, IsForeignKey=false)]
-		public dt_users dt_users2
-		{
-			get
-			{
-				return this._dt_users2.Entity;
-			}
-			set
-			{
-				dt_users previousValue = this._dt_users2.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_users2.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_users2.Entity = null;
-						previousValue.dt_users1 = null;
-					}
-					this._dt_users2.Entity = value;
-					if ((value != null))
-					{
-						value.dt_users1 = this;
-					}
-					this.SendPropertyChanged("dt_users2");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_activity_transactions", Storage="_li_activity_transactions", ThisKey="id", OtherKey="user_id")]
 		public EntitySet<li_activity_transactions> li_activity_transactions
 		{
@@ -1397,40 +1358,6 @@ namespace Lip2p.Linq2SQL
 			set
 			{
 				this._dt_user_login_log.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_users", Storage="_dt_users1", ThisKey="id", OtherKey="id", IsForeignKey=true)]
-		public dt_users dt_users1
-		{
-			get
-			{
-				return this._dt_users1.Entity;
-			}
-			set
-			{
-				dt_users previousValue = this._dt_users1.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_users1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_users1.Entity = null;
-						previousValue.dt_users2 = null;
-					}
-					this._dt_users1.Entity = value;
-					if ((value != null))
-					{
-						value.dt_users2 = this;
-						this._id = value.id;
-					}
-					else
-					{
-						this._id = default(int);
-					}
-					this.SendPropertyChanged("dt_users1");
-				}
 			}
 		}
 		
