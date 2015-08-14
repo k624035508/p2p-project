@@ -630,6 +630,24 @@
     <Content Include="scripts\underscore-min.js" />
     <Content Include="scripts\webuploader\uploader.swf" />
     <Content Include="scripts\webuploader\webuploader.min.js" />
+    <Content Include="templates\AnGuang\about.xml" />
+    <Content Include="templates\AnGuang\css\bootstrap.min.css" />
+    <Content Include="templates\AnGuang\css\footer.css" />
+    <Content Include="templates\AnGuang\css\head.css" />
+    <Content Include="templates\AnGuang\css\index.css" />
+    <Content Include="templates\AnGuang\css\invest-list.css" />
+    <Content Include="templates\AnGuang\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\invest-list-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
+    <Content Include="templates\AnGuang\index.html" />
+    <Content Include="templates\AnGuang\js\bootstrap.min.js" />
+    <Content Include="templates\AnGuang\js\jquery-1.11.3.min.js" />
     <Content Include="templates\lip2p\404.aspx" />
     <Content Include="templates\lip2p\about.xml" />
     <Content Include="templates\lip2p\aboutus.html" />
@@ -2392,6 +2410,10 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\lip2p.pubxml" />
+    <Content Include="templates\AnGuang\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="templates\AnGuang\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="templates\AnGuang\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="templates\AnGuang\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="templates\lip2p\css\bootstrap-theme.css.map" />
     <None Include="templates\lip2p\css\bootstrap.css.map" />
     <Content Include="tools\calc_stand_guard_fee.ashx" />
