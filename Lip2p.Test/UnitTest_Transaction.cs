@@ -10,6 +10,7 @@ using Lip2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Lip2p.Core.AutoLogic;
+using Newtonsoft.Json.Linq;
 
 namespace Lip2p.Test
 {
@@ -71,7 +72,7 @@ namespace Lip2p.Test
 
         }
 
-        private static readonly string str = "server=192.168.1.71;uid=sa;pwd=123456;database=DTcmsdb3;";
+        private static readonly string str = "server=192.168.5.108;uid=sa;pwd=a123456;database=DTcmsdb3;";
 
         // 投满标
         [TestMethod]
@@ -697,13 +698,13 @@ namespace Lip2p.Test
             context.SubmitChanges();
         }
 
-        [TestMethod]
-        //public void AutoSendRepayNotice()
-        //{
-        //    var context = new Lip2pDataContext(str);
-        //    var shouldRepayTask = context.li_repayment_tasks.Where(r => r.li_projects.add_time.Date == DateTime.Today).ToList();
-        //    if (shouldRepayTask.Any())            
-        //        AutoRepay.SendRepayNotice(shouldRepayTask, context);
-        //}
+        /*[TestMethod]
+        public void AutoSendRepayNotice()
+        {
+            var context = new Lip2pDataContext(str);
+            var shouldRepayTask = context.li_repayment_tasks.Where(r => r.li_projects.add_time.Date == DateTime.Today).ToList();
+            if (shouldRepayTask.Any())            
+                AutoRepay.SendRepayNotice(shouldRepayTask, context);
+        }*/
     }
 }

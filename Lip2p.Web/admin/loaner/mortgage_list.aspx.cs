@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 using System.Data;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Lip2p.Common;
 using Lip2p.Linq2SQL;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Lip2p.Web.admin.loaner
 {
@@ -37,8 +40,20 @@ namespace Lip2p.Web.admin.loaner
                 var keywords = DTRequest.GetQueryString("keywords");
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
+                InitMortgageType();
                 RptBind();
             }
+        }
+
+        private void InitMortgageType()
+        {
+            rblMortgageType.Items.Clear();
+            var mortgageTypeses = context.li_mortgage_types.ToList();
+            var listItems = mortgageTypeses.Select(c =>
+                        new ListItem(string.Format("{0}x{1}", c.name, c.li_mortgages.Count(m => loaner_id == "" || m.owner == Convert.ToInt32(loaner_id))),
+                            c.id.ToString())).ToArray();
+            rblMortgageType.Items.AddRange(listItems);
+            rblMortgageType.SelectedValue = rblMortgageType.Items[0].Value;
         }
 
         #region 数据绑定=================================
@@ -46,9 +61,9 @@ namespace Lip2p.Web.admin.loaner
         {
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
-            var query = context.li_mortgages.Where(q => q.name.Contains(txtKeywords.Text));
+            var query = context.li_mortgages.Where(q => q.type == Convert.ToInt32(rblMortgageType.SelectedValue) && q.name.Contains(txtKeywords.Text));
             if (loaner_id != "")
-                query = context.li_mortgages.Where(q => q.owner == Convert.ToInt32(loaner_id));
+                query = query.Where(q => q.owner == Convert.ToInt32(loaner_id));
 
             totalCount = query.Count();
             rptList.DataSource = query.OrderByDescending(q => q.last_update_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList();
@@ -134,6 +149,31 @@ namespace Lip2p.Web.admin.loaner
             int id = Convert.ToInt32(ownerId.ToString());
             var loaner = context.li_loaners.FirstOrDefault(q => q.id == id);
             return loaner == null ? "(借款人已删除)" : loaner.name;
+        }
+
+        protected void rblMortgageType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            RptBind();
+        }
+
+        protected string GenerateDynamicTableHead()
+        {
+            var mortgageType = context.li_mortgage_types.Single(t => t.id == Convert.ToInt32(rblMortgageType.SelectedValue));
+            var schemeObj = (JObject)JsonConvert.DeserializeObject(mortgageType.scheme);
+
+            return schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Aggregate(new StringBuilder(), (sb, p) => sb.AppendLine($"<th align='left' width='10%'>{p.Value}</th>"))
+                    .ToString();
+        }
+
+        protected string GenerateDynamicTableData(li_mortgages dataItem)
+        {
+            var schemeObj = (JObject)JsonConvert.DeserializeObject(dataItem.li_mortgage_types.scheme);
+            var kv = (JObject)JsonConvert.DeserializeObject(dataItem.properties);
+
+            return schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Aggregate(new StringBuilder(), (sb, p) => sb.AppendLine($"<td>{kv[p.Key]}</td>"))
+                    .ToString();
         }
     }
 }

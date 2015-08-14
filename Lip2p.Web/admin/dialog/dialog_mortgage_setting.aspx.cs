@@ -59,7 +59,7 @@ namespace Lip2p.Web.admin.dialog
         {
             public int id { get; set; }
             public string name { get; set; }
-            public byte type { get; set; }
+            public string typeName { get; set; }
             public decimal valuation { get; set; }
             public byte status { get; set; }
             public bool check { get; set; }
@@ -85,7 +85,7 @@ namespace Lip2p.Web.admin.dialog
                 {
                     id = m.id,
                     name = m.name,
-                    type = m.type,
+                    typeName = m.li_mortgage_types.name,
                     valuation = m.valuation,
                     status = (byte) Lip2pEnums.MortgageStatusEnum.Mortgageable,
                     check = false,
@@ -106,7 +106,7 @@ namespace Lip2p.Web.admin.dialog
                     {
                         id = m.id,
                         name = m.name,
-                        type = m.type,
+                        typeName = m.li_mortgage_types.name,
                         valuation = m.valuation,
                         status = (byte)Lip2pEnums.MortgageStatusEnum.Mortgaged,
                         check = r.id == risk_id,

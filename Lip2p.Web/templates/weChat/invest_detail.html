@@ -1,3 +1,5 @@
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -286,21 +288,16 @@
                 <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">抵押物信息</span></div>
                 <%foreach(var mortgage in mortgages)%>
                 <div class="pawn-info">
-                    <%if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.House || mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Business)%>
                     <ul>
-                        <li><span>房屋地址： </span><span>{mortgage.property_addr}</span></li>
-                        <li><span>房屋面积： </span><span>{mortgage.property_size}</span></li>
-                        <li><span>房屋楼龄： </span><span>{mortgage.property_age}</span></li>
-                        <li><span>市场价值： </span><span><%=string.Format("{0:c}", mortgage.valuation)%></span></li>
-                        <li><span>房屋用途： </span><span>{mortgage.property_uses}</span></li>
-                    </ul>
-                    <%else if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Car)%>
-                    <ul>
-                        <li><span>车品牌： </span><span>{mortgage.car_brand}</span></li>
-                        <li><span>车型号： </span><span>{mortgage.car_model}</span></li>
+                        <%csharp%>
+                        var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
+                        var kv = (JObject)JsonConvert.DeserializeObject(mortgage.properties);
+                        foreach (var p in schemeObj) {
+                        <%/csharp%>
+                        <li><span><%=p.Value%>： </span><span><%=kv[p.Key]%></span></li>
+                        <%csharp%> } <%/csharp%>
                         <li><span>市场价值： </span><span><%=string.Format("{0:c}", mortgage.valuation)%></span></li>
                     </ul>
-                    <%/if%>
                 </div>
                 <div class="pawn-remark">
                     <p class="remark-style">备注：</p>

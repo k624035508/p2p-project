@@ -93,7 +93,7 @@ namespace Lip2p.Web
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            AutoGenerateTemplate();
+            //AutoGenerateTemplate();
         }
 
         private static void AutoGenerateTemplate()
