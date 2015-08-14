@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/head.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="css/invest-list.css"/>
+    <link rel="stylesheet" href="css/footer.css"/>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<script>
+    function iconHover(id, style, styleHover) {
+        $(id).hover(function () {
+            $(this).removeClass(style).addClass(styleHover);
+        }, function () {
+            $(this).removeClass(styleHover).addClass(style);
+        })
+    }
+    $(function(){
+        // floating icon hover
+        iconHover("#floating-qq", "qq-icon", "qqHover-icon");
+        iconHover("#floating-cal", "cal-icon", "calHover-icon");
+        iconHover("#floating-top", "top-icon", "topHover-icon");
+    });
+
+</script>
+<body>
+<!--head-->
+<div class="container-fluid top-bar-wrap">
+    <div class="top-bar">
+        <span class="top-bar-icon head-hot-line-icon"></span>
+        <span class="head-hot-line-num">客服热线：400-8989-089</span>
+        <span class="top-bar-icon weibo-icon"></span>
+        <span class="top-bar-icon wechat-icon"></span>
+
+        <div class="pull-right">
+            <ul class="list-inline">
+                <li><a href="#">登录</a></li>
+                <li class="hr-line">|</li>
+                <li><a href="#">注册</a></li>
+                <li class="hr-line">|</li>
+                <li><a href="#">帮助</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid nav-bar-wrap">
+    <div class="nav-bar">
+        <nav class="pull-right">
+            <ul class="list-inline">
+                <li><a href="#" class="nav-active">首页</a></li>
+                <li><a href="#">我要理财</a></li>
+                <li role="presentation" id="myAccount" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        我的账户 <span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-custom">
+                        <li><a href="#">账户总览</a></li>
+                        <li><a href="#">交易明细</a></li>
+                        <li><a href="#">回款计划</a></li>
+                        <li><a href="#">安全中心</a></li>
+                        <li><a href="#">银行卡管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">安全保障</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--head end-->
+
+<!--banner-->
+<div class="container-fluid">
+    <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="imgs/index/bannerTest.jpg" alt="Chania">
+            </div>
+
+            <div class="item">
+                <img src="imgs/index/bannerTest-02.jpg" alt="Chania">
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#bannerCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#bannerCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!--banner end-->
+
+<!--announcement-->
+<div class="container-fluid announcement-wrap">
+    <div class="announcement">
+        <span class="announce-board-icon announce-icon"></span>
+        <span class="return-announce">还款公告： <a href="#">铜业公司补充流动资金（8FG-C224一期）</a></span>
+        <span class="announce-board-icon news-icon"></span>
+        <span class="web-announce">网站公告： <a href="#">XXX微信公众号推出“XXXXXX”活动</a></span>
+        <span class="announce-board-icon news-icon"></span>
+        <span class="pull-right"><a href="#">更多></a></span>
+    </div>
+</div>
+<!--announcement end-->
+
+<!--invest list-->
+<div class="container-fluid">
+    <div class="invest-cell">
+        <div class="invest-title-wrap">
+            <span class="invest-style-tab">房贷宝</span>
+            <span class="invest-title"><a href="#">石化供应链系列-XXX公司应收</a></span>
+            <span class="invest-list-icon jian-icon"></span>
+            <span class="invest-list-icon yue-icon"></span>
+            <span class="invest-list-icon xin-icon"></span>
+        </div>
+        <div class="invest-content">
+            <div class="apr">
+                <div class="red25px margin-bottom10px">13.00<span class="red15px">%</span></div>
+                <div class="grey13px">年化利率</div>
+            </div>
+            <div class="deadline">
+                <div class="grey25px margin-bottom10px">1<span class="grey15px">个月</span></div>
+                <div class="grey13px">期限</div>
+            </div>
+            <div class="sum">
+                <div class="grey25px margin-bottom10px">456<span class="grey15px">万</span></div>
+                <div class="grey13px">借款金额</div>
+            </div>
+            <div class="repayment">
+                <div class="progress progress-custom">
+                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                        <span class="sr-only">20% Complete</span>
+                    </div>
+                </div>
+                <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">2,300,500.00元</span></div>
+                <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">25人</span></div>   <!--满标人数显示-->
+                <div class="grey13px">到期还本付息</div>
+            </div>
+            <div class="invest-btn pull-right">
+                <button type="button" class="invest-now-btn">立即投资</button>
+                <button type="button" class="invest-full-btn hidden">满标</button>   <!--满标按钮显示-->
+            </div>
+        </div>
+    </div>
+    <div class="more-projects">
+        <a href="#">查看更多投资理财项目</a>
+    </div>
+</div>
+<!--invest list end-->
+
+<!--dynamic boards-->
+<div class="container-fluid">
+    <div class="dynamic-wrap">
+        <!--公司动态-->
+        <div class="company-news">
+            <div class="dynamic-title-wrap">
+                <a href="#">
+                    <span class="dynamic-title">公司动态</span>
+                    <span class="link-mark pull-right"></span>
+                </a>
+            </div>
+            <div class="news-wrap">
+                <div class="img-wrap">
+                    <img src="imgs/index/shilanTest.jpg" alt=""/>
+                </div>
+                <div class="img-title">秦时明月之少年虞姬-石兰</div>
+                <div class="news-list">
+                    <ul class="list-unstyled">
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月29日五金机械经营场地贷...</a></span><span class="grey14px pull-right">2015-05-15</span></li>
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月16号XXX针织厂贷后回访</a></span><span class="grey14px pull-right">2015-04-20</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--媒体报道-->
+        <div class="media-report">
+            <div class="dynamic-title-wrap">
+                <a href="#">
+                    <span class="dynamic-title">媒体报道</span>
+                    <span class="link-mark pull-right"></span>
+                </a>
+            </div>
+            <div class="report-wrap">
+                <div class="img-wrap">
+                    <img src="imgs/index/shilanTest.jpg" alt=""/>
+                </div>
+                <div class="img-title">秦时明月之少年虞姬-石兰</div>
+                <div class="report-list">
+                    <ul class="list-unstyled">
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月29日五金机械经营场地贷...</a></span><span class="grey14px pull-right">2015-05-15</span></li>
+                        <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月16号XXX针织厂贷后回访</a></span><span class="grey14px pull-right">2015-04-20</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--网站公告-->
+        <div class="company-placard">
+            <div class="dynamic-title-wrap">
+                <a href="#">
+                    <span class="dynamic-title">公司公告</span>
+                    <span class="link-mark pull-right"></span>
+                </a>
+            </div>
+            <ul class="list-unstyled">
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月29日五金机械经营场地贷...</a></span><span class="grey14px pull-right">2015-05-15</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月16号XXX针织厂贷后回访</a></span><span class="grey14px pull-right">2015-04-20</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月29日五金机械经营场地贷...</a></span><span class="grey14px pull-right">2015-05-15</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月16号XXX针织厂贷后回访</a></span><span class="grey14px pull-right">2015-04-20</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月29日五金机械经营场地贷...</a></span><span class="grey14px pull-right">2015-05-15</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">4月16号XXX针织厂贷后回访</a></span><span class="grey14px pull-right">2015-04-20</span></li>
+                <li><span class="list-mark"></span><span><a href="#" class="dark-grey14px">5月21日瓷海国际工作地点回访</a></span><span class="grey14px pull-right">2015-05-28</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--dynamic boards end-->
+
+<!--floating icon-->
+<div class="floating-wrap">
+    <a href="#"><span id="floating-qq" class="floating-icon qq-icon"></span></a>
+    <a href="#"><span id="floating-cal" class="floating-icon cal-icon"></span></a>
+    <a href="#"><span id="floating-top" class="floating-icon top-icon"></span></a>
+</div>
+<!--floating icon end-->
+
+<!--footer-->
+<div class="container-fluid footer-wrap">
+    <div class="footer-top"></div>
+    <div class="footer-bottom">2015 广东安广融合电子商务股份有限公司 粤ICP备14084776号-1</div>
+</div>
+<!--footer end-->
+</body>
+</html>

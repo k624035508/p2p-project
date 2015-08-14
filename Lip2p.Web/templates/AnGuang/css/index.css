@@ -1,0 +1,190 @@
+﻿/*首页样式*/
+body {background: #f2f2f2;}
+
+/*banner*/
+div.carousel-inner .carousel-control.left,
+div.carousel-inner .carousel-control.right {
+    background-image: none !important;
+    filter: none !important;
+}
+div#bannerCarousel {margin: 0 auto;}
+
+/*公告板*/
+div.announcement-wrap {background: #f7f4ed;}
+
+div.announcement {
+    width: 1100px;
+    height: 40px;
+    padding: 5.5px 0;
+    margin: 0 auto;
+}
+
+div.announcement > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+span.return-announce,
+span.return-announce a,
+span.web-announce,
+span.web-announce a,
+div.announcement span.pull-right a {
+    color: #646464;
+    font-size: 15px;
+}
+
+div.announcement span.pull-right a {line-height: 29px;}
+
+span.return-announce {margin: 0 5px 0 15px;}
+
+.announce-board-icon {
+    width: 29px;
+    height: 29px;
+    background: url("../imgs/index/announce-icon.png") no-repeat;
+}
+
+.announce-icon {background-position: -15px -13px;}
+
+.news-icon {background-position: -15px -68px;}
+
+span.web-announce {margin: 0 5px 0 120px;}
+
+/*动态三板块*/
+div.dynamic-wrap {
+    width: 1100px;
+    height: 415px;
+    margin: 25px auto 0 auto;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+}
+
+div.dynamic-wrap > div {
+    float: left;
+    display: inline-block;
+    width: 33.333%;
+    height: 100%;
+    border-right: 1px solid #e6e6e6;
+}
+
+div.dynamic-wrap div.company-placard {border-right: none;}
+
+div.dynamic-title-wrap {
+    height: 55px;
+    padding: 12.5px 20px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+div.dynamic-title-wrap a > span,
+div.news-list ul li > span,
+div.report-list ul li > span,
+div.company-placard ul li > span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.dynamic-wrap ul.list-unstyled li span:nth-child(2) {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+span.dynamic-title {
+    color: #464646;
+    font-size: 20px;
+    padding-left: 10px;
+    border-left: 5px solid #ff414b;
+}
+
+span.link-mark {
+    width: 30px;
+    height: 30px;
+    background:url("../imgs/index/link-mark-icon.png") no-repeat;
+}
+
+div.news-wrap, div.report-wrap {padding: 25px 20px;}
+
+div.news-wrap ul li, div .report-wrap ul li {margin-bottom: 10px;}
+
+div.company-placard ul {
+    height: 360px;
+    padding: 15px 20px;
+}
+
+div.company-placard ul li {
+    height: 10%;
+    line-height: 30px;
+}
+
+div.img-wrap {
+    width: 100%;
+    height: 205px;
+    overflow-x: hidden;
+}
+
+div.img-wrap img {height: 100%;}
+
+div.img-title {
+    position: relative;
+    top: -25px;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    padding-left: 10px;
+    background: #080808;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+}
+
+.grey14px {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.dark-grey14px,
+div.news-list ul li a:hover,
+div.report-list ul li a:hover,
+div.company-placard ul li a:hover {
+    color: #464646;
+    font-size: 14px;
+}
+
+div.news-list ul li .list-mark,
+div.report-list ul li .list-mark,
+div.company-placard ul li .list-mark {
+    width: 5px;
+    height: 5px;
+    margin-right: 8px;
+    background: #fa7878;
+}
+
+/*浮窗图标按钮*/
+div.floating-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: 570px;
+    width: 50px;
+}
+
+div.floating-wrap a span {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.floating-icon {
+    width: 50px;
+    height: 53px;
+    background: url("../imgs/index/floating-icon.png") no-repeat;
+}
+
+.qq-icon {background-position: -15px -181px;}
+.qqHover-icon {background-position: -15px -264px;}
+
+.cal-icon {background-position: -15px -15px;}
+.calHover-icon {background-position: -15px -98px;}
+
+.top-icon {background-position: -15px -347px;}
+.topHover-icon {background-position: -15px -430px;}
