@@ -1,4 +1,4 @@
-﻿/*head样式*/
+﻿/*网站导航样式*/
 * {font-family: "Microsoft YaHei";}
 
 div.container-fluid {padding: 0;}
@@ -52,6 +52,7 @@ div.top-bar .hr-line {color: #bbbabf;}
 div.top-bar ul li>a {color: #646464;}
 
 div.nav-bar-wrap {
+    min-width: 1100px;
     height: 90px;
     background: #fff;
 }
