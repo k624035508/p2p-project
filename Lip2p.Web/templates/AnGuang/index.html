@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
@@ -110,9 +110,15 @@
 <div class="container-fluid announcement-wrap">
     <div class="announcement">
         <span class="announce-board-icon announce-icon"></span>
-        <span class="return-announce">还款公告： <a href="#">铜业公司补充流动资金（8FG-C224一期）</a></span>
+        <%set var announce_repay=get_article_list("content", 43, 1, "").Rows[0]%>
+        <span class="return-announce">还款公告：<a href='<%linkurl("article_content_show",{announce_repay[id]},{announce_repay[category_id]})%>'>
+                                                <%=announce_repay["title"].ToString().Length>25?announce_repay["title"].ToString().Substring(0, 25)+"...":announce_repay["title"].ToString()%>
+                                                </a></span>
         <span class="announce-board-icon news-icon"></span>
-        <span class="web-announce">网站公告： <a href="#">XXX微信公众号推出“XXXXXX”活动</a></span>
+        <%set var announce54=get_article_list("content_project", 54, 1, "").Rows[0]%>
+        <span class="web-announce">网站公告： <a href='<%linkurl("article_invest_show",{announce54[id]},{announce54[category_id]})%>'>
+                                            <%=announce54["title"].ToString().Length>30?announce54["title"].ToString().Substring(0, 30)+"...":announce54["title"].ToString()%>
+                                            </a></span>
         <span class="announce-board-icon news-icon"></span>
         <span class="pull-right"><a href="#">更多></a></span>
     </div>
@@ -121,45 +127,58 @@
 
 <!--invest list-->
 <div class="container-fluid">
+    <%foreach(DataRow dr in get_project_list(5,0,0,0,0).Rows)%>
     <div class="invest-cell">
         <div class="invest-title-wrap">
             <span class="invest-style-tab">房贷宝</span>
-            <span class="invest-title"><a href="#">石化供应链系列-XXX公司应收</a></span>
-            <span class="invest-list-icon jian-icon"></span>
+            <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
+            <%if(dr["tag"].ToString()=="1")%>
             <span class="invest-list-icon yue-icon"></span>
+            <%else if(dr["tag"].ToString()=="2")%>
+            <span class="invest-list-icon jian-icon"></span>
+            <%/if%>
             <span class="invest-list-icon xin-icon"></span>
         </div>
         <div class="invest-content">
             <div class="apr">
-                <div class="red25px margin-bottom10px">13.00<span class="red15px">%</span></div>
+                <div class="red25px margin-bottom10px">{dr[profit_rate_year]}<span class="red15px">%</span></div>
                 <div class="grey13px">年化利率</div>
             </div>
             <div class="deadline">
-                <div class="grey25px margin-bottom10px">1<span class="grey15px">个月</span></div>
+                <div class="grey25px margin-bottom10px">{dr[repayment_number]}<span class="grey15px">{dr[repayment_term]}</span></div>
                 <div class="grey13px">期限</div>
             </div>
             <div class="sum">
-                <div class="grey25px margin-bottom10px">456<span class="grey15px">万</span></div>
+                <div class="grey25px margin-bottom10px">{dr[project_amount_str]}<span class="grey15px">万</span></div>
                 <div class="grey13px">借款金额</div>
             </div>
             <div class="repayment">
                 <div class="progress progress-custom">
-                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{dr[project_investment_progress]}"
+                         aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}%">
                         <span class="sr-only">20% Complete</span>
                     </div>
                 </div>
-                <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">2,300,500.00元</span></div>
-                <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">25人</span></div>   <!--满标人数显示-->
+                <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{dr[project_investment_balance]}</span></div>
+                <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>   <!--满标人数显示-->
                 <div class="grey13px">到期还本付息</div>
             </div>
             <div class="invest-btn pull-right">
-                <button type="button" class="invest-now-btn">立即投资</button>
-                <button type="button" class="invest-full-btn hidden">满标</button>   <!--满标按钮显示-->
+                <%if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.DelayFaBiao) %>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FaBiao) %>
+                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.ManBiao||(int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.JieBiao) %>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">满标</button>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.WanCheng) %>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
+                <%/if%>
             </div>
         </div>
     </div>
+    <%/foreach%>
     <div class="more-projects">
-        <a href="#">查看更多投资理财项目</a>
+        <a href='<%linkurl("invest")%>'>查看更多投资理财项目</a>
     </div>
 </div>
 <!--invest list end-->
@@ -178,7 +197,7 @@
             <div class="news-wrap">
                 <%set var inc_news_ls=get_article_list("content", 42, 4, "").Rows.Cast<DataRow>();%>
                 <%set var inc_news_first=inc_news_ls.First()%>
-                <a class="img-wrap" href="<%linkurl("article_content_show",{inc_news_first[id]},{inc_news_first[category_id]})%>">
+                <a class="img-wrap" href='<%linkurl("article_content_show",{inc_news_first[id]},{inc_news_first[category_id]})%>'>
                     <img src="{inc_news_first[img_url]}" alt=""/>
                 </a>
                 <div class="img-title">{inc_news_first[title]}</div>
@@ -186,7 +205,9 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in inc_news_ls.Skip(1))%>
                         <li><span class="list-mark"></span>
-                        <span><a href="<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>" class="dark-grey14px"><%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%></a></span>
+                            <span><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
+                                <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%>
+                                </a></span>
                         <span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></li>
                         <%/foreach%>
                     </ul>
@@ -205,7 +226,7 @@
             <div class="report-wrap">
                 <%set var media_dt_ls=get_article_list("content", 44, 4, "").Rows.Cast<DataRow>();%>
                 <%set var media_dt_first=media_dt_ls.First()%>
-                <a class="img-wrap" href="<%linkurl("article_content_show",{media_dt_first[id]},{media_dt_first[category_id]})%>">
+                <a class="img-wrap" href='<%linkurl("article_content_show",{media_dt_first[id]},{media_dt_first[category_id]})%>'>
                     <img src="{media_dt_first[img_url]}" alt=""/>
                 </a>
                 <div class="img-title">{media_dt_first[title]}</div>
@@ -213,7 +234,7 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in media_dt_ls.Skip(1))%>
                         <li><span class="list-mark"></span><span>
-                            <a href="<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>" class="dark-grey14px">
+                            <a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
                                 <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%></a>
                             </span><span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
                         </li>
@@ -234,7 +255,9 @@
             <ul class="list-unstyled">
                 <%set var announces_ls=get_article_list("content", 43, 10, "").Rows.Cast<DataRow>();%>
                 <%foreach(DataRow dr in announces_ls)%>
-                <li><span class="list-mark"></span><span><a href="<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>" class="dark-grey14px"><%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%></a></span>
+                <li><span class="list-mark"></span><span><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
+                                                        <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%>
+                                                        </a></span>
                 <span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></li>
                 <%/foreach%>
             </ul>
