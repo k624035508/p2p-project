@@ -116,15 +116,16 @@ div.company-placard ul li {
     line-height: 30px;
 }
 
-div.img-wrap {
+.img-wrap {
     width: 100%;
     height: 205px;
     overflow-x: hidden;
+    display: block;
 }
 
-div.img-wrap img {height: 100%;}
+.img-wrap img {height: 100%;}
 
-div.img-title {
+.img-title {
     position: relative;
     top: -25px;
     width: 100%;
