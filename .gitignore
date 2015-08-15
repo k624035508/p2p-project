@@ -13,3 +13,4 @@ packages/
 .nuget/
 *site.config
 *applicationhost.config
+node_modules/
