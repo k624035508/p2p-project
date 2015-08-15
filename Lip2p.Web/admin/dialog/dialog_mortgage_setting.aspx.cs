@@ -44,7 +44,7 @@ namespace Lip2p.Web.admin.dialog
             ddlLoaner.Items.Clear();
             var models =
                 context.li_loaners.OrderByDescending(l => l.last_update_time)
-                    .Select(l => new ListItem(l.name, l.id.ToString())).ToArray();
+                    .Select(l => new ListItem(l.dt_users.real_name, l.id.ToString())).ToArray();
             ddlLoaner.Items.AddRange(models);
             if (risk.loaner != null)
             {

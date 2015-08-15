@@ -51,6 +51,15 @@
 </div>
 
 <div class="tab-content">
+    <dl>
+    <dt>关联会员</dt>
+    <dd>
+      <div class="rule-single-select">
+          <asp:DropDownList ID="ddlSelectUser" runat="server" AutoPostBack="True" datatype="*"
+              errormsg="请选择会员" sucmsg=" "  />
+      </div>
+    </dd>
+  </dl>
   <dl>
     <dt>姓名</dt>
     <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>

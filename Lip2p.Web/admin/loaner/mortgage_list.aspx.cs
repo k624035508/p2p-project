@@ -148,7 +148,7 @@ namespace Lip2p.Web.admin.loaner
         {
             int id = Convert.ToInt32(ownerId.ToString());
             var loaner = context.li_loaners.FirstOrDefault(q => q.id == id);
-            return loaner == null ? "(借款人已删除)" : loaner.name;
+            return loaner == null ? "(借款人已删除)" : loaner.dt_users.real_name;
         }
 
         protected void rblMortgageType_OnSelectedIndexChanged(object sender, EventArgs e)

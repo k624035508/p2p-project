@@ -49,15 +49,15 @@ namespace Lip2p.Web.admin.loaner
         private void ShowInfo(int id)
         {
             var model = context.li_loaners.First(q => q.id == id);
-            txtName.Text = model.name;
-            txtTel.Text = model.tel;
+            txtName.Text = model.dt_users.real_name;
+            txtTel.Text = model.dt_users.mobile;
             txtAge.Text = model.age.ToString();
-            rblGender.SelectedValue = model.gender.ToString();
-            txtCencus.Text = model.cencus;
+            rblGender.SelectedValue = model.dt_users.sex;
+            txtCencus.Text = model.dt_users.area;
             txtJob.Text = model.job;
             txtWorkingAt.Text = model.working_at;
-            txtIdCardNumber.Text = model.id_card_number;
-            txtEmail.Text = model.email;
+            txtIdCardNumber.Text = model.dt_users.id_card_number;
+            txtEmail.Text = model.dt_users.email;
             txtEducationalBackground.Text = model.educational_background;
             rblMaritalStatus.SelectedValue = model.marital_status.ToString();
             txtIncome.Text = model.income;
@@ -94,23 +94,23 @@ namespace Lip2p.Web.admin.loaner
         #region 增加操作=================================
         private bool DoAdd()
         {
-            var check = context.li_loaners.FirstOrDefault(q => q.id_card_number == txtIdCardNumber.Text.Trim()); //检测用户名是否重复
-            if (check != null)
-            {
-                JscriptMsg("身份证号重复！", "", "Error");
-                return false;
-            }
+            //var check = context.li_loaners.FirstOrDefault(q => q.id_card_number == txtIdCardNumber.Text.Trim()); //检测用户名是否重复
+            //if (check != null)
+            //{
+            //    JscriptMsg("身份证号重复！", "", "Error");
+            //    return false;
+            //}
             var model = new li_loaners
             {
-                name = txtName.Text.Trim(),
-                tel = txtTel.Text.Trim(),
+                //name = txtName.Text.Trim(),
+                //tel = txtTel.Text.Trim(),
                 age = Convert.ToInt16(txtAge.Text.Trim()),
-                gender = Convert.ToByte(rblGender.SelectedValue),
-                cencus = txtCencus.Text.Trim(),
+                //gender = Convert.ToByte(rblGender.SelectedValue),
+                //cencus = txtCencus.Text.Trim(),
                 job = txtJob.Text.Trim(),
                 working_at = txtWorkingAt.Text.Trim(),
-                id_card_number = txtIdCardNumber.Text.Trim(),
-                email = txtEmail.Text.Trim(),
+                //id_card_number = txtIdCardNumber.Text.Trim(),
+                //email = txtEmail.Text.Trim(),
                 educational_background = txtEducationalBackground.Text.Trim(),
                 marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue),
                 income = txtIncome.Text.Trim(),
@@ -122,7 +122,7 @@ namespace Lip2p.Web.admin.loaner
             try
             {
                 context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加借贷人:" + model.name); //记录日志
+                AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加借贷人:" + model.dt_users.real_name); //记录日志
                 return true;
             }
             catch (Exception)
@@ -137,15 +137,15 @@ namespace Lip2p.Web.admin.loaner
         {
             var model = context.li_loaners.First(q => q.id == id);
 
-            model.name = txtName.Text.Trim();
-            model.tel = txtTel.Text.Trim();
+            //model.name = txtName.Text.Trim();
+            //model.tel = txtTel.Text.Trim();
             model.age = Convert.ToInt16(txtAge.Text.Trim());
-            model.gender = Convert.ToByte(rblGender.SelectedValue);
-            model.cencus = txtCencus.Text.Trim();
+            //model.gender = Convert.ToByte(rblGender.SelectedValue);
+            //model.cencus = txtCencus.Text.Trim();
             model.job = txtJob.Text.Trim();
             model.working_at = txtWorkingAt.Text.Trim();
-            model.id_card_number = txtIdCardNumber.Text.Trim();
-            model.email = txtEmail.Text.Trim();
+            //model.id_card_number = txtIdCardNumber.Text.Trim();
+            //model.email = txtEmail.Text.Trim();
             model.educational_background = txtEducationalBackground.Text.Trim();
             model.marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue);
             model.income = txtIncome.Text.Trim();
@@ -155,7 +155,7 @@ namespace Lip2p.Web.admin.loaner
             try
             {
                 context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改借贷人:" + model.name); //记录日志
+                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改借贷人:" + model.dt_users.real_name); //记录日志
                 return true;
             }
             catch (Exception)

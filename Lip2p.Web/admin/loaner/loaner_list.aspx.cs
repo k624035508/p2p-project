@@ -40,7 +40,7 @@ namespace Lip2p.Web.admin.loaner
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             var query = new Lip2pDataContext().li_loaners
-                .Where(q => q.name.Contains(_keyword) || q.tel.Contains(_keyword) || q.id_card_number.Contains(_keyword));
+                .Where(q => q.dt_users.real_name.Contains(_keyword) || q.dt_users.mobile.Contains(_keyword) || q.dt_users.id_card_number.Contains(_keyword));
             totalCount = query.Count();
             rptList.DataSource = query.OrderByDescending(q => q.last_update_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();

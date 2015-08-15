@@ -71,7 +71,7 @@ namespace Lip2p.Web.admin.loaner
         private void InitOwnerLbl()
         {
             var loaners = context.li_loaners.OrderByDescending(q => q.last_update_time).ToList();
-            lblOwner.Text = loaners.First(l => l.id == Convert.ToInt32(owner_id)).name;
+            lblOwner.Text = loaners.First(l => l.id == Convert.ToInt32(owner_id)).dt_users.real_name;
         }
 
         #region 赋值操作=================================
@@ -79,7 +79,7 @@ namespace Lip2p.Web.admin.loaner
         {
             var model = context.li_mortgages.First(q => q.id == id);
             txtName.Text = model.name;
-            lblOwner.Text = model.li_loaners.name;
+            lblOwner.Text = model.li_loaners.dt_users.real_name;
             rblMortgageType.SelectedValue = model.type.ToString();
             txtValuation.Text = model.valuation.ToString("0.##");
             txtRemark.Text = model.remark;
