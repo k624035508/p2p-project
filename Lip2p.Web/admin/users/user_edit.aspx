@@ -61,6 +61,7 @@
                     <li><a href="javascript:;" onclick="tabs(this);" class="selected">基本资料</a></li>
                     <li><a href="javascript:;" onclick="tabs(this);">账户信息</a></li>
                     <li><a href="javascript:;" onclick="tabs(this);">会员部功能</a></li>
+                    <li><a href="javascript:;" onclick="tabs(this);">借款人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -344,6 +345,105 @@
             </div>
             <!--/内容底部-->
         </div>
+    <div class="tab-content" style="display: none;">
+        <dl>
+            <dt>是否借款人</dt>
+            <dd>
+                <div class="rule-single-checkbox">
+                    <asp:CheckBox ID="chkIsLoaner" runat="server" AutoPostBack="True" OnCheckedChanged="chkIsLoaner_OnCheckedChanged"/>
+                </div>
+                <span class="Validform_checktip">*是否添加借款人信息</span>
+            </dd>
+        </dl>
+        <% if (chkIsLoaner.Checked) { %>
+        <dl>
+            <dt>年龄</dt>
+            <dd><asp:TextBox ID="txtAge" runat="server" CssClass="input normal" datatype="/^\d+$/" /><span class="Validform_checktip">* </span></dd>
+        </dl>
+        <dl>
+            <dt>工作</dt>
+            <dd><asp:TextBox ID="txtJob" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+        </dl>
+        <dl>
+            <dt>工作地点</dt>
+            <dd><asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+        </dl>
+        <dl>
+            <dt>学历</dt>
+            <dd><asp:TextBox ID="txtEducationalBackground" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+        </dl>
+        <dl>
+            <dt>婚姻状态</dt>
+            <dd>
+                <div class="rule-multi-radio">
+                    <asp:RadioButtonList ID="rblMaritalStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        <asp:ListItem Value="1" Selected="True">未婚</asp:ListItem>
+                        <asp:ListItem Value="2">已婚</asp:ListItem>
+                        <asp:ListItem Value="3">离婚</asp:ListItem>
+                        <asp:ListItem Value="4">丧偶</asp:ListItem>
+                    </asp:RadioButtonList>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>收入</dt>
+            <dd><asp:TextBox ID="txtIncome" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+        </dl>
+        <dl>
+            <dt>是否添加公司信息</dt>
+            <dd>
+                <div class="rule-single-checkbox">
+                    <asp:CheckBox ID="chkBindCompany" runat="server" AutoPostBack="True" OnCheckedChanged="chkBindCompany_OnCheckedChanged"/>
+                </div>
+                <span class="Validform_checktip">*是否添加公司信息</span>
+            </dd>
+        </dl>
+        <% if (chkBindCompany.Checked) { %>
+            <dl>
+                <dt>公司名称</dt>
+                <dd><asp:TextBox ID="txtCompanyName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>成立时间</dt>
+                <dd>
+                    <div class="input-date">
+                        <asp:TextBox ID="txtSetupTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            datatype="/^^\d{4}\-\d{1,2}\-\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
+                        <i>日期</i>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>注册资本</dt>
+                <dd><asp:TextBox ID="txtRegisteredCapital" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>经营范围</dt>
+                <dd><asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>经营状态</dt>
+                <dd><asp:TextBox ID="txtBusinessStatus" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>涉讼情况</dt>
+                <dd><asp:TextBox ID="txtBusinessLawsuit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
+                <dt>年收入</dt>
+                <dd><asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
+                <dt>净资产</dt>
+                <dd><asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
+                <dt>备注</dt>
+                <dd><asp:TextBox ID="txtCompanyRemark" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+        <% } %>
+        <% } %>
+    </div>
     <!--/内容-->
     <!--工具栏-->
     <div class="page-footer">

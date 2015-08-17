@@ -164,6 +164,35 @@ namespace Lip2p.Web.admin.users
                     .Take(pageSize)
                     .ToList();
             rptList.DataBind();
+
+            // 读出借款人信息
+            var loanerInfo = context.li_loaners.SingleOrDefault(l => l.user_id == model.id);
+            chkIsLoaner.Checked = loanerInfo != null;
+            if (loanerInfo != null)
+            {
+                txtAge.Text = loanerInfo.age.ToString();
+                txtJob.Text = loanerInfo.job;
+                txtWorkingAt.Text = loanerInfo.working_at;
+                txtEducationalBackground.Text = loanerInfo.educational_background;
+                rblMaritalStatus.SelectedValue = loanerInfo.marital_status.ToString();
+                txtIncome.Text = loanerInfo.income;
+
+                var loanerCompany = context.li_loaner_companies.SingleOrDefault(c => c.loaner_id == loanerInfo.id);
+                chkBindCompany.Checked = loanerCompany != null;
+                if (loanerCompany != null)
+                {
+                    txtCompanyName.Text = loanerCompany.name;
+                    txtSetupTime.Text = loanerCompany.setup_time.ToString("yyyy-MM-dd");
+                    txtRegisteredCapital.Text = loanerCompany.registered_capital;
+                    txtBusinessScope.Text = loanerCompany.business_scope;
+                    txtBusinessStatus.Text = loanerCompany.business_status;
+                    txtBusinessLawsuit.Text = loanerCompany.business_lawsuit;
+                    txtIncomeYearly.Text = loanerCompany.income_yearly;
+                    txtNetAssets.Text = loanerCompany.net_assets;
+                    txtCompanyRemark.Text = loanerCompany.remark;
+                }
+            }
+
             //绑定页码
             this.totalCount = query.Count();
             txtPageNum.Text = pageSize.ToString();
@@ -253,7 +282,10 @@ namespace Lip2p.Web.admin.users
                         serving_user = userId
                     });
                 }
-                //保存身份证照片
+                // 创建借款人信息
+                UpdateLoanerInfo(userId, model.reg_time);
+
+                // 保存身份证照片
                 try
                 {
                     var user = context.dt_users.First(u => u.id == userId);
@@ -327,6 +359,9 @@ namespace Lip2p.Web.admin.users
                     groupServer.group_id = Convert.ToInt32(ddlServingGroup.SelectedValue);
                 }
 
+                // 修改借款人信息
+                UpdateLoanerInfo(model.id, model.reg_time);
+
                 //保存身份证照片
                 try
                 {
@@ -343,6 +378,112 @@ namespace Lip2p.Web.admin.users
             }
             return result;
         }
+
+        private void UpdateLoanerInfo(int userId, DateTime lastUpdateTime)
+        {
+            var loanerInfo = context.li_loaners.SingleOrDefault(l => l.user_id == userId);
+            if (chkIsLoaner.Checked)
+            {
+                if (loanerInfo == null)
+                {
+                    loanerInfo = new li_loaners
+                    {
+                        age = Convert.ToInt16(txtAge.Text),
+                        user_id = userId,
+                        educational_background = txtEducationalBackground.Text,
+                        income = txtIncome.Text,
+                        job = txtJob.Text,
+                        last_update_time = lastUpdateTime,
+                        working_at = txtWorkingAt.Text,
+                        marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue),
+                    };
+                    context.li_loaners.InsertOnSubmit(loanerInfo);
+
+                    if (chkBindCompany.Checked)
+                    {
+                        var loanerCompany = new li_loaner_companies
+                        {
+                            name = txtCompanyName.Text,
+                            business_lawsuit = txtBusinessLawsuit.Text,
+                            business_scope = txtBusinessScope.Text,
+                            business_status = txtBusinessStatus.Text,
+                            income_yearly = txtIncomeYearly.Text,
+                            li_loaners = loanerInfo,
+                            net_assets = txtNetAssets.Text,
+                            registered_capital = txtRegisteredCapital.Text,
+                            setup_time = Convert.ToDateTime(txtSetupTime.Text),
+                            remark = txtCompanyRemark.Text,
+                        };
+                        context.li_loaner_companies.InsertOnSubmit(loanerCompany);
+                    }
+                }
+                else
+                {
+                    loanerInfo.age = Convert.ToInt16(txtAge.Text);
+                    loanerInfo.user_id = userId;
+                    loanerInfo.educational_background = txtEducationalBackground.Text;
+                    loanerInfo.income = txtIncome.Text;
+                    loanerInfo.job = txtJob.Text;
+                    loanerInfo.last_update_time = lastUpdateTime;
+                    loanerInfo.working_at = txtWorkingAt.Text;
+                    loanerInfo.marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue);
+
+                    UpdateLoanerCompanyInfo(loanerInfo);
+                }
+            }
+            else if (loanerInfo != null)
+            {
+                var c = loanerInfo.li_loaner_companies.SingleOrDefault();
+                if (c != null)
+                {
+                    context.li_loaner_companies.DeleteOnSubmit(c);
+                }
+                context.li_loaners.DeleteOnSubmit(loanerInfo);
+            }
+        }
+
+        private void UpdateLoanerCompanyInfo(li_loaners loaner)
+        {
+            var company = loaner.li_loaner_companies.SingleOrDefault();
+            if (chkBindCompany.Checked)
+            {
+                if (company == null)
+                {
+                    company = new li_loaner_companies
+                    {
+                        name = txtCompanyName.Text,
+                        business_lawsuit = txtBusinessLawsuit.Text,
+                        business_scope = txtBusinessScope.Text,
+                        business_status = txtBusinessStatus.Text,
+                        income_yearly = txtIncomeYearly.Text,
+                        li_loaners = loaner,
+                        net_assets = txtNetAssets.Text,
+                        registered_capital = txtRegisteredCapital.Text,
+                        setup_time = Convert.ToDateTime(txtSetupTime.Text),
+                        remark = txtCompanyRemark.Text,
+                    };
+                    context.li_loaner_companies.InsertOnSubmit(company);
+                }
+                else
+                {
+                    company.name = txtCompanyName.Text;
+                    company.business_lawsuit = txtBusinessLawsuit.Text;
+                    company.business_scope = txtBusinessScope.Text;
+                    company.business_status = txtBusinessStatus.Text;
+                    company.income_yearly = txtIncomeYearly.Text;
+                    company.li_loaners = loaner;
+                    company.net_assets = txtNetAssets.Text;
+                    company.registered_capital = txtRegisteredCapital.Text;
+                    company.setup_time = Convert.ToDateTime(txtSetupTime.Text);
+                    company.remark = txtCompanyRemark.Text;
+                }
+            }
+            else if (company != null)
+            {
+                context.li_loaner_companies.DeleteOnSubmit(company);
+            }
+        }
+
         #endregion
 
         private void LoadAlbum(dt_users model, Lip2pEnums.AlbumTypeEnum type)
@@ -425,6 +566,24 @@ namespace Lip2p.Web.admin.users
                     return;
                 }
                 JscriptMsg("添加用户成功！", "user_list.aspx", "Success");
+            }
+        }
+
+        protected void chkIsLoaner_OnCheckedChanged(object sender, EventArgs e)
+        {
+            if (pagein == "Edit")
+            {
+                txtUserName.Attributes.Remove("ajaxurl");
+                ClientScript.RegisterClientScriptBlock(Page.GetType(), "SwitchTab", "$(function (){ $('.content-tab-ul-wrap a:nth(3)').click();});", true);
+            }
+        }
+
+        protected void chkBindCompany_OnCheckedChanged(object sender, EventArgs e)
+        {
+            if (pagein == "Edit")
+            {
+                txtUserName.Attributes.Remove("ajaxurl");
+                ClientScript.RegisterClientScriptBlock(Page.GetType(), "SwitchTab", "$(function (){ $('.content-tab-ul-wrap a:nth(3)').click();});", true);
             }
         }
     }
