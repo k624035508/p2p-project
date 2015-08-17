@@ -232,7 +232,10 @@ namespace Lip2p.Web.admin.project
             {
                 this.risk_id = risk.id;
                 if (risk.li_loaners != null)
+                {
                     loaner = risk.li_loaners;
+                    if(loaner.dt_users == null) loaner.dt_users = new dt_users();
+                }
 
                 //查询风控信息下面的标的物
                 mortgages = (from rm in context.li_risk_mortgage

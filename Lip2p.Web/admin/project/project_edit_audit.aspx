@@ -309,7 +309,7 @@
                         <td>
                             <div class="position">
                                 <span id="loaner_name">
-                                    <%=loaner.name%></span>
+                                    <%=loaner.dt_users.real_name%></span>
                             </div>
                         </td>
                     </tr>
@@ -319,7 +319,7 @@
                         </th>
                         <td>
                             <span id="loaner_gender">
-                                <%=Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.PersonSexTypeEnum)loaner.gender)%></span>
+                                <%=loaner.dt_users.sex)%></span>
                         </td>
                     </tr>
                     <tr>
@@ -346,7 +346,7 @@
                         </th>
                         <td>
                             <span id="loaner_tel">
-                                <%=loaner.tel%></span>
+                                <%=loaner.dt_users.mobile%></span>
                         </td>
                     </tr>
                     <tr>
@@ -355,7 +355,7 @@
                         </th>
                         <td>
                             <span id="loaner_id_card_number">
-                                <%=loaner.id_card_number%></span>
+                                <%=loaner.dt_users.id_card_number%></span>
                         </td>
                     </tr>
                 </table>

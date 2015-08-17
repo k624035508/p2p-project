@@ -67,15 +67,15 @@
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
-    <td><a href="loaner_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
-    <td><%# Utils.GetLip2pEnumDes((Lip2pEnums.PersonSexTypeEnum) Convert.ToByte(Eval("gender")))%></td>
-    <td><%# string.IsNullOrWhiteSpace((string) Eval("tel")) ? "" : string.Format("{0:### #### ####}", long.Parse(Eval("tel").ToString()))%></td>
+    <td><a href="loaner_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("dt_users.real_name") %></a></td>
+    <td><%# Eval("dt_users.sex")%></td>
+    <td><%# string.IsNullOrWhiteSpace((string) Eval("dt_users.mobile")) ? "" : string.Format("{0:### #### ####}", long.Parse(Eval("dt_users.mobile").ToString()))%></td>
     <td><%# Eval("age")%></td>
-    <td><%# Eval("cencus")%></td>
+    <td><%# Eval("dt_users.area")%></td>
     <td><%# Eval("educational_background")%></td>
     <td><%# Utils.GetLip2pEnumDes((Lip2pEnums.MaritalStatusEnum) Convert.ToByte(Eval("marital_status")))%></td>
-    <td><%# Eval("id_card_number")%></td>
-    <td><%# Eval("email") %></td>
+    <td><%# Eval("dt_users.id_card_number")%></td>
+    <td><%# Eval("dt_users.email") %></td>
     <td><%# Eval("income")%></td>
     <td><a href="mortgage_list.aspx?loaner_id=<%#Eval("id")%>">管理标的物（<%# Eval("li_mortgages.Count")%>）</a></td>
   </tr>

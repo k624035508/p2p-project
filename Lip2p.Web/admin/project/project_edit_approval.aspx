@@ -295,7 +295,7 @@
                         <td>
                             <div class="position">
                                 <span id="loaner_name">
-                                    <%=loaner.name%></span>
+                                    <%=loaner.dt_users.real_name%></span>
                                 <%if (this.action == Lip2p.Common.DTEnums.ActionEnum.Add.ToString())
                                   { %>
                                 <asp:Button ID="btnSelectLoaner" runat="server" CssClass="ibtn" OnClick="OpenMortgageDialog"
@@ -315,7 +315,7 @@
                         </th>
                         <td>
                             <span id="loaner_gender">
-                                <%=loaner.gender > 0 ? Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.PersonSexTypeEnum)loaner.gender) : ""%></span>
+                                <%=loaner.dt_users.sex%></span>
                         </td>
                     </tr>
                     <tr>
@@ -342,7 +342,7 @@
                         </th>
                         <td>
                             <span id="loaner_tel">
-                                <%=loaner.tel%></span>
+                                <%=loaner.dt_users.mobile%></span>
                         </td>
                     </tr>
                     <tr>
@@ -351,7 +351,7 @@
                         </th>
                         <td>
                             <span id="loaner_id_card_number">
-                                <%=loaner.id_card_number%></span>
+                                <%=loaner.dt_users.id_card_number%></span>
                         </td>
                     </tr>
                 </table>
