@@ -538,7 +538,7 @@
       <Column Name="registered_capital" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="business_scope" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="business_status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="business_lawsuit" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="business_lawsuit" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="income_yearly" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="net_assets" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="remark" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />

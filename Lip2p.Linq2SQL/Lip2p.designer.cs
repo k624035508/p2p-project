@@ -12259,7 +12259,7 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_lawsuit", DbType="NChar(20)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_lawsuit", DbType="NVarChar(20)")]
 		public string business_lawsuit
 		{
 			get
