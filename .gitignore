@@ -14,3 +14,4 @@ packages/
 *site.config
 *applicationhost.config
 node_modules/
+build/

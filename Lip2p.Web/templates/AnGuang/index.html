@@ -1,32 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
-    <link rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<%templateskin%>/css/head.css"/>
-    <link rel="stylesheet" href="<%templateskin%>/css/index.css"/>
-    <link rel="stylesheet" href="<%templateskin%>/css/invest-list.css"/>
-    <link rel="stylesheet" href="<%templateskin%>/css/footer.css"/>
-    <script src="<%templateskin%>/js/jquery-1.11.3.min.js"></script>
-    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/index.bundle.js"></script>
 </head>
-<script>
-    function iconHover(id, style, styleHover) {
-        $(id).hover(function () {
-            $(this).removeClass(style).addClass(styleHover);
-        }, function () {
-            $(this).removeClass(styleHover).addClass(style);
-        })
-    }
-    $(function(){
-        // floating icon hover
-        iconHover("#floating-qq", "qq-icon", "qqHover-icon");
-        iconHover("#floating-cal", "cal-icon", "calHover-icon");
-        iconHover("#floating-top", "top-icon", "topHover-icon");
-    });
-
-</script>
 <body>
 <!--head-->
 <div class="container-fluid top-bar-wrap">

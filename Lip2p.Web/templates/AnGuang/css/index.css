@@ -101,7 +101,7 @@ span.dynamic-title {
 span.link-mark {
     width: 30px;
     height: 30px;
-    background:url("../imgs/index/link-mark-icon.png") no-repeat;
+    background: url("../imgs/index/link-mark-icon.png") no-repeat;
 }
 
 div.news-wrap, div.report-wrap {padding: 25px 20px;}
