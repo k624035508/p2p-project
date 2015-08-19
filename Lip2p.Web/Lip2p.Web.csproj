@@ -644,6 +644,7 @@
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\index.html" />
+    <Content Include="templates\AnGuang\js\ie8-polyfills.js" />
     <Content Include="templates\AnGuang\js\index.js" />
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\webpack.config.js" />
