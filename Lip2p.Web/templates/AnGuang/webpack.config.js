@@ -5,7 +5,8 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
         index: "./js/index.js",
-        login: "./js/login.js"
+        login: "./js/login.js",
+        invest_detail: "./js/invest_detail.js"
     },
     output: {
         path: path.join(__dirname, './build'),

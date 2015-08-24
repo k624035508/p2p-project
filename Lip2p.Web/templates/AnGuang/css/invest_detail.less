@@ -1,0 +1,347 @@
+//标书样式
+@images: "../imgs/index";
+@import "common-style";
+
+body {
+	background: @body-color;
+}
+
+div.breadcrumbs {
+	width: @min-width;
+	font-size: @font15;
+	margin: 20px auto;
+	color: @dark-grey;
+	a {
+		color: @dark-grey;
+	}
+}
+
+.tender-face-block {
+	display: inline-block;
+	height: 100%;
+	border: @border;
+	background: @white;
+}
+
+.title-mark {
+	height: 30px;
+	line-height: 30px;
+	color: @white;
+	font-size: @font18;
+	padding: 3px 15px;
+	background: @red;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+div.tender-content {
+	width: @min-width;
+	height: 330px;
+	margin: 0 auto;
+	.tender-face {
+		width: 780px;
+		.tender-face-block;
+		.invest-title {
+			padding: 14px 15px;
+			border-bottom: @border-dashed;
+			& > * {
+				.inline-block;
+			}
+			span a {
+				font-size: @font20;
+				color: @blue;
+			}
+		}
+		.invest-rules {
+			height: 120px;
+			padding: 18px 0;
+			border-bottom: @border-dashed;
+			& > * {
+				.inline-block;
+				float: left;
+				width: 33.333%;
+				height: 100%;
+				padding: 5px;
+				text-align: center;
+			}
+			.sum, .deadline {
+				border-right: @border;
+			}
+			.sum div:first-child, .deadline div:first-child, .apr div:first-child {
+				font-size: @font18;
+				color: @grey;
+			}
+			.rules-style {
+				font-size: @font25;
+				color: @red;
+				margin-top: 15px;
+				span {
+					font-size: @font15;
+				}
+			}
+		}
+		.repayment {
+			padding: 19.5px 45px;
+			& > * {
+				.inline-block;
+				float: left;
+				width: 50%;
+				height: 100%;
+			}
+			.repayment-way {
+				table tbody > tr {
+					& td {
+						padding: 8px 20px 8px 0;
+						font-size: @font15;
+					}
+					& td:first-child {
+						color: @grey;
+					}
+					& td:last-child {
+						color: @dark-grey;
+					}
+				}
+			}
+			.interest-way {
+				.repayment-way;
+				padding-left: 105px;
+			}
+		}
+	}
+	.invest-control {
+		width: 295px;
+		height: 100%;
+		padding: 25px 0;
+		.tender-face-block;
+		.btn-common {
+			width: 100%;
+			height: 40px;
+			font-size: @font18;
+			border-radius: 4px;
+		}
+		.investable-amount-wrap {
+			padding: 0 18px;
+			.investable-amount {
+				margin: 25px 0;
+				font-size: @font40;
+				color: @red;
+				text-align: center;
+				span {
+					font-size: @font20;
+				}
+			}
+			.account-balance {
+				//未满标 登录后
+				& div, & input {
+					margin-bottom: 18px;
+				}
+				& span {
+					font-size: @font18;
+					color: @dark-grey;
+				}
+				& a {
+					font-size: @font18;
+					color: @blue;
+				}
+				& input {
+					width: 100%;
+					height: 40px;
+					padding: 0 10px;
+					border: @border;
+					border-radius: 4px;
+				}
+
+				& .investing-btn {
+					color: @white;
+					background: @red;
+					border-color: @red;
+				}
+				.tips {
+					font-size: @font15;
+					color: @dark-grey;
+				}
+			}
+			.account-balance-unlogin {
+				//未满标 未登录
+				div {
+					margin: 30px 0 25px 0;
+					font-size: @font18;
+					color: @dark-grey;
+				}
+				.register-btn {
+					.account-balance .investing-btn;
+				}
+				span {
+					display: block;
+					margin-top: 20px;
+					font-size: @font15;
+					text-align: center;
+					& a {
+						font-size: @font15;
+						color: @blue;
+					}
+				}
+			}
+			.account-balance-empty {
+				//满标
+				.tips {
+					font-size: @font15;
+					line-height: 30px;
+					margin-bottom: 28px;
+				}
+				& .empty-btn {
+					color: @dark-grey;
+					background: @light-grey;
+					border-color: @light-grey;
+				}
+			}
+		}
+	}
+}
+
+span.invest-style-tab {
+	font-size: @font20;
+	color: @blue;
+	padding: 1px 5px;
+	margin-right: 10px;
+	border: 1px solid;
+}
+
+.invest-list-icon {
+	width: 28px;
+	height: 28px;
+	margin-left: 10px;
+	background: url("@{images}/invest-list-icon.png") no-repeat;
+}
+
+.jian-icon {
+	background-position: -15px -15px;
+}
+
+.xin-icon {
+	background-position: -15px -73px;
+}
+
+.yue-icon {
+	background-position: -15px -131px;
+}
+
+div.repayment .progress-custom {
+	width: 140px;
+	height: 10px;
+	margin-bottom: 0;
+}
+
+//项目内容
+div.project-content-wrap {
+	width: @min-width;
+	background: @white;
+	border: @border;
+	padding: 35px 0;
+	margin: 35px auto 50px auto;
+	& > div {
+		.inline-block;
+		float: left;
+	}
+	.project-content-left {
+		width: 87%;
+		font-size: @font15;
+		& > ul {
+			margin: 35px 38px;
+			& > li {margin-bottom: 15px;}
+			& > li > span {
+				display: inline-block;
+				vertical-align: top;
+			}
+			& > li span:first-child {
+				width: 85px;
+				color: @grey;
+				margin-right: 10px;
+			}
+			li .span-sec {
+				width: 738px;
+				color: @dark-grey;
+			}
+		}
+
+		.personal-info {
+			padding: 35px 38px;
+			& > ul {
+				.inline-block;
+				float: left;
+				width: 33.33%;
+				margin-bottom: 0;
+				font-size: @font15;
+				& > li {
+					margin-bottom: 15px;
+					span:first-child {
+						color: @grey;
+						margin-right: 10px;
+					}
+					span {
+						display: inline-block;
+						width: 85px;
+					}
+				}
+				& li:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+		.photo-cell {
+			margin: 33px 28px 18px 28px;
+			.col-md-3 {
+				.thumbnail-custom {
+					margin: 6px 0 0 0;
+					border-radius: 0;
+				}
+				.photo-title {
+					position: relative;
+					top: -22px;
+					color: @white;
+					text-align: center;
+					background: #080808;
+					opacity: 0.5;
+					-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+					filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+				}
+			}
+		}
+		.invest-record {
+			margin: 35px 38px;
+			height: 250px;
+			overflow-y: auto;
+			thead tr > th {background: #f4f4f4;}
+			tbody .account-style {color: @blue;}
+		}
+	}
+	.project-content-right {
+		width: 13%;
+		height: 1760px;
+		border-left: @border;
+		ul {
+			position: relative;
+			left: -5px;
+			li{
+				margin-bottom: 20px;
+				a {
+					font-size: @font15;
+					color: grey;
+					text-decoration: none;
+					span {
+						display: inline-block;
+						width: 10px;
+						height: 10px;
+						border-radius: 10px;
+						border: 1px solid @grey;
+						margin-right: 5px;
+					}
+					&:hover, &:focus {
+						color: @blue;
+						span {background: @grey;}
+					}
+				}
+			}
+		}
+	}
+}

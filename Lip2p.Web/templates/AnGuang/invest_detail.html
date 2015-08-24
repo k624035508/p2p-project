@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标书</title>
+    <!--[if lt IE 9]>
+    <script src="js/ie8-polyfill.js"></script>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <script src="build/tender.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<div class="container-fluid top-bar-wrap">
+    <div class="top-bar">
+        <span class="top-bar-icon head-hot-line-icon"></span>
+        <span class="head-hot-line-num">客服热线：400-8989-089</span>
+        <span class="top-bar-icon weibo-icon"></span>
+        <span class="top-bar-icon wechat-icon"></span>
+
+        <div class="pull-right">
+            <ul class="list-inline">
+                <li><a href="#">登录</a></li>
+                <li class="hr-line">|</li>
+                <li><a href="#">注册</a></li>
+                <li class="hr-line">|</li>
+                <li><a href="#">帮助</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid nav-bar-wrap">
+    <div class="nav-bar">
+        <nav class="pull-right">
+            <ul class="list-inline">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="#" class="nav-active">我要理财</a></li>
+                <li role="presentation" id="myAccount" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        我的账户 <span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-custom">
+                        <li><a href="#">账户总览</a></li>
+                        <li><a href="#">交易明细</a></li>
+                        <li><a href="#">回款计划</a></li>
+                        <li><a href="#">安全中心</a></li>
+                        <li><a href="#">银行卡管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">安全保障</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--head end-->
+
+<!--面包屑导航-->
+<div class="breadcrumbs">
+    <a href="#">我要理财</a>
+    <span> > </span>
+    <span>项目详情</span>
+</div>
+<!--面包屑导航 end-->
+
+<!--标书样式-->
+<div class="tender-content">
+    <div class="tender-face">
+        <div class="invest-title">
+            <span class="invest-style-tab">房贷宝</span>
+            <span><a href="#">石化供应链系列 - XXX公司应收</a></span>
+            <span class="invest-list-icon jian-icon"></span>
+            <span class="invest-list-icon xin-icon"></span>
+            <span class="invest-list-icon yue-icon"></span>
+        </div>
+        <div class="invest-rules">
+            <div class="sum">
+                <div>借款金额</div>
+                <div class="rules-style">5,000,000.00 <span>元</span></div>
+            </div>
+            <div class="deadline">
+                <div>期限</div>
+                <div class="rules-style">2 <span>个月</span></div>
+            </div>
+            <div class="apr">
+                <div>年化利率</div>
+                <div class="rules-style">18.00 <span>%</span></div>
+            </div>
+        </div>
+        <div class="repayment">
+            <div class="repayment-way">
+                <table>
+                    <tbody>
+                        <tr><td>还款方式</td><td colspan="2">先息后本</td></tr>
+                        <tr><td>投标人数</td><td colspan="2">2人</td></tr>
+                        <tr><td>投标进度</td><td><div class="progress progress-custom">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                            </div>
+                        </div></td><td>20%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="interest-way">
+                <table>
+                    <tbody>
+                        <tr><td>计息方式</td><td>满标当天，立即计息</td></tr>
+                        <tr><td>发标时间</td><td>2015-08-20 16：25</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="invest-control pull-right">
+        <div><span class="title-mark">可投金额</span></div>
+        <div class="investable-amount-wrap">
+            <div class="investable-amount">32,500.00 <span>元</span></div>
+            <!--未满标 登录后-->
+            <div class="account-balance hidden">
+                <div><span>账户余额 5,008.00 元</span><a href="#" class="pull-right">[充值]</a></div>
+                <input type="text" placeholder="请输入投资金额"/>
+                <button type="button" class="btn-common investing-btn">投 资</button>
+            </div>
+            <!--未满标 未登录-->
+            <div class="account-balance-unlogin">
+                <div>起投金额100元</div>
+                <button type="button" class="btn-common register-btn">30秒快速注册</button>
+                <span>已有账号？ <a href="#">立即登录</a></span>
+            </div>
+            <!--满标-->
+            <div class="account-balance-empty hidden">
+                <div class="tips">已经有10名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
+                <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--标书样式 end-->
+
+<!--项目内容-->
+<div class="project-content-wrap clearfix">
+    <div class="project-content-left">
+        <div id="project-summary"><span class="title-mark">1.项目简介</span></div>
+        <ul class="list-unstyled">
+            <li><span>项目描述</span><span class="span-sec">借款企业主营业务为矿产品、煤炭等产品的销售，借款用于采购铝矾土，销售给与其合作关系稳定的下游客户，采购的货物由监管公司进行监管，借款企业分批回款分批出货。该项目的风控要点在于对供应链的控制。</span></li>
+            <li><span>借款用途</span><span class="span-sec">补充流动资金。</span></li>
+            <li><span>还款来源</span><span class="span-sec">工资收入。</span></li>
+            <li><span>借款期限</span><span class="span-sec">借款1个月，期限较短。</span></li>
+        </ul>
+        <div id="borrower-info"><span class="title-mark">2.借款人信息</span></div>
+        <div class="personal-info clearfix">
+            <ul class="list-unstyled">
+                <li><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><span>李二狗</span></li>
+                <li><span>出生年月</span><span>1975-05-10</span></li>
+                <li><span>年 收 入</span><span>10万</span></li>
+                <li><span>文化程度</span><span>专科</span></li>
+            </ul>
+            <ul class="list-unstyled">
+                <li><span>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</span><span>广东省</span></li>
+                <li><span>婚姻状况</span><span>已婚</span></li>
+                <li><span>房产数量</span><span>1套</span></li>
+                <li><span>是否购车</span><span>是</span></li>
+            </ul>
+            <ul class="list-unstyled">
+                <li><span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span><span>男</span></li>
+                <li><span>逾期次数</span><span>0次</span></li>
+                <li><span>借款次数</span><span>1次</span></li>
+            </ul>
+        </div>
+        <div id="corporate-info"><span class="title-mark">3.企业信息</span></div>
+        <ul class="list-unstyled">
+            <li><span>成立时间</span><span class="span-sec">2013年</span></li>
+            <li><span>注册资本</span><span class="span-sec">5000万</span></li>
+            <li><span>净 资 产</span><span class="span-sec">1,350.00 万元</span></li>
+            <li><span>经营范围</span><span class="span-sec">有色金属和油品等贸易商品</span></li>
+            <li><span>经营状况</span><span class="span-sec">截至2014年3月31日，企业资产超过3亿。</span></li>
+            <li><span>涉诉情况</span><span class="span-sec">根据全国法院被执行人信息查询系统、全国法院失信被执行人名单信息公布及互联网搜索，未发现借款企业涉诉信息。</span></li>
+        </ul>
+        <div id="risk-control"><span class="title-mark">4.风控措施</span></div>
+        <ul class="list-unstyled">
+            <li><span>风控描述</span><span class="span-sec">房屋抵押，抵押物位于经济发达的南海区，临近禅城一环，交通便利，产权清晰，能单独处理。</span></li>
+            <li><span>房屋地址</span><span class="span-sec">佛山市南海区</span></li>
+            <li><span>房屋面积</span><span class="span-sec">245.98平方米</span></li>
+            <li><span>房屋楼龄</span><span class="span-sec">抵押物业楼龄不超过5年</span></li>
+            <li><span>市场价值</span><span class="span-sec">￥3,500,000.00</span></li>
+            <li><span>房屋用途</span><span class="span-sec">自住</span></li>
+        </ul>
+        <div id="relevant-info"><span class="title-mark">5.相关资料</span></div>
+        <div class="row photo-cell">
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <a href="#" class="thumbnail thumbnail-custom">
+                    <img src="imgs/index/shilanTest.jpg"/>
+                </a>
+                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+            </div>
+        </div>
+        <div id="invest-record"><span class="title-mark">6.投标记录</span></div>
+        <div class="invest-record">
+            <table class="table table-hover">
+                <thead>
+                    <tr><th>序号</th><th>用户名</th><th>投标金额</th><th>投标时间</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td class="account-style">135****3546</td><td>23000.00</td><td>2015-06-27 14:20</td></tr>
+                    <tr><td>2</td><td class="account-style">136****4897</td><td>10500.00</td><td>2015-06-30 10:12</td></tr>
+                    <tr><td>3</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
+                    <tr><td>4</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
+                    <tr><td>5</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="project-content-right">
+        <ul class="list-unstyled">
+            <li><a href="#project-summary"><span></span>1.项目简介</a></li>
+            <li><a href="#borrower-info"><span></span>2.借款人信息</a></li>
+            <li><a href="#corporate-info"><span></span>3.企业信息</a></li>
+            <li><a href="#risk-control"><span></span>4.风控措施</a></li>
+            <li><a href="#relevant-info"><span></span>5.相关资料</a></li>
+            <li><a href="#invest-record"><span></span>6.投资记录</a></li>
+        </ul>
+    </div>
+</div>
+<!--项目内容 end-->
+</body>
+</html>

@@ -644,9 +644,13 @@
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\index.html" />
-    <Content Include="templates\AnGuang\js\ie8-polyfills.js" />
+    <Content Include="templates\AnGuang\invest_detail.html" />
+    <Content Include="templates\AnGuang\js\html5shiv.min.js" />
+    <Content Include="templates\AnGuang\js\ie8-polyfill.js" />
     <Content Include="templates\AnGuang\js\index.js" />
+    <Content Include="templates\AnGuang\js\invest_detail.js" />
     <Content Include="templates\AnGuang\js\login.js" />
+    <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\lip2p\404.aspx" />
     <Content Include="templates\lip2p\about.xml" />
@@ -2411,6 +2415,8 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\lip2p.pubxml" />
     <Content Include="templates\AnGuang\package.json" />
+    <Content Include="templates\AnGuang\css\common-style.less" />
+    <Content Include="templates\AnGuang\css\invest_detail.less" />
     <None Include="templates\lip2p\css\bootstrap-theme.css.map" />
     <None Include="templates\lip2p\css\bootstrap.css.map" />
     <Content Include="tools\calc_stand_guard_fee.ashx" />
