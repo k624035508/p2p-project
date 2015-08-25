@@ -176,7 +176,7 @@
     <Compile Include="Page\project_list.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\project_detail.cs">
+    <Compile Include="Page\project.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Page\mytrade.cs">

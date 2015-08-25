@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -70,35 +72,39 @@
     <div class="tender-face">
         <div class="invest-title">
             <span class="invest-style-tab">房贷宝</span>
-            <span><a href="#">石化供应链系列 - XXX公司应收</a></span>
-            <span class="invest-list-icon jian-icon"></span>
-            <span class="invest-list-icon xin-icon"></span>
+            <span><a href="#">{projectModel.title}</a></span>
+            
+            <%if(projectModel.tag.ToString()=="1")%>
             <span class="invest-list-icon yue-icon"></span>
+            <%else if(projectModel.tag.ToString()=="2")%>
+            <span class="invest-list-icon jian-icon"></span>
+            <%/if%>
+            <span class="invest-list-icon xin-icon"></span>
         </div>
         <div class="invest-rules">
             <div class="sum">
                 <div>借款金额</div>
-                <div class="rules-style">5,000,000.00 <span>元</span></div>
+                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span>元</span></div>
             </div>
             <div class="deadline">
                 <div>期限</div>
-                <div class="rules-style">2 <span>个月</span></div>
+                <div class="rules-style">{projectModel.repayment_term_span_count}<span><%=Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></div>
             </div>
             <div class="apr">
                 <div>年化利率</div>
-                <div class="rules-style">18.00 <span>%</span></div>
+                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span>%</span></div>
             </div>
         </div>
         <div class="repayment">
             <div class="repayment-way">
                 <table>
                     <tbody>
-                        <tr><td>还款方式</td><td colspan="2">先息后本</td></tr>
-                        <tr><td>投标人数</td><td colspan="2">2人</td></tr>
+                        <tr><td>还款方式</td><td colspan="2"><%=Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
+                        <tr><td>投标人数</td><td colspan="2">{invsetorCount}人</td></tr>
                         <tr><td>投标进度</td><td><div class="progress progress-custom">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{investmentProgress}" aria-valuemin="0" aria-valuemax="100" style="width: {investmentProgress}%">
                             </div>
-                        </div></td><td>20%</td></tr>
+                        </div></td><td>{investmentProgress}%</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -106,7 +112,7 @@
                 <table>
                     <tbody>
                         <tr><td>计息方式</td><td>满标当天，立即计息</td></tr>
-                        <tr><td>发标时间</td><td>2015-08-20 16：25</td></tr>
+                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -115,24 +121,28 @@
     <div class="invest-control pull-right">
         <div><span class="title-mark">可投金额</span></div>
         <div class="investable-amount-wrap">
-            <div class="investable-amount">32,500.00 <span>元</span></div>
-            <!--未满标 登录后-->
-            <div class="account-balance hidden">
-                <div><span>账户余额 5,008.00 元</span><a href="#" class="pull-right">[充值]</a></div>
-                <input type="text" placeholder="请输入投资金额"/>
-                <button type="button" class="btn-common investing-btn">投 资</button>
+            <div class="investable-amount">{investmentBalance}</div>
+            <%if(projectModel.status>(int)Lip2pEnums.ProjectStatusEnum.FaBiao)%>
+            <!--满标-->
+            <div class="account-balance-empty">
+                <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
+                <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
             </div>
+            <%else if(!IsUserLogin())%>
             <!--未满标 未登录-->
             <div class="account-balance-unlogin">
                 <div>起投金额100元</div>
                 <button type="button" class="btn-common register-btn">30秒快速注册</button>
-                <span>已有账号？ <a href="#">立即登录</a></span>
+                <span>已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></span>
             </div>
-            <!--满标-->
-            <div class="account-balance-empty hidden">
-                <div class="tips">已经有10名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
-                <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
+            <%else%>
+            <!--未满标 登录后-->
+            <div class="account-balance">
+                <div><span>账户余额 {idle_money} 元</span><a href='<%linkurl("recharge")%>' class="pull-right">[充值]</a></div>
+                <input type="text" placeholder="请输入投资金额"/>
+                <button type="button" class="btn-common investing-btn">投 资</button>
             </div>
+            <%/if%>
         </div>
     </div>
 </div>
@@ -151,79 +161,81 @@
         <div id="borrower-info"><span class="title-mark">2.借款人信息</span></div>
         <div class="personal-info clearfix">
             <ul class="list-unstyled">
-                <li><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><span>李二狗</span></li>
-                <li><span>出生年月</span><span>1975-05-10</span></li>
-                <li><span>年 收 入</span><span>10万</span></li>
-                <li><span>文化程度</span><span>专科</span></li>
+                <li><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>
+                <li><span>出生年月</span><span>暂无数据</span></li>
+                <li><span>月 收 入</span><span>{loaner.income}</span></li>
+                <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
             </ul>
             <ul class="list-unstyled">
-                <li><span>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</span><span>广东省</span></li>
-                <li><span>婚姻状况</span><span>已婚</span></li>
-                <li><span>房产数量</span><span>1套</span></li>
-                <li><span>是否购车</span><span>是</span></li>
+                <li><span>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</span><span>{loaner.dt_users.area}</span></li>
+                <li><span>婚姻状况</span><span><%=Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
+                <li><span>房产数量</span><span>暂无数据</span></li>
+                <li><span>是否购车</span><span>暂无数据</span></li>
             </ul>
             <ul class="list-unstyled">
-                <li><span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span><span>男</span></li>
-                <li><span>逾期次数</span><span>0次</span></li>
-                <li><span>借款次数</span><span>1次</span></li>
+                <li><span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span><span><%=loaner.dt_users.sex%></span></li>
+                <li><span>逾期次数</span><span>暂无数据</span></li>
+                <li><span>借款次数</span><span>暂无数据</span></li>
             </ul>
         </div>
         <div id="corporate-info"><span class="title-mark">3.企业信息</span></div>
+        <%if(loaner_company==null)%>
+        暂无数据
+        <%else%>
         <ul class="list-unstyled">
-            <li><span>成立时间</span><span class="span-sec">2013年</span></li>
-            <li><span>注册资本</span><span class="span-sec">5000万</span></li>
-            <li><span>净 资 产</span><span class="span-sec">1,350.00 万元</span></li>
-            <li><span>经营范围</span><span class="span-sec">有色金属和油品等贸易商品</span></li>
-            <li><span>经营状况</span><span class="span-sec">截至2014年3月31日，企业资产超过3亿。</span></li>
-            <li><span>涉诉情况</span><span class="span-sec">根据全国法院被执行人信息查询系统、全国法院失信被执行人名单信息公布及互联网搜索，未发现借款企业涉诉信息。</span></li>
+            <li><span>企业名称</span><span class="span-sec">{loaner_company.name}</span></li>
+            <li><span>成立时间</span><span class="span-sec">{loaner_company.setup_time}</span></li>
+            <li><span>注册资本</span><span class="span-sec">{loaner_company.registered_capital}</span></li>
+            <li><span>净 资 产</span><span class="span-sec">{loaner_company.net_assets}</span></li>
+            <li><span>经营范围</span><span class="span-sec">{loaner_company.business_scope}</span></li>
+            <li><span>经营状况</span><span class="span-sec">{loaner_company.business_status}</span></li>
+            <li><span>涉诉情况</span><span class="span-sec">{loaner_company.business_lawsuit}</span></li>
+            <li><span>年收入</span><span class="span-sec">{loaner_company.income_yearly}</span></li>
+            <li><span>备注</span><span class="span-sec">{loaner_company.remark}</span></li>
         </ul>
+        <%/if%>
         <div id="risk-control"><span class="title-mark">4.风控措施</span></div>
         <ul class="list-unstyled">
-            <li><span>风控描述</span><span class="span-sec">房屋抵押，抵押物位于经济发达的南海区，临近禅城一环，交通便利，产权清晰，能单独处理。</span></li>
-            <li><span>房屋地址</span><span class="span-sec">佛山市南海区</span></li>
-            <li><span>房屋面积</span><span class="span-sec">245.98平方米</span></li>
-            <li><span>房屋楼龄</span><span class="span-sec">抵押物业楼龄不超过5年</span></li>
-            <li><span>市场价值</span><span class="span-sec">￥3,500,000.00</span></li>
-            <li><span>房屋用途</span><span class="span-sec">自住</span></li>
+            <li><span>风控描述</span><span class="span-sec">{risk.risk_content}</span></li>
+            <%foreach(var mortgage in mortgages)%>
+            <%csharp%>
+            var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
+            var kv = (JObject)JsonConvert.DeserializeObject(mortgage.properties);
+
+            var properties = schemeObj.Cast<KeyValuePair<string, JToken>>().Select(p => new Tuple<string,string>(p.Value.ToString(), kv[p.Key].ToString()))
+                .Concat(new [] {new Tuple<string,string>("市场价值",mortgage.valuation.ToString("c")) }).ToList();
+            foreach (var p in properties) {
+            <%/csharp%>
+            <li><span><%=p.Item1%></span><span class="span-sec"><%=p.Item2%></span></li>
+            <%csharp%> } <%/csharp%>
+            <%/foreach%>
         </ul>
         <div id="relevant-info"><span class="title-mark">5.相关资料</span></div>
         <div class="row photo-cell">
+            <%foreach(var picture in albums_pictures)%>
             <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
+                <a href="javascript:;" class="thumbnail thumbnail-custom">
+                    <img src="{picture.thumb_path}" origin-src="{picture.original_path}"/>
                 </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+                <div class="photo-title">{picture.remark}</div>
             </div>
+            <%/foreach%>
+            <%foreach(var picture in albums_credit)%>
             <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
+                <a href="javascript:;" class="thumbnail thumbnail-custom">
+                    <img src="{picture.thumb_path}" origin-src="{picture.original_path}"/>
                 </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+                <div class="photo-title">{picture.remark}</div>
             </div>
+            <%/foreach%>
+            <%foreach(var picture in albums_mortgage)%>
             <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
+                <a href="javascript:;" class="thumbnail thumbnail-custom">
+                    <img src="{picture.thumb_path}" origin-src="{picture.original_path}"/>
                 </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
+                <div class="photo-title">{picture.remark}</div>
             </div>
-            <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
-                </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
-            </div>
-            <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
-                </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
-            </div>
-            <div class="col-md-3 col-xs-3">
-                <a href="#" class="thumbnail thumbnail-custom">
-                    <img src="imgs/index/shilanTest.jpg"/>
-                </a>
-                <div class="photo-title">秦时明月之少年虞姬--石兰</div>
-            </div>
+            <%/foreach%>
         </div>
         <div id="invest-record"><span class="title-mark">6.投标记录</span></div>
         <div class="invest-record">
@@ -232,13 +244,17 @@
                     <tr><th>序号</th><th>用户名</th><th>投标金额</th><th>投标时间</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>1</td><td class="account-style">135****3546</td><td>23000.00</td><td>2015-06-27 14:20</td></tr>
-                    <tr><td>2</td><td class="account-style">136****4897</td><td>10500.00</td><td>2015-06-30 10:12</td></tr>
-                    <tr><td>3</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
-                    <tr><td>4</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
-                    <tr><td>5</td><td class="account-style">136****5430</td><td>8000.00</td><td>2015-06-30 15:18</td></tr>
+                    <%set int totalCount=0%>
+                    <%set var investments=query_investment(projectModel,page-1,PageSize,out totalCount)%>
+                    <%for(int i=0;i<investments.Count;i++)%>
+                    <tr><td>{i+1}</td><td class="account-style"><%=investments[i].user_name%></td><td><%=investments[i].value%></td><td><%=investments[i].create_time%></td></tr>
+                    <%/for%>
+                    <%if(totalCount<1)%>
+                    <tr><td align="center" colspan="4">暂无记录</td></tr>
+                    <%/if%>
                 </tbody>
             </table>
+            <div class="flickr" style="text-align: center;"><%= get_page_link(PageSize,page,totalCount,linkurl("invest_detail",project_id,"__id__"))%></div> <!--放置页码列表-->
         </div>
     </div>
     <div class="project-content-right">

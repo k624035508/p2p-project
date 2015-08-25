@@ -25,6 +25,7 @@ namespace Lip2p.Web.UI.Page
         protected string investmentProgress = string.Empty;//投资进度
         protected string investmentBalance = string.Empty;//剩余金额
         protected li_loaners loaner = new li_loaners();//借款人
+        protected li_loaner_companies loaner_company;//借款人企业
         protected li_risks risk = new li_risks();//风险信息
         protected List<li_mortgages> mortgages = new List<li_mortgages>();//抵押物
         protected List<ProjectTransactions> project_transactions = new List<ProjectTransactions>();//投标记录
@@ -65,6 +66,8 @@ namespace Lip2p.Web.UI.Page
                 risk = projectModel.li_risks;
                 //借款人
                 loaner = risk.li_loaners;
+                //借款人企业
+                loaner_company = risk.li_loaners.li_loaner_companies.SingleOrDefault();
                 //抵押物
                 mortgages = (from rm in risk.li_risk_mortgage
                     from m in context.li_mortgages
