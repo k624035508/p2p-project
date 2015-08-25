@@ -24,9 +24,10 @@ module.exports = {
     ],
     module: {
         loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader!autoprefixer-loader" },
-            { test: /\.png$/, loader: "url-loader?limit=100000" },
-            { test: /\.jpg$/, loader: "file-loader" },
+            { test: /\.css$/, loader: "style!css!autoprefixer" },
+            { test: /\.png$/, loader: "url?limit=100000" },
+            { test: /\.jpg$/, loader: "file" },
+            { test: /\.less$/, loader: "style!css!autoprefixer!less" },
 
             // **IMPORTANT** This is needed so that each bootstrap js file required by
             // bootstrap-webpack has access to the jQuery object
