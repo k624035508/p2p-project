@@ -319,9 +319,17 @@ div.project-content-wrap {
 		width: 13%;
 		height: 1760px;
 		border-left: @border;
-		ul {
+        .notScroll {
 			position: relative;
 			left: -5px;
+		}
+		.scrolled {
+			position: fixed;
+			top: 35px;
+			left: 50%;
+			margin-left: 402px;
+		}
+		ul {
 			li{
 				margin-bottom: 20px;
 				a {
