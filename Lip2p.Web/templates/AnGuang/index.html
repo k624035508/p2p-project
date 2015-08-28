@@ -189,11 +189,10 @@
                 <div class="news-list">
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in inc_news_ls.Skip(1))%>
-                        <li><span class="list-mark"></span>
-                            <span><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
-                                <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%>
-                                </a></span>
-                        <span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></li>
+                        <li>
+                            <span class="list-title-wrap"><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                                <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></span>
+                        </li>
                         <%/foreach%>
                     </ul>
                 </div>
@@ -218,10 +217,10 @@
                 <div class="report-list">
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in media_dt_ls.Skip(1))%>
-                        <li><span class="list-mark"></span><span>
-                            <a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
-                                <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%></a>
-                            </span><span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
+                        <li><span class="list-title-wrap">
+                            <a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                                <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a>
+                            </span>
                         </li>
                         <%/foreach%>
                     </ul>
@@ -240,10 +239,10 @@
             <ul class="list-unstyled">
                 <%set var announces_ls=get_article_list("content", 43, 10, "").Rows.Cast<DataRow>();%>
                 <%foreach(DataRow dr in announces_ls)%>
-                <li><span class="list-mark"></span><span><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px">
-                                                        <%=dr["title"].ToString().Length>25?dr["title"].ToString().Substring(0, 25)+"...":dr["title"].ToString()%>
+                <li><span class="list-title-wrap"><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                                                        <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
                                                         </a></span>
-                <span class="grey14px pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></li>
+                </li>
                 <%/foreach%>
             </ul>
         </div>
@@ -253,7 +252,7 @@
 
 <!--floating icon-->
 <div class="floating-wrap">
-    <a href="#"><span id="floating-qq" class="floating-icon qq-icon"></span></a>
+    <a href="#"><span id="floating-qq"></span></a>
     <a href="#"><span id="floating-cal" class="floating-icon cal-icon"></span></a>
     <a href="#" id="floating-top-wrap" style="display:none"><span id="floating-top" class="floating-icon top-icon"></span></a>
 </div>

@@ -1,0 +1,200 @@
+﻿/*首页样式*/
+@import "common-style.less";
+@images: "../imgs/index";
+
+body {background: @body-color;}
+
+/*banner*/
+div#bannerCarousel {
+    min-width: @min-width;
+    margin: 0 auto;
+    .carousel-inner {
+        .carousel-control.left, .carousel-control.right {
+            background-image: none !important;
+            filter: none !important;
+        }
+    } 
+}
+
+/*公告板*/
+div.announcement-wrap {
+    background: #f7f4ed;
+    .announcement {
+        width: @min-width;
+        height: 40px;
+        padding: 5.5px 0;
+        margin: 0 auto;
+        & > * {
+            .inline-block;
+        }
+        .return-announce,
+        .return-announce a,
+        .web-announce,
+        .web-announce a,
+        .pull-right a {
+            color: @dark-grey;
+            font-size: @font15;
+        }
+        .return-announce {margin: 0 5px 0 15px;}
+        .return-announce a, .web-announce a, .pull-right a {
+            text-decoration: none;
+            &:hover {
+                color:@red;
+            }
+        }
+        .pull-right a {line-height: 29px;}
+        .announce-board-icon {
+            width: 29px;
+            height: 29px;
+            background: url("@{images}/announce-icon.png") no-repeat;
+        }
+        .announce-icon {background-position: -15px -13px;}
+
+        .news-icon {background-position: -15px -68px;}
+
+        span.web-announce {margin: 0 5px 0 120px;}
+    }
+}
+
+/*动态三板块*/
+div.dynamic-wrap {
+    width: @min-width;
+    height: 415px;
+    margin: 25px auto 0 auto;
+    border: @border;
+    background: @white;
+    & > div {
+        float: left;
+        display: inline-block;
+        width: 33.333%;
+        height: 100%;
+        border-right: @border;
+    }
+    .company-placard {border-right: none;}
+    .dynamic-title-wrap {
+        height: 55px;
+        padding: 12.5px 20px;
+        border-bottom: @border;
+        & a > span { .inline-block; }
+    }
+    ul li {
+        .list-title-wrap { 
+            width: 307px;
+            a {
+                & > span { .inline-block; }
+                color: @dark-grey;
+                text-decoration: none;
+                .list-mark {
+                    width: 5px;
+                    height: 5px;
+                    margin-right: 8px;
+                    background: @grey;
+                }
+                &:hover { 
+                    color: @red;
+                    .list-mark { background: #fa7878; }
+                }
+            }
+            .list-title {
+                display: inline-block;
+                width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+    .dynamic-title {
+        color: @dark-grey;
+        font-size: @font20;
+        padding-left: 10px;
+        border-left: 5px solid @red;
+        &:hover { color: @red; }
+    }
+    .link-mark {
+        width: 30px;
+        height: 30px;
+        background: url("@{images}/link-mark-icon.png") no-repeat;
+    }
+    .news-wrap, .report-wrap {
+        padding: 25px 20px;
+        ul li { margin-bottom: 10px; }
+        .img-wrap {
+            width: 100%;
+            height: 205px;
+            overflow-y: hidden;
+            display: block;
+            img { width: 100%; }
+        }
+        .img-title {
+            position: relative;
+            top: -25px;
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+            color: @white;
+            padding-left: 10px;
+            background: #080808;
+            opacity: 0.5;
+            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+        }
+    }
+    .company-placard ul {
+        height: 360px;
+        padding: 15px 20px;
+        li {
+            height: 10%;
+            line-height: 30px;
+        }
+    }
+}
+
+/*浮窗图标按钮*/
+div.floating-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: 570px;
+    width: 50px;
+    a span {
+        display: block;
+        margin-bottom: 20px;
+    }
+    #floating-qq {
+        .floating-icon;
+        .qq-icon;
+        &:hover {
+            .qqHover-icon;
+        }
+    }
+    #floating-cal {
+        .floating-icon;
+        .cal-icon;
+        &:hover {
+            .calHover-icon;
+        }
+    }
+    #floating-top {
+        .floating-icon;
+        .top-icon;
+        &:hover {
+            .topHover-icon;
+        }
+    }
+    .floating-icon {
+        width: 50px;
+        height: 53px;
+        background: url("@{images}/floating-icon.png") no-repeat;
+    }
+
+    .qq-icon {background-position: -15px -181px;}
+    .qqHover-icon {background-position: -15px -264px;}
+
+    .cal-icon {background-position: -15px -15px;}
+    .calHover-icon {background-position: -15px -98px;}
+
+    .top-icon {background-position: -15px -347px;}
+    .topHover-icon {background-position: -15px -430px;}
+}
+
