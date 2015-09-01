@@ -1,0 +1,98 @@
+//头部样式
+@import "common-style";
+
+div.orange-top-bar {
+	height: 30px;
+	background: @orange;
+	padding: 4px 0;
+	.content-wrap {
+		color: white;
+		font-size: @font15;
+		& > span { .inline-block; }
+		.pull-right {
+			& > span {
+				padding: 0 20px;
+				a { color: white; }
+			}
+			& span:first-child, & span:first-child + span { border-right: 1px solid white; }
+		}
+	}
+}
+
+div.company-brand {
+	height: 90px;
+	border-bottom: 2px solid @dark-orange;
+	padding: 16px 0;
+	.content-wrap {
+		& > div { .inline-block; }
+		.company-name {
+			.title-black-style;
+		}
+		.logo-border { margin: 0 23px; }
+		.hot-line {
+			margin-top: 5.5px;
+			& > div { .inline-block; }
+			.hot-line-num {
+				margin-left: 10px;
+				& div:first-child {
+					.title-black-style;
+				}
+				& div:first-child + div {
+					color: #c82323;
+					font-size: @font20;
+					font-weight: bold;
+				}
+			}
+		}
+	}
+	.title-black-style {
+		color: black;
+		font-size: @font15;
+		font-weight: bold;
+	}
+}
+
+div.nav-wrap {
+	height: 50px;
+	background: -moz-linear-gradient(top, #fff, #dadada);
+	background: -o-linear-gradient(top, #fff, #dadada);
+	background: -ms-linear-gradient(#fff 0%,#dadada 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dadada',GradientType=0 ); /* IE6-9 */
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#dadada));
+	ul.nav-bar > li {
+		width: 122px;
+		height: 50px;
+		line-height: 50px;
+		padding: 0;
+		text-align: center;
+		a {
+			color: @orange;
+			font-size: @font17;
+		}
+		&:hover {
+			border-bottom: 1px solid @dark-orange;
+			background: -moz-linear-gradient(top, #fff, #f3d690);
+			background: -o-linear-gradient(top, #fff, #f3d690);
+			background: -ms-linear-gradient(#fff 0%,#f3d690 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f3d690',GradientType=0 ); /* IE6-9 */
+			background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f3d690));
+		}
+	}
+	.dropdown-menu-custom {
+		min-width: 122px;
+		margin: 1px 0 0;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		li {
+			text-align: center;
+			border-bottom: 1px solid #e6e6e6;
+			a {
+				color: black !important;
+				font-size: @font12 !important;
+				line-height: 32px;
+			}
+		}
+	}
+	#about-us:hover > ul.dropdown-menu-custom { display: block; }
+}

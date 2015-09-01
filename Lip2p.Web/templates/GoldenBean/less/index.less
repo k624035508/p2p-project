@@ -1,0 +1,223 @@
+@import "common-style";
+@images: "../imgs/index";
+
+.banner-wrap {
+	margin-top: 25px;
+	.carousel-indicators-custom {
+		bottom: 2px;
+		li {
+			&, &:active {
+				width: 13px;
+				height: 13px;
+			}
+		}
+	}
+}
+
+.blocks-list {
+	& > div {
+		margin-top: 20px;
+		padding: 15px 9px;
+		.inline-block;
+		height: 350px;
+		border: @border;
+	}
+	.block-lg {
+		width: 365px;
+		margin-right: 10px;
+	}
+	.block-sm {
+		width: 241px;
+		address {
+			margin-top: 4px;
+			line-height: 25px;
+		}
+	}
+	.block-title {
+		font-size: @font18;
+		color: black;
+		font-weight: bold;
+		line-height: 18px;
+		.title-eng {
+			font-size: @font14;
+			color: @grey;
+		}
+		.more-link a {
+			font-size: @font14;
+			color: @orange;
+			text-decoration: none;
+			&:hover { color: @dark-orange; }
+		}
+	}
+	.content-box {
+		margin-top: 12px;
+		.company-name {
+			font-size: @font14;
+			color: @dark-orange;
+			font-weight: bold;
+			padding: 12px 0 6px 0;
+		}
+		.company-name-sm {
+			.company-name;
+			font-size: @font13;
+			padding: 15px 0 6px 0;
+		}
+		.about-company {
+			font-size: @font14;
+			color: @dark-grey;
+			text-indent: 28px;
+			line-height: 22px;
+			a {
+				color: @dark-orange;
+				text-decoration: none;
+				&:hover { color: @orange; }
+			}
+		}
+		ul {
+			margin-top: 11px;
+			li {
+				padding: 5px 0;
+				border-top: 1px dashed @light-grey;
+				a {
+					font-size: @font14;
+					color: @dark-grey;
+					text-decoration: none;
+					.list-mark {
+						.inline-block;
+						width: 5px;
+						height: 5px;
+						background: @grey;
+						margin-right: 5px;
+					}
+					&:hover {
+						color: @dark-orange;
+						.list-mark { background: @dark-orange; }
+					}
+				}
+				span.pull-right { color: @grey; }
+			}
+			& li:first-child { border-top: none; }
+		}
+	}
+	.content-sm {
+		margin-top: 12px;
+		border-bottom: 1px dashed @light-grey;
+		.margin-right11 { margin-right: 11px; }
+		& a > span {
+			display: inline-block;
+			width: 63px;
+			height: 63px;
+			color: @dark-grey;
+			font-size: @font13;
+			text-align: center;
+			padding-top: 42px;
+			margin-bottom: 20px;
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
+		.guide { background: url("@{images}/guide.png"); }
+		.price { background: url("@{images}/price.png"); }
+		.download { background: url("@{images}/download.png"); }
+		.process { background: url("@{images}/process.png"); }
+		.account { background: url("@{images}/account.png"); }
+		.rules { background: url("@{images}/rules.png"); }
+	}
+	.account-btns {
+		margin-top: 20px;
+		a  span {
+			display: block;
+			width: 190px;
+			height: 30px;
+			margin: 0 auto;
+			line-height: 30px;
+			text-align: center;
+			font-size: @font12;
+			color: @dark-grey;
+			background-size: contain;
+			background: url("@{images}/btn-bg.png") no-repeat;
+		}
+		.account-simulate {
+			margin-top: 15px;
+		}
+	}
+}
+
+.product-center {
+	height: 280px;
+	margin-top: 20px;
+	.content-wrap {
+		padding: 20px 9px;
+		border: @border;
+		.blocks-list .block-title;
+		.photos-slider {
+			text-align: center;
+			margin-top: 35px;
+			& > * {
+				display: inline-block;
+				vertical-align: top;
+				margin: 0 12px;
+			}
+			& > div{
+				a div {
+					width: 185px;
+					height: 130px;
+					border: @border;
+					overflow-x: hidden;
+					img {height: 100%;}
+				}
+				p {
+					color: @dark-grey;
+					font-size: @font12;
+					font-weight: normal;
+					margin: 10px 0;
+				}
+			}
+			& > span {
+				width: 28px;
+				height: 130px;
+				line-height: 130px;
+			}
+		}
+	}
+}
+
+div.banks-cooperate {
+	height: 180px;
+	margin-top: 20px;
+	.content-wrap {
+		.product-center .content-wrap;
+		.banks-list {
+			text-align: center;
+			& > li { margin: 11px 28px; }
+		}
+	}
+}
+
+div.floating-wrap {
+	position: fixed;
+	bottom: 10px;
+	left: 50%;
+	margin-left: 520px;
+	a div {
+		width: 58px;
+		height: 68px;
+		margin-top: 10px;
+		text-align: center;
+		padding-top: 44px;
+		font-size: @font12;
+		color: white;
+		background: url("@{images}/floating-icon.png") no-repeat;
+	}
+	#account {
+		background-position: -15px -15px;
+		&:hover { background-position: -15px -113px; }
+	}
+	#service {
+		background-position: -15px -211px;
+		&:hover { background-position: -15px -309px; }
+	}
+	#top {
+		background-position: -15px -407px;
+		&:hover { background-position: -15px -505px; }
+	}
+}
