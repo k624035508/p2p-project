@@ -642,6 +642,7 @@
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\invest-list-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
