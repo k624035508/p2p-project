@@ -1851,8 +1851,6 @@
     <Content Include="templates\AnGuang\package.json" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
-    <None Include="templates\lip2p\css\bootstrap-theme.css.map" />
-    <None Include="templates\lip2p\css\bootstrap.css.map" />
     <Content Include="tools\calc_stand_guard_fee.ashx" />
     <Content Include="tools\email_verify.ashx" />
     <Content Include="tools\mobile_verify.ashx" />
