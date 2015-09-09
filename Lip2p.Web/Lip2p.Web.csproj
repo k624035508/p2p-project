@@ -631,10 +631,10 @@
     <Content Include="scripts\webuploader\uploader.swf" />
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\about.xml" />
-    <Content Include="templates\AnGuang\css\footer.css" />
-    <None Include="templates\AnGuang\css\head.less" />
-    <None Include="templates\AnGuang\css\index.less" />
-    <Content Include="templates\AnGuang\css\invest-list.css" />
+    <None Include="templates\AnGuang\less\footer.less" />
+    <None Include="templates\AnGuang\less\head.less" />
+    <None Include="templates\AnGuang\less\index.less" />
+    <None Include="templates\AnGuang\less\invest-list.less" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
@@ -2416,8 +2416,8 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\lip2p.pubxml" />
     <Content Include="templates\AnGuang\package.json" />
-    <Content Include="templates\AnGuang\css\common-style.less" />
-    <Content Include="templates\AnGuang\css\invest_detail.less" />
+    <Content Include="templates\AnGuang\less\common-style.less" />
+    <Content Include="templates\AnGuang\less\invest_detail.less" />
     <None Include="templates\lip2p\css\bootstrap-theme.css.map" />
     <None Include="templates\lip2p\css\bootstrap.css.map" />
     <Content Include="tools\calc_stand_guard_fee.ashx" />

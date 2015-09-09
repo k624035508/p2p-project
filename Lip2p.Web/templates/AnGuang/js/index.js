@@ -1,8 +1,8 @@
 ﻿require("bootstrap-webpack");
-require("../css/head.less");
-require("../css/index.less");
-require("../css/invest-list.css");
-require("../css/footer.css");
+require("../less/head.less");
+require("../less/index.less");
+require("../less/invest-list.less");
+require("../less/footer.less");
 
 var $ = require("jquery");
 

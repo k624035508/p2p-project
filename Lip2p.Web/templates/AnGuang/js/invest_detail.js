@@ -1,8 +1,8 @@
 var $ = require("jquery");
 require("bootstrap-webpack");
-require("../css/head.less");
-require("../css/invest_detail.less");
-require("../css/footer.css");
+require("../less/head.less");
+require("../less/invest_detail.less");
+require("../less/footer.less");
 
 $(function () {
     $(window).scroll(function () {
