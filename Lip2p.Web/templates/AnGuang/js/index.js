@@ -1,5 +1,5 @@
 ﻿require("bootstrap-webpack");
-require("../css/head.css");
+require("../css/head.less");
 require("../css/index.less");
 require("../css/invest-list.css");
 require("../css/footer.css");

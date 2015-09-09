@@ -632,7 +632,7 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\about.xml" />
     <Content Include="templates\AnGuang\css\footer.css" />
-    <Content Include="templates\AnGuang\css\head.css" />
+    <None Include="templates\AnGuang\css\head.less" />
     <None Include="templates\AnGuang\css\index.less" />
     <Content Include="templates\AnGuang\css\invest-list.css" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
