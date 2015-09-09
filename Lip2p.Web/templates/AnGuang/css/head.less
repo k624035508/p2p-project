@@ -1,0 +1,103 @@
+﻿/*网站导航样式*/
+@import "common-style.less";
+
+* { font-family: "Microsoft YaHei"; }
+
+div.container-fluid { padding: 0; }
+
+ul, ol { margin-bottom: 0; }
+
+div.top-bar-wrap {
+    height: 40px;
+    .top-bar {
+        width: @min-width;
+        margin: 7px auto;
+        & > * { .inline-block; }
+        .top-bar-icon {
+            width: 26px;
+            height: 26px;
+            background: url("../imgs/index/head-icon.png") no-repeat;
+            display: inline-block;
+        }
+
+        .head-hot-line-icon { background-position: -15px -15px; }
+
+        .weibo-icon {
+            margin-left: 80px;
+            background-position: -15px -127px;
+        }
+
+        .wechat-icon {
+            margin-left: 25px;
+            background-position: -15px -71px;
+        }
+        .head-hot-line-num {
+            font-size: @font15;
+            color: @darker-grey;
+            margin-left: 5px;
+        }
+        .pull-right {
+            font-size: @font15;
+            line-height: 26px;
+            ul {
+                li {
+                    padding: 0 0 0 25px;
+                    a {
+                        color: @dark-grey;
+                        text-decoration: none;
+                        &:hover, &:focus { color: @red; }
+                    }
+                }
+                .hr-line { color: #bbbabf; }
+            }
+        }
+    }
+}
+
+div.nav-bar-wrap {
+    height: 90px;
+    background: #fff;
+    .nav-active {
+        color: #ff414b !important;
+        border-bottom: 2px solid #ff414b;
+    }
+    .nav-bar {
+        width: @min-width;
+        font-size: @font17;
+        line-height: 60px;
+        margin: 0 auto;
+        nav.pull-right {
+            margin-top: 15px;
+            ul.list-inline {
+                li {
+                    padding: 0 0 0 50px;
+                    a {
+                        color: @darker-grey;
+                        padding-bottom: 13px;
+                        text-decoration: none;
+                    }
+                 }
+                 & > li > a:hover, & > li > a:focus { .nav-active; }
+                 .dropdown-menu-custom {
+                    top: 85%;
+                    left: 24%;
+                    min-width: 120px;
+                    margin: 0;
+                    padding: 0;
+                    li {
+                        padding: 0;
+                        border-top: 1px dashed @light-grey;
+                        a {
+                            padding-bottom: 0;
+                            line-height: 36px;
+                        }
+                    }
+                    & li:first-child { border-top: none; }
+                 }
+            }
+        }
+        #myAccount:hover > .dropdown-menu-custom { display: block; }
+    }
+}
+
+

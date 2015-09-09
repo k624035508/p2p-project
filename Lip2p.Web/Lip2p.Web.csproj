@@ -634,6 +634,7 @@
     <Content Include="templates\AnGuang\css\footer.css" />
     <Content Include="templates\AnGuang\css\head.css" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
+    <None Include="templates\AnGuang\css\head.less" />
     <None Include="templates\AnGuang\css\index.less" />
     <Content Include="templates\AnGuang\css\invest-list.css" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
@@ -643,6 +644,7 @@
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\invest-list-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
