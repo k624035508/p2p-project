@@ -4,6 +4,8 @@ require("../less/head.less");
 require("../less/invest_detail.less");
 require("../less/footer.less");
 
+var header = require("./header.js");
+
 $(function () {
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
@@ -16,4 +18,6 @@ $(function () {
             rightNav.addClass("notScroll");
         }
     });
+
+    header.setHeaderHighlight(1);
 });

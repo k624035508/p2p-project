@@ -643,6 +643,7 @@
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
+    <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\html5shiv.min.js" />
     <Content Include="templates\AnGuang\js\ie8-polyfill.js" />
     <Content Include="templates\AnGuang\js\index.js" />
@@ -652,6 +653,7 @@
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\webpack.config.js" />
+    <Content Include="templates\AnGuang\_header.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">
