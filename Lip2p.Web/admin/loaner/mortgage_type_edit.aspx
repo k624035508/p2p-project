@@ -12,8 +12,12 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <style>
-.fieldSchemeContainer {
-    padding: 1em 0;
+input[type=button] {
+    margin: 4.5px 0px;
+    padding: 1px 6px;
+}
+.fieldSchemeContainer input.normal {
+    margin: 2px 0px;
 }
 </style>
 <script type="text/javascript">
@@ -97,21 +101,21 @@
     <dd><asp:TextBox ID="txtTypeName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>
   </dl>
   <dl>
-      <dt>字段</dt>
+      <dt>字段提示</dt>
       <dd>
           注：删除字段或更改“字段标识”可能会导致抵押物属性数据丢失，如要修改请咨询开发人员
           <asp:HiddenField id="txtScheme" runat="server"/>
-          <div class="fieldSchemeContainer">
-              字段标识 <input class="txtFieldId input normal" datatype="/^\S+$/"/>
-              <br/>
-              字段名称 <input class="txtFieldName input normal" datatype="/^\S+$/"/>
-              <br/>
-              <input type="button" class="btnDeleteField" value="删除字段" onclick="deleteFieldScheme(this)"/>
-          </div>
-          <input type="button" id="btnAppendField" value="添加字段" onclick="cloneFieldScheme()"/>
-          <br/>
-          <span class="Validform_checktip"></span>
       </dd>
+  </dl>
+  <dl class="fieldSchemeContainer">
+      <dt>字段标识</dt><dd><input class="txtFieldId input normal" datatype="/^\S+$/"/></dd>
+      <dt>字段名称</dt><dd><input class="txtFieldName input normal" datatype="/^\S+$/"/></dd>
+      <dt>删除字段</dt><dd><input type="button" class="btnDeleteField" value="删除字段" onclick="deleteFieldScheme(this)"/></dd>
+  </dl>
+  <dl id="btnAppendField">
+      <dt>添加字段</dt><dd><input type="button" value="添加字段" onclick="cloneFieldScheme()"/></dd>
+      <br/>
+      <span class="Validform_checktip"></span>
   </dl>
 </div>
 <!--/内容-->
