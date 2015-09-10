@@ -6,9 +6,42 @@ div.footer-wrap {
     background: @white;
     .footer-top {
         width: @min-width;
-        height: 225px;
+        height: 150px;
         margin: 0 auto;
-        border: @border;
+        padding: 27px 35px;
+        & > div { .inline-block; }
+        .content-left {
+            ul {
+                li {
+                    padding: 0 22px;
+                    border-right: @border;
+                    a {
+                        font-size: @font18;
+                        color: @darker-grey;
+                        text-decoration: none;
+                        &:hover { color: @red; }
+                    }
+                }
+                & li:first-child { border-left: @border; }
+            }
+            p, p a {
+                font-size: @font14;
+                color: @grey;
+                margin: 0;
+            }
+            .contacts {
+                margin: 25px 0 5px 0;
+                span { margin-left: 20px; }
+            }
+            .links a {
+                padding-right: 10px;
+            }
+        }
+        .qrcode {
+            width: 95px;
+            height: 95px;
+            background: url("../imgs/index/qrcode.png") no-repeat;
+        }
     }
     .footer-bottom {
         height: 60px;
