@@ -1,156 +1,123 @@
 ﻿/*投资列表样式*/
+@import "common-style.less";
+
 div.invest-cell {
-    width: 1100px;
+    width: @min-width;
     margin: 25px auto 0 auto;
-    border: 1px solid #e6e6e6;
-}
+    border: @border;
+    .invest-title-wrap {
+        height: 60px;
+        padding: 14px 35px;
+        background: @white;
+        border-bottom: @border;
+        & > * { .inline-block; }
+        .invest-list-icon {
+            width: 28px;
+            height: 28px;
+            margin-left: 10px;
+            background: url("../imgs/index/invest-list-icon.png") no-repeat;
+        }
 
-div.invest-title-wrap {
-    height: 60px;
-    padding: 14px 35px;
-    background: #fff;
-    border-bottom: 1px solid #e6e6e6;
-}
+        .jian-icon {background-position: -15px -15px;}
 
-div.invest-content {
-    height: 100px;
-    padding: 16px 35px;
-    margin: 0;
-    background: #fff;
-}
+        .xin-icon {background-position: -15px -73px;}
 
-div.invest-content:hover {
-    background: #f0f5ff;
-}
-
-div.invest-cell .invest-title-wrap > * {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.invest-list-icon {
-    width: 28px;
-    height: 28px;
-    margin-left: 10px;
-    background: url("../imgs/index/invest-list-icon.png") no-repeat;
-}
-
-.jian-icon {background-position: -15px -15px;}
-
-.xin-icon {background-position: -15px -73px;}
-
-.yue-icon {background-position: -15px -131px;}
-
-span.invest-style-tab {
-    font-size: 20px;
-    color: #37aaf0;
-    padding: 1px 5px;
-    margin-right: 10px;
-    border: 1px solid;
-}
-
-div.invest-title-wrap span a {
-    font-size: 20px;
-    color: #464646;
-}
-
-div.invest-content > div {
-    float: left;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-div.invest-content div.apr {
-    width: 21%;
-}
-
-div.invest-content div.deadline {
-    width: 18.5%;
-}
-
-div.invest-content div.sum {
-    width: 20%;
-}
-
-div.invest-content div.repayment {
-    width: 28%;
-}
-
-div.repayment .progress-custom {
-    width: 125px;
-    height: 10px;
-    margin-bottom: 12px;
-}
-
-div.repayment .progress-bar-info {
-    background-color: #38aaf0 !important;
+        .yue-icon {background-position: -15px -131px;}
+        span a {
+            font-size: @font20;
+            color: @darker-grey;
+            text-decoration: none;
+            &:hover { color: @red; }
+        }
+    }
+    .invest-content {
+        & > div {
+            float: left;
+            .inline-block;
+        }
+        height: 100px;
+        padding: 16px 35px;
+        margin: 0;
+        background: @white;
+        &:hover { background: #f0f5ff; }
+        .apr { width: 21%; }
+        .deadline { width: 18.5%; }
+        .sum { width: 20%; }
+        .repayment {
+            width: 28%;
+            .progress-custom {
+                width: 125px;
+                height: 10px;
+                margin-bottom: 12px;
+            }
+            .progress-bar-info { background-color: #38aaf0 !important; }
+        }
+        .invest-btn {
+            button {
+                width: 115px;
+                height: 35px;
+                margin-top: 16.5px;
+                font-size: @font17;
+                border-radius: 4px;
+            }
+            .invest-now-btn {
+                color: @white;
+                background: @red;
+                border-color: @red;
+            }
+            .invest-full-btn {
+                color: @dark-grey;
+                background: @light-grey;
+                border-color: @light-grey;
+            }
+        }
+    }
 }
 
 .grey13px {
-    color: #aaa;
-    font-size: 13px;
+    color: @grey;
+    font-size: @font13;
 }
 
 .dark-grey13px {
-    color: #646464;
-    font-size: 13px;
+    color: @dark-grey;
+    font-size: @font13;
 }
 
 .grey15px {
-    color: #646464;
-    font-size: 15px;
+    color: @dark-grey;
+    font-size: @font15;
 }
 
 .grey25px {
-    color: #646464;
-    font-size: 25px;
+    color: @dark-grey;
+    font-size: @font25;
 }
 
 .red15px {
-    color: #ff414b;
-    font-size: 15px;
+    color: @red;
+    font-size: @font15;
 }
 
 .red25px {
-    color: #ff414b;
-    font-size: 25px;
+    color: @red;
+    font-size: @font25;
 }
 
-.margin-bottom10px {
-    margin-bottom: 10px;
-}
-
-div.invest-btn button {
-    width: 115px;
-    height: 35px;
-    margin-top: 16.5px;
-    font-size: 17px;
-    border-radius: 4px;
-}
-
-div.invest-btn .invest-now-btn {
-    color: #fff;
-    background: #ff414b;
-    border-color: #ff414b;
-}
-
-div.invest-btn .invest-full-btn {
-    color: #646464;
-    background: #e6e6e6;
-    border-color: #e6e6e6;
-}
+.margin-bottom10px { margin-bottom: 10px; }
 
 div.more-projects {
-    width: 1100px;
+    width: @min-width;
     height: 50px;
     line-height: 50px;
     text-align: center;
     margin: 25px auto 0 auto;
-    border: 1px solid #e6e6e6;
-    background: #fff;
-}
-
-div.more-projects a {
-    color: #37aaf0;
-    font-size: 15px;
+    border: @border;
+    background: @white;
+    a {
+        color: @blue;
+        font-size: @font15;
+        text-decoration: none;
+        &:hover { color: #337ab7; }
+    }
 }
