@@ -545,4 +545,24 @@
       <Association Name="li_loaners_li_loaner_companies" Member="li_loaners" ThisKey="loaner_id" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_navigation" Member="dt_navigation">
+    <Type Name="dt_navigation">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nav_type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="sub_title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="link_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_lock" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="parent_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="class_list" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="class_layer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="channel_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="action_type" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="icon_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

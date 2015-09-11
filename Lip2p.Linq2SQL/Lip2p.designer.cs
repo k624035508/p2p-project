@@ -129,6 +129,9 @@ namespace Lip2p.Linq2SQL
     partial void Insertli_loaner_companies(li_loaner_companies instance);
     partial void Updateli_loaner_companies(li_loaner_companies instance);
     partial void Deleteli_loaner_companies(li_loaner_companies instance);
+    partial void Insertdt_navigation(dt_navigation instance);
+    partial void Updatedt_navigation(dt_navigation instance);
+    partial void Deletedt_navigation(dt_navigation instance);
     #endregion
 		
 		public Lip2pDataContext(string connection) : 
@@ -424,6 +427,14 @@ namespace Lip2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_loaner_companies>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_navigation> dt_navigation
+		{
+			get
+			{
+				return this.GetTable<dt_navigation>();
 			}
 		}
 	}
@@ -12369,6 +12380,428 @@ namespace Lip2p.Linq2SQL
 						this._loaner_id = default(int);
 					}
 					this.SendPropertyChanged("li_loaners");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_navigation")]
+	public partial class dt_navigation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _nav_type;
+		
+		private string _name;
+		
+		private string _title;
+		
+		private string _sub_title;
+		
+		private string _link_url;
+		
+		private System.Nullable<int> _sort_id;
+		
+		private System.Nullable<byte> _is_lock;
+		
+		private string _remark;
+		
+		private System.Nullable<int> _parent_id;
+		
+		private string _class_list;
+		
+		private System.Nullable<int> _class_layer;
+		
+		private System.Nullable<int> _channel_id;
+		
+		private string _action_type;
+		
+		private System.Nullable<byte> _is_sys;
+		
+		private string _icon_url;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onnav_typeChanging(string value);
+    partial void Onnav_typeChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OntitleChanging(string value);
+    partial void OntitleChanged();
+    partial void Onsub_titleChanging(string value);
+    partial void Onsub_titleChanged();
+    partial void Onlink_urlChanging(string value);
+    partial void Onlink_urlChanged();
+    partial void Onsort_idChanging(System.Nullable<int> value);
+    partial void Onsort_idChanged();
+    partial void Onis_lockChanging(System.Nullable<byte> value);
+    partial void Onis_lockChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    partial void Onparent_idChanging(System.Nullable<int> value);
+    partial void Onparent_idChanged();
+    partial void Onclass_listChanging(string value);
+    partial void Onclass_listChanged();
+    partial void Onclass_layerChanging(System.Nullable<int> value);
+    partial void Onclass_layerChanged();
+    partial void Onchannel_idChanging(System.Nullable<int> value);
+    partial void Onchannel_idChanged();
+    partial void Onaction_typeChanging(string value);
+    partial void Onaction_typeChanged();
+    partial void Onis_sysChanging(System.Nullable<byte> value);
+    partial void Onis_sysChanged();
+    partial void Onicon_urlChanging(string value);
+    partial void Onicon_urlChanged();
+    #endregion
+		
+		public dt_navigation()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nav_type", DbType="NVarChar(50)")]
+		public string nav_type
+		{
+			get
+			{
+				return this._nav_type;
+			}
+			set
+			{
+				if ((this._nav_type != value))
+				{
+					this.Onnav_typeChanging(value);
+					this.SendPropertyChanging();
+					this._nav_type = value;
+					this.SendPropertyChanged("nav_type");
+					this.Onnav_typeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50)")]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="NVarChar(100)")]
+		public string title
+		{
+			get
+			{
+				return this._title;
+			}
+			set
+			{
+				if ((this._title != value))
+				{
+					this.OntitleChanging(value);
+					this.SendPropertyChanging();
+					this._title = value;
+					this.SendPropertyChanged("title");
+					this.OntitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sub_title", DbType="NVarChar(100)")]
+		public string sub_title
+		{
+			get
+			{
+				return this._sub_title;
+			}
+			set
+			{
+				if ((this._sub_title != value))
+				{
+					this.Onsub_titleChanging(value);
+					this.SendPropertyChanging();
+					this._sub_title = value;
+					this.SendPropertyChanged("sub_title");
+					this.Onsub_titleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_link_url", DbType="NVarChar(255)")]
+		public string link_url
+		{
+			get
+			{
+				return this._link_url;
+			}
+			set
+			{
+				if ((this._link_url != value))
+				{
+					this.Onlink_urlChanging(value);
+					this.SendPropertyChanging();
+					this._link_url = value;
+					this.SendPropertyChanged("link_url");
+					this.Onlink_urlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sort_id", DbType="Int")]
+		public System.Nullable<int> sort_id
+		{
+			get
+			{
+				return this._sort_id;
+			}
+			set
+			{
+				if ((this._sort_id != value))
+				{
+					this.Onsort_idChanging(value);
+					this.SendPropertyChanging();
+					this._sort_id = value;
+					this.SendPropertyChanged("sort_id");
+					this.Onsort_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_lock", DbType="TinyInt")]
+		public System.Nullable<byte> is_lock
+		{
+			get
+			{
+				return this._is_lock;
+			}
+			set
+			{
+				if ((this._is_lock != value))
+				{
+					this.Onis_lockChanging(value);
+					this.SendPropertyChanging();
+					this._is_lock = value;
+					this.SendPropertyChanged("is_lock");
+					this.Onis_lockChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(500)")]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parent_id", DbType="Int")]
+		public System.Nullable<int> parent_id
+		{
+			get
+			{
+				return this._parent_id;
+			}
+			set
+			{
+				if ((this._parent_id != value))
+				{
+					this.Onparent_idChanging(value);
+					this.SendPropertyChanging();
+					this._parent_id = value;
+					this.SendPropertyChanged("parent_id");
+					this.Onparent_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_class_list", DbType="NVarChar(500)")]
+		public string class_list
+		{
+			get
+			{
+				return this._class_list;
+			}
+			set
+			{
+				if ((this._class_list != value))
+				{
+					this.Onclass_listChanging(value);
+					this.SendPropertyChanging();
+					this._class_list = value;
+					this.SendPropertyChanged("class_list");
+					this.Onclass_listChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_class_layer", DbType="Int")]
+		public System.Nullable<int> class_layer
+		{
+			get
+			{
+				return this._class_layer;
+			}
+			set
+			{
+				if ((this._class_layer != value))
+				{
+					this.Onclass_layerChanging(value);
+					this.SendPropertyChanging();
+					this._class_layer = value;
+					this.SendPropertyChanged("class_layer");
+					this.Onclass_layerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_channel_id", DbType="Int")]
+		public System.Nullable<int> channel_id
+		{
+			get
+			{
+				return this._channel_id;
+			}
+			set
+			{
+				if ((this._channel_id != value))
+				{
+					this.Onchannel_idChanging(value);
+					this.SendPropertyChanging();
+					this._channel_id = value;
+					this.SendPropertyChanged("channel_id");
+					this.Onchannel_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_action_type", DbType="NVarChar(500)")]
+		public string action_type
+		{
+			get
+			{
+				return this._action_type;
+			}
+			set
+			{
+				if ((this._action_type != value))
+				{
+					this.Onaction_typeChanging(value);
+					this.SendPropertyChanging();
+					this._action_type = value;
+					this.SendPropertyChanged("action_type");
+					this.Onaction_typeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_sys", DbType="TinyInt")]
+		public System.Nullable<byte> is_sys
+		{
+			get
+			{
+				return this._is_sys;
+			}
+			set
+			{
+				if ((this._is_sys != value))
+				{
+					this.Onis_sysChanging(value);
+					this.SendPropertyChanging();
+					this._is_sys = value;
+					this.SendPropertyChanged("is_sys");
+					this.Onis_sysChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_icon_url", DbType="NVarChar(255)")]
+		public string icon_url
+		{
+			get
+			{
+				return this._icon_url;
+			}
+			set
+			{
+				if ((this._icon_url != value))
+				{
+					this.Onicon_urlChanging(value);
+					this.SendPropertyChanging();
+					this._icon_url = value;
+					this.SendPropertyChanged("icon_url");
+					this.Onicon_urlChanged();
 				}
 			}
 		}
