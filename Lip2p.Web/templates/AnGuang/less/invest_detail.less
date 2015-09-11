@@ -1,6 +1,7 @@
 ﻿//标书样式
-@images: "../imgs/index";
 @import "common-style";
+@images: "../imgs/index";
+@content-margin: 35px 38px;
 
 body {
 	background: @body-color;
@@ -241,7 +242,7 @@ div.project-content-wrap {
 		width: 87%;
 		font-size: @font15;
 		& > ul {
-			margin: 35px 38px;
+			margin: @content-margin;
 			& > li {margin-bottom: 15px;}
 			& > li > span {
 				display: inline-block;
@@ -259,7 +260,7 @@ div.project-content-wrap {
 		}
 
 		.personal-info {
-			padding: 35px 38px;
+			margin: @content-margin;
 			& > ul {
 				.inline-block;
 				float: left;
@@ -268,7 +269,7 @@ div.project-content-wrap {
 				font-size: @font15;
 				& > li {
 					margin-bottom: 15px;
-					span:first-child {
+					& > span:first-child {
 						color: @grey;
 						margin-right: 10px;
 					}
@@ -282,6 +283,14 @@ div.project-content-wrap {
 				}
 			}
 		}
+        .risk-control-content {
+            .specific-location {
+                display: inline-block;
+                width: 60px;
+                text-align: right;
+            }
+            .span-sec * { color: @darker-grey; }
+        }
 		.photo-cell {
 			margin: 33px 28px 18px 28px;
 			.col-md-3 {
@@ -302,12 +311,11 @@ div.project-content-wrap {
 			}
 		}
 		.invest-record {
-			margin: 35px 38px;
-			height: 250px;
-			overflow-y: auto;
+			margin: @content-margin;
 			thead tr > th {background: #f4f4f4;}
 			tbody .account-style {color: @blue;}
 		}
+        .content-null { margin: @content-margin; }
 	}
 	.project-content-right {
 		width: 13%;
