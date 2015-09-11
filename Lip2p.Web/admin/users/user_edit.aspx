@@ -153,7 +153,7 @@
                 <div class="input-date">
                     <asp:TextBox ID="txtBirthday" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
-                    <i>日期</i>
+                    <i></i>
                 </div>
             </dd>
         </dl>
@@ -409,7 +409,7 @@
                     <div class="input-date">
                         <asp:TextBox ID="txtSetupTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                             datatype="/^^\d{4}\-\d{1,2}\-\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
-                        <i>日期</i>
+                        <i></i>
                     </div>
                 </dd>
             </dl>

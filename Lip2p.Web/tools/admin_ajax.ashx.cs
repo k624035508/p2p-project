@@ -10,6 +10,8 @@ using System.Web.SessionState;
 using Lip2p.Web.UI;
 using Lip2p.Common;
 using Lip2p.Core;
+using System.Linq;
+using Lip2p.Linq2SQL;
 
 namespace Lip2p.Web.tools
 {
@@ -298,32 +300,32 @@ namespace Lip2p.Web.tools
             {
                 return;
             }
-            DataTable dt = new BLL.navigation().GetDataList(0, DTEnums.NavigationEnum.System.ToString());
-            this.get_navigation_childs(context, dt, 0, "", roleModel.role_type, roleModel.manager_role_values);
-
+            var db = new Lip2pDataContext();
+            var navs = db.dt_navigation.Where(n => n.nav_type == DTEnums.NavigationEnum.System.ToString()).ToList();
+            get_navigation_childs(context, navs, 0, roleModel.role_type, roleModel.manager_role_values);
         }
-        private void get_navigation_childs(HttpContext context, DataTable oldData, int parent_id, string parent_name, int role_type,List<Model.manager_role_value> ls)
+        private void get_navigation_childs(HttpContext context, List<dt_navigation> oldData, int parent_id, int role_type, List<Model.manager_role_value> ls)
         {
-            DataRow[] dr = oldData.Select("parent_id=" + parent_id);
-            bool isWrite = false;
-            for (int i = 0; i < dr.Length; i++)
+            var dr = oldData.Where(n => n.parent_id == parent_id).ToList();
+            bool isWrite = false; //是否输出开始标签
+            for (int i = 0; i < dr.Count; i++)
             {
                 //检查是否显示在界面上====================
                 bool isActionPass = true;
-                if (int.Parse(dr[i]["is_lock"].ToString()) == 1)
+                if (dr[i].is_lock == 1)
                 {
                     isActionPass = false;
                 }
                 //检查管理员权限==========================
                 if (isActionPass && role_type > 1)
                 {
-                    string[] actionTypeArr = dr[i]["action_type"].ToString().Split(',');
+                    string[] actionTypeArr = dr[i].action_type.Split(',');
                     foreach (string action_type_str in actionTypeArr)
                     {
                         //如果存在显示权限资源，则检查是否拥有该权限
                         if (action_type_str == "Show")
                         {
-                            Model.manager_role_value modelt = ls.Find(p => p.nav_name == dr[i]["name"].ToString() && p.action_type == "Show");
+                            Model.manager_role_value modelt = ls.Find(p => p.nav_name == dr[i].name && p.action_type == "Show");
                             if (modelt == null)
                             {
                                 isActionPass = false;
@@ -334,63 +336,64 @@ namespace Lip2p.Web.tools
                 //如果没有该权限则不显示
                 if (!isActionPass)
                 {
-                    if (isWrite && i == (dr.Length - 1) && parent_id > 0 && parent_name != "sys_contents")
+                    if (isWrite && i == (dr.Count - 1) && parent_id > 0)
                     {
                         context.Response.Write("</ul>\n");
                     }
                     continue;
                 }
-                //输出开始标记
-                if (!isWrite && parent_id > 0 && parent_name != "sys_contents")
+                //如果是顶级导航
+                if (parent_id == 0)
                 {
-                    isWrite = true;
-                    context.Response.Write("<ul>\n");
-                }
-                //以下是输出选项内容=======================
-                if (int.Parse(dr[i]["class_layer"].ToString()) == 1)
-                {
-                    context.Response.Write("<div class=\"list-group\" name=\"" + dr[i]["sub_title"].ToString() + "\">\n");
-                    if (dr[i]["name"].ToString() != "sys_contents")
+                    context.Response.Write("<div class=\"list-group\">\n");
+                    context.Response.Write("<h1 title=\"" + dr[i].sub_title + "\">");
+                    if (!string.IsNullOrWhiteSpace(dr[i].icon_url))
                     {
-                        context.Response.Write("<h2>" + dr[i]["title"].ToString() + "<i></i></h2>\n");
+                        context.Response.Write("<img src=\"" + dr[i].icon_url + "\" />");
                     }
+                    context.Response.Write("</h1>\n");
+                    context.Response.Write("<div class=\"list-wrap\">\n");
+                    context.Response.Write("<h2>" + dr[i].title + "<i></i></h2>\n");
                     //调用自身迭代
-                    this.get_navigation_childs(context, oldData, int.Parse(dr[i]["id"].ToString()), dr[i]["name"].ToString(), role_type, ls);
+                    this.get_navigation_childs(context, oldData, dr[i].id, role_type, ls);
+                    context.Response.Write("</div>\n");
                     context.Response.Write("</div>\n");
                 }
-                else if (int.Parse(dr[i]["class_layer"].ToString()) == 2 && parent_name == "sys_contents")
+                else //下级导航
                 {
-                    context.Response.Write("<h2>" + dr[i]["title"].ToString() + "<i></i></h2>\n");
-                    //调用自身迭代
-                    this.get_navigation_childs(context, oldData, int.Parse(dr[i]["id"].ToString()), dr[i]["name"].ToString(), role_type, ls);
-                }
-                else
-                {
-                    context.Response.Write("<li>\n");
-                    context.Response.Write("<a navid=\"" + dr[i]["name"].ToString() + "\"");
-                    if (!string.IsNullOrEmpty(dr[i]["link_url"].ToString()))
+                    if (!isWrite)
                     {
-                        if (int.Parse(dr[i]["channel_id"].ToString()) > 0)
+                        isWrite = true;
+                        context.Response.Write("<ul>\n");
+                    }
+                    context.Response.Write("<li>\n");
+                    context.Response.Write("<a navid=\"" + dr[i].name + "\"");
+                    if (!string.IsNullOrWhiteSpace(dr[i].link_url))
+                    {
+                        if (dr[i].channel_id > 0)
                         {
-                            context.Response.Write(" href=\"" + dr[i]["link_url"].ToString() + "?channel_id=" + dr[i]["channel_id"].ToString() + "\" target=\"mainframe\"");
+                            context.Response.Write(" href=\"" + dr[i].link_url + "?channel_id=" + dr[i].channel_id + "\" target=\"mainframe\"");
                         }
                         else
                         {
-                            context.Response.Write(" href=\"" + dr[i]["link_url"].ToString() + "\" target=\"mainframe\"");
+                            context.Response.Write(" href=\"" + dr[i].link_url + "\" target=\"mainframe\"");
                         }
                     }
-                    context.Response.Write(" class=\"item\">\n");
-                    context.Response.Write("<span>" + dr[i]["title"].ToString() + "</span>\n");
+                    if (!string.IsNullOrWhiteSpace(dr[i].icon_url))
+                    {
+                        context.Response.Write(" icon=\"" + dr[i].icon_url + "\"");
+                    }
+                    context.Response.Write(" target=\"mainframe\">\n");
+                    context.Response.Write("<span>" + dr[i].title + "</span>\n");
                     context.Response.Write("</a>\n");
                     //调用自身迭代
-                    this.get_navigation_childs(context, oldData, int.Parse(dr[i]["id"].ToString()), dr[i]["name"].ToString(), role_type, ls);
+                    this.get_navigation_childs(context, oldData, dr[i].id, role_type, ls);
                     context.Response.Write("</li>\n");
-                }
-                //以上是输出选项内容=======================
-                //输出结束标记
-                if (i == (dr.Length - 1) && parent_id > 0 && parent_name != "sys_contents")
-                {
-                    context.Response.Write("</ul>\n");
+
+                    if (i == (dr.Count - 1))
+                    {
+                        context.Response.Write("</ul>\n");
+                    }
                 }
             }
         }

@@ -67,14 +67,14 @@ th.align-right {
                     <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " Style="font-size: 15px" />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <span style=" display:inline-block;" class="rl">到</span>
                 <div class="input-date" style="display: inline-block; float: left; margin-right:10px;">
                     <asp:TextBox ID="txtEndTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " Style="font-size: 15px" />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <div style="display: inline-block;">
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True" ></asp:TextBox>
