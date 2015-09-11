@@ -139,7 +139,7 @@
         </div>
         <div id="corporate-info"><span class="title-mark">3.企业信息</span></div>
         <%if(loaner_company==null)%>
-        暂无数据
+        <div class="content-null">暂无数据</div>
         <%else%>
         <ul class="list-unstyled">
             <li><span>企业名称</span><span class="span-sec">{loaner_company.name}</span></li>
@@ -154,8 +154,8 @@
         </ul>
         <%/if%>
         <div id="risk-control"><span class="title-mark">4.风控措施</span></div>
-        <ul class="list-unstyled">
-            <li><span>风控描述</span><span class="span-sec">{risk.risk_content}</span></li>
+        <ul class="list-unstyled risk-control-content">
+            <li><span><span class="specific-location">风控描述</span></span><span class="span-sec">{risk.risk_content}</span></li>
             <%foreach(var mortgage in mortgages)%>
             <%csharp%>
             var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
@@ -165,7 +165,7 @@
                 .Concat(new [] {new Tuple<string,string>("市场价值",mortgage.valuation.ToString("c")) }).ToList();
             foreach (var p in properties) {
             <%/csharp%>
-            <li><span><%=p.Item1%></span><span class="span-sec"><%=p.Item2%></span></li>
+            <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
             <%csharp%> } <%/csharp%>
             <%/foreach%>
         </ul>
