@@ -255,7 +255,7 @@ textarea.input{ width:300px; height:65px; }
 /*分页样式*/
 .pagelist{ clear:both; display:block; margin:0 0 20px 1px; }
 	.pagelist:after{ clear:both; content:"."; display:block; height:0; visibility:hidden; }
-	.pagelist .l-btns{ display:block; float:left; margin:2px 5px 0 -1px; padding:0 10px; border:1px solid #dbdbdb; height:28px; overflow:hidden; }
+	.pagelist .l-btns{ display:block; float:left; margin:0px 5px 0 -1px; padding:0 10px; border:1px solid #dbdbdb; height:28px; overflow:hidden; }
 	.pagelist .l-btns span{ font-size:12px; color:#333; line-height:28px; }
 	.pagelist .l-btns .pagenum{ display:inline-block; margin:0 5px; padding:0 5px; border:1px solid #dbdbdb; border-top:0; border-bottom:0; width:30px; height:28px; line-height:28px; font-size:12px; color:#333; text-align:center; vertical-align:top; overflow:hidden; }
 
