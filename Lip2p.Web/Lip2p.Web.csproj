@@ -637,6 +637,7 @@
     <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\ie7-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\invest-list-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
