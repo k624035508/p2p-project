@@ -157,16 +157,16 @@ textarea.input{ width:300px; height:65px; }
 	.input.small{ width:50px; }
 	.input:focus{ background:#FFFBDE; border-color:#7BBFF2; outline:2px solid #99D8F5; }
 /*日期样式*/
-.date-input{ position:relative; display:inline-block; width:170px; height:32px; vertical-align:middle; *display:inline; }
-	.date-input i{ display:block; position:absolute; top:10px; left:8px; width:14px; height:14px; background:url(skin_icons.png) no-repeat -308px -28px; }
+.date-input, .input-date{ position:relative; display:inline-block; width:170px; height:32px; vertical-align:middle; *display:inline; margin-right: 15px; }
+	.date-input i, .input-date i{ display:block; position:absolute; top:10px; left:8px; width:14px; height:14px; background:url(skin_icons.png) no-repeat -308px -28px; }
 .select{ margin:1px; padding:4px; min-height:20px; line-height:20px; border:1px solid #eee; background:#fff; vertical-align:middle; color:#333; font-size:100%; }
-	.date-input input{ padding-left:25px; width:170px; }
+	.date-input input, .input-date input{ padding-left:25px; width:170px; }
 .select1{ padding:1px; min-height:20px; line-height:20px; border:1px solid #eee; background:#fff; vertical-align:middle; color:#333; font-size:100%; }
 /* =========================内页通用样式.结束======================= */
 
 /* ==========================列表页样式.开始======================== */
 .toolbar-wrap{ padding:10px 0; width:100%; *position:relative; *z-index:1; }
-.toolbar{ top:0; right:15px; left:15px; bottom:auto; padding:10px 0 5px; min-height:32px; background:#fff; z-index:2; font-size:12px; color:#333; }
+.toolbar{ top:0; right:15px; left:15px; bottom:auto; padding:10px 0 5px; min-height:32px; background:#fff; z-index:2; font-size:12px; color:#333; position: relative; }
 	.toolbar:after{ clear:both; content:"."; display:block; height:0; visibility:hidden; }
 	.toolbar .box-wrap{ position:relative; }
 	.toolbar .menu-btn{ display:none; width:30px; height:30px; border:solid 1px #eee; background:url(skin_icons.png) no-repeat -384px -20px #fafafa; cursor:pointer; }
@@ -197,6 +197,7 @@ textarea.input{ width:300px; height:65px; }
 	.toolbar .r-list .btn-search{ display:block; float:left; margin:0 0 0 -1px; padding:0; width:30px; height:30px; line-height:30px; border:1px solid #eee; background:url(skin_icons.png) -160px -20px no-repeat #fafafa; cursor:pointer; text-indent:-9999px; }
 	.toolbar .r-list .img-view{ display:block; float:left; margin-left:10px; width:30px; height:30px; border:1px solid #eee; background:url(skin_icons.png) -187px -20px no-repeat #fafafa; text-indent:-9999px; }
 	.toolbar .r-list .txt-view{ display:block; float:left; width:30px; height:30px; border:1px solid #eee; border-left:none; background:url(skin_icons.png) -216px -20px no-repeat #fafafa; text-indent:-9999px; }
+    .toolbar .r-list .rl {float: left;line-height: 30px;vertical-align: middle;}
 /*迷你样式*/
 .toolbar.mini .menu-btn{ display:block; }
 .toolbar.mini .l-list{ display:none; position:absolute; top:37px; left:0; right:0; float:none; padding:5px; padding-bottom:0; border:1px solid #eee; background:#fafafa; z-index:1; }
@@ -348,7 +349,7 @@ textarea.input{ width:300px; height:65px; }
 	
 /*上传样式*/
 .upload-box{ position:relative; display:inline-block; height:32px; vertical-align:middle; zoom:1; *display:inline;}
-	.upload-box .upload-btn{ display:inline-block; height:32px; zoom:1; *display:inline; }
+	.upload-box .upload-btn{ display:inline-block; height:32px; zoom:1; *display:inline; border: 1px solid #e1e1e1;}
 	.upload-box .upload-progress{ position:absolute; top:0; left:0; padding:2px 5px; width:115px; height:26px; border:1px solid #d7d7d7; background:#fff; overflow:hidden; }
 	.upload-box .upload-progress .txt{ display:block; padding-right:10px; font-weight:normal; font-style:normal; font-size:11px; line-height:18px; height:18px; text-overflow:ellipsis; overflow:hidden; }
 	.upload-box .upload-progress .bar{ position:relative; display:block; width:112px; height:4px; border:1px solid #1da76b; }

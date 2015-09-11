@@ -99,14 +99,14 @@ thead * {
                     <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " Style="font-size: 15px" />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <span  class="rl">到</span>
                 <div class="input-date" style="display: inline-block; float:left; margin-right:10px;">
                     <asp:TextBox ID="txtEndTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " Style="font-size: 15px" />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <div class="menu-list" style="display: inline-block; float: left; margin-right: 8px; margin-left: 8px;">
                     <div class="rule-single-select">

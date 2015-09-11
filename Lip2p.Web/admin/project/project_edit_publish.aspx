@@ -306,7 +306,7 @@
                     <asp:TextBox ID="txtAddTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <span class="Validform_checktip">不选择默认当前发布时间</span>
             </dd>
@@ -318,7 +318,7 @@
                     <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                         datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
                         sucmsg=" " />
-                    <i>日期</i>
+                    <i></i>
                 </div>
                 <span class="Validform_checktip">不选择默认当前发布时间</span>
             </dd>
