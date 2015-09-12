@@ -295,7 +295,7 @@ namespace Lip2p.Core
                 return;
             }
 
-            if ((int)Lip2pEnums.ProjectStatusEnum.FaBiao != pr.status)
+            if ((int)Lip2pEnums.ProjectStatusEnum.Financing != pr.status)
                 throw new InvalidOperationException("项目不是发标状态，不能投资");
             // 判断投资金额的数额是否合理
             var canBeInvest = pr.financing_amount - pr.investment_amount;
@@ -425,22 +425,23 @@ namespace Lip2p.Core
         public static li_projects FinishInvestment(this Lip2pDataContext context, int projectId)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
-            if (project.status != (int) Lip2pEnums.ProjectStatusEnum.FaBiao)
+            if (project.status != (int) Lip2pEnums.ProjectStatusEnum.Financing)
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
 
             if (project.tag == (int)Lip2pEnums.ProjectTagEnum.Trial || project.tag == (int)Lip2pEnums.ProjectTagEnum.DailyProject) // 体验标的截标
             {
                 var now = DateTime.Now;
                 project.invest_complete_time = now;
-                project.status = (int)Lip2pEnums.ProjectStatusEnum.JieBiao;
+                project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingSuccess; // 本来这里是截标，TODO 是否应该直接跳去还款中
                 project.update_time = now;
 
                 context.SubmitChanges();
                 return project;
             }
 
-            //修改项目状态为满标/截标
-            project.status = project.investment_amount < project.financing_amount ? (int) Lip2pEnums.ProjectStatusEnum.JieBiao : (int) Lip2pEnums.ProjectStatusEnum.ManBiao;
+            // 修改项目状态为满标/截标
+            //project.status = project.investment_amount < project.financing_amount ? (int) Lip2pEnums.ProjectStatusEnum.JieBiao : (int) Lip2pEnums.ProjectStatusEnum.ManBiao;
+            project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingSuccess;
             // 项目完成时间应该等于最后一个人的投资时间
             var lastInvestment =
                 project.li_project_transactions.LastOrDefault(
@@ -682,7 +683,7 @@ namespace Lip2p.Core
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
             if (pro.li_repayment_tasks.All(r => r.status != (int) Lip2pEnums.RepaymentStatusEnum.Unpaid))
             {
-                pro.status = (int) Lip2pEnums.ProjectStatusEnum.WanCheng;
+                pro.status = (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime; // TODO 考虑放款的3种情况
                 pro.update_time = repaymentTask.repay_at.Value;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
@@ -737,7 +738,7 @@ namespace Lip2p.Core
         {
             // 判断项目状态是否未满标
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
-            if ((int) Lip2pEnums.ProjectStatusEnum.JieBiao <= tr.li_projects.status)
+            if ((int) Lip2pEnums.ProjectStatusEnum.Financing < tr.li_projects.status)
                 throw new InvalidOperationException("项目已经不是发标状态，不能申请退款");
 
             // 更改交易状态

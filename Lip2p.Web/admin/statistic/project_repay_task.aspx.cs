@@ -94,7 +94,7 @@ namespace Lip2p.Web.admin.statistic
 
             var query1 =
                 context.li_repayment_tasks.Where(rt =>
-                    (int) Lip2pEnums.ProjectStatusEnum.FaBiao < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text))
+                    (int) Lip2pEnums.ProjectStatusEnum.Financing < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text))
                     .Where(r =>
                         rblRepaymentStatus.SelectedValue == "0" || r.status == Convert.ToByte(rblRepaymentStatus.SelectedValue));
 

@@ -31,7 +31,7 @@ namespace Lip2p.Web.UI.Page
                 context.li_projects.Where(
                     p =>
                         p.tag == (int) Lip2pEnums.ProjectTagEnum.Trial &&
-                        (int) Lip2pEnums.ProjectStatusEnum.FaBiao <= p.status)
+                        (int) Lip2pEnums.ProjectStatusEnum.Financing <= p.status)
                     .OrderByDescending(p => p.publish_time)
                     .FirstOrDefault();
             return trialProject;
@@ -44,7 +44,7 @@ namespace Lip2p.Web.UI.Page
                 context.li_projects.Where(
                     p =>
                         p.tag == (int) Lip2pEnums.ProjectTagEnum.DailyProject &&
-                        (int) Lip2pEnums.ProjectStatusEnum.FaBiao <= p.status)
+                        (int) Lip2pEnums.ProjectStatusEnum.Financing <= p.status)
                     .OrderByDescending(p => p.publish_time)
                     .FirstOrDefault();
             return dailyProject;

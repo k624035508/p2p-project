@@ -34,13 +34,19 @@ namespace Lip2p.Web.UI.Page
             MyTradeTypeMapHistoryEnum = new Dictionary<Lip2pEnums.MyInvestRadioBtnTypeEnum, Lip2pEnums.ProjectStatusEnum[]>
             {
                 {
-                    Lip2pEnums.MyInvestRadioBtnTypeEnum.Invested, new[] { Lip2pEnums.ProjectStatusEnum.FaBiao }
+                    Lip2pEnums.MyInvestRadioBtnTypeEnum.Investing, new[] { Lip2pEnums.ProjectStatusEnum.Financing }
                 },
                 {
-                    Lip2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Lip2pEnums.ProjectStatusEnum.ManBiao, Lip2pEnums.ProjectStatusEnum.JieBiao, }
+                    Lip2pEnums.MyInvestRadioBtnTypeEnum.InvestEndding, new[] { Lip2pEnums.ProjectStatusEnum.FinancingSuccess, Lip2pEnums.ProjectStatusEnum.FinancingTimeout }
                 },
                 {
-                    Lip2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete, new[] { Lip2pEnums.ProjectStatusEnum.WanCheng }
+                    Lip2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Lip2pEnums.ProjectStatusEnum.ProjectRepaying,
+                        Lip2pEnums.ProjectStatusEnum.NotRepayCompleteIntime, Lip2pEnums.ProjectStatusEnum.BadDebt }
+                },
+                {
+                    Lip2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete, new[] { Lip2pEnums.ProjectStatusEnum.RepayCompleteEarlier,
+                        Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime, Lip2pEnums.ProjectStatusEnum.RepayCompleteDelay,
+                        Lip2pEnums.ProjectStatusEnum.AdvancePayForFinancer, Lip2pEnums.ProjectStatusEnum.BadDebtRepayComplete }
                 },
             };
 

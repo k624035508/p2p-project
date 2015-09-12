@@ -22,7 +22,7 @@ namespace Lip2p.Core.AutoLogic
             var project = context.li_projects.FirstOrDefault(p => p.id == projectId);
             if (project != null)
             {
-                project.status = (int)Lip2pEnums.ProjectStatusEnum.FaBiao;
+                project.status = (int)Lip2pEnums.ProjectStatusEnum.Financing;
                 context.SubmitChanges();
             }
         }

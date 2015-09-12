@@ -8,68 +8,6 @@ namespace Lip2p.Common
     public class Lip2pEnums
     {       
         /// <summary>
-        /// 项目状态枚举
-        /// </summary>
-        public enum ProjectStatusEnum
-        {
-            /// <summary>
-            /// 新增
-            /// </summary>
-            [Description("新增")]
-            New = 0,
-            /// <summary>
-            /// 立项
-            /// </summary>
-            [Description("立项")]
-            LiXiang = 10,
-            /// <summary>
-            /// 风审
-            /// </summary>
-            [Description("风审")]
-            FengShen = 20,
-            /// <summary>
-            /// 签约
-            /// </summary>
-            [Description("签约")]
-            QianYue = 30,
-            /// <summary>
-            /// 立标
-            /// </summary>
-            [Description("立标")]
-            LiBiao = 40,
-            /// <summary>
-            /// 复核
-            /// </summary>
-            [Description("复核")]
-            FuHe = 50,
-            /// <summary>
-            /// 延迟发标
-            /// </summary>
-            [Description("延迟发标")]
-            DelayFaBiao = 55,
-            /// <summary>
-            /// 发标
-            /// </summary>
-            [Description("发标")]
-            FaBiao = 60,
-            /// <summary>
-            /// 截标
-            /// </summary>
-            [Description("截标")]
-            JieBiao = 70,
-            /// <summary>
-            /// 满标
-            /// </summary>
-            [Description("满标")]
-            ManBiao = 80,
-            /// <summary>
-            /// 完成
-            /// </summary>
-            [Description("完成")]
-            WanCheng = 90
-        }
-
-        /// <summary>
         /// 项目标识
         /// </summary>
         public enum ProjectTagEnum
@@ -87,7 +25,7 @@ namespace Lip2p.Common
         /// <summary>
         /// 流程状态
         /// </summary>
-        public enum WorkflowStatusEnum
+        public enum ProjectStatusEnum
         {
             // 发标前 (前台不可见)
             [Description("借款申请待提交")]
@@ -98,36 +36,40 @@ namespace Lip2p.Common
             FinancingApplicationFail = 3,
             [Description("借款申请审核通过")]
             FinancingApplicationSuccess = 4,
-            [Description("融资失败")]
+            [Description("融资失败")] // 流标
             FinancingFail = 5,
 
             // 上线募集
+            [Description("定时发标")]
+            FinancingAtTime = 10,
             [Description("融资中")]
-            Financing = 10,
-            [Description("融资成功")] // 复审，准备放款给融资者
-            FinancingSuccess = 11,
+            Financing = 11,
+
+            // 募集结束
             [Description("融资超时")] // 等待决定是由平台满标还是流标
-            FinancingTimeout = 12,
+            FinancingTimeout = 20,
+            [Description("满标")] // 复审，准备放款给融资者
+            FinancingSuccess = 21,
 
             // 还款中
             [Description("还款中")]
-            ProjectRepaying = 20,
+            ProjectRepaying = 30,
             [Description("到期未还款完成")] // 等待决定是否垫付
-            NotRepayCompleteIntime = 21,
+            NotRepayCompleteIntime = 31,
             [Description("坏账")]
-            BadDebt = 22,
+            BadDebt = 32,
 
             // 还款完成
-            [Description("提前还款完成")]
-            RepayCompleteEarlier = 30,
             [Description("按时还款完成")]
-            RepayCompleteIntime = 31,
+            RepayCompleteIntime = 40,
+            [Description("提前还款完成")]
+            RepayCompleteEarlier = 41,
             [Description("到期未还款已垫付")]
-            AdvancePayForFinancer = 32,
+            AdvancePayForFinancer = 42,
             [Description("垫付后还款完成")]
-            RepayCompleteDelay = 33,
+            RepayCompleteDelay = 43,
             [Description("坏账后还款完成")]
-            BadDebtRepayComplete = 34,
+            BadDebtRepayComplete = 44,
         }
 
         /// <summary>
@@ -492,11 +434,13 @@ namespace Lip2p.Common
             [Description("全部")]
             All = 0,
             [Description("投资中")]
-            Invested = 1,
+            Investing = 1,
+            [Description("投资结束")]
+            InvestEndding = 2,
             [Description("还款中")]
-            Repaying = 2,
+            Repaying = 3,
             [Description("已完成")]
-            RepayComplete = 3,
+            RepayComplete = 4,
         }
 
         /// <summary>

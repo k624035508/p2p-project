@@ -89,11 +89,11 @@ namespace Lip2p.Web.admin.statistic
             var query = context.li_projects.Where(p => p.title.Contains(txtKeywords.Text));
 
             if (rblProjectStatus.SelectedValue == "1")
-                query = query.Where(p => p.status == (int)Lip2pEnums.ProjectStatusEnum.FaBiao);
+                query = query.Where(p => p.status == (int)Lip2pEnums.ProjectStatusEnum.Financing);
             else if (rblProjectStatus.SelectedValue == "2")
-                query = query.Where(p => (int)Lip2pEnums.ProjectStatusEnum.FaBiao < p.status);
+                query = query.Where(p => (int)Lip2pEnums.ProjectStatusEnum.Financing < p.status);
             else
-                query = query.Where(p => (int)Lip2pEnums.ProjectStatusEnum.FaBiao <= p.status);
+                query = query.Where(p => (int)Lip2pEnums.ProjectStatusEnum.Financing <= p.status);
 
             if (txtYear.Text != "-")
                 query = query.Where(t => t.invest_complete_time == null || t.invest_complete_time.Value.Year == Convert.ToInt32(txtYear.Text));

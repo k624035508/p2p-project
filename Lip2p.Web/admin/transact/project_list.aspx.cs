@@ -39,7 +39,7 @@ namespace Lip2p.Web.admin.transact
             page = DTRequest.GetQueryInt("page", 1);
            //txtKeywords.Text = keywords;
             var query = context.li_projects
-                .Where(p => (int)Lip2pEnums.ProjectStatusEnum.FaBiao <= p.status && p.title.Contains(txtKeywords.Text));
+                .Where(p => (int)Lip2pEnums.ProjectStatusEnum.Financing <= p.status && p.title.Contains(txtKeywords.Text));
 
             totalCount = query.Count();
             rptList.DataSource = query.OrderByDescending(q => q.add_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
@@ -94,7 +94,7 @@ namespace Lip2p.Web.admin.transact
 
         protected string QueryRepaymentProgress(li_projects pro)
         {
-            if (pro.status <= (int) Lip2pEnums.ProjectStatusEnum.FaBiao)
+            if (pro.status < (int) Lip2pEnums.ProjectStatusEnum.ProjectRepaying)
                 return "未满标";
             var repayments = pro.li_repayment_tasks.Select(r => r.status).ToList();
             return string.Format("{0}/{1}", repayments.Count(r => r != (int) Lip2pEnums.RepaymentStatusEnum.Unpaid), repayments.Count);

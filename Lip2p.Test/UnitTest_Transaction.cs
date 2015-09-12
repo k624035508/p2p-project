@@ -79,7 +79,7 @@ namespace Lip2p.Test
         public void CheckInvestAmount()
         {
             Lip2pDataContext context = new Lip2pDataContext(str);
-            var projects = context.li_projects.Where(p => (int)Lip2pEnums.ProjectStatusEnum.FaBiao <= p.status && p.investment_amount == 0).ToList();
+            var projects = context.li_projects.Where(p => (int)Lip2pEnums.ProjectStatusEnum.Financing <= p.status && p.investment_amount == 0).ToList();
             foreach (var p in projects)
             {
                 var investmentAmount = p.li_project_transactions.Where(
@@ -103,7 +103,7 @@ namespace Lip2p.Test
             var projects =
                 context.li_projects.Where(
                     p =>
-                        p.status == (int) Lip2pEnums.ProjectStatusEnum.FaBiao &&
+                        p.status == (int) Lip2pEnums.ProjectStatusEnum.Financing &&
                         p.tag != (int) Lip2pEnums.ProjectTagEnum.Trial && p.tag != (int)Lip2pEnums.ProjectTagEnum.DailyProject).ToList();
             int doneCount = 0;
             projects.ForEach(p =>
@@ -145,13 +145,13 @@ namespace Lip2p.Test
                 context.li_projects.Where(
                     p =>
                         p.tag != (int) Lip2pEnums.ProjectTagEnum.Trial &&
-                        (int) Lip2pEnums.ProjectStatusEnum.FaBiao < p.status &&
-                        p.status != (int) Lip2pEnums.ProjectStatusEnum.WanCheng &&
+                        (int) Lip2pEnums.ProjectStatusEnum.Financing < p.status &&
+                        p.status < (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime &&
                         p.li_repayment_tasks.All(r => r.status != (int) Lip2pEnums.RepaymentStatusEnum.Unpaid)).ToList();
             errorProjects.ForEach(p =>
             {
                 Debug.WriteLine(p.title);
-                p.status = (int) Lip2pEnums.ProjectStatusEnum.WanCheng;
+                p.status = (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 p.update_time = p.li_repayment_tasks.Max(r => r.repay_at.Value);
             });
             context.SubmitChanges();
@@ -258,7 +258,7 @@ namespace Lip2p.Test
                 var projectInvestmentMap = u.li_project_transactions.Where(p =>
                     p.status == (int) Lip2pEnums.ProjectTransactionStatusEnum.Success &&
                     p.type == (int) Lip2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    p.li_projects.status != (int) Lip2pEnums.ProjectStatusEnum.WanCheng)
+                    p.li_projects.status < (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime)
                     .GroupBy(p => p.li_projects)
                     .ToDictionary(g => g.Key, g => g.Sum(p => p.value));
 

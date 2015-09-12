@@ -185,7 +185,7 @@ namespace Lip2p.Web.admin.dialog
         {
             var mortgage = context.li_mortgages.Single(m => m.id == mortgageId);
             var projs = mortgage.li_risk_mortgage.Select(rm => rm.li_risks)
-                .SelectMany(r => r.li_projects.Where(p => p.status != (int) Lip2pEnums.ProjectStatusEnum.WanCheng)).ToList();
+                .SelectMany(r => r.li_projects.Where(p => p.status < (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime)).ToList();
             var projectNames = projs.Select(p => p.title).ToList();
             var riskCount = projs.GroupBy(p => p.risk_id).Count();
             return string.Join(",", projectNames) + (riskCount <= 1 ? "" : " 警告：此抵押物被多个风控信息关联");

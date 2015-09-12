@@ -272,7 +272,8 @@ namespace Lip2p.Web.admin.project
             SetProjectModel(project);
                         
             //修改项目状态为立项
-            project.status = (int)Lip2pEnums.ProjectStatusEnum.LiXiang;
+            throw new NotImplementedException("不确定跳转到什么状态");
+            //project.status = (int)Lip2pEnums.ProjectStatusEnum.LiXiang;
             context.li_projects.InsertOnSubmit(project);
 
             try
@@ -361,7 +362,8 @@ namespace Lip2p.Web.admin.project
             SetRiskModel(project.li_risks);
 
             //项目状态修改
-            if (project.status < (int)Lip2pEnums.ProjectStatusEnum.FengShen)
+            throw new NotImplementedException("不确定跳转到什么状态");
+            /*if (project.status < (int)Lip2pEnums.ProjectStatusEnum.FengShen)
             {                
                 //风控信息赋值
                 var riskInfo = project.li_risks;
@@ -373,7 +375,7 @@ namespace Lip2p.Web.admin.project
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.LienCertificate, 2);
-            }
+            }*/
             project.status += 10;
 
             try

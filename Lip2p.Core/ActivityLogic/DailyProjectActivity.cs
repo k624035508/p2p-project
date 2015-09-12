@@ -75,7 +75,7 @@ namespace Lip2p.Core.ActivityLogic
                 if (IsExpired()) throw new Exception("此天标券已经过期了");
 
                 var proj = context.li_projects.Single(p => p.id == projectId);
-                if ((int)Lip2pEnums.ProjectStatusEnum.FaBiao != proj.status)
+                if ((int)Lip2pEnums.ProjectStatusEnum.Financing != proj.status)
                     throw new InvalidOperationException("项目不是发标状态，不能投资");
 
                 var ticketValue = GetTicketValue();
@@ -113,7 +113,7 @@ namespace Lip2p.Core.ActivityLogic
                 if (proj.investment_amount == proj.financing_amount) // 如果项目满了，设置为满标
                 {
                     proj.invest_complete_time = useTime;
-                    proj.status = (int) Lip2pEnums.ProjectStatusEnum.ManBiao;
+                    proj.status = (int) Lip2pEnums.ProjectStatusEnum.FinancingSuccess; // FIXME 直接跳到 还款中 ？
                     proj.update_time = useTime;
                 }
 
