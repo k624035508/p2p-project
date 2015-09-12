@@ -12056,21 +12056,19 @@ namespace Lip2p.Linq2SQL
 		
 		private string _title;
 		
+		private string _no;
+		
 		private string _user_name;
 		
 		private System.DateTime _add_time;
 		
-		private System.DateTime _update_time;
+		private System.Nullable<System.DateTime> _audit_time;
 		
 		private System.Nullable<System.DateTime> _publish_time;
 		
 		private System.Nullable<System.DateTime> _invest_complete_time;
 		
-		private string _loan_contract_number;
-		
-		private string _no;
-		
-		private string _loan_agreement_no;
+		private System.Nullable<System.DateTime> _make_loan_time;
 		
 		private int _status;
 		
@@ -12090,6 +12088,8 @@ namespace Lip2p.Linq2SQL
 		
 		private decimal _investment_amount;
 		
+		private short _financing_day;
+		
 		private int _risk_id;
 		
 		private System.Nullable<int> _sort_id;
@@ -12103,8 +12103,6 @@ namespace Lip2p.Linq2SQL
 		private string _seo_keywords;
 		
 		private string _seo_description;
-		
-		private short _financing_day;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
 		
@@ -12122,22 +12120,20 @@ namespace Lip2p.Linq2SQL
     partial void Oncategory_idChanged();
     partial void OntitleChanging(string value);
     partial void OntitleChanged();
+    partial void OnnoChanging(string value);
+    partial void OnnoChanged();
     partial void Onuser_nameChanging(string value);
     partial void Onuser_nameChanged();
     partial void Onadd_timeChanging(System.DateTime value);
     partial void Onadd_timeChanged();
-    partial void Onupdate_timeChanging(System.DateTime value);
-    partial void Onupdate_timeChanged();
+    partial void Onaudit_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Onaudit_timeChanged();
     partial void Onpublish_timeChanging(System.Nullable<System.DateTime> value);
     partial void Onpublish_timeChanged();
     partial void Oninvest_complete_timeChanging(System.Nullable<System.DateTime> value);
     partial void Oninvest_complete_timeChanged();
-    partial void Onloan_contract_numberChanging(string value);
-    partial void Onloan_contract_numberChanged();
-    partial void OnnoChanging(string value);
-    partial void OnnoChanged();
-    partial void Onloan_agreement_noChanging(string value);
-    partial void Onloan_agreement_noChanged();
+    partial void Onmake_loan_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Onmake_loan_timeChanged();
     partial void OnstatusChanging(int value);
     partial void OnstatusChanged();
     partial void OntagChanging(System.Nullable<int> value);
@@ -12156,6 +12152,8 @@ namespace Lip2p.Linq2SQL
     partial void Onfinancing_amountChanged();
     partial void Oninvestment_amountChanging(decimal value);
     partial void Oninvestment_amountChanged();
+    partial void Onfinancing_dayChanging(short value);
+    partial void Onfinancing_dayChanged();
     partial void Onrisk_idChanging(int value);
     partial void Onrisk_idChanged();
     partial void Onsort_idChanging(System.Nullable<int> value);
@@ -12170,8 +12168,6 @@ namespace Lip2p.Linq2SQL
     partial void Onseo_keywordsChanged();
     partial void Onseo_descriptionChanging(string value);
     partial void Onseo_descriptionChanged();
-    partial void Onfinancing_dayChanging(short value);
-    partial void Onfinancing_dayChanged();
     #endregion
 		
 		public li_projects()
@@ -12242,6 +12238,26 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_no", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string no
+		{
+			get
+			{
+				return this._no;
+			}
+			set
+			{
+				if ((this._no != value))
+				{
+					this.OnnoChanging(value);
+					this.SendPropertyChanging();
+					this._no = value;
+					this.SendPropertyChanged("no");
+					this.OnnoChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
 		public string user_name
 		{
@@ -12282,22 +12298,22 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_update_time", DbType="DateTime NOT NULL")]
-		public System.DateTime update_time
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_audit_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> audit_time
 		{
 			get
 			{
-				return this._update_time;
+				return this._audit_time;
 			}
 			set
 			{
-				if ((this._update_time != value))
+				if ((this._audit_time != value))
 				{
-					this.Onupdate_timeChanging(value);
+					this.Onaudit_timeChanging(value);
 					this.SendPropertyChanging();
-					this._update_time = value;
-					this.SendPropertyChanged("update_time");
-					this.Onupdate_timeChanged();
+					this._audit_time = value;
+					this.SendPropertyChanged("audit_time");
+					this.Onaudit_timeChanged();
 				}
 			}
 		}
@@ -12342,62 +12358,22 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loan_contract_number", DbType="VarChar(50)")]
-		public string loan_contract_number
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_make_loan_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> make_loan_time
 		{
 			get
 			{
-				return this._loan_contract_number;
+				return this._make_loan_time;
 			}
 			set
 			{
-				if ((this._loan_contract_number != value))
+				if ((this._make_loan_time != value))
 				{
-					this.Onloan_contract_numberChanging(value);
+					this.Onmake_loan_timeChanging(value);
 					this.SendPropertyChanging();
-					this._loan_contract_number = value;
-					this.SendPropertyChanged("loan_contract_number");
-					this.Onloan_contract_numberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_no", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string no
-		{
-			get
-			{
-				return this._no;
-			}
-			set
-			{
-				if ((this._no != value))
-				{
-					this.OnnoChanging(value);
-					this.SendPropertyChanging();
-					this._no = value;
-					this.SendPropertyChanged("no");
-					this.OnnoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loan_agreement_no", DbType="NVarChar(50)")]
-		public string loan_agreement_no
-		{
-			get
-			{
-				return this._loan_agreement_no;
-			}
-			set
-			{
-				if ((this._loan_agreement_no != value))
-				{
-					this.Onloan_agreement_noChanging(value);
-					this.SendPropertyChanging();
-					this._loan_agreement_no = value;
-					this.SendPropertyChanged("loan_agreement_no");
-					this.Onloan_agreement_noChanged();
+					this._make_loan_time = value;
+					this.SendPropertyChanged("make_loan_time");
+					this.Onmake_loan_timeChanged();
 				}
 			}
 		}
@@ -12582,6 +12558,26 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_financing_day", DbType="SmallInt NOT NULL")]
+		public short financing_day
+		{
+			get
+			{
+				return this._financing_day;
+			}
+			set
+			{
+				if ((this._financing_day != value))
+				{
+					this.Onfinancing_dayChanging(value);
+					this.SendPropertyChanging();
+					this._financing_day = value;
+					this.SendPropertyChanged("financing_day");
+					this.Onfinancing_dayChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_risk_id", DbType="Int NOT NULL")]
 		public int risk_id
 		{
@@ -12722,26 +12718,6 @@ namespace Lip2p.Linq2SQL
 					this._seo_description = value;
 					this.SendPropertyChanged("seo_description");
 					this.Onseo_descriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_financing_day", DbType="SmallInt NOT NULL")]
-		public short financing_day
-		{
-			get
-			{
-				return this._financing_day;
-			}
-			set
-			{
-				if ((this._financing_day != value))
-				{
-					this.Onfinancing_dayChanging(value);
-					this.SendPropertyChanging();
-					this._financing_day = value;
-					this.SendPropertyChanged("financing_day");
-					this.Onfinancing_dayChanged();
 				}
 			}
 		}

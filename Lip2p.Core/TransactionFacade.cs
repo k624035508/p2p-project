@@ -433,7 +433,6 @@ namespace Lip2p.Core
                 var now = DateTime.Now;
                 project.invest_complete_time = now;
                 project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingSuccess; // 本来这里是截标，TODO 是否应该直接跳去还款中
-                project.update_time = now;
 
                 context.SubmitChanges();
                 return project;
@@ -449,8 +448,6 @@ namespace Lip2p.Core
                         tr.status == (int) Lip2pEnums.ProjectTransactionStatusEnum.Success &&
                         tr.type == (int) Lip2pEnums.ProjectTransactionTypeEnum.Invest);
             project.invest_complete_time = lastInvestment != null ? lastInvestment.create_time : DateTime.Now;
-
-            project.update_time = project.invest_complete_time.Value;
 
             var termSpan = (Lip2pEnums.ProjectRepaymentTermSpanEnum) project.repayment_term_span; // 期的跨度（年月日）
             var termSpanCount = project.repayment_term_span_count; // 跨度数
@@ -684,7 +681,6 @@ namespace Lip2p.Core
             if (pro.li_repayment_tasks.All(r => r.status != (int) Lip2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime; // TODO 考虑放款的3种情况
-                pro.update_time = repaymentTask.repay_at.Value;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
             }

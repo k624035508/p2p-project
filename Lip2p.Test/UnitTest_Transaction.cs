@@ -152,7 +152,6 @@ namespace Lip2p.Test
             {
                 Debug.WriteLine(p.title);
                 p.status = (int) Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime;
-                p.update_time = p.li_repayment_tasks.Max(r => r.repay_at.Value);
             });
             context.SubmitChanges();
         }

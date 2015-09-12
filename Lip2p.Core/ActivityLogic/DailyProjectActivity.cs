@@ -114,7 +114,6 @@ namespace Lip2p.Core.ActivityLogic
                 {
                     proj.invest_complete_time = useTime;
                     proj.status = (int) Lip2pEnums.ProjectStatusEnum.FinancingSuccess; // FIXME 直接跳到 还款中 ？
-                    proj.update_time = useTime;
                 }
 
                 // 修改钱包，添加待收金额

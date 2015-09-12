@@ -138,7 +138,6 @@ namespace Lip2p.Web.admin.statistic
                         Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTermSpanEnum) p.repayment_term_span),
                     InvestCompleteTime = p.invest_complete_time,
                     RepayCompleteTime = p.li_repayment_tasks.Select(r => r.should_repay_time).Last(),
-                    LoanContractNumber = p.loan_agreement_no,
                     Creditor = p.li_risks.li_creditors.real_name
                 };
                 int j = 0;

@@ -103,7 +103,6 @@ namespace Lip2p.Web.UI
                         category_id = p.category_id,
                         amount = p.financing_amount,
                         add_time = p.publish_time ?? p.add_time,
-                        update_time = p.update_time,
                         publish_time = p.publish_time,
                         tag = p.tag,
                         //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径

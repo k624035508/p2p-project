@@ -139,7 +139,6 @@ namespace Lip2p.Web.admin.project
             txt_project_repayment_number.Text = _project.repayment_term_span_count.ToString();
             txt_project_repayment_term.SelectedValue = _project.repayment_term_span.ToString();
             txt_project_repayment_type.Text = _project.repayment_type.ToString();
-            txtLoanAgreementNo.Text = _project.loan_agreement_no;
 
             if (txt_project_profit_rate != null && _project.profit_rate_year > 0)
                 txt_project_profit_rate.Text = _project.profit_rate_year.ToString();
@@ -210,7 +209,6 @@ namespace Lip2p.Web.admin.project
             project.img_url = txtImgUrl.Text.Trim();
             project.add_time = Utils.StrToDateTime(txtAddTime.Text.Trim());
             project.user_name = GetAdminInfo().user_name; //获得当前登录用户名
-            project.update_time = DateTime.Now;
             //项目信息
             project.category_id = Utils.StrToInt(ddlCategoryId.SelectedValue, 0);
             project.title = txtTitle.Text.Trim();
@@ -219,7 +217,6 @@ namespace Lip2p.Web.admin.project
             project.repayment_term_span_count = Utils.StrToInt(txt_project_repayment_number.Text.Trim(), 0);
             project.repayment_term_span = Utils.StrToInt(txt_project_repayment_term.SelectedValue, 20);
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
-            project.loan_agreement_no = txtLoanAgreementNo.Text.Trim();
             if (txt_project_profit_rate != null)
                 project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
             if (txtPublishTime != null)
