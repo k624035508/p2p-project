@@ -39,11 +39,12 @@ namespace Lip2p.Web.admin.project
                     var project = context.li_projects.FirstOrDefault(p => p.id == id);
                     if (project != null)
                     {
+                        throw new NotImplementedException("不确定跳转到什么状态");
                         //项目风审通过后直接签约
-                        if (project.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue)
+                        /*if (project.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue)
                             project.status = (int)Lip2pEnums.ProjectStatusEnum.QianYue;
                         else
-                            project.status += 10;
+                            project.status += 10;*/
                     }
                 }
             }

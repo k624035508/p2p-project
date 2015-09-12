@@ -136,7 +136,8 @@ namespace Lip2p.Web.admin.project
                 query = query.Where(q => q.status == _project_status);
             else
             {                
-                if (this.page_name.Equals("approval"))
+                throw new NotImplementedException("不确定跳转到什么状态");
+                /*if (this.page_name.Equals("approval"))
                     query = query.Where(q => q.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue);
                 else if (this.page_name.Equals("publish"))
                     query = query.Where(q => q.status >= (int)Lip2pEnums.ProjectStatusEnum.QianYue);
@@ -144,7 +145,7 @@ namespace Lip2p.Web.admin.project
                 {
                     query = query.Where(q => q.status == (int)Lip2pEnums.ProjectStatusEnum.LiXiang 
                         || q.status == (int)Lip2pEnums.ProjectStatusEnum.LiBiao);
-                }
+                }*/
             }
 
             this.totalCount = query.Count();

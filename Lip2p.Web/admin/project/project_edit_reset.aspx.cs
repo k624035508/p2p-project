@@ -23,15 +23,16 @@ namespace Lip2p.Web.admin.project
             base.Page_Load(sender, e);
             if (!Page.IsPostBack)
             {
+                throw new NotImplementedException("不确定跳转到什么状态");
                 //复核后不能修改项目基本信息
-                if (project_status >= (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FuHe)
+                /*if (project_status >= (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FuHe)
                 {
                     txt_project_amount.Enabled = false;
                     txt_project_repayment_number.Enabled = false;
                     txt_project_repayment_term.Enabled = false;
                     txt_project_repayment_type.Enabled = false;
                     txt_project_profit_rate.Enabled = false;
-                }
+                }*/
             }
         }
 

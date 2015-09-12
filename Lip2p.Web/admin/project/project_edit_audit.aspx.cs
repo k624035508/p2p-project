@@ -20,10 +20,11 @@ namespace Lip2p.Web.admin.project
             base.Page_Load(sender, e);
             if (!Page.IsPostBack)
             {
-                if (project_status < (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.QianYue)
+                throw new NotImplementedException("不确定跳转到什么状态");
+                /*if (project_status < (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.QianYue)
                 {
                     div_project_profit_rate.Visible = false;
-                }
+                }*/
             }
         }
 
@@ -33,12 +34,13 @@ namespace Lip2p.Web.admin.project
             if (project != null)
             {
                 //项目风审通过后直接签约
-                if (project.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue)
+                throw new NotImplementedException("不确定跳转到什么状态");
+                /*if (project.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue)
                     project.status = (int)Lip2pEnums.ProjectStatusEnum.QianYue;
                 else
                     project.status += 10;
                 context.SubmitChanges();
-                JscriptMsg("项目审批通过！", String.Format("project_list_audit.aspx?channel_id={1}", page_name, this.channel_id), "Success");
+                JscriptMsg("项目审批通过！", String.Format("project_list_audit.aspx?channel_id={1}", page_name, this.channel_id), "Success");*/
             }
         }
 

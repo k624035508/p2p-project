@@ -58,7 +58,7 @@ namespace Lip2p.Web
         public void DelayedRelease()
         {
             var linqContext = new Lip2pDataContext();
-            var project = linqContext.li_projects.Where(p => p.status==(int)Lip2pEnums.ProjectStatusEnum.DelayFaBiao).ToList();
+            var project = linqContext.li_projects.Where(p => p.status==(int)Lip2pEnums.ProjectStatusEnum.FinancingAtTime).ToList();
             for (int i = 0; i < project.Count; i++)
             {
                 //启动进程
@@ -69,7 +69,7 @@ namespace Lip2p.Web
                 }
                 else
                 {
-                    project[i].status = (int)Lip2pEnums.ProjectStatusEnum.FaBiao;
+                    project[i].status = (int)Lip2pEnums.ProjectStatusEnum.Financing;
                 }
             }
             linqContext.SubmitChanges();

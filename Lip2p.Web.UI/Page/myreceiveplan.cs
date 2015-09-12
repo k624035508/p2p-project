@@ -267,7 +267,7 @@ namespace Lip2p.Web.UI.Page
                 (atr.activity_type == (int) Lip2pEnums.ActivityTransactionActivityTypeEnum.Trial ||
                  atr.activity_type == (int) Lip2pEnums.ActivityTransactionActivityTypeEnum.DailyProject))
                 .Where(atr =>
-                    projectStatus == (int) Lip2pEnums.ProjectStatusEnum.WanCheng
+                    (int)Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime <= projectStatus
                         ? atr.transact_time != null
                         : atr.transact_time == null)
                 .ToDictionary(atr => atr.li_wallet_histories.First().create_time, atr =>
@@ -279,7 +279,7 @@ namespace Lip2p.Web.UI.Page
                     ptr.investor == userInfo.id && ptr.type == (int) Lip2pEnums.ProjectTransactionTypeEnum.Invest &&
                     ptr.status == (int) Lip2pEnums.ProjectTransactionStatusEnum.Success)
                     .Where(ptr => ptr.li_projects.status == projectStatus ||
-                        projectStatus == (int) Lip2pEnums.ProjectStatusEnum.ManBiao && ptr.li_projects.status == (int) Lip2pEnums.ProjectStatusEnum.JieBiao) // 查满标时包括截标
+                        projectStatus == (int) Lip2pEnums.ProjectStatusEnum.FinancingSuccess && ptr.li_projects.status == (int) Lip2pEnums.ProjectStatusEnum.FinancingSuccess) // 查满标时包括截标
                 .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
 
             var result = usedTickets.Concat(investedProjects)
@@ -342,7 +342,7 @@ namespace Lip2p.Web.UI.Page
                 var result = new
                 {
                     Title = project.title,
-                    ProfitingAmount = (int) Lip2pEnums.ProjectStatusEnum.FaBiao < project.status
+                    ProfitingAmount = (int) Lip2pEnums.ProjectStatusEnum.Financing < project.status
                         ? project.li_repayment_tasks.Sum(ta => Math.Round(investRatio * ta.repay_principal, 2) + Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
                         : "(未满标)",
                     ProfitRateYear = project.profit_rate_year,

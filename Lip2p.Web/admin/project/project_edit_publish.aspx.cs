@@ -25,14 +25,15 @@ namespace Lip2p.Web.admin.project
             if (!Page.IsPostBack)
             {
                 //复核后不能修改项目基本信息
-                if (project_status >= (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FuHe)
+                throw new NotImplementedException("不确定跳转到什么状态");
+                /*if (project_status >= (int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FuHe)
                 {
                     txt_project_amount.Enabled = false;
                     txt_project_repayment_number.Enabled = false;
                     txt_project_repayment_term.Enabled = false;
                     txt_project_repayment_type.Enabled = false;
                     txt_project_profit_rate.Enabled = false;
-                }
+                }*/
                 //拆标可以修改项目标题
                 if (action == DTEnums.ActionEnum.Copy.ToString())
                 {
@@ -98,7 +99,8 @@ namespace Lip2p.Web.admin.project
             context.li_risks.InsertOnSubmit(risk);
 
             project_copy.li_risks = risk;
-            project_copy.status = (int)Lip2pEnums.ProjectStatusEnum.LiBiao;
+            throw new NotImplementedException("不确定跳转到什么状态");
+            //project_copy.status = (int)Lip2pEnums.ProjectStatusEnum.LiBiao;
             context.li_projects.InsertOnSubmit(project_copy);
             try
             {
@@ -122,10 +124,11 @@ namespace Lip2p.Web.admin.project
             var project = context.li_projects.FirstOrDefault(p => p.id == this.id);
             if (project != null)
             {
-                var info = project.status == (int)Lip2pEnums.ProjectStatusEnum.FaBiao ? "项目下标成功！" : "重新立标成功";
+                throw new NotImplementedException("不确定跳转到什么状态");
+                /*var info = project.status == (int)Lip2pEnums.ProjectStatusEnum.FaBiao ? "项目下标成功！" : "重新立标成功";
                 project.status = (int)Lip2pEnums.ProjectStatusEnum.QianYue;
                 context.SubmitChanges();                
-                JscriptMsg(info, String.Format("project_list_{0}.aspx?channel_id={1}", page_name, this.channel_id), "Success");
+                JscriptMsg(info, String.Format("project_list_{0}.aspx?channel_id={1}", page_name, this.channel_id), "Success");*/
             }
         }
 
@@ -187,7 +190,9 @@ namespace Lip2p.Web.admin.project
             SetRiskModel(project.li_risks);
 
             //项目状态修改
-            if (project.status < (int)Lip2pEnums.ProjectStatusEnum.FengShen)
+
+            throw new NotImplementedException("不确定跳转到什么状态");
+            /*if (project.status < (int)Lip2pEnums.ProjectStatusEnum.FengShen)
             {
                 //风控信息赋值
                 var riskInfo = project.li_risks;
@@ -199,9 +204,9 @@ namespace Lip2p.Web.admin.project
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
                 LoadAlbum(riskInfo, Lip2pEnums.AlbumTypeEnum.LienCertificate, 2);
-            }
+            }*/
 
-            project.status = (int)Lip2pEnums.ProjectStatusEnum.DelayFaBiao;
+            project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingAtTime;
             project.publish_time = Utils.StrToDateTime(txtPublishTime.Text.Trim());
             //project.publish_time = DateTime.Now.AddMinutes(10);
 

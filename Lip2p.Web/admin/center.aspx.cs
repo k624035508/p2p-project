@@ -79,7 +79,7 @@ namespace Lip2p.Web.admin
                     //累计提现
                     totalWithDraw = context.li_wallets.Sum(w => w.total_withdraw).ToString("c");
                     //标的总数
-                    projectCount = context.li_projects.Count(p => p.status >= (int)Lip2pEnums.ProjectStatusEnum.FaBiao); 
+                    projectCount = context.li_projects.Count(p => p.status >= (int)Lip2pEnums.ProjectStatusEnum.Financing); 
                     //今日登陆人数
                     BLL.user_login_log bllLog=new user_login_log();
                     totalLoginCount = bllLog.GetList("user_id", "CONVERT(varchar(10),login_time,121)='"+DateTime.Now.ToString("yyyy-MM-dd")+"'").Tables[0].Rows.Count;

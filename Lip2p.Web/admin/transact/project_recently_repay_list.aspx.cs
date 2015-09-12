@@ -50,8 +50,8 @@ namespace Lip2p.Web.admin.transact
             var query = context.li_projects
                 .Where(
                     p =>
-                        (int) Lip2pEnums.ProjectStatusEnum.FaBiao < p.status &&
-                        p.status != (int)Lip2pEnums.ProjectStatusEnum.WanCheng && p.title.Contains(txtKeywords.Text));
+                        (int) Lip2pEnums.ProjectStatusEnum.ProjectRepaying <= p.status &&
+                        p.status < (int)Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime && p.title.Contains(txtKeywords.Text));
 
             if (rblProjectShowType.SelectedValue == "1")
             {
