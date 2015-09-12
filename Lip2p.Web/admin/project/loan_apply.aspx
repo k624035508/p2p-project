@@ -1,11 +1,15 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply" %>
 
+<%@ Import Namespace="Lip2p.Common" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>申请借款</title>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
@@ -25,9 +29,9 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
-                        <li><a class="add" href=""><i></i><span>新增</span></a></li>
+                        <li><a class="add" href=""><i></i><span>申请借款</span></a></li>
                         <li>
-                            <asp:LinkButton ID="btnSave" runat="server" CssClass="save" ><i></i><span>保存</span></asp:LinkButton></li>
+                            <asp:LinkButton ID="btnSave" runat="server" CssClass="save"><i></i><span>保存排序</span></asp:LinkButton></li>
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
                         <li>
                             <asp:LinkButton ID="btnDelete" runat="server" CssClass="del"><i></i><span>删除</span></asp:LinkButton></li>
@@ -38,22 +42,65 @@
                         <div class="rule-single-select">
                             <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
                         </div>
-                        <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlProperty" runat="server" AutoPostBack="True">
-                                <asp:ListItem Value="" Selected="True">所有状态</asp:ListItem>
-                                <asp:ListItem Value="10">立项</asp:ListItem>
-                                <asp:ListItem Value="20">风审</asp:ListItem>
-                            </asp:DropDownList>
-                        </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
-                    <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search" OnClick="btnSearch_Click">查询</asp:LinkButton>
-                    <asp:LinkButton ID="lbtnViewTxt" runat="server" CssClass="txt-view" OnClick="lbtnViewTxt_Click" ToolTip="文字列表视图" />                
+                    <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search">查询</asp:LinkButton>
                 </div>
             </div>
         </div>
         <!--/工具栏-->
 
+        <asp:Repeater ID="rptList1" runat="server">
+            <HeaderTemplate>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <tr>
+                        <th width="5%">选择</th>
+                        <th align="left" width="15%">标题</th>
+                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="8%">借款类型</th>
+                        <th align="left" width="10%">借款金额(元)</th>                        
+                        <th align="left" width="8%">借款期限</th>
+                        <th align="left" width="8%">年化利率</th>
+                        <th align="left" width="8%">还款方式</th>                        
+                        <th align="left" width="10%">申请时间</th>
+                        <th align="left" width="5%">排序</th>
+                        <th width="5%">操作</th>
+                    </tr>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td align="center">
+                        <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
+                        <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
+                    </td>
+                    <td><a href=""><%#Eval("title")%></a></td>
+                    <td></td>
+                    <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
+                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
+                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
+                    <td></td>
+                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
+                    <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+                    <td>
+                        <asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" /></td>
+                    <td align="center"><a href="">修改</a></td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                <%#rptList1.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"11\">暂无记录</td></tr>" : ""%>
+                </table>
+            </FooterTemplate>
+        </asp:Repeater>
+
+        <!--内容底部-->
+        <div class="line20"></div>
+        <div class="pagelist">
+            <div class="l-btns">
+                <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
+            </div>
+            <div id="PageContent" runat="server" class="default"></div>
+        </div>
+        <!--/内容底部-->
     </form>
 </body>
 </html>

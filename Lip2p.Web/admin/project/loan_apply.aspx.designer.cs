@@ -49,15 +49,6 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.DropDownList ddlCategoryId;
         
         /// <summary>
-        /// ddlProperty 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProperty;
-        
-        /// <summary>
         /// txtKeywords 控件。
         /// </summary>
         /// <remarks>
@@ -76,12 +67,30 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.LinkButton lbtnSearch;
         
         /// <summary>
-        /// lbtnViewTxt 控件。
+        /// rptList1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnViewTxt;
+        protected global::System.Web.UI.WebControls.Repeater rptList1;
+        
+        /// <summary>
+        /// txtPageNum 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPageNum;
+        
+        /// <summary>
+        /// PageContent 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PageContent;
     }
 }

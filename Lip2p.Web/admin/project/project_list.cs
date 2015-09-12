@@ -136,7 +136,7 @@ namespace Lip2p.Web.admin.project
                 query = query.Where(q => q.status == _project_status);
             else
             {                
-                throw new NotImplementedException("不确定跳转到什么状态");
+                //throw new NotImplementedException("不确定跳转到什么状态");
                 /*if (this.page_name.Equals("approval"))
                     query = query.Where(q => q.status < (int)Lip2pEnums.ProjectStatusEnum.QianYue);
                 else if (this.page_name.Equals("publish"))
