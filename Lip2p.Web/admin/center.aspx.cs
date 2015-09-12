@@ -73,11 +73,11 @@ namespace Lip2p.Web.admin
                     //昨日成交量
                     tradingVolume = context.QueryTradingVolume(1).ToString("c");
                     //站岗资金
-                    totalIdle = context.li_wallets.Where(w => !w.dt_users.dt_user_groups.title.Contains("马甲")).Sum(w => w.idle_money).ToString("c");
+                    totalIdle = context.li_wallets.Where(w => !w.dt_users.dt_user_groups.title.Contains("马甲")).Select(w => w.idle_money).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //累计充值
-                    totalRecharge = context.li_wallets.Sum(w => w.total_charge).ToString("c");
+                    totalRecharge = context.li_wallets.Select(w => w.total_charge).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //累计提现
-                    totalWithDraw = context.li_wallets.Sum(w => w.total_withdraw).ToString("c");
+                    totalWithDraw = context.li_wallets.Select(w => w.total_withdraw).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //标的总数
                     projectCount = context.li_projects.Count(p => p.status >= (int)Lip2pEnums.ProjectStatusEnum.FaBiao); 
                     //今日登陆人数
