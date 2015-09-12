@@ -301,7 +301,7 @@ namespace Lip2p.Web.tools
                 return;
             }
             var db = new Lip2pDataContext();
-            var navs = db.dt_navigation.Where(n => n.nav_type == DTEnums.NavigationEnum.System.ToString()).ToList();
+            var navs = db.dt_navigation.Where(n => n.nav_type == DTEnums.NavigationEnum.System.ToString()).OrderBy(n => n.sort_id).ToList();
             get_navigation_childs(context, navs, 0, roleModel.role_type, roleModel.manager_role_values);
         }
         private void get_navigation_childs(HttpContext context, List<dt_navigation> oldData, int parent_id, int role_type, List<Model.manager_role_value> ls)

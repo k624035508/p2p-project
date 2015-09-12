@@ -73,7 +73,7 @@ namespace Lip2p.Web.admin
                     //昨日成交量
                     tradingVolume = context.QueryTradingVolume(1).ToString("c");
                     //站岗资金
-                    totalIdle = context.li_wallets.Where(w => !w.dt_users.dt_user_groups.title.Contains("马甲")).Select(w => w.idle_money).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
+                    totalIdle = context.li_wallets.Select(w => w.idle_money).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //累计充值
                     totalRecharge = context.li_wallets.Select(w => w.total_charge).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //累计提现
