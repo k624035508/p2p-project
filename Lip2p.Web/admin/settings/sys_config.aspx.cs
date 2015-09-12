@@ -128,7 +128,7 @@ namespace Lip2p.Web.admin.settings
 
             // 自动放款设置
             enableAutoRepay.Checked = model.enableAutoRepay == 1;
-            txtAutoRepayTime.Text = model.autoRepayTime;
+            txtSystemTimerTriggerTime.Text = model.systemTimerTriggerTime;
             sendShortMsgAfterRepay.Checked = model.sendShortMsgAfterRepay == 1;
             sendRepayAnnounceAfterRepay.Checked = model.sendRepayAnnounceAfterRepay == 1;
         }
@@ -277,11 +277,11 @@ namespace Lip2p.Web.admin.settings
                 // 自动放款设置
                 ConfigLoader.CleanCache();
                 model.enableAutoRepay = enableAutoRepay.Checked ? 1 : 0;
-                if (!model.autoRepayTime.Equals(txtAutoRepayTime.Text))
+                if (!model.systemTimerTriggerTime.Equals(txtSystemTimerTriggerTime.Text))
                 {
-                    Global.InitDailyTimer(txtAutoRepayTime.Text);
+                    Global.InitDailyTimer(txtSystemTimerTriggerTime.Text);
                 }
-                model.autoRepayTime = txtAutoRepayTime.Text;
+                model.systemTimerTriggerTime = txtSystemTimerTriggerTime.Text;
                 model.sendShortMsgAfterRepay = sendShortMsgAfterRepay.Checked ? 1 : 0;
                 model.sendRepayAnnounceAfterRepay = sendRepayAnnounceAfterRepay.Checked ? 1 : 0;
 

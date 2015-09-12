@@ -528,19 +528,19 @@
 <!--自动放款设置-->
 <div class="tab-content" style="display:none">
     <dl>
+        <dt>每天计时器触发时间</dt>
+        <dd>
+            <asp:TextBox ID="txtSystemTimerTriggerTime" runat="server" CssClass="input txt" datatype="/^\d{1,2}:\d{2}:\d{2}$/" sucmsg=" " />
+            <span class="Validform_checktip">*格式（24小时制）</span>
+        </dd>
+    </dl>
+    <dl>
         <dt>是否启用自动放款</dt>
         <dd>
             <div class="rule-single-checkbox">
                 <asp:CheckBox ID="enableAutoRepay" runat="server" />
             </div>
             <span class="Validform_checktip">*</span>
-        </dd>
-    </dl>
-    <dl>
-        <dt>每天自动放款时间</dt>
-        <dd>
-            <asp:TextBox ID="txtAutoRepayTime" runat="server" CssClass="input txt" datatype="/^\d{1,2}:\d{2}:\d{2}$/" sucmsg=" " />
-            <span class="Validform_checktip">*格式（24小时制）</span>
         </dd>
     </dl>
     <dl>

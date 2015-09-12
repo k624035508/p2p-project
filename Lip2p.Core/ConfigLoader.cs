@@ -135,8 +135,8 @@ namespace Lip2p.Core
         private string _sysdatabaseprefix = "dt_";
         private string _sysencryptstring = "Lip2p";
 
+        private string _systemTimerTriggerTime = "9:00:00";
         private int _enableAutoRepay = 0;
-        private string _autoRepayTime = "9:00:00";
         private int _sendShortMsgAfterRepay = 1;
         private int _sendRepayAnnounceAfterRepay = 1;
 
@@ -591,20 +591,20 @@ namespace Lip2p.Core
         #endregion
 
         /// <summary>
-        /// 是否自动发送放款通知短信
+        /// 每天的定时器触发时间
+        /// </summary>
+        public string systemTimerTriggerTime
+        {
+            get { return _systemTimerTriggerTime; }
+            set { _systemTimerTriggerTime = value; }
+        }
+        /// <summary>
+        /// 是否启用自动放款
         /// </summary>
         public int enableAutoRepay
         {
             get { return _enableAutoRepay; }
             set { _enableAutoRepay = value; }
-        }
-        /// <summary>
-        /// 每天自动放款时间
-        /// </summary>
-        public string autoRepayTime
-        {
-            get { return _autoRepayTime; }
-            set { _autoRepayTime = value; }
         }
         /// <summary>
         /// 是否自动发送放款通知短信

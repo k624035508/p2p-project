@@ -55,6 +55,9 @@ namespace Lip2p.Web
             }
         }
 
+        /// <summary>
+        /// 重新启动延迟发标的计划任务
+        /// </summary>
         public void DelayedRelease()
         {
             var linqContext = new Lip2pDataContext();
@@ -77,7 +80,7 @@ namespace Lip2p.Web
 
         public static void InitDailyTimer(string autoRepayTime = null)
         {
-            autoRepayTime = autoRepayTime ?? ConfigLoader.loadSiteConfig().autoRepayTime;
+            autoRepayTime = autoRepayTime ?? ConfigLoader.loadSiteConfig().systemTimerTriggerTime;
             var match = new Regex(@"^(\d{1,2}):(\d{2}):(\d{2})$").Match(autoRepayTime);
             if (match.Success)
             {
