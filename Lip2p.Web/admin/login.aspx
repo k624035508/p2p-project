@@ -1,13 +1,14 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="Lip2p.Web.admin.login" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
 <title>管理员登录</title>
 <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../scripts/jquery/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
     $(function () {
         //检测IE
@@ -20,22 +21,27 @@
 
 <body class="loginbody">
 <form id="form1" runat="server">
-<div class="login-screen">
-	<div class="login-icon">LOGO</div>
-    <div class="login-form">
-        <h1>系统管理登录</h1>
-        <div class="control-group">
-            <asp:TextBox ID="txtUserName" runat="server" CssClass="login-field" placeholder="用户名" title="用户名"></asp:TextBox>
-            <label class="login-field-icon user" for="txtUserName"></label>
-        </div>
-        <div class="control-group">
-            <asp:TextBox ID="txtPassword" runat="server" CssClass="login-field" TextMode="Password" placeholder="密码" title="密码"></asp:TextBox>
-            <label class="login-field-icon pwd" for="txtPassword"></label>
-        </div>
-        <div><asp:Button ID="btnSubmit" runat="server" Text="登 录" CssClass="btn-login" onclick="btnSubmit_Click" /></div>
-        <span class="login-tips"><i></i><b id="msgtip" runat="server">请输入用户名和密码</b></span>
+<div style="width:100%; height:100%; min-width:300px; min-height:260px;"></div>
+<div class="login-wrap">
+  <div class="login-logo">LOGO</div>
+  <div class="login-form">
+    <div class="col">
+      <asp:TextBox ID="txtUserName" runat="server" CssClass="login-input" placeholder="管理员账号" title="管理员账号"></asp:TextBox>
+      <label class="icon user" for="txtUserName"></label>
     </div>
-    <i class="arrow">箭头</i>
+    <div class="col">
+      <asp:TextBox ID="txtPassword" runat="server" CssClass="login-input" TextMode="Password" placeholder="管理员密码" title="管理员密码"></asp:TextBox>
+      <label class="icon pwd" for="txtPassword"></label>
+    </div>
+    <div class="col">
+      <asp:Button ID="btnSubmit" runat="server" Text="登 录" CssClass="login-btn" onclick="btnSubmit_Click" />
+    </div>
+  </div>
+  <div class="login-tips"><i></i><p id="msgtip" runat="server">请输入用户名和密码</p></div>
+</div>
+
+<div class="copy-right">
+  <p>版权所有 安广融合电子商务有限公司 Copyright © 2015 agrhp2p.com Inc. All Rights Reserved.</p>
 </div>
 </form>
 </body>

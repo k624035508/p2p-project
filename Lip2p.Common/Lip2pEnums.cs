@@ -85,6 +85,52 @@ namespace Lip2p.Common
         }
 
         /// <summary>
+        /// 流程状态
+        /// </summary>
+        public enum WorkflowStatusEnum
+        {
+            // 发标前 (前台不可见)
+            [Description("借款申请待提交")]
+            FinancingApplicationUncommitted = 1,
+            [Description("借款申请审核中")]
+            FinancingApplicationChecking = 2,
+            [Description("借款申请审核不通过")]
+            FinancingApplicationFail = 3,
+            [Description("借款申请审核通过")]
+            FinancingApplicationSuccess = 4,
+            [Description("融资失败")]
+            FinancingFail = 5,
+
+            // 上线募集
+            [Description("融资中")]
+            Financing = 10,
+            [Description("融资成功")] // 复审，准备放款给融资者
+            FinancingSuccess = 11,
+            [Description("融资超时")] // 等待决定是由平台满标还是流标
+            FinancingTimeout = 12,
+
+            // 还款中
+            [Description("还款中")]
+            ProjectRepaying = 20,
+            [Description("到期未还款完成")] // 等待决定是否垫付
+            NotRepayCompleteIntime = 21,
+            [Description("坏账")]
+            BadDebt = 22,
+
+            // 还款完成
+            [Description("提前还款完成")]
+            RepayCompleteEarlier = 30,
+            [Description("按时还款完成")]
+            RepayCompleteIntime = 31,
+            [Description("到期未还款已垫付")]
+            AdvancePayForFinancer = 32,
+            [Description("垫付后还款完成")]
+            RepayCompleteDelay = 33,
+            [Description("坏账后还款完成")]
+            BadDebtRepayComplete = 34,
+        }
+
+        /// <summary>
         /// 人员性别
         /// </summary>
         public enum PersonSexTypeEnum
