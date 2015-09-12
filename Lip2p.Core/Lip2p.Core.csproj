@@ -89,6 +89,10 @@
       <Project>{d02bf08d-240f-4233-9b83-b22429e5f3a0}</Project>
       <Name>Lip2p.Linq2SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lip2p.Model\Lip2p.Model.csproj">
+      <Project>{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}</Project>
+      <Name>Lip2p.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

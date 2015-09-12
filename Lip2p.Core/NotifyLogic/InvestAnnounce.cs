@@ -3,6 +3,7 @@ using System.Linq;
 using Lip2p.Common;
 using Lip2p.Core.Message;
 using Lip2p.Linq2SQL;
+using Lip2p.Model;
 using DESEncrypt = Lip2p.Common.DESEncrypt;
 using DTMail = Lip2p.Common.DTMail;
 using Utils = Lip2p.Common.Utils;

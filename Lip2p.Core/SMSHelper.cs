@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Lip2p.Common;
+using Lip2p.Model;
 
 namespace Lip2p.Core
 {
