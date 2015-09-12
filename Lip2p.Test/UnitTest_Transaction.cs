@@ -705,5 +705,15 @@ namespace Lip2p.Test
             if (shouldRepayTask.Any())            
                 AutoRepay.SendRepayNotice(shouldRepayTask, context);
         }*/
+
+        [TestMethod]
+        public void TestLinq()
+        {
+            var db = new Lip2pDataContext(str);
+            var timeoutProjects = db.li_projects.Where(
+                p => p.status == (int)Lip2pEnums.ProjectStatusEnum.Financing && p.publish_time != null &&
+                     p.publish_time.Value.AddDays(p.financing_day) <= DateTime.Today).ToList();
+            Debug.WriteLine(timeoutProjects.Count);
+        }
     }
 }

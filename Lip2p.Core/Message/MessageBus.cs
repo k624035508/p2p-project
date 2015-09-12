@@ -19,6 +19,7 @@ namespace Lip2p.Core.Message
             // Business
             TransactionFacade.DoSubscribe();
             AutoRepay.DoSubscribe();
+            FinancingTimeout.DoSubscribe();
             ScheduleAnnounce.DoSubscribe();
 
             // Activity

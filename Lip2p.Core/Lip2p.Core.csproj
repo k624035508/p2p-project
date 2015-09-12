@@ -60,6 +60,7 @@
     <Compile Include="ActivityLogic\DailyProjectActivity.cs" />
     <Compile Include="ActivityLogic\TrialActivity.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
+    <Compile Include="AutoLogic\FinancingTimeout.cs" />
     <Compile Include="DbExtensions.cs" />
     <Compile Include="InitLogic\UserLogin.cs" />
     <Compile Include="InitLogic\NewUserInit.cs" />

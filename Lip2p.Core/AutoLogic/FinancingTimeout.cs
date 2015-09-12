@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Lip2p.Common;
+using Lip2p.Core.Message;
+using Lip2p.Linq2SQL;
+
+namespace Lip2p.Core.AutoLogic
+{
+    class FinancingTimeout
+    {
+        internal static void DoSubscribe()
+        {
+            MessageBus.Main.Subscribe<TimerMsg>(m => CheckTimeoutProject(m.OnTime)); // 每日定时检测募集超时项目，设置为超时状态
+        }
+
+        private static void CheckTimeoutProject(bool onTime)
+        {
+            var db = new Lip2pDataContext();
+            var timeoutProjects = db.li_projects.Where(
+                p => p.status == (int) Lip2pEnums.ProjectStatusEnum.Financing && p.publish_time != null)
+                .AsEnumerable()
+                .Where(p => p.publish_time.Value.AddDays(p.financing_day) <= DateTime.Today).ToList();
+            timeoutProjects.ForEach(p =>
+            {
+                p.status = (int) Lip2pEnums.ProjectStatusEnum.FinancingTimeout;
+            });
+            db.SubmitChanges();
+        }
+    }
+}
