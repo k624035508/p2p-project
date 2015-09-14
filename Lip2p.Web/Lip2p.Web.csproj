@@ -102,8 +102,6 @@
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
-    <Content Include="admin\popularize\financing_edit.aspx" />
-    <Content Include="admin\popularize\financing_list.aspx" />
     <Content Include="admin\popularize\companyContent_edit.aspx" />
     <Content Include="admin\popularize\companyContent_list.aspx" />
     <Content Include="admin\popularize\help_edit.aspx" />
@@ -150,6 +148,7 @@
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
     <Content Include="admin\project\loan_apply.aspx" />
+    <Content Include="admin\project\loan_apply_edit.aspx" />
     <Content Include="admin\project\project_edit_publish.aspx" />
     <Content Include="admin\project\project_list_approval.aspx" />
     <Content Include="admin\project\project_list_publish.aspx" />
@@ -754,20 +753,6 @@
     <Compile Include="admin\manager\department_select_member.aspx.designer.cs">
       <DependentUpon>department_select_member.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\popularize\financing_edit.aspx.cs">
-      <DependentUpon>financing_edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\popularize\financing_edit.aspx.designer.cs">
-      <DependentUpon>financing_edit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\popularize\financing_list.aspx.cs">
-      <DependentUpon>financing_list.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\popularize\financing_list.aspx.designer.cs">
-      <DependentUpon>financing_list.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\popularize\companyContent_edit.aspx.cs">
       <DependentUpon>companyContent_edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1056,6 +1041,13 @@
     </Compile>
     <Compile Include="admin\project\loan_apply.aspx.designer.cs">
       <DependentUpon>loan_apply.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\loan_apply_edit.aspx.cs">
+      <DependentUpon>loan_apply_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\loan_apply_edit.aspx.designer.cs">
+      <DependentUpon>loan_apply_edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\project_edit_publish.aspx.cs">
       <DependentUpon>project_edit_publish.aspx</DependentUpon>

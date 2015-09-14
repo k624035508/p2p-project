@@ -32,7 +32,7 @@ namespace Lip2p.Web.admin.project
 
             if (channel_id == 0)
             {
-                JscriptMsg("频道ID不正确！", "back", "Error");
+                JscriptMsg("频道参数不正确！", "back", "Error");
                 return;
             }
             this.channel_name = new BLL.channel().GetChannelName(this.channel_id); //取得频道名称
