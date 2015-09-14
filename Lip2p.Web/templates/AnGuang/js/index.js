@@ -1,15 +1,14 @@
-﻿require("bootstrap-webpack");
-require("../less/head.less");
-require("../less/index.less");
-require("../less/invest-list.less");
-require("../less/footer.less");
+﻿import "bootstrap-webpack";
+import "../less/head.less";
+import "../less/index.less";
+import "../less/invest-list.less";
+import "../less/footer.less";
 
-var $ = require("jquery");
+import $ from "jquery"
+import header from "./header.js"
 
-var header = require("./header.js");
-
-$(function(){
-    //返回顶部浮窗隐藏与出现
+$(function () {
+    // 返回顶部浮窗隐藏与出现
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
         if (scrollTop >= 250) {

@@ -118,13 +118,15 @@
                 <div class="grey13px">到期还本付息</div>
             </div>
             <div class="invest-btn pull-right">
-                <%if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.DelayFaBiao) %>
+                <%if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                 <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
-                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FaBiao) %>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.Financing) %>
                 <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
-                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.ManBiao||(int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.JieBiao) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">满标</button>
-                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.WanCheng) %>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
+                <%else if((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+                <%else if((int)dr["status"]>=(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
                 <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
                 <%/if%>
             </div>

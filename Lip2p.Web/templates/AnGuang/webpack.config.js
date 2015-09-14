@@ -3,6 +3,7 @@ var path = require('path');
 var webpack = require("webpack");
 
 module.exports = {
+    cache: true,
     entry: {
         index: "./js/index.js",
         login: "./js/login.js",
@@ -24,6 +25,7 @@ module.exports = {
     ],
     module: {
         loaders: [
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
             { test: /\.jpg$/, loader: "file" },

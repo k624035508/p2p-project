@@ -1,10 +1,10 @@
-var $ = require("jquery");
-require("bootstrap-webpack");
-require("../less/head.less");
-require("../less/invest_detail.less");
-require("../less/footer.less");
+import $ from "jquery";
+import "bootstrap-webpack";
+import "../less/head.less";
+import "../less/invest_detail.less";
+import "../less/footer.less";
 
-var header = require("./header.js");
+import header from "./header.js";
 
 $(function () {
     $(window).scroll(function () {
