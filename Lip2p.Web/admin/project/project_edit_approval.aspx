@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="project_edit_approval.aspx.cs"
-    Inherits="Lip2p.Web.admin.project.project_edit_approval" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="project_edit_approval.aspx.cs" Inherits="Lip2p.Web.admin.project.project_edit_approval" ValidateRequest="false" %>
 <%@ Import Namespace="Newtonsoft.Json.Linq" %>
 <%@ Import Namespace="Newtonsoft.Json" %>
 
