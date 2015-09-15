@@ -49,6 +49,10 @@
                     $(this).parent().addClass("selected");
                 }
             });
+            // 初始化相册
+            $(".upload-album").each(function () {
+                $(this).InitSWFUpload({ btntext: "批量上传", btnwidth: 66, single: false, water: true, thumbnail: true, filesize: "<%=siteConfig.imgsize %>", sendurl: "../../tools/upload_ajax.ashx", flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpeg;*.png;*.gif;" });
+            });
             //选择tab
             $(function () {
                 if ("<%=select_tab_index%>" == 0) {
@@ -62,7 +66,6 @@
                 else {
                     $("#a_item_mortgages").parent().parent().find("li a").removeClass("selected");
                     $("#a_item_mortgages").addClass("selected");
-                    //根据参数决定显示内容
                     $(".tab-content").hide();
                     $(".tab-content").eq(1).show();
                 }
@@ -285,8 +288,59 @@
                     </table>
                 </dd>
             </dl>
+            <dl id="dl_company" runat="server" Visible="False">
+                <dt>企业信息</dt>
+                <dd>
+                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
+                        <tr>
+                            <th width="20%">企业名称
+                            </th>
+                            <td>
+                                <div class="position">
+                                    <span id="sp_company_name" runat="server"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>成立时间
+                            </th>
+                            <td>
+                                <span id="sp_company_setup_time" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>注册资本
+                            </th>
+                            <td>
+                                <span id="sp_company_registered_capital" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>经营范围
+                            </th>
+                            <td>
+                                <span id="sp_company_business_scope" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>经营状况
+                            </th>
+                            <td>
+                                <span id="sp_company_business_status" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>年收入
+                            </th>
+                            <td>
+                                <span id="sp_company_income_yearly" runat="server"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </dd>
+            </dl>
             <dl>
-                <dt>标的物信息</dt>
+                <dt>抵押物信息</dt>
                 <dd>
                     <asp:Repeater ID="rptList" runat="server">
                         <HeaderTemplate>
@@ -321,7 +375,7 @@
         </div>
         <%-- 风控信息 --%>
         <div class="tab-content" style="display: none" id="div_risks_info">
-            <dl>
+            <dl id="dl_creditor" runat="server" Visible="False">
                 <dt>债权人</dt>
                 <dd>
                     <div class="rule-single-select">
@@ -330,35 +384,52 @@
                     </div>
                 </dd>
             </dl>
-            <dl>
+            <dl id="dl_creditor_dic" runat="server" Visible="False">
                 <dt>债权人描述</dt>
                 <dd>
-                    <asp:TextBox ID="txtCreditorContent" runat="server" CssClass="input" TextMode="MultiLine"
+                    <asp:TextBox ID="txtCreditorContent" runat="server" CssClass="input" TextMode="MultiLine"  Width="90%"
                         datatype="*0-255" sucmsg=" ">债权人为广东汇诚创利电子商务有限公司资产部员工，由公司授权、代表广东汇诚创利电子商务有限公司全权处理与客户的的债权关系。
                     </asp:TextBox>
                     <span class="Validform_checktip"></span>
                 </dd>
             </dl>
             <dl>
-                <dt>借款人描述</dt>
+                <dt>借款描述</dt>
                 <dd>
                     <asp:TextBox ID="txtLoanerContent" runat="server" CssClass="input" TextMode="MultiLine"
-                        datatype="*0-255" sucmsg=" "></asp:TextBox>
+                        datatype="*0-255" sucmsg=" " Width="90%"></asp:TextBox>
                     <span class="Validform_checktip"></span>
                 </dd>
             </dl>
+            <dl>
+                <dt>借款用途</dt>
+                <dd>
+                    <asp:TextBox ID="txtLoanUse" runat="server" CssClass="input" TextMode="MultiLine"
+                        datatype="*0-255" sucmsg=" " Width="90%"></asp:TextBox>
+                    <span class="Validform_checktip"></span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>还款来源</dt>
+                <dd>
+                    <asp:TextBox ID="txtRepaymentSource" runat="server" CssClass="input" TextMode="MultiLine"
+                        datatype="*0-255" sucmsg=" " Width="90%"></asp:TextBox>
+                    <span class="Validform_checktip"></span>
+                </dd>
+            </dl>
+            <%--<dl>
+                <dt>风控等级</dt>
+                <dd>
+                    <asp:TextBox ID="txtCreditRating" runat="server" CssClass="input"
+                        datatype="*0-255" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip"></span>
+                </dd>
+            </dl>--%>
             <dl>
                 <dt>风控描述</dt>
                 <dd>
                     <textarea id="txtRiskContent" class="editor" style="visibility: hidden;" runat="server"></textarea>
                     <span class="Validform_checktip"></span>
-                </dd>
-            </dl>
-            <dl>
-                <dt>借款合同编号</dt>
-                <dd>
-                    <asp:TextBox ID="txtLoanAgreementNo" runat="server" CssClass="input normal" datatype="*0-100"
-                        sucmsg=" " />
                 </dd>
             </dl>
             <dl>

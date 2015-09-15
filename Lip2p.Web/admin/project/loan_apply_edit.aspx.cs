@@ -127,6 +127,7 @@ namespace Lip2p.Web.admin.project
         {
             ddlCategoryId.SelectedValue = _project.category_id.ToString();//项目类别
             rbl_project_type.SelectedValue = _project.type.ToString();//借款主体
+            SetLoanType();
 
             txtSeoTitle.Text = _project.seo_title;
             txtSeoKeywords.Text = _project.seo_keywords;
@@ -159,10 +160,16 @@ namespace Lip2p.Web.admin.project
                 ddlLoaner.SelectedValue = risk.loaner.ToString();
                 ShowLoanerInfo(risk.loaner);
                 //债权人信息
-                ddlCreditor.SelectedValue = risk.creditor.ToString();
-                txtCreditorContent.Text = risk.creditor_content;
-                txtLoanerContent.Text = risk.loaner_content;
-                txtRiskContent.Value = risk.risk_content;                                
+                if (rbl_project_type.SelectedValue == ((int) Lip2pEnums.LoanTypeEnum.Creditor).ToString())
+                {
+                    ddlCreditor.SelectedValue = risk.creditor.ToString();
+                    txtCreditorContent.Text = risk.creditor_content;
+                }
+                //txtCreditRating.Text = risk.credit_rating;
+                txtRepaymentSource.Text = risk.source_of_repayment;//还款来源
+                txtLoanUse.Text = risk.loan_usage;//借款用途
+                txtLoanerContent.Text = risk.loaner_content;//借款描述
+                txtRiskContent.Value = risk.risk_content;//风控描述
                 // 加载相册
                 rptMortgageContracts.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Lip2pEnums.AlbumTypeEnum.MortgageContract);
                 rptMortgageContracts.DataBind();
@@ -201,7 +208,7 @@ namespace Lip2p.Web.admin.project
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
             project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
             //提交操作则状态为待初审            
-            project.status = save_only ? 0 : (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
+            project.status = save_only ? (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted : (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
         }
 
         /// <summary>
@@ -211,15 +218,21 @@ namespace Lip2p.Web.admin.project
         private void SetRiskModel(li_risks risk)
         {
             risk.loaner = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
-            risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
-            risk.creditor_content = txtCreditorContent.Text;
+            //债权人信息
+            if (rbl_project_type.SelectedValue == ((int) Lip2pEnums.LoanTypeEnum.Creditor).ToString())
+            {
+                risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
+                risk.creditor_content = txtCreditorContent.Text;
+            }
             risk.loaner_content = txtLoanerContent.Text;
+            risk.loan_usage = txtLoanUse.Text;
+            risk.source_of_repayment = txtRepaymentSource.Text;
             risk.risk_content = txtRiskContent.Value;
+            risk.last_update_time = DateTime.Now;
             //相关图片资料
             LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
             LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
             LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LienCertificate, 2);
-           
         }
 
         #region 相册
@@ -298,7 +311,7 @@ namespace Lip2p.Web.admin.project
             }
             catch (Exception ex)
             {
-                JscriptMsg(ex.Message, "back", "Error");
+                //JscriptMsg(ex.Message, "back", "Error");
                 return false;
             }
 
@@ -356,9 +369,15 @@ namespace Lip2p.Web.admin.project
                 JscriptMsg("添加信息成功！", String.Format("loan_apply.aspx?channel_id={0}", this.channel_id), "Success");
             }
         }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            save_only = true;
+            sumbit();
+        }
         #endregion
 
-        #region 选择借款人
+        #region 借款人
         public class MortgageItem
         {
             public int id { get; set; }
@@ -429,7 +448,7 @@ namespace Lip2p.Web.admin.project
             var selectedLoaner = Convert.ToInt32(ddlLoaner.SelectedValue);
             if (risk.loaner != selectedLoaner) // 更换借款人后，之前的抵押物绑定需要全部删除
             {
-                var dtRiskMortgages = context.li_risk_mortgage.Where(rm => rm.risk == risk_id).ToList();
+                var dtRiskMortgages = context.li_risk_mortgage.Where(rm => rm.risk == risk.id).ToList();
                 context.li_risk_mortgage.DeleteAllOnSubmit(dtRiskMortgages);
 
                 risk.loaner = selectedLoaner;
@@ -441,7 +460,7 @@ namespace Lip2p.Web.admin.project
                 int mortgageId = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
                 CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
                 if (!cb.Enabled) continue;
-                var riskMortgage = context.li_risk_mortgage.FirstOrDefault(rm => rm.risk == risk_id && rm.mortgage == mortgageId);
+                var riskMortgage = context.li_risk_mortgage.FirstOrDefault(rm => rm.risk == risk.id && rm.mortgage == mortgageId);
                 if (cb.Checked) // 绑定抵押物
                 {
                     if (riskMortgage != null) continue;
@@ -464,32 +483,70 @@ namespace Lip2p.Web.admin.project
         protected void ddlLoaner_SelectedIndexChanged(object sender, EventArgs e)
         {
             select_tab_index = 1;
-            ShowLoanerInfo(Utils.StrToInt(ddlLoaner.SelectedValue, 0));
+            var loanId = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
+            if (loanId > 0)
+                ShowLoanerInfo(loanId);
         } 
 
         private void ShowLoanerInfo(int loaner_id)
         {
             var loaner = context.li_loaners.SingleOrDefault(l => l.id == loaner_id);
+            //借款人信息
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner.dt_users.sex;
             sp_loaner_job.InnerText = loaner.job;
             sp_loaner_working_at.InnerText = loaner.working_at;
             sp_loaner_tel.InnerText = loaner.dt_users.telphone;
             sp_loaner_id_card_number.InnerText = loaner.dt_users.id_card_number;
+            //企业信息
+            if (rbl_project_type.SelectedValue == ((int) Lip2pEnums.LoanTypeEnum.Company).ToString() && loaner.li_loaner_companies != null)
+            {
+                sp_company_name.InnerText = loaner.li_loaner_companies.name;
+                sp_company_business_scope.InnerText = loaner.li_loaner_companies.business_scope;
+                sp_company_business_status.InnerText = loaner.li_loaner_companies.business_status;
+                sp_company_income_yearly.InnerText = loaner.li_loaner_companies.income_yearly;
+                sp_company_registered_capital.InnerText = loaner.li_loaner_companies.registered_capital;
+                sp_company_setup_time.InnerText = loaner.li_loaner_companies.setup_time.ToString("yyyy年MM月dd日");
+            }
 
             LoadMortgageList(Utils.StrToInt(ddlLoaner.SelectedValue, 0), this.risk_id);
         }
         #endregion
 
+        /// <summary>
+        /// 切换借款主体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rbl_project_type_SelectedIndexChanged(object sender, EventArgs e)
         {
             select_tab_index = 0;
+            SetLoanType();
         }
 
-        protected void btnSave_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 根据借款主体显示页面样式
+        /// </summary>
+        private void SetLoanType()
         {
-            save_only = true;
-            sumbit();
+            if (rbl_project_type.SelectedValue == ((int)Lip2pEnums.LoanTypeEnum.Company).ToString())
+            {
+                dl_company.Visible = true;
+                dl_creditor.Visible = false;
+                dl_creditor_dic.Visible = false;
+            }
+            else if (rbl_project_type.SelectedValue == ((int)Lip2pEnums.LoanTypeEnum.Personal).ToString())
+            {
+                dl_company.Visible = false;
+                dl_creditor.Visible = false;
+                dl_creditor_dic.Visible = false;
+            }
+            else
+            {
+                dl_company.Visible = false;
+                dl_creditor.Visible = true;
+                dl_creditor_dic.Visible = true;
+            }
         }
     }
 
