@@ -258,17 +258,17 @@ namespace Lip2p.Web.admin.project
 
         private bool DoAdd()
         {
-            bool result = false;
             var project = new li_projects();
             //新增风控信息，并加入风控信息id
             var risk = new li_risks();
-            project.risk_id = risk.id;
+            project.li_risks = risk;
             //风控信息赋值
             risk.loaner = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
             risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
             risk.creditor_content = txtCreditorContent.Text;
             risk.loaner_content = txtLoanerContent.Text;
             risk.risk_content = txtRiskContent.Value;
+            risk.last_update_time = DateTime.Now;
             //相关图片资料
             LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
             LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
@@ -282,21 +282,19 @@ namespace Lip2p.Web.admin.project
             try
             {
                 context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加项目成功！"); //记录日志
-                result = true;
+                AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加项目成功！"); //记录日志                
             }
             catch (Exception ex)
             {
-                
+                JscriptMsg(ex.Message, "back", "Error");
                 return false;
             }
 
-            return result;
+            return true;
         }
 
         private bool DoEdit(int _id)
         {
-            bool result = false;
             var project = context.li_projects.FirstOrDefault(q => q.id == this.project_id);
 
             if (project == null)
@@ -310,13 +308,12 @@ namespace Lip2p.Web.admin.project
             {
                 context.SubmitChanges();
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改项目成功！"); //记录日志
-                result = true;
             }
             catch (Exception)
             {
                 return false;
             }
-            return result;
+            return true;
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
