@@ -17,6 +17,7 @@ namespace Lip2p.Web.admin.project
         protected int project_id = 0;
         protected int risk_id = 0;
         protected int select_tab_index = 0; //刷新前选择的tab
+        protected bool save_only = false;
 
         protected Lip2pDataContext context = new Lip2pDataContext();
 
@@ -36,6 +37,7 @@ namespace Lip2p.Web.admin.project
         public virtual void Page_Load(object sender, EventArgs e)
         {
             this.action = DTRequest.GetQueryString("action");
+            this.project_id = DTRequest.GetQueryInt("id");
             if (!Page.IsPostBack)
             {
                 CategoryDDLBind(this.channel_id);
@@ -43,8 +45,7 @@ namespace Lip2p.Web.admin.project
                 LoanerDDLBind();                
 
                 if (!string.IsNullOrEmpty(action) && action == DTEnums.ActionEnum.Edit.ToString())
-                {
-                    this.project_id = DTRequest.GetQueryInt("id");
+                {                    
                     if (this.project_id == 0)
                     {
                         JscriptMsg("传输参数不正确！", "back", "Error");
@@ -156,13 +157,12 @@ namespace Lip2p.Web.admin.project
                 this.risk_id = risk.id;
                 //借款人信息
                 ddlLoaner.SelectedValue = risk.loaner.ToString();
-
+                ShowLoanerInfo(risk.loaner);
                 //债权人信息
                 ddlCreditor.SelectedValue = risk.creditor.ToString();
                 txtCreditorContent.Text = risk.creditor_content;
                 txtLoanerContent.Text = risk.loaner_content;
-                txtRiskContent.Value = risk.risk_content;
-                                
+                txtRiskContent.Value = risk.risk_content;                                
                 // 加载相册
                 rptMortgageContracts.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Lip2pEnums.AlbumTypeEnum.MortgageContract);
                 rptMortgageContracts.DataBind();
@@ -177,7 +177,11 @@ namespace Lip2p.Web.admin.project
 
         #region 增加、修改操作=================================
 
-        protected void SetProjectModel(li_projects project)
+        /// <summary>
+        /// 项目信息赋值
+        /// </summary>
+        /// <param name="project"></param>
+        private void SetProjectModel(li_projects project)
         {       
             project.seo_title = txtSeoTitle.Text.Trim();
             project.seo_keywords = txtSeoKeywords.Text.Trim();
@@ -195,7 +199,27 @@ namespace Lip2p.Web.admin.project
             project.repayment_term_span_count = Utils.StrToInt(txt_project_repayment_number.Text.Trim(), 0);
             project.repayment_term_span = Utils.StrToInt(txt_project_repayment_term.SelectedValue, 20);
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
-            project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);            
+            project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
+            //提交操作则状态为待初审            
+            project.status = save_only ? 0 : (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
+        }
+
+        /// <summary>
+        /// 风控信息赋值
+        /// </summary>
+        /// <param name="risk"></param>
+        private void SetRiskModel(li_risks risk)
+        {
+            risk.loaner = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
+            risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
+            risk.creditor_content = txtCreditorContent.Text;
+            risk.loaner_content = txtLoanerContent.Text;
+            risk.risk_content = txtRiskContent.Value;
+            //相关图片资料
+            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
+            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
+            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LienCertificate, 2);
+           
         }
 
         #region 相册
@@ -259,26 +283,12 @@ namespace Lip2p.Web.admin.project
         private bool DoAdd()
         {
             var project = new li_projects();
-            //新增风控信息，并加入风控信息id
             var risk = new li_risks();
             project.li_risks = risk;
-            //风控信息赋值
-            risk.loaner = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
-            risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
-            risk.creditor_content = txtCreditorContent.Text;
-            risk.loaner_content = txtLoanerContent.Text;
-            risk.risk_content = txtRiskContent.Value;
-            risk.last_update_time = DateTime.Now;
-            //相关图片资料
-            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LoanAgreement, 0);
-            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.MortgageContract, 1);
-            LoadAlbum(risk, Lip2pEnums.AlbumTypeEnum.LienCertificate, 2);
-            //项目信息
-            SetProjectModel(project);
-            //修改项目状态为待初审
-            project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
-            // 保存抵押物信息
+            SetRiskModel(risk);
+            SetProjectModel(project);            
             BindMortgages(risk);
+
             context.li_risks.InsertOnSubmit(risk);
             context.li_projects.InsertOnSubmit(project);           
             try
@@ -298,15 +308,13 @@ namespace Lip2p.Web.admin.project
         private bool DoEdit(int _id)
         {
             var project = context.li_projects.FirstOrDefault(q => q.id == this.project_id);
-
             if (project == null)
             {
                 JscriptMsg("信息不存在或已被删除！", "back", "Error");
                 return false;
             }
-            //项目信息赋值
+            SetRiskModel(project.li_risks);
             SetProjectModel(project);
-            // 保存抵押物信息
             BindMortgages(project.li_risks);
             try
             {
@@ -321,6 +329,11 @@ namespace Lip2p.Web.admin.project
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            sumbit();
+        }
+
+        private void sumbit()
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
@@ -451,8 +464,12 @@ namespace Lip2p.Web.admin.project
         protected void ddlLoaner_SelectedIndexChanged(object sender, EventArgs e)
         {
             select_tab_index = 1;
-            var loaner = context.li_loaners.SingleOrDefault(l => l.id == Utils.StrToInt(ddlLoaner.SelectedValue, 0));
+            ShowLoanerInfo(Utils.StrToInt(ddlLoaner.SelectedValue, 0));
+        } 
 
+        private void ShowLoanerInfo(int loaner_id)
+        {
+            var loaner = context.li_loaners.SingleOrDefault(l => l.id == loaner_id);
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner.dt_users.sex;
             sp_loaner_job.InnerText = loaner.job;
@@ -461,12 +478,6 @@ namespace Lip2p.Web.admin.project
             sp_loaner_id_card_number.InnerText = loaner.dt_users.id_card_number;
 
             LoadMortgageList(Utils.StrToInt(ddlLoaner.SelectedValue, 0), this.risk_id);
-        } 
-
-        private void SetLoanerInfo(li_loaners loaner)
-        {
-
-
         }
         #endregion
 
@@ -475,7 +486,11 @@ namespace Lip2p.Web.admin.project
             select_tab_index = 0;
         }
 
-
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            save_only = true;
+            sumbit();
+        }
     }
 
 }

@@ -471,7 +471,7 @@
         <div class="page-footer">
             <div class="btn-list">
                 <asp:Button ID="btnApproval" runat="server" Text="提交" CssClass="btn" OnClick="btnSubmit_Click" />
-                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn"/>
+                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn" OnClick="btnSave_Click"/>
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='loan_apply.aspx?channel_id=<%=this.channel_id%>'" />
             </div>
