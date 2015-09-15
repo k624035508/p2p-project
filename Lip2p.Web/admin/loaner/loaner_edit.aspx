@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>编辑借贷人</title>
+<title>查看借贷人</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -34,7 +34,7 @@
   <i class="arrow"></i>
   <a href="loaner_list.aspx"><span>借贷人列表</span></a>
   <i class="arrow"></i>
-  <span>编辑借贷人</span>
+  <span>查看借贷人</span>
 </div>
 <div class="line10"></div>
 <!--/导航栏-->
@@ -44,7 +44,7 @@
   <div id="floatHead" class="content-tab">
     <div class="content-tab-ul-wrap">
       <ul>
-        <li><a href="javascript:;" onclick="tabs(this);" class="selected">编辑借贷人</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);" class="selected">查看借贷人</a></li>
       </ul>
     </div>
   </div>
