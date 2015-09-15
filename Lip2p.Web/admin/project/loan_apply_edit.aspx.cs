@@ -277,6 +277,8 @@ namespace Lip2p.Web.admin.project
             SetProjectModel(project);
             //修改项目状态为待初审
             project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
+            // 保存抵押物信息
+            BindMortgages(risk);
             context.li_risks.InsertOnSubmit(risk);
             context.li_projects.InsertOnSubmit(project);           
             try
@@ -304,6 +306,8 @@ namespace Lip2p.Web.admin.project
             }
             //项目信息赋值
             SetProjectModel(project);
+            // 保存抵押物信息
+            BindMortgages(project.li_risks);
             try
             {
                 context.SubmitChanges();
@@ -407,10 +411,47 @@ namespace Lip2p.Web.admin.project
             rptList.DataBind();
         }
 
+        private void BindMortgages(li_risks risk)
+        {
+            var selectedLoaner = Convert.ToInt32(ddlLoaner.SelectedValue);
+            if (risk.loaner != selectedLoaner) // 更换借款人后，之前的抵押物绑定需要全部删除
+            {
+                var dtRiskMortgages = context.li_risk_mortgage.Where(rm => rm.risk == risk_id).ToList();
+                context.li_risk_mortgage.DeleteAllOnSubmit(dtRiskMortgages);
+
+                risk.loaner = selectedLoaner;
+                risk.last_update_time = DateTime.Now;
+            }
+
+            for (int i = 0; i < rptList.Items.Count; i++)
+            {
+                int mortgageId = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
+                CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
+                if (!cb.Enabled) continue;
+                var riskMortgage = context.li_risk_mortgage.FirstOrDefault(rm => rm.risk == risk_id && rm.mortgage == mortgageId);
+                if (cb.Checked) // 绑定抵押物
+                {
+                    if (riskMortgage != null) continue;
+                    riskMortgage = new li_risk_mortgage
+                    {
+                        mortgage = mortgageId,
+                        last_update_time = DateTime.Now,
+                        li_risks = risk
+                    };
+                    context.li_risk_mortgage.InsertOnSubmit(riskMortgage);
+                }
+                else // 解除绑定
+                {
+                    if (riskMortgage == null) continue;
+                    context.li_risk_mortgage.DeleteOnSubmit(riskMortgage);
+                }
+            }
+        }
+
         protected void ddlLoaner_SelectedIndexChanged(object sender, EventArgs e)
         {
             select_tab_index = 1;
-            var loaner = new Lip2pDataContext().li_loaners.SingleOrDefault(l => l.id == Utils.StrToInt(ddlLoaner.SelectedValue, 0));
+            var loaner = context.li_loaners.SingleOrDefault(l => l.id == Utils.StrToInt(ddlLoaner.SelectedValue, 0));
 
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner.dt_users.sex;
