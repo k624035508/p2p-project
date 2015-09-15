@@ -31,6 +31,15 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.DropDownList ddlCategoryId;
         
         /// <summary>
+        /// rbl_project_type 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rbl_project_type;
+        
+        /// <summary>
         /// txtTitle 控件。
         /// </summary>
         /// <remarks>
@@ -220,6 +229,78 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.TextBox txtAddTime;
         
         /// <summary>
+        /// ddlLoaner 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLoaner;
+        
+        /// <summary>
+        /// sp_loaner_name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_name;
+        
+        /// <summary>
+        /// sp_loaner_gender 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_gender;
+        
+        /// <summary>
+        /// sp_loaner_job 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_job;
+        
+        /// <summary>
+        /// sp_loaner_working_at 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_working_at;
+        
+        /// <summary>
+        /// sp_loaner_tel 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_tel;
+        
+        /// <summary>
+        /// sp_loaner_id_card_number 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_id_card_number;
+        
+        /// <summary>
+        /// rptList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptList;
+        
+        /// <summary>
         /// ddlCreditor 控件。
         /// </summary>
         /// <remarks>
@@ -328,12 +409,12 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Button btnApproval;
         
         /// <summary>
-        /// Button1 控件。
+        /// btnSave 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }

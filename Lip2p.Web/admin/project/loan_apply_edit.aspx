@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply_edit.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply_edit" %>
 
+<%@ Import Namespace="Lip2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -48,6 +49,25 @@
                     $(this).parent().addClass("selected");
                 }
             });
+            //选择tab
+            $(function () {
+                if ("<%=select_tab_index%>" == 0) {
+                    //设置点击后的切换样式
+                    $("#a_item_base").parent().parent().find("li a").removeClass("selected");
+                    $("#a_item_base").addClass("selected");
+                    //根据参数决定显示内容
+                    $(".tab-content").hide();
+                    $(".tab-content").eq(0).show();
+                }
+                else {
+                    $("#a_item_mortgages").parent().parent().find("li a").removeClass("selected");
+                    $("#a_item_mortgages").addClass("selected");
+                    //根据参数决定显示内容
+                    $(".tab-content").hide();
+                    $(".tab-content").eq(1).show();
+                }
+
+            });
         });
     </script>
 </head>
@@ -67,8 +87,9 @@
             <div id="floatHead" class="content-tab">
                 <div class="content-tab-ul-wrap">
                     <ul>
-                        <li><a href="javascript:;" onclick="tabs(this);" class="selected">基本信息</a></li>
-                        <li><a href="javascript:;" onclick="tabs(this);">标的信息</a></li>
+                        <% %>
+                        <li><a href="javascript:;" id="a_item_base" onclick="tabs(this);" class="selected">基本信息</a></li>
+                        <li><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
                         <li><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>
                         <li><a href="javascript:;" onclick="tabs(this);">SEO选项</a></li>
                     </ul>
@@ -82,6 +103,19 @@
                     <div class="rule-single-select">
                         <asp:DropDownList ID="ddlCategoryId" runat="server" datatype="*" sucmsg=" ">
                         </asp:DropDownList>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>借款主体</dt>
+                <dd>
+                    <div class="rule-multi-radio">
+                        <asp:RadioButtonList ID="rbl_project_type" runat="server" RepeatDirection="Horizontal"
+                            RepeatLayout="Flow" AutoPostBack="true" OnSelectedIndexChanged="rbl_project_type_SelectedIndexChanged">
+                            <asp:ListItem Value="10" Selected="True">企业</asp:ListItem>
+                            <asp:ListItem Value="20">个人</asp:ListItem>
+                            <asp:ListItem Value="30">债权</asp:ListItem>
+                        </asp:RadioButtonList>
                     </div>
                 </dd>
             </dl>
@@ -191,6 +225,16 @@
         <%-- 标的信息 --%>
         <div class="tab-content" style="display: none" id="div_mortgages_info">
             <dl>
+                <dl>
+                    <dt>选择借款人</dt>
+                    <dd>
+                        <div class="rule-single-select">
+                            <asp:DropDownList ID="ddlLoaner" runat="server" datatype="*" sucmsg=" " AutoPostBack="true"
+                                OnSelectedIndexChanged="ddlLoaner_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>
+                    </dd>
+                </dl>
                 <dt>借款人信息</dt>
                 <dd>
                     <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
@@ -199,9 +243,7 @@
                             </th>
                             <td>
                                 <div class="position">
-                                    <span id="loaner_name">
-                                        <%=loaner.dt_users.real_name%></span>
-                                    <input id="btnSelectLoaner2" type="button" class="ibtn" value="选择" />
+                                    <span id="sp_loaner_name" runat="server"></span>
                                 </div>
                             </td>
                         </tr>
@@ -209,40 +251,35 @@
                             <th>性别
                             </th>
                             <td>
-                                <span id="loaner_gender">
-                                    <%=loaner.dt_users.sex%></span>
+                                <span id="sp_loaner_gender" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>职业
                             </th>
                             <td>
-                                <span id="loaner_job">
-                                    <%=loaner.job%></span>
+                                <span id="sp_loaner_job" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>工作所在地
                             </th>
                             <td>
-                                <span id="loaner_working_at">
-                                    <%=loaner.working_at%></span>
+                                <span id="sp_loaner_working_at" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>手机号码
                             </th>
                             <td>
-                                <span id="loaner_tel">
-                                    <%=loaner.dt_users.mobile%></span>
+                                <span id="sp_loaner_tel" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>身份证号码
                             </th>
                             <td>
-                                <span id="loaner_id_card_number">
-                                    <%=loaner.dt_users.id_card_number%></span>
+                                <span id="sp_loaner_id_card_number" runat="server"></span>
                             </td>
                         </tr>
                     </table>
@@ -250,7 +287,36 @@
             </dl>
             <dl>
                 <dt>标的物信息</dt>
-                <dd></dd>
+                <dd>
+                    <asp:Repeater ID="rptList" runat="server">
+                        <HeaderTemplate>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                                <tr>
+                                    <th width="10%">选择</th>
+                                    <th align="left">名称</th>
+                                    <th align="left">类型</th>
+                                    <th align="left">估值</th>
+                                    <th align="left">状态</th>
+                                </tr>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td align="center">
+                                    <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" Checked='<%# Eval("check")%>' Enabled='<%# Eval("enable") %>' />
+                                    <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
+                                </td>
+                                <td><%# Eval("name")%></td>
+                                <td><%# Eval("typeName")%></td>
+                                <td><%# Eval("valuation")%></td>
+                                <td title="<%# QueryUsingProject(((MortgageItem) Container.DataItem).id)%>"><%# Utils.GetLip2pEnumDes((Lip2pEnums.MortgageStatusEnum)Convert.ToByte(Eval("status")))%></td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"6\">暂无记录</td></tr>" : ""%>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                </dd>
             </dl>
         </div>
         <%-- 风控信息 --%>
@@ -405,8 +471,9 @@
         <div class="page-footer">
             <div class="btn-list">
                 <asp:Button ID="btnApproval" runat="server" Text="提交" CssClass="btn" OnClick="btnSubmit_Click" />
-                <asp:Button ID="Button1" runat="server" Text="保存" CssClass="btn" OnClick="btnSubmit_Click" />
-                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" />
+                <asp:Button ID="btnSave" runat="server" Text="保存" CssClass="btn"/>
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
+                    onclick="location.href='loan_apply.aspx?channel_id=<%=this.channel_id%>'" />
             </div>
             <div class="clear">
             </div>
