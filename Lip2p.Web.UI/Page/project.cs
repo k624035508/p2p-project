@@ -67,7 +67,7 @@ namespace Lip2p.Web.UI.Page
                 //借款人
                 loaner = risk.li_loaners;
                 //借款人企业
-                loaner_company = risk.li_loaners.li_loaner_companies.SingleOrDefault();
+                loaner_company = risk.li_loaners.li_loaner_companies;
                 //抵押物
                 mortgages = (from rm in risk.li_risk_mortgage
                     from m in context.li_mortgages

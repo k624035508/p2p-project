@@ -177,7 +177,7 @@ namespace Lip2p.Web.admin.users
                 rblMaritalStatus.SelectedValue = loanerInfo.marital_status.ToString();
                 txtIncome.Text = loanerInfo.income;
 
-                var loanerCompany = context.li_loaner_companies.SingleOrDefault(c => c.loaner_id == loanerInfo.id);
+                var loanerCompany = loanerInfo.li_loaner_companies;
                 chkBindCompany.Checked = loanerCompany != null;
                 if (loanerCompany != null)
                 {
@@ -408,12 +408,12 @@ namespace Lip2p.Web.admin.users
                             business_scope = txtBusinessScope.Text,
                             business_status = txtBusinessStatus.Text,
                             income_yearly = txtIncomeYearly.Text,
-                            li_loaners = loanerInfo,
                             net_assets = txtNetAssets.Text,
                             registered_capital = txtRegisteredCapital.Text,
                             setup_time = Convert.ToDateTime(txtSetupTime.Text),
                             remark = txtCompanyRemark.Text,
                         };
+                        loanerInfo.li_loaner_companies = loanerCompany;
                         context.li_loaner_companies.InsertOnSubmit(loanerCompany);
                     }
                 }
@@ -433,7 +433,7 @@ namespace Lip2p.Web.admin.users
             }
             else if (loanerInfo != null)
             {
-                var c = loanerInfo.li_loaner_companies.SingleOrDefault();
+                var c = loanerInfo.li_loaner_companies;
                 if (c != null)
                 {
                     context.li_loaner_companies.DeleteOnSubmit(c);
@@ -444,7 +444,7 @@ namespace Lip2p.Web.admin.users
 
         private void UpdateLoanerCompanyInfo(li_loaners loaner)
         {
-            var company = loaner.li_loaner_companies.SingleOrDefault();
+            var company = loaner.li_loaner_companies;
             if (chkBindCompany.Checked)
             {
                 if (company == null)
@@ -456,12 +456,12 @@ namespace Lip2p.Web.admin.users
                         business_scope = txtBusinessScope.Text,
                         business_status = txtBusinessStatus.Text,
                         income_yearly = txtIncomeYearly.Text,
-                        li_loaners = loaner,
                         net_assets = txtNetAssets.Text,
                         registered_capital = txtRegisteredCapital.Text,
                         setup_time = Convert.ToDateTime(txtSetupTime.Text),
                         remark = txtCompanyRemark.Text,
                     };
+                    loaner.li_loaner_companies = company;
                     context.li_loaner_companies.InsertOnSubmit(company);
                 }
                 else
@@ -471,7 +471,6 @@ namespace Lip2p.Web.admin.users
                     company.business_scope = txtBusinessScope.Text;
                     company.business_status = txtBusinessStatus.Text;
                     company.income_yearly = txtIncomeYearly.Text;
-                    company.li_loaners = loaner;
                     company.net_assets = txtNetAssets.Text;
                     company.registered_capital = txtRegisteredCapital.Text;
                     company.setup_time = Convert.ToDateTime(txtSetupTime.Text);
