@@ -421,6 +421,12 @@ namespace Lip2p.Web.admin.project
 
             LoadMortgageList(Utils.StrToInt(ddlLoaner.SelectedValue, 0), this.risk_id);
         } 
+
+        private void SetLoanerInfo(li_loaners loaner)
+        {
+
+
+        }
         #endregion
 
         protected void rbl_project_type_SelectedIndexChanged(object sender, EventArgs e)

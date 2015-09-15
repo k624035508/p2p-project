@@ -29,7 +29,7 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
-                        <li><a class="add" href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action='add'"><i></i><span>申请借款</span></a></li>
+                        <li><a class="add" href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Add%>"><i></i><span>申请借款</span></a></li>
                         <li>
                             <asp:LinkButton ID="btnSave" runat="server" CssClass="save"><i></i><span>保存排序</span></asp:LinkButton></li>
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
@@ -73,7 +73,7 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href=""><%#Eval("title")%></a></td>
+                    <td><a href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    

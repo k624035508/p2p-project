@@ -106,7 +106,7 @@ namespace Lip2p.Web.admin.project
         private List<li_projects> GetList(string _channel_name, int _category_id, int _pageIndex, string _keyword, int _project_status)
         {
             pageSize = new BLL.channel().GetPageSize(_channel_name);
-            var query = context.li_projects.Where(p => p.status == 0 && (p.title.Contains(_keyword) || p.no.Contains(_keyword)));
+            var query = context.li_projects.Where(p => p.status <= 3 && (p.title.Contains(_keyword) || p.no.Contains(_keyword)));
             if (_category_id > 0)
                 query = query.Where(q => q.category_id == _category_id);
 
