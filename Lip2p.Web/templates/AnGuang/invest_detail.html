@@ -81,7 +81,7 @@
         <div><span class="title-mark">可投金额</span></div>
         <div class="investable-amount-wrap">
             <div class="investable-amount">{investmentBalance}</div>
-            <%if(projectModel.status>(int)Lip2pEnums.ProjectStatusEnum.FaBiao)%>
+            <%if(projectModel.status>(int)Lip2pEnums.ProjectStatusEnum.FinancingTimeout)%>
             <!--满标-->
             <div class="account-balance-empty">
                 <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>

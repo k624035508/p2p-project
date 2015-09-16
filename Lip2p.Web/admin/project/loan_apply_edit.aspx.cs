@@ -136,7 +136,7 @@ namespace Lip2p.Web.admin.project
             txtClick.Text = _project.click.ToString();
             txtImgUrl.Text = _project.img_url;
             txtTitle.Text = _project.title;
-            txt_project_no.Text = _project.no.ToString();
+            txt_project_no.Text = _project.no;
             txt_project_amount.Text = _project.financing_amount.ToString();//借款金额            
             txt_project_repayment_number.Text = _project.repayment_term_span_count.ToString();//借款期限
             txt_project_repayment_term.SelectedValue = _project.repayment_term_span.ToString();//借款期限单位
