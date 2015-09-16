@@ -661,6 +661,7 @@
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\webpack.config.js" />
+    <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_header.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
