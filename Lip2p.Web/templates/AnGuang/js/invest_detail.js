@@ -3,6 +3,7 @@ import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/invest_detail.less";
 import "../less/footer.less";
+import "visualnav";
 
 import header from "./header.js";
 
@@ -20,4 +21,10 @@ $(function () {
     });
 
     header.setHeaderHighlight(1);
+
+    $("#sidemenu").visualNav({
+        selectedClass : "active",
+        selectedAppliedTo : 'a',
+        animationTime     : 600,
+    });
 });
