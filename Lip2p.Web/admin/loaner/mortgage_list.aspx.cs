@@ -23,6 +23,11 @@ namespace Lip2p.Web.admin.loaner
 
         protected string keywords = string.Empty, loaner_id;
 
+        protected bool IsReadonly()
+        {
+            return "true" == DTRequest.GetQueryString("readonly");
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //keywords = DTRequest.GetQueryString("keywords");

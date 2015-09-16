@@ -14,6 +14,12 @@
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+<style>
+    #mortgageList {
+        width: 100%;
+        height: 60vh;
+    }
+</style>
 <script type="text/javascript">
     $(function () {
         //初始化表单验证
@@ -45,6 +51,7 @@
     <div class="content-tab-ul-wrap">
       <ul>
         <li><a href="javascript:;" onclick="tabs(this);" class="selected">查看借贷人</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);">查看抵押物</a></li>
       </ul>
     </div>
   </div>
@@ -141,6 +148,10 @@
     </dd>
   </dl>
 </div>
+<div class="tab-content" style="display: none;">
+    <iframe id="mortgageList" src="mortgage_list.aspx?loaner_id=<%=id %>&readonly=true"></iframe>
+</div>
+
 <!--/内容-->
 
 <!--工具栏-->
