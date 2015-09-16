@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_audit.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_audit" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
+<%@ Import Namespace="Lip2p.Linq2SQL" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,7 +30,8 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
-                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>                        
+                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+                        <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','所选项目将通过审批，确定继续吗？');"><i></i><span>审批</span></asp:LinkButton></li>                        
                     </ul>
                 </div>
                 <div class="r-list">
@@ -69,16 +71,16 @@
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
                     <td><a href=""><%#Eval("title")%></a></td>
-                    <td></td>
+                    <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
-                    <td></td>
+                    <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
                     <td>
                         <asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" /></td>
-                    <td align="center"><a href="">修改</a></td>
+                    <td align="center"><a href="">审核</a></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

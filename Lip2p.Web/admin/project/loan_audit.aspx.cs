@@ -148,5 +148,16 @@ namespace Lip2p.Web.admin.project
         }
 
         #endregion
+
+        protected string QueryLoaner(int projectId)
+        {
+            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
+            if (project != null)
+            {
+                var user = project.li_risks.li_loaners.dt_users;
+                return $"{user.real_name}({user.user_name})";
+            }
+            return "";
+        }
     }
 }

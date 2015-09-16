@@ -59,6 +59,7 @@ namespace Lip2p.Web.admin.project
                     }
                     ShowInfo(project);
                 }
+                SetLoanType();
             }
         }
 
@@ -127,7 +128,6 @@ namespace Lip2p.Web.admin.project
         {
             ddlCategoryId.SelectedValue = _project.category_id.ToString();//项目类别
             rbl_project_type.SelectedValue = _project.type.ToString();//借款主体
-            SetLoanType();
 
             txtSeoTitle.Text = _project.seo_title;
             txtSeoKeywords.Text = _project.seo_keywords;
@@ -378,6 +378,10 @@ namespace Lip2p.Web.admin.project
         #endregion
 
         #region 借款人
+
+        /// <summary>
+        /// 标的物dto
+        /// </summary>
         public class MortgageItem
         {
             public int id { get; set; }
