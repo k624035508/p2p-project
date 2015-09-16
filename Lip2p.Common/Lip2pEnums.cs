@@ -22,6 +22,16 @@ namespace Lip2p.Common
             DailyProject = 4
         }
 
+        public enum LoanTypeEnum
+        {
+            [Description("企业")]
+            Company = 10,
+            [Description("个人")]
+            Personal = 20,
+            [Description("债权")]
+            Creditor = 30
+        }
+
         /// <summary>
         /// 流程状态
         /// </summary>

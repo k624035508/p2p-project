@@ -126,12 +126,12 @@ namespace Lip2p.Linq2SQL
     partial void Insertli_risks(li_risks instance);
     partial void Updateli_risks(li_risks instance);
     partial void Deleteli_risks(li_risks instance);
-    partial void Insertli_loaner_companies(li_loaner_companies instance);
-    partial void Updateli_loaner_companies(li_loaner_companies instance);
-    partial void Deleteli_loaner_companies(li_loaner_companies instance);
     partial void Insertli_loaners(li_loaners instance);
     partial void Updateli_loaners(li_loaners instance);
     partial void Deleteli_loaners(li_loaners instance);
+    partial void Insertli_loaner_companies(li_loaner_companies instance);
+    partial void Updateli_loaner_companies(li_loaner_companies instance);
+    partial void Deleteli_loaner_companies(li_loaner_companies instance);
     #endregion
 		
 		public Lip2pDataContext(string connection) : 
@@ -422,19 +422,19 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		public System.Data.Linq.Table<li_loaner_companies> li_loaner_companies
-		{
-			get
-			{
-				return this.GetTable<li_loaner_companies>();
-			}
-		}
-		
 		public System.Data.Linq.Table<li_loaners> li_loaners
 		{
 			get
 			{
 				return this.GetTable<li_loaners>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_loaner_companies> li_loaner_companies
+		{
+			get
+			{
+				return this.GetTable<li_loaner_companies>();
 			}
 		}
 	}
@@ -12101,312 +12101,6 @@ namespace Lip2p.Linq2SQL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_loaner_companies")]
-	public partial class li_loaner_companies : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private string _name;
-		
-		private System.DateTime _setup_time;
-		
-		private string _registered_capital;
-		
-		private string _business_scope;
-		
-		private string _business_status;
-		
-		private string _business_lawsuit;
-		
-		private string _income_yearly;
-		
-		private string _net_assets;
-		
-		private string _remark;
-		
-		private EntitySet<li_loaners> _li_loaners;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void Onsetup_timeChanging(System.DateTime value);
-    partial void Onsetup_timeChanged();
-    partial void Onregistered_capitalChanging(string value);
-    partial void Onregistered_capitalChanged();
-    partial void Onbusiness_scopeChanging(string value);
-    partial void Onbusiness_scopeChanged();
-    partial void Onbusiness_statusChanging(string value);
-    partial void Onbusiness_statusChanged();
-    partial void Onbusiness_lawsuitChanging(string value);
-    partial void Onbusiness_lawsuitChanged();
-    partial void Onincome_yearlyChanging(string value);
-    partial void Onincome_yearlyChanged();
-    partial void Onnet_assetsChanging(string value);
-    partial void Onnet_assetsChanged();
-    partial void OnremarkChanging(string value);
-    partial void OnremarkChanged();
-    #endregion
-		
-		public li_loaner_companies()
-		{
-			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this.OnnameChanging(value);
-					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_setup_time", DbType="Date NOT NULL")]
-		public System.DateTime setup_time
-		{
-			get
-			{
-				return this._setup_time;
-			}
-			set
-			{
-				if ((this._setup_time != value))
-				{
-					this.Onsetup_timeChanging(value);
-					this.SendPropertyChanging();
-					this._setup_time = value;
-					this.SendPropertyChanged("setup_time");
-					this.Onsetup_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_registered_capital", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string registered_capital
-		{
-			get
-			{
-				return this._registered_capital;
-			}
-			set
-			{
-				if ((this._registered_capital != value))
-				{
-					this.Onregistered_capitalChanging(value);
-					this.SendPropertyChanging();
-					this._registered_capital = value;
-					this.SendPropertyChanged("registered_capital");
-					this.Onregistered_capitalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_scope", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string business_scope
-		{
-			get
-			{
-				return this._business_scope;
-			}
-			set
-			{
-				if ((this._business_scope != value))
-				{
-					this.Onbusiness_scopeChanging(value);
-					this.SendPropertyChanging();
-					this._business_scope = value;
-					this.SendPropertyChanged("business_scope");
-					this.Onbusiness_scopeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_status", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
-		public string business_status
-		{
-			get
-			{
-				return this._business_status;
-			}
-			set
-			{
-				if ((this._business_status != value))
-				{
-					this.Onbusiness_statusChanging(value);
-					this.SendPropertyChanging();
-					this._business_status = value;
-					this.SendPropertyChanged("business_status");
-					this.Onbusiness_statusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_lawsuit", DbType="NVarChar(20)")]
-		public string business_lawsuit
-		{
-			get
-			{
-				return this._business_lawsuit;
-			}
-			set
-			{
-				if ((this._business_lawsuit != value))
-				{
-					this.Onbusiness_lawsuitChanging(value);
-					this.SendPropertyChanging();
-					this._business_lawsuit = value;
-					this.SendPropertyChanged("business_lawsuit");
-					this.Onbusiness_lawsuitChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_income_yearly", DbType="NVarChar(10)")]
-		public string income_yearly
-		{
-			get
-			{
-				return this._income_yearly;
-			}
-			set
-			{
-				if ((this._income_yearly != value))
-				{
-					this.Onincome_yearlyChanging(value);
-					this.SendPropertyChanging();
-					this._income_yearly = value;
-					this.SendPropertyChanged("income_yearly");
-					this.Onincome_yearlyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_net_assets", DbType="NVarChar(10)")]
-		public string net_assets
-		{
-			get
-			{
-				return this._net_assets;
-			}
-			set
-			{
-				if ((this._net_assets != value))
-				{
-					this.Onnet_assetsChanging(value);
-					this.SendPropertyChanging();
-					this._net_assets = value;
-					this.SendPropertyChanged("net_assets");
-					this.Onnet_assetsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(50)")]
-		public string remark
-		{
-			get
-			{
-				return this._remark;
-			}
-			set
-			{
-				if ((this._remark != value))
-				{
-					this.OnremarkChanging(value);
-					this.SendPropertyChanging();
-					this._remark = value;
-					this.SendPropertyChanged("remark");
-					this.OnremarkChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaner_companies_li_loaners", Storage="_li_loaners", ThisKey="id", OtherKey="company_id")]
-		public EntitySet<li_loaners> li_loaners
-		{
-			get
-			{
-				return this._li_loaners;
-			}
-			set
-			{
-				this._li_loaners.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_li_loaners(li_loaners entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_loaner_companies = this;
-		}
-		
-		private void detach_li_loaners(li_loaners entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_loaner_companies = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_loaners")]
 	public partial class li_loaners : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -12848,6 +12542,312 @@ namespace Lip2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_loaners = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_loaner_companies")]
+	public partial class li_loaner_companies : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _name;
+		
+		private System.DateTime _setup_time;
+		
+		private string _registered_capital;
+		
+		private string _business_scope;
+		
+		private string _business_status;
+		
+		private string _business_lawsuit;
+		
+		private string _income_yearly;
+		
+		private string _net_assets;
+		
+		private string _remark;
+		
+		private EntitySet<li_loaners> _li_loaners;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void Onsetup_timeChanging(System.DateTime value);
+    partial void Onsetup_timeChanged();
+    partial void Onregistered_capitalChanging(string value);
+    partial void Onregistered_capitalChanged();
+    partial void Onbusiness_scopeChanging(string value);
+    partial void Onbusiness_scopeChanged();
+    partial void Onbusiness_statusChanging(string value);
+    partial void Onbusiness_statusChanged();
+    partial void Onbusiness_lawsuitChanging(string value);
+    partial void Onbusiness_lawsuitChanged();
+    partial void Onincome_yearlyChanging(string value);
+    partial void Onincome_yearlyChanged();
+    partial void Onnet_assetsChanging(string value);
+    partial void Onnet_assetsChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    #endregion
+		
+		public li_loaner_companies()
+		{
+			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_setup_time", DbType="Date NOT NULL")]
+		public System.DateTime setup_time
+		{
+			get
+			{
+				return this._setup_time;
+			}
+			set
+			{
+				if ((this._setup_time != value))
+				{
+					this.Onsetup_timeChanging(value);
+					this.SendPropertyChanging();
+					this._setup_time = value;
+					this.SendPropertyChanged("setup_time");
+					this.Onsetup_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_registered_capital", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string registered_capital
+		{
+			get
+			{
+				return this._registered_capital;
+			}
+			set
+			{
+				if ((this._registered_capital != value))
+				{
+					this.Onregistered_capitalChanging(value);
+					this.SendPropertyChanging();
+					this._registered_capital = value;
+					this.SendPropertyChanged("registered_capital");
+					this.Onregistered_capitalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_scope", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string business_scope
+		{
+			get
+			{
+				return this._business_scope;
+			}
+			set
+			{
+				if ((this._business_scope != value))
+				{
+					this.Onbusiness_scopeChanging(value);
+					this.SendPropertyChanging();
+					this._business_scope = value;
+					this.SendPropertyChanged("business_scope");
+					this.Onbusiness_scopeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_status", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string business_status
+		{
+			get
+			{
+				return this._business_status;
+			}
+			set
+			{
+				if ((this._business_status != value))
+				{
+					this.Onbusiness_statusChanging(value);
+					this.SendPropertyChanging();
+					this._business_status = value;
+					this.SendPropertyChanged("business_status");
+					this.Onbusiness_statusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_business_lawsuit", DbType="NVarChar(20)")]
+		public string business_lawsuit
+		{
+			get
+			{
+				return this._business_lawsuit;
+			}
+			set
+			{
+				if ((this._business_lawsuit != value))
+				{
+					this.Onbusiness_lawsuitChanging(value);
+					this.SendPropertyChanging();
+					this._business_lawsuit = value;
+					this.SendPropertyChanged("business_lawsuit");
+					this.Onbusiness_lawsuitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_income_yearly", DbType="NVarChar(10)")]
+		public string income_yearly
+		{
+			get
+			{
+				return this._income_yearly;
+			}
+			set
+			{
+				if ((this._income_yearly != value))
+				{
+					this.Onincome_yearlyChanging(value);
+					this.SendPropertyChanging();
+					this._income_yearly = value;
+					this.SendPropertyChanged("income_yearly");
+					this.Onincome_yearlyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_net_assets", DbType="NVarChar(10)")]
+		public string net_assets
+		{
+			get
+			{
+				return this._net_assets;
+			}
+			set
+			{
+				if ((this._net_assets != value))
+				{
+					this.Onnet_assetsChanging(value);
+					this.SendPropertyChanging();
+					this._net_assets = value;
+					this.SendPropertyChanged("net_assets");
+					this.Onnet_assetsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(50)")]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaner_companies_li_loaners", Storage="_li_loaners", ThisKey="id", OtherKey="company_id")]
+		public EntitySet<li_loaners> li_loaners
+		{
+			get
+			{
+				return this._li_loaners;
+			}
+			set
+			{
+				this._li_loaners.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_li_loaners(li_loaners entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaner_companies = this;
+		}
+		
+		private void detach_li_loaners(li_loaners entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaner_companies = null;
 		}
 	}
 }

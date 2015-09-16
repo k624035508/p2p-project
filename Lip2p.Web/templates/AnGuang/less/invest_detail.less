@@ -241,23 +241,32 @@ div.project-content-wrap {
 	.project-content-left {
 		width: 87%;
 		font-size: @font15;
-		& > ul {
+        width: 87%;
+		font-size: @font15;
+		& > div > ul {
 			margin: @content-margin;
-			& > li {margin-bottom: 15px;}
-			& > li > span {
-				display: inline-block;
-				vertical-align: top;
-			}
-			& > li span:first-child {
-				width: 85px;
-				color: @grey;
-				margin-right: 10px;
-			}
-			li .span-sec {
-				width: 738px;
-				color: @darker-grey;
+			li {
+				margin: 15px 0;
+				span {
+					display: inline-block;
+					vertical-align: top;
+				}
+				& > span:first-child {
+					width: 85px;
+					color: @grey;
+					margin-right: 10px;
+				}
+				.span-sec {
+					width: 738px;
+					color: @darker-grey;
+				}
 			}
 		}
+        .specific-location {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+        }
 
 		.personal-info {
 			margin: @content-margin;
@@ -268,8 +277,8 @@ div.project-content-wrap {
 				margin-bottom: 0;
 				font-size: @font15;
 				& > li {
-					margin-bottom: 15px;
-					& > span:first-child {
+					margin-top: 15px;
+					span:first-child {
 						color: @grey;
 						margin-right: 10px;
 					}
@@ -278,19 +287,12 @@ div.project-content-wrap {
 						width: 85px;
 					}
 				}
-				& li:last-child {
-					margin-bottom: 0;
+				& li:first-child {
+					margin-top: 0;
 				}
 			}
 		}
-        .risk-control-content {
-            .specific-location {
-                display: inline-block;
-                width: 60px;
-                text-align: right;
-            }
-            .span-sec * { color: @darker-grey; }
-        }
+        .risk-control-content .span-sec *{ color: @darker-grey; }
 		.photo-cell {
 			margin: 33px 28px 18px 28px;
 			.col-md-3 {
@@ -346,7 +348,7 @@ div.project-content-wrap {
 						border: 1px solid @grey;
 						margin-right: 5px;
 					}
-					&:hover, &:focus {
+					&:hover, &.active {
 						color: @blue;
 						span {background: @grey;}
 					}

@@ -147,6 +147,7 @@
     <Content Include="admin\order\payment_list.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\project\loan_audit.aspx" />
     <Content Include="admin\project\loan_apply.aspx" />
     <Content Include="admin\project\loan_apply_edit.aspx" />
     <Content Include="admin\project\project_edit_publish.aspx" />
@@ -660,6 +661,7 @@
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\webpack.config.js" />
+    <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_header.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
@@ -1034,6 +1036,13 @@
     </Compile>
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\loan_audit.aspx.cs">
+      <DependentUpon>loan_audit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\loan_audit.aspx.designer.cs">
+      <DependentUpon>loan_audit.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\loan_apply.aspx.cs">
       <DependentUpon>loan_apply.aspx</DependentUpon>

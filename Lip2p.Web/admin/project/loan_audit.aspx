@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_audit.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_audit" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
 <!DOCTYPE html>
@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>申请借款</title>
+    <title>借款初审</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -21,7 +21,7 @@
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
             <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
             <i class="arrow"></i>
-            <span>申请借款</span>
+            <span>借款初审</span>
         </div>
         <!--/导航栏-->
         <!--工具栏-->
@@ -29,10 +29,7 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
-                        <li><a class="add" href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Add%>"><i></i><span>申请借款</span></a></li>
-                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
-                        <li>
-                            <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClick="btnDelete_Click" OnClientClick="return ExePostBack('btnDelete');"><i></i><span>删除</span></asp:LinkButton></li>
+                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>                        
                     </ul>
                 </div>
                 <div class="r-list">
@@ -71,7 +68,7 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td><a href=""><%#Eval("title")%></a></td>
                     <td></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    

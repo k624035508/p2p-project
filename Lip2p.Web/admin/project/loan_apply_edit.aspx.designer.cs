@@ -292,6 +292,69 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_loaner_id_card_number;
         
         /// <summary>
+        /// dl_company 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dl_company;
+        
+        /// <summary>
+        /// sp_company_name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_name;
+        
+        /// <summary>
+        /// sp_company_setup_time 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_setup_time;
+        
+        /// <summary>
+        /// sp_company_registered_capital 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_registered_capital;
+        
+        /// <summary>
+        /// sp_company_business_scope 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_business_scope;
+        
+        /// <summary>
+        /// sp_company_business_status 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_business_status;
+        
+        /// <summary>
+        /// sp_company_income_yearly 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_company_income_yearly;
+        
+        /// <summary>
         /// rptList 控件。
         /// </summary>
         /// <remarks>
@@ -301,6 +364,15 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Repeater rptList;
         
         /// <summary>
+        /// dl_creditor 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dl_creditor;
+        
+        /// <summary>
         /// ddlCreditor 控件。
         /// </summary>
         /// <remarks>
@@ -308,6 +380,15 @@ namespace Lip2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCreditor;
+        
+        /// <summary>
+        /// dl_creditor_dic 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dl_creditor_dic;
         
         /// <summary>
         /// txtCreditorContent 控件。
@@ -328,6 +409,24 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.TextBox txtLoanerContent;
         
         /// <summary>
+        /// txtLoanUse 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLoanUse;
+        
+        /// <summary>
+        /// txtRepaymentSource 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRepaymentSource;
+        
+        /// <summary>
         /// txtRiskContent 控件。
         /// </summary>
         /// <remarks>
@@ -335,15 +434,6 @@ namespace Lip2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txtRiskContent;
-        
-        /// <summary>
-        /// txtLoanAgreementNo 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLoanAgreementNo;
         
         /// <summary>
         /// rptLoanAgreement 控件。

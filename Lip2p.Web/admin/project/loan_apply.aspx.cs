@@ -106,10 +106,11 @@ namespace Lip2p.Web.admin.project
         private List<li_projects> GetList(string _channel_name, int _category_id, int _pageIndex, string _keyword, int _project_status)
         {
             pageSize = new BLL.channel().GetPageSize(_channel_name);
-            var query = context.li_projects.Where(p => p.status <= 3 && (p.title.Contains(_keyword) || p.no.Contains(_keyword)));
+            var query = context.li_projects.Where(p => (p.status == (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted || p.status == (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationFail) 
+            && (p.title.Contains(_keyword) || p.no.Contains(_keyword)));
             if (_category_id > 0)
                 query = query.Where(q => q.category_id == _category_id);
-
+            
             this.totalCount = query.Count();
             return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
                 .Skip(pageSize * (page - 1)).Take(pageSize).ToList();
@@ -143,27 +144,6 @@ namespace Lip2p.Web.admin.project
             }
             Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
                 this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status));
-        }
-
-        //保存排序
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Edit.ToString()); //检查权限
-            BLL.article bll = new BLL.article();
-
-            for (int i = 0; i < rptList1.Items.Count; i++)
-            {
-                int id = Convert.ToInt32(((HiddenField)rptList1.Items[i].FindControl("hidId")).Value);
-                int sortId;
-                if (!int.TryParse(((TextBox)rptList1.Items[i].FindControl("txtSortId")).Text.Trim(), out sortId))
-                {
-                    sortId = 99;
-                }
-                bll.UpdateField(id, "sort_id=" + sortId.ToString());
-            }
-            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "保存" + this.channel_name + "频道内容排序"); //记录日志
-            JscriptMsg("保存排序成功啦！", Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status), "Success");
         }
 
         //批量删除
