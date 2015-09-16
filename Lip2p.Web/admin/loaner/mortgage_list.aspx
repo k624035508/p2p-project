@@ -12,12 +12,18 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+<% if (IsReadonly()) { %>
+<style>
+    .toolbar { padding-top: 0; }
+    .toolbar-wrap { padding-top: 0; }
+</style>
+<% } %>
 </head>
 
 <body class="mainbody">
 <form id="form1" runat="server">
 <!--导航栏-->
-<div class="location">
+<div class="location" <%=IsReadonly() ? "style='display:none'" : "" %> >
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
@@ -31,7 +37,7 @@
 <div class="toolbar-wrap">
   <div id="floatHead" class="toolbar">
     <div class="l-list" style="width: 80%">
-      <ul class="icon-list">
+      <ul class="icon-list" <%=IsReadonly() ? "style='display:none'" : "" %>>
         <li><a class="add" href="mortgage_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>&owner_id=<%=loaner_id %>"><i></i><span>新增</span></a></li>
         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
         <li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>
@@ -40,7 +46,7 @@
           <asp:RadioButtonList ID="rblMortgageType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblMortgageType_OnSelectedIndexChanged"/>
       </div>
     </div>
-    <div class="r-list">
+    <div class="r-list" <%=IsReadonly() ? "style='display:none'" : "" %>>
       <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"/>
       <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search" onclick="btnSearch_Click">查询</asp:LinkButton>
     </div>
@@ -67,7 +73,11 @@
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
+      <% if (IsReadonly()) { %>
+    <td><%# Eval("name") %></td>
+      <% } else { %>
     <td><a href="mortgage_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
+      <% } %>
     <td><%# Eval("li_mortgage_types.name") %></td>
     <td><%# QueryOwnerNameById(Eval("owner"))%></td>
     <%# GenerateDynamicTableData((li_mortgages) Container.DataItem) %>

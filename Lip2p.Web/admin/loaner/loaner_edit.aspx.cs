@@ -14,7 +14,7 @@ namespace Lip2p.Web.admin.loaner
     public partial class loaner_edit : UI.ManagePage
     {
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
-        private int id = 0;
+        protected int id = 0;
         Lip2pDataContext context = new Lip2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
