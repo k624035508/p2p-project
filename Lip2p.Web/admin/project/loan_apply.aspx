@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
+<%@ Import Namespace="Lip2p.Linq2SQL" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,7 +30,7 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
-                        <li><a class="add" href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Add%>"><i></i><span>申请借款</span></a></li>
+                        <li><a class="add" href="loan_apply_detail.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Add%>"><i></i><span>申请借款</span></a></li>
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
                         <li>
                             <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClick="btnDelete_Click" OnClientClick="return ExePostBack('btnDelete');"><i></i><span>删除</span></asp:LinkButton></li>
@@ -58,7 +59,7 @@
                         <th align="left" width="8%">借款类型</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
                         <th align="left" width="8%">借款期限</th>
-                        <th align="left" width="8%">年化利率</th>
+                        <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>                        
                         <th align="left" width="10%">申请时间</th>
                         <th align="left" width="5%">排序</th>
@@ -71,12 +72,12 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href="loan_apply_edit.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
-                    <td></td>
+                    <td><a href="loan_apply_detail.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
-                    <td></td>
+                    <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
                     <td>

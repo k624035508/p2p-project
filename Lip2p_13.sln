@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7437214A-CFED-4BA0-814B-26AB98081CEE}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,8 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web", "Lip2p.Web\Lip2p.Web.csproj", "{6DB1BDD3-4EE3-4259-B459-62F54591995E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web.UI", "Lip2p.Web.UI\Lip2p.Web.UI.csproj", "{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Web.Plugin.Advert", "Lip2p.Web\plugins\advert\Lip2p.Web.Plugin.Advert.csproj", "{572E3093-A353-4C12-BC4B-18C4EDB27591}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lip2p.Linq2SQL", "Lip2p.Linq2SQL\Lip2p.Linq2SQL.csproj", "{D02BF08D-240F-4233-9B83-B22429E5F3A0}"
 EndProject
@@ -79,10 +77,6 @@ Global
 		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2391E96-3195-4F5C-8941-8D3FFFE0B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{572E3093-A353-4C12-BC4B-18C4EDB27591}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D02BF08D-240F-4233-9B83-B22429E5F3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU

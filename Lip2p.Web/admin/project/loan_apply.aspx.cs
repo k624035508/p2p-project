@@ -178,5 +178,16 @@ namespace Lip2p.Web.admin.project
             JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
                 this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status), "Success");
         }
+
+        protected string QueryLoaner(int projectId)
+        {
+            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
+            if (project != null)
+            {
+                var user = project.li_risks.li_loaners.dt_users;
+                return $"{user.real_name}({user.user_name})";
+            }
+            return "";
+        }
     }
 }
