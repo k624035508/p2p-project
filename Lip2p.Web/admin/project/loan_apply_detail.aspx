@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply_edit.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply_edit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply_detail.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply_detail" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -213,7 +213,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt>发布时间</dt>
+                <dt>申请时间</dt>
                 <dd>
                     <div class="input-date">
                         <asp:TextBox ID="txtAddTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
@@ -221,7 +221,7 @@
                             sucmsg=" " />
                         <i></i>
                     </div>
-                    <span class="Validform_checktip">不选择默认当前发布时间</span>
+                    <span class="Validform_checktip">不选择默认当前申请时间</span>
                 </dd>
             </dl>
         </div>
@@ -362,7 +362,7 @@
                                 <td><%# Eval("name")%></td>
                                 <td><%# Eval("typeName")%></td>
                                 <td><%# Eval("valuation")%></td>
-                                <td title="<%# QueryUsingProject(((MortgageItem) Container.DataItem).id)%>"><%# Utils.GetLip2pEnumDes((Lip2pEnums.MortgageStatusEnum)Convert.ToByte(Eval("status")))%></td>
+                                <td title="<%# Loan.QueryUsingProject(((Lip2p.BLL.loan.MortgageItem) Container.DataItem).id)%>"><%# Utils.GetLip2pEnumDes((Lip2pEnums.MortgageStatusEnum)Convert.ToByte(Eval("status")))%></td>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>

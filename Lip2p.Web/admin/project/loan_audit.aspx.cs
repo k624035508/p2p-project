@@ -19,14 +19,12 @@ namespace Lip2p.Web.admin.project
         protected string keywords = string.Empty;
         protected int page;
         protected int pageSize;
-        protected string project_status = string.Empty;
         protected int totalCount;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             channel_id = DTRequest.GetQueryInt("channel_id");
             category_id = DTRequest.GetQueryInt("category_id");
-            project_status = DTRequest.GetQueryString("project_status");
 
             if (channel_id == 0)
             {
@@ -38,11 +36,23 @@ namespace Lip2p.Web.admin.project
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_audit", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var keywords = DTRequest.GetQueryString("keywords");
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
-                TreeBind(channel_id); //绑定类别
-                RptBind(channel_id, category_id, txtKeywords.Text, Utils.StrToInt(project_status, 0));
+                var action = DTRequest.GetQueryString("action");
+                if (!string.IsNullOrEmpty(action) && action.Equals("audit_success"))
+                {
+                    do_loan_audit(true, DTRequest.GetQueryInt("id"));
+                }
+                else if (!string.IsNullOrEmpty(action) && action.Equals("audit_fail"))
+                {
+                    do_loan_audit(false, DTRequest.GetQueryInt("id"));
+                }
+                else
+                {
+                    var keywords = DTRequest.GetQueryString("keywords");
+                    if (!string.IsNullOrEmpty(keywords))
+                        txtKeywords.Text = keywords;
+                    TreeBind(channel_id); //绑定类别
+                    RptBind(channel_id, category_id, txtKeywords.Text);
+                }
             }
         }
 
@@ -76,16 +86,16 @@ namespace Lip2p.Web.admin.project
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("loan_audit.aspx",
-                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                channel_id.ToString(), category_id.ToString(), txtKeywords.Text, project_status));
+                "channel_id={0}&category_id={1}&keywords={2}",
+                channel_id.ToString(), category_id.ToString(), txtKeywords.Text));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("loan_audit.aspx",
-                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                channel_id.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, project_status));
+                "channel_id={0}&category_id={1}&keywords={2}",
+                channel_id.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text));
         }
 
         //设置分页数量
@@ -101,12 +111,12 @@ namespace Lip2p.Web.admin.project
             }
             Response.Redirect(Utils.CombUrlTxt("loan_audit.aspx",
                 "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                channel_id.ToString(), category_id.ToString(), txtKeywords.Text, project_status));
+                channel_id.ToString(), category_id.ToString(), txtKeywords.Text));
         }
 
         #region 数据绑定=================================
 
-        protected void RptBind(int _channel_id, int _category_id, string _keyworkds, int _project_status)
+        protected void RptBind(int _channel_id, int _category_id, string _keyworkds)
         {
             page = DTRequest.GetQueryInt("page", 1);
             if (category_id > 0)
@@ -120,8 +130,8 @@ namespace Lip2p.Web.admin.project
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
             var pageUrl = Utils.CombUrlTxt("loan_audit.aspx",
-                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&page={4}",
-                _channel_id.ToString(), _category_id.ToString(), txtKeywords.Text, project_status, "__id__");
+                "channel_id={0}&category_id={1}&keywords={2}&page={3}",
+                _channel_id.ToString(), _category_id.ToString(), txtKeywords.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -158,6 +168,48 @@ namespace Lip2p.Web.admin.project
                 return $"{user.real_name}({user.user_name})";
             }
             return "";
+        }
+
+        protected void btnAudit_OnClick(object sender, EventArgs e)
+        {
+            ChkAdminLevel("loan_audit", DTEnums.ActionEnum.Audit.ToString()); //检查权限
+            var context = new Lip2p.Linq2SQL.Lip2pDataContext();
+            for (int i = 0; i < rptList1.Items.Count; i++)
+            {
+                int id = Convert.ToInt32(((HiddenField)rptList1.Items[i].FindControl("hidId")).Value);
+                CheckBox cb = (CheckBox)rptList1.Items[i].FindControl("chkId");
+                if (cb.Checked)
+                {
+                    var project = context.li_projects.FirstOrDefault(p => p.id == id);
+                    if (project != null)
+                    {
+                        project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess;
+                    }
+                }
+            }
+            context.SubmitChanges();
+            AddAdminLog(DTEnums.ActionEnum.Audit.ToString(), "审核" + this.channel_name + "频道内容信息"); //记录日志
+            JscriptMsg("批量审核成功！", Utils.CombUrlTxt("loan_audit.aspx", "channel_id={0}&category_id={1}&keywords={2}",
+                this.channel_id.ToString(), this.category_id.ToString(), this.keywords), "Success");
+        }
+
+        private void do_loan_audit(bool auditSuccess, int projectId)
+        {
+            ChkAdminLevel("loan_audit", DTEnums.ActionEnum.Audit.ToString()); //检查权限
+            var project = context.li_projects.FirstOrDefault(p => p.id == projectId);
+            if (project != null)
+            {
+                project.status = auditSuccess
+                    ? (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess
+                    : (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationFail;
+                context.SubmitChanges();
+                AddAdminLog(DTEnums.ActionEnum.Audit.ToString(), "审核操作成功！"); //记录日志
+                JscriptMsg("审核操作成功！", Utils.CombUrlTxt("loan_audit.aspx", "channel_id={0}", this.channel_id.ToString()));
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
         }
     }
 }

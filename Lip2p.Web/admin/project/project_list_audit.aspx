@@ -40,7 +40,7 @@
     //等比例缩放图片大小
     function AutoResizeImage(e, s) {
         var img = new Image();
-        img.src = $(this).attr("src")
+        img.src = $(this).attr("src");
         var w = img.width;
         var h = img.height;
         var wRatio = w / h;

@@ -65,6 +65,7 @@
     <Compile Include="channel_category.cs" />
     <Compile Include="department.cs" />
     <Compile Include="express.cs" />
+    <Compile Include="loan.cs" />
     <Compile Include="mail_template.cs" />
     <Compile Include="manager.cs" />
     <Compile Include="manager_log.cs" />

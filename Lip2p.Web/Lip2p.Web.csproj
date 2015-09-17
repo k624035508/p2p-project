@@ -147,9 +147,10 @@
     <Content Include="admin\order\payment_list.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\project\loan_audit_detail.aspx" />
     <Content Include="admin\project\loan_audit.aspx" />
     <Content Include="admin\project\loan_apply.aspx" />
-    <Content Include="admin\project\loan_apply_edit.aspx" />
+    <Content Include="admin\project\loan_apply_detail.aspx" />
     <Content Include="admin\project\project_edit_publish.aspx" />
     <Content Include="admin\project\project_list_approval.aspx" />
     <Content Include="admin\project\project_list_publish.aspx" />
@@ -1037,6 +1038,13 @@
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\project\loan_audit_detail.aspx.cs">
+      <DependentUpon>loan_audit_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\loan_audit_detail.aspx.designer.cs">
+      <DependentUpon>loan_audit_detail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\project\loan_audit.aspx.cs">
       <DependentUpon>loan_audit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1051,12 +1059,12 @@
     <Compile Include="admin\project\loan_apply.aspx.designer.cs">
       <DependentUpon>loan_apply.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\project\loan_apply_edit.aspx.cs">
-      <DependentUpon>loan_apply_edit.aspx</DependentUpon>
+    <Compile Include="admin\project\loan_apply_detail.aspx.cs">
+      <DependentUpon>loan_apply_detail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\project\loan_apply_edit.aspx.designer.cs">
-      <DependentUpon>loan_apply_edit.aspx</DependentUpon>
+    <Compile Include="admin\project\loan_apply_detail.aspx.designer.cs">
+      <DependentUpon>loan_apply_detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\project_edit_publish.aspx.cs">
       <DependentUpon>project_edit_publish.aspx</DependentUpon>

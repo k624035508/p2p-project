@@ -10,7 +10,7 @@
 namespace Lip2p.Web.admin.project {
     
     
-    public partial class loan_apply_edit {
+    public partial class loan_apply_detail {
         
         /// <summary>
         /// form1 控件。

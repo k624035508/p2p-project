@@ -31,7 +31,8 @@
                 <div class="l-list">
                     <ul class="icon-list">
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
-                        <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','所选项目将通过审批，确定继续吗？');"><i></i><span>审批</span></asp:LinkButton></li>                        
+                        <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','所选项目将通过审批，确定继续吗？');"
+                             OnClick="btnAudit_OnClick"><i></i><span>审批通过</span></asp:LinkButton></li>                        
                     </ul>
                 </div>
                 <div class="r-list">
@@ -70,7 +71,7 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href=""><%#Eval("title")%></a></td>
+                    <td><a href="loan_audit_detail.aspx?channel_id=<%=this.channel_id %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
@@ -80,7 +81,8 @@
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
                     <td>
                         <asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" /></td>
-                    <td align="center"><a href="">审核</a></td>
+                    <td align="center"><a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_success&id=<%#Eval("id")%>">通过</a>  
+                        <a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_fail&id=<%#Eval("id")%>">不通过</a></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
