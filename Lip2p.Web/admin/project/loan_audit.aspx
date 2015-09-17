@@ -52,17 +52,16 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="5%">选择</th>
-                        <th align="left" width="15%">标题</th>
+                        <th width="6%">选择</th>
+                        <th align="left" width="16%">标题</th>
                         <th align="left" width="10%">借款人</th>
-                        <th align="left" width="8%">借款类型</th>
+                        <th align="left" width="8%">产品</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率</th>
                         <th align="left" width="8%">还款方式</th>                        
                         <th align="left" width="10%">申请时间</th>
-                        <th align="left" width="5%">排序</th>
-                        <th width="5%">操作</th>
+                        <th width="6%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -79,8 +78,6 @@
                     <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
-                    <td>
-                        <asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" /></td>
                     <td align="center"><a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_success&id=<%#Eval("id")%>">通过</a>  
                         <a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_fail&id=<%#Eval("id")%>">不通过</a></td>
                 </tr>

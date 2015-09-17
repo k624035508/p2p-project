@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_apply" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_financing.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_financing" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
 <%@ Import Namespace="Lip2p.Linq2SQL" %>
@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>申请借款</title>
+    <title>借款募集</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -22,19 +22,21 @@
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
             <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
             <i class="arrow"></i>
-            <span>申请借款</span>
+            <span>借款募集</span>
         </div>
         <!--/导航栏-->
         <!--工具栏-->
         <div class="toolbar-wrap">
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
-                    <ul class="icon-list">
-                        <li><a class="add" href="loan_apply_detail.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Add%>"><i></i><span>申请借款</span></a></li>
-                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
-                        <li>
-                            <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClick="btnDelete_Click" OnClientClick="return ExePostBack('btnDelete');"><i></i><span>删除</span></asp:LinkButton></li>
-                    </ul>
+                    <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
+                        <asp:RadioButtonList ID="rblRepaymentStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True">
+                            <asp:ListItem Value="0" Selected="True">待发布</asp:ListItem>
+                            <asp:ListItem Value="1">借款中</asp:ListItem>
+                            <asp:ListItem Value="2">已过期</asp:ListItem>
+                            <asp:ListItem Value="3">流标</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </div>
                 </div>
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
@@ -53,32 +55,33 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="6%">选择</th>
+                        <th width="2%"></th>
                         <th align="left" width="16%">标题</th>
-                        <th align="left" width="10%">借款人</th>
-                        <th align="left" width="8%">产品</th>
-                        <th align="left" width="10%">借款金额(元)</th>                        
+                        <th align="left" width="8%">借款产品</th>
+                        <th align="left" width="6%">状态</th>
+                        <th align="left" width="5%">标识</th>
+                        <th align="left" width="8%">借款进度</th>
+                        <th align="left" width="10%">借款金额(元)</th>
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
-                        <th align="left" width="8%">还款方式</th>                        
-                        <th align="left" width="10%">申请时间</th>
-                        <th width="6%">操作</th>
+                        <th align="left" width="8%">还款方式</th>
+                        <th align="left" width="10%">发布时间</th>
+                        <th width="5%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td align="center">
-                        <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
-                        <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
-                    </td>
+                    <td></td>
                     <td><a href="loan_apply_detail.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
-                    <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
-                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
-                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
-                    <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
+                    <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
                     <td align="center"><a href="">修改</a></td>
                 </tr>
             </ItemTemplate>
