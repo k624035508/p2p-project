@@ -93,6 +93,7 @@
     <Content Include="admin\js\layindex.js" />
     <Content Include="admin\js\laymain.js" />
     <Content Include="admin\js\uploader.js" />
+    <Content Include="admin\loaner\company_edit.aspx" />
     <Content Include="admin\loaner\creditor_edit.aspx" />
     <Content Include="admin\loaner\company_list.aspx" />
     <Content Include="admin\loaner\creditor_list.aspx" />
@@ -692,6 +693,13 @@
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">
       <DependentUpon>dialog_picture.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\company_edit.aspx.cs">
+      <DependentUpon>company_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\loaner\company_edit.aspx.designer.cs">
+      <DependentUpon>company_edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\loaner\creditor_edit.aspx.cs">
       <DependentUpon>creditor_edit.aspx</DependentUpon>

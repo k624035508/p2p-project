@@ -36,9 +36,6 @@ namespace Lip2p.Linq2SQL
     partial void Insertli_activity_transactions(li_activity_transactions instance);
     partial void Updateli_activity_transactions(li_activity_transactions instance);
     partial void Deleteli_activity_transactions(li_activity_transactions instance);
-    partial void Insertli_albums(li_albums instance);
-    partial void Updateli_albums(li_albums instance);
-    partial void Deleteli_albums(li_albums instance);
     partial void Insertli_bank_accounts(li_bank_accounts instance);
     partial void Updateli_bank_accounts(li_bank_accounts instance);
     partial void Deleteli_bank_accounts(li_bank_accounts instance);
@@ -132,6 +129,9 @@ namespace Lip2p.Linq2SQL
     partial void Insertli_loaner_companies(li_loaner_companies instance);
     partial void Updateli_loaner_companies(li_loaner_companies instance);
     partial void Deleteli_loaner_companies(li_loaner_companies instance);
+    partial void Insertli_albums(li_albums instance);
+    partial void Updateli_albums(li_albums instance);
+    partial void Deleteli_albums(li_albums instance);
     #endregion
 		
 		public Lip2pDataContext(string connection) : 
@@ -171,14 +171,6 @@ namespace Lip2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_activity_transactions>();
-			}
-		}
-		
-		public System.Data.Linq.Table<li_albums> li_albums
-		{
-			get
-			{
-				return this.GetTable<li_albums>();
 			}
 		}
 		
@@ -437,6 +429,14 @@ namespace Lip2p.Linq2SQL
 				return this.GetTable<li_loaner_companies>();
 			}
 		}
+		
+		public System.Data.Linq.Table<li_albums> li_albums
+		{
+			get
+			{
+				return this.GetTable<li_albums>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_users")]
@@ -501,8 +501,6 @@ namespace Lip2p.Linq2SQL
 		
 		private EntitySet<li_activity_transactions> _li_activity_transactions;
 		
-		private EntitySet<li_albums> _li_albums;
-		
 		private EntitySet<li_bank_accounts> _li_bank_accounts;
 		
 		private EntitySet<li_bank_transactions> _li_bank_transactions;
@@ -526,6 +524,8 @@ namespace Lip2p.Linq2SQL
 		private EntitySet<dt_user_login_log> _dt_user_login_log;
 		
 		private EntitySet<li_loaners> _li_loaners;
+		
+		private EntitySet<li_albums> _li_albums;
 		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
@@ -592,7 +592,6 @@ namespace Lip2p.Linq2SQL
 		public dt_users()
 		{
 			this._li_activity_transactions = new EntitySet<li_activity_transactions>(new Action<li_activity_transactions>(this.attach_li_activity_transactions), new Action<li_activity_transactions>(this.detach_li_activity_transactions));
-			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_bank_accounts = new EntitySet<li_bank_accounts>(new Action<li_bank_accounts>(this.attach_li_bank_accounts), new Action<li_bank_accounts>(this.detach_li_bank_accounts));
 			this._li_bank_transactions = new EntitySet<li_bank_transactions>(new Action<li_bank_transactions>(this.attach_li_bank_transactions), new Action<li_bank_transactions>(this.detach_li_bank_transactions));
 			this._li_creditors = default(EntityRef<li_creditors>);
@@ -605,6 +604,7 @@ namespace Lip2p.Linq2SQL
 			this._li_wallets = default(EntityRef<li_wallets>);
 			this._dt_user_login_log = new EntitySet<dt_user_login_log>(new Action<dt_user_login_log>(this.attach_dt_user_login_log), new Action<dt_user_login_log>(this.detach_dt_user_login_log));
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
+			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -1166,19 +1166,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="the_user")]
-		public EntitySet<li_albums> li_albums
-		{
-			get
-			{
-				return this._li_albums;
-			}
-			set
-			{
-				this._li_albums.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_bank_accounts", Storage="_li_bank_accounts", ThisKey="id", OtherKey="owner")]
 		public EntitySet<li_bank_accounts> li_bank_accounts
 		{
@@ -1399,6 +1386,19 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="the_user")]
+		public EntitySet<li_albums> li_albums
+		{
+			get
+			{
+				return this._li_albums;
+			}
+			set
+			{
+				this._li_albums.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -1460,18 +1460,6 @@ namespace Lip2p.Linq2SQL
 		}
 		
 		private void detach_li_activity_transactions(li_activity_transactions entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = null;
-		}
-		
-		private void attach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = this;
-		}
-		
-		private void detach_li_albums(li_albums entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -1568,6 +1556,18 @@ namespace Lip2p.Linq2SQL
 		}
 		
 		private void detach_li_loaners(li_loaners entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_li_albums(li_albums entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -1983,448 +1983,6 @@ namespace Lip2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_activity_transactions = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_albums")]
-	public partial class li_albums : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private string _thumb_path;
-		
-		private string _original_path;
-		
-		private string _remark;
-		
-		private System.DateTime _add_time;
-		
-		private byte _type;
-		
-		private System.Nullable<int> _loaner;
-		
-		private System.Nullable<int> _mortgage;
-		
-		private System.Nullable<int> _the_user;
-		
-		private System.Nullable<int> _risk;
-		
-		private EntityRef<dt_users> _dt_users;
-		
-		private EntityRef<li_mortgages> _li_mortgages;
-		
-		private EntityRef<li_risks> _li_risks;
-		
-		private EntityRef<li_loaners> _li_loaners;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void Onthumb_pathChanging(string value);
-    partial void Onthumb_pathChanged();
-    partial void Onoriginal_pathChanging(string value);
-    partial void Onoriginal_pathChanged();
-    partial void OnremarkChanging(string value);
-    partial void OnremarkChanged();
-    partial void Onadd_timeChanging(System.DateTime value);
-    partial void Onadd_timeChanged();
-    partial void OntypeChanging(byte value);
-    partial void OntypeChanged();
-    partial void OnloanerChanging(System.Nullable<int> value);
-    partial void OnloanerChanged();
-    partial void OnmortgageChanging(System.Nullable<int> value);
-    partial void OnmortgageChanged();
-    partial void Onthe_userChanging(System.Nullable<int> value);
-    partial void Onthe_userChanged();
-    partial void OnriskChanging(System.Nullable<int> value);
-    partial void OnriskChanged();
-    #endregion
-		
-		public li_albums()
-		{
-			this._dt_users = default(EntityRef<dt_users>);
-			this._li_mortgages = default(EntityRef<li_mortgages>);
-			this._li_risks = default(EntityRef<li_risks>);
-			this._li_loaners = default(EntityRef<li_loaners>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_thumb_path", DbType="VarChar(70) NOT NULL", CanBeNull=false)]
-		public string thumb_path
-		{
-			get
-			{
-				return this._thumb_path;
-			}
-			set
-			{
-				if ((this._thumb_path != value))
-				{
-					this.Onthumb_pathChanging(value);
-					this.SendPropertyChanging();
-					this._thumb_path = value;
-					this.SendPropertyChanged("thumb_path");
-					this.Onthumb_pathChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_original_path", DbType="VarChar(70) NOT NULL", CanBeNull=false)]
-		public string original_path
-		{
-			get
-			{
-				return this._original_path;
-			}
-			set
-			{
-				if ((this._original_path != value))
-				{
-					this.Onoriginal_pathChanging(value);
-					this.SendPropertyChanging();
-					this._original_path = value;
-					this.SendPropertyChanged("original_path");
-					this.Onoriginal_pathChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(50)")]
-		public string remark
-		{
-			get
-			{
-				return this._remark;
-			}
-			set
-			{
-				if ((this._remark != value))
-				{
-					this.OnremarkChanging(value);
-					this.SendPropertyChanging();
-					this._remark = value;
-					this.SendPropertyChanged("remark");
-					this.OnremarkChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_add_time", DbType="DateTime NOT NULL")]
-		public System.DateTime add_time
-		{
-			get
-			{
-				return this._add_time;
-			}
-			set
-			{
-				if ((this._add_time != value))
-				{
-					this.Onadd_timeChanging(value);
-					this.SendPropertyChanging();
-					this._add_time = value;
-					this.SendPropertyChanged("add_time");
-					this.Onadd_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
-		public byte type
-		{
-			get
-			{
-				return this._type;
-			}
-			set
-			{
-				if ((this._type != value))
-				{
-					this.OntypeChanging(value);
-					this.SendPropertyChanging();
-					this._type = value;
-					this.SendPropertyChanged("type");
-					this.OntypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loaner", DbType="Int")]
-		public System.Nullable<int> loaner
-		{
-			get
-			{
-				return this._loaner;
-			}
-			set
-			{
-				if ((this._loaner != value))
-				{
-					if (this._li_loaners.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnloanerChanging(value);
-					this.SendPropertyChanging();
-					this._loaner = value;
-					this.SendPropertyChanged("loaner");
-					this.OnloanerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mortgage", DbType="Int")]
-		public System.Nullable<int> mortgage
-		{
-			get
-			{
-				return this._mortgage;
-			}
-			set
-			{
-				if ((this._mortgage != value))
-				{
-					if (this._li_mortgages.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnmortgageChanging(value);
-					this.SendPropertyChanging();
-					this._mortgage = value;
-					this.SendPropertyChanged("mortgage");
-					this.OnmortgageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_the_user", DbType="Int")]
-		public System.Nullable<int> the_user
-		{
-			get
-			{
-				return this._the_user;
-			}
-			set
-			{
-				if ((this._the_user != value))
-				{
-					if (this._dt_users.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.Onthe_userChanging(value);
-					this.SendPropertyChanging();
-					this._the_user = value;
-					this.SendPropertyChanged("the_user");
-					this.Onthe_userChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_risk", DbType="Int")]
-		public System.Nullable<int> risk
-		{
-			get
-			{
-				return this._risk;
-			}
-			set
-			{
-				if ((this._risk != value))
-				{
-					if (this._li_risks.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnriskChanging(value);
-					this.SendPropertyChanging();
-					this._risk = value;
-					this.SendPropertyChanged("risk");
-					this.OnriskChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_albums", Storage="_dt_users", ThisKey="the_user", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public dt_users dt_users
-		{
-			get
-			{
-				return this._dt_users.Entity;
-			}
-			set
-			{
-				dt_users previousValue = this._dt_users.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_users.Entity = null;
-						previousValue.li_albums.Remove(this);
-					}
-					this._dt_users.Entity = value;
-					if ((value != null))
-					{
-						value.li_albums.Add(this);
-						this._the_user = value.id;
-					}
-					else
-					{
-						this._the_user = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("dt_users");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgages_li_albums", Storage="_li_mortgages", ThisKey="mortgage", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public li_mortgages li_mortgages
-		{
-			get
-			{
-				return this._li_mortgages.Entity;
-			}
-			set
-			{
-				li_mortgages previousValue = this._li_mortgages.Entity;
-				if (((previousValue != value) 
-							|| (this._li_mortgages.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_mortgages.Entity = null;
-						previousValue.li_albums.Remove(this);
-					}
-					this._li_mortgages.Entity = value;
-					if ((value != null))
-					{
-						value.li_albums.Add(this);
-						this._mortgage = value.id;
-					}
-					else
-					{
-						this._mortgage = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("li_mortgages");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_risks_li_albums", Storage="_li_risks", ThisKey="risk", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public li_risks li_risks
-		{
-			get
-			{
-				return this._li_risks.Entity;
-			}
-			set
-			{
-				li_risks previousValue = this._li_risks.Entity;
-				if (((previousValue != value) 
-							|| (this._li_risks.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_risks.Entity = null;
-						previousValue.li_albums.Remove(this);
-					}
-					this._li_risks.Entity = value;
-					if ((value != null))
-					{
-						value.li_albums.Add(this);
-						this._risk = value.id;
-					}
-					else
-					{
-						this._risk = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("li_risks");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaners_li_albums", Storage="_li_loaners", ThisKey="loaner", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public li_loaners li_loaners
-		{
-			get
-			{
-				return this._li_loaners.Entity;
-			}
-			set
-			{
-				li_loaners previousValue = this._li_loaners.Entity;
-				if (((previousValue != value) 
-							|| (this._li_loaners.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_loaners.Entity = null;
-						previousValue.li_albums.Remove(this);
-					}
-					this._li_loaners.Entity = value;
-					if ((value != null))
-					{
-						value.li_albums.Add(this);
-						this._loaner = value.id;
-					}
-					else
-					{
-						this._loaner = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("li_loaners");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -10058,9 +9616,9 @@ namespace Lip2p.Linq2SQL
 		
 		private System.DateTime _last_update_time;
 		
-		private EntitySet<li_albums> _li_albums;
-		
 		private EntitySet<li_risk_mortgage> _li_risk_mortgage;
+		
+		private EntitySet<li_albums> _li_albums;
 		
 		private EntityRef<li_mortgage_types> _li_mortgage_types;
 		
@@ -10090,8 +9648,8 @@ namespace Lip2p.Linq2SQL
 		
 		public li_mortgages()
 		{
-			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_risk_mortgage = new EntitySet<li_risk_mortgage>(new Action<li_risk_mortgage>(this.attach_li_risk_mortgage), new Action<li_risk_mortgage>(this.detach_li_risk_mortgage));
+			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_mortgage_types = default(EntityRef<li_mortgage_types>);
 			this._li_loaners = default(EntityRef<li_loaners>);
 			OnCreated();
@@ -10265,19 +9823,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgages_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="mortgage")]
-		public EntitySet<li_albums> li_albums
-		{
-			get
-			{
-				return this._li_albums;
-			}
-			set
-			{
-				this._li_albums.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgages_li_risk_mortgage", Storage="_li_risk_mortgage", ThisKey="id", OtherKey="mortgage")]
 		public EntitySet<li_risk_mortgage> li_risk_mortgage
 		{
@@ -10288,6 +9833,19 @@ namespace Lip2p.Linq2SQL
 			set
 			{
 				this._li_risk_mortgage.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgages_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="mortgage")]
+		public EntitySet<li_albums> li_albums
+		{
+			get
+			{
+				return this._li_albums;
+			}
+			set
+			{
+				this._li_albums.Assign(value);
 			}
 		}
 		
@@ -10379,18 +9937,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		private void attach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_mortgages = this;
-		}
-		
-		private void detach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_mortgages = null;
-		}
-		
 		private void attach_li_risk_mortgage(li_risk_mortgage entity)
 		{
 			this.SendPropertyChanging();
@@ -10398,6 +9944,18 @@ namespace Lip2p.Linq2SQL
 		}
 		
 		private void detach_li_risk_mortgage(li_risk_mortgage entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_mortgages = null;
+		}
+		
+		private void attach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_mortgages = this;
+		}
+		
+		private void detach_li_albums(li_albums entity)
 		{
 			this.SendPropertyChanging();
 			entity.li_mortgages = null;
@@ -11661,11 +11219,11 @@ namespace Lip2p.Linq2SQL
 		
 		private string _description;
 		
-		private EntitySet<li_albums> _li_albums;
-		
 		private EntitySet<li_risk_mortgage> _li_risk_mortgage;
 		
 		private EntitySet<li_projects> _li_projects;
+		
+		private EntitySet<li_albums> _li_albums;
 		
 		private EntityRef<li_creditors> _li_creditors;
 		
@@ -11701,9 +11259,9 @@ namespace Lip2p.Linq2SQL
 		
 		public li_risks()
 		{
-			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_risk_mortgage = new EntitySet<li_risk_mortgage>(new Action<li_risk_mortgage>(this.attach_li_risk_mortgage), new Action<li_risk_mortgage>(this.detach_li_risk_mortgage));
 			this._li_projects = new EntitySet<li_projects>(new Action<li_projects>(this.attach_li_projects), new Action<li_projects>(this.detach_li_projects));
+			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_creditors = default(EntityRef<li_creditors>);
 			this._li_loaners = default(EntityRef<li_loaners>);
 			OnCreated();
@@ -11937,19 +11495,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_risks_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="risk")]
-		public EntitySet<li_albums> li_albums
-		{
-			get
-			{
-				return this._li_albums;
-			}
-			set
-			{
-				this._li_albums.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_risks_li_risk_mortgage", Storage="_li_risk_mortgage", ThisKey="id", OtherKey="risk")]
 		public EntitySet<li_risk_mortgage> li_risk_mortgage
 		{
@@ -11973,6 +11518,19 @@ namespace Lip2p.Linq2SQL
 			set
 			{
 				this._li_projects.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_risks_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="risk")]
+		public EntitySet<li_albums> li_albums
+		{
+			get
+			{
+				return this._li_albums;
+			}
+			set
+			{
+				this._li_albums.Assign(value);
 			}
 		}
 		
@@ -12064,18 +11622,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		private void attach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_risks = this;
-		}
-		
-		private void detach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_risks = null;
-		}
-		
 		private void attach_li_risk_mortgage(li_risk_mortgage entity)
 		{
 			this.SendPropertyChanging();
@@ -12095,6 +11641,18 @@ namespace Lip2p.Linq2SQL
 		}
 		
 		private void detach_li_projects(li_projects entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_risks = null;
+		}
+		
+		private void attach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_risks = this;
+		}
+		
+		private void detach_li_albums(li_albums entity)
 		{
 			this.SendPropertyChanging();
 			entity.li_risks = null;
@@ -12127,11 +11685,11 @@ namespace Lip2p.Linq2SQL
 		
 		private System.DateTime _last_update_time;
 		
-		private EntitySet<li_albums> _li_albums;
-		
 		private EntitySet<li_mortgages> _li_mortgages;
 		
 		private EntitySet<li_risks> _li_risks;
+		
+		private EntitySet<li_albums> _li_albums;
 		
 		private EntityRef<dt_users> _dt_users;
 		
@@ -12165,9 +11723,9 @@ namespace Lip2p.Linq2SQL
 		
 		public li_loaners()
 		{
-			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._li_mortgages = new EntitySet<li_mortgages>(new Action<li_mortgages>(this.attach_li_mortgages), new Action<li_mortgages>(this.detach_li_mortgages));
 			this._li_risks = new EntitySet<li_risks>(new Action<li_risks>(this.attach_li_risks), new Action<li_risks>(this.detach_li_risks));
+			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			this._dt_users = default(EntityRef<dt_users>);
 			this._li_loaner_companies = default(EntityRef<li_loaner_companies>);
 			OnCreated();
@@ -12381,19 +11939,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaners_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="loaner")]
-		public EntitySet<li_albums> li_albums
-		{
-			get
-			{
-				return this._li_albums;
-			}
-			set
-			{
-				this._li_albums.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaners_li_mortgages", Storage="_li_mortgages", ThisKey="id", OtherKey="owner")]
 		public EntitySet<li_mortgages> li_mortgages
 		{
@@ -12417,6 +11962,19 @@ namespace Lip2p.Linq2SQL
 			set
 			{
 				this._li_risks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaners_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="loaner")]
+		public EntitySet<li_albums> li_albums
+		{
+			get
+			{
+				return this._li_albums;
+			}
+			set
+			{
+				this._li_albums.Assign(value);
 			}
 		}
 		
@@ -12508,18 +12066,6 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
-		private void attach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_loaners = this;
-		}
-		
-		private void detach_li_albums(li_albums entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_loaners = null;
-		}
-		
 		private void attach_li_mortgages(li_mortgages entity)
 		{
 			this.SendPropertyChanging();
@@ -12539,6 +12085,18 @@ namespace Lip2p.Linq2SQL
 		}
 		
 		private void detach_li_risks(li_risks entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaners = null;
+		}
+		
+		private void attach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaners = this;
+		}
+		
+		private void detach_li_albums(li_albums entity)
 		{
 			this.SendPropertyChanging();
 			entity.li_loaners = null;
@@ -12573,6 +12131,8 @@ namespace Lip2p.Linq2SQL
 		
 		private EntitySet<li_loaners> _li_loaners;
 		
+		private EntitySet<li_albums> _li_albums;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -12602,6 +12162,7 @@ namespace Lip2p.Linq2SQL
 		public li_loaner_companies()
 		{
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
+			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
 			OnCreated();
 		}
 		
@@ -12818,6 +12379,19 @@ namespace Lip2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaner_companies_li_albums", Storage="_li_albums", ThisKey="id", OtherKey="company")]
+		public EntitySet<li_albums> li_albums
+		{
+			get
+			{
+				return this._li_albums;
+			}
+			set
+			{
+				this._li_albums.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -12848,6 +12422,525 @@ namespace Lip2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_loaner_companies = null;
+		}
+		
+		private void attach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaner_companies = this;
+		}
+		
+		private void detach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_loaner_companies = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_albums")]
+	public partial class li_albums : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _thumb_path;
+		
+		private string _original_path;
+		
+		private string _remark;
+		
+		private System.DateTime _add_time;
+		
+		private byte _type;
+		
+		private System.Nullable<int> _loaner;
+		
+		private System.Nullable<int> _mortgage;
+		
+		private System.Nullable<int> _the_user;
+		
+		private System.Nullable<int> _risk;
+		
+		private System.Nullable<int> _company;
+		
+		private EntityRef<li_loaners> _li_loaners;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+		private EntityRef<li_loaner_companies> _li_loaner_companies;
+		
+		private EntityRef<li_mortgages> _li_mortgages;
+		
+		private EntityRef<li_risks> _li_risks;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onthumb_pathChanging(string value);
+    partial void Onthumb_pathChanged();
+    partial void Onoriginal_pathChanging(string value);
+    partial void Onoriginal_pathChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    partial void Onadd_timeChanging(System.DateTime value);
+    partial void Onadd_timeChanged();
+    partial void OntypeChanging(byte value);
+    partial void OntypeChanged();
+    partial void OnloanerChanging(System.Nullable<int> value);
+    partial void OnloanerChanged();
+    partial void OnmortgageChanging(System.Nullable<int> value);
+    partial void OnmortgageChanged();
+    partial void Onthe_userChanging(System.Nullable<int> value);
+    partial void Onthe_userChanged();
+    partial void OnriskChanging(System.Nullable<int> value);
+    partial void OnriskChanged();
+    partial void OncompanyChanging(System.Nullable<int> value);
+    partial void OncompanyChanged();
+    #endregion
+		
+		public li_albums()
+		{
+			this._li_loaners = default(EntityRef<li_loaners>);
+			this._dt_users = default(EntityRef<dt_users>);
+			this._li_loaner_companies = default(EntityRef<li_loaner_companies>);
+			this._li_mortgages = default(EntityRef<li_mortgages>);
+			this._li_risks = default(EntityRef<li_risks>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_thumb_path", DbType="VarChar(70) NOT NULL", CanBeNull=false)]
+		public string thumb_path
+		{
+			get
+			{
+				return this._thumb_path;
+			}
+			set
+			{
+				if ((this._thumb_path != value))
+				{
+					this.Onthumb_pathChanging(value);
+					this.SendPropertyChanging();
+					this._thumb_path = value;
+					this.SendPropertyChanged("thumb_path");
+					this.Onthumb_pathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_original_path", DbType="VarChar(70) NOT NULL", CanBeNull=false)]
+		public string original_path
+		{
+			get
+			{
+				return this._original_path;
+			}
+			set
+			{
+				if ((this._original_path != value))
+				{
+					this.Onoriginal_pathChanging(value);
+					this.SendPropertyChanging();
+					this._original_path = value;
+					this.SendPropertyChanged("original_path");
+					this.Onoriginal_pathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(50)")]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_add_time", DbType="DateTime NOT NULL")]
+		public System.DateTime add_time
+		{
+			get
+			{
+				return this._add_time;
+			}
+			set
+			{
+				if ((this._add_time != value))
+				{
+					this.Onadd_timeChanging(value);
+					this.SendPropertyChanging();
+					this._add_time = value;
+					this.SendPropertyChanged("add_time");
+					this.Onadd_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
+		public byte type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loaner", DbType="Int")]
+		public System.Nullable<int> loaner
+		{
+			get
+			{
+				return this._loaner;
+			}
+			set
+			{
+				if ((this._loaner != value))
+				{
+					if (this._li_loaners.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnloanerChanging(value);
+					this.SendPropertyChanging();
+					this._loaner = value;
+					this.SendPropertyChanged("loaner");
+					this.OnloanerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mortgage", DbType="Int")]
+		public System.Nullable<int> mortgage
+		{
+			get
+			{
+				return this._mortgage;
+			}
+			set
+			{
+				if ((this._mortgage != value))
+				{
+					if (this._li_mortgages.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnmortgageChanging(value);
+					this.SendPropertyChanging();
+					this._mortgage = value;
+					this.SendPropertyChanged("mortgage");
+					this.OnmortgageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_the_user", DbType="Int")]
+		public System.Nullable<int> the_user
+		{
+			get
+			{
+				return this._the_user;
+			}
+			set
+			{
+				if ((this._the_user != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onthe_userChanging(value);
+					this.SendPropertyChanging();
+					this._the_user = value;
+					this.SendPropertyChanged("the_user");
+					this.Onthe_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_risk", DbType="Int")]
+		public System.Nullable<int> risk
+		{
+			get
+			{
+				return this._risk;
+			}
+			set
+			{
+				if ((this._risk != value))
+				{
+					if (this._li_risks.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnriskChanging(value);
+					this.SendPropertyChanging();
+					this._risk = value;
+					this.SendPropertyChanged("risk");
+					this.OnriskChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_company", DbType="Int")]
+		public System.Nullable<int> company
+		{
+			get
+			{
+				return this._company;
+			}
+			set
+			{
+				if ((this._company != value))
+				{
+					if (this._li_loaner_companies.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OncompanyChanging(value);
+					this.SendPropertyChanging();
+					this._company = value;
+					this.SendPropertyChanged("company");
+					this.OncompanyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaners_li_albums", Storage="_li_loaners", ThisKey="loaner", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
+		public li_loaners li_loaners
+		{
+			get
+			{
+				return this._li_loaners.Entity;
+			}
+			set
+			{
+				li_loaners previousValue = this._li_loaners.Entity;
+				if (((previousValue != value) 
+							|| (this._li_loaners.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_loaners.Entity = null;
+						previousValue.li_albums.Remove(this);
+					}
+					this._li_loaners.Entity = value;
+					if ((value != null))
+					{
+						value.li_albums.Add(this);
+						this._loaner = value.id;
+					}
+					else
+					{
+						this._loaner = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("li_loaners");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_albums", Storage="_dt_users", ThisKey="the_user", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.li_albums.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.li_albums.Add(this);
+						this._the_user = value.id;
+					}
+					else
+					{
+						this._the_user = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_loaner_companies_li_albums", Storage="_li_loaner_companies", ThisKey="company", OtherKey="id", IsForeignKey=true)]
+		public li_loaner_companies li_loaner_companies
+		{
+			get
+			{
+				return this._li_loaner_companies.Entity;
+			}
+			set
+			{
+				li_loaner_companies previousValue = this._li_loaner_companies.Entity;
+				if (((previousValue != value) 
+							|| (this._li_loaner_companies.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_loaner_companies.Entity = null;
+						previousValue.li_albums.Remove(this);
+					}
+					this._li_loaner_companies.Entity = value;
+					if ((value != null))
+					{
+						value.li_albums.Add(this);
+						this._company = value.id;
+					}
+					else
+					{
+						this._company = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("li_loaner_companies");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_mortgages_li_albums", Storage="_li_mortgages", ThisKey="mortgage", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
+		public li_mortgages li_mortgages
+		{
+			get
+			{
+				return this._li_mortgages.Entity;
+			}
+			set
+			{
+				li_mortgages previousValue = this._li_mortgages.Entity;
+				if (((previousValue != value) 
+							|| (this._li_mortgages.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_mortgages.Entity = null;
+						previousValue.li_albums.Remove(this);
+					}
+					this._li_mortgages.Entity = value;
+					if ((value != null))
+					{
+						value.li_albums.Add(this);
+						this._mortgage = value.id;
+					}
+					else
+					{
+						this._mortgage = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("li_mortgages");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_risks_li_albums", Storage="_li_risks", ThisKey="risk", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
+		public li_risks li_risks
+		{
+			get
+			{
+				return this._li_risks.Entity;
+			}
+			set
+			{
+				li_risks previousValue = this._li_risks.Entity;
+				if (((previousValue != value) 
+							|| (this._li_risks.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_risks.Entity = null;
+						previousValue.li_albums.Remove(this);
+					}
+					this._li_risks.Entity = value;
+					if ((value != null))
+					{
+						value.li_albums.Add(this);
+						this._risk = value.id;
+					}
+					else
+					{
+						this._risk = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("li_risks");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
