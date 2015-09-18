@@ -368,13 +368,13 @@ namespace Lip2p.Web.admin.users
                     var user = context.dt_users.First(u => u.id == model.id);
                     LoadAlbum(user, Lip2pEnums.AlbumTypeEnum.IdCard);
                     context.SubmitChanges();
+                    AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改用户信息:" + model.user_name); //记录日志
+                    result = true;
                 }
                 catch (Exception ex)
                 {
                     AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加用户出错:" + ex.Message);
                 }
-                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改用户信息:" + model.user_name); //记录日志
-                result = true;
             }
             return result;
         }
@@ -479,10 +479,11 @@ namespace Lip2p.Web.admin.users
             }
             else if (company != null)
             {
-                context.li_loaner_companies.DeleteOnSubmit(company);
+                /*if (company.li_loaners.Count == 1)
+                    context.li_loaner_companies.DeleteOnSubmit(company);*/
+                loaner.li_loaner_companies = null;
             }
         }
-
         #endregion
 
         private void LoadAlbum(dt_users model, Lip2pEnums.AlbumTypeEnum type)

@@ -88,7 +88,7 @@ namespace Lip2p.Web.admin.loaner
                         thumb_path = albumSplit[2],
                         remark = remark,
                         add_time = DateTime.Now,
-                        the_user = model.id,
+                        li_loaner_companies = model,
                         type = (byte)type
                     };
                 });
@@ -124,7 +124,14 @@ namespace Lip2p.Web.admin.loaner
             {
                 var loaner = context.li_loaners.SingleOrDefault(l => l.dt_users.user_name == ln) ??
                              context.li_loaners.Single(l => l.dt_users.real_name == ln);
-                loaner.li_loaner_companies = model;
+                if (loaner.li_loaner_companies != null)
+                {
+                    JscriptMsg(loaner.dt_users.user_name + " 已经绑定企业，不能重复绑定！", "", "Error");
+                }
+                else
+                {
+                    loaner.li_loaner_companies = model;
+                }
             });
 
             try
@@ -133,7 +140,7 @@ namespace Lip2p.Web.admin.loaner
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加企业信息:" + txtCompanyName.Text); //记录日志
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -164,7 +171,18 @@ namespace Lip2p.Web.admin.loaner
             {
                 var loaner = context.li_loaners.SingleOrDefault(l => l.dt_users.user_name == ln) ??
                              context.li_loaners.Single(l => l.dt_users.real_name == ln);
-                loaner.company_id = id;
+                if (loaner.li_loaner_companies == model)
+                {
+                    // do nothing
+                }
+                else if (loaner.li_loaner_companies != null)
+                {
+                    JscriptMsg(loaner.dt_users.user_name + " 已经绑定企业，不能重复绑定！", "", "Error");
+                }
+                else
+                {
+                    loaner.li_loaner_companies = model;
+                }
             });
 
             model.name = txtCompanyName.Text.Trim();

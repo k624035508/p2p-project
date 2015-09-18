@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+<script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.queue.js"></script>
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
@@ -53,7 +54,7 @@
 <div class="tab-content">
   <dl>
     <dt>已关联借款人</dt>
-    <dd><asp:TextBox ID="txtLoaners" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* 请输入人员账号/姓名</span></dd>
+    <dd><asp:TextBox ID="txtLoaners" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* 请输入人员账号/姓名，用英文逗号隔开</span></dd>
   </dl>
     <dl>
         <dt>公司名称</dt>
