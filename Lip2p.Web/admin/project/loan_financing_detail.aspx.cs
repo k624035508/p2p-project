@@ -11,11 +11,12 @@ using Lip2p.BLL;
 
 namespace Lip2p.Web.admin.project
 {
-    public partial class loan_audit_detail : Web.UI.ManagePage
+    public partial class loan_financing_detail : Web.UI.ManagePage
     {
         protected int ChannelId;
         protected int ProjectId = 0;
         protected int LoanType = 0;
+        protected int ProjectStatus;
         protected  BLL.loan Loan;
 
         public Lip2pDataContext LqContext = new Lip2pDataContext();
@@ -23,7 +24,7 @@ namespace Lip2p.Web.admin.project
         //页面初始化事件
         public virtual void Page_Init(object sernder, EventArgs e)
         {
-            ChkAdminLevel("loan_audit_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
+            ChkAdminLevel("loan_financing_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             if (this.ChannelId == 0)
             {
@@ -36,6 +37,7 @@ namespace Lip2p.Web.admin.project
         public virtual void Page_Load(object sender, EventArgs e)
         {
             this.ProjectId = DTRequest.GetQueryInt("id");
+            this.ProjectStatus = DTRequest.GetQueryInt("status");
             if (!Page.IsPostBack)
             {         
                 if (this.ProjectId == 0)
@@ -50,8 +52,32 @@ namespace Lip2p.Web.admin.project
                     return;
                 }
                 Loan = new BLL.loan(LqContext);
+                ShowByStatus();
                 ShowInfo(project);
                 LoanType = project.type;
+            }
+        }
+
+        private void ShowByStatus()
+        {
+            switch (ProjectStatus)
+            {
+                case (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess:
+                    dl_publish_time.Visible = true;
+                    dl_tag.Visible = true;
+                    btnApply.Visible = true;
+
+                    rblTag.Items.AddRange(
+                        Utils.GetEnumValues<Lip2pEnums.ProjectTagEnum>()
+                            .Select(te => new ListItem(Utils.GetLip2pEnumDes(te), ((int) te).ToString()))
+                            .ToArray());
+                    break;
+                case (int)Lip2pEnums.ProjectStatusEnum.Financing:
+                    btnDrop.Visible = true;
+                    break;
+                case (int)Lip2pEnums.ProjectStatusEnum.FinancingTimeout:
+                    btnFail.Visible = true;
+                    break;
             }
         }
 
@@ -109,7 +135,8 @@ namespace Lip2p.Web.admin.project
         /// <summary>
         /// 显示借款人、抵押物信息
         /// </summary>
-        /// <param name="loaner_id"></param>
+        /// <param name="loaner"></param>
+        /// <param name="riskId"></param>
         private void ShowLoanerInfo(li_loaners loaner,int riskId)
         {
             //借款人信息
@@ -135,28 +162,92 @@ namespace Lip2p.Web.admin.project
             rptList.DataBind();
         }
 
-        protected void btnAudit_OnClick(object sender, EventArgs e)
+        /// <summary>
+        /// 发布借款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnApply_OnClick(object sender, EventArgs e)
         {
-            do_loan_audit(true);
-        }
-
-        protected void btnNotAudit_OnClick(object sender, EventArgs e)
-        {
-            do_loan_audit(false);
-        }
-
-        private void do_loan_audit(bool auditSuccess)
-        {
-            ChkAdminLevel("loan_audit", DTEnums.ActionEnum.Audit.ToString()); //检查权限
-            var project = LqContext.li_projects.FirstOrDefault(p => p.id == ProjectId);
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
-                project.status = auditSuccess
-                    ? (int) Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess
-                    : (int) Lip2pEnums.ProjectStatusEnum.FinancingApplicationFail;
-                LqContext.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Audit.ToString(), "审核操作成功！"); //记录日志
-                JscriptMsg("审核操作成功！", Utils.CombUrlTxt("loan_audit.aspx", "channel_id={0}", this.ChannelId.ToString()));
+                try
+                {
+                    if (!string.IsNullOrEmpty(rblTag.SelectedValue))
+                        project.tag = Utils.StrToInt(rblTag.SelectedValue, 0);
+                    project.status = (int)Lip2pEnums.ProjectStatusEnum.Financing;
+                    project.publish_time = string.IsNullOrEmpty(txtPublishTime.Text.Trim())
+                        ? DateTime.Now
+                        : DateTime.Parse(txtPublishTime.Text.Trim());
+                    LqContext.SubmitChanges();
+                    JscriptMsg("发布借款成功！",
+                        Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                            ((int)Lip2pEnums.ProjectStatusEnum.Financing).ToString()));
+                }
+                catch (Exception ex)
+                {
+                    JscriptMsg("发布借款失败：" + ex.Message, "back", "Error");
+                }
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 撤销借款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnDrop_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            if (project != null)
+            {
+                try
+                {
+                    project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationFail;
+                    LqContext.SubmitChanges();
+                    JscriptMsg("撤销借款成功！",
+                        Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                            ((int)Lip2pEnums.ProjectStatusEnum.Financing).ToString()));
+                }
+                catch (Exception ex)
+                {
+                    JscriptMsg("撤销借款失败：" + ex.Message, "back", "Error");
+                }
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 借款流标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnFail_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            if (project != null)
+            {
+                try
+                {
+                    project.status = (int)Lip2pEnums.ProjectStatusEnum.FinancingFail;
+                    //TODO 资金原路退回投资者账户
+                    LqContext.SubmitChanges();
+                    JscriptMsg("借款流标操作成功！",
+                        Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                            ((int)Lip2pEnums.ProjectStatusEnum.Financing).ToString()));
+                }
+                catch (Exception ex)
+                {
+                    JscriptMsg("借款流标操作失败：" + ex.Message, "back", "Error");
+                }
             }
             else
             {

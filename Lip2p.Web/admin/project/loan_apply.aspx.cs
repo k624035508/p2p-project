@@ -54,7 +54,7 @@ namespace Lip2p.Web.admin.project
             DataTable dt = bll.GetList(0, _channel_id);
 
             this.ddlCategoryId.Items.Clear();
-            this.ddlCategoryId.Items.Add(new ListItem("所有类型", ""));
+            this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
             foreach (DataRow dr in dt.Rows)
             {
                 string Id = dr["id"].ToString();
