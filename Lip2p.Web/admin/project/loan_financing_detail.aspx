@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_audit_detail.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_audit_detail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_financing_detail.aspx.cs" Inherits="Lip2p.Web.admin.project.loan_financing_detail" %>
 
 <%@ Import Namespace="Lip2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,15 +6,25 @@
 <head>
     <title>初审明细</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+     <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 </head>
+<script type="text/javascript">
+    $(function() {
+        //初始化表单验证
+        $("#form1").initValidform();
+    });
+</script>
 <body class="mainbody">
     <form id="form1" runat="server">
         <!--导航栏-->
         <div class="location">
-            <a href="loan_audit.aspx?channel_id=<%=this.ChannelId %>" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
-            <i class="arrow"></i><a href="loan_audit.aspx?channel_id=<%=this.ChannelId %>">
+            <a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
+            <i class="arrow"></i><a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>">
                 <span>借款初审</span></a> <i class="arrow"></i><span>初审明细</span>
         </div>
         <div class="line10">
@@ -383,16 +393,38 @@
                 <input type="hidden" name="hid_photo_name" value="splitter" />
                 <input type="hidden" name="hid_photo_remark" value="splitter" />
             </dl>
+            <dl id="dl_tag" runat="server" Visible="False">
+                <dt>借款标识</dt>
+                <dd>
+                    <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
+                        <asp:RadioButtonList ID="rblTag" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        </asp:RadioButtonList>
+                    </div>
+                </dd>
+            </dl>
+            <dl id="dl_publish_time" runat="server" Visible="False">
+                <dt>发布时间</dt>
+                <dd>
+                    <div class="input-date" >
+                        <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                            sucmsg=" "  />
+                        <i></i>
+                    </div>
+                    <span class="Validform_checktip">不选择默认当前发布时间</span>
+                </dd>
+            </dl>
         </div>
         <!--/内容-->
 
         <!--工具栏-->
         <div class="page-footer">
             <div class="btn-list">
-                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClick="btnAudit_OnClick"/>
-                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClick="btnNotAudit_OnClick"/>
+                <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
+                <asp:Button ID="btnDrop" runat="server" Text="撤销" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
+                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClick="btnFail_OnClick" Visible="False" />
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
-                    onclick="location.href='loan_audit.aspx?channel_id=<%=this.ChannelId%>'" />
+                    onclick="location.href='loan_financing.aspx?channel_id=<%=this.ChannelId%>&status=<%=this.ProjectStatus%>'" />
             </div>
             <div class="clear">
             </div>

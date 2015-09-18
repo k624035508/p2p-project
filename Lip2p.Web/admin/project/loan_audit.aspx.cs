@@ -62,7 +62,7 @@ namespace Lip2p.Web.admin.project
             var dt = bll.GetList(0, _channel_id);
 
             ddlCategoryId.Items.Clear();
-            ddlCategoryId.Items.Add(new ListItem("所有类型", ""));
+            ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
             foreach (DataRow dr in dt.Rows)
             {
                 var Id = dr["id"].ToString();

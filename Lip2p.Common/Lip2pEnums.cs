@@ -38,41 +38,77 @@ namespace Lip2p.Common
         public enum ProjectStatusEnum
         {
             // 发标前 (前台不可见)
-            [Description("借款申请待提交")]
+            /// <summary>
+            /// 借款申请待提交
+            /// </summary>
+            [Description("待提交")]
             FinancingApplicationUncommitted = 1,
-            [Description("借款申请审核中")]
+            /// <summary>
+            /// 借款申请审核中
+            /// </summary>
+            [Description("初审中")]
             FinancingApplicationChecking = 2,
-            [Description("借款申请审核不通过")]
+            /// <summary>
+            /// 借款申请审核不通过
+            /// </summary>
+            [Description("初审失败")]
             FinancingApplicationFail = 3,
-            [Description("借款申请审核通过")]
+            /// <summary>
+            /// 借款申请审核通过
+            /// </summary>
+            [Description("待发标")]
             FinancingApplicationSuccess = 4,
-            [Description("融资失败")] // 流标
+            /// <summary>
+            /// 融资失败
+            /// </summary>
+            [Description("流标")]
             FinancingFail = 5,
 
             // 上线募集
             [Description("定时发标")]
             FinancingAtTime = 10,
-            [Description("融资中")]
+            /// <summary>
+            /// 融资中
+            /// </summary>
+            [Description("借款中")]
             Financing = 11,
 
             // 募集结束
-            [Description("融资超时")] // 等待决定是由平台满标还是流标
+            /// <summary>
+            /// 融资超时 等待决定是由平台满标还是流标
+            /// </summary>
+            [Description("已过期")] 
             FinancingTimeout = 20,
-            [Description("满标")] // 复审，准备放款给融资者
+            /// <summary>
+            /// 复审，准备放款给融资者
+            /// </summary>
+            [Description("满标")]
             FinancingSuccess = 21,
 
             // 还款中
             [Description("还款中")]
             ProjectRepaying = 30,
-            [Description("到期未还款完成")] // 等待决定是否垫付
+            /// <summary>
+            /// 到期未还款完成 等待决定是否垫付
+            /// </summary>
+            [Description("逾期未还")]
             NotRepayCompleteIntime = 31,
+            /// <summary>
+            /// 逾期的借款最后完成都视为坏账
+            /// </summary>
             [Description("坏账")]
             BadDebt = 32,
 
             // 还款完成
-            [Description("按时还款完成")]
+            /// <summary>
+            /// 按时还款完成
+            /// </summary>
+            [Description("已完成")]
             RepayCompleteIntime = 40,
-            [Description("提前还款完成")]
+            /// <summary>
+            /// 提前还款完成
+            /// </summary>
+            [Description("提前还款")]
             RepayCompleteEarlier = 41,
             [Description("到期未还款已垫付")]
             AdvancePayForFinancer = 42,

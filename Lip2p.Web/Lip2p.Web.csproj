@@ -149,6 +149,7 @@
     <Content Include="admin\order\payment_list.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\project\loan_financing_detail.aspx" />
     <Content Include="admin\project\loan_financing.aspx" />
     <Content Include="admin\project\loan_audit_detail.aspx" />
     <Content Include="admin\project\loan_audit.aspx" />
@@ -1054,6 +1055,13 @@
     </Compile>
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\loan_financing_detail.aspx.cs">
+      <DependentUpon>loan_financing_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\loan_financing_detail.aspx.designer.cs">
+      <DependentUpon>loan_financing_detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\loan_financing.aspx.cs">
       <DependentUpon>loan_financing.aspx</DependentUpon>

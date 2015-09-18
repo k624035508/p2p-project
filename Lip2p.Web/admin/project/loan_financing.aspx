@@ -2,6 +2,7 @@
 
 <%@ Import Namespace="Lip2p.Common" %>
 <%@ Import Namespace="Lip2p.Linq2SQL" %>
+<%@ Import Namespace="Lip2p.Web.UI" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,11 +31,8 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblRepaymentStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True">
-                            <asp:ListItem Value="0" Selected="True">待发布</asp:ListItem>
-                            <asp:ListItem Value="1">借款中</asp:ListItem>
-                            <asp:ListItem Value="2">已过期</asp:ListItem>
-                            <asp:ListItem Value="3">流标</asp:ListItem>
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True"
+                            OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
                         </asp:RadioButtonList>
                     </div>
                 </div>
@@ -72,17 +70,31 @@
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="loan_apply_detail.aspx?channel_id=<%=this.channel_id %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%#Utils.GetLip2pEnumDes((Lip2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
+                    <td><%#getTagString(Eval("tag"))%></td>
+                    <td><%#getInvestmentProgress(Convert.ToInt32(Eval("id"))) %></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
-                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
+                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
-                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
+                    <td><%#Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
-                    <td align="center"><a href="">修改</a></td>
+                    <td align="center">
+                        <% if (ProjectStatus == (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                            { %>
+                        <a href="">发布</a>
+                        <% }
+                            else if (ProjectStatus == (int)Lip2pEnums.ProjectStatusEnum.Financing)
+                            { %>
+                        <a href="">撤销</a>
+                        <% }
+                            else if (ProjectStatus == (int)Lip2pEnums.ProjectStatusEnum.FinancingTimeout)
+                            { %>
+                        <a href="">流标</a>
+                        <% } %>
+
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
