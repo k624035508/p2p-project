@@ -65,6 +65,7 @@ namespace Lip2p.Web.admin.project
                 case (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess:
                     dl_publish_time.Visible = true;
                     dl_tag.Visible = true;
+                    div_financing_day.Visible = true;
                     btnApply.Visible = true;
 
                     rblTag.Items.AddRange(
@@ -180,6 +181,7 @@ namespace Lip2p.Web.admin.project
                     project.publish_time = string.IsNullOrEmpty(txtPublishTime.Text.Trim())
                         ? DateTime.Now
                         : DateTime.Parse(txtPublishTime.Text.Trim());
+                    project.financing_day = Convert.ToInt16(txt_financing_day.Text.Trim());
                     LqContext.SubmitChanges();
                     JscriptMsg("发布借款成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),

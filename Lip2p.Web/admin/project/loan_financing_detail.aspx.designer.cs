@@ -337,6 +337,33 @@ namespace Lip2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.TextBox txtPublishTime;
         
         /// <summary>
+        /// div_financing_day 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_financing_day;
+        
+        /// <summary>
+        /// txt_financing_day 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_financing_day;
+        
+        /// <summary>
+        /// financing_day_rate_tip 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label financing_day_rate_tip;
+        
+        /// <summary>
         /// btnApply 控件。
         /// </summary>
         /// <remarks>

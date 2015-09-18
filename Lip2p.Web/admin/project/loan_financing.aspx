@@ -54,7 +54,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
                         <th width="2%"></th>
-                        <th align="left" width="16%">标题</th>
+                        <th align="left" width="15%">标题</th>
                         <th align="left" width="8%">借款产品</th>
                         <th align="left" width="6%">状态</th>
                         <th align="left" width="5%">标识</th>
@@ -63,7 +63,8 @@
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>
-                        <th align="left" width="10%">发布时间</th>
+                        <th align="left" width="8%">发布时间</th>
+                        <th align="left" width="5%">募集期限(天)</th>
                         <th width="5%">操作</th>
                     </tr>
             </HeaderTemplate>
@@ -80,6 +81,7 @@
                     <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetLip2pEnumDes((Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
+                    <td><%#Eval("financing_day")%></td>
                     <td align="center">
                         <% if (ProjectStatus == (int)Lip2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
                             { %>

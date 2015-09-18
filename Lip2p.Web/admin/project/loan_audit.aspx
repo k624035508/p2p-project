@@ -15,6 +15,22 @@
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
 </head>
+<script type="text/javascript">
+    function auditTip(id, status, msg) {
+        parent.dialog({
+            title: '提示',
+            content: msg,
+            okValue: '确定',
+            ok: function () {
+                location.href = "project/loan_audit.aspx?channel_id=<%=this.channel_id %>&action=" + status + "&id=" + id;
+            },
+            cancelValue: '取消',
+            cancel: function () { }
+        }).showModal();
+
+        return false;
+    }
+</script>
 <body class="mainbody">
     <form id="form1" runat="server">
         <!--导航栏-->
@@ -31,8 +47,9 @@
                 <div class="l-list">
                     <ul class="icon-list">
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
-                        <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','所选项目将通过审批，确定继续吗？');"
-                             OnClick="btnAudit_OnClick"><i></i><span>审批通过</span></asp:LinkButton></li>                        
+                        <li>
+                            <asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','所选项目将通过审批，确定继续吗？');"
+                                OnClick="btnAudit_OnClick"><i></i><span>审批通过</span></asp:LinkButton></li>
                     </ul>
                 </div>
                 <div class="r-list">
@@ -56,10 +73,10 @@
                         <th align="left" width="16%">标题</th>
                         <th align="left" width="10%">借款人</th>
                         <th align="left" width="8%">产品</th>
-                        <th align="left" width="10%">借款金额(元)</th>                        
+                        <th align="left" width="10%">借款金额(元)</th>
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率</th>
-                        <th align="left" width="8%">还款方式</th>                        
+                        <th align="left" width="8%">还款方式</th>
                         <th align="left" width="10%">申请时间</th>
                         <th width="6%">操作</th>
                     </tr>
@@ -73,13 +90,13 @@
                     <td><a href="loan_audit_detail.aspx?channel_id=<%=this.channel_id %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Lip2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
-                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
+                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
-                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
+                    <td><%#Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
-                    <td align="center"><a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_success&id=<%#Eval("id")%>">通过</a>  
-                        <a href="loan_audit.aspx?channel_id=<%=this.channel_id %>&action=audit_fail&id=<%#Eval("id")%>">不通过</a></td>
+                    <td align="center"><a onclick="return auditTip('<%#Eval("id")%>','audit_success','所选借款将通过审批，确定继续吗？');" href="javascript:;">通过</a>
+                        <a onclick="return auditTip('<%#Eval("id")%>','audit_fail','所选借款将审批不通过，确定继续吗？');" href="javascript:;">不通过</a></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

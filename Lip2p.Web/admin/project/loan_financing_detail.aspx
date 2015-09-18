@@ -7,7 +7,7 @@
     <title>初审明细</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
-     <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
@@ -393,7 +393,7 @@
                 <input type="hidden" name="hid_photo_name" value="splitter" />
                 <input type="hidden" name="hid_photo_remark" value="splitter" />
             </dl>
-            <dl id="dl_tag" runat="server" Visible="False">
+            <dl id="dl_tag" runat="server" visible="False">
                 <dt>借款标识</dt>
                 <dd>
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
@@ -402,16 +402,24 @@
                     </div>
                 </dd>
             </dl>
-            <dl id="dl_publish_time" runat="server" Visible="False">
+            <dl id="dl_publish_time" runat="server" visible="False">
                 <dt>发布时间</dt>
                 <dd>
-                    <div class="input-date" >
+                    <div class="input-date">
                         <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                             datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
-                            sucmsg=" "  />
+                            sucmsg=" " />
                         <i></i>
                     </div>
                     <span class="Validform_checktip">不选择默认当前发布时间</span>
+                </dd>
+            </dl>
+            <dl id="div_financing_day" runat="server" Visible="False">
+                <dt>募集期限(天)</dt>
+                <dd>
+                    <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
+                        sucmsg=" "></asp:TextBox>
+                <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
         </div>
@@ -424,7 +432,7 @@
                 <asp:Button ID="btnDrop" runat="server" Text="撤销" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
                 <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClick="btnFail_OnClick" Visible="False" />
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
-                    onclick="location.href='loan_financing.aspx?channel_id=<%=this.ChannelId%>&status=<%=this.ProjectStatus%>'" />
+                    onclick="location.href='loan_financing.aspx?channel_id=<%=this.ChannelId%>    &status=<%=this.ProjectStatus%>    '" />
             </div>
             <div class="clear">
             </div>
