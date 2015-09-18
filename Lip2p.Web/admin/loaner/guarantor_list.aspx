@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="company_list.aspx.cs" Inherits="Lip2p.Web.admin.loaner.company_list" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="guarantor_list.aspx.cs" Inherits="Lip2p.Web.admin.loaner.guarantor_list" %>
 <%@ Import namespace="Lip2p.Common" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>企业信息列表</title>
+<title>担保机构列表</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -20,7 +20,7 @@
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>企业信息列表</span>
+  <span>担保机构列表</span>
 </div>
 <!--/导航栏-->
 
@@ -29,7 +29,7 @@
   <div id="floatHead" class="toolbar">
     <div class="l-list">
       <ul class="icon-list">
-        <li><a class="add" href="company_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>"><i></i><span>新增</span></a></li>
+        <li><a class="add" href="guarantor_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>"><i></i><span>新增</span></a></li>
         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
         <li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>
       </ul>
@@ -48,15 +48,9 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="5%">选择</th>
-    <th align="left">企业名称</th>
-    <th align="left" width="10%">成立时间</th>
-    <th align="left" width="10%">注册资本</th>
-    <th align="left" width="10%">经营范围</th>
-    <th align="left" width="10%">经营状态</th>
-    <th align="left" width="10%">涉讼情况</th>
-    <th align="left" width="10%">年收入</th>
-    <th align="left" width="10%">净资产</th>
-    <th align="left" width="10%">备注</th>
+    <th align="left" width="10%">担保机构</th>
+    <th align="left" width="10%">类型</th>
+    <th align="left">描述</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -65,19 +59,13 @@
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
-    <td><a href="company_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
-    <td><%# Eval("setup_time") %></td>
-    <td><%# Eval("registered_capital") %></td>
-    <td><%# Eval("business_scope") %></td>
-    <td><%# Eval("business_status") %></td>
-    <td><%# Eval("business_lawsuit") %></td>
-    <td><%# Eval("income_yearly") %></td>
-    <td><%# Eval("net_assets") %></td>
-    <td><%# Eval("remark") %></td>
+    <td><a href="guarantor_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
+    <td><%# Utils.GetLip2pEnumDes((Lip2pEnums.GuarantorTypeEnum) Convert.ToByte(Eval("type")))%></td>
+    <td><%# Eval("description") %></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"10\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"4\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>

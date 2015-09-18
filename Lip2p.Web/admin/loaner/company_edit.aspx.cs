@@ -67,8 +67,8 @@ namespace Lip2p.Web.admin.loaner
             txtNetAssets.Text = model.net_assets;
             txtCompanyRemark.Text = model.remark;
 
-            rptIdCardPics.DataSource = model.li_albums;
-            rptIdCardPics.DataBind();
+            rptPics.DataSource = model.li_albums;
+            rptPics.DataBind();
         }
         #endregion
 

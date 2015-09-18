@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="company_edit.aspx.cs" Inherits="Lip2p.Web.admin.loaner.company_edit" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="guarantor_edit.aspx.cs" Inherits="Lip2p.Web.admin.loaner.guarantor_edit" ValidateRequest="false" %>
 <%@ Import namespace="Lip2p.Common" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>编辑企业信息</title>
+<title>编辑担保机构</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -30,12 +30,12 @@
 <form id="form1" runat="server">
 <!--导航栏-->
 <div class="location">
-  <a href="company_list.aspx" class="back"><i></i><span>返回列表页</span></a>
+  <a href="guarantor_list.aspx" class="back"><i></i><span>返回列表页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <a href="company_list.aspx"><span>企业信息列表</span></a>
+  <a href="guarantor_list.aspx"><span>担保机构列表</span></a>
   <i class="arrow"></i>
-  <span>编辑企业信息</span>
+  <span>编辑担保机构</span>
 </div>
 <div class="line10"></div>
 <!--/导航栏-->
@@ -45,61 +45,34 @@
   <div id="floatHead" class="content-tab">
     <div class="content-tab-ul-wrap">
       <ul>
-        <li><a href="javascript:;" onclick="tabs(this);" class="selected">编辑企业信息</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);" class="selected">编辑担保机构</a></li>
       </ul>
     </div>
   </div>
 </div>
 
 <div class="tab-content">
-  <dl>
-    <dt>已关联借款人</dt>
-    <dd><asp:TextBox ID="txtLoaners" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* 请输入人员账号/姓名，用英文逗号隔开</span></dd>
-  </dl>
     <dl>
-        <dt>公司名称</dt>
-        <dd><asp:TextBox ID="txtCompanyName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+        <dt>担保机构名称</dt>
+        <dd><asp:TextBox ID="txtGuarantorName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
     <dl>
-        <dt>成立时间</dt>
-        <dd>
-            <div class="input-date">
-                <asp:TextBox ID="txtSetupTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                    datatype="/^^\d{4}\-\d{1,2}\-\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
-                <i></i>
-            </div>
-        </dd>
+      <dt>类型</dt>
+      <dd>
+        <div class="rule-multi-radio">
+          <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
+          <asp:ListItem Value="1" Selected="True">小额贷款公司</asp:ListItem>
+          <asp:ListItem Value="2">担保公司</asp:ListItem>
+          </asp:RadioButtonList>
+        </div>
+      </dd>
     </dl>
     <dl>
-        <dt>注册资本</dt>
-        <dd><asp:TextBox ID="txtRegisteredCapital" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+        <dt>描述</dt>
+        <dd><asp:TextBox ID="txtDescription" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
     </dl>
     <dl>
-        <dt>经营范围</dt>
-        <dd><asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
-    </dl>
-    <dl>
-        <dt>经营状态</dt>
-        <dd><asp:TextBox ID="txtBusinessStatus" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
-    </dl>
-    <dl>
-        <dt>涉讼情况</dt>
-        <dd><asp:TextBox ID="txtBusinessLawsuit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-    </dl>
-    <dl>
-        <dt>年收入</dt>
-        <dd><asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-    </dl>
-    <dl>
-        <dt>净资产</dt>
-        <dd><asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-    </dl>
-    <dl>
-        <dt>备注</dt>
-        <dd><asp:TextBox ID="txtCompanyRemark" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-    </dl>
-    <dl>
-    <dt>企业照片</dt>
+    <dt>担保机构照片</dt>
     <dd>
       <div class="upload-box upload-album"></div>
       <div class="photo-list">

@@ -32,6 +32,14 @@ namespace Lip2p.Common
             Creditor = 30
         }
 
+        public enum GuarantorTypeEnum
+        {
+            [Description("小额贷款公司")]
+            MicrofinanceCompany = 1,
+            [Description("担保公司")]
+            GuaranteeCompany = 2,
+        }
+
         /// <summary>
         /// 流程状态
         /// </summary>

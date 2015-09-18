@@ -12,7 +12,7 @@ using Lip2p.Linq2SQL;
 
 namespace Lip2p.Web.admin.loaner
 {
-    public partial class company_list : UI.ManagePage
+    public partial class guarantor_list : UI.ManagePage
     {
         protected int totalCount;
         protected int page;
@@ -28,7 +28,7 @@ namespace Lip2p.Web.admin.loaner
             pageSize = GetPageSize(10); //每页数量
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_company", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.View.ToString()); //检查权限
                 var keywords = DTRequest.GetQueryString("keywords");
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
@@ -41,7 +41,7 @@ namespace Lip2p.Web.admin.loaner
         {
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
-            var query = from c in context.li_loaner_companies
+            var query = from c in context.li_guarantors
                         where c.name.Contains(txtKeywords.Text)
                         select c;
 
@@ -51,7 +51,7 @@ namespace Lip2p.Web.admin.loaner
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("company_list.aspx", "keywords={0}&page={1}", txtKeywords.Text, "__id__");
+            string pageUrl = Utils.CombUrlTxt("guarantor_list.aspx", "keywords={0}&page={1}", txtKeywords.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
         #endregion
@@ -74,7 +74,7 @@ namespace Lip2p.Web.admin.loaner
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("company_list.aspx", "keywords={0}", txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("guarantor_list.aspx", "keywords={0}", txtKeywords.Text));
         }
 
         //设置分页数量
@@ -88,13 +88,13 @@ namespace Lip2p.Web.admin.loaner
                     Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("company_list.aspx", "keywords={0}", txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("guarantor_list.aspx", "keywords={0}", txtKeywords.Text));
         }
 
         //批量删除
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            ChkAdminLevel("loan_company", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.Delete.ToString()); //检查权限
             int sucCount = 0;
             int errorCount = 0;
             for (int i = 0; i < rptList.Items.Count; i++)
@@ -103,11 +103,11 @@ namespace Lip2p.Web.admin.loaner
                 CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
                 if (cb.Checked)
                 {
-                    var preDel = context.li_creditors.FirstOrDefault(q => q.user_id == id);
+                    var preDel = context.li_guarantors.FirstOrDefault(q => q.id == id);
                     if (preDel != null)
                     {
                         sucCount += 1;
-                        context.li_creditors.DeleteOnSubmit(preDel);
+                        context.li_guarantors.DeleteOnSubmit(preDel);
                     }
                     else errorCount += 1;
                 }
@@ -115,12 +115,12 @@ namespace Lip2p.Web.admin.loaner
             try
             {
                 context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除企业信息" + sucCount + "条，失败" + errorCount + "条"); //记录日志
-                JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("company_list.aspx", "keywords={0}", txtKeywords.Text), "Success");
+                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除担保机构" + sucCount + "条，失败" + errorCount + "条"); //记录日志
+                JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("guarantor_list.aspx", "keywords={0}", txtKeywords.Text), "Success");
             }
             catch (Exception ex)
             {
-                JscriptMsg("删除失败！" + FriendlyDBError.HandleDeleteError(ex), Utils.CombUrlTxt("company_list.aspx", "keywords={0}", txtKeywords.Text), "Failure");
+                JscriptMsg("删除失败！" + FriendlyDBError.HandleDeleteError(ex), Utils.CombUrlTxt("guarantor_list.aspx", "keywords={0}", txtKeywords.Text), "Failure");
             }
         }
     }
