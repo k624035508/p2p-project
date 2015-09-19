@@ -438,9 +438,9 @@ namespace Agp2p.Core
                 project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
 
                 context.SubmitChanges();
-                return project;
             }
 
+            context.SubmitChanges();
             return project;
         }
 
