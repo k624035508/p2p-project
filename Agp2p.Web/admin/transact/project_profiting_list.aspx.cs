@@ -39,8 +39,7 @@ namespace Agp2p.Web.admin.transact
                 context.li_project_transactions.Where(
                     t =>
                         t.project == projectId && t.investor == investorId &&
-                        (t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest ||
-                         t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipalAndInterest));
+                        (t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor && 0 < t.repay_interest));
 
             totalCount = query.Count();
             rptList.DataSource = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();

@@ -579,13 +579,28 @@ namespace Agp2p.Core
             }
         }
 
-        public static readonly Dictionary<Agp2pEnums.ProjectTransactionTypeEnum, Agp2pEnums.WalletHistoryTypeEnum> PTrTypeToHisActTypeMap
-            = new Dictionary<Agp2pEnums.ProjectTransactionTypeEnum, Agp2pEnums.WalletHistoryTypeEnum>
+        public static Agp2pEnums.WalletHistoryTypeEnum GetWalletHistoryTypeByProjectTransaction(li_project_transactions ptr)
         {
-            {Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipalAndInterest, Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest},
-            {Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipal, Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal},
-            {Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest, Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest}
-        };
+            if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor)
+            {
+                if (ptr.value != 0 && ptr.repay_interest != 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest;
+                else if (ptr.value == 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest;
+                else if (ptr.repay_interest == 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal;
+            }
+            else if (ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.LoanerRepay)
+            {
+                if (ptr.value != 0 && ptr.repay_interest != 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipalAndInterest;
+                else if (ptr.value == 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayInterest;
+                else if (ptr.repay_interest == 0)
+                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipal;
+            }
+            throw new Exception("还款状态异常");
+        }
 
         /// <summary>
         /// 马上执行还款计划
@@ -617,7 +632,7 @@ namespace Agp2p.Core
                 wallet.last_update_time = ptr.create_time;
 
                 // 添加钱包历史
-                var his = CloneFromWallet(wallet, PTrTypeToHisActTypeMap[(Agp2pEnums.ProjectTransactionTypeEnum) ptr.type]);
+                var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(ptr));
                 his.li_project_transactions = ptr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
@@ -645,13 +660,6 @@ namespace Agp2p.Core
         /// <returns></returns>
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime)
         {
-            // 判断交易类型
-            var trType = repaymentTask.repay_interest != 0 && repaymentTask.repay_principal != 0
-                ? Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipalAndInterest
-                : (repaymentTask.repay_interest != 0
-                    ? Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest
-                    : Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipal);
-
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord = repaymentTask.li_projects.li_project_transactions.Where(
                     tr =>
@@ -665,7 +673,7 @@ namespace Agp2p.Core
             return moneyRepayRatio.Select(r => new li_project_transactions
             {
                 create_time = transactTime, // 变更时间应该等于还款计划的还款时间
-                type = (byte) trType,
+                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
                 project = repaymentTask.project,
                 dt_users = r.Key,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
@@ -809,15 +817,12 @@ namespace Agp2p.Core
                 switch (his.li_project_transactions.type)
                 {
                     case (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest:
+                    case (int) Agp2pEnums.ProjectTransactionTypeEnum.LoanerRepay:
                         receivedPrincipal = profited = null;
-                        break;
-                    case (int) Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest:
-                        receivedPrincipal = null;
-                        profited = his.li_project_transactions.repay_interest.GetValueOrDefault(0);
                         break;
                     default:
                         receivedPrincipal = his.li_project_transactions.value;
-                        profited = his.li_project_transactions.repay_interest.GetValueOrDefault(0);
+                        profited = his.li_project_transactions.repay_interest;
                         break;
                 }
                 return callback(receivedPrincipal, profited);

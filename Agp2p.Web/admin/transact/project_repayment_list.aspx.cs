@@ -113,10 +113,10 @@ namespace Agp2p.Web.admin.transact
         protected string GetRepaymentTaskType(li_repayment_tasks repayment)
         {
             var trType = repayment.repay_interest != 0 && repayment.repay_principal != 0
-                ? Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipalAndInterest
+                ? Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest
                 : (repayment.repay_interest != 0
-                    ? Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest
-                    : Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipal);
+                    ? Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest
+                    : Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal);
             return Utils.GetAgp2pEnumDes(trType);
         }
 

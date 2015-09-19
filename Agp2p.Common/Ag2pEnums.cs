@@ -300,12 +300,10 @@ namespace Agp2p.Common
         {
             [Description("投标")]
             Invest = 1,
-            [Description("利息收益")]
-            RepaidInterest = 2,
-            [Description("返还本金")]
-            RepaidPrincipal = 3,
-            [Description("返还本息")]
-            RepaidPrincipalAndInterest = 4,
+            [Description("返还给投资者")]
+            RepayToInvestor = 2,
+            [Description("借款人还款")]
+            LoanerRepay = 3,
         }
 
         /// <summary>
@@ -364,18 +362,25 @@ namespace Agp2p.Common
             [Description("返还本息")]
             RepaidPrincipalAndInterest = 22,
 
+            [Description("借款人还利息")]
+            LoanerRepayInterest = 30,
+            [Description("借款人还本金")]
+            LoanerRepayPrincipal = 31,
+            [Description("借款人还本息")]
+            LoanerRepayPrincipalAndInterest = 32,
+
             [Description("获得金钱待确认")]
-            Gaining = 30,
+            Gaining = 40,
             [Description("扣取金钱待确认")]
-            Losting = 31,
+            Losting = 41,
             [Description("获得金钱")]
-            GainConfirm = 32,
+            GainConfirm = 42,
             [Description("扣取金钱")]
-            LostConfirm = 33,
+            LostConfirm = 43,
             [Description("取消获得金钱")]
-            GainCancel = 34,
+            GainCancel = 44,
             [Description("取消扣取金钱")]
-            LostCancel = 35,
+            LostCancel = 45,
         }
 
         /// <summary>

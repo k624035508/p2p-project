@@ -84,8 +84,7 @@ namespace Agp2p.Web.admin.transact
             var profits = context.li_project_transactions.Where(
                 a =>
                     a.project == tr.project && a.investor == tr.investor &&
-                    (a.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepaidInterest ||
-                     a.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepaidPrincipalAndInterest))
+                    (a.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor && 0 < a.repay_interest))
                 .Select(t => t.repay_interest.Value)
                 .ToList();
             return string.Format("收益 {0} 次，共 {1} 元", profits.Count, profits.Sum().ToString("c"));
