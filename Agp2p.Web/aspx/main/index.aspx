@@ -1,16 +1,16 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Lip2p.Web.UI.Page.index" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Agp2p.Web.UI.Page.index" ValidateRequest="false" %>
 <%@ Import namespace="System.Collections.Generic" %>
 <%@ Import namespace="System.Text" %>
 <%@ Import namespace="System.Data" %>
-<%@ Import namespace="Lip2p.Common" %>
+<%@ Import namespace="Agp2p.Common" %>
 
 <script runat="server">
 override protected void OnInit(EventArgs e)
 {
 
 	/* 
-		This page was created by Lip2p Template Engine at 2015/9/16 10:44:26.
-		本页面代码由Lip2p模板引擎生成于 2015/9/16 10:44:26. 
+		This page was created by Agp2p Template Engine at 2015/9/19 14:36:41.
+		本页面代码由Agp2p模板引擎生成于 2015/9/19 14:36:41. 
 	*/
 
 	base.OnInit(e);
@@ -106,7 +106,7 @@ override protected void OnInit(EventArgs e)
 	}	//end for if
 
 	templateBuilder.Append("\r\n            <span class=\"invest-list-icon xin-icon\"></span>\r\n        </div>\r\n        <div class=\"invest-content\">\r\n            <div class=\"apr\">\r\n                <div class=\"red25px margin-bottom10px\">" + Utils.ObjectToStr(dr["profit_rate_year"]) + "<span class=\"red15px\">%</span></div>\r\n                <div class=\"grey13px\">年化利率</div>\r\n            </div>\r\n            <div class=\"deadline\">\r\n                <div class=\"grey25px margin-bottom10px\">" + Utils.ObjectToStr(dr["repayment_number"]) + "<span class=\"grey15px\">" + Utils.ObjectToStr(dr["repayment_term"]) + "</span></div>\r\n                <div class=\"grey13px\">期限</div>\r\n            </div>\r\n            <div class=\"sum\">\r\n                <div class=\"grey25px margin-bottom10px\">" + Utils.ObjectToStr(dr["project_amount_str"]) + "<span class=\"grey15px\">万</span></div>\r\n                <div class=\"grey13px\">借款金额</div>\r\n            </div>\r\n            <div class=\"repayment\">\r\n                <div class=\"progress progress-custom\">\r\n                    <div class=\"progress-bar progress-bar-info\" role=\"progressbar\" aria-valuenow=\"" + Utils.ObjectToStr(dr["project_investment_progress"]) + "\"\r\n                         aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + Utils.ObjectToStr(dr["project_investment_progress"]) + "%\">\r\n                        <span class=\"sr-only\">20% Complete</span>\r\n                    </div>\r\n                </div>\r\n                <div class=\"grey13px margin-bottom10px\">可投金额 : <span class=\"dark-grey13px\">" + Utils.ObjectToStr(dr["project_investment_balance"]) + "</span></div>\r\n                <div class=\"grey13px margin-bottom10px hidden\">投资人数 : <span class=\"dark-grey13px\">" + Utils.ObjectToStr(dr["project_investment_count"]) + "人</span></div>   <!--满标人数显示-->\r\n                <div class=\"grey13px\">到期还本付息</div>\r\n            </div>\r\n            <div class=\"invest-btn pull-right\">\r\n                ");
-	if ((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingAtTime)
+	if ((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime)
 	{
 
 	templateBuilder.Append("\r\n                <button type=\"button\" class=\"invest-full-btn\" onclick=\"location.href='");
@@ -114,7 +114,7 @@ override protected void OnInit(EventArgs e)
 
 	templateBuilder.Append("'\">待发标</button>\r\n                ");
 	}
-	else if ((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.Financing)
+	else if ((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)
 	{
 
 	templateBuilder.Append("\r\n                <button type=\"button\" class=\"invest-now-btn\" onclick=\"location.href='");
@@ -122,7 +122,7 @@ override protected void OnInit(EventArgs e)
 
 	templateBuilder.Append("'\">立即投资</button>\r\n                ");
 	}
-	else if ((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FinancingSuccess)
+	else if ((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
 	{
 
 	templateBuilder.Append("\r\n                <button type=\"button\" class=\"invest-full-btn\" onclick=\"location.href='");
@@ -130,7 +130,7 @@ override protected void OnInit(EventArgs e)
 
 	templateBuilder.Append("'\">募集结束</button>\r\n                ");
 	}
-	else if ((int)dr["status"]==(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.ProjectRepaying)
+	else if ((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
 	{
 
 	templateBuilder.Append("\r\n                <button type=\"button\" class=\"invest-now-btn\" onclick=\"location.href='");
@@ -138,7 +138,7 @@ override protected void OnInit(EventArgs e)
 
 	templateBuilder.Append("'\">还款中</button>\r\n                ");
 	}
-	else if ((int)dr["status"]>=(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+	else if ((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
 	{
 
 	templateBuilder.Append("\r\n                <button type=\"button\" class=\"invest-full-btn\" onclick=\"location.href='");

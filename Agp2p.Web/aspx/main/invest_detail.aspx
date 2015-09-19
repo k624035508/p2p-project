@@ -1,8 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Lip2p.Web.UI.Page.project" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Agp2p.Web.UI.Page.project" ValidateRequest="false" %>
 <%@ Import namespace="System.Collections.Generic" %>
 <%@ Import namespace="System.Text" %>
 <%@ Import namespace="System.Data" %>
-<%@ Import namespace="Lip2p.Common" %>
+<%@ Import namespace="Agp2p.Common" %>
 <%@ Import namespace="Newtonsoft.Json.Linq" %>
 <%@ Import namespace="Newtonsoft.Json" %>
 
@@ -11,8 +11,8 @@ override protected void OnInit(EventArgs e)
 {
 
 	/* 
-		This page was created by Lip2p Template Engine at 2015/9/16 10:44:26.
-		本页面代码由Lip2p模板引擎生成于 2015/9/16 10:44:26. 
+		This page was created by Agp2p Template Engine at 2015/9/19 14:36:41.
+		本页面代码由Agp2p模板引擎生成于 2015/9/19 14:36:41. 
 	*/
 
 	base.OnInit(e);
@@ -62,13 +62,13 @@ override protected void OnInit(EventArgs e)
 	templateBuilder.Append("<span>元</span></div>\r\n            </div>\r\n            <div class=\"deadline\">\r\n                <div>期限</div>\r\n                <div class=\"rules-style\">");
 	templateBuilder.Append(Utils.ObjectToStr(projectModel.repayment_term_span_count));
 	templateBuilder.Append("<span>");
-	templateBuilder.Append(Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span).ToString());
+	templateBuilder.Append(Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span).ToString());
 
 	templateBuilder.Append("</span></div>\r\n            </div>\r\n            <div class=\"apr\">\r\n                <div>年化利率</div>\r\n                <div class=\"rules-style\">");
 	templateBuilder.Append(string.Format("{0:0.0}", projectModel.profit_rate_year).ToString());
 
 	templateBuilder.Append("<span>%</span></div>\r\n            </div>\r\n        </div>\r\n        <div class=\"repayment\">\r\n            <div class=\"repayment-way\">\r\n                <table>\r\n                    <tbody>\r\n                        <tr><td>还款方式</td><td colspan=\"2\">");
-	templateBuilder.Append(Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type).ToString());
+	templateBuilder.Append(Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type).ToString());
 
 	templateBuilder.Append("</td></tr>\r\n                        <tr><td>投标人数</td><td colspan=\"2\">");
 	templateBuilder.Append(Utils.ObjectToStr(invsetorCount));
@@ -84,7 +84,7 @@ override protected void OnInit(EventArgs e)
 	templateBuilder.Append("</td></tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"invest-control pull-right\">\r\n        <div><span class=\"title-mark\">可投金额</span></div>\r\n        <div class=\"investable-amount-wrap\">\r\n            <div class=\"investable-amount\">");
 	templateBuilder.Append(Utils.ObjectToStr(investmentBalance));
 	templateBuilder.Append("</div>\r\n            ");
-	if (projectModel.status>(int)Lip2pEnums.ProjectStatusEnum.FinancingTimeout)
+	if (projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)
 	{
 
 	templateBuilder.Append("\r\n            <!--满标-->\r\n            <div class=\"account-balance-empty\">\r\n                <div class=\"tips\">已经有");
@@ -120,7 +120,7 @@ override protected void OnInit(EventArgs e)
 	templateBuilder.Append("</span></li>\r\n                </ul>\r\n                <ul class=\"list-unstyled\">\r\n                    <li><span>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</span><span>");
 	templateBuilder.Append(Utils.ObjectToStr(loaner.dt_users.area));
 	templateBuilder.Append("</span></li>\r\n                    <li><span>婚姻状况</span><span>");
-	templateBuilder.Append(Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.MaritalStatusEnum)loaner.marital_status).ToString());
+	templateBuilder.Append(Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status).ToString());
 
 	templateBuilder.Append("</span></li>\r\n                    <li><span>房产数量</span><span>暂无数据</span></li>\r\n                    <li><span>是否购车</span><span>暂无数据</span></li>\r\n                </ul>\r\n                <ul class=\"list-unstyled\">\r\n                    <li><span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span><span>");
 	templateBuilder.Append(loaner.dt_users.sex.ToString());

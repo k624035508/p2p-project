@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.project
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("loan_financing_success", DTEnums.ActionEnum.View.ToString()); //检查权限
                 ShowProjectStatus();
                 TreeBind(); //绑定类别
                 RptBind();
@@ -122,7 +122,7 @@ namespace Agp2p.Web.admin.project
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
+            string pageUrl = Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
@@ -152,14 +152,14 @@ namespace Agp2p.Web.admin.project
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {            
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
@@ -174,7 +174,7 @@ namespace Agp2p.Web.admin.project
                     Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
@@ -187,6 +187,17 @@ namespace Agp2p.Web.admin.project
         {
             this.ProjectStatus = Utils.StrToInt(rblStatus.SelectedValue, 0);
             RptBind();
+        }
+
+        protected string QueryLoaner(int projectId)
+        {
+            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
+            if (project != null)
+            {
+                var user = project.li_risks.li_loaners.dt_users;
+                return $"{user.real_name}({user.user_name})";
+            }
+            return "";
         }
     }
 }
