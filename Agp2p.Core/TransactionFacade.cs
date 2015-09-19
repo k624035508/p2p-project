@@ -436,9 +436,17 @@ namespace Agp2p.Core
                 var now = DateTime.Now;
                 project.invest_complete_time = now;
                 project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
-
                 context.SubmitChanges();
+                return project;
             }
+
+            // 项目完成时间应该等于最后一个人的投资时间
+            var lastInvestment =
+                project.li_project_transactions.LastOrDefault(
+                    tr =>
+                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                        tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest);
+            project.invest_complete_time = lastInvestment != null ? lastInvestment.create_time : DateTime.Now;
 
             context.SubmitChanges();
             return project;
@@ -457,21 +465,14 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("项目不是满标状态，不能设置为正在还款状态");
             
             // 修改项目状态为满标/截标
-            //project.status = project.investment_amount < project.financing_amount ? (int) Agp2pEnums.ProjectStatusEnum.JieBiao : (int) Agp2pEnums.ProjectStatusEnum.ManBiao;
             project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
-            // 项目完成时间应该等于最后一个人的投资时间
-            var lastInvestment =
-                project.li_project_transactions.LastOrDefault(
-                    tr =>
-                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
-                        tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest);
-            project.invest_complete_time = lastInvestment != null ? lastInvestment.create_time : DateTime.Now;
+            project.make_loan_time = DateTime.Now;
 
             var termSpan = (Agp2pEnums.ProjectRepaymentTermSpanEnum) project.repayment_term_span; // 期的跨度（年月日）
             var termSpanCount = project.repayment_term_span_count; // 跨度数
             var repaymentType = (Agp2pEnums.ProjectRepaymentTypeEnum) project.repayment_type; // 还款类型
 
-            project.profit_rate = CalcFinalProfitRate(project.invest_complete_time.Value, project.profit_rate_year, termSpan, termSpanCount); // 满标时计算真实总利率
+            project.profit_rate = CalcFinalProfitRate(project.make_loan_time.Value, project.profit_rate_year, termSpan, termSpanCount); // 满标时计算真实总利率
             var termCount = CalcRealTermCount(termSpan, termSpanCount); // 实际期数
 
             var repayPrincipal = project.investment_amount; // 本金投资总额
@@ -489,7 +490,7 @@ namespace Agp2p.Core
                     repay_principal = repayPrincipalEachTerm,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                     term = (short) termNumber,
-                    should_repay_time = CalcRepayTime(project.invest_complete_time.Value, termSpan, termNumber, termCount)
+                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, termNumber, termCount)
                 }).ToList();
             }
             else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.XianXi) // 先息后本
@@ -501,7 +502,7 @@ namespace Agp2p.Core
                     repay_principal = 0,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                     term = (short) termNumber,
-                    should_repay_time = CalcRepayTime(project.invest_complete_time.Value, termSpan, termNumber, termCount)
+                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, termNumber, termCount)
                 }).ToList();
                 repaymentTasks.Last().repay_principal = repayPrincipal; // 最后额外添加一期返还全部本金
             }
@@ -545,7 +546,7 @@ namespace Agp2p.Core
                     wallet.profiting_money += Math.Round(ratio*task.repay_interest, 2); // 累加利润：避免直接计算总利润（利率 * 总投资额），这样可以避免精度问题
                 }
             }
-            var projectInvestCompleteTime = project.invest_complete_time.Value;
+            var projectInvestCompleteTime = project.make_loan_time.Value;
             wallets.ForEach(w => w.last_update_time = projectInvestCompleteTime); // 时间应该一致
 
             // 创建钱包历史
