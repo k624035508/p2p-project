@@ -24,7 +24,7 @@ namespace Agp2p.Core.AutoLogic
                 .Where(p => p.publish_time.Value.AddDays(p.financing_day) <= DateTime.Today).ToList();
             timeoutProjects.ForEach(p =>
             {
-                p.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingTimeout;
+                db.FinishInvestment(p.id);
             });
             db.SubmitChanges();
         }

@@ -63,10 +63,10 @@
       <%# Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) Eval("repayment_term_span"))%></td>
     <td><%# Eval("profit_rate_year")%></td>
     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Eval("repayment_type"))%></td>
-    <td><a href="project_investment_list.aspx?project_id=<%#Eval("id")%>"><%# calcProjectProgress((li_projects) Container.DataItem) %></a></td>
+    <td><a href="project_investment_list.aspx?project_id=<%#Eval("id")%>"><%# CalcProjectProgress((li_projects) Container.DataItem) %></a></td>
     <td><a href="project_repayment_list.aspx?project_id=<%#Eval("id")%>"><%# QueryRepaymentProgress((li_projects) Container.DataItem) %></a></td>
     <td><asp:Button ID="btnFinishInvestment" runat="server" Text="截标" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClick="btnFinishInvestment_OnClick"
-                OnClientClick="return ExeNoCheckPostBack(this.name, '确认截标？');" Visible='<%# Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.ProjectStatusEnum.FaBiao %>'/></td>
+                OnClientClick="return ExeNoCheckPostBack(this.name, '确认截标？');" Visible='<%# Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.ProjectStatusEnum.Financing %>'/></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
