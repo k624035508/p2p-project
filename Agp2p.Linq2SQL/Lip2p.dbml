@@ -1,0 +1,586 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DTcmsdb3" Class="Agp2pDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.dt_users" Member="dt_users">
+    <Type Name="dt_users">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="group_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="salt" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="pay_password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="nick_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="avatar" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="sex" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="birthday" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="telphone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="qq" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="safe_question" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="safe_answer" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="exp" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="reg_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="reg_ip" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="real_name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="id_card_number" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="NvarChar(255)" CanBeNull="true" />
+      <Column Name="openid" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="dt_users_li_activity_transactions" Member="li_activity_transactions" ThisKey="id" OtherKey="user_id" Type="li_activity_transactions" />
+      <Association Name="dt_users_li_bank_accounts" Member="li_bank_accounts" ThisKey="id" OtherKey="owner" Type="li_bank_accounts" />
+      <Association Name="dt_users_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="charger" Type="li_bank_transactions" />
+      <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
+      <Association Name="dt_users_li_invitations" Member="li_invitations" ThisKey="id" OtherKey="user_id" Type="li_invitations" Cardinality="One" />
+      <Association Name="dt_users_li_invitations1" Member="li_invitations1" ThisKey="id" OtherKey="inviter" Type="li_invitations" />
+      <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
+      <Association Name="dt_users_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="user_id" Type="li_wallet_histories" />
+      <Association Name="dt_users_dt_user_code" Member="dt_user_code" ThisKey="id" OtherKey="user_id" Type="dt_user_code" />
+      <Association Name="dt_users_li_user_group_servers" Member="li_user_group_servers" ThisKey="id" OtherKey="serving_user" Type="li_user_group_servers" Cardinality="One" />
+      <Association Name="dt_users_li_wallets" Member="li_wallets" ThisKey="id" OtherKey="user_id" Type="li_wallets" Cardinality="One" />
+      <Association Name="dt_users_dt_user_login_log" Member="dt_user_login_log" ThisKey="id" OtherKey="user_id" Type="dt_user_login_log" />
+      <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
+      <Association Name="dt_users_li_albums" Member="li_albums" ThisKey="id" OtherKey="the_user" Type="li_albums" />
+      <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_activity_transactions" Member="li_activity_transactions">
+    <Type Name="li_activity_transactions">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="transact_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="value" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="approver" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="activity_type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="details" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="li_activity_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="activity_transaction" Type="li_wallet_histories" />
+      <Association Name="dt_users_li_activity_transactions" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="dt_manager_li_activity_transactions" Member="dt_manager" ThisKey="approver" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_bank_accounts" Member="li_bank_accounts">
+    <Type Name="li_bank_accounts">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bank" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="opening_bank" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="account" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="last_access_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="location" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="withdraw_account" Type="li_bank_transactions" />
+      <Association Name="dt_users_li_bank_accounts" Member="dt_users" ThisKey="owner" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_bank_transactions" Member="li_bank_transactions">
+    <Type Name="li_bank_transactions">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="charger" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="withdraw_account" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="transact_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="handling_fee" Type="System.Decimal" DbType="Decimal(9,2) NOT NULL" CanBeNull="false" />
+      <Column Name="handling_fee_type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="no_order" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="pay_api" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="approver" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ip" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Association Name="li_bank_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="bank_transaction" Type="li_wallet_histories" />
+      <Association Name="dt_users_li_bank_transactions" Member="dt_users" ThisKey="charger" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_accounts" ThisKey="withdraw_account" OtherKey="id" Type="li_bank_accounts" IsForeignKey="true" />
+      <Association Name="dt_manager_li_bank_transactions" Member="dt_manager" ThisKey="approver" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_creditors" Member="li_creditors">
+    <Type Name="li_creditors">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="real_name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="id_card_number" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_creditors_li_risks" Member="li_risks" ThisKey="user_id" OtherKey="creditor" Type="li_risks" />
+      <Association Name="dt_users_li_creditors" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_invitations" Member="li_invitations">
+    <Type Name="li_invitations">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="inviter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="first_invest_transaction" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_users_li_invitations" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="dt_users_li_invitations1" Member="dt_users1" ThisKey="inviter" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_project_transactions_li_invitations" Member="li_project_transactions" ThisKey="first_invest_transaction" OtherKey="id" Type="li_project_transactions" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_project_transactions" Member="li_project_transactions">
+    <Type Name="li_project_transactions">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="investor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="project" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="repay_interest" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="agree_no" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="li_project_transactions_li_invitations" Member="li_invitations" ThisKey="id" OtherKey="first_invest_transaction" Type="li_invitations" />
+      <Association Name="li_project_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="project_transaction" Type="li_wallet_histories" />
+      <Association Name="dt_users_li_project_transactions" Member="dt_users" ThisKey="investor" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_projects_li_project_transactions" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_repayment_tasks" Member="li_repayment_tasks">
+    <Type Name="li_repayment_tasks">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="project" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="term" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="repay_interest" Type="System.Decimal" DbType="Decimal(9,2) NOT NULL" CanBeNull="false" />
+      <Column Name="repay_principal" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="should_repay_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="repay_at" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="li_projects_li_repayment_tasks" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_risk_mortgage" Member="li_risk_mortgage">
+    <Type Name="li_risk_mortgage">
+      <Column Name="risk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mortgage" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_mortgages_li_risk_mortgage" Member="li_mortgages" ThisKey="mortgage" OtherKey="id" Type="li_mortgages" IsForeignKey="true" />
+      <Association Name="li_risks_li_risk_mortgage" Member="li_risks" ThisKey="risk" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_user_group_access_keys" Member="li_user_group_access_keys">
+    <Type Name="li_user_group_access_keys">
+      <Column Name="user_group" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="owner_manager" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="dt_user_groups_li_user_group_access_keys" Member="dt_user_groups" ThisKey="user_group" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
+      <Association Name="dt_manager_li_user_group_access_keys" Member="dt_manager" ThisKey="owner_manager" OtherKey="id" Type="dt_manager" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_wallet_histories" Member="li_wallet_histories">
+    <Type Name="li_wallet_histories">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="action_type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="idle_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="investing_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="locked_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="profiting_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_profit" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_investment" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="project_transaction" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="bank_transaction" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="activity_transaction" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="dt_users_li_wallet_histories" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_activity_transactions_li_wallet_histories" Member="li_activity_transactions" ThisKey="activity_transaction" OtherKey="id" Type="li_activity_transactions" IsForeignKey="true" />
+      <Association Name="li_bank_transactions_li_wallet_histories" Member="li_bank_transactions" ThisKey="bank_transaction" OtherKey="id" Type="li_bank_transactions" IsForeignKey="true" />
+      <Association Name="li_project_transactions_li_wallet_histories" Member="li_project_transactions" ThisKey="project_transaction" OtherKey="id" Type="li_project_transactions" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_code" Member="dt_user_code">
+    <Type Name="dt_user_code">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="type" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="str_code" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="count" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="eff_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="dt_users_dt_user_code" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_groups" Member="dt_user_groups">
+    <Type Name="dt_user_groups">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="grade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="upgrade_exp" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="discount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_default" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_upgrade" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_lock" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="dt_user_groups_dt_users" Member="dt_users" ThisKey="id" OtherKey="group_id" Type="dt_users" />
+      <Association Name="dt_user_groups_li_user_group_access_keys" Member="li_user_group_access_keys" ThisKey="id" OtherKey="user_group" Type="li_user_group_access_keys" />
+      <Association Name="dt_user_groups_li_user_group_servers" Member="li_user_group_servers" ThisKey="id" OtherKey="group_id" Type="li_user_group_servers" />
+      <Association Name="dt_user_groups_li_user_group_departments" Member="li_user_group_departments" ThisKey="id" OtherKey="user_group_id" Type="li_user_group_departments" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_article_attribute_value" Member="dt_article_attribute_value">
+    <Type Name="dt_article_attribute_value">
+      <Column Name="article_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sub_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="source" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="goods_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="stock_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_user_group_servers" Member="li_user_group_servers">
+    <Type Name="li_user_group_servers">
+      <Column Name="serving_user" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="group_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="dt_user_groups_li_user_group_servers" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
+      <Association Name="dt_users_li_user_group_servers" Member="dt_users" ThisKey="serving_user" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_manager" Member="dt_manager">
+    <Type Name="dt_manager">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="role_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="role_type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="salt" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="real_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="telephone" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="is_lock" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="parent_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="department_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_default" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="dt_manager_li_activity_transactions" Member="li_activity_transactions" ThisKey="id" OtherKey="approver" Type="li_activity_transactions" />
+      <Association Name="dt_manager_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="approver" Type="li_bank_transactions" />
+      <Association Name="dt_manager_li_user_group_access_keys" Member="li_user_group_access_keys" ThisKey="id" OtherKey="owner_manager" Type="li_user_group_access_keys" />
+      <Association Name="dt_manager_dt_manager" Member="dt_manager2" ThisKey="id" OtherKey="parent_id" Type="dt_manager" />
+      <Association Name="dt_manager_dt_manager" Member="dt_manager1" ThisKey="parent_id" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
+      <Association Name="li_departments_dt_manager" Member="li_departments" ThisKey="department_id" OtherKey="id" Type="li_departments" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_wallets" Member="li_wallets">
+    <Type Name="li_wallets">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="idle_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="investing_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="locked_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="profiting_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_profit" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_investment" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="unused_money" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_charge" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="total_withdraw" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="dt_users_li_wallets" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_message" Member="dt_user_message">
+    <Type Name="dt_user_message">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="post_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="accept_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="is_read" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="post_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="read_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_mail_template" Member="dt_mail_template">
+    <Type Name="dt_mail_template">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="call_index" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="maill_title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_manager_log" Member="dt_manager_log">
+    <Type Name="dt_manager_log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="action_type" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="user_ip" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_sms_template" Member="dt_sms_template">
+    <Type Name="dt_sms_template">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="call_index" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_point_log" Member="dt_user_point_log">
+    <Type Name="dt_user_point_log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="value" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_departments" Member="li_departments">
+    <Type Name="li_departments">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="department_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_lock" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="parent_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="class_list" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="class_layer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_default" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="li_departments_dt_manager" Member="dt_manager" ThisKey="id" OtherKey="department_id" Type="dt_manager" />
+      <Association Name="li_departments_li_user_group_departments" Member="li_user_group_departments" ThisKey="id" OtherKey="department_id" Type="li_user_group_departments" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_login_log" Member="dt_user_login_log">
+    <Type Name="dt_user_login_log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="login_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="login_ip" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="dt_users_dt_user_login_log" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_weixin_account" Member="dt_weixin_account">
+    <Type Name="dt_weixin_account">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="originalid" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="wxcode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="token" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="appid" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="appsecret" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="is_push" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_user_group_departments" Member="li_user_group_departments">
+    <Type Name="li_user_group_departments">
+      <Column Name="user_group_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="department_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="li_departments_li_user_group_departments" Member="li_departments" ThisKey="department_id" OtherKey="id" Type="li_departments" IsForeignKey="true" />
+      <Association Name="dt_user_groups_li_user_group_departments" Member="dt_user_groups" ThisKey="user_group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_article" Member="dt_article">
+    <Type Name="dt_article">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="channel_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="call_index" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="link_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="img_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="zhaiyao" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="click" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="groupids_view" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="vote_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_msg" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_top" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_red" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_hot" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_slide" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="update_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article_attribute_value" ThisKey="id" OtherKey="article_id" Type="dt_article_attribute_value" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_mortgage_types" Member="li_mortgage_types">
+    <Type Name="li_mortgage_types">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="scheme" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_mortgage_types_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="type" Type="li_mortgages" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_mortgages" Member="li_mortgages">
+    <Type Name="li_mortgages">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="valuation" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="properties" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_mortgages_li_risk_mortgage" Member="li_risk_mortgage" ThisKey="id" OtherKey="mortgage" Type="li_risk_mortgage" />
+      <Association Name="li_mortgages_li_albums" Member="li_albums" ThisKey="id" OtherKey="mortgage" Type="li_albums" />
+      <Association Name="li_mortgage_types_li_mortgages" Member="li_mortgage_types" ThisKey="type" OtherKey="id" Type="li_mortgage_types" IsForeignKey="true" />
+      <Association Name="li_loaners_li_mortgages" Member="li_loaners" ThisKey="owner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_navigation" Member="dt_navigation">
+    <Type Name="dt_navigation">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nav_type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="sub_title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="link_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="is_lock" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="parent_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="class_list" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="class_layer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="channel_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="action_type" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="icon_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_projects" Member="li_projects">
+    <Type Name="li_projects">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="no" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="audit_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="publish_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="invest_complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="make_loan_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="tag" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="profit_rate_year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="profit_rate" Type="System.Decimal" DbType="Decimal(9,9) NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_term_span" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_term_span_count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="financing_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="investment_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="financing_day" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="risk_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="img_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="click" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
+      <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
+      <Association Name="li_risks_li_projects" Member="li_risks" ThisKey="risk_id" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_loaners" Member="li_loaners">
+    <Type Name="li_loaners">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="job" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="working_at" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="company_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="educational_background" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="marital_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="income" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="age" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="li_loaners_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="owner" Type="li_mortgages" />
+      <Association Name="li_loaners_li_risks" Member="li_risks" ThisKey="id" OtherKey="loaner" Type="li_risks" />
+      <Association Name="li_loaners_li_albums" Member="li_albums" ThisKey="id" OtherKey="loaner" Type="li_albums" />
+      <Association Name="dt_users_li_loaners" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_loaner_companies_li_loaners" Member="li_loaner_companies" ThisKey="company_id" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_loaner_companies" Member="li_loaner_companies">
+    <Type Name="li_loaner_companies">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="setup_time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="registered_capital" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="business_scope" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="business_status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="business_lawsuit" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="income_yearly" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="net_assets" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="li_loaner_companies_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="company_id" Type="li_loaners" />
+      <Association Name="li_loaner_companies_li_albums" Member="li_albums" ThisKey="id" OtherKey="company" Type="li_albums" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_risks" Member="li_risks">
+    <Type Name="li_risks">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="loaner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="credit_rating" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="loan_usage" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="source_of_repayment" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="creditor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="creditor_content" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="loaner_content" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="risk_content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="guarantor_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="li_risks_li_risk_mortgage" Member="li_risk_mortgage" ThisKey="id" OtherKey="risk" Type="li_risk_mortgage" />
+      <Association Name="li_risks_li_projects" Member="li_projects" ThisKey="id" OtherKey="risk_id" Type="li_projects" />
+      <Association Name="li_risks_li_albums" Member="li_albums" ThisKey="id" OtherKey="risk" Type="li_albums" />
+      <Association Name="li_creditors_li_risks" Member="li_creditors" ThisKey="creditor" OtherKey="user_id" Type="li_creditors" IsForeignKey="true" />
+      <Association Name="li_loaners_li_risks" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
+      <Association Name="li_guarantors_li_risks" Member="li_guarantors" ThisKey="guarantor_id" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_guarantors" Member="li_guarantors">
+    <Type Name="li_guarantors">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="li_guarantors_li_risks" Member="li_risks" ThisKey="id" OtherKey="guarantor_id" Type="li_risks" />
+      <Association Name="li_guarantors_li_albums" Member="li_albums" ThisKey="id" OtherKey="guarantor" Type="li_albums" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_albums" Member="li_albums">
+    <Type Name="li_albums">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="thumb_path" Type="System.String" DbType="VarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="original_path" Type="System.String" DbType="VarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="loaner" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="mortgage" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="the_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="risk" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="company" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="guarantor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="li_loaners_li_albums" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="dt_users_li_albums" Member="dt_users" ThisKey="the_user" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="li_guarantors_li_albums" Member="li_guarantors" ThisKey="guarantor" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
+      <Association Name="li_loaner_companies_li_albums" Member="li_loaner_companies" ThisKey="company" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
+      <Association Name="li_mortgages_li_albums" Member="li_mortgages" ThisKey="mortgage" OtherKey="id" Type="li_mortgages" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="li_risks_li_albums" Member="li_risks" ThisKey="risk" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+</Database>
