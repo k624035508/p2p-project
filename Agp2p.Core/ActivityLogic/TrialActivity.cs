@@ -104,7 +104,7 @@ namespace Agp2p.Core.ActivityLogic
                 if (proj.investment_amount == proj.financing_amount) // 如果项目满了，设置为满标
                 {
                     proj.invest_complete_time = useTime;
-                    proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess; // FIXME 直接跳到 还款中 ？
+                    proj.status = (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // FIXME 直接跳到 还款中 ？
                 }
 
                 // 修改钱包，添加待收金额

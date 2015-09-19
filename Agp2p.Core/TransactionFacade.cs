@@ -430,6 +430,17 @@ namespace Agp2p.Core
             project.status = (int) (project.investment_amount < project.financing_amount
                 ? Agp2pEnums.ProjectStatusEnum.FinancingTimeout
                 : Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
+
+            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || project.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject) // 体验标的截标
+            {
+                var now = DateTime.Now;
+                project.invest_complete_time = now;
+                project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
+
+                context.SubmitChanges();
+                return project;
+            }
+
             return project;
         }
 
@@ -444,20 +455,10 @@ namespace Agp2p.Core
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
                 throw new InvalidOperationException("项目不是满标状态，不能设置为正在还款状态");
-
-            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || project.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject) // 体验标的截标
-            {
-                var now = DateTime.Now;
-                project.invest_complete_time = now;
-                project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess; // 本来这里是截标，TODO 是否应该直接跳去还款中
-
-                context.SubmitChanges();
-                return project;
-            }
-
+            
             // 修改项目状态为满标/截标
             //project.status = project.investment_amount < project.financing_amount ? (int) Agp2pEnums.ProjectStatusEnum.JieBiao : (int) Agp2pEnums.ProjectStatusEnum.ManBiao;
-            project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
+            project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
             // 项目完成时间应该等于最后一个人的投资时间
             var lastInvestment =
                 project.li_project_transactions.LastOrDefault(
