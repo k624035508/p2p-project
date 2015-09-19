@@ -55,10 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityLogic\InviterBonus.cs" />
-    <Compile Include="ActivityLogic\RegHongBao.cs" />
-    <Compile Include="ActivityLogic\DailyProjectActivity.cs" />
-    <Compile Include="ActivityLogic\TrialActivity.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
     <Compile Include="AutoLogic\FinancingTimeout.cs" />
     <Compile Include="DbExtensions.cs" />
@@ -97,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ActivityLogic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

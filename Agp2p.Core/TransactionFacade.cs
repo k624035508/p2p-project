@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Agp2p.Common;
-using Agp2p.Core.ActivityLogic;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 
@@ -284,16 +283,6 @@ namespace Agp2p.Core
         public static void Invest(this Agp2pDataContext context, int userId, int projectId, decimal investingMoney)
         {
             var pr = context.li_projects.Single(p => p.id == projectId);
-            if (pr.tag == (int)Agp2pEnums.ProjectTagEnum.Trial)
-            {
-                InvestTrialProject(context, userId, projectId, investingMoney);
-                return;
-            }
-            if (pr.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject)
-            {
-                InvestDailyProject(context, userId, projectId, investingMoney);
-                return;
-            }
 
             if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status)
                 throw new InvalidOperationException("项目不是发标状态，不能投资");
@@ -343,64 +332,6 @@ namespace Agp2p.Core
             context.SubmitChanges();
 
             MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
-        }
-
-        /// <summary>
-        /// 投资新手体验项目
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="userId"></param>
-        /// <param name="projectId"></param>
-        /// <param name="investingMoney"></param>
-        private static void InvestTrialProject(Agp2pDataContext context, int userId, int projectId, decimal investingMoney)
-        {
-            var atr = context.li_activity_transactions.SingleOrDefault(
-                a =>
-                    a.user_id == userId &&
-                    a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial);
-            if (atr == null)
-            {
-                throw new InvalidOperationException("你没有新手体验券，不能投资新手标");
-            }
-            if (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
-            {
-                var ticket = new TrialActivity.TrialTicket(atr);
-                if (ticket.IsUsed())
-                {
-                    throw new InvalidOperationException("体验券已经被使用");
-                }
-                if (ticket.GetTicketValue() != investingMoney)
-                {
-                    throw new InvalidOperationException("投资的金额应等于体验券的面值");
-                }
-                ticket.Use(context, projectId);
-            }
-            else
-            {
-                throw new InvalidOperationException("你已使用过了新手体验券，或新手体验券已过期");
-            }
-        }
-
-        private static void InvestDailyProject(Agp2pDataContext context, int userId, int projectId, decimal investingMoney) // TODO 未实现完
-        {
-            var ticket = context.li_activity_transactions.Where(
-                a =>
-                    a.user_id == userId &&
-                    a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject &&
-                    a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
-                .AsEnumerable()
-                .Select(a => new DailyProjectActivity.DailyProjectTicket(a))
-                .FirstOrDefault(ti => ti.GetTicketValue() == investingMoney);
-
-            if (ticket == null)
-            {
-                throw new InvalidOperationException("你没有价值为 " + investingMoney.ToString("c") + " 的天标券");
-            }
-            if (ticket.IsExpired())
-            {
-                throw new InvalidOperationException("这张天标券已过期");
-            }
-            ticket.Use(context, projectId);
         }
 
         /// <summary>

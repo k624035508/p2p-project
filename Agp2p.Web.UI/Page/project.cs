@@ -7,7 +7,6 @@ using System.Linq;
 using Agp2p.BLL;
 using System.Web;
 using Agp2p.Core;
-using Agp2p.Core.ActivityLogic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -153,35 +152,6 @@ namespace Agp2p.Web.UI.Page
             {
                 var user = GetUserInfo();
                 has_email = !string.IsNullOrEmpty(user.email);
-
-                if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial)
-                {
-                    var trial = context.li_activity_transactions.SingleOrDefault(
-                        a =>
-                            a.user_id == user.id &&
-                            a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial);
-                    if (trial != null)
-                    {
-                        var ticket = new TrialActivity.TrialTicket(trial);
-                        if (!ticket.IsUsed())
-                        {
-                            idle_money = ticket.GetTicketValue();
-                        }
-                    }
-                    return;
-                }
-                else if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject)
-                {
-                    idle_money = context.li_activity_transactions.Where(t =>
-                        t.user_id == user.id &&
-                        t.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject &&
-                        t.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
-                        .AsEnumerable()
-                        .Select(atr => ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value"))
-                        .DefaultIfEmpty(0)
-                        .Sum();
-                    return;
-                }
 
                 // 普通项目
                 var wallet = context.li_wallets.FirstOrDefault(w => w.user_id == user.id);

@@ -177,7 +177,6 @@
     <Content Include="admin\skin\default\style.css" />
     <Content Include="admin\skin\default\valid_icons.png" />
     <Content Include="admin\skin\layout.css" />
-    <Content Include="admin\statistic\daily_project_ticket_usages.aspx" />
     <Content Include="admin\statistic\investor_invest_detail.aspx" />
     <Content Include="admin\statistic\project_repay_detail.aspx" />
     <Content Include="admin\statistic\project_repay_task.aspx" />
@@ -1112,13 +1111,6 @@
     </Compile>
     <Compile Include="admin\settings\url_rewrite_list.aspx.designer.cs">
       <DependentUpon>url_rewrite_list.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\statistic\daily_project_ticket_usages.aspx.cs">
-      <DependentUpon>daily_project_ticket_usages.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\statistic\daily_project_ticket_usages.aspx.designer.cs">
-      <DependentUpon>daily_project_ticket_usages.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\statistic\investor_invest_detail.aspx.cs">
       <DependentUpon>investor_invest_detail.aspx</DependentUpon>
