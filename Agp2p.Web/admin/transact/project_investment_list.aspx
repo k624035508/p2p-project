@@ -65,11 +65,11 @@
     <td><a href="project_profiting_list.aspx?investor_id=<%# Eval("investor") %>&project_id=<%# Eval("project") %>"><%# queryProfitStatus((li_project_transactions)Container.DataItem)%></a></td>
     <td><asp:Button ID="btnRefund" runat="server" Text="退款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClientClick="return ExeNoCheckPostBack(this.name, '确认退款？');"
             OnClick="btnRefund_OnClick" Visible='<%# Convert.ToByte(Eval("status")) == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success
-                      && Convert.ToByte(Eval("li_projects.status")) == (byte) Agp2pEnums.ProjectStatusEnum.FaBiao %>' /></td>
+                      && Convert.ToByte(Eval("li_projects.status")) == (byte) Agp2pEnums.ProjectStatusEnum.Financing %>' /></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"8\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>
