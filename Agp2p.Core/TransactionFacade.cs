@@ -417,7 +417,7 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 投资结束（未投满则项目状态为截标，投满则为满标）
+        /// 投资结束
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectId"></param>
@@ -425,8 +425,25 @@ namespace Agp2p.Core
         public static li_projects FinishInvestment(this Agp2pDataContext context, int projectId)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
-            if (project.status != (int) Agp2pEnums.ProjectStatusEnum.Financing)
+            if (project.status != (int)Agp2pEnums.ProjectStatusEnum.Financing)
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
+            project.status = (int) (project.investment_amount < project.financing_amount
+                ? Agp2pEnums.ProjectStatusEnum.FinancingTimeout
+                : Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
+            return project;
+        }
+
+        /// <summary>
+        /// 开始还款
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        public static li_projects StartRepayment(this Agp2pDataContext context, int projectId)
+        {
+            var project = context.li_projects.Single(p => p.id == projectId);
+            if (project.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
+                throw new InvalidOperationException("项目不是满标状态，不能设置为正在还款状态");
 
             if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || project.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject) // 体验标的截标
             {

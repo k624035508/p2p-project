@@ -87,7 +87,7 @@ namespace Agp2p.Web.admin.transact
             Response.Redirect(Utils.CombUrlTxt("project_list.aspx", "keywords={0}", txtKeywords.Text));
         }
 
-        protected string calcProjectProgress(li_projects project)
+        protected string CalcProjectProgress(li_projects project)
         {
             return (project.investment_amount/project.financing_amount).ToString("P2");
         }
@@ -95,7 +95,7 @@ namespace Agp2p.Web.admin.transact
         protected string QueryRepaymentProgress(li_projects pro)
         {
             if (pro.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
-                return "未满标";
+                return "未开始还款";
             var repayments = pro.li_repayment_tasks.Select(r => r.status).ToList();
             return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid), repayments.Count);
         }
