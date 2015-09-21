@@ -12,7 +12,7 @@ using Agp2p.Web.UI;
 
 namespace Agp2p.Web.admin.project
 {
-    public partial class loan_financing_success : Web.UI.ManagePage
+    public partial class loan_financing : Web.UI.ManagePage
     {
         protected int ChannelId;
         protected int TotalCount;
@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.project
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_financing_success", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString()); //检查权限
                 ShowProjectStatus();
                 TreeBind(); //绑定类别
                 RptBind();
@@ -53,26 +53,22 @@ namespace Agp2p.Web.admin.project
             if (!string.IsNullOrEmpty(keywords))
                 txtKeywords.Text = keywords;
             
-            //满标
             rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingSuccess),
-                    ((int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess).ToString()));
-            //还款中
+                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess),
+                    ((int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess).ToString()));
             rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.ProjectRepaying),
-                    ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
-            //提前还款
-            //rblStatus.Items.Add(
-            //    new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier),
-            //        ((int)Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier).ToString()));
-            //已完成
+                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.Financing),
+                    ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
             rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime),
-                    ((int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime).ToString()));
+                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingTimeout),
+                    ((int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout).ToString()));
+            rblStatus.Items.Add(
+                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingFail),
+                    ((int)Agp2pEnums.ProjectStatusEnum.FinancingFail).ToString()));
 
             if (ProjectStatus == 0)
             {
-                ProjectStatus = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
+                ProjectStatus = (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess;
                 rblStatus.SelectedIndex = 0;
             }
             else
@@ -122,7 +118,7 @@ namespace Agp2p.Web.admin.project
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
+            string pageUrl = Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
@@ -139,7 +135,17 @@ namespace Agp2p.Web.admin.project
         private List<li_projects> GetList()
         {
             PageSize = new BLL.channel().GetPageSize(ChannelName);
-            var query = context.li_projects.Where(p => p.status == ProjectStatus && (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
+            var query = context.li_projects.Where(p => p.title.Contains(Keywords) || p.no.Contains(Keywords));
+            if (ProjectStatus == (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+            {
+                //如果是待发标状态则需要查询出定时发标的状态
+                query = query.Where(
+                        p => p.status == ProjectStatus || p.status == (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime);
+            }
+            else
+            {
+                query = query.Where(p => p.status == ProjectStatus);
+            }
             if (CategoryId > 0)
                 query = query.Where(q => q.category_id == CategoryId);
             
@@ -152,14 +158,14 @@ namespace Agp2p.Web.admin.project
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {            
-            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
@@ -174,8 +180,32 @@ namespace Agp2p.Web.admin.project
                     Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
+        }
+
+        /// <summary>
+        /// 获取标识描述
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        protected string getTagString(object tag)
+        {
+            return tag == null ? "无" : Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectTagEnum)Utils.StrToInt(tag.ToString(), 0));
+        }
+
+        /// <summary>
+        /// 获取募集进度
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        protected string getInvestmentProgress(int projectId)
+        {
+            return
+                context.GetInvestmentProgress(projectId,
+                    (total, projectAmount) =>
+                        new BasePage.ProjectInvestmentProgress {total = total, projectAmount = projectAmount})
+                    .GetInvestmentProgress() + "%";
         }
 
         /// <summary>
@@ -187,17 +217,6 @@ namespace Agp2p.Web.admin.project
         {
             this.ProjectStatus = Utils.StrToInt(rblStatus.SelectedValue, 0);
             RptBind();
-        }
-
-        protected string QueryLoaner(int projectId)
-        {
-            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
-            if (project != null)
-            {
-                var user = project.li_risks.li_loaners.dt_users;
-                return $"{user.real_name}({user.user_name})";
-            }
-            return "";
         }
     }
 }

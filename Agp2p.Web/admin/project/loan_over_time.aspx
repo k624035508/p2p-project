@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_financing_success.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_financing_success" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_over_time.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_financing" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <%@ Import Namespace="Agp2p.Linq2SQL" %>
@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>满标借款</title>
+    <title>逾期借款</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -23,7 +23,7 @@
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
             <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
             <i class="arrow"></i>
-            <span>满标借款</span>
+            <span>逾期借款</span>
         </div>
         <!--/导航栏-->
         <!--工具栏-->
@@ -55,52 +55,48 @@
                     <tr>
                         <th width="2%"></th>
                         <th align="left" width="15%">标题</th>
-                        <th align="left" width="10%">借款人</th>
-                        <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
-                            { %>
-                        <th align="left" width="8%">满标时间</th>
-                        <% }
-                            else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
-                            { %>
-                        <th align="left" width="8%">放款时间</th>
-                        <% }
-                            else if (ProjectStatus >= (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
-                            { %>
-                        <th align="left" width="8%">完成时间</th>
-                        <% } %>
-                        <th align="left" width="8%">发布时间</th>
-                        <th align="left" width="5%">状态</th>
                         <th align="left" width="8%">借款产品</th>
+                        <th align="left" width="6%">状态</th>
+                        <th align="left" width="5%">标识</th>
+                        <th align="left" width="8%">借款进度</th>
                         <th align="left" width="10%">借款金额(元)</th>
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>
+                        <th align="left" width="8%">发布时间</th>
+                        <th align="left" width="5%">募集期限(天)</th>
+                        <th width="5%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td></td>
                     <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
-                    <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
-                    <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
-                        { %>
-                    <td><%#string.Format("{0:g}",Eval("invest_complete_time"))%></td>
-                    <% }
-                        else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
-                        { %>
-                    <td><%#string.Format("{0:g}",Eval("make_loan_time"))%></td>
-                    <% }
-                        else if (ProjectStatus >= (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
-                        { %>
-                    <td><%#string.Format("{0:g}",Eval("complete_time"))%></td>
-                    <% } %>
-                    <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
+                    <td><%#getTagString(Eval("tag"))%></td>
+                    <td><%#getInvestmentProgress(Convert.ToInt32(Eval("id"))) %></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
+                    <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
+                    <td><%#Eval("financing_day")%></td>
+                    <td align="center">
+                        <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                            { %>
+                        <a href="">发布</a>
+                        <% }
+                            else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.Financing)
+                            { %>
+                        <a href="">撤销</a>
+                        <% }
+                            else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)
+                            { %>
+                        <a href="">流标</a>
+                        <% } %>
+
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

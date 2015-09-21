@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.BLL;
+using Agp2p.Core;
 
 namespace Agp2p.Web.admin.project
 {
@@ -268,26 +269,17 @@ namespace Agp2p.Web.admin.project
         /// <param name="e"></param>
         protected void btnMakeLoan_OnClick(object sender, EventArgs e)
         {
-            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
-            if (project != null)
+            try
             {
-                try
-                {
-                    project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
-                    //TODO 资金打入借款人账户
-                    LqContext.SubmitChanges();
-                    JscriptMsg("放款操作成功！",
-                        Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
-                            ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
-                }
-                catch (Exception ex)
-                {
-                    JscriptMsg("放款操作失败：" + ex.Message, "back", "Error");
-                }
+                //TODO 资金打入借款人账户
+                LqContext.StartRepayment(ProjectId);
+                JscriptMsg("放款操作成功！",
+                    Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                        ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
             }
-            else
+            catch (Exception ex)
             {
-                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+                JscriptMsg("放款操作失败：" + ex.Message, "back", "Error");
             }
         }
     }
