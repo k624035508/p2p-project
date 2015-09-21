@@ -38,7 +38,7 @@ namespace Agp2p.Core.NotifyLogic
                 content = string.Format("您于{0}投资了“{1}”，投资金额为{2}元。详情请到“投资列表”中查询。",
                     DateTime.Now.ToString("yyyy年MM月dd日HH时mm分"),
                     investment.li_projects.title,
-                    investment.value.ToString("N")),
+                    investment.principal.ToString("N")),
                 post_time = investTime,
             };
             context.dt_user_message.InsertOnSubmit(userMsg);
@@ -83,7 +83,7 @@ namespace Agp2p.Core.NotifyLogic
                     //投资信息
                     var agree_no = Utils.GetOrderNumber();
                     bodytxt = bodytxt.Replace("{agree_no}", agree_no);
-                    bodytxt = bodytxt.Replace("{project_amount}", ui.value.ToString("N"));
+                    bodytxt = bodytxt.Replace("{project_amount}", ui.principal.ToString("N"));
                     //增加协议号到投资记录中
                     ui.agree_no = agree_no;             
                     //发送邮件

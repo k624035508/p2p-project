@@ -518,7 +518,7 @@ namespace Agp2p.Web.admin.users
                     tr =>
                         tr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                         tr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.create_time.Date == DateTime.Now.Date).Sum(t => t.value).ToString("c");
+                        tr.create_time.Date == DateTime.Now.Date).Sum(t => t.principal).ToString("c");
         }
 
         #region 返回用户状态=============================

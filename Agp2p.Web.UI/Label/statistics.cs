@@ -77,7 +77,7 @@ namespace Agp2p.Web.UI
                         ptr.create_time.Year == now.Year && ptr.create_time.Month == now.Month &&
                         ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .Select(ptr => ptr.value))
+                    .Select(ptr => ptr.principal))
                     .Sum())
                 .OrderByDescending(d => d.Value)
                 .Take(10)

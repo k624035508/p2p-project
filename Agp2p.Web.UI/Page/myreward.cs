@@ -52,7 +52,7 @@ namespace Agp2p.Web.UI.Page
         {
             if (inv.li_project_transactions != null)
             {
-                return inv.li_project_transactions.value.ToString("c");
+                return inv.li_project_transactions.principal.ToString("c");
             }
             return "";
         }

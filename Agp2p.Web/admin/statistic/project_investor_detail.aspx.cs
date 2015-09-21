@@ -117,14 +117,14 @@ namespace Agp2p.Web.admin.statistic
                             InvestorRealName = tr.dt_users.real_name,
                             InvestorUserName = tr.dt_users.user_name,
                             InvestorGroupName = tr.dt_users.dt_user_groups.title,
-                            InvestValue = tr.value,
+                            InvestValue = tr.principal,
                             InvestTime = tr.create_time.ToString()
                         }).Concat(new[]
                         {
                             new InvestorDetail
                             {
                                 Project = new ProjectDetail {Name = "合计"},
-                                InvestValue = invested.Sum(t => t.value),
+                                InvestValue = invested.Sum(t => t.principal),
                             }
                         }).ToList();
                         investorDetails.First().Project = new ProjectDetail
@@ -149,7 +149,7 @@ namespace Agp2p.Web.admin.statistic
                             InvestValue = query.SelectMany(p => p.li_project_transactions.Where(t =>
                                 t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                 t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success))
-                                .Select(t => t.value)
+                                .Select(t => t.principal)
                                 .AsEnumerable().DefaultIfEmpty(0).Sum(),
                         }
                     }).ToList();

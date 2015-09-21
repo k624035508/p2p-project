@@ -40,13 +40,11 @@ namespace Agp2p.Web.UI.Page
                     Agp2pEnums.MyInvestRadioBtnTypeEnum.InvestEndding, new[] { Agp2pEnums.ProjectStatusEnum.FinancingSuccess, Agp2pEnums.ProjectStatusEnum.FinancingTimeout }
                 },
                 {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying,
-                        Agp2pEnums.ProjectStatusEnum.NotRepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.BadDebt }
+                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying, Agp2pEnums.ProjectStatusEnum.BadDebt }
                 },
                 {
                     Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete, new[] { Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier,
-                        Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.RepayCompleteDelay,
-                        Agp2pEnums.ProjectStatusEnum.AdvancePayForFinancer, Agp2pEnums.ProjectStatusEnum.BadDebtRepayComplete }
+                        Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.BadDebtRepayComplete }
                 },
             };
 
@@ -94,7 +92,7 @@ namespace Agp2p.Web.UI.Page
             {
                 projectName = ptr.li_projects.title,
                 investTime = ptr.create_time.ToString("yyyy-MM-dd HH:mm"),
-                investValue = ptr.value.ToString("c")
+                investValue = ptr.principal.ToString("c")
             });
             return JsonConvert.SerializeObject(result);
         }

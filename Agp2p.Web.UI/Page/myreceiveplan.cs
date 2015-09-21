@@ -142,7 +142,7 @@ namespace Agp2p.Web.UI.Page
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .GroupBy(inv => inv.li_projects)
-                .ToDictionary(g => g.Key, g => g.Sum(tr => tr.value));
+                .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
 
             return investedProjectValueMap.SelectMany(p =>
             {
@@ -320,7 +320,7 @@ namespace Agp2p.Web.UI.Page
                     ptr.investor == userId &&
                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .Sum(ptr => ptr.value);
+                .Sum(ptr => ptr.principal);
         }
 
         [WebMethod]
