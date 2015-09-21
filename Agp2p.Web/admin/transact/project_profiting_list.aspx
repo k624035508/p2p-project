@@ -47,8 +47,8 @@
     <td style="padding-left: 1em"><%# Container.ItemIndex + pageSize * (page - 1) + 1 %></td>
     <td ><%# Eval("dt_users.user_name")%></td>
     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum) Convert.ToByte(Eval("type"))) %></td>
-    <td><%# Convert.ToDecimal(Eval("value")).ToString("c") %></td>
-    <td><%# Convert.ToDecimal(Eval("repay_interest")).ToString("c")%></td>
+    <td><%# Convert.ToDecimal(Eval("principal")).ToString("c") %></td>
+    <td><%# Convert.ToDecimal(Eval("interest")).ToString("c")%></td>
     <td><%# Eval("create_time")%></td>
   </tr>
 </ItemTemplate>

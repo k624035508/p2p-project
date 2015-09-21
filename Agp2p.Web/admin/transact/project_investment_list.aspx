@@ -60,7 +60,7 @@
     <td ><%# Eval("dt_users.user_name")%></td>
     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum) Convert.ToByte(Eval("type"))) %></td>
     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionStatusEnum) Convert.ToByte(Eval("status"))) %></td>
-    <td><%# Convert.ToDecimal(Eval("value")).ToString("c") %></td>
+    <td><%# Convert.ToDecimal(Eval("principal")).ToString("c") %></td>
     <td><%# Eval("create_time")%></td>
     <td><a href="project_profiting_list.aspx?investor_id=<%# Eval("investor") %>&project_id=<%# Eval("project") %>"><%# queryProfitStatus((li_project_transactions)Container.DataItem)%></a></td>
     <td><asp:Button ID="btnRefund" runat="server" Text="退款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClientClick="return ExeNoCheckPostBack(this.name, '确认退款？');"
