@@ -2478,7 +2478,7 @@ namespace Agp2p.Web.tools
                 if (string.IsNullOrEmpty(userInvest.agree_no))
                     userInvest.agree_no = userInvest.create_time.ToString("yyMMddhhmmssss");
                 bodytxt = bodytxt.Replace("{agree_no}", userInvest.agree_no);
-                bodytxt = bodytxt.Replace("{project_amount}", userInvest.value.ToString("N"));
+                bodytxt = bodytxt.Replace("{project_amount}", userInvest.principal.ToString("N"));
 
                 context.Response.ContentType = "application/json";
                 var json = JsonConvert.SerializeObject(

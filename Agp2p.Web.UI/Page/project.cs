@@ -199,7 +199,7 @@ namespace Agp2p.Web.UI.Page
                         user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
                         user_id = pt.dt_users.id,
                         create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                        value = pt.value.ToString("c")
+                        value = pt.principal.ToString("c")
                     }).ToList();
             }
             count = project_transactions.Count;

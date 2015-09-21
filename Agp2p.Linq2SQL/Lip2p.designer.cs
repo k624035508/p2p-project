@@ -48,12 +48,6 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_invitations(li_invitations instance);
     partial void Updateli_invitations(li_invitations instance);
     partial void Deleteli_invitations(li_invitations instance);
-    partial void Insertli_project_transactions(li_project_transactions instance);
-    partial void Updateli_project_transactions(li_project_transactions instance);
-    partial void Deleteli_project_transactions(li_project_transactions instance);
-    partial void Insertli_repayment_tasks(li_repayment_tasks instance);
-    partial void Updateli_repayment_tasks(li_repayment_tasks instance);
-    partial void Deleteli_repayment_tasks(li_repayment_tasks instance);
     partial void Insertli_risk_mortgage(li_risk_mortgage instance);
     partial void Updateli_risk_mortgage(li_risk_mortgage instance);
     partial void Deleteli_risk_mortgage(li_risk_mortgage instance);
@@ -135,6 +129,12 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_albums(li_albums instance);
     partial void Updateli_albums(li_albums instance);
     partial void Deleteli_albums(li_albums instance);
+    partial void Insertli_repayment_tasks(li_repayment_tasks instance);
+    partial void Updateli_repayment_tasks(li_repayment_tasks instance);
+    partial void Deleteli_repayment_tasks(li_repayment_tasks instance);
+    partial void Insertli_project_transactions(li_project_transactions instance);
+    partial void Updateli_project_transactions(li_project_transactions instance);
+    partial void Deleteli_project_transactions(li_project_transactions instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -206,22 +206,6 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_invitations>();
-			}
-		}
-		
-		public System.Data.Linq.Table<li_project_transactions> li_project_transactions
-		{
-			get
-			{
-				return this.GetTable<li_project_transactions>();
-			}
-		}
-		
-		public System.Data.Linq.Table<li_repayment_tasks> li_repayment_tasks
-		{
-			get
-			{
-				return this.GetTable<li_repayment_tasks>();
 			}
 		}
 		
@@ -448,6 +432,22 @@ namespace Agp2p.Linq2SQL
 				return this.GetTable<li_albums>();
 			}
 		}
+		
+		public System.Data.Linq.Table<li_repayment_tasks> li_repayment_tasks
+		{
+			get
+			{
+				return this.GetTable<li_repayment_tasks>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_project_transactions> li_project_transactions
+		{
+			get
+			{
+				return this.GetTable<li_project_transactions>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_users")]
@@ -522,8 +522,6 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_invitations> _li_invitations1;
 		
-		private EntitySet<li_project_transactions> _li_project_transactions;
-		
 		private EntitySet<li_wallet_histories> _li_wallet_histories;
 		
 		private EntitySet<dt_user_code> _dt_user_code;
@@ -537,6 +535,8 @@ namespace Agp2p.Linq2SQL
 		private EntitySet<li_loaners> _li_loaners;
 		
 		private EntitySet<li_albums> _li_albums;
+		
+		private EntitySet<li_project_transactions> _li_project_transactions;
 		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
@@ -608,7 +608,6 @@ namespace Agp2p.Linq2SQL
 			this._li_creditors = default(EntityRef<li_creditors>);
 			this._li_invitations = default(EntityRef<li_invitations>);
 			this._li_invitations1 = new EntitySet<li_invitations>(new Action<li_invitations>(this.attach_li_invitations1), new Action<li_invitations>(this.detach_li_invitations1));
-			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_wallet_histories = new EntitySet<li_wallet_histories>(new Action<li_wallet_histories>(this.attach_li_wallet_histories), new Action<li_wallet_histories>(this.detach_li_wallet_histories));
 			this._dt_user_code = new EntitySet<dt_user_code>(new Action<dt_user_code>(this.attach_dt_user_code), new Action<dt_user_code>(this.detach_dt_user_code));
 			this._li_user_group_servers = default(EntityRef<li_user_group_servers>);
@@ -616,6 +615,7 @@ namespace Agp2p.Linq2SQL
 			this._dt_user_login_log = new EntitySet<dt_user_login_log>(new Action<dt_user_login_log>(this.attach_dt_user_login_log), new Action<dt_user_login_log>(this.detach_dt_user_login_log));
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
 			this._li_albums = new EntitySet<li_albums>(new Action<li_albums>(this.attach_li_albums), new Action<li_albums>(this.detach_li_albums));
+			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -1274,19 +1274,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_project_transactions", Storage="_li_project_transactions", ThisKey="id", OtherKey="investor")]
-		public EntitySet<li_project_transactions> li_project_transactions
-		{
-			get
-			{
-				return this._li_project_transactions;
-			}
-			set
-			{
-				this._li_project_transactions.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_wallet_histories", Storage="_li_wallet_histories", ThisKey="id", OtherKey="user_id")]
 		public EntitySet<li_wallet_histories> li_wallet_histories
 		{
@@ -1410,6 +1397,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_project_transactions", Storage="_li_project_transactions", ThisKey="id", OtherKey="investor")]
+		public EntitySet<li_project_transactions> li_project_transactions
+		{
+			get
+			{
+				return this._li_project_transactions;
+			}
+			set
+			{
+				this._li_project_transactions.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -1512,18 +1512,6 @@ namespace Agp2p.Linq2SQL
 			entity.dt_users1 = null;
 		}
 		
-		private void attach_li_project_transactions(li_project_transactions entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = this;
-		}
-		
-		private void detach_li_project_transactions(li_project_transactions entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = null;
-		}
-		
 		private void attach_li_wallet_histories(li_wallet_histories entity)
 		{
 			this.SendPropertyChanging();
@@ -1579,6 +1567,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_albums(li_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_li_project_transactions(li_project_transactions entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_li_project_transactions(li_project_transactions entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -3232,669 +3232,6 @@ namespace Agp2p.Linq2SQL
 						this._first_invest_transaction = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("li_project_transactions");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_project_transactions")]
-	public partial class li_project_transactions : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private int _investor;
-		
-		private int _project;
-		
-		private byte _type;
-		
-		private decimal _value;
-		
-		private System.Nullable<decimal> _repay_interest;
-		
-		private byte _status;
-		
-		private System.DateTime _create_time;
-		
-		private string _agree_no;
-		
-		private EntitySet<li_invitations> _li_invitations;
-		
-		private EntitySet<li_wallet_histories> _li_wallet_histories;
-		
-		private EntityRef<dt_users> _dt_users;
-		
-		private EntityRef<li_projects> _li_projects;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OninvestorChanging(int value);
-    partial void OninvestorChanged();
-    partial void OnprojectChanging(int value);
-    partial void OnprojectChanged();
-    partial void OntypeChanging(byte value);
-    partial void OntypeChanged();
-    partial void OnvalueChanging(decimal value);
-    partial void OnvalueChanged();
-    partial void Onrepay_interestChanging(System.Nullable<decimal> value);
-    partial void Onrepay_interestChanged();
-    partial void OnstatusChanging(byte value);
-    partial void OnstatusChanged();
-    partial void Oncreate_timeChanging(System.DateTime value);
-    partial void Oncreate_timeChanged();
-    partial void Onagree_noChanging(string value);
-    partial void Onagree_noChanged();
-    #endregion
-		
-		public li_project_transactions()
-		{
-			this._li_invitations = new EntitySet<li_invitations>(new Action<li_invitations>(this.attach_li_invitations), new Action<li_invitations>(this.detach_li_invitations));
-			this._li_wallet_histories = new EntitySet<li_wallet_histories>(new Action<li_wallet_histories>(this.attach_li_wallet_histories), new Action<li_wallet_histories>(this.detach_li_wallet_histories));
-			this._dt_users = default(EntityRef<dt_users>);
-			this._li_projects = default(EntityRef<li_projects>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_investor", DbType="Int NOT NULL")]
-		public int investor
-		{
-			get
-			{
-				return this._investor;
-			}
-			set
-			{
-				if ((this._investor != value))
-				{
-					if (this._dt_users.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OninvestorChanging(value);
-					this.SendPropertyChanging();
-					this._investor = value;
-					this.SendPropertyChanged("investor");
-					this.OninvestorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project", DbType="Int NOT NULL")]
-		public int project
-		{
-			get
-			{
-				return this._project;
-			}
-			set
-			{
-				if ((this._project != value))
-				{
-					if (this._li_projects.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnprojectChanging(value);
-					this.SendPropertyChanging();
-					this._project = value;
-					this.SendPropertyChanged("project");
-					this.OnprojectChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
-		public byte type
-		{
-			get
-			{
-				return this._type;
-			}
-			set
-			{
-				if ((this._type != value))
-				{
-					this.OntypeChanging(value);
-					this.SendPropertyChanging();
-					this._type = value;
-					this.SendPropertyChanged("type");
-					this.OntypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_value", DbType="Decimal(19,2) NOT NULL")]
-		public decimal value
-		{
-			get
-			{
-				return this._value;
-			}
-			set
-			{
-				if ((this._value != value))
-				{
-					this.OnvalueChanging(value);
-					this.SendPropertyChanging();
-					this._value = value;
-					this.SendPropertyChanged("value");
-					this.OnvalueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_interest", DbType="Decimal(9,2)")]
-		public System.Nullable<decimal> repay_interest
-		{
-			get
-			{
-				return this._repay_interest;
-			}
-			set
-			{
-				if ((this._repay_interest != value))
-				{
-					this.Onrepay_interestChanging(value);
-					this.SendPropertyChanging();
-					this._repay_interest = value;
-					this.SendPropertyChanged("repay_interest");
-					this.Onrepay_interestChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
-		public byte status
-		{
-			get
-			{
-				return this._status;
-			}
-			set
-			{
-				if ((this._status != value))
-				{
-					this.OnstatusChanging(value);
-					this.SendPropertyChanging();
-					this._status = value;
-					this.SendPropertyChanged("status");
-					this.OnstatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_create_time", DbType="DateTime NOT NULL")]
-		public System.DateTime create_time
-		{
-			get
-			{
-				return this._create_time;
-			}
-			set
-			{
-				if ((this._create_time != value))
-				{
-					this.Oncreate_timeChanging(value);
-					this.SendPropertyChanging();
-					this._create_time = value;
-					this.SendPropertyChanged("create_time");
-					this.Oncreate_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_agree_no", DbType="VarChar(50)")]
-		public string agree_no
-		{
-			get
-			{
-				return this._agree_no;
-			}
-			set
-			{
-				if ((this._agree_no != value))
-				{
-					this.Onagree_noChanging(value);
-					this.SendPropertyChanging();
-					this._agree_no = value;
-					this.SendPropertyChanged("agree_no");
-					this.Onagree_noChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_invitations", Storage="_li_invitations", ThisKey="id", OtherKey="first_invest_transaction")]
-		public EntitySet<li_invitations> li_invitations
-		{
-			get
-			{
-				return this._li_invitations;
-			}
-			set
-			{
-				this._li_invitations.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_wallet_histories", Storage="_li_wallet_histories", ThisKey="id", OtherKey="project_transaction")]
-		public EntitySet<li_wallet_histories> li_wallet_histories
-		{
-			get
-			{
-				return this._li_wallet_histories;
-			}
-			set
-			{
-				this._li_wallet_histories.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_project_transactions", Storage="_dt_users", ThisKey="investor", OtherKey="id", IsForeignKey=true)]
-		public dt_users dt_users
-		{
-			get
-			{
-				return this._dt_users.Entity;
-			}
-			set
-			{
-				dt_users previousValue = this._dt_users.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_users.Entity = null;
-						previousValue.li_project_transactions.Remove(this);
-					}
-					this._dt_users.Entity = value;
-					if ((value != null))
-					{
-						value.li_project_transactions.Add(this);
-						this._investor = value.id;
-					}
-					else
-					{
-						this._investor = default(int);
-					}
-					this.SendPropertyChanged("dt_users");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_project_transactions", Storage="_li_projects", ThisKey="project", OtherKey="id", IsForeignKey=true)]
-		public li_projects li_projects
-		{
-			get
-			{
-				return this._li_projects.Entity;
-			}
-			set
-			{
-				li_projects previousValue = this._li_projects.Entity;
-				if (((previousValue != value) 
-							|| (this._li_projects.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_projects.Entity = null;
-						previousValue.li_project_transactions.Remove(this);
-					}
-					this._li_projects.Entity = value;
-					if ((value != null))
-					{
-						value.li_project_transactions.Add(this);
-						this._project = value.id;
-					}
-					else
-					{
-						this._project = default(int);
-					}
-					this.SendPropertyChanged("li_projects");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_li_invitations(li_invitations entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_project_transactions = this;
-		}
-		
-		private void detach_li_invitations(li_invitations entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_project_transactions = null;
-		}
-		
-		private void attach_li_wallet_histories(li_wallet_histories entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_project_transactions = this;
-		}
-		
-		private void detach_li_wallet_histories(li_wallet_histories entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_project_transactions = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_repayment_tasks")]
-	public partial class li_repayment_tasks : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private int _project;
-		
-		private short _term;
-		
-		private decimal _repay_interest;
-		
-		private decimal _repay_principal;
-		
-		private System.DateTime _should_repay_time;
-		
-		private System.Nullable<System.DateTime> _repay_at;
-		
-		private byte _status;
-		
-		private EntityRef<li_projects> _li_projects;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnprojectChanging(int value);
-    partial void OnprojectChanged();
-    partial void OntermChanging(short value);
-    partial void OntermChanged();
-    partial void Onrepay_interestChanging(decimal value);
-    partial void Onrepay_interestChanged();
-    partial void Onrepay_principalChanging(decimal value);
-    partial void Onrepay_principalChanged();
-    partial void Onshould_repay_timeChanging(System.DateTime value);
-    partial void Onshould_repay_timeChanged();
-    partial void Onrepay_atChanging(System.Nullable<System.DateTime> value);
-    partial void Onrepay_atChanged();
-    partial void OnstatusChanging(byte value);
-    partial void OnstatusChanged();
-    #endregion
-		
-		public li_repayment_tasks()
-		{
-			this._li_projects = default(EntityRef<li_projects>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project", DbType="Int NOT NULL")]
-		public int project
-		{
-			get
-			{
-				return this._project;
-			}
-			set
-			{
-				if ((this._project != value))
-				{
-					if (this._li_projects.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnprojectChanging(value);
-					this.SendPropertyChanging();
-					this._project = value;
-					this.SendPropertyChanged("project");
-					this.OnprojectChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_term", DbType="SmallInt NOT NULL")]
-		public short term
-		{
-			get
-			{
-				return this._term;
-			}
-			set
-			{
-				if ((this._term != value))
-				{
-					this.OntermChanging(value);
-					this.SendPropertyChanging();
-					this._term = value;
-					this.SendPropertyChanged("term");
-					this.OntermChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_interest", DbType="Decimal(9,2) NOT NULL")]
-		public decimal repay_interest
-		{
-			get
-			{
-				return this._repay_interest;
-			}
-			set
-			{
-				if ((this._repay_interest != value))
-				{
-					this.Onrepay_interestChanging(value);
-					this.SendPropertyChanging();
-					this._repay_interest = value;
-					this.SendPropertyChanged("repay_interest");
-					this.Onrepay_interestChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_principal", DbType="Decimal(19,2) NOT NULL")]
-		public decimal repay_principal
-		{
-			get
-			{
-				return this._repay_principal;
-			}
-			set
-			{
-				if ((this._repay_principal != value))
-				{
-					this.Onrepay_principalChanging(value);
-					this.SendPropertyChanging();
-					this._repay_principal = value;
-					this.SendPropertyChanged("repay_principal");
-					this.Onrepay_principalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_should_repay_time", DbType="DateTime NOT NULL")]
-		public System.DateTime should_repay_time
-		{
-			get
-			{
-				return this._should_repay_time;
-			}
-			set
-			{
-				if ((this._should_repay_time != value))
-				{
-					this.Onshould_repay_timeChanging(value);
-					this.SendPropertyChanging();
-					this._should_repay_time = value;
-					this.SendPropertyChanged("should_repay_time");
-					this.Onshould_repay_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_at", DbType="DateTime")]
-		public System.Nullable<System.DateTime> repay_at
-		{
-			get
-			{
-				return this._repay_at;
-			}
-			set
-			{
-				if ((this._repay_at != value))
-				{
-					this.Onrepay_atChanging(value);
-					this.SendPropertyChanging();
-					this._repay_at = value;
-					this.SendPropertyChanged("repay_at");
-					this.Onrepay_atChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
-		public byte status
-		{
-			get
-			{
-				return this._status;
-			}
-			set
-			{
-				if ((this._status != value))
-				{
-					this.OnstatusChanging(value);
-					this.SendPropertyChanging();
-					this._status = value;
-					this.SendPropertyChanged("status");
-					this.OnstatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_repayment_tasks", Storage="_li_projects", ThisKey="project", OtherKey="id", IsForeignKey=true)]
-		public li_projects li_projects
-		{
-			get
-			{
-				return this._li_projects.Entity;
-			}
-			set
-			{
-				li_projects previousValue = this._li_projects.Entity;
-				if (((previousValue != value) 
-							|| (this._li_projects.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_projects.Entity = null;
-						previousValue.li_repayment_tasks.Remove(this);
-					}
-					this._li_projects.Entity = value;
-					if ((value != null))
-					{
-						value.li_repayment_tasks.Add(this);
-						this._project = value.id;
-					}
-					else
-					{
-						this._project = default(int);
-					}
-					this.SendPropertyChanged("li_projects");
 				}
 			}
 		}
@@ -10457,9 +9794,9 @@ namespace Agp2p.Linq2SQL
 		
 		private string _seo_description;
 		
-		private EntitySet<li_project_transactions> _li_project_transactions;
-		
 		private EntitySet<li_repayment_tasks> _li_repayment_tasks;
+		
+		private EntitySet<li_project_transactions> _li_project_transactions;
 		
 		private EntityRef<li_risks> _li_risks;
 		
@@ -10527,8 +9864,8 @@ namespace Agp2p.Linq2SQL
 		
 		public li_projects()
 		{
-			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_repayment_tasks = new EntitySet<li_repayment_tasks>(new Action<li_repayment_tasks>(this.attach_li_repayment_tasks), new Action<li_repayment_tasks>(this.detach_li_repayment_tasks));
+			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_risks = default(EntityRef<li_risks>);
 			OnCreated();
 		}
@@ -11097,19 +10434,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_project_transactions", Storage="_li_project_transactions", ThisKey="id", OtherKey="project")]
-		public EntitySet<li_project_transactions> li_project_transactions
-		{
-			get
-			{
-				return this._li_project_transactions;
-			}
-			set
-			{
-				this._li_project_transactions.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_repayment_tasks", Storage="_li_repayment_tasks", ThisKey="id", OtherKey="project")]
 		public EntitySet<li_repayment_tasks> li_repayment_tasks
 		{
@@ -11120,6 +10444,19 @@ namespace Agp2p.Linq2SQL
 			set
 			{
 				this._li_repayment_tasks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_project_transactions", Storage="_li_project_transactions", ThisKey="id", OtherKey="project")]
+		public EntitySet<li_project_transactions> li_project_transactions
+		{
+			get
+			{
+				return this._li_project_transactions;
+			}
+			set
+			{
+				this._li_project_transactions.Assign(value);
 			}
 		}
 		
@@ -11177,18 +10514,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		private void attach_li_project_transactions(li_project_transactions entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_projects = this;
-		}
-		
-		private void detach_li_project_transactions(li_project_transactions entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_projects = null;
-		}
-		
 		private void attach_li_repayment_tasks(li_repayment_tasks entity)
 		{
 			this.SendPropertyChanging();
@@ -11196,6 +10521,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_repayment_tasks(li_repayment_tasks entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_projects = null;
+		}
+		
+		private void attach_li_project_transactions(li_project_transactions entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_projects = this;
+		}
+		
+		private void detach_li_project_transactions(li_project_transactions entity)
 		{
 			this.SendPropertyChanging();
 			entity.li_projects = null;
@@ -13272,6 +12609,693 @@ namespace Agp2p.Linq2SQL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_repayment_tasks")]
+	public partial class li_repayment_tasks : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _project;
+		
+		private short _term;
+		
+		private decimal _repay_interest;
+		
+		private decimal _repay_principal;
+		
+		private System.DateTime _should_repay_time;
+		
+		private System.Nullable<System.DateTime> _repay_at;
+		
+		private byte _status;
+		
+		private System.Nullable<decimal> _prepay;
+		
+		private EntityRef<li_projects> _li_projects;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnprojectChanging(int value);
+    partial void OnprojectChanged();
+    partial void OntermChanging(short value);
+    partial void OntermChanged();
+    partial void Onrepay_interestChanging(decimal value);
+    partial void Onrepay_interestChanged();
+    partial void Onrepay_principalChanging(decimal value);
+    partial void Onrepay_principalChanged();
+    partial void Onshould_repay_timeChanging(System.DateTime value);
+    partial void Onshould_repay_timeChanged();
+    partial void Onrepay_atChanging(System.Nullable<System.DateTime> value);
+    partial void Onrepay_atChanged();
+    partial void OnstatusChanging(byte value);
+    partial void OnstatusChanged();
+    partial void OnprepayChanging(System.Nullable<decimal> value);
+    partial void OnprepayChanged();
+    #endregion
+		
+		public li_repayment_tasks()
+		{
+			this._li_projects = default(EntityRef<li_projects>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project", DbType="Int NOT NULL")]
+		public int project
+		{
+			get
+			{
+				return this._project;
+			}
+			set
+			{
+				if ((this._project != value))
+				{
+					if (this._li_projects.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnprojectChanging(value);
+					this.SendPropertyChanging();
+					this._project = value;
+					this.SendPropertyChanged("project");
+					this.OnprojectChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_term", DbType="SmallInt NOT NULL")]
+		public short term
+		{
+			get
+			{
+				return this._term;
+			}
+			set
+			{
+				if ((this._term != value))
+				{
+					this.OntermChanging(value);
+					this.SendPropertyChanging();
+					this._term = value;
+					this.SendPropertyChanged("term");
+					this.OntermChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_interest", DbType="Decimal(9,2) NOT NULL")]
+		public decimal repay_interest
+		{
+			get
+			{
+				return this._repay_interest;
+			}
+			set
+			{
+				if ((this._repay_interest != value))
+				{
+					this.Onrepay_interestChanging(value);
+					this.SendPropertyChanging();
+					this._repay_interest = value;
+					this.SendPropertyChanged("repay_interest");
+					this.Onrepay_interestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_principal", DbType="Decimal(19,2) NOT NULL")]
+		public decimal repay_principal
+		{
+			get
+			{
+				return this._repay_principal;
+			}
+			set
+			{
+				if ((this._repay_principal != value))
+				{
+					this.Onrepay_principalChanging(value);
+					this.SendPropertyChanging();
+					this._repay_principal = value;
+					this.SendPropertyChanged("repay_principal");
+					this.Onrepay_principalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_should_repay_time", DbType="DateTime NOT NULL")]
+		public System.DateTime should_repay_time
+		{
+			get
+			{
+				return this._should_repay_time;
+			}
+			set
+			{
+				if ((this._should_repay_time != value))
+				{
+					this.Onshould_repay_timeChanging(value);
+					this.SendPropertyChanging();
+					this._should_repay_time = value;
+					this.SendPropertyChanged("should_repay_time");
+					this.Onshould_repay_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_repay_at", DbType="DateTime")]
+		public System.Nullable<System.DateTime> repay_at
+		{
+			get
+			{
+				return this._repay_at;
+			}
+			set
+			{
+				if ((this._repay_at != value))
+				{
+					this.Onrepay_atChanging(value);
+					this.SendPropertyChanging();
+					this._repay_at = value;
+					this.SendPropertyChanged("repay_at");
+					this.Onrepay_atChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
+		public byte status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_prepay", DbType="Decimal(19,2)")]
+		public System.Nullable<decimal> prepay
+		{
+			get
+			{
+				return this._prepay;
+			}
+			set
+			{
+				if ((this._prepay != value))
+				{
+					this.OnprepayChanging(value);
+					this.SendPropertyChanging();
+					this._prepay = value;
+					this.SendPropertyChanged("prepay");
+					this.OnprepayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_repayment_tasks", Storage="_li_projects", ThisKey="project", OtherKey="id", IsForeignKey=true)]
+		public li_projects li_projects
+		{
+			get
+			{
+				return this._li_projects.Entity;
+			}
+			set
+			{
+				li_projects previousValue = this._li_projects.Entity;
+				if (((previousValue != value) 
+							|| (this._li_projects.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_projects.Entity = null;
+						previousValue.li_repayment_tasks.Remove(this);
+					}
+					this._li_projects.Entity = value;
+					if ((value != null))
+					{
+						value.li_repayment_tasks.Add(this);
+						this._project = value.id;
+					}
+					else
+					{
+						this._project = default(int);
+					}
+					this.SendPropertyChanged("li_projects");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_project_transactions")]
+	public partial class li_project_transactions : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _investor;
+		
+		private int _project;
+		
+		private byte _type;
+		
+		private decimal _principal;
+		
+		private System.Nullable<decimal> _interest;
+		
+		private byte _status;
+		
+		private System.DateTime _create_time;
+		
+		private string _agree_no;
+		
+		private EntitySet<li_invitations> _li_invitations;
+		
+		private EntitySet<li_wallet_histories> _li_wallet_histories;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+		private EntityRef<li_projects> _li_projects;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OninvestorChanging(int value);
+    partial void OninvestorChanged();
+    partial void OnprojectChanging(int value);
+    partial void OnprojectChanged();
+    partial void OntypeChanging(byte value);
+    partial void OntypeChanged();
+    partial void OnprincipalChanging(decimal value);
+    partial void OnprincipalChanged();
+    partial void OninterestChanging(System.Nullable<decimal> value);
+    partial void OninterestChanged();
+    partial void OnstatusChanging(byte value);
+    partial void OnstatusChanged();
+    partial void Oncreate_timeChanging(System.DateTime value);
+    partial void Oncreate_timeChanged();
+    partial void Onagree_noChanging(string value);
+    partial void Onagree_noChanged();
+    #endregion
+		
+		public li_project_transactions()
+		{
+			this._li_invitations = new EntitySet<li_invitations>(new Action<li_invitations>(this.attach_li_invitations), new Action<li_invitations>(this.detach_li_invitations));
+			this._li_wallet_histories = new EntitySet<li_wallet_histories>(new Action<li_wallet_histories>(this.attach_li_wallet_histories), new Action<li_wallet_histories>(this.detach_li_wallet_histories));
+			this._dt_users = default(EntityRef<dt_users>);
+			this._li_projects = default(EntityRef<li_projects>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_investor", DbType="Int NOT NULL")]
+		public int investor
+		{
+			get
+			{
+				return this._investor;
+			}
+			set
+			{
+				if ((this._investor != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OninvestorChanging(value);
+					this.SendPropertyChanging();
+					this._investor = value;
+					this.SendPropertyChanged("investor");
+					this.OninvestorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project", DbType="Int NOT NULL")]
+		public int project
+		{
+			get
+			{
+				return this._project;
+			}
+			set
+			{
+				if ((this._project != value))
+				{
+					if (this._li_projects.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnprojectChanging(value);
+					this.SendPropertyChanging();
+					this._project = value;
+					this.SendPropertyChanged("project");
+					this.OnprojectChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
+		public byte type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_principal", DbType="Decimal(19,2) NOT NULL")]
+		public decimal principal
+		{
+			get
+			{
+				return this._principal;
+			}
+			set
+			{
+				if ((this._principal != value))
+				{
+					this.OnprincipalChanging(value);
+					this.SendPropertyChanging();
+					this._principal = value;
+					this.SendPropertyChanged("principal");
+					this.OnprincipalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_interest", DbType="Decimal(9,2)")]
+		public System.Nullable<decimal> interest
+		{
+			get
+			{
+				return this._interest;
+			}
+			set
+			{
+				if ((this._interest != value))
+				{
+					this.OninterestChanging(value);
+					this.SendPropertyChanging();
+					this._interest = value;
+					this.SendPropertyChanged("interest");
+					this.OninterestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="TinyInt NOT NULL")]
+		public byte status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_create_time", DbType="DateTime NOT NULL")]
+		public System.DateTime create_time
+		{
+			get
+			{
+				return this._create_time;
+			}
+			set
+			{
+				if ((this._create_time != value))
+				{
+					this.Oncreate_timeChanging(value);
+					this.SendPropertyChanging();
+					this._create_time = value;
+					this.SendPropertyChanged("create_time");
+					this.Oncreate_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_agree_no", DbType="VarChar(50)")]
+		public string agree_no
+		{
+			get
+			{
+				return this._agree_no;
+			}
+			set
+			{
+				if ((this._agree_no != value))
+				{
+					this.Onagree_noChanging(value);
+					this.SendPropertyChanging();
+					this._agree_no = value;
+					this.SendPropertyChanged("agree_no");
+					this.Onagree_noChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_invitations", Storage="_li_invitations", ThisKey="id", OtherKey="first_invest_transaction")]
+		public EntitySet<li_invitations> li_invitations
+		{
+			get
+			{
+				return this._li_invitations;
+			}
+			set
+			{
+				this._li_invitations.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_wallet_histories", Storage="_li_wallet_histories", ThisKey="id", OtherKey="project_transaction")]
+		public EntitySet<li_wallet_histories> li_wallet_histories
+		{
+			get
+			{
+				return this._li_wallet_histories;
+			}
+			set
+			{
+				this._li_wallet_histories.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_project_transactions", Storage="_dt_users", ThisKey="investor", OtherKey="id", IsForeignKey=true)]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.li_project_transactions.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.li_project_transactions.Add(this);
+						this._investor = value.id;
+					}
+					else
+					{
+						this._investor = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_project_transactions", Storage="_li_projects", ThisKey="project", OtherKey="id", IsForeignKey=true)]
+		public li_projects li_projects
+		{
+			get
+			{
+				return this._li_projects.Entity;
+			}
+			set
+			{
+				li_projects previousValue = this._li_projects.Entity;
+				if (((previousValue != value) 
+							|| (this._li_projects.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_projects.Entity = null;
+						previousValue.li_project_transactions.Remove(this);
+					}
+					this._li_projects.Entity = value;
+					if ((value != null))
+					{
+						value.li_project_transactions.Add(this);
+						this._project = value.id;
+					}
+					else
+					{
+						this._project = default(int);
+					}
+					this.SendPropertyChanged("li_projects");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_li_invitations(li_invitations entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_project_transactions = this;
+		}
+		
+		private void detach_li_invitations(li_invitations entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_project_transactions = null;
+		}
+		
+		private void attach_li_wallet_histories(li_wallet_histories entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_project_transactions = this;
+		}
+		
+		private void detach_li_wallet_histories(li_wallet_histories entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_project_transactions = null;
 		}
 	}
 }

@@ -249,7 +249,7 @@ namespace Agp2p.Web.admin.users
                     tr =>
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                         tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.create_time.Date == DateTime.Now.Date).Sum(t => t.value);
+                        tr.create_time.Date == DateTime.Now.Date).Sum(t => t.principal);
         }
 
         protected void btnExportExcel_Click(object sender, EventArgs e)

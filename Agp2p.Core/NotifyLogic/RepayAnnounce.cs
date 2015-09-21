@@ -34,7 +34,7 @@ namespace Agp2p.Core.NotifyLogic
                     try
                     {
                         //找出模板
-                        var smsModel = 0 < t.value
+                        var smsModel = 0 < t.principal
                             ? context.dt_sms_template.SingleOrDefault(te => te.call_index == "user_repay_all_info")
                             : context.dt_sms_template.SingleOrDefault(te => te.call_index == "user_repay_info");
                         if (smsModel == null) throw new InvalidOperationException("找不到模板");
@@ -43,7 +43,7 @@ namespace Agp2p.Core.NotifyLogic
                         var msgContent = smsModel.content
                             .Replace("{user_name}", t.dt_users.user_name)
                             .Replace("{project_name}", t.li_projects.title)
-                            .Replace("{amount}", (t.value + t.repay_interest).ToString());
+                            .Replace("{amount}", (t.principal + t.interest).ToString());
                         var errorMsg = string.Empty;
                         if (Utils.IsDebugging())
                         {
@@ -65,7 +65,7 @@ namespace Agp2p.Core.NotifyLogic
                             title = "项目还款",
                             content = string.Format("您的投标“{0}”已还款，共{1}元，详情请到“我的投资”中查询，欢迎续投！",
                                 t.li_projects.title,
-                                (t.value + t.repay_interest).ToString()),
+                                (t.principal + t.interest).ToString()),
                             post_time = t.create_time
                         };
                         context.dt_user_message.InsertOnSubmit(userMsg);

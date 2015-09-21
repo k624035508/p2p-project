@@ -95,17 +95,12 @@ namespace Agp2p.Common
 
             // 还款中
             [Description("还款中")]
-            ProjectRepaying = 30,
-            /// <summary>
-            /// 到期未还款完成 等待决定是否垫付
-            /// </summary>
-            [Description("逾期未还")]
-            NotRepayCompleteIntime = 31,
+            ProjectRepaying = 30, // 根据 还款计划 判断是否逾期未还，再决定是否垫付
             /// <summary>
             /// 逾期的借款最后完成都视为坏账
             /// </summary>
             [Description("坏账")]
-            BadDebt = 32,
+            BadDebt = 31,
 
             // 还款完成
             /// <summary>
@@ -118,12 +113,8 @@ namespace Agp2p.Common
             /// </summary>
             [Description("提前还款")]
             RepayCompleteEarlier = 41,
-            [Description("到期未还款已垫付")]
-            AdvancePayForFinancer = 42,
-            [Description("垫付后还款完成")]
-            RepayCompleteDelay = 43,
             [Description("坏账后还款完成")]
-            BadDebtRepayComplete = 44,
+            BadDebtRepayComplete = 42,
         }
 
         /// <summary>

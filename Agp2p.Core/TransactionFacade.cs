@@ -318,7 +318,7 @@ namespace Agp2p.Core
                 investor = userId,
                 project = projectId,
                 type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
-                value = investingMoney,
+                principal = investingMoney,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                 create_time = wallet.last_update_time // 时间应该一致
             };
@@ -464,7 +464,7 @@ namespace Agp2p.Core
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                     .ToLookup(tr => tr.investor);
             // 计算出每个用户的投资占比
-            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key, records => records.Sum(tr => tr.value) / project.investment_amount); // 公式：用户投资总额 / 项目投资总额
+            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key, records => records.Sum(tr => tr.principal) / project.investment_amount); // 公式：用户投资总额 / 项目投资总额
 
             var wallets = context.li_wallets.Where(w => moneyRepayRatio.Keys.Contains(w.user_id)).ToList();
 
@@ -583,20 +583,20 @@ namespace Agp2p.Core
         {
             if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor)
             {
-                if (ptr.value != 0 && ptr.repay_interest != 0)
+                if (ptr.principal != 0 && ptr.interest != 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest;
-                else if (ptr.value == 0)
+                else if (ptr.principal == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest;
-                else if (ptr.repay_interest == 0)
+                else if (ptr.interest == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal;
             }
             else if (ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.LoanerRepay)
             {
-                if (ptr.value != 0 && ptr.repay_interest != 0)
+                if (ptr.principal != 0 && ptr.interest != 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipalAndInterest;
-                else if (ptr.value == 0)
+                else if (ptr.principal == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayInterest;
-                else if (ptr.repay_interest == 0)
+                else if (ptr.interest == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipal;
             }
             throw new Exception("还款状态异常");
@@ -625,10 +625,10 @@ namespace Agp2p.Core
             {
                 // 增加钱包空闲金额与减去待收本金和待收利润
                 var wallet = ptr.dt_users.li_wallets;
-                wallet.idle_money += ptr.repay_interest.GetValueOrDefault(0) + ptr.value;
-                wallet.investing_money -= ptr.value;
-                wallet.profiting_money -= ptr.repay_interest.GetValueOrDefault(0);
-                wallet.total_profit += ptr.repay_interest.GetValueOrDefault(0);
+                wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
+                wallet.investing_money -= ptr.principal;
+                wallet.profiting_money -= ptr.interest.GetValueOrDefault(0);
+                wallet.total_profit += ptr.interest.GetValueOrDefault(0);
                 wallet.last_update_time = ptr.create_time;
 
                 // 添加钱包历史
@@ -668,7 +668,7 @@ namespace Agp2p.Core
                     .ToLookup(tr => tr.dt_users);
             // 计算出每个用户的投资占比
             var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
-                records => records.Sum(tr => tr.value)/repaymentTask.li_projects.investment_amount); // 公式：用户投资总额 / 项目投资总额
+                records => records.Sum(tr => tr.principal)/repaymentTask.li_projects.investment_amount); // 公式：用户投资总额 / 项目投资总额
 
             return moneyRepayRatio.Select(r => new li_project_transactions
             {
@@ -677,8 +677,8 @@ namespace Agp2p.Core
                 project = repaymentTask.project,
                 dt_users = r.Key,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                value = Math.Round(r.Value*repaymentTask.repay_principal, 2),
-                repay_interest = Math.Round(r.Value*repaymentTask.repay_interest, 2)
+                principal = Math.Round(r.Value*repaymentTask.repay_principal, 2),
+                interest = Math.Round(r.Value*repaymentTask.repay_interest, 2)
             }).ToList();
         }
 
@@ -699,13 +699,13 @@ namespace Agp2p.Core
             tr.status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
 
             // 修改项目已投资金额
-            tr.li_projects.investment_amount -= tr.value;
+            tr.li_projects.investment_amount -= tr.principal;
 
             // 更改钱包金额
             var wallet = context.li_wallets.Single(w => w.user_id == tr.investor);
 
             // 如果项目已经满标再撤销，就需要减掉 待收利润；满标前撤销的话待收利润未计算，所以不用减
-            var investedMoney = tr.value;
+            var investedMoney = tr.principal;
             wallet.idle_money += investedMoney;
             wallet.investing_money -= investedMoney;
             wallet.total_investment -= investedMoney;
@@ -794,7 +794,7 @@ namespace Agp2p.Core
                 r =>
                     r.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success && r.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     now.AddDays(-inDaysEarlier).Date <= r.create_time.Date && now.Date > r.create_time.Date)
-                .Select(r => r.value).AsEnumerable().DefaultIfEmpty(0).Sum();
+                .Select(r => r.principal).AsEnumerable().DefaultIfEmpty(0).Sum();
         }
 
         /// <summary>
@@ -821,8 +821,8 @@ namespace Agp2p.Core
                         receivedPrincipal = profited = null;
                         break;
                     default:
-                        receivedPrincipal = his.li_project_transactions.value;
-                        profited = his.li_project_transactions.repay_interest;
+                        receivedPrincipal = his.li_project_transactions.principal;
+                        profited = his.li_project_transactions.interest;
                         break;
                 }
                 return callback(receivedPrincipal, profited);
@@ -889,7 +889,7 @@ namespace Agp2p.Core
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess) // 项目满标不显示支出
                     return null;
                 return his.li_project_transactions.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                    ? his.li_project_transactions.value // 投资
+                    ? his.li_project_transactions.principal // 投资
                     : (decimal?)null;
             }
             // 活动扣除

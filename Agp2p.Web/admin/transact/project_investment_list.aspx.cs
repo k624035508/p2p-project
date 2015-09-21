@@ -84,8 +84,8 @@ namespace Agp2p.Web.admin.transact
             var profits = context.li_project_transactions.Where(
                 a =>
                     a.project == tr.project && a.investor == tr.investor &&
-                    (a.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor && 0 < a.repay_interest))
-                .Select(t => t.repay_interest.Value)
+                    (a.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor && 0 < a.interest))
+                .Select(t => t.interest.Value)
                 .ToList();
             return string.Format("收益 {0} 次，共 {1} 元", profits.Count, profits.Sum().ToString("c"));
         }
@@ -96,7 +96,7 @@ namespace Agp2p.Web.admin.transact
             {
                 int projectTransactionId = Convert.ToInt32(((Button)sender).CommandArgument);
                 var bt = context.Refund(projectTransactionId);
-                var remark = "撤销投资成功, 涉及金额: " + bt.value;
+                var remark = "撤销投资成功, 涉及金额: " + bt.principal;
                 AddAdminLog(DTEnums.ActionEnum.Cancel.ToString(), remark); //记录日志
                 JscriptMsg(remark, Utils.CombUrlTxt("project_investment_list.aspx", "project_id={0}", project_id), "Success");
             }

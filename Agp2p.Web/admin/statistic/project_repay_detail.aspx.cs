@@ -147,15 +147,15 @@ namespace Agp2p.Web.admin.statistic
                                     t.investor == tr.investor &&
                                     t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                     t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                                .Select(t => t.value).AsEnumerable().Sum(), // 反查总投资金额
+                                .Select(t => t.principal).AsEnumerable().Sum(), // 反查总投资金额
                             InvestTime =
                                 pro.li_project_transactions.Last(t => t.investor == tr.investor &&
                                                                       t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                                                       t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                                     .create_time.ToString(), // 用最后一次的投资时间作为呈现的时间
-                            RepayPrincipal = tr.value,
-                            RepayInterest = tr.repay_interest.GetValueOrDefault(0),
-                            RepayTotal = (tr.value + tr.repay_interest.GetValueOrDefault(0)),
+                            RepayPrincipal = tr.principal,
+                            RepayInterest = tr.interest.GetValueOrDefault(0),
+                            RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0)),
                         }).ToList();
 
                         repaymentDetails.First().RepaymentTask = new RepaymentTaskDetail
@@ -265,7 +265,7 @@ namespace Agp2p.Web.admin.statistic
                     t.project == tr.project && t.investor == tr.investor &&
                     t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .Select(t => t.value)
+                .Select(t => t.principal)
                 .AsEnumerable()
                 .Sum();
         }

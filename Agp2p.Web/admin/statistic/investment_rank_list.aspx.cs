@@ -107,7 +107,7 @@ namespace Agp2p.Web.admin.statistic
                         t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                 .Where(t => startTime == null || startTime <= t.create_time)
                 .Where(t => endTime == null || t.create_time <= endTime)
-                .Select(t => t.value).AsEnumerable().DefaultIfEmpty(0).Sum();
+                .Select(t => t.principal).AsEnumerable().DefaultIfEmpty(0).Sum();
         }
 
         protected static decimal QueryInviteeInvestmentSum(dt_users user, DateTime? startTime, DateTime? endTime)
@@ -118,7 +118,7 @@ namespace Agp2p.Web.admin.statistic
                     i.li_project_transactions.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .Where(i => startTime == null || startTime <= i.dt_users.reg_time)
                 .Where(i => endTime == null || i.dt_users.reg_time <= endTime)
-                .Select(i => i.li_project_transactions.value).AsEnumerable()
+                .Select(i => i.li_project_transactions.principal).AsEnumerable()
                 .DefaultIfEmpty(0)
                 .Sum();
         }

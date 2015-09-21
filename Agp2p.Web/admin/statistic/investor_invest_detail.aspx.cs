@@ -116,14 +116,14 @@ namespace Agp2p.Web.admin.statistic
                         ? proj.profit_rate = // cache in project rate for 小计
                             TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span, proj.repayment_term_span_count)
                         : proj.profit_rate;
-                    var repayTotal = Math.Round(tr.value*profitRate, 2);
+                    var repayTotal = Math.Round(tr.principal*profitRate, 2);
                     return new InvestorInvestDetail
                     {
                         Index = (index++).ToString(),
                         InvestorRealName = g.Key.real_name,
                         InvestorUserName = g.Key.user_name,
                         InvestTime = tr.create_time,
-                        InvestValue = tr.value,
+                        InvestValue = tr.principal,
                         ProfitRateYear = proj.profit_rate_year.ToString(),
                         ProjectCompleteTime =
                             proj.invest_complete_time == null
@@ -133,13 +133,13 @@ namespace Agp2p.Web.admin.statistic
                         ProjectName = proj.title,
                         Term = proj.repayment_term_span_count + Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span),
                         RepayTotal = repayTotal,
-                        Total = tr.value + repayTotal
+                        Total = tr.principal + repayTotal
                     };
                 });
                 return investorInvestDetails.Concat(Enumerable.Range(0, 1).Select(i =>
                 {
-                    var investSum = g.Sum(tr => tr.value);
-                    var profitSum = g.Sum(tr => Math.Round(tr.value*tr.li_projects.profit_rate, 2));
+                    var investSum = g.Sum(tr => tr.principal);
+                    var profitSum = g.Sum(tr => Math.Round(tr.principal*tr.li_projects.profit_rate, 2));
                     return new InvestorInvestDetail
                     {
                         InvestorUserName = "小计",
@@ -151,7 +151,7 @@ namespace Agp2p.Web.admin.statistic
             });
             return withSum.Concat(Enumerable.Range(0, 1).Select(i =>
             {
-                var investSum = qu.Sum(g => g.Sum(tr => tr.value));
+                var investSum = qu.Sum(g => g.Sum(tr => tr.principal));
                 var profitSum = qu.AsEnumerable().Sum(g =>
                 {
                     return g.Sum(tr =>
@@ -160,7 +160,7 @@ namespace Agp2p.Web.admin.statistic
                         var profitRate = proj.invest_complete_time == null
                             ? TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span, proj.repayment_term_span_count)
                             : proj.profit_rate;
-                        return Math.Round(tr.value*profitRate, 2);
+                        return Math.Round(tr.principal*profitRate, 2);
                     });
                 });
                 return new InvestorInvestDetail
