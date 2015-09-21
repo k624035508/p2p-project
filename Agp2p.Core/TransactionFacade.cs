@@ -362,7 +362,7 @@ namespace Agp2p.Core
                 ? Agp2pEnums.ProjectStatusEnum.FinancingTimeout
                 : Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
 
-            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || project.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject) // 体验标的截标
+            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
             {
                 var now = DateTime.Now;
                 project.invest_complete_time = now;

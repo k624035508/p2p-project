@@ -23,7 +23,7 @@ namespace Agp2p.Web.UI
             //var categoryList = get_category_list(channel_name, 0);
             var query =
                 context.li_projects.Where(p => p.status >= (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime)
-                    .Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial && p.tag != (int) Agp2pEnums.ProjectTagEnum.DailyProject);
+                    .Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
             if (category_id > 0)
                 query = query.Where(p => p.category_id == category_id);
             //项目筛选暂写死逻辑在此
