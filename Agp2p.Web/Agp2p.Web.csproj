@@ -640,6 +640,17 @@
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
+    <Content Include="templates\AnGuang\imgs\register\account.png" />
+    <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
+    <Content Include="templates\AnGuang\imgs\register\error.png" />
+    <Content Include="templates\AnGuang\imgs\register\pic-code.png" />
+    <Content Include="templates\AnGuang\imgs\register\piccodeTest.png" />
+    <Content Include="templates\AnGuang\imgs\register\psw.png" />
+    <Content Include="templates\AnGuang\imgs\register\recommended.png" />
+    <Content Include="templates\AnGuang\imgs\register\red-bag-login.png" />
+    <Content Include="templates\AnGuang\imgs\register\red-bag.png" />
+    <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
+    <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\header.js" />
@@ -648,11 +659,15 @@
     <Content Include="templates\AnGuang\js\index.js" />
     <Content Include="templates\AnGuang\js\invest_detail.js" />
     <Content Include="templates\AnGuang\js\login.js" />
+    <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
+    <Content Include="templates\AnGuang\login.html" />
+    <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\AnGuang\_footer.html" />
+    <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
@@ -670,6 +685,9 @@
     <Content Include="templates\AnGuang\less\head.less" />
     <Content Include="templates\AnGuang\less\index.less" />
     <Content Include="templates\AnGuang\less\invest-list.less" />
+    <Content Include="templates\AnGuang\less\footerSmall.less" />
+    <Content Include="templates\AnGuang\less\register.less" />
+    <Content Include="templates\AnGuang\less\login.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">

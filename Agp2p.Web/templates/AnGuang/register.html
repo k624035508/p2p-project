@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/ie8-polyfill.js"></script>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/register.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<!--register box-->
+<div class="content-wrap register-box">
+    <div class="register-left">
+        <div class="title-tips">免费注册 <span class="pull-right">已有账号？ <a href="login.html">立即登录</a></span></div>
+        <div class="form-box"><label for="account">手机号码 ：</label><input id="account" class="input-l" type="text"/><span class="status error-tips">请输入正确的手机号码</span></div>
+        <div class="form-box"><label for="psw">登录密码 ：</label><input id="psw" class="input-l" type="password"/><span class="status right-tips"></span></div>
+        <div class="form-box"><label for="psw2">确认密码 ：</label><input id="psw2" class="input-l" type="password"/><span class="status"></span></div>
+        <div class="form-box"><label for="pic-code">验证码 ：</label><input id="pic-code" class="input-s" type="text"/><span class="pic-code-wrap"><img src="<%templateskin%>/imgs/register/piccodeTest.png"/></span><span class="status"></span></div>
+        <div class="form-box"><label for="sms-code">短信验证码 ：</label><input id="sms-code" class="input-s" type="text"/><button type="button">获取验证码</button><span class="status"></span></div>
+        <div class="form-box"><label for="recommended">推荐人号码 ：</label><input id="recommended" class="input-l" type="text"/></div>
+        <div class="agreement"><input type="checkbox"/> 我已经阅读并同意 <a href="#">《注册协议》</a></div>
+        <div class="register-btn"><button type="button">注 册</button></div>
+    </div>
+    <div class="dividing-hr"></div>
+    <div class="register-right pull-right"></div>
+</div>
+<!--register box end-->
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>

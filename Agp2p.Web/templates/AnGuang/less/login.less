@@ -1,0 +1,143 @@
+@import "common-style";
+@images: "../imgs/register";
+
+body {
+	background: @body-color;
+	overflow-y: hidden;
+}
+
+.top-bar #login { color: @red !important; }
+
+div.register-box {
+	margin-top: 25px;
+	padding: 25px 10px 22px 30px;
+	height: 550px;
+	border: @border;
+	background: @white;
+	& > div {
+		.inline-block;
+		height: 500px;
+	}
+	.register-left {
+		width: 615px;
+		.title-tips {
+			font-size: @font25;
+			color: @red;
+			margin-bottom: 40px;
+			padding-bottom: 12px;
+			border-bottom: @border;
+			span {
+				font-size: @font14;
+				color: @grey;
+				a {
+					text-decoration: none;
+					color: @blue;
+					line-height: 35px;
+				}
+			}
+		}
+		.form-box {
+			margin-top: 48px;
+			label {
+				margin-right: 15px;
+				width: 95px;
+				font-size: @font15;
+				font-weight: normal;
+				color: @dark-grey;
+				text-align: right;
+			}
+			input {
+				padding-left: 50px;
+				height: 45px;
+				line-height: 45px;
+				border: @border;
+				border-radius: 5px;
+				&:focus { outline-color: @red; }
+			}
+			.input-l { width: 300px; }
+			.input-s {
+				width: 200px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			#account { background: url("@{images}/account.png") no-repeat; }
+			#psw, #psw2 { background: url("@{images}/psw.png") no-repeat; }
+			#pic-code { background: url("@{images}/pic-code.png") no-repeat; }
+			#sms-code { background: url("@{images}/sms-code.png") no-repeat; }
+			#recommended { background: url("@{images}/recommended.png") no-repeat; }
+			span { .inline-block; }
+			.pic-code-wrap {
+				width: 100px;
+				height: 45px;
+				overflow: hidden;
+				border: @border;
+				border-left: none;
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+				vertical-align: bottom;
+			}
+			button {
+				width: 100px;
+				height: 45px;
+				font-size: @font15;
+				color: @white;
+				background: @red;
+				border: none;
+				vertical-align: bottom;
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+			.status {
+				margin-left: 30px;
+				width: 170px;
+				height: 15px;
+				line-height: 14px;
+				padding-left: 25px;
+				font-size: @font12;
+				color: @red;
+			}
+			.error-tips { background: url("@{images}/error.png") no-repeat; }
+			.right-tips { background: url("@{images}/blue-tick.png") no-repeat; }
+		}
+		.agreement {
+			width: 300px;
+			color: #aaaaaa;
+			margin-top: 45px;
+			margin-left: 110px;
+			input {
+				-webkit-appearance: none;
+				width: 15px;
+				height: 15px;
+				border: @border;
+				border-radius: 0;
+				&:checked {
+					background: url("@{images}/red-tick.png") no-repeat;
+					outline: none;
+				}
+			}
+			a { color: @blue; }
+		}
+		.register-btn {
+			margin-top: 15px;
+			padding-left: 110px;
+			button {
+				width: 300px;
+				height: 45px;
+				color: #fff;
+				font-size: 22px;
+				border-color: #ff414b;
+				background: #ff414b;
+				border-radius: 4px;
+			}
+		}
+	}
+	.dividing-hr {
+		margin-left: 30px;
+		width: 1px;
+		background: @light-grey;
+	}
+	.register-right {
+		width: 400px;
+		background: url("@{images}/red-bag-login.png") no-repeat;
+	}
+}

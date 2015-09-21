@@ -2,7 +2,7 @@ import $ from "jquery";
 import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/invest_detail.less";
-import "../less/footer.less";
+import "../less/footerSmall.less";
 import "visualnav";
 
 import header from "./header.js";

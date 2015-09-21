@@ -1,6 +1,6 @@
 import "bootstrap-webpack";
 import "../less/head.less";
-import "../less/login.less";
+import "../less/register.less";
 import "../less/footerSmall.less";
 
 import $ from "jquery";
