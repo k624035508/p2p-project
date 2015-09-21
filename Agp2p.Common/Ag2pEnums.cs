@@ -295,6 +295,10 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("借款人还款")]
             LoanerRepay = 3,
+            [Description("提前还款罚息")]
+            EarlyRepaymentPenalty = 4,
+            [Description("逾期还款罚款")]
+            LateRepaymentPenalty = 5,
         }
 
         /// <summary>
@@ -302,10 +306,12 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectTransactionStatusEnum
         {
+            [Description("进行中")]
+            Pending = 1,
             [Description("成功")]
-            Success = 1,
+            Success = 2,
             [Description("撤销")]
-            Rollback = 2,
+            Rollback = 3,
         }
 
         /// <summary>
@@ -315,10 +321,12 @@ namespace Agp2p.Common
         {
             [Description("待还款")]
             Unpaid = 1,
+            [Description("作废")] // 提前还款后，某些还款计划可能作废
+            Invalid = 2,
             [Description("已手动还款")]
-            ManualPaid = 2,
+            ManualPaid = 10,
             [Description("已自动还款")]
-            AutoPaid = 3,
+            AutoPaid = 11,
         }
 
         /// <summary>
