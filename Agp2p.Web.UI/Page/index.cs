@@ -37,18 +37,6 @@ namespace Agp2p.Web.UI.Page
             return trialProject;
         }
 
-        protected li_projects QueryFirstDailyProject()
-        {
-            var context = new Agp2pDataContext();
-            var dailyProject =
-                context.li_projects.Where(
-                    p =>
-                        p.tag == (int) Agp2pEnums.ProjectTagEnum.DailyProject &&
-                        (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status)
-                    .OrderByDescending(p => p.publish_time)
-                    .FirstOrDefault();
-            return dailyProject;
-        }
     }
 
 }

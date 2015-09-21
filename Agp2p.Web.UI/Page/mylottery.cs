@@ -27,16 +27,6 @@ namespace Agp2p.Web.UI.Page
             <int, Func<li_activity_transactions, Dictionary<string, string>>>
         {
             {
-                (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBaoActivation,
-                atr => new Dictionary<string, string>
-                {
-                    {"lottery-value", "￥" + atr.value.ToString("F0")},
-                    {"lottery-spec", "投 " + QueryDetails(atr, "InvestUntil", "?") + " 送 " + atr.value.ToString("F0")},
-                    {"lottery-source", "注册奖励红包"},
-                    {"lottery-condition", "投资满 " + QueryDetails(atr, "InvestUntil", "?") + " 元可用"},
-                }
-            },
-            {
                 (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial, atr => new Dictionary<string, string>
                 {
                     { "lottery-value", "￥" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("F0") },
@@ -52,30 +42,11 @@ namespace Agp2p.Web.UI.Page
                     }
                 }
             },
-            {
-                (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject, atr => new Dictionary<string, string>
-                {
-                    { "lottery-face-class", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting ? "lottery-face-red" : "lottery-face-grey" },
-                    { "lottery-value", "￥" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("F0") },
-                    {"lottery-spec", "投多少返多少"},
-                    {"lottery-source", "投资送天标券"},
-                    {"lottery-condition", "只可用于投资天标"},
-                    {
-                        "lottery-valid-time", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting
-                            ? atr.create_time.ToString("yy/MM/dd") + "-" + Convert.ToDateTime(QueryDetails(atr, "Deadline")).ToString("yy/MM/dd")
-                            : (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm
-                                ? "于 " + Convert.ToDateTime(QueryDetails(atr, "RepayTime")).ToString("yyyy.MM.dd") + " 收益"
-                                : "已过期")
-                    }
-                }
-            },
         };
 
         private static readonly int[] LotteryType =
         {
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBaoActivation,
             (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial,
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject,
         };
         protected List<Dictionary<string, string>> QueryLottery()
         {

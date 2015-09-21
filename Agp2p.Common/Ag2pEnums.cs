@@ -18,8 +18,6 @@ namespace Agp2p.Common
             Hot = 2,
             [Description("新手体验标")]
             Trial = 3,
-            [Description("天标")]
-            DailyProject = 4
         }
 
         public enum LoanTypeEnum
@@ -259,16 +257,10 @@ namespace Agp2p.Common
         {
             [Description("手工操作/冲正")]
             ManualOperation = 1,
-            [Description("投资激活红包")]
-            HongBaoActivation = 2,
+            [Description("新手体验券")]
+            Trial = 2,
             [Description("被推荐人首次投资奖励推荐人")]
             RefereeFirstTimeProfitBonus = 3,
-            [Description("投资红包奖励")]
-            InvestBonus = 4,
-            [Description("新手体验券")]
-            Trial = 5,
-            [Description("天标券")]
-            DailyProject = 6,
         }
 
         /// <summary>
