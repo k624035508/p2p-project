@@ -172,7 +172,7 @@ namespace Agp2p.Web.UI.Page
         protected List<ProjectTransactions> query_projecttransactions(li_projects projectModel, out int count)
         {
             //投标记录
-            if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject)
+            if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial)
             {
                 project_transactions =
                     context.li_activity_transactions.Where(atr => atr.details.Contains("\"ProjectId\":" + projectModel.id + ",")) // 防止跨项目查询(ProjectId 不能是最后一个属性)
@@ -230,7 +230,6 @@ namespace Agp2p.Web.UI.Page
             EnumMapping = new Dictionary<Agp2pEnums.ProjectTagEnum, Agp2pEnums.ActivityTransactionActivityTypeEnum>
             {
                 {Agp2pEnums.ProjectTagEnum.Trial, Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial},
-                {Agp2pEnums.ProjectTagEnum.DailyProject, Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject},
             };
         protected List<Dictionary<string, string>> QueryTickets()
         {

@@ -84,8 +84,7 @@ namespace Agp2p.Web.UI.Page
         {
             IEnumerable<li_activity_transactions> query = context.li_activity_transactions.Where(
                 a =>
-                    a.user_id == userId && (a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial ||
-                                            a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject) &&
+                    a.user_id == userId && a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial &&
                     a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
 
             query = (type == Agp2pEnums.RepaymentStatusEnum.Unpaid
@@ -213,11 +212,10 @@ namespace Agp2p.Web.UI.Page
 
             //新手标+天标回款记录总数
             var query = context.li_activity_transactions.Where(
-               a =>
-                   a.user_id == userModel.id && 
-                  (a.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial ||
-                   a.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject) && 
-                   a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
+                a =>
+                    a.user_id == userModel.id &&
+                    a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial &&
+                    a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
 
             query = status == Agp2pEnums.RepaymentStatusEnum.Unpaid ? query.Where(w => w.transact_time == null) : query.Where(w => w.transact_time != null);
 
@@ -241,11 +239,11 @@ namespace Agp2p.Web.UI.Page
                     .Distinct()
                     .Count();
             var query = context.li_activity_transactions.Where(
-                   w =>
-                   w.user_id == userModel.id &&
-                  (w.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial ||
-                   w.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject) &&
-                   w.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm); // TODO 有 bug，应该判断是不是同一个项目
+                w =>
+                    w.user_id == userModel.id &&
+                    w.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial
+                    &&
+                    w.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm); // TODO 有 bug，应该判断是不是同一个项目
             return totalProject + query.Count();
         }
 
@@ -264,10 +262,9 @@ namespace Agp2p.Web.UI.Page
             var usedTickets = context.li_activity_transactions.Where(atr =>
                 atr.user_id == userInfo.id &&
                 atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm &&
-                (atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial ||
-                 atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.DailyProject))
+                atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial)
                 .Where(atr =>
-                    (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime <= projectStatus
+                    (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime <= projectStatus
                         ? atr.transact_time != null
                         : atr.transact_time == null)
                 .ToDictionary(atr => atr.li_wallet_histories.First().create_time, atr =>

@@ -127,7 +127,7 @@
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
                 <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
                 <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
                 <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
                 <%/if%>

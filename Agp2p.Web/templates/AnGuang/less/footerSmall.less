@@ -1,0 +1,40 @@
+/*ÄÚÒ³footerÑùÊ½*/
+@import "common-style.less";
+
+div.footer-wrap {
+	margin-top: 25px;
+	background: @white;
+	.footer-top {
+		height: 50px;
+		margin: 0 auto;
+		padding: 13px 35px;
+		text-align: center;
+		border: @border;
+		& > div { .inline-block; }
+		ul {
+			li {
+				padding: 0 22px;
+				border-right: @border;
+				a {
+					font-size: @font18;
+					color: @darker-grey;
+					text-decoration: none;
+					&:hover { color: @red; }
+				}
+			}
+			& li:first-child { border-left: @border; }
+		}
+	}
+	.footer-bottom {
+		height: 50px;
+		line-height: 50px;
+		color: @dark-grey;
+		font-size: 16px;
+		text-align: center;
+		background: -webkit-gradient(linear, 0 0, 0 100%, from(@white), to(@body-color)); //Chrome Safari
+		background: -moz-linear-gradient(top, @white, @body-color); //FireFox
+		background: -o-linear-gradient(top, #eee, #aaa);
+		background: -ms-linear-gradient(@white 0%, @body-color 100%);
+		-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#f2f2f2',grandientType=1); //IE8
+	}
+}
