@@ -80,7 +80,7 @@ namespace Agp2p.Web.admin.project
         protected void TreeBind()
         {
             BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, this.CategoryId);
+            DataTable dt = bll.GetList(0, this.ChannelId);
 
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));

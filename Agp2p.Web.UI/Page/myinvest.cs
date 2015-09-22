@@ -40,11 +40,11 @@ namespace Agp2p.Web.UI.Page
                     Agp2pEnums.MyInvestRadioBtnTypeEnum.InvestEndding, new[] { Agp2pEnums.ProjectStatusEnum.FinancingSuccess, Agp2pEnums.ProjectStatusEnum.FinancingTimeout }
                 },
                 {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying, Agp2pEnums.ProjectStatusEnum.BadDebt }
+                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying}
                 },
                 {
                     Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete, new[] { Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier,
-                        Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.BadDebtRepayComplete }
+                        Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.BadDebt }
                 },
             };
 

@@ -110,9 +110,7 @@ namespace Agp2p.Common
             /// 提前还款完成
             /// </summary>
             [Description("提前还款")]
-            RepayCompleteEarlier = 41,
-            [Description("坏账后还款完成")]
-            BadDebtRepayComplete = 42,
+            RepayCompleteEarlier = 41
         }
 
         /// <summary>

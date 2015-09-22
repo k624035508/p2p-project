@@ -1,8 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_over_time.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_over_time" %>
 
-<%@ Import Namespace="Agp2p.Common" %>
-<%@ Import Namespace="Agp2p.Linq2SQL" %>
-<%@ Import Namespace="Agp2p.Web.UI" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,7 +28,11 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True">
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True"
+                             OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
+                            <asp:ListItem Value="0" Selected="True">逾期未还</asp:ListItem>
+                            <asp:ListItem Value="1">逾期已还</asp:ListItem>
+                            <asp:ListItem Value="2">垫付借款</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
                 </div>

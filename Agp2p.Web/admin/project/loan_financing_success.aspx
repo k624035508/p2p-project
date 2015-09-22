@@ -39,7 +39,7 @@
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />

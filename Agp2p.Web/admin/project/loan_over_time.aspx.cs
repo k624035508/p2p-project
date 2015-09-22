@@ -104,16 +104,32 @@ namespace Agp2p.Web.admin.project
         private List<RepayOverTime> GetList()
         {
             PageSize = new BLL.channel().GetPageSize(ChannelName);
-            var query = context.li_repayment_tasks.Where(r => r.repay_at == null && DateTime.Now > r.should_repay_time)
-                    .Where(r => r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords))
-                    .AsEnumerable()
-                    .Select(r =>
+            var query =
+                context.li_repayment_tasks.Where(
+                    r =>
+                        r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time &&
+                        (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)));
+
+            if (CategoryId > 0)
+                query = query.Where(q => q.li_projects.category_id == CategoryId);
+            //逾期未还
+            if (rblStatus.SelectedValue == "0")
+                query = query.Where(r => r.repay_at == null);
+            //逾期已还
+            else if (rblStatus.SelectedValue == "1")
+                query = query.Where(r => r.repay_at != null);
+            //垫付借款
+            else if (rblStatus.SelectedValue == "2")
+                query = query.Where(r => r.prepay != null);
+
+            var repayList = query.AsEnumerable().Select(r =>
                     {
                         var repay = new RepayOverTime();
                         var loaner = r.li_projects.li_risks.li_loaners.dt_users;
                         repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
                         repay.Amount = r.repay_interest + r.repay_principal;
                         repay.Category = r.li_projects.category_id;
+                        //TODO 逾期罚金计算
                         repay.Forfeit = 0;
                         repay.OverDayCount = DateTime.Now.DayOfYear - r.should_repay_time.DayOfYear;
                         repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
@@ -127,12 +143,9 @@ namespace Agp2p.Web.admin.project
 
                         return repay;
                     });
-
-            if (CategoryId > 0)
-                query = query.Where(q => q.Category == CategoryId);
             
-            this.TotalCount = query.Count();
-            return query.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            this.TotalCount = repayList.Count();
+            return repayList.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
@@ -179,6 +192,11 @@ namespace Agp2p.Web.admin.project
             public int Category { get; set; }//产品
             public int ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率
+        }
+
+        protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            RptBind();
         }
     }
 }
