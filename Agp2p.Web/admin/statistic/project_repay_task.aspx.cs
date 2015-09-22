@@ -96,7 +96,8 @@ namespace Agp2p.Web.admin.statistic
                 context.li_repayment_tasks.Where(rt =>
                     (int) Agp2pEnums.ProjectStatusEnum.Financing < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text))
                     .Where(r =>
-                        rblRepaymentStatus.SelectedValue == "0" || r.status == Convert.ToByte(rblRepaymentStatus.SelectedValue));
+                        rblRepaymentStatus.SelectedValue == "0" || Convert.ToByte(rblRepaymentStatus.SelectedValue) == r.status
+                        || (Convert.ToByte(rblRepaymentStatus.SelectedValue) == (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid && (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status));
 
             if (ddlOrderBy.SelectedValue == "invest_complete_time")
             {

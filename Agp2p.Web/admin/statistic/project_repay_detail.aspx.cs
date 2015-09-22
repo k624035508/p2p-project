@@ -131,10 +131,7 @@ namespace Agp2p.Web.admin.statistic
                             profiting = TransactionFacade.GenerateRepayTransactions(r, r.should_repay_time); // 临时预计收益
                         }
                         //根据组权限查询数据
-                        profiting = profiting.Where(ptr =>
-                        {
-                            return !canAccessGroups.Any() || canAccessGroups.Contains(ptr.dt_users.group_id);
-                        }).ToList();
+                        profiting = profiting.Where(ptr => !canAccessGroups.Any() || canAccessGroups.Contains(ptr.dt_users.group_id)).ToList();
 
                         if (profiting.Count == 0) return Enumerable.Empty<RepaymentDetail>();
                         var repaymentDetails = profiting.Select(tr => new RepaymentDetail

@@ -53,8 +53,9 @@ td.center { text-align: center; }
                 <div class="rule-multi-radio" style="display: inline-block;float: left; margin-right:10px;">
                     <asp:RadioButtonList ID="rblProjectStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblProjectStatus_OnSelectedIndexChanged">
                         <asp:ListItem Value="0">不限</asp:ListItem>
-                        <asp:ListItem Value="1">未满标</asp:ListItem>
-                        <asp:ListItem Value="2" Selected="True">已满标</asp:ListItem>
+                        <asp:ListItem Value="1">融资中</asp:ListItem>
+                        <asp:ListItem Value="2">融资结束</asp:ListItem>
+                        <asp:ListItem Value="3" Selected="True">已满标</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
                 <div style="display: inline-block;">

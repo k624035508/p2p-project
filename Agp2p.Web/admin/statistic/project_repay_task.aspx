@@ -63,7 +63,7 @@ td.center { text-align: center; }
                     <asp:RadioButtonList ID="rblRepaymentStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblRepaymentStatus_OnSelectedIndexChanged">
                         <asp:ListItem Value="0" Selected="True">不限</asp:ListItem>
                         <asp:ListItem Value="1">待还款</asp:ListItem>
-                        <asp:ListItem Value="2">已还款</asp:ListItem>
+                        <asp:ListItem Value="10">已还款</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
                 <div style="display: inline-block;">

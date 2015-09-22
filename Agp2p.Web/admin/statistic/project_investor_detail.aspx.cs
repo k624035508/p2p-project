@@ -91,7 +91,9 @@ namespace Agp2p.Web.admin.statistic
             if (rblProjectStatus.SelectedValue == "1")
                 query = query.Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
             else if (rblProjectStatus.SelectedValue == "2")
-                query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.Financing < p.status);
+                query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.Financing < p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
+            else if (rblProjectStatus.SelectedValue == "3")
+                query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= p.status);
             else
                 query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.Financing <= p.status);
 
