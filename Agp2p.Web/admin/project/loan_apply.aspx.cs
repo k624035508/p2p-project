@@ -12,46 +12,45 @@ namespace Agp2p.Web.admin.project
 {
     public partial class loan_apply : Web.UI.ManagePage
     {
-        protected int channel_id;
-        protected int totalCount;
-        protected int page;
-        protected int pageSize;
+        protected int ChannelId;
+        protected int TotalCount;
+        protected int PageIndex;
+        protected int PageSize;
 
-        protected int category_id;
-        protected string project_status = string.Empty;
-        protected string channel_name = string.Empty;
-        protected string keywords = string.Empty;
+        protected int CategoryId;
+        protected int ProjectStatus;
+        protected string ChannelName = string.Empty;
+        protected string Keywords = string.Empty;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.channel_id = DTRequest.GetQueryInt("channel_id");
-            this.category_id = DTRequest.GetQueryInt("category_id");
-            this.project_status = DTRequest.GetQueryString("project_status");
+            this.ChannelId = DTRequest.GetQueryInt("channel_id");
+            this.CategoryId = DTRequest.GetQueryInt("category_id");
+            this.ProjectStatus = DTRequest.GetQueryInt("project_status");
+            this.Keywords = DTRequest.GetQueryString("keywords");
 
-            if (channel_id == 0)
+            if (ChannelId == 0)
             {
                 JscriptMsg("频道参数不正确！", "back", "Error");
                 return;
             }
-            this.channel_name = new BLL.channel().GetChannelName(this.channel_id); //取得频道名称
-
+            this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var keywords = DTRequest.GetQueryString("keywords");
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
-                TreeBind(this.channel_id); //绑定类别
-                RptBind(this.channel_id, this.category_id, txtKeywords.Text, Utils.StrToInt(this.project_status, 0));
+                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString());
+                if (!string.IsNullOrEmpty(Keywords))
+                    txtKeywords.Text = Keywords;
+                TreeBind();
+                RptBind();
             }
         }
 
-        protected void TreeBind(int _channel_id)
+        protected void TreeBind()
         {
             BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, _channel_id);
+            DataTable dt = bll.GetList(0, this.ChannelId);
 
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
@@ -76,22 +75,22 @@ namespace Agp2p.Web.admin.project
 
 
         #region 数据绑定=================================
-        protected void RptBind(int _channel_id, int _category_id, string _keyworkds, int _project_status)
+        protected void RptBind()
         {
-            this.page = DTRequest.GetQueryInt("page", 1);
-            if (this.category_id > 0)
+            this.PageIndex = DTRequest.GetQueryInt("page", 1);
+            if (this.CategoryId > 0)
             {
-                this.ddlCategoryId.SelectedValue = _category_id.ToString();
+                this.ddlCategoryId.SelectedValue = this.CategoryId.ToString();
             }
 
             //绑定列表
-            this.rptList1.DataSource = GetList(this.channel_name, _category_id, this.page, _keyworkds, _project_status);
+            this.rptList1.DataSource = GetList();
             this.rptList1.DataBind();
             //绑定页码
-            txtPageNum.Text = this.pageSize.ToString();
+            txtPageNum.Text = this.PageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&page={4}",
-                _channel_id.ToString(), _category_id.ToString(), txtKeywords.Text, this.project_status.ToString(), "__id__");
-            PageContent.InnerHtml = Utils.OutPageList(this.pageSize, this.page, this.totalCount, pageUrl, 8);
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
+            PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
 
         /// <summary>
@@ -103,17 +102,17 @@ namespace Agp2p.Web.admin.project
         /// <param name="_keyword"></param>
         /// <param name="_project_status"></param>
         /// <returns></returns>
-        private List<li_projects> GetList(string _channel_name, int _category_id, int _pageIndex, string _keyword, int _project_status)
+        private List<li_projects> GetList()
         {
-            pageSize = new BLL.channel().GetPageSize(_channel_name);
+            PageSize = new BLL.channel().GetPageSize(ChannelName);
             var query = context.li_projects.Where(p => (p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted || p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail) 
-            && (p.title.Contains(_keyword) || p.no.Contains(_keyword)));
-            if (_category_id > 0)
-                query = query.Where(q => q.category_id == _category_id);
+            && (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
+            if (CategoryId > 0)
+                query = query.Where(q => q.category_id == CategoryId);
             
-            this.totalCount = query.Count();
+            this.TotalCount = query.Count();
             return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
-                .Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+                .Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
@@ -121,14 +120,7 @@ namespace Agp2p.Web.admin.project
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status));
-        }
-
-        //筛选类别
-        protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
-        {            
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.channel_id.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.project_status));
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //设置分页数量
@@ -143,7 +135,7 @@ namespace Agp2p.Web.admin.project
                 }
             }
             Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status));
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //批量删除
@@ -174,9 +166,9 @@ namespace Agp2p.Web.admin.project
                 }
             }
             context.SubmitChanges();
-            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "删除" + this.channel_name + "频道内容成功" + sucCount + "条，失败" + errorCount + "条"); //记录日志
+            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "删除" + this.ChannelName + "频道内容成功" + sucCount + "条，失败" + errorCount + "条"); //记录日志
             JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.project_status), "Success");
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()), "Success");
         }
 
         protected string QueryLoaner(int projectId)
@@ -188,6 +180,12 @@ namespace Agp2p.Web.admin.project
                 return $"{user.real_name}({user.user_name})";
             }
             return "";
+        }
+
+        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
+                this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
         }
     }
 }

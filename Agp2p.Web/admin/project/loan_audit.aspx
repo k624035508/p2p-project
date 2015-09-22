@@ -22,7 +22,7 @@
             content: msg,
             okValue: '确定',
             ok: function () {
-                location.href = "project/loan_audit.aspx?channel_id=<%=this.channel_id %>&action=" + status + "&id=" + id;
+                location.href = "project/loan_audit.aspx?channel_id=<%=this.ChannelId %>&action=" + status + "&id=" + id;
             },
             cancelValue: '取消',
             cancel: function () { }
@@ -55,7 +55,7 @@
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
@@ -87,7 +87,7 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href="loan_audit_detail.aspx?channel_id=<%=this.channel_id %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td><a href="loan_audit_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
