@@ -91,8 +91,11 @@ namespace Agp2p.Web.UI.Page
                     });
                 albums_credit.AddRange(
                     loaner.li_albums.Where(a => a.loaner == loaner.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard));
-                albums_credit.AddRange(
-                    risk.li_creditors.dt_users.li_albums.Where(a => a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard));
+                if (risk.li_creditors != null && risk.li_creditors.dt_users != null)
+                {
+                    albums_credit.AddRange(
+                        risk.li_creditors.dt_users.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard));
+                }
                 albums_credit.AddRange(
                     risk.li_albums.Where(
                         a => a.risk == risk.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate));
