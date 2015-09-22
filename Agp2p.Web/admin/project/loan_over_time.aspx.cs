@@ -12,7 +12,7 @@ using Agp2p.Web.UI;
 
 namespace Agp2p.Web.admin.project
 {
-    public partial class loan_financing : Web.UI.ManagePage
+    public partial class loan_over_time : Web.UI.ManagePage
     {
         protected int ChannelId;
         protected int TotalCount;
@@ -40,47 +40,16 @@ namespace Agp2p.Web.admin.project
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString()); //检查权限
-                ShowProjectStatus();
+                ChkAdminLevel("loan_over_time", DTEnums.ActionEnum.View.ToString()); //检查权限
                 TreeBind(); //绑定类别
                 RptBind();
-            }
-        }
-
-        private void ShowProjectStatus()
-        {
-            var keywords = DTRequest.GetQueryString("keywords");
-            if (!string.IsNullOrEmpty(keywords))
-                txtKeywords.Text = keywords;
-            
-            rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess),
-                    ((int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess).ToString()));
-            rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.Financing),
-                    ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
-            rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingTimeout),
-                    ((int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout).ToString()));
-            rblStatus.Items.Add(
-                new ListItem(Utils.GetAgp2pEnumDes(Agp2pEnums.ProjectStatusEnum.FinancingFail),
-                    ((int)Agp2pEnums.ProjectStatusEnum.FinancingFail).ToString()));
-
-            if (ProjectStatus == 0)
-            {
-                ProjectStatus = (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess;
-                rblStatus.SelectedIndex = 0;
-            }
-            else
-            {
-                rblStatus.SelectedValue = ProjectStatus.ToString();
             }
         }
 
         protected void TreeBind()
         {
             BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, this.CategoryId);
+            DataTable dt = bll.GetList(0, this.ChannelId);
 
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
@@ -118,7 +87,7 @@ namespace Agp2p.Web.admin.project
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
+            string pageUrl = Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
@@ -132,40 +101,52 @@ namespace Agp2p.Web.admin.project
         /// <param name="_keyword"></param>
         /// <param name="_project_status"></param>
         /// <returns></returns>
-        private List<li_projects> GetList()
+        private List<RepayOverTime> GetList()
         {
             PageSize = new BLL.channel().GetPageSize(ChannelName);
-            var query = context.li_projects.Where(p => p.title.Contains(Keywords) || p.no.Contains(Keywords));
-            if (ProjectStatus == (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
-            {
-                //如果是待发标状态则需要查询出定时发标的状态
-                query = query.Where(
-                        p => p.status == ProjectStatus || p.status == (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime);
-            }
-            else
-            {
-                query = query.Where(p => p.status == ProjectStatus);
-            }
+            var query = context.li_repayment_tasks.Where(r => r.repay_at == null && DateTime.Now > r.should_repay_time)
+                    .Where(r => r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords))
+                    .AsEnumerable()
+                    .Select(r =>
+                    {
+                        var repay = new RepayOverTime();
+                        var loaner = r.li_projects.li_risks.li_loaners.dt_users;
+                        repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
+                        repay.Amount = r.repay_interest + r.repay_principal;
+                        repay.Category = r.li_projects.category_id;
+                        repay.Forfeit = 0;
+                        repay.OverDayCount = DateTime.Now.DayOfYear - r.should_repay_time.DayOfYear;
+                        repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
+                        repay.ProfitRate = r.li_projects.profit_rate_year;
+                        repay.RepaymentType =
+                            Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)r.li_projects.repayment_type);
+                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");
+                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";
+                        repay.ProjectId = r.li_projects.id;
+                        repay.ProjectTitle = r.li_projects.title;
+
+                        return repay;
+                    });
+
             if (CategoryId > 0)
-                query = query.Where(q => q.category_id == CategoryId);
+                query = query.Where(q => q.Category == CategoryId);
             
             this.TotalCount = query.Count();
-            return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
-                .Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            return query.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {            
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
@@ -180,43 +161,24 @@ namespace Agp2p.Web.admin.project
                     Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
-        /// <summary>
-        /// 获取标识描述
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        protected string getTagString(object tag)
+        class RepayOverTime
         {
-            return tag == null ? "无" : Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectTagEnum)Utils.StrToInt(tag.ToString(), 0));
-        }
-
-        /// <summary>
-        /// 获取募集进度
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <returns></returns>
-        protected string getInvestmentProgress(int projectId)
-        {
-            return
-                context.GetInvestmentProgress(projectId,
-                    (total, projectAmount) =>
-                        new BasePage.ProjectInvestmentProgress {total = total, projectAmount = projectAmount})
-                    .GetInvestmentProgress() + "%";
-        }
-
-        /// <summary>
-        /// 选择状态
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.ProjectStatus = Utils.StrToInt(rblStatus.SelectedValue, 0);
-            RptBind();
+            public int ProjectId { get; set; }
+            public string ProjectTitle { get; set; }
+            public string Loaner { get; set; }
+            public decimal Amount { get; set; }//应还
+            public decimal Forfeit { get; set; }//罚款
+            public string OverTimeTerm { get; set; }//逾期期数
+            public string ShouldRepayTime { get; set; }//应还时间
+            public string RepayTime { get; set; }//实还时间
+            public int OverDayCount { get; set; }//逾期天数
+            public int Category { get; set; }//产品
+            public int ProfitRate { get; set; }//年化利率
+            public string RepaymentType { get; set; }//年化利率
         }
     }
 }

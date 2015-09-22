@@ -10,7 +10,7 @@
 namespace Agp2p.Web.admin.project {
     
     
-    public partial class loan_financing {
+    public partial class loan_over_time {
         
         /// <summary>
         /// form1 控件。

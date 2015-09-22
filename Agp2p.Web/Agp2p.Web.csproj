@@ -142,6 +142,7 @@
     <Content Include="admin\dialog\dialog_print.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\project\loan_over_time.aspx" />
     <Content Include="admin\project\loan_financing_success.aspx" />
     <Content Include="admin\project\loan_financing_detail.aspx" />
     <Content Include="admin\project\loan_financing.aspx" />
@@ -992,6 +993,13 @@
     </Compile>
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\project\loan_over_time.aspx.cs">
+      <DependentUpon>loan_over_time.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\project\loan_over_time.aspx.designer.cs">
+      <DependentUpon>loan_over_time.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\loan_financing_success.aspx.cs">
       <DependentUpon>loan_financing_success.aspx</DependentUpon>

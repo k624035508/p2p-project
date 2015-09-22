@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_over_time.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_financing" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_over_time.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_over_time" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <%@ Import Namespace="Agp2p.Linq2SQL" %>
@@ -31,8 +31,7 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True"
-                            OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True">
                         </asp:RadioButtonList>
                     </div>
                 </div>
@@ -55,47 +54,35 @@
                     <tr>
                         <th width="2%"></th>
                         <th align="left" width="15%">标题</th>
-                        <th align="left" width="8%">借款产品</th>
-                        <th align="left" width="6%">状态</th>
-                        <th align="left" width="5%">标识</th>
-                        <th align="left" width="8%">借款进度</th>
-                        <th align="left" width="10%">借款金额(元)</th>
-                        <th align="left" width="8%">借款期限</th>
-                        <th align="left" width="8%">年化利率(%)</th>
-                        <th align="left" width="8%">还款方式</th>
-                        <th align="left" width="8%">发布时间</th>
-                        <th align="left" width="5%">募集期限(天)</th>
+                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="8%">应还金额(元)</th>
+                        <th align="left" width="8%">逾期罚金(元)</th>
+                        <th align="left" width="6%">逾期期数</th>
+                        <th align="left" width="8%">应还时间</th>
+                        <th align="left" width="8%">实还时间</th>
+                        <th align="left" width="6%">逾期天数</th>
+                        <th align="left" width="6%">产品</th>
+                        <th align="left" width="6%">年化利率(%)</th>
+                        <th align="left" width="6%">还款方式</th>
                         <th width="5%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
-                    <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
-                    <td><%#getTagString(Eval("tag"))%></td>
-                    <td><%#getInvestmentProgress(Convert.ToInt32(Eval("id"))) %></td>
-                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
-                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
-                    <td><%#Eval("profit_rate_year")%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
-                    <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
-                    <td><%#Eval("financing_day")%></td>
+                    <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
+                    <td><%#Eval("Loaner")%></td>
+                    <td><%#Eval("Amount")%></td>
+                    <td><%#Eval("Forfeit")%></td>
+                    <td><%#Eval("OverTimeTerm")%></td>
+                    <td><%#Eval("ShouldRepayTime")%></td>
+                    <td><%#Eval("RepayTime")%></td>
+                    <td><%#Eval("OverDayCount")%></td>
+                    <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("Category")))%></td>
+                    <td><%#Eval("ProfitRate")%></td>
+                    <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
-                        <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
-                            { %>
-                        <a href="">发布</a>
-                        <% }
-                            else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.Financing)
-                            { %>
-                        <a href="">撤销</a>
-                        <% }
-                            else if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)
-                            { %>
-                        <a href="">流标</a>
-                        <% } %>
-
+                        <a href="">垫付</a>
                     </td>
                 </tr>
             </ItemTemplate>
