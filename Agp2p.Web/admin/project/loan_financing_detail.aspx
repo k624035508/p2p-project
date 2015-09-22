@@ -432,8 +432,8 @@
                 <asp:Button ID="btnDrop" runat="server" Text="撤销" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
                 <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClick="btnMakeLoan_OnClick" Visible="False" />
                 <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClick="btnFail_OnClick" Visible="False" />
-                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
-                    onclick="location.href='loan_financing.aspx?channel_id=<%=this.ChannelId%>&status=<%=this.ProjectStatus%>'" />
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
+                    onclick="location.href='javascript:history.back(-1);'" />
             </div>
             <div class="clear">
             </div>
