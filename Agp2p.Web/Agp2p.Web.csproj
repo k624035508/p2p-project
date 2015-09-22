@@ -92,6 +92,7 @@
     <Content Include="admin\js\layindex.js" />
     <Content Include="admin\js\laymain.js" />
     <Content Include="admin\js\uploader.js" />
+    <Content Include="admin\loaner\_creditSituationInfoTemplate.html" />
     <Content Include="admin\loaner\guarantor_edit.aspx" />
     <Content Include="admin\loaner\company_edit.aspx" />
     <Content Include="admin\loaner\guarantor_list.aspx" />
@@ -102,6 +103,7 @@
     <Content Include="admin\loaner\loaner_edit.aspx" />
     <Content Include="admin\loaner\mortgage_edit.aspx" />
     <Content Include="admin\loaner\mortgage_type_list.aspx" />
+    <Content Include="admin\loaner\_shareholdersInfoTemplate.html" />
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />

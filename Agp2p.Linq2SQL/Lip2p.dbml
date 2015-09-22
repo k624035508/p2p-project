@@ -486,16 +486,6 @@
       <Association Name="li_guarantors_li_risks" Member="li_guarantors" ThisKey="guarantor_id" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.li_guarantors" Member="li_guarantors">
-    <Type Name="li_guarantors">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="li_guarantors_li_risks" Member="li_risks" ThisKey="id" OtherKey="guarantor_id" Type="li_risks" />
-      <Association Name="li_guarantors_li_albums" Member="li_albums" ThisKey="id" OtherKey="guarantor" Type="li_albums" />
-    </Type>
-  </Table>
   <Table Name="dbo.li_albums" Member="li_albums">
     <Type Name="li_albums">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -512,10 +502,10 @@
       <Column Name="guarantor" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="li_loaners_li_albums" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="dt_users_li_albums" Member="dt_users" ThisKey="the_user" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" />
-      <Association Name="li_guarantors_li_albums" Member="li_guarantors" ThisKey="guarantor" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
       <Association Name="li_loaner_companies_li_albums" Member="li_loaner_companies" ThisKey="company" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
       <Association Name="li_mortgages_li_albums" Member="li_mortgages" ThisKey="mortgage" OtherKey="id" Type="li_mortgages" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="li_risks_li_albums" Member="li_risks" ThisKey="risk" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="li_guarantors_li_albums" Member="li_guarantors" ThisKey="guarantor" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_repayment_tasks" Member="li_repayment_tasks">
@@ -584,6 +574,29 @@
       <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
       <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
       <Association Name="li_risks_li_projects" Member="li_risks" ThisKey="risk_id" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_guarantors" Member="li_guarantors">
+    <Type Name="li_guarantors">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="regist_number" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="legal_person" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="registered_capital" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="setup_time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="business_scope" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="shareholders_info" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="credit_situation_info" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="cm_business_types" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="cm_cooperation_time" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="cm_total_degree" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="cm_used_degree" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="cm_remain_degree" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="li_guarantors_li_risks" Member="li_risks" ThisKey="id" OtherKey="guarantor_id" Type="li_risks" />
+      <Association Name="li_guarantors_li_albums" Member="li_albums" ThisKey="id" OtherKey="guarantor" Type="li_albums" />
     </Type>
   </Table>
 </Database>

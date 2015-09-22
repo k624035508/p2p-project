@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Data;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -46,6 +47,8 @@ namespace Agp2p.Web.admin.loaner
                 }
                 else if (action == DTEnums.ActionEnum.Add.ToString())
                 {
+                    txtShareholdersInfo.Value = File.ReadAllText(Request.MapPath("./_shareholdersInfoTemplate.html"));
+                    txtCreditSituationInfo.Value = File.ReadAllText(Request.MapPath("./_creditSituationInfoTemplate.html"));
                 }
             }
         }
@@ -56,8 +59,21 @@ namespace Agp2p.Web.admin.loaner
             var model = context.li_guarantors.First(q => q.id == id);
 
             txtGuarantorName.Text = model.name;
+            txtRegistNumber.Text = model.regist_number;
             rblType.SelectedValue = model.type.ToString();
+            txtLegalPerson.Text = model.legal_person;
+            txtRegisteredCapital.Text = model.registered_capital;
+            txtSetupDate.Text = model.setup_time.ToString("yyyy-MM-dd");
+            txtAddr.Text = model.address;
             txtDescription.Text = model.description;
+            txtBusinessScope.Text = model.business_scope;
+            txtShareholdersInfo.Value = model.shareholders_info;
+            txtCreditSituationInfo.Value = model.credit_situation_info;
+            txtCMBusinessTypes.Text = model.cm_business_types;
+            txtCMCooperationTime.Text = model.cm_cooperation_time;
+            txtCMCooperationTotalDegree.Text = model.cm_total_degree;
+            txtCMCooperationUsedDegree.Text = model.cm_used_degree;
+            txtCMCooperationRemainDegree.Text = model.cm_remain_degree;
 
             rptPics.DataSource = model.li_albums;
             rptPics.DataBind();
@@ -100,8 +116,22 @@ namespace Agp2p.Web.admin.loaner
             {
                 name = txtGuarantorName.Text,
                 type = Convert.ToByte(rblType.SelectedValue),
-                description = txtDescription.Text
+                regist_number = txtRegistNumber.Text,
+                legal_person = txtLegalPerson.Text,
+                registered_capital = txtRegisteredCapital.Text,
+                setup_time = Convert.ToDateTime(txtSetupDate.Text),
+                address = txtAddr.Text,
+                description = txtDescription.Text,
+                business_scope = txtBusinessScope.Text,
+                shareholders_info = txtShareholdersInfo.Value,
+                credit_situation_info = txtCreditSituationInfo.Value,
+                cm_business_types = txtCMBusinessTypes.Text,
+                cm_cooperation_time = txtCMCooperationTime.Text,
+                cm_total_degree = txtCMCooperationTotalDegree.Text,
+                cm_used_degree = txtCMCooperationUsedDegree.Text,
+                cm_remain_degree = txtCMCooperationRemainDegree.Text,
             };
+
             context.li_guarantors.InsertOnSubmit(model);
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
 
@@ -123,11 +153,22 @@ namespace Agp2p.Web.admin.loaner
         {
             var model = context.li_guarantors.Single(q => q.id == id);
 
-            var pattern = new Regex(@"^([^\s\(\)]+)(?:\(.+\))?$");
-
             model.name = txtGuarantorName.Text.Trim();
             model.type = Convert.ToByte(rblType.SelectedValue);
+            model.regist_number = txtRegistNumber.Text;
+            model.legal_person = txtLegalPerson.Text;
+            model.registered_capital = txtRegisteredCapital.Text;
+            model.setup_time = Convert.ToDateTime(txtSetupDate.Text);
+            model.address = txtAddr.Text;
             model.description = txtDescription.Text;
+            model.business_scope = txtBusinessScope.Text;
+            model.shareholders_info = txtShareholdersInfo.Value;
+            model.credit_situation_info = txtCreditSituationInfo.Value;
+            model.cm_business_types = txtCMBusinessTypes.Text;
+            model.cm_cooperation_time = txtCMCooperationTime.Text;
+            model.cm_total_degree = txtCMCooperationTotalDegree.Text;
+            model.cm_used_degree = txtCMCooperationUsedDegree.Text;
+            model.cm_remain_degree = txtCMCooperationRemainDegree.Text;
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
 

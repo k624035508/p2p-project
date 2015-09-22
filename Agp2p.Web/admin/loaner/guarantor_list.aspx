@@ -49,8 +49,14 @@
   <tr>
     <th width="5%">选择</th>
     <th align="left" width="10%">担保机构</th>
-    <th align="left" width="10%">类型</th>
-    <th align="left">描述</th>
+    <th align="left" width="10%">注册号</th>
+    <th align="left" width="5%">类型</th>
+    <th align="left" width="10%">法定代表人</th>
+    <th align="left" width="5%">注册资本</th>
+    <th align="left" width="5%">成立日期</th>
+    <th align="left" width="10%">公司地址</th>
+    <th align="left" width="10%">经营范围</th>
+    <th align="left" width="10%">描述</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -60,12 +66,18 @@
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
     <td><a href="guarantor_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
+    <td><%# Eval("regist_number") %></td>
     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.GuarantorTypeEnum) Convert.ToByte(Eval("type")))%></td>
+    <td><%# Eval("legal_person") %></td>
+    <td><%# Eval("registered_capital") %></td>
+    <td><%# Eval("setup_time","{0:yyyy-MM-dd}") %></td>
+    <td><%# Eval("address") %></td>
+    <td><%# Eval("business_scope") %></td>
     <td><%# Eval("description") %></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"4\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"10\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>
