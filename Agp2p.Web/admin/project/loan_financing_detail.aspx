@@ -393,32 +393,32 @@
                 <input type="hidden" name="hid_photo_name" value="splitter" />
                 <input type="hidden" name="hid_photo_remark" value="splitter" />
             </dl>
-            <dl id="dl_tag" runat="server" visible="False">
+            <dl>
                 <dt>借款标识</dt>
                 <dd>
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblTag" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        <asp:RadioButtonList ID="rblTag" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
                         </asp:RadioButtonList>
                     </div>
                 </dd>
             </dl>
-            <dl id="dl_publish_time" runat="server" visible="False">
+            <dl>
                 <dt>发布时间</dt>
                 <dd>
                     <div class="input-date">
                         <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                             datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
-                            sucmsg=" " />
+                            sucmsg=" " Enabled="False"/>
                         <i></i>
                     </div>
                     <span class="Validform_checktip">不选择默认当前发布时间</span>
                 </dd>
             </dl>
-            <dl id="div_financing_day" runat="server" Visible="False">
+            <dl>
                 <dt>募集期限(天)</dt>
                 <dd>
                     <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
-                        sucmsg=" "></asp:TextBox>
+                        sucmsg=" " Enabled="False"></asp:TextBox>
                 <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
@@ -428,10 +428,12 @@
         <!--工具栏-->
         <div class="page-footer">
             <div class="btn-list">
+                <asp:LinkButton runat="server"></asp:LinkButton>
                 <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
+                <asp:Button ID="btnApplyOnTime" runat="server" Text="定时发布" CssClass="btn" OnClick="btnApplyOnTime_OnClick" Visible="False" />
                 <asp:Button ID="btnDrop" runat="server" Text="撤销" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
-                <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClick="btnMakeLoan_OnClick" Visible="False" />
-                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClick="btnFail_OnClick" Visible="False" />
+                <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExePostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
+                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExePostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='javascript:history.back(-1);'" />
             </div>

@@ -301,15 +301,6 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Repeater rptLienCertificates;
         
         /// <summary>
-        /// dl_tag 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dl_tag;
-        
-        /// <summary>
         /// rblTag 控件。
         /// </summary>
         /// <remarks>
@@ -319,15 +310,6 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.RadioButtonList rblTag;
         
         /// <summary>
-        /// dl_publish_time 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dl_publish_time;
-        
-        /// <summary>
         /// txtPublishTime 控件。
         /// </summary>
         /// <remarks>
@@ -335,15 +317,6 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPublishTime;
-        
-        /// <summary>
-        /// div_financing_day 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_financing_day;
         
         /// <summary>
         /// txt_financing_day 控件。
@@ -371,6 +344,15 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnApply;
+        
+        /// <summary>
+        /// btnApplyOnTime 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApplyOnTime;
         
         /// <summary>
         /// btnDrop 控件。

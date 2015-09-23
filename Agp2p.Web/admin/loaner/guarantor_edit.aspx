@@ -13,6 +13,8 @@
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.queue.js"></script>
 <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../editor/kindeditor-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
@@ -21,6 +23,25 @@
         $("#form1").initValidform();
         $(".upload-album").each(function () {
             $(this).InitSWFUpload({ btntext: "批量上传", btnwidth: 66, single: false, water: true, thumbnail: true, filesize: "<%=siteConfig.imgsize %>", sendurl: "../../tools/upload_ajax.ashx", flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpeg;*.png;*.gif;" });
+        });
+        //初始化编辑器
+        KindEditor.create('.editor', {
+            width: '98%',
+            height: '400px',
+            resizeType: 1,
+            uploadJson: '../../tools/upload_ajax.ashx?action=EditorFile&IsWater=1',
+            fileManagerJson: '../../tools/upload_ajax.ashx?action=ManagerFile',
+            allowFileManager: true
+        });
+        KindEditor.create('.editor-mini', {
+            width: '98%',
+            height: '400px',
+            resizeType: 1,
+            uploadJson: '../../tools/upload_ajax.ashx?action=EditorFile&IsWater=1',
+            items: [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link']
         });
     });
 </script>
@@ -57,6 +78,10 @@
         <dd><asp:TextBox ID="txtGuarantorName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
     <dl>
+        <dt>注册号</dt>
+        <dd><asp:TextBox ID="txtRegistNumber" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
       <dt>类型</dt>
       <dd>
         <div class="rule-multi-radio">
@@ -68,8 +93,46 @@
       </dd>
     </dl>
     <dl>
+        <dt>法定代表人</dt>
+        <dd><asp:TextBox ID="txtLegalPerson" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+        <dt>注册资本</dt>
+        <dd><asp:TextBox ID="txtRegisteredCapital" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+        <dt>成立日期</dt>
+        <dd>
+            <div class="input-date">
+                <asp:TextBox ID="txtSetupDate" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                    datatype="/^^\d{4}\-\d{1,2}\-\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
+                <i></i>
+            </div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>公司地址</dt>
+        <dd><asp:TextBox ID="txtAddr" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+        <dt>经营范围</dt>
+        <dd><asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
         <dt>描述</dt>
         <dd><asp:TextBox ID="txtDescription" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+      <dt>股东信息</dt>
+      <dd>
+        <textarea id="txtShareholdersInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
+      </dd>
+    </dl>
+    <dl>
+      <dt>银行授信额度情况</dt>
+      <dd>
+        <textarea id="txtCreditSituationInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
+      </dd>
     </dl>
     <dl>
     <dt>担保机构照片</dt>
@@ -95,6 +158,26 @@
       </div>
     </dd>
   </dl>
+    <dl>
+      <dt>额度管理-合作业务品种</dt>
+      <dd><asp:TextBox ID="txtCMBusinessTypes" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+      <dt>合作时间</dt>
+      <dd><asp:TextBox ID="txtCMCooperationTime" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+      <dt>合作总额度</dt>
+      <dd><asp:TextBox ID="txtCMCooperationTotalDegree" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+      <dt>已使用额度</dt>
+      <dd><asp:TextBox ID="txtCMCooperationUsedDegree" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+      <dt>额度余额</dt>
+      <dd><asp:TextBox ID="txtCMCooperationRemainDegree" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
 </div>
 <!--/内容-->
 

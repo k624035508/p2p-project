@@ -7,6 +7,8 @@
     <title>初审明细</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="mainbody">
