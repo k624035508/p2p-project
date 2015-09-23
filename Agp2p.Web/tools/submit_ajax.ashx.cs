@@ -318,7 +318,7 @@ namespace Agp2p.Web.tools
         #region 用户注册OK=====================================
         private void user_register(HttpContext context)
         {
-            string code = DTRequest.GetFormString("txtCode").Trim();
+            string code = DTRequest.GetFormString("txtSMSCode").Trim();
             string invitecode = DTRequest.GetFormString("txtInviteCode").Trim();
             string inviteNo = DTRequest.GetFormString("txtInviteNo").Trim();
             string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : 
