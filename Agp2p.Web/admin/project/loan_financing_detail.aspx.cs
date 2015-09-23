@@ -64,15 +64,11 @@ namespace Agp2p.Web.admin.project
             switch (ProjectStatus)
             {
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess:
-                    dl_publish_time.Visible = true;
-                    dl_tag.Visible = true;
-                    div_financing_day.Visible = true;
+                    rblTag.Enabled = true;
+                    txtPublishTime.Enabled = true;
+                    txt_financing_day.Enabled = true;
                     btnApply.Visible = true;
-
-                    rblTag.Items.AddRange(
-                        Utils.GetEnumValues<Agp2pEnums.ProjectTagEnum>()
-                            .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int) te).ToString()))
-                            .ToArray());
+                    btnApplyOnTime.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.Financing:
                     btnDrop.Visible = true;
@@ -93,14 +89,20 @@ namespace Agp2p.Web.admin.project
         /// <param name="_project"></param>
         public virtual void ShowInfo(li_projects _project)
         {
+            rblTag.Items.AddRange(
+                        Utils.GetEnumValues<Agp2pEnums.ProjectTagEnum>()
+                            .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
+                            .ToArray());
+            rblTag.SelectedValue = _project.tag?.ToString()??"0";
+
             spa_category.InnerText = new article_category().GetTitle(_project.category_id);//项目类别
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
             spa_amount.InnerText = _project.financing_amount.ToString();//借款金额            
-            spa_repayment.InnerText = _project.repayment_term_span +
-                                      Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) _project.repayment_type); //借款期限
-            spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) _project.repayment_type);//还款方式
+            spa_repayment.InnerText = _project.repayment_term_span_count +
+                                      Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
+            spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
 
@@ -281,6 +283,11 @@ namespace Agp2p.Web.admin.project
             {
                 JscriptMsg("放款操作失败：" + ex.Message, "back", "Error");
             }
+        }
+
+        protected void btnApplyOnTime_OnClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 

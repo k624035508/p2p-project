@@ -1,12 +1,9 @@
 ﻿using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Agp2p.BLL;
 
 namespace Agp2p.Web.admin.project
@@ -66,9 +63,9 @@ namespace Agp2p.Web.admin.project
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
             spa_amount.InnerText = _project.financing_amount.ToString();//借款金额            
-            spa_repayment.InnerText = _project.repayment_term_span +
-                                      Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) _project.repayment_type); //借款期限
-            spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) _project.repayment_type);//还款方式
+            spa_repayment.InnerText = _project.repayment_term_span_count +
+                                      Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) _project.repayment_term_span); //借款期限
+            spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum) _project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
 

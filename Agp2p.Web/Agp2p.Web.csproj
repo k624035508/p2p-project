@@ -86,6 +86,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\audit\make_loan_audit.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
     <Content Include="admin\js\common.js" />
     <Content Include="admin\js\jquery.skygqOneDblClick.1.1.js" />
@@ -694,6 +695,13 @@
     <Content Include="templates\AnGuang\less\login.less" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\audit\make_loan_audit.aspx.cs">
+      <DependentUpon>make_loan_audit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\audit\make_loan_audit.aspx.designer.cs">
+      <DependentUpon>make_loan_audit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">
       <DependentUpon>dialog_picture.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
