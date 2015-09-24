@@ -6,6 +6,9 @@ import "../less/footerSmall.less";
 import $ from "jquery";
 
 $(function(){
+    // 手机号码输入判断
+
+
     // 刷新图文验证码
     var $picCode = $(".pic-code-wrap img");
     var originSrc = $picCode[0].getAttribute("src");
@@ -35,8 +38,7 @@ $(function(){
     });
 
     // 注册
-    var $register = $("#registerBtn");
-    $register.click(function(){
+    $("#registerBtn").click(function(){
         $.ajax({
             url: "/tools/submit_ajax.ashx?action=user_register",
             type: "post",

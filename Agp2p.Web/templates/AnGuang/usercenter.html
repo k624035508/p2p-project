@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的账户</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/ie8-polyfill.js"></script>
+    <script src="<%templateskin%>/js/html5shiv.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/usercenter.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<!--面包屑导航-->
+<div class="breadcrumbs">
+    <a href="#">首页</a>
+    <span> > </span>
+    <span>我的账户</span>
+</div>
+<!--面包屑导航 end-->
+
+<div class="content-wrap usercenter">
+    <div class="nav-left">
+        <div class="total-account">
+            <p class="account-h">账户总额</p>
+            <p class="account-num">1032000.50<span>元</span></p>
+        </div>
+        <ul class="list-unstyled outside-ul">
+            <li><a href="#" class="account-link active">账户总览</a></li>
+            <li><a class="funds">资金管理</a>
+                <ul class="list-unstyled inner-ul">
+                    <li><a href="#">资金明细</a></li>
+                    <li><a href="#">我要充值</a></li>
+                    <li><a href="#">我要提现</a></li>
+                </ul>
+            </li>
+            <li><a class="investing">投资管理</a>
+                <ul class="list-unstyled inner-ul">
+                    <li><a href="#">我的投资</a></li>
+                    <li><a href="#">投资记录</a></li>
+                    <li><a href="#">回款计划</a></li>
+                </ul>
+            </li>
+            <li><a class="account">账户管理</a>
+                <ul class="list-unstyled inner-ul">
+                    <li><a href="#">我的信息</a></li>
+                    <li><a href="#">银行账户</a></li>
+                    <li><a href="#">推荐奖励</a></li>
+                    <li><a href="#">我的奖券</a></li>
+                </ul>
+            </li>
+            <li><a class="news">消息管理</a>
+                <ul class="list-unstyled inner-ul">
+                    <li><a href="#">我的消息</a></li>
+                    <li><a href="#">通知设置</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="content-right pull-right">
+        <!-- 账户总览-->
+        <div class="overview-head">
+            <div class="head-left">
+                <p class="username">您好！ 135****6652</p>
+                <p class="save-level">安全级别 <span class="level-icon low"></span></p>
+                <p class="login-time">上次登录时间：2015/09/23 10：30</p>
+            </div>
+            <div class="head-center">
+                <p class="balance">账户余额：<span>2500000.00</span></p>
+                <p class="balance-frozen">冻结金额： <span>5000.00</span></p>
+            </div>
+            <div class="head-right pull-right">
+                <a href="#" class="recharge">充 值</a>
+                <a href="#" class="withdraw">提 现</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>

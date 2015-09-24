@@ -7,6 +7,7 @@
 @font20: 20px;
 @font22: 22px;
 @font25: 25px;
+@font30: 30px;
 @font40: 40px;
 @blue: #37aaf0;
 @darker-grey: #464646;
@@ -31,6 +32,18 @@
 	padding: 1px 5px;
 	margin-right: 10px;
 	border: 1px solid;
+}
+
+.breadcrumbs {
+	width: @min-width;
+	font-size: @font15;
+	margin: 20px auto;
+	color: @darker-grey;
+	a {
+		text-decoration: none;
+		color: @darker-grey;
+		&:hover { color: @red; }
+	}
 }
 
 .content-wrap {

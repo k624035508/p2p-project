@@ -1,0 +1,143 @@
+@import "common-style";
+@images: "../imgs/usercenter";
+
+body { background: @body-color; }
+div.usercenter {
+	& > div {
+		.inline-block;
+		height: 877px;
+	}
+	.nav-left {
+		border: 1px solid @red;
+		width: 230px;
+		.total-account {
+			height: 180px;
+			background: @red;
+			color: @white;
+			padding: 25px 15px;
+			.account-h {
+				font-size: @font20;
+			}
+			.account-num {
+				font-size: @font30;
+				text-align: right;
+				padding-top: 50px;
+				span { font-size: @font15; }
+			}
+		}
+		.outside-ul {
+			a {
+				display: inline-block;
+				width: 160px;
+				height: 25px;
+				line-height: 25px;
+				text-decoration: none;
+				color: @dark-grey;
+			}
+			& > li {
+				font-size: @font18;
+				text-align: center;
+				line-height: 55px;
+			}
+			& li:first-child {
+				background: @white;
+				.active { color: @red; }
+				&:hover, &:focus, {
+					.account-link { .active; }
+				}
+			}
+			.account-link { background: url("@{images}/overview.png") no-repeat; }
+			.funds { background: url("@{images}/funds.png") no-repeat; }
+			.investing { background: url("@{images}/investing.png") no-repeat; }
+			.account { background: url("@{images}/account.png") no-repeat; }
+			.news { background: url("@{images}/news.png") no-repeat; }
+		}
+		.inner-ul {
+			& > li {
+				font-size: @font15;
+				line-height: 35px;
+				background: @white;
+				&:hover, &:focus {
+					background: #e1e1e1;
+					border-left: 3px solid @red;
+				}
+			}
+		}
+	}
+	.content-right {
+		width: 855px;
+		background: @white;
+		border: @border;
+
+		//账户总览内容
+		.overview-head {
+			height: 178px;
+			padding: 30px 25px;
+			border-bottom: @border;
+			p { margin: 0; }
+			& > div { .inline-block; }
+			.head-left {
+				width: 300px;
+				.username {
+					font-size: @font25;
+					color: @dark-grey;
+				}
+				.save-level {
+					font-size: @font18;
+					color: @dark-grey;
+					.level-icon {
+						display: inline-block;
+						vertical-align: top;
+						width: 38px;
+						height: 23px;
+						margin-left: 10px;
+						background-repeat: no-repeat;
+					}
+					.low { background: url("@{images}/low.png"); }
+					.middle { background: url("@{images}/middle.png"); }
+					.high { background: url("@{images}/high.png"); }
+				}
+				.login-time {
+					font-size: @font18;
+					color: @grey;
+				}
+				.save-level, .login-time { margin-top: 16px; }
+			}
+			.head-center {
+				margin: 9px 0 0 85px;
+				font-size: @font18;
+				p {
+					color: @dark-grey;
+					span { color: @red; }
+				}
+				.balance-frozen { margin-top: 50px; }
+			}
+			.head-right {
+				& > a {
+					display: block;
+					width: 130px;
+					height: 45px;
+					line-height: 45px;
+					color: @white;
+					font-size: @font20;
+					text-align: center;
+					text-decoration: none;
+					border-radius: 5px;
+				}
+				.recharge { background: @red; }
+				.withdraw {
+					background: @blue;
+					margin-top: 26px;
+				}
+			}
+		}
+
+		//资金明细内容
+
+
+		//我要充值内容
+
+
+		//我要提现内容
+	}
+}

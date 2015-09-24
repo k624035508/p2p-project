@@ -656,6 +656,14 @@
     <Content Include="templates\AnGuang\imgs\register\red-bag.png" />
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\funds.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\high.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\investing.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\low.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\middle.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\news.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\overview.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\header.js" />
@@ -666,10 +674,12 @@
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
+    <Content Include="templates\AnGuang\js\usercenter.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\login.html" />
     <Content Include="templates\AnGuang\register.html" />
+    <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
@@ -693,6 +703,7 @@
     <Content Include="templates\AnGuang\less\footerSmall.less" />
     <Content Include="templates\AnGuang\less\register.less" />
     <Content Include="templates\AnGuang\less\login.less" />
+    <Content Include="templates\AnGuang\less\usercenter.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
