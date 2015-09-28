@@ -45,6 +45,11 @@ namespace Agp2p.Web.admin.loaner
                 var keywords = DTRequest.GetQueryString("keywords");
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
+                if (!context.li_mortgage_types.Any())
+                {
+                    JscriptMsg("请先设置抵押物类型", "back", "Error");
+                    return;
+                }
                 InitMortgageType();
                 RptBind();
             }
@@ -53,8 +58,7 @@ namespace Agp2p.Web.admin.loaner
         private void InitMortgageType()
         {
             rblMortgageType.Items.Clear();
-            var mortgageTypeses = context.li_mortgage_types.ToList();
-            var listItems = mortgageTypeses.Select(c =>
+            var listItems = context.li_mortgage_types.AsEnumerable().Select(c =>
                         new ListItem(string.Format("{0}x{1}", c.name, c.li_mortgages.Count(m => loaner_id == "" || m.owner == Convert.ToInt32(loaner_id))),
                             c.id.ToString())).ToArray();
             rblMortgageType.Items.AddRange(listItems);
