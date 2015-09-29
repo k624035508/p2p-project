@@ -11,11 +11,13 @@ namespace Agp2p.Web.UI
     public class ManagePage : System.Web.UI.Page
     {
         protected internal Model.siteconfig siteConfig;
+        protected internal Model.costconfig Costconfig;
 
         public ManagePage()
         {
             this.Load += new EventHandler(ManagePage_Load);
             siteConfig = new BLL.siteconfig().loadConfig();
+            Costconfig = new BLL.cost_config().loadConfig();
         }
 
         private void ManagePage_Load(object sender, EventArgs e)

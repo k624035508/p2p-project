@@ -317,6 +317,8 @@ namespace Agp2p.Common
             ManualPaid = 10,
             [Description("已自动还款")]
             AutoPaid = 11,
+            [Description("提前还款")]
+            EarlierPaid = 20
         }
 
         /// <summary>
