@@ -690,6 +690,7 @@
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
+    <Content Include="templates\AnGuang\_recharge.html" />
     <Content Include="templates\AnGuang\_tradeDetails.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />

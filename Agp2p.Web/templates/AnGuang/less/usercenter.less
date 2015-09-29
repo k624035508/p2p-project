@@ -1,5 +1,6 @@
-@import "common-style";
+ï»¿@import "common-style";
 @images: "../imgs/usercenter";
+@bank-icons: "../imgs/usercenter/bank-icons";
 
 body { background: @body-color; }
 div.usercenter {
@@ -69,7 +70,7 @@ div.usercenter {
 		background: @white;
 		border: @border;
 
-		//»áÔ±ÖĞĞÄÄÚÈİÍ·²¿
+		//ä¼šå‘˜ä¸­å¿ƒå†…å®¹å¤´éƒ¨
 		.overview-head {
 			height: 178px;
 			padding: 30px 25px;
@@ -133,7 +134,7 @@ div.usercenter {
 		}
 
 		.content-body { padding: 30px 25px; }
-		//½»Ò×Ã÷Ï¸ÄÚÈİ
+		//äº¤æ˜“æ˜ç»†å†…å®¹
 		.controls {
 			font-size: @font13;
 			color: @dark-grey;
@@ -188,6 +189,101 @@ div.usercenter {
 					background: #f9f9f9;
 					cursor: default;
 				}
+			}
+		}
+
+        //æˆ‘è¦å……å€¼å†…å®¹
+		.bank-chose-th, .bank-chose-tips {
+			padding-bottom: 6px;
+			border-bottom: 2px solid @light-grey;
+			span {
+				font-size: @font18;
+				color: @dark-grey;
+				padding-bottom: 7px;
+				border-bottom: 2px solid @red;
+			}
+		}
+		.bank-select {
+			padding: 35px 15px 5px 135px;
+			li {
+				vertical-align: top;
+				width: 135px;
+				height: 35px;
+				padding: 0;
+				margin-right: 21px;
+				margin-bottom: 20px;
+				border-radius: 5px;
+				background-repeat: no-repeat;
+				cursor: pointer;
+			}
+			#zhonghang { background: url("@{bank-icons}/zhonghang.png"); }
+			#gonghang { background: url("@{bank-icons}/gonghang.png"); }
+			#jianhang { background: url("@{bank-icons}/jianhang.png"); }
+			#nonghang { background: url("@{bank-icons}/nonghang.png"); }
+			#zhaohang { background: url("@{bank-icons}/zhaohang.png"); }
+			#youzheng { background: url("@{bank-icons}/youzheng.png"); }
+			#guangda { background: url("@{bank-icons}/guangda.png"); }
+			#zhongxin { background: url("@{bank-icons}/zhongxin.png"); }
+			#pufa { background: url("@{bank-icons}/pufa.png"); }
+			#minsheng { background: url("@{bank-icons}/minsheng.png"); }
+			#guangfa { background: url("@{bank-icons}/guangfa.png"); }
+			#xingye { background: url("@{bank-icons}/xingye.png"); }
+			#pingan { background: url("@{bank-icons}/pingan.png"); }
+			#jiaohang { background: url("@{bank-icons}/jiaohang.png"); }
+			#huaxia { background: url("@{bank-icons}/huaxia.png"); }
+		}
+		.balance-recharge span, .amount-recharge span {
+			display: inline-block;
+			width: 118px;
+			margin-right: 10px;
+			color: @dark-grey;
+			text-align: right;
+		}
+		.balance-recharge {
+			font-size: @font15;
+			color: @red;
+			margin-bottom: 30px;
+		}
+		.amount-recharge {
+			font-size: @font15;
+			i {
+				display: inline-block;
+				vertical-align: top;
+				color: @red;
+				font-size: @font18;
+				font-weight: bolder;
+				margin-right: 8px;
+			}
+			input {
+				width: 200px;
+				height: 40px;
+				line-height: 40px;
+				padding-left: 10px;
+				border: @border;
+				border-radius: 5px;
+			}
+		}
+		.rechargeBtn {
+			margin: 35px 0 30px 132px;
+			a {
+				display: inline-block;
+				width: 150px;
+				height: 45px;
+				line-height: 45px;
+				text-align: center;
+				text-decoration: none;
+				color: @white;
+				font-size: @font20;
+				background: @red;
+				border-radius: 5px;
+			}
+		}
+		.rechargeTips {
+			padding: 20px 35px;
+			p {
+				margin: 0 0 6px !important;
+				font-size: @font15;
+				color: @dark-grey;
 			}
 		}
 	}

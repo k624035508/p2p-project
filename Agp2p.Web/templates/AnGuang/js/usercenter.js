@@ -1,4 +1,4 @@
-import "bootstrap-webpack";
+ï»¿import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/usercenter.less";
 import "../less/footerSmall.less";
@@ -9,14 +9,14 @@ import "../less/bootstrap-datetimepicker.css";
 import "./bootstrap-datetimepicker.js";
 import  "./bootstrap-datetimepicker.zh-CN.js";
 $(function(){
-    //µã»÷µ¼º½¼ÓÔØÏàÓ¦ÄÚÈİ
+    //åŠ è½½äº¤æ˜“æ˜ç»†å†…å®¹
     var $mainContent = $("div.content-body");
     var basePath = $mainContent.data("templateskin");
 
     $("#tradeDetails").click(function(){
         $(this).parent().addClass("nav-active");
         $mainContent.load(basePath + "/_tradeDetails.html", function () {
-            //ÈÕÆÚÉèÖÃ
+            //æ—¥æœŸè®¾ç½®
             $(".form_date").datetimepicker({
                 language: 'zh-CN',
                 format: 'yyyy-mm-dd',
@@ -30,11 +30,26 @@ $(function(){
                 minView: 2
             });
 
-            //½»Ò×Ã÷Ï¸ ÏêÇé·ûºÅ·­×ª
+            //äº¤æ˜“æ˜ç»† è¯¦æƒ…ç¬¦å·ç¿»è½¬
             $(".detailRow").click(function(){
                 $(this).next("tr").toggle();
                 $(this).find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
             });
         });
+    });
+
+    //åŠ è½½æˆ‘è¦å……å€¼å†…å®¹
+    $("#recharge").click(function(){
+        $(this).parent().addClass("nav-active");
+        $mainContent.load(basePath + "/_recharge.html");
+    });
+
+    //å……å€¼é€‰æ‹©é“¶è¡Œ
+    var $bank = $(".bank-select li");
+    $bank.click(function(){
+        $bank.find("img").remove();
+        var img = document.createElement("img");
+        img.src = require("../imgs/usercenter/bank-icons/selected.png");
+        this.appendChild(img);
     });
 });
