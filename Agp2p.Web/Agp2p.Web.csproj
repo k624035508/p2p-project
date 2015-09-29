@@ -640,11 +640,13 @@
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\ie7-bg.png" />
-    <Content Include="templates\AnGuang\imgs\index\invest-list-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\xin.png" />
+    <Content Include="templates\AnGuang\imgs\index\yue.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
@@ -657,6 +659,7 @@
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\date.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\funds.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\high.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\investing.png" />
@@ -666,6 +669,8 @@
     <Content Include="templates\AnGuang\imgs\usercenter\overview.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
+    <Content Include="templates\AnGuang\js\bootstrap-datetimepicker.js" />
+    <Content Include="templates\AnGuang\js\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\html5shiv.min.js" />
     <Content Include="templates\AnGuang\js\ie8-polyfill.js" />
@@ -675,6 +680,7 @@
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\js\usercenter.js" />
+    <Content Include="templates\AnGuang\less\bootstrap-datetimepicker.css" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\login.html" />
@@ -684,6 +690,7 @@
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
+    <Content Include="templates\AnGuang\_tradeDetails.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">

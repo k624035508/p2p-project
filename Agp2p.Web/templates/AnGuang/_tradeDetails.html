@@ -1,0 +1,49 @@
+﻿<!-- 交易明细内容-->
+<div class="controls">
+    <select name="tradeType" id="typeSel">
+        <option value="">全部类型</option>
+        <option value="">充值</option>
+        <option value="">提现</option>
+        <option value="">投资</option>
+        <option value="">回款</option>
+        <option value="">其他</option>
+    </select>
+    <div class="dateSel pull-right">
+        <input class="form_date" type="text" /> 到
+        <input class="form_date" type="text" />
+        <a href="#">搜 索</a>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<table class="table trade-tb">
+    <thead>
+        <tr>
+            <th>交易类型</th>
+            <th>收入(元)</th>
+            <th>支出(元)</th>
+            <th>余额(元)</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="detailRow">
+            <td>充值</td>
+            <td>4000</td>
+            <td></td>
+            <td>6000</td>
+            <td>2015/09/25 15：07</td>
+            <td>详情 <span class="glyphicon glyphicon-triangle-bottom" data-toggle="glyphicon-triangle-top"></span></td>
+        </tr>
+        <tr class="detailMark"><td colspan="6">备注：成功充值金额4000元</td></tr>
+        <tr class="detailRow">
+            <td>投资</td>
+            <td></td>
+            <td>6000</td>
+            <td>0</td>
+            <td>2015/09/25 16：32</td>
+            <td>详情 <span class="glyphicon glyphicon-triangle-bottom"></span></td>
+        </tr>
+        <tr class="detailMark"><td colspan="6">备注：投资XXXX项目支出金额6000元</td></tr>
+    </tbody>
+</table>

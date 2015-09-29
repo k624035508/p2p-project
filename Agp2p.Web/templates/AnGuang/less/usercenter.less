@@ -42,7 +42,7 @@ div.usercenter {
 			& li:first-child {
 				background: @white;
 				.active { color: @red; }
-				&:hover, &:focus, {
+				&:hover, &:focus {
 					.account-link { .active; }
 				}
 			}
@@ -57,7 +57,7 @@ div.usercenter {
 				font-size: @font15;
 				line-height: 35px;
 				background: @white;
-				&:hover, &:focus {
+				&:hover, &:focus, &.nav-active {
 					background: #e1e1e1;
 					border-left: 3px solid @red;
 				}
@@ -69,7 +69,7 @@ div.usercenter {
 		background: @white;
 		border: @border;
 
-		//账户总览内容
+		//会员中心内容头部
 		.overview-head {
 			height: 178px;
 			padding: 30px 25px;
@@ -132,12 +132,63 @@ div.usercenter {
 			}
 		}
 
-		//资金明细内容
-
-
-		//我要充值内容
-
-
-		//我要提现内容
+		.content-body { padding: 30px 25px; }
+		//交易明细内容
+		.controls {
+			font-size: @font13;
+			color: @dark-grey;
+			#typeSel {
+				width: 90px;
+				height: 35px;
+				border: @border;
+			}
+			.dateSel {
+				& > * {
+					.inline-block;
+					margin: 0 8px;
+					height: 35px;
+					line-height: 35px;
+					border: @border;
+					cursor: pointer;
+				}
+				input {
+					width: 140px;
+					padding-left: 10px;
+					background: url("@{images}/date.png") 95% center no-repeat;
+				}
+				a {
+					width: 70px;
+					color: @dark-grey;
+					text-align: center;
+					text-decoration: none;
+					background: #f1f5ff;
+				}
+			}
+		}
+		.trade-tb {
+			margin-top: 30px;
+			th, td { text-align: center; }
+			th {
+				color: @darker-grey;
+				border-bottom: 2px solid @blue;
+			}
+			td {
+				height: 39px;
+				color: @dark-grey;
+				border-bottom: 1px solid @blue;
+			}
+			tbody tr {
+				cursor: pointer;
+				&:hover { background: #f1f5ff; }
+			}
+			.detailMark{
+				display: none;
+				td {
+					text-align: left;
+					background: #f9f9f9;
+					cursor: default;
+				}
+			}
+		}
 	}
 }
