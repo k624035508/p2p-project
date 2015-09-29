@@ -55,6 +55,7 @@
     <Compile Include="channel.cs" />
     <Compile Include="channel_category.cs" />
     <Compile Include="channel_field.cs" />
+    <Compile Include="costconfig.cs" />
     <Compile Include="department.cs" />
     <Compile Include="DTO\dto_user_idcard.cs" />
     <Compile Include="express.cs" />

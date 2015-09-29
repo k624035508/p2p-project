@@ -155,6 +155,7 @@
     <Content Include="admin\project\loan_apply.aspx" />
     <Content Include="admin\project\loan_apply_detail.aspx" />
     <Content Include="admin\settings\builder_html.aspx" />
+    <Content Include="admin\settings\cost_config.aspx" />
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
     <Content Include="admin\settings\plugin_list.aspx" />
@@ -633,7 +634,6 @@
     <Content Include="scripts\webuploader\uploader.swf" />
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\about.xml" />
-    <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
@@ -704,6 +704,7 @@
     <Content Include="templates\AnGuang\less\register.less" />
     <Content Include="templates\AnGuang\less\login.less" />
     <Content Include="templates\AnGuang\less\usercenter.less" />
+    <Content Include="xmlconfig\cost.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1103,6 +1104,13 @@
     </Compile>
     <Compile Include="admin\settings\builder_html.aspx.designer.cs">
       <DependentUpon>builder_html.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\cost_config.aspx.cs">
+      <DependentUpon>cost_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\cost_config.aspx.designer.cs">
+      <DependentUpon>cost_config.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\settings\nav_edit.aspx.cs">
       <DependentUpon>nav_edit.aspx</DependentUpon>
@@ -1825,6 +1833,7 @@
     <Folder Include="html\" />
     <Folder Include="images\" />
     <Folder Include="plugins\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
@@ -1859,7 +1868,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\lip2p.pubxml" />
     <Content Include="templates\AnGuang\package.json" />
     <Content Include="tools\calc_stand_guard_fee.ashx" />
     <Content Include="tools\email_verify.ashx" />

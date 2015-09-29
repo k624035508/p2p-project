@@ -32,6 +32,8 @@ namespace Agp2p.Common
         /// 用户配置文件名
         /// </summary>
         public const string FILE_USER_XML_CONFING = "Userpath";
+
+        public const string FILE_COST_XML_CONFING = "CostConfigpath";
         /// <summary>
         /// 订单配置文件名
         /// </summary>
@@ -72,6 +74,10 @@ namespace Agp2p.Common
         /// 用户配置
         /// </summary>
         public const string CACHE_USER_CONFIG = "dt_cache_user_config";
+        /// <summary>
+        /// 平台费用配置
+        /// </summary>
+        public const string CACHE_COST_CONFIG = "dt_cache_cost_config";
         /// <summary>
         /// 订单配置
         /// </summary>

@@ -72,6 +72,7 @@
     <Compile Include="users.cs" />
     <Compile Include="user_amount_log.cs" />
     <Compile Include="user_code.cs" />
+    <Compile Include="cost_config.cs" />
     <Compile Include="user_config.cs" />
     <Compile Include="user_groups.cs" />
     <Compile Include="user_login_log.cs" />

@@ -55,5 +55,15 @@ namespace Agp2p.Linq2SQL.Properties {
                 return ((string)(this["DTcmsdb3ConnectionString2"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.5.98;Initial Catalog=agrh;User ID=sa")]
+        public string agrhConnectionString {
+            get {
+                return ((string)(this["agrhConnectionString"]));
+            }
+        }
     }
 }
