@@ -324,7 +324,7 @@ namespace Agp2p.Web.tools
             string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : 
                 Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
             string password = DTRequest.GetFormString("txtPassword").Trim();
-            string password1 = DTRequest.GetFormString("txtPassword1").Trim();
+            //string password1 = DTRequest.GetFormString("txtPassword1").Trim();
             string email = Utils.ToHtml(DTRequest.GetFormString("txtEmail").Trim());
             string mobile = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string userip = DTRequest.GetIP();            
@@ -351,11 +351,11 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，系统暂不允许注册新用户！\"}");
                 return;
             }
-            if (!password.Equals(password1))
+            /*if (!password.Equals(password1))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"两次输入的密码不一样！\"}");
                 return;
-            }
+            }*/
             
             //校检验证码,如果注册使用手机短信则只需验证手机验证码，否则使用网页验证码
             if (userConfig.regstatus == 2) //手机验证码
@@ -2126,9 +2126,9 @@ namespace Agp2p.Web.tools
             {
                 try
                 {
-                    decimal investingMoney = DTRequest.GetFormDecimal("investingMoney_submit", 0);
-                    int project_id = DTRequest.GetFormInt("project_id", 0);
-                    string pw = DTRequest.GetFormString("txtPassword");
+                    decimal investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
+                    int project_id = DTRequest.GetFormInt("projectId", 0);
+                    string pw = DTRequest.GetFormString("transactPassword");
                     int user_id = user.id;
                     if (Utils.MD5(pw).Equals(user.pay_password))
                     {

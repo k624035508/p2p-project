@@ -415,10 +415,10 @@
                 </dd>
             </dl>
             <dl>
-                <dt>募集期限(天)</dt>
+                <dt>募集期限</dt>
                 <dd>
                     <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
-                        sucmsg=" " Enabled="False"></asp:TextBox>
+                        sucmsg=" " Enabled="False"></asp:TextBox>天
                 <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>

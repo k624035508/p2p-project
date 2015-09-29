@@ -92,7 +92,7 @@ namespace Agp2p.Web.admin.project
                 spa_loanerContent.InnerText = risk.loaner_content;//借款描述
                 spa_loanUse.InnerText = risk.loan_usage;//借款用途
                 spa_repaymentSource.InnerText = risk.source_of_repayment;//还款来源
-                spa_txtRiskContent.InnerText = risk.risk_content;//风控描述
+                spa_txtRiskContent.InnerHtml = risk.risk_content;//风控描述
                 // 加载相册
                 rptMortgageContracts.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract);
                 rptMortgageContracts.DataBind();

@@ -47,7 +47,7 @@ $(function(){
                 txtSMSCode: $("#sms-code").val(),
                 txtMobile: $("#account").val(),
                 txtPassword: $("#psw").val(),
-                txtPassword1: $("#psw2").val(),
+                //txtPassword1: $("#psw2").val(), TODO 重复输入的密码只在前台判断
                 txtInviteNo: $("#recommended").val()
             },
             success: function(data){

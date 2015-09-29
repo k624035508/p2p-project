@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_apply_detail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_apply_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_apply_detail" ValidateRequest="false"%>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
