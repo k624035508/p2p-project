@@ -1,5 +1,6 @@
 ﻿/*投资列表样式*/
 @import "common-style.less";
+@images: "../imgs/index";
 
 div.invest-cell {
     width: @min-width;
@@ -12,17 +13,16 @@ div.invest-cell {
         border-bottom: @border;
         & > * { .inline-block; }
         .invest-list-icon {
-            width: 28px;
-            height: 28px;
+            width: 20px;
+            height: 20px;
             margin-left: 10px;
-            background: url("../imgs/index/invest-list-icon.png") no-repeat;
         }
 
-        .jian-icon {background-position: -15px -15px;}
+        .jian-icon { background: url("@{images}/jian.png") no-repeat; }
 
-        .xin-icon {background-position: -15px -73px;}
+        .xin-icon { background: url("@{images}/xin.png") no-repeat; }
 
-        .yue-icon {background-position: -15px -131px;}
+        .yue-icon { background: url("@{images}/yue.png") no-repeat; }
         span a {
             font-size: @font20;
             color: @darker-grey;

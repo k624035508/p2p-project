@@ -31,10 +31,10 @@
             <p class="account-num">1032000.50<span>元</span></p>
         </div>
         <ul class="list-unstyled outside-ul">
-            <li><a href="#" class="account-link active">账户总览</a></li>
+            <li><a href="#" class="account-link">账户总览</a></li>
             <li><a class="funds">资金管理</a>
                 <ul class="list-unstyled inner-ul">
-                    <li><a href="#">资金明细</a></li>
+                    <li class=""><a id="tradeDetails" href="#">资金明细</a></li>
                     <li><a href="#">我要充值</a></li>
                     <li><a href="#">我要提现</a></li>
                 </ul>
@@ -63,7 +63,6 @@
         </ul>
     </div>
     <div class="content-right pull-right">
-        <!-- 账户总览-->
         <div class="overview-head">
             <div class="head-left">
                 <p class="username">您好！ 135****6652</p>
@@ -79,6 +78,10 @@
                 <a href="#" class="withdraw">提 现</a>
             </div>
         </div>
+
+        <div class="content-body" data-templateSkin="<%templateskin%>">
+        </div>
+
     </div>
 </div>
 
