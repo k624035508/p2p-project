@@ -6,6 +6,7 @@ using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Linq;
+using System.Web.Services;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -68,5 +69,11 @@ namespace Agp2p.Web.UI.Page
 
         }
 
+
+        [WebMethod]
+        public static string AjaxQueryTransactionHistory(short pageIndex, short pageSize)
+        {
+            return mytrade.AjaxQueryTransactionHistory(pageIndex, pageSize);
+        }
     }
 }

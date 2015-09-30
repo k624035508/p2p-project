@@ -10,7 +10,7 @@ module.exports = {
         invest_detail: "./js/invest_detail.js",
         register: "./js/register.js",
         login: "./js/login.js",
-        usercenter: "./js/usercenter.js"
+        usercenter: "./js/usercenter.jsx"
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -29,6 +29,7 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
+            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
             { test: /\.jpg$/, loader: "file" },

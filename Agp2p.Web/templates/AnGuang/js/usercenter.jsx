@@ -3,13 +3,13 @@ import "../less/head.less";
 import "../less/usercenter.less";
 import "../less/footerSmall.less";
 
-import $ from "jquery";
-import header from "./header.js";
-import "../less/bootstrap-datetimepicker.css";
-import "./bootstrap-datetimepicker.js";
-import  "./bootstrap-datetimepicker.zh-CN.js";
+
+import React from "react"
+import Picker from "../component/type-timespan-picker.jsx"
+import TransactionTable from "../component/transactions-table.jsx"
+
 $(function(){
-    //加载交易明细内容
+    //点击导航加载相应内容
     var $mainContent = $("div.content-body");
     var basePath = $mainContent.data("templateskin");
     var $nav = $(".outside-ul li");
@@ -17,27 +17,12 @@ $(function(){
     $("#tradeDetails").click(function(){
         $nav.removeClass("nav-active");
         $(this).parent().addClass("nav-active");
-        $mainContent.load(basePath + "/_tradeDetails.html", function () {
-            //日期设置
-            $(".form_date").datetimepicker({
-                language: 'zh-CN',
-                format: 'yyyy-mm-dd',
-                weekStart: 1,
-                todayBtn: true,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1,
-                autoclose: 1,
-                minView: 2
-            });
 
-            //交易明细 详情符号翻转
-            $(".detailRow").click(function(){
-                $(this).next("tr").toggle();
-                $(this).find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
-            });
-        });
+        React.render(
+        	<div>
+        		<Picker />
+	        	<TransactionTable url={$mainContent.data("aspx-path") + "/AjaxQueryTransactionHistory"} />
+        	</div>, $mainContent[0])
     });
 
     //加载我要充值内容
@@ -55,5 +40,4 @@ $(function(){
             });
         });
     });
-
 });

@@ -696,7 +696,6 @@
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
-    <Content Include="templates\AnGuang\js\usercenter.js" />
     <Content Include="templates\AnGuang\less\bootstrap-datetimepicker.css" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
@@ -708,7 +707,6 @@
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
     <Content Include="templates\AnGuang\_recharge.html" />
-    <Content Include="templates\AnGuang\_tradeDetails.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">
@@ -729,6 +727,8 @@
     <Content Include="templates\AnGuang\less\register.less" />
     <Content Include="templates\AnGuang\less\login.less" />
     <Content Include="templates\AnGuang\less\usercenter.less" />
+    <Content Include="templates\AnGuang\component\type-timespan-picker.jsx" />
+    <Content Include="templates\AnGuang\js\usercenter.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1897,6 +1897,9 @@
     <Content Include="tools\email_verify.ashx" />
     <Content Include="tools\mobile_verify.ashx" />
     <Content Include="tools\trade_pwd.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="templates\AnGuang\component\transactions-table.jsx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
