@@ -57,8 +57,12 @@
     <dd><asp:TextBox ID="txtLoaners" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* 请输入人员账号/姓名，用英文逗号隔开</span></dd>
   </dl>
     <dl>
-        <dt>公司名称</dt>
+        <dt>企业名称</dt>
         <dd><asp:TextBox ID="txtCompanyName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+    </dl>
+    <dl>
+        <dt>企业负责人</dt>
+        <dd><asp:TextBox ID="txtManager" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
     <dl>
         <dt>成立时间</dt>
@@ -79,6 +83,10 @@
         <dd><asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
     <dl>
+        <dt>所属行业</dt>
+        <dd><asp:TextBox ID="txtBusinessBelong" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+    </dl>
+    <dl>
         <dt>经营状态</dt>
         <dd><asp:TextBox ID="txtBusinessStatus" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
@@ -91,8 +99,16 @@
         <dd><asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
     </dl>
     <dl>
+        <dt>年净利润</dt>
+        <dd><asp:TextBox ID="txtNetProfit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
         <dt>净资产</dt>
         <dd><asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+    </dl>
+    <dl>
+        <dt>地址</dt>
+        <dd><asp:TextBox ID="txtAddress" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
     </dl>
     <dl>
         <dt>备注</dt>
