@@ -1616,23 +1616,23 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            int amout = DTRequest.GetFormInt("txtAmount");
+            //int amout = DTRequest.GetFormInt("txtAmount");
             string password = DTRequest.GetFormString("txtPassword");
-            if (model.amount < 1)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您账户上的余额不足！\"}");
-                return;
-            }
-            if (amout < 1)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，最小兑换金额为1元！\"}");
-                return;
-            }
-            if (amout > model.amount)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您兑换的金额大于账户余额！\"}");
-                return;
-            }
+            //if (model.amount < 1)
+            //{
+            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，您账户上的余额不足！\"}");
+            //    return;
+            //}
+            //if (amout < 1)
+            //{
+            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，最小兑换金额为1元！\"}");
+            //    return;
+            //}
+            //if (amout > model.amount)
+            //{
+            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，您兑换的金额大于账户余额！\"}");
+            //    return;
+            //}
             if (password == "")
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入您账户的密码！\"}");
@@ -1645,23 +1645,23 @@ namespace Agp2p.Web.tools
                 return;
             }
             //计算兑换后的积分值
-            int convertPoint = (int)(Convert.ToDecimal(amout) * userConfig.pointcashrate);
+            //int convertPoint = (int)(Convert.ToDecimal(amout) * userConfig.pointcashrate);
             //扣除金额
-            int amountNewId = new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout * -1, "用户兑换积分", 1);
+            //int amountNewId = new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout * -1, "用户兑换积分", 1);
             //增加积分
-            if (amountNewId < 1)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
-                return;
-            }
-            int pointNewId = new BLL.user_point_log().Add(model.id, model.user_name, convertPoint, "用户兑换积分", true);
-            if (pointNewId < 1)
-            {
-                //返还金额
-                new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout, "用户兑换积分失败，返还金额", 1);
-                context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
-                return;
-            }
+            //if (amountNewId < 1)
+            //{
+            //    context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
+            //    return;
+            //}
+            //int pointNewId = new BLL.user_point_log().Add(model.id, model.user_name, convertPoint, "用户兑换积分", true);
+            //if (pointNewId < 1)
+            //{
+            //    //返还金额
+            //    new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout, "用户兑换积分失败，返还金额", 1);
+            //    context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
+            //    return;
+            //}
 
             context.Response.Write("{\"status\":1, \"msg\":\"恭喜您，积分兑换成功！\"}");
             return;

@@ -25,7 +25,6 @@ namespace Agp2p.Model
         private string _address = "";
         private string _safe_question = "";
         private string _safe_answer = "";
-        private decimal _amount = 0M;
         private int _point = 0;
         private int _exp = 0;
         private int _status = 0;
@@ -162,14 +161,6 @@ namespace Agp2p.Model
         {
             set { _safe_answer = value; }
             get { return _safe_answer; }
-        }
-        /// <summary>
-        /// 预存款
-        /// </summary>
-        public decimal amount
-        {
-            set { _amount = value; }
-            get { return _amount; }
         }
         /// <summary>
         /// 用户积分

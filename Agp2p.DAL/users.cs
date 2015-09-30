@@ -144,9 +144,9 @@ namespace Agp2p.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into dt_users(");
-            strSql.Append("group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,amount,point,exp,status,reg_time,reg_ip,real_name,id_card_number,area,openid)");
+            strSql.Append("group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,point,exp,status,reg_time,reg_ip,real_name,id_card_number,area,openid)");
             strSql.Append(" values (");
-            strSql.Append("@group_id,@user_name,@password,@salt,@email,@nick_name,@avatar,@sex,@birthday,@telphone,@mobile,@qq,@address,@safe_question,@safe_answer,@amount,@point,@exp,@status,@reg_time,@reg_ip,@real_name,@id_card_number,@area,@openid)");
+            strSql.Append("@group_id,@user_name,@password,@salt,@email,@nick_name,@avatar,@sex,@birthday,@telphone,@mobile,@qq,@address,@safe_question,@safe_answer,@point,@exp,@status,@reg_time,@reg_ip,@real_name,@id_card_number,@area,@openid)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@group_id", SqlDbType.Int,4),
@@ -164,7 +164,6 @@ namespace Agp2p.DAL
 					new SqlParameter("@address", SqlDbType.NVarChar,255),
 					new SqlParameter("@safe_question", SqlDbType.NVarChar,255),
 					new SqlParameter("@safe_answer", SqlDbType.NVarChar,255),
-					new SqlParameter("@amount", SqlDbType.Decimal,5),
 					new SqlParameter("@point", SqlDbType.Int,4),
 					new SqlParameter("@exp", SqlDbType.Int,4),
 					new SqlParameter("@status", SqlDbType.TinyInt,1),
@@ -189,16 +188,15 @@ namespace Agp2p.DAL
             parameters[12].Value = model.address;
             parameters[13].Value = model.safe_question;
             parameters[14].Value = model.safe_answer;
-            parameters[15].Value = model.amount;
-            parameters[16].Value = model.point;
-            parameters[17].Value = model.exp;
-            parameters[18].Value = model.status;
-            parameters[19].Value = model.reg_time;
-            parameters[20].Value = model.reg_ip;
-            parameters[21].Value = model.real_name;
-            parameters[22].Value = model.id_card_number;
-            parameters[23].Value = model.area;
-            parameters[24].Value = model.openid;
+            parameters[15].Value = model.point;
+            parameters[16].Value = model.exp;
+            parameters[17].Value = model.status;
+            parameters[18].Value = model.reg_time;
+            parameters[19].Value = model.reg_ip;
+            parameters[20].Value = model.real_name;
+            parameters[21].Value = model.id_card_number;
+            parameters[22].Value = model.area;
+            parameters[23].Value = model.openid;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -244,7 +242,6 @@ namespace Agp2p.DAL
             strSql.Append("address=@address,");
             strSql.Append("safe_question=@safe_question,");
             strSql.Append("safe_answer=@safe_answer,");
-            strSql.Append("amount=@amount,");
             strSql.Append("point=@point,");
             strSql.Append("exp=@exp,");
             strSql.Append("status=@status,");
@@ -271,7 +268,6 @@ namespace Agp2p.DAL
 					new SqlParameter("@address", SqlDbType.NVarChar,255),
 					new SqlParameter("@safe_question", SqlDbType.NVarChar,255),
 					new SqlParameter("@safe_answer", SqlDbType.NVarChar,255),
-					new SqlParameter("@amount", SqlDbType.Decimal,5),
 					new SqlParameter("@point", SqlDbType.Int,4),
 					new SqlParameter("@exp", SqlDbType.Int,4),
 					new SqlParameter("@status", SqlDbType.TinyInt,1),
@@ -297,17 +293,16 @@ namespace Agp2p.DAL
             parameters[12].Value = model.address;
             parameters[13].Value = model.safe_question;
             parameters[14].Value = model.safe_answer;
-            parameters[15].Value = model.amount;
-            parameters[16].Value = model.point;
-            parameters[17].Value = model.exp;
-            parameters[18].Value = model.status;
-            parameters[19].Value = model.reg_time;
-            parameters[20].Value = model.reg_ip;
-            parameters[21].Value = model.real_name;
-            parameters[22].Value = model.id_card_number;
-            parameters[23].Value = model.area;
-            parameters[24].Value = model.openid;
-            parameters[25].Value = model.id;
+            parameters[15].Value = model.point;
+            parameters[16].Value = model.exp;
+            parameters[17].Value = model.status;
+            parameters[18].Value = model.reg_time;
+            parameters[19].Value = model.reg_ip;
+            parameters[20].Value = model.real_name;
+            parameters[21].Value = model.id_card_number;
+            parameters[22].Value = model.area;
+            parameters[23].Value = model.openid;
+            parameters[24].Value = model.id;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -412,7 +407,7 @@ namespace Agp2p.DAL
         public Model.users GetModel(int id)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 id,group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,amount,point,exp,status,reg_time,reg_ip,real_name,id_card_number,area,openid from " + databaseprefix + "users ");
+            strSql.Append("select  top 1 id,group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,point,exp,status,reg_time,reg_ip,real_name,id_card_number,area,openid from " + databaseprefix + "users ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)};
@@ -447,10 +442,7 @@ namespace Agp2p.DAL
                 model.address = ds.Tables[0].Rows[0]["address"].ToString();
                 model.safe_question = ds.Tables[0].Rows[0]["safe_question"].ToString();
                 model.safe_answer = ds.Tables[0].Rows[0]["safe_answer"].ToString();
-                if (ds.Tables[0].Rows[0]["amount"].ToString() != "")
-                {
-                    model.amount = decimal.Parse(ds.Tables[0].Rows[0]["amount"].ToString());
-                }
+
                 if (ds.Tables[0].Rows[0]["point"].ToString() != "")
                 {
                     model.point = int.Parse(ds.Tables[0].Rows[0]["point"].ToString());
@@ -551,7 +543,7 @@ namespace Agp2p.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" id,group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,amount,point,exp,status,reg_time,reg_ip,area,openid ");
+            strSql.Append(" id,group_id,user_name,password,salt,email,nick_name,avatar,sex,birthday,telphone,mobile,qq,address,safe_question,safe_answer,point,exp,status,reg_time,reg_ip,area,openid ");
             strSql.Append(" FROM " + databaseprefix + "users ");
             if (strWhere.Trim() != "")
             {

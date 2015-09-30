@@ -36,11 +36,6 @@ namespace Agp2p.Web.api.payment.balance
                 Response.Redirect(new Web.UI.BasePage().linkurl("payment", "login")); //尚未登录
                 return;
             }
-            if (userModel.amount < order_amount)
-            {
-                Response.Redirect(new Web.UI.BasePage().linkurl("payment", "recharge")); //账户的余额不足
-                return;
-            }
 
             if (order_no.StartsWith("B")) //B开头为商品订单
             {
