@@ -6,7 +6,9 @@ using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Linq;
+using System.Net;
 using System.Web.Services;
+using Newtonsoft.Json;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -66,14 +68,38 @@ namespace Agp2p.Web.UI.Page
             //查询用户钱包
             var context = new Linq2SQL.Agp2pDataContext();
             wallet = context.li_wallets.FirstOrDefault(w => w.user_id == userModel.id);
-
         }
-
 
         [WebMethod]
         public static string AjaxQueryTransactionHistory(short pageIndex, short pageSize)
         {
             return mytrade.AjaxQueryTransactionHistory(pageIndex, pageSize);
+        }
+
+        [WebMethod]
+        public static string AjaxQueryEnumInfo(string enumFullName)
+        {
+            var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var type = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(assembly => assembly.GetType(enumFullName))
+                .Where(t => t != null).FirstOrDefault(t => t.IsEnum);
+            if (type == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return "没找到枚举类型";
+            }
+
+            var values = Enum.GetValues(type).Cast<Enum>();
+            return
+                JsonConvert.SerializeObject(
+                    values.Select(en => new {key = Utils.GetAgp2pEnumDes(en), value = Convert.ToInt32(en)}));
         }
     }
 }

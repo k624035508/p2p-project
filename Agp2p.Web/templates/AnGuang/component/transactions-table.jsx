@@ -7,13 +7,13 @@ var TransactionTable = React.createClass({
     },
     componentDidMount: function() {
     	$.ajax({
-            type: "post",
+    		type: "post",
     		dataType: "json",
     		contentType: "application/json",
-    	    url: this.props.url,
-    		data: JSON.stringify({ pageIndex: 0, pageSize: 10}),
+    		url: this.props.url,
+    		data: JSON.stringify(this.props.args),
     		success: function(data) {
-    		    this.setState({data: JSON.parse(data.d)});
+    			this.setState({data: JSON.parse(data.d)});
     		}.bind(this),
     		error: function(xhr, status, err) {
     			console.error(this.props.url, status, err.toString());
@@ -51,8 +51,8 @@ var TransactionTable = React.createClass({
     componentDidUpdate: function () {
         //交易明细 详情符号翻转
         $(this.getDOMNode()).find(".detailRow").click(function(){
-            $(this).next("tr").toggle();
-            $(this).find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
+        	$(this).next("tr").toggle();
+        	$(this).find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
         });
     }
 });

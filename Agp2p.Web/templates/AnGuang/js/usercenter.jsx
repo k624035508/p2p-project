@@ -12,6 +12,7 @@ $(function(){
     //点击导航加载相应内容
     var $mainContent = $("div.content-body");
     var basePath = $mainContent.data("templateskin");
+    var aspxPath = $mainContent.data("aspx-path");
     var $nav = $(".outside-ul li");
 
     $("#tradeDetails").click(function(){
@@ -20,9 +21,9 @@ $(function(){
 
         React.render(
         	<div>
-        		<Picker />
-	        	<TransactionTable url={$mainContent.data("aspx-path") + "/AjaxQueryTransactionHistory"} />
-        	</div>, $mainContent[0])
+	        	<Picker url={aspxPath + "/AjaxQueryEnumInfo"} args={{ enumFullName: "Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"}} />
+	        	<TransactionTable url={aspxPath + "/AjaxQueryTransactionHistory"} args={{ pageIndex: 0, pageSize: 10}} />
+        	</div>, $mainContent[0]);
     });
 
     //加载我要充值内容
