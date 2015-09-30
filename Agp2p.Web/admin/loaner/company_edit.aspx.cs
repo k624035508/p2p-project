@@ -66,6 +66,10 @@ namespace Agp2p.Web.admin.loaner
             txtIncomeYearly.Text = model.income_yearly;
             txtNetAssets.Text = model.net_assets;
             txtCompanyRemark.Text = model.remark;
+            txtAddress.Text = model.address;
+            txtBusinessBelong.Text = model.business_belong;
+            txtNetProfit.Text = model.net_profit_yearly;
+            txtManager.Text = model.manager;
 
             rptPics.DataSource = model.li_albums;
             rptPics.DataBind();
@@ -115,6 +119,10 @@ namespace Agp2p.Web.admin.loaner
                 income_yearly = txtIncomeYearly.Text,
                 net_assets = txtNetAssets.Text,
                 remark = txtCompanyRemark.Text,
+                manager = txtManager.Text,
+                net_profit_yearly = txtNetProfit.Text,
+                address = txtAddress.Text,
+                business_belong = txtBusinessBelong.Text
             };
             context.li_loaner_companies.InsertOnSubmit(model);
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
@@ -194,6 +202,10 @@ namespace Agp2p.Web.admin.loaner
             model.income_yearly = txtIncomeYearly.Text;
             model.net_assets = txtNetAssets.Text;
             model.remark = txtCompanyRemark.Text;
+            model.manager = txtManager.Text;
+            model.net_profit_yearly = txtNetProfit.Text;
+            model.address = txtAddress.Text;
+            model.business_belong = txtBusinessBelong.Text;
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
 
