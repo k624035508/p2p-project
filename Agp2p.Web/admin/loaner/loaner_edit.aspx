@@ -19,6 +19,7 @@
         width: 100%;
         height: 60vh;
     }
+    .readonly { background-color: lightgray;}
 </style>
 <script type="text/javascript">
     $(function () {
@@ -27,6 +28,7 @@
         $(".upload-album").each(function () {
             $(this).InitSWFUpload({ btntext: "批量上传", btnwidth: 66, single: false, water: true, thumbnail: true, filesize: "<%=siteConfig.imgsize %>", sendurl: "../../tools/upload_ajax.ashx", flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpeg;*.png;*.gif;" });
         });
+        $("input[disabled]").addClass("readonly");
     });
 </script>
 </head>
@@ -60,57 +62,61 @@
 <div class="tab-content">
   <dl>
     <dt>姓名</dt>
-    <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" datatype="/^\S+$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">*</span></dd>
+      <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="False"/><span class="Validform_checktip">要修改灰色字段请在会员管理页面修改</span></dd>
   </dl>
   <dl>
     <dt>性别</dt>
     <dd>
       <div class="rule-multi-radio">
         <asp:RadioButtonList ID="rblGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
-        <asp:ListItem Value="1" Selected="True">保密</asp:ListItem>
-        <asp:ListItem Value="2">男</asp:ListItem>
-        <asp:ListItem Value="3">女</asp:ListItem>
+        <asp:ListItem Value="保密" Selected="True">保密</asp:ListItem>
+        <asp:ListItem Value="男">男</asp:ListItem>
+        <asp:ListItem Value="女">女</asp:ListItem>
         </asp:RadioButtonList>
       </div>
     </dd>
   </dl>
   <dl>
     <dt>电话</dt>
-    <dd><asp:TextBox ID="txtTel" runat="server" CssClass="input normal" datatype="/^\d{11}$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">* 11位手机号</span></dd>
-  </dl>
-  <dl>
-    <dt>年龄</dt>
-      <dd><asp:TextBox ID="txtAge" runat="server" CssClass="input normal" datatype="/^\d+$/" Enabled="False"/><span class="Validform_checktip">* </span></dd>
-  </dl>
-  <dl>
-    <dt>籍贯</dt>
-    <dd><asp:TextBox ID="txtCencus" runat="server" CssClass="input normal" datatype="/^\S+$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">* </span></dd>
-  </dl>
-  <dl>
-    <dt>工作</dt>
-    <dd><asp:TextBox ID="txtJob" runat="server" CssClass="input normal" datatype="/^.*$/" Enabled="False"></asp:TextBox></dd>
-  </dl>
-  <dl>
-    <dt>工作地点</dt>
-    <dd><asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.*$/" Enabled="False"></asp:TextBox></dd>
+    <dd><asp:TextBox ID="txtTel" runat="server" CssClass="input normal" Enabled="False"></asp:TextBox><span class="Validform_checktip"> 11位手机号</span></dd>
   </dl>
   <dl>
     <dt>身份证号码</dt>
-    <dd><asp:TextBox ID="txtIdCardNumber" runat="server" CssClass="input normal" datatype="/^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">* 18位公民身份证</span></dd>
+      <dd><asp:TextBox ID="txtIdCardNumber" runat="server" CssClass="input normal" Enabled="False"/></dd>
   </dl>
   <dl>
     <dt>电子邮件</dt>
-    <dd><asp:TextBox ID="txtEmail" runat="server" CssClass="input normal" datatype="/^.*$/" Enabled="False"></asp:TextBox></dd>
+      <dd><asp:TextBox ID="txtEmail" runat="server" CssClass="input normal" Enabled="False"/></dd>
+  </dl>
+  <dl>
+    <dt>年龄</dt>
+      <dd><asp:TextBox ID="txtAge" runat="server" CssClass="input normal" datatype="/^\d+$/" /><span class="Validform_checktip">* </span></dd>
+  </dl>
+  <dl>
+    <dt>籍贯</dt>
+      <dd><asp:TextBox ID="txtCencus" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* </span></dd>
+  </dl>
+  <dl>
+    <dt>工作</dt>
+      <dd><asp:TextBox ID="txtJob" runat="server" CssClass="input normal" datatype="/^.+$/"/><span class="Validform_checktip">* </span></dd>
+  </dl>
+  <dl>
+    <dt>工作地点</dt>
+      <dd><asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.+$/"/><span class="Validform_checktip">* </span></dd>
+  </dl>
+  <dl>
+    <dt>工作单位</dt>
+      <dd><asp:TextBox ID="txtWorkingUnit" runat="server" CssClass="input normal" datatype="/^.+$/"/><span class="Validform_checktip">* </span></dd>
   </dl>
   <dl>
     <dt>学历</dt>
-    <dd><asp:TextBox ID="txtEducationalBackground" runat="server" CssClass="input normal" datatype="/^\S+$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+      <dd><asp:TextBox ID="txtEducationalBackground" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">* </span></dd>
   </dl>
   <dl>
     <dt>婚姻状态</dt>
     <dd>
       <div class="rule-multi-radio">
-        <asp:RadioButtonList ID="rblMaritalStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
+        <asp:RadioButtonList ID="rblMaritalStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
         <asp:ListItem Value="1" Selected="True">未婚</asp:ListItem>
         <asp:ListItem Value="2">已婚</asp:ListItem>
         <asp:ListItem Value="3">离婚</asp:ListItem>
@@ -121,12 +127,12 @@
   </dl>
   <dl>
     <dt>收入</dt>
-    <dd><asp:TextBox ID="txtIncome" runat="server" CssClass="input normal" datatype="/^.+$/" Enabled="False"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+      <dd><asp:TextBox ID="txtIncome" runat="server" CssClass="input normal" datatype="/^.+$/"/><span class="Validform_checktip">* </span></dd>
   </dl>
   <dl>
     <dt>身份证照片</dt>
     <dd>
-      <div class="upload-box upload-album" style="display: none;"></div>
+      <div class="upload-box upload-album"></div>
       <div class="photo-list">
         <ul>
           <asp:Repeater ID="rptIdCardPics" runat="server">
@@ -157,7 +163,7 @@
 <!--工具栏-->
 <div class="page-footer">
   <div class="btn-list">
-    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" Visible="False" />
+    <asp:Button ID="btnSubmit" runat="server" Text="提交保存" CssClass="btn" onclick="btnSubmit_Click" />
     <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
   </div>
   <div class="clear"></div>

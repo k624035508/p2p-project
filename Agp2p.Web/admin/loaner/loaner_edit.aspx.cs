@@ -53,9 +53,10 @@ namespace Agp2p.Web.admin.loaner
             txtTel.Text = model.dt_users.mobile;
             txtAge.Text = model.age.ToString();
             rblGender.SelectedValue = model.dt_users.sex;
-            txtCencus.Text = model.dt_users.area;
+            txtCencus.Text = model.native_place;
             txtJob.Text = model.job;
             txtWorkingAt.Text = model.working_at;
+            txtWorkingUnit.Text = model.working_company;
             txtIdCardNumber.Text = model.dt_users.id_card_number;
             txtEmail.Text = model.dt_users.email;
             txtEducationalBackground.Text = model.educational_background;
@@ -109,6 +110,7 @@ namespace Agp2p.Web.admin.loaner
                 //cencus = txtCencus.Text.Trim(),
                 job = txtJob.Text.Trim(),
                 working_at = txtWorkingAt.Text.Trim(),
+                working_company = txtWorkingUnit.Text.Trim(),
                 //id_card_number = txtIdCardNumber.Text.Trim(),
                 //email = txtEmail.Text.Trim(),
                 educational_background = txtEducationalBackground.Text.Trim(),
@@ -141,9 +143,10 @@ namespace Agp2p.Web.admin.loaner
             //model.tel = txtTel.Text.Trim();
             model.age = Convert.ToInt16(txtAge.Text.Trim());
             //model.gender = Convert.ToByte(rblGender.SelectedValue);
-            //model.cencus = txtCencus.Text.Trim();
+            model.native_place = txtCencus.Text.Trim();
             model.job = txtJob.Text.Trim();
             model.working_at = txtWorkingAt.Text.Trim();
+            model.working_company = txtWorkingUnit.Text.Trim();
             //model.id_card_number = txtIdCardNumber.Text.Trim();
             //model.email = txtEmail.Text.Trim();
             model.educational_background = txtEducationalBackground.Text.Trim();
