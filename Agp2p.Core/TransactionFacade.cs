@@ -725,11 +725,11 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 将项目的全部投资退款
+        /// 项目流标，将项目的全部投资退款
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectId"></param>
-        public static void RefundAll(this Agp2pDataContext context, int projectId)
+        public static void ProjectFinancingFail(this Agp2pDataContext context, int projectId)
         {
             // 判断项目状态
             var proj = context.li_projects.Single(t => t.id == projectId);
@@ -742,6 +742,8 @@ namespace Agp2p.Core
                     tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .Select(tr => tr.id)
                 .ForEach(trId => context.Refund(trId, false));
+
+            proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingFail;
             context.SubmitChanges();
         }
 
