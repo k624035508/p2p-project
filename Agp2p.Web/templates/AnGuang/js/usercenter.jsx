@@ -3,10 +3,10 @@ import "../less/head.less";
 import "../less/usercenter.less";
 import "../less/footerSmall.less";
 
-
 import React from "react"
 import MyTransaction from "../containers/mytransaction.jsx"
 import RechargePage from "../containers/recharge.jsx"
+import WithdrawPage from "../containers/withdraw.jsx"
 
 $(function(){
     //点击导航加载相应内容
@@ -34,15 +34,7 @@ $(function(){
     $("#withdraw").click(function(){
         $nav.removeClass("nav-active");
         $(this).parent().addClass("nav-active");
-        $mainContent.load(basePath + "/_withdraw.html",function(){
-            //提现银行卡选择
-            var $card = $(".ul-withdraw .card");
-            $card.click(function(){
-                $card.find("img").remove();
-                var img = document.createElement("img");
-                img.src = basePath + "/imgs/usercenter/withdraw-icons/selected.png";
-                this.appendChild(img);
-            });
-        })
+
+        React.render(<WithdrawPage templateBasePath={basePath} />, $mainContent[0]);
     });
 });

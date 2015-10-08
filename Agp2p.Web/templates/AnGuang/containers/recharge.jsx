@@ -46,6 +46,7 @@ export default class RechargePage extends React.Component {
 		//充值选择银行
 		var $bank = $(this.refs.root.getDOMNode()).find(".bank-select li");
 		var {templateBasePath} = this.props;
+		
 		$bank.click(function(){
 			$bank.find("img").remove();
 			var img = document.createElement("img");
