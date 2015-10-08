@@ -747,6 +747,9 @@
     <Content Include="templates\AnGuang\less\usercenter.less" />
     <Content Include="templates\AnGuang\component\type-timespan-picker.jsx" />
     <Content Include="templates\AnGuang\js\usercenter.jsx" />
+    <Content Include="templates\AnGuang\components\transactions-table.jsx" />
+    <Content Include="templates\AnGuang\components\type-timespan-picker.jsx" />
+    <Content Include="templates\AnGuang\containers\mytransaction.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
