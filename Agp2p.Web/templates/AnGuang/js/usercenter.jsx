@@ -3,10 +3,10 @@ import "../less/head.less";
 import "../less/usercenter.less";
 import "../less/footerSmall.less";
 
-
 import React from "react"
-import Picker from "../component/type-timespan-picker.jsx"
-import TransactionTable from "../component/transactions-table.jsx"
+import MyTransaction from "../containers/mytransaction.jsx"
+import RechargePage from "../containers/recharge.jsx"
+import WithdrawPage from "../containers/withdraw.jsx"
 
 $(function(){
     //点击导航加载相应内容
@@ -19,42 +19,22 @@ $(function(){
         $nav.removeClass("nav-active");
         $(this).parent().addClass("nav-active");
 
-        React.render(
-        	<div>
-	        	<Picker url={aspxPath + "/AjaxQueryEnumInfo"} args={{ enumFullName: "Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"}} />
-	        	<TransactionTable url={aspxPath + "/AjaxQueryTransactionHistory"} args={{ pageIndex: 0, pageSize: 10}} />
-        	</div>, $mainContent[0]);
+        React.render(<MyTransaction aspxPath={aspxPath} />, $mainContent[0]);
     });
 
     //加载我要充值内容
     $("#recharge").click(function(){
         $nav.removeClass("nav-active");
         $(this).parent().addClass("nav-active");
-        $mainContent.load(basePath + "/_recharge.html",function(){
-            //充值选择银行
-            var $bank = $(".bank-select li");
-            $bank.click(function(){
-                $bank.find("img").remove();
-                var img = document.createElement("img");
-                img.src = basePath + "/imgs/usercenter/recharge-icons/selected.png";
-                this.appendChild(img);
-            });
-        });
+
+        React.render(<RechargePage templateBasePath={basePath} />, $mainContent[0]);
     });
 
     //加载我要提现内容
     $("#withdraw").click(function(){
         $nav.removeClass("nav-active");
         $(this).parent().addClass("nav-active");
-        $mainContent.load(basePath + "/_withdraw.html",function(){
-            //提现银行卡选择
-            var $card = $(".ul-withdraw .card");
-            $card.click(function(){
-                $card.find("img").remove();
-                var img = document.createElement("img");
-                img.src = basePath + "/imgs/usercenter/withdraw-icons/selected.png";
-                this.appendChild(img);
-            });
-        })
+
+        React.render(<WithdrawPage templateBasePath={basePath} />, $mainContent[0]);
     });
 });

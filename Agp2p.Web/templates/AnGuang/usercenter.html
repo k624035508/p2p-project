@@ -28,7 +28,7 @@
     <div class="nav-left">
         <div class="total-account">
             <p class="account-h">账户总额</p>
-            <p class="account-num">1032000.50<span>元</span></p>
+            <p class="account-num"><%=GetTotalMoney()%><span>&nbsp;元</span></p>
         </div>
         <ul class="list-unstyled outside-ul">
             <li><a href="#" class="account-link">账户总览</a></li>
@@ -65,13 +65,17 @@
     <div class="content-right pull-right">
         <div class="overview-head">
             <div class="head-left">
-                <p class="username">您好！ 135****6652</p>
+                <%if(!string.IsNullOrEmpty(userModel.nick_name))%>
+                <p class="username">您好！ {userModel.nick_name}</p>
+                <%else%>
+                <p class="username">您好！ {userModel.user_name}</p>
+                <%/if%>
                 <p class="save-level">安全级别 <span class="level-icon low"></span></p>
-                <p class="login-time">上次登录时间：2015/09/23 10：30</p>
+                <p class="login-time">上次登录时间：{pre_login_time}</p>
             </div>
             <div class="head-center">
-                <p class="balance">账户余额：<span>2500000.00</span></p>
-                <p class="balance-frozen">冻结金额： <span>5000.00</span></p>
+                <p class="balance">账户余额：<span><%=string.Format("{0:N}",wallet.idle_money)%></span></p>
+                <p class="balance-frozen">冻结金额： <span><%=string.Format("{0:N}",wallet.locked_money)%></span></p>
             </div>
             <div class="head-right pull-right">
                 <a href="#" class="recharge">充 值</a>

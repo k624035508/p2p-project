@@ -725,8 +725,6 @@
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
-    <Content Include="templates\AnGuang\_recharge.html" />
-    <Content Include="templates\AnGuang\_withdraw.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">
@@ -749,6 +747,11 @@
     <Content Include="templates\AnGuang\less\usercenter.less" />
     <Content Include="templates\AnGuang\component\type-timespan-picker.jsx" />
     <Content Include="templates\AnGuang\js\usercenter.jsx" />
+    <Content Include="templates\AnGuang\components\transactions-table.jsx" />
+    <Content Include="templates\AnGuang\components\type-timespan-picker.jsx" />
+    <Content Include="templates\AnGuang\containers\mytransaction.jsx" />
+    <Content Include="templates\AnGuang\containers\recharge.jsx" />
+    <Content Include="templates\AnGuang\containers\withdraw.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
