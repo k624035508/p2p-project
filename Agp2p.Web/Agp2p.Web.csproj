@@ -743,13 +743,13 @@
     <Content Include="templates\AnGuang\less\register.less" />
     <Content Include="templates\AnGuang\less\login.less" />
     <Content Include="templates\AnGuang\less\usercenter.less" />
-    <Content Include="templates\AnGuang\component\type-timespan-picker.jsx" />
     <Content Include="templates\AnGuang\js\usercenter.jsx" />
     <Content Include="templates\AnGuang\components\transactions-table.jsx" />
     <Content Include="templates\AnGuang\components\type-timespan-picker.jsx" />
     <Content Include="templates\AnGuang\containers\mytransaction.jsx" />
     <Content Include="templates\AnGuang\containers\recharge.jsx" />
     <Content Include="templates\AnGuang\containers\withdraw.jsx" />
+    <Content Include="templates\AnGuang\containers\UserCenterPage.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1918,9 +1918,6 @@
     <Content Include="tools\email_verify.ashx" />
     <Content Include="tools\mobile_verify.ashx" />
     <Content Include="tools\trade_pwd.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="templates\AnGuang\component\transactions-table.jsx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

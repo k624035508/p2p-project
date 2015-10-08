@@ -12,13 +12,13 @@ export default class MyTransaction extends React.Component {
 		var _this = this;
 		return (
 			<div>
-	        	<Picker url={this.props.aspxPath + "/AjaxQueryEnumInfo"}
+	        	<Picker url={USER_CENTER_ASPX_PATH + "/AjaxQueryEnumInfo"}
 	        			enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"
 	        			onTypeChange={newType => _this.setState({type: newType}) }
 	        			onStartTimeChange={newStartTime => _this.setState({startTime: newStartTime})}
 	        			onEndTimeChange={newEndTime => _this.setState({endTime: newEndTime})} />
 	        	<TransactionTable
-		        	url={this.props.aspxPath + "/AjaxQueryTransactionHistory"}
+		        	url={USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory"}
 		        	type={this.state.type}
 		        	pageIndex={this.state.pageIndex}
 		        	startTime={this.state.startTime}

@@ -25,6 +25,10 @@ module.exports = {
             "window.jQuery": "jquery",
             "root.jQuery": "jquery"
         }),
+        new webpack.DefinePlugin({
+            TEMPLATE_PATH : JSON.stringify("/templates/AnGuang"),
+            USER_CENTER_ASPX_PATH : JSON.stringify("/aspx/main/usercenter.aspx")
+        })
     ],
     module: {
         loaders: [
