@@ -36,9 +36,25 @@ $(function(){
             $bank.click(function(){
                 $bank.find("img").remove();
                 var img = document.createElement("img");
-                img.src = basePath + "/imgs/usercenter/bank-icons/selected.png";
+                img.src = basePath + "/imgs/usercenter/recharge-icons/selected.png";
                 this.appendChild(img);
             });
         });
+    });
+
+    //加载我要提现内容
+    $("#withdraw").click(function(){
+        $nav.removeClass("nav-active");
+        $(this).parent().addClass("nav-active");
+        $mainContent.load(basePath + "/_withdraw.html",function(){
+            //提现银行卡选择
+            var $card = $(".ul-withdraw .card");
+            $card.click(function(){
+                $card.find("img").remove();
+                var img = document.createElement("img");
+                img.src = basePath + "/imgs/usercenter/withdraw-icons/selected.png";
+                this.appendChild(img);
+            });
+        })
     });
 });
