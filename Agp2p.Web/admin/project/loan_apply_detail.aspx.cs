@@ -1,10 +1,8 @@
 ﻿using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -276,6 +274,8 @@ namespace Agp2p.Web.admin.project
             SetRiskModel(risk);
             SetProjectModel(project);            
             BindMortgages(risk);
+            //项目编号
+            project.no = new BLL.article_category().GetModel(project.category_id).call_index + (LqContext.li_projects.Count(p => p.category_id == project.category_id) + 1).ToString("0000");
 
             LqContext.li_risks.InsertOnSubmit(risk);
             LqContext.li_projects.InsertOnSubmit(project);           

@@ -249,6 +249,7 @@ namespace Agp2p.Web.admin.project
                 {
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingFail;
                     //TODO 资金原路退回投资者账户
+                    LqContext.ProjectFinancingFail(project.id);
                     LqContext.SubmitChanges();
                     JscriptMsg("借款流标操作成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),

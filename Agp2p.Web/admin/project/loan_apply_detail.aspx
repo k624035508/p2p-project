@@ -136,7 +136,7 @@
                 <dd>
                     <asp:TextBox ID="txt_project_no" runat="server" CssClass="input normal" datatype="*0-100"
                         sucmsg=" " />
-                    <asp:Label ID="div_project_no_tip" runat="server" CssClass="Validform_checktip" />
+                    <span class="Validform_checktip">不填则自动生成</span>
                 </dd>
             </dl>
             <dl id="div_project_amount">

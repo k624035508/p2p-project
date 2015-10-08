@@ -64,8 +64,9 @@
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>
                         <th align="left" width="8%">发布时间</th>
-                        <th align="left" width="5%">募集期限(天)</th>
-                        <th width="5%">操作</th>
+                        <th align="left" width="5%">募集期(天)</th>
+                        <th align="left" width="5%">状态</th> 
+                        <%--<th width="5%">操作</th>--%>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -82,7 +83,8 @@
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
                     <td><%#Eval("financing_day")%></td>
-                    <td align="center">
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>          
+                    <%--<td align="center">
                         <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
                             { %>
                         <a href="">发布</a>
@@ -96,7 +98,7 @@
                         <a href="">流标</a>
                         <% } %>
 
-                    </td>
+                    </td>--%>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
