@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_over_time.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_over_time" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="repay_over_time.aspx.cs" Inherits="Agp2p.Web.admin.repayment.repay_over_time" %>
 
 <!DOCTYPE html>
 
@@ -71,7 +71,7 @@
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
+                    <td><a href="repay_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Amount")%></td>
                     <td><%#Eval("Forfeit")%></td>
