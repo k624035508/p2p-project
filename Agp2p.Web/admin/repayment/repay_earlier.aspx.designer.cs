@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Agp2p.Web.admin.project {
+namespace Agp2p.Web.admin.repayment {
     
     
-    public partial class loan_repay_earlier {
+    public partial class repay_earlier {
         
         /// <summary>
         /// form1 控件。
