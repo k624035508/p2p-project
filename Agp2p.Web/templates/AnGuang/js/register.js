@@ -7,7 +7,52 @@ import $ from "jquery";
 
 $(function(){
     // 手机号码输入判断
+    $("#account").blur(function(){
+        var regex = /\d{11}/;
+        var phone = $("#account").val();
+        var $status = $("#account").next();
+        if(regex.test(phone)){
+            $status.removeClass("error-tips");
+            $status.addClass("right-tips");
+            $status.text("");
+        } else{
+            $status.removeClass("right-tips");
+            $status.addClass("error-tips");
+            $status.text("请输入正确的手机号码");
+        }
+    });
 
+    //登录密码个数判断
+    $("#psw").blur(function(){
+        var num = $("#psw").val().length;
+        var $status = $("#psw").next();
+        $status.removeClass("psw-tips");
+        if(5 < num && num < 17){
+            $status.removeClass("error-tips");
+            $status.addClass("right-tips");
+            $status.text("");
+        } else {
+            $status.removeClass("right-tips");
+            $status.addClass("error-tips");
+            $status.text("请输入6~16位密码");
+        }
+    });
+
+    //确认密码判断
+    $("#psw2").blur(function(){
+        var psw = $("#psw").val();
+        var psw2 = $("#psw2").val();
+        var $status = $("#psw2").next();
+        if (psw2 == psw){
+            $status.removeClass("error-tips");
+            $status.addClass("right-tips");
+            $status.text("");
+        } else {
+            $status.removeClass("right-tips");
+            $status.addClass("error-tips");
+            $status.text("两次输入的密码不一致");
+        }
+    });
 
     // 刷新图文验证码
     var $picCode = $(".pic-code-wrap img");

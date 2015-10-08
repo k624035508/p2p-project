@@ -1,4 +1,4 @@
-import "bootstrap-webpack";
+ï»¿import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/login.less";
 import "../less/footerSmall.less";
@@ -23,7 +23,7 @@ $(function(){
                 }
             },
             error: function(data){
-                alert("²Ù×÷³¬Ê±£¬ÇëÖØÊÔ");
+                alert("æ“ä½œè¶…æ—¶ï¼Œè¯·é‡è¯•");
             }
         });
     });
