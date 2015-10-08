@@ -56,13 +56,13 @@
                         <th width="6%">选择</th>
                         <th align="left" width="16%">标题</th>
                         <th align="left" width="10%">借款人</th>
+                        <th align="left" width="8%">借款主体</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>                        
                         <th align="left" width="10%">申请时间</th>
-                        <th width="6%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -73,13 +73,14 @@
                     </td>
                     <td><a href="loan_apply_detail.aspx?channel_id=<%=this.ChannelId %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)Utils.StrToInt(Eval("type").ToString(), 0))%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
-                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
+                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
-                    <td align="center"><a href="">修改</a></td>
+                    
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

@@ -391,8 +391,9 @@
         <!--工具栏-->
         <div class="page-footer">
             <div class="btn-list">
-                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClick="btnAudit_OnClick"/>
-                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClick="btnNotAudit_OnClick"/>
+                <asp:LinkButton runat="server"></asp:LinkButton>
+                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnAudit','是否确定审核通过？');" OnClick="btnAudit_OnClick"/>
+                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnNotAudit','是否确定审核不通过？');" OnClick="btnNotAudit_OnClick"/>
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
                     onclick="location.href='loan_audit.aspx?channel_id=<%=this.ChannelId%>'" />
             </div>

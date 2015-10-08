@@ -1,6 +1,7 @@
 ﻿@import "common-style";
 @images: "../imgs/usercenter";
-@bank-icons: "../imgs/usercenter/bank-icons";
+@recharge: "../imgs/usercenter/recharge-icons";
+@withdraw: "../imgs/usercenter/withdraw-icons";
 
 body { background: @body-color; }
 div.usercenter {
@@ -139,8 +140,10 @@ div.usercenter {
 			font-size: @font13;
 			color: @dark-grey;
 			#typeSel {
-				width: 90px;
-				height: 35px;
+				width: 70px;
+                height: 35px;
+                letter-spacing: 3px;
+                padding-left: 12px;
 				border: @border;
 			}
 			.dateSel {
@@ -149,12 +152,12 @@ div.usercenter {
 					margin: 0 8px;
 					height: 35px;
 					line-height: 35px;
-					border: @border;
-					cursor: pointer;
 				}
 				input {
 					width: 140px;
 					padding-left: 10px;
+					border: @border;
+                    cursor: pointer;
 					background: url("@{images}/date.png") 95% center no-repeat;
 				}
 				a {
@@ -162,6 +165,8 @@ div.usercenter {
 					color: @dark-grey;
 					text-align: center;
 					text-decoration: none;
+                    border: @border;
+                    cursor: pointer;
 					background: #f1f5ff;
 				}
 			}
@@ -216,21 +221,21 @@ div.usercenter {
 				background-repeat: no-repeat;
 				cursor: pointer;
 			}
-			#zhonghang { background: url("@{bank-icons}/zhonghang.png"); }
-			#gonghang { background: url("@{bank-icons}/gonghang.png"); }
-			#jianhang { background: url("@{bank-icons}/jianhang.png"); }
-			#nonghang { background: url("@{bank-icons}/nonghang.png"); }
-			#zhaohang { background: url("@{bank-icons}/zhaohang.png"); }
-			#youzheng { background: url("@{bank-icons}/youzheng.png"); }
-			#guangda { background: url("@{bank-icons}/guangda.png"); }
-			#zhongxin { background: url("@{bank-icons}/zhongxin.png"); }
-			#pufa { background: url("@{bank-icons}/pufa.png"); }
-			#minsheng { background: url("@{bank-icons}/minsheng.png"); }
-			#guangfa { background: url("@{bank-icons}/guangfa.png"); }
-			#xingye { background: url("@{bank-icons}/xingye.png"); }
-			#pingan { background: url("@{bank-icons}/pingan.png"); }
-			#jiaohang { background: url("@{bank-icons}/jiaohang.png"); }
-			#huaxia { background: url("@{bank-icons}/huaxia.png"); }
+			#zhonghang { background: url("@{recharge}/zhonghang.png"); }
+			#gonghang { background: url("@{recharge}/gonghang.png"); }
+			#jianhang { background: url("@{recharge}/jianhang.png"); }
+			#nonghang { background: url("@{recharge}/nonghang.png"); }
+			#zhaohang { background: url("@{recharge}/zhaohang.png"); }
+			#youzheng { background: url("@{recharge}/youzheng.png"); }
+			#guangda { background: url("@{recharge}/guangda.png"); }
+			#zhongxin { background: url("@{recharge}/zhongxin.png"); }
+			#pufa { background: url("@{recharge}/pufa.png"); }
+			#minsheng { background: url("@{recharge}/minsheng.png"); }
+			#guangfa { background: url("@{recharge}/guangfa.png"); }
+			#xingye { background: url("@{recharge}/xingye.png"); }
+			#pingan { background: url("@{recharge}/pingan.png"); }
+			#jiaohang { background: url("@{recharge}/jiaohang.png"); }
+			#huaxia { background: url("@{recharge}/huaxia.png"); }
 		}
 		.balance-recharge span, .amount-recharge span {
 			display: inline-block;
@@ -286,5 +291,110 @@ div.usercenter {
 				color: @dark-grey;
 			}
 		}
+
+        //我要提现内容
+		.withdraw {
+			height: 513px;
+			& > div {
+				margin-bottom: 30px;
+				& > * { display: inline-block; }
+				span {
+					font-size: @font15;
+					color: @dark-grey;
+				}
+				& span:first-child {
+					width: 122px;
+					text-align: right;
+					margin-right: 10px;
+					i {
+						display: inline-block;
+						vertical-align: top;
+						font-size: @font18;
+						font-weight: bolder;
+						color: @red;
+						margin-right: 8px;
+					}
+				}
+				input {
+					width: 200px;
+					height: 40px;
+					line-height: 40px;
+					padding-left: 10px;
+					margin-right: 15px;
+					border: @border;
+					border-radius: 5px;
+				}
+			}
+			.balance-withdraw, .recorded-date { color: @red; }
+			.withdrawBtn {
+				margin-left: 132px;
+				margin-bottom: 0;
+				a {
+					display: inline-block;
+					width: 150px;
+					height: 45px;
+					line-height: 45px;
+					text-decoration: none;
+					text-align: center;
+					font-size: @font20;
+					color: @white;
+					background: @red;
+					border-radius: 5px;
+				}
+			}
+			.bank-select-withdraw {
+				& > span {
+					position: relative;
+					top: 15px;
+				}
+				& > div { width: 670px; }
+				.ul-withdraw {
+					margin-left: 0;
+					& > li {
+						width: 200px;
+						height: 50px;
+						background-repeat: no-repeat;
+						margin-right: 20px;
+						cursor: pointer;
+						vertical-align: top;
+						p {
+							margin: 4px 0 0;
+							padding-left: 65px;
+						}
+						.card-num {
+							font-size: @font12;
+							color: @grey;
+						}
+						img {
+							position: relative;
+							margin-top: -62px;
+							margin-left: -5px;
+						}
+					}
+					.zhonghang { background: url("@{withdraw}/zhonghang.png"); }
+					.gonghang { background: url("@{withdraw}/gonghang.png"); }
+					.jianhang { background: url("@{withdraw}/jianhang.png"); }
+					.nonghang { background: url("@{withdraw}/nonghang.png"); }
+					.zhaohang { background: url("@{withdraw}/zhaohang.png"); }
+					.youzheng { background: url("@{withdraw}/youzheng.png"); }
+					.guangda { background: url("@{withdraw}/guangda.png"); }
+					.zhongxin { background: url("@{withdraw}/zhongxin.png"); }
+					.pufa { background: url("@{withdraw}/pufa.png"); }
+					.minsheng { background: url("@{withdraw}/minsheng.png"); }
+					.guangfa { background: url("@{withdraw}/guangfa.png"); }
+					.xingye { background: url("@{withdraw}/xingye.png"); }
+					.pingan { background: url("@{withdraw}/pingan.png"); }
+					.jiaohang { background: url("@{withdraw}/jiaohang.png"); }
+					.huaxia { background: url("@{withdraw}/huaxia.png"); }
+					.add-card {
+						text-align: center;
+						line-height: 50px;
+						color: @red;
+						background: url("@{withdraw}/add.png");
+					}
+				}
+			}
+		}
+
 	}
 }

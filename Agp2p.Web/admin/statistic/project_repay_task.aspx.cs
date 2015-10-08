@@ -139,7 +139,7 @@ namespace Agp2p.Web.admin.statistic
                         Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) p.repayment_term_span),
                     InvestCompleteTime = p.invest_complete_time,
                     RepayCompleteTime = p.li_repayment_tasks.Select(r => r.should_repay_time).Last(),
-                    Creditor = p.li_risks.li_creditors.real_name
+                    Creditor = p.li_risks.li_creditors == null ? p.li_risks.li_loaners.dt_users.real_name : p.li_risks.li_creditors.real_name
                 };
                 int j = 0;
                 return rgi.rg.Select(rg => new RepaymentTaskAmountDetail

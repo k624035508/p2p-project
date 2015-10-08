@@ -431,9 +431,9 @@
                 <asp:LinkButton runat="server"></asp:LinkButton>
                 <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
                 <asp:Button ID="btnApplyOnTime" runat="server" Text="定时发布" CssClass="btn" OnClick="btnApplyOnTime_OnClick" Visible="False" />
-                <asp:Button ID="btnDrop" runat="server" Text="撤销" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
-                <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExePostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
-                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExePostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
+                <asp:Button ID="btnDrop" runat="server" Text="撤销" OnClientClick="return ExeNoCheckPostBack('btnDrop','是否确定撤销该借款？');" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
+                <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
+                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='javascript:history.back(-1);'" />
             </div>
