@@ -43,11 +43,15 @@ $(function(){
         var psw = $("#psw").val();
         var psw2 = $("#psw2").val();
         var $status = $("#psw2").next();
-        if (psw2 == psw){
+        if (psw2 == ""){
+            $status.removeClass("right-tips");
+            $status.removeClass("error-tips");
+            $status.text("");
+        } else if(psw2 == psw){
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
             $status.text("");
-        } else {
+        }else {
             $status.removeClass("right-tips");
             $status.addClass("error-tips");
             $status.text("两次输入的密码不一致");
@@ -61,25 +65,44 @@ $(function(){
         this.setAttribute("src", originSrc + "?r=" + Math.random());
     });
 
+    //图文验证码的提示格式判断
+    $("#pic-code").blur(function(){
+        var picCode = $("#pic-code").val().length;
+        var $status = $("#pic-code").siblings(".status");
+        if(picCode == 0) {
+            $status.addClass("error-tips");
+            $status.text("请输入图片上的验证码");
+        } else {
+            $status.removeClass("error-tips");
+            $status.text("");
+        }
+    });
+
     // 获取短信验证码
     $("#get-sms-btn").click(function(){
-        var phone = $("#account").val();
-        var picCode = $("#pic-code").val();
-        $.ajax({
-            url: "/tools/submit_ajax.ashx?action=user_register_smscode",
-            type: "post",
-            dataType: "json",
-            data: {
-                mobile: phone,
-                txtPicCode: picCode
-            },
-            success: function (data) {
-                alert(data.msg);
-            },
-            error: function (data) {
-                alert("操作超时，请重试");
-            }
-        });
+        //判断图文验证码是否为空
+        var picCode = $("#pic-code").val().length;
+        if (picCode == 0) {
+            alert("请输入验证码！");
+        }else {
+            var phone = $("#account").val();
+            var picCode = $("#pic-code").val();
+            $.ajax({
+                url: "/tools/submit_ajax.ashx?action=user_register_smscode",
+                type: "post",
+                dataType: "json",
+                data: {
+                    mobile: phone,
+                    txtPicCode: picCode
+                },
+                success: function (data) {
+                    alert(data.msg);
+                },
+                error: function (data) {
+                    alert("操作超时，请重试");
+                }
+            });
+        }
     });
 
     // 注册
