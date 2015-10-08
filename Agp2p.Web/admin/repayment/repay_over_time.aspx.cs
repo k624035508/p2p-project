@@ -10,9 +10,9 @@ using System.Web.UI.WebControls;
 using Agp2p.Core;
 using Agp2p.Web.UI;
 
-namespace Agp2p.Web.admin.project
+namespace Agp2p.Web.admin.repayment
 {
-    public partial class loan_over_time : Web.UI.ManagePage
+    public partial class repay_over_time : Web.UI.ManagePage
     {
         protected int ChannelId;
         protected int TotalCount;

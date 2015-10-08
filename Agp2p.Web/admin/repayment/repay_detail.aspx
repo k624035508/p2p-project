@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_financing_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_financing_detail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="repay_detail.aspx.cs" Inherits="Agp2p.Web.admin.repayment.repay_detail" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -23,9 +23,9 @@
     <form id="form1" runat="server">
         <!--导航栏-->
         <div class="location">
-            <a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
-            <i class="arrow"></i><a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>">
-                <span>借款募集</span></a> <i class="arrow"></i><span>借款明细</span>
+            <a href="repay_manage.aspx?channel_id=<%=this.ChannelId %>" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
+            <i class="arrow"></i><a href="repay_manage.aspx?channel_id=<%=this.ChannelId %>">
+                <span>应还借款</span></a> <i class="arrow"></i><span>借款明细</span>
         </div>
         <div class="line10">
         </div>
@@ -429,11 +429,8 @@
         <div class="page-footer">
             <div class="btn-list">
                 <asp:LinkButton runat="server"></asp:LinkButton>
-                <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
-                <asp:Button ID="btnApplyOnTime" runat="server" Text="定时发布" CssClass="btn" OnClick="btnApplyOnTime_OnClick" Visible="False" />
-                <asp:Button ID="btnDrop" runat="server" Text="撤销" OnClientClick="return ExeNoCheckPostBack('btnDrop','是否确定撤销该借款？');" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
-                <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
-                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
+                <asp:Button ID="btnRepay" runat="server" Text="还款" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnRepay','是否确定放款给借款人？');" OnClick="btnRepay_OnClick" Visible="False" />
+                <asp:Button ID="btnPrepay" runat="server" Text="垫付" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnPrepay_OnClick" Visible="False" />
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='javascript:history.back(-1);'" />
             </div>
