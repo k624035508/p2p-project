@@ -72,7 +72,7 @@ namespace Agp2p.Web.UI.Page
                 },
                 {
                     Agp2pEnums.TransactionDetailsDropDownListEnum.Invest, new[] {
-                        Agp2pEnums.WalletHistoryTypeEnum.Invest, /*Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,*/ Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund
+                        Agp2pEnums.WalletHistoryTypeEnum.Invest, /*Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,*/ 
                     }
                 },
                 {
@@ -82,6 +82,7 @@ namespace Agp2p.Web.UI.Page
                 },
                 {
                     Agp2pEnums.TransactionDetailsDropDownListEnum.Others, new[] {
+                        Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund,
                         Agp2pEnums.WalletHistoryTypeEnum.Gaining, Agp2pEnums.WalletHistoryTypeEnum.Losting,
                         Agp2pEnums.WalletHistoryTypeEnum.GainConfirm, Agp2pEnums.WalletHistoryTypeEnum.GainCancel,
                         Agp2pEnums.WalletHistoryTypeEnum.LostConfirm, Agp2pEnums.WalletHistoryTypeEnum.LostCancel,
@@ -98,7 +99,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="endTick"></param>
         /// <returns></returns>
         protected static List<li_wallet_histories> query_transaction_history(int userId, Agp2pEnums.TransactionDetailsDropDownListEnum type, int pageIndex,
-            long startTick, long endTick, short pageSize, out int count)
+            string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
             var query = context.li_wallet_histories.Where(h => h.user_id == userId);
@@ -109,17 +110,17 @@ namespace Agp2p.Web.UI.Page
 
             if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
                 query = query.Where(w => MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(w.action_type));
-            if (startTick != 0)
-                query = query.Where(h => new DateTime(startTick) <= h.create_time);
-            if (endTick != 0)
-                query = query.Where(h => h.create_time <= new DateTime(endTick));
+            if (startTime != "")
+                query = query.Where(h => Convert.ToDateTime(startTime) <= h.create_time);
+            if (endTime != "")
+                query = query.Where(h => h.create_time <= Convert.ToDateTime(endTime));
 
             count = query.Count();
             return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();
         }
 
         [WebMethod]
-        public static string AjaxQueryTransactionHistory(short pageIndex, short pageSize)
+        public static string AjaxQueryTransactionHistory(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -129,7 +130,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             int count;
-            var his = query_transaction_history(userInfo.id, Agp2pEnums.TransactionDetailsDropDownListEnum.All, pageIndex, 0, 0, pageSize, out count);
+            var his = query_transaction_history(userInfo.id, (Agp2pEnums.TransactionDetailsDropDownListEnum)type, pageIndex, startTime, endTime, pageSize, out count);
             var os = his.Select(h => new
             {
                 h.id,

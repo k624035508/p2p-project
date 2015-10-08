@@ -343,7 +343,7 @@ namespace Agp2p.Common
             Invest = 10,
             [Description("项目满标")] // 开始计算待收益金额
             InvestSuccess = 11,
-            [Description("申请退款")]
+            [Description("投资撤销")]
             InvestorRefund = 12,
 
             [Description("利息收益")]

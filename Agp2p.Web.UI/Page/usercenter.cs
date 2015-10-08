@@ -71,9 +71,9 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryTransactionHistory(short pageIndex, short pageSize)
+        public static string AjaxQueryTransactionHistory(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
-            return mytrade.AjaxQueryTransactionHistory(pageIndex, pageSize);
+            return mytrade.AjaxQueryTransactionHistory(type, pageIndex, pageSize, startTime, endTime);
         }
 
         [WebMethod]
