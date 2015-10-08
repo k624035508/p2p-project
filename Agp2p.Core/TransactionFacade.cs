@@ -688,12 +688,12 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="projectTransactionId"></param>
         /// <returns></returns>
-        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId)
+        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, bool save = true)
         {
-            // 判断项目状态是否未满标
+            // 判断项目状态
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
-            if ((int) Agp2pEnums.ProjectStatusEnum.Financing < tr.li_projects.status)
-                throw new InvalidOperationException("项目已经不是发标状态，不能申请退款");
+            if ((int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= tr.li_projects.status)
+                throw new InvalidOperationException("项目所在的状态不能退款");
 
             // 更改交易状态
             tr.status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
@@ -702,9 +702,9 @@ namespace Agp2p.Core
             tr.li_projects.investment_amount -= tr.principal;
 
             // 更改钱包金额
-            var wallet = context.li_wallets.Single(w => w.user_id == tr.investor);
+            var wallet = tr.dt_users.li_wallets;
 
-            // 如果项目已经满标再撤销，就需要减掉 待收利润；满标前撤销的话待收利润未计算，所以不用减
+            // 如果项目已经正在还款再撤销，就需要减掉 待收利润；满标前撤销的话待收利润未计算，所以不用减
             var investedMoney = tr.principal;
             wallet.idle_money += investedMoney;
             wallet.investing_money -= investedMoney;
@@ -716,9 +716,35 @@ namespace Agp2p.Core
             his.li_project_transactions = tr;
             context.li_wallet_histories.InsertOnSubmit(his);
 
-            context.SubmitChanges();
+            if (save)
+            {
+                context.SubmitChanges();
+            }
 
             return tr;
+        }
+
+        /// <summary>
+        /// 项目流标，将项目的全部投资退款
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="projectId"></param>
+        public static void ProjectFinancingFail(this Agp2pDataContext context, int projectId)
+        {
+            // 判断项目状态
+            var proj = context.li_projects.Single(t => t.id == projectId);
+            if ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= proj.status)
+                throw new InvalidOperationException("项目所在的状态不能退款");
+
+            proj.li_project_transactions.Where(
+                tr =>
+                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .Select(tr => tr.id)
+                .ForEach(trId => context.Refund(trId, false));
+
+            proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingFail;
+            context.SubmitChanges();
         }
 
         /// <summary>
