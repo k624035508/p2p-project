@@ -71,7 +71,7 @@
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="repay_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
+                    <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Amount")%></td>
                     <td><%#Eval("Forfeit")%></td>

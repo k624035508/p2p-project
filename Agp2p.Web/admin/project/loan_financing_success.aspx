@@ -80,7 +80,7 @@
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
+                    <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
                         { %>

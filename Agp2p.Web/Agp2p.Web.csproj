@@ -146,18 +146,17 @@
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
     <Content Include="admin\project\loan_all.aspx" />
-    <Content Include="admin\repayment\repay_detail.aspx" />
+    <Content Include="admin\project\loan_detail.aspx" />
     <Content Include="admin\repayment\repay_earlier.aspx" />
     <Content Include="admin\repayment\repay_over_time.aspx" />
     <Content Include="admin\project\loan_financing_success.aspx" />
-    <Content Include="admin\project\loan_financing_detail.aspx" />
     <Content Include="admin\project\loan_financing.aspx" />
-    <Content Include="admin\project\loan_audit_detail.aspx" />
     <Content Include="admin\project\loan_audit.aspx" />
     <Content Include="admin\project\loan_apply.aspx" />
     <Content Include="admin\project\loan_apply_detail.aspx" />
     <Content Include="admin\repayment\repay_manage.aspx" />
     <Content Include="admin\settings\builder_html.aspx" />
+    <Content Include="admin\settings\cost_config.aspx" />
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
     <Content Include="admin\settings\plugin_list.aspx" />
@@ -1092,12 +1091,12 @@
     <Compile Include="admin\project\loan_all.aspx.designer.cs">
       <DependentUpon>loan_all.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\repayment\repay_detail.aspx.cs">
-      <DependentUpon>repay_detail.aspx</DependentUpon>
+    <Compile Include="admin\project\loan_detail.aspx.cs">
+      <DependentUpon>loan_detail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="admin\repayment\repay_detail.aspx.designer.cs">
-      <DependentUpon>repay_detail.aspx</DependentUpon>
+    <Compile Include="admin\project\loan_detail.aspx.designer.cs">
+      <DependentUpon>loan_detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\repayment\repay_earlier.aspx.cs">
       <DependentUpon>repay_earlier.aspx</DependentUpon>
@@ -1120,26 +1119,12 @@
     <Compile Include="admin\project\loan_financing_success.aspx.designer.cs">
       <DependentUpon>loan_financing_success.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\project\loan_financing_detail.aspx.cs">
-      <DependentUpon>loan_financing_detail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\project\loan_financing_detail.aspx.designer.cs">
-      <DependentUpon>loan_financing_detail.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\project\loan_financing.aspx.cs">
       <DependentUpon>loan_financing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\project\loan_financing.aspx.designer.cs">
       <DependentUpon>loan_financing.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\project\loan_audit_detail.aspx.cs">
-      <DependentUpon>loan_audit_detail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\project\loan_audit_detail.aspx.designer.cs">
-      <DependentUpon>loan_audit_detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\loan_audit.aspx.cs">
       <DependentUpon>loan_audit.aspx</DependentUpon>
@@ -1175,6 +1160,13 @@
     </Compile>
     <Compile Include="admin\settings\builder_html.aspx.designer.cs">
       <DependentUpon>builder_html.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\cost_config.aspx.cs">
+      <DependentUpon>cost_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\cost_config.aspx.designer.cs">
+      <DependentUpon>cost_config.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\settings\nav_edit.aspx.cs">
       <DependentUpon>nav_edit.aspx</DependentUpon>

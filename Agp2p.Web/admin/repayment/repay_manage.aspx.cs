@@ -132,6 +132,8 @@ namespace Agp2p.Web.admin.repayment
                             Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)r.li_projects.repayment_type);
                         repay.ProjectId = r.li_projects.id;
                         repay.ProjectTitle = r.li_projects.title;
+                        repay.ProjectStatus = r.li_projects.status;
+                        repay.RepayStatus = r.status;
 
                         return repay;
                     });
@@ -184,6 +186,8 @@ namespace Agp2p.Web.admin.repayment
             public int Category { get; set; }//产品
             public int ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率
+            public int ProjectStatus { get; set; }//项目状态
+            public int RepayStatus { get; set; }//还款状态
         }
 
         protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)

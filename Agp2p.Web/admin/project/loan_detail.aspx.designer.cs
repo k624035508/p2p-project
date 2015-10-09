@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Agp2p.Web.admin.repayment {
+namespace Agp2p.Web.admin.project {
     
     
-    public partial class repay_detail {
+    public partial class loan_detail {
         
         /// <summary>
         /// form1 控件。
@@ -94,6 +94,24 @@ namespace Agp2p.Web.admin.repayment {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_repayment_type;
         
         /// <summary>
+        /// spa_tag 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_tag;
+        
+        /// <summary>
+        /// spa_financing_day 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_financing_day;
+        
+        /// <summary>
         /// spa_add_time 控件。
         /// </summary>
         /// <remarks>
@@ -101,6 +119,24 @@ namespace Agp2p.Web.admin.repayment {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_add_time;
+        
+        /// <summary>
+        /// spa_publish_time 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_publish_time;
+        
+        /// <summary>
+        /// spa_make_loan_time 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spa_make_loan_time;
         
         /// <summary>
         /// sp_loaner_name 控件。
@@ -301,6 +337,15 @@ namespace Agp2p.Web.admin.repayment {
         protected global::System.Web.UI.WebControls.Repeater rptLienCertificates;
         
         /// <summary>
+        /// div_fabiao 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_fabiao;
+        
+        /// <summary>
         /// rblTag 控件。
         /// </summary>
         /// <remarks>
@@ -337,21 +382,66 @@ namespace Agp2p.Web.admin.repayment {
         protected global::System.Web.UI.WebControls.Label financing_day_rate_tip;
         
         /// <summary>
-        /// btnRepay 控件。
+        /// btnAudit 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRepay;
+        protected global::System.Web.UI.WebControls.Button btnAudit;
         
         /// <summary>
-        /// btnPrepay 控件。
+        /// btnNotAudit 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrepay;
+        protected global::System.Web.UI.WebControls.Button btnNotAudit;
+        
+        /// <summary>
+        /// btnApply 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApply;
+        
+        /// <summary>
+        /// btnApplyOnTime 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApplyOnTime;
+        
+        /// <summary>
+        /// btnDrop 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDrop;
+        
+        /// <summary>
+        /// btnMakeLoan 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnMakeLoan;
+        
+        /// <summary>
+        /// btnFail 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFail;
     }
 }
