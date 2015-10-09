@@ -6,7 +6,7 @@ import "../less/footerSmall.less";
 import $ from "jquery";
 
 $(function(){
-    // 手机号码输入判断
+    // 手机号码格式判断
     $("#account").blur(function(){
         var regex = /\d{11}/;
         var phone = $("#account").val();
@@ -22,7 +22,7 @@ $(function(){
         }
     });
 
-    //登录密码个数判断
+    //登录密码格式判断
     $("#psw").blur(function(){
         var num = $("#psw").val().length;
         var $status = $("#psw").next();
@@ -38,15 +38,15 @@ $(function(){
         }
     });
 
-    //确认密码判断
+    //确认密码格式判断
     $("#psw2").blur(function(){
         var psw = $("#psw").val();
         var psw2 = $("#psw2").val();
         var $status = $("#psw2").next();
         if (psw2 == ""){
             $status.removeClass("right-tips");
-            $status.removeClass("error-tips");
-            $status.text("");
+            $status.addClass("error-tips");
+            $status.text("请输入6~16位密码");
         } else if(psw2 == psw){
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
@@ -65,7 +65,7 @@ $(function(){
         this.setAttribute("src", originSrc + "?r=" + Math.random());
     });
 
-    //图文验证码的提示格式判断
+    //图文验证码格式判断
     $("#pic-code").blur(function(){
         var picCode = $("#pic-code").val().length;
         var $status = $("#pic-code").siblings(".status");
@@ -73,6 +73,19 @@ $(function(){
             $status.addClass("error-tips");
             $status.text("请输入图片上的验证码");
         } else {
+            $status.removeClass("error-tips");
+            $status.text("");
+        }
+    });
+
+    //短信验证码格式判断
+    $("#sms-code").blur(function(){
+        var smsCode = $("#sms-code").val().length;
+        var $status = $("#sms-code").siblings(".status");
+        if(smsCode == 0){
+            $status.addClass("error-tips");
+            $status.text("请输入短信验证码");
+        }else {
             $status.removeClass("error-tips");
             $status.text("");
         }
