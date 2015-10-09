@@ -17,14 +17,12 @@ div.usercenter {
 			background: @red;
 			color: @white;
 			padding: 25px 15px;
-			.account-h {
-				font-size: @font20;
-			}
+			.account-h { font-size: @font20; }
 			.account-num {
-				font-size: @font30;
 				text-align: right;
 				padding-top: 50px;
 				span { font-size: @font15; }
+				& span:first-child { font-size: @font30; }
 			}
 		}
 		.outside-ul {
@@ -109,8 +107,8 @@ div.usercenter {
 				margin: 9px 0 0 85px;
 				font-size: @font18;
 				p {
-					color: @dark-grey;
 					span { color: @red; }
+					& span:first-child { color: @dark-grey; }
 				}
 				.balance-frozen { margin-top: 50px; }
 			}
@@ -145,6 +143,7 @@ div.usercenter {
                 letter-spacing: 3px;
                 padding-left: 12px;
 				border: @border;
+				outline: none;
 			}
 			.dateSel {
 				& > * {
@@ -393,6 +392,45 @@ div.usercenter {
 						background: url("@{withdraw}/add.png");
 					}
 				}
+			}
+		}
+
+		//投资记录内容
+		#typePicker {
+			float: left;
+			& > li {
+				width: 65px;
+				height: 35px;
+				line-height: 34px;
+				text-align: center;
+				border-top: @border;
+				border-right: @border;
+				border-bottom: @border;
+				cursor: pointer;
+				outline: none;
+			}
+			& li:first-child { border-left: @border; }
+			.active {
+				color: @white;
+				background: @red;
+			}
+		}
+
+		.investRecord-tb {
+			margin-top: 30px;
+			th, td { text-align: center; }
+			th {
+				color: @darker-grey;
+				border-bottom: 2px solid @blue;
+			}
+			td {
+				height: 39px;
+				color: @dark-grey;
+				border-bottom: 1px solid @blue;
+			}
+			tbody tr {
+				cursor: pointer;
+				&:hover { background: #f1f5ff; }
 			}
 		}
 

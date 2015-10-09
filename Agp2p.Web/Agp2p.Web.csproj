@@ -747,13 +747,14 @@
     <Content Include="templates\AnGuang\less\usercenter.less" />
     <Content Include="templates\AnGuang\js\usercenter.jsx" />
     <Content Include="templates\AnGuang\components\transactions-table.jsx" />
-    <Content Include="templates\AnGuang\components\dropdown-date-picker.jsx" />
     <Content Include="templates\AnGuang\containers\mytransaction.jsx" />
     <Content Include="templates\AnGuang\containers\recharge.jsx" />
     <Content Include="templates\AnGuang\containers\withdraw.jsx" />
     <Content Include="templates\AnGuang\containers\UserCenterPage.jsx" />
     <Content Include="templates\AnGuang\components\dropdown-picker.jsx" />
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
+    <Content Include="templates\AnGuang\components\horizontal-picker.jsx" />
+    <Content Include="templates\AnGuang\containers\invest-record.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

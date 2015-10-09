@@ -33,7 +33,7 @@ export default class DatePicker extends React.Component {
 		        <input className="form_date" type="text" ref="startTimePicker" onChange={(ev) => this.props.onStartTimeChange(ev.target.value) }/>
 		        到
 		        <input className="form_date" type="text" ref="endTimePicker" onChange={(ev) => this.props.onEndTimeChange(ev.target.value)} />
-		        <a href="#">搜 索</a>
+		        <a href="javascript:;">搜 索</a>
 		    </div>
 		);
 	}
