@@ -1,6 +1,7 @@
 import React from "react";
 
-import Picker from "../components/type-timespan-picker.jsx"
+import DropdownPicker from "../components/dropdown-picker.jsx"
+import DatePicker from "../components/date-picker.jsx"
 import TransactionTable from "../components/transactions-table.jsx"
 
 export default class MyTransaction extends React.Component {
@@ -12,13 +13,13 @@ export default class MyTransaction extends React.Component {
 		var _this = this;
 		return (
 			<div>
-	        	<Picker url={this.props.aspxPath + "/AjaxQueryEnumInfo"}
-	        			enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"
-	        			onTypeChange={newType => _this.setState({type: newType}) }
-	        			onStartTimeChange={newStartTime => _this.setState({startTime: newStartTime})}
-	        			onEndTimeChange={newEndTime => _this.setState({endTime: newEndTime})} />
+				<div className="controls">
+					<DropdownPicker onTypeChange={newType => _this.setState({type: newType}) } enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum" />
+					<DatePicker onStartTimeChange={newStartTime => _this.setState({startTime: newStartTime})} onEndTimeChange={newEndTime => _this.setState({endTime: newEndTime})}/>
+					<div style={{clear: "both"}}></div>
+				</div>
 	        	<TransactionTable
-		        	url={this.props.aspxPath + "/AjaxQueryTransactionHistory"}
+		        	url={USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory"}
 		        	type={this.state.type}
 		        	pageIndex={this.state.pageIndex}
 		        	startTime={this.state.startTime}

@@ -41,12 +41,11 @@ export default class WithdrawPage extends React.Component {
 	componentDidMount() {
 		//提现银行卡选择
         var $card = $(this.refs.root.getDOMNode()).find(".ul-withdraw .card");
-		var {templateBasePath} = this.props;
 		
         $card.click(function(){
             $card.find("img").remove();
             var img = document.createElement("img");
-            img.src = templateBasePath + "/imgs/usercenter/withdraw-icons/selected.png";
+            img.src = TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png";
             this.appendChild(img);
         });
     }
