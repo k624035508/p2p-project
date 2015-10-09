@@ -707,9 +707,9 @@
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\bootstrap-datetimepicker.js" />
     <Content Include="templates\AnGuang\js\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="templates\AnGuang\js\es5-sham.min.js" />
+    <Content Include="templates\AnGuang\js\es5-shim.min.js" />
     <Content Include="templates\AnGuang\js\header.js" />
-    <Content Include="templates\AnGuang\js\html5shiv.min.js" />
-    <Content Include="templates\AnGuang\js\ie8-polyfill.js" />
     <Content Include="templates\AnGuang\js\index.js" />
     <Content Include="templates\AnGuang\js\invest_detail.js" />
     <Content Include="templates\AnGuang\js\login.js" />

@@ -1,10 +1,5 @@
 ﻿import React from "react";
-import Router from 'react-router'; // or var Router = ReactRouter; in browsers
-
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
+import { Link } from 'react-router'
 
 export default class UserCenterPage extends React.Component {
 	constructor(props) {
@@ -34,8 +29,8 @@ export default class UserCenterPage extends React.Component {
 			            <li><a className="funds">资金管理</a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/mytrade" activeClassName="nav-active">资金明细</Link></li>
-			                    <li><Link to="/recharge">我要充值</Link></li>
-			                    <li><Link to="/withdraw">我要提现</Link></li>
+			                    <li><Link to="/recharge" activeClassName="nav-active">我要充值</Link></li>
+			                    <li><Link to="/withdraw" activeClassName="nav-active">我要提现</Link></li>
 			                </ul>
 			            </li>
 			            <li><a className="investing">投资管理</a>
@@ -79,7 +74,7 @@ export default class UserCenterPage extends React.Component {
 			        </div>
 
 			        <div className="content-body">
-			        <RouteHandler/>
+			        {this.props.children}
 			        </div>
 			    </div>
 			</div>

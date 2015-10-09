@@ -4,12 +4,7 @@ import "../less/usercenter.less";
 import "../less/footerSmall.less";
 
 import React from "react"
-import Router from 'react-router'; // or var Router = ReactRouter; in browsers
-
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
+import { Router, Route, Link } from 'react-router'
 
 import UserCenterPage from "../containers/UserCenterPage.jsx"
 import MyTransaction from "../containers/mytransaction.jsx"
@@ -20,15 +15,13 @@ $(function(){
     //点击导航加载相应内容
     var $mountNode = $("#app");
 
-    var routes = (
-        <Route path="/" handler={UserCenterPage}>
-            <Route path="mytrade" handler={MyTransaction} />
-            <Route path="recharge" handler={RechargePage} />
-            <Route path="withdraw" handler={WithdrawPage} />
-        </Route>
-    );
-
-    Router.run(routes, function (Handler) {
-        React.render(<Handler/>, $mountNode[0]);
-    });
+    React.render((
+    	<Router>
+	    	<Route path="/" component={UserCenterPage}>
+		    	<Route path="mytrade" component={MyTransaction}/>
+		    	<Route path="recharge" component={RechargePage}/>
+		    	<Route path="withdraw" component={WithdrawPage}/>
+	    	</Route>
+    	</Router>
+	), $mountNode[0]);
 });
