@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_financing_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_financing_detail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_detail" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>初审明细</title>
+    <title>借款明细</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
     <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
@@ -23,9 +23,8 @@
     <form id="form1" runat="server">
         <!--导航栏-->
         <div class="location">
-            <a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
-            <i class="arrow"></i><a href="loan_financing.aspx?channel_id=<%=this.ChannelId %>">
-                <span>借款募集</span></a> <i class="arrow"></i><span>借款明细</span>
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
+             <i class="arrow"></i><span>借款明细</span>
         </div>
         <div class="line10">
         </div>
@@ -63,21 +62,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>项目标题
+                            <th>借款标题
                             </th>
                             <td>
                                 <span id="spa_title" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>项目编号
+                            <th>借款编号
                             </th>
                             <td>
                                 <span id="spa_no" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>项目金额(元)
+                            <th>借款金额(元)
                             </th>
                             <td>
                                 <span id="spa_amount" runat="server"></span>
@@ -104,6 +103,23 @@
                                 <span id="spa_repayment_type" runat="server"></span>
                             </td>
                         </tr>
+                        <% if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                           { %>
+                        <tr>
+                            <th>借款标识
+                            </th>
+                            <td>
+                                <span id="spa_tag" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>募集期限
+                            </th>
+                            <td>
+                                <span id="spa_financing_day" runat="server"></span>天
+                            </td>
+                        </tr>
+                        <% } %>
                         <tr>
                             <th>申请时间
                             </th>
@@ -111,6 +127,26 @@
                                 <span id="spa_add_time" runat="server"></span>
                             </td>
                         </tr>
+                        <% if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                           { %>
+                        <tr>
+                            <th>发布时间
+                            </th>
+                            <td>
+                                <span id="spa_publish_time" runat="server"></span>
+                            </td>
+                        </tr>
+                        <% }
+                           if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
+                           { %>
+                        <tr>
+                            <th>放款时间
+                            </th>
+                            <td>
+                                <span id="spa_make_loan_time" runat="server"></span>
+                            </td>
+                        </tr>
+                        <% } %>
                     </table>
                 </dd>
             </dl>
@@ -393,35 +429,37 @@
                 <input type="hidden" name="hid_photo_name" value="splitter" />
                 <input type="hidden" name="hid_photo_remark" value="splitter" />
             </dl>
-            <dl>
-                <dt>借款标识</dt>
-                <dd>
-                    <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblTag" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
-                        </asp:RadioButtonList>
-                    </div>
-                </dd>
-            </dl>
-            <dl>
-                <dt>发布时间</dt>
-                <dd>
-                    <div class="input-date">
-                        <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
-                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
-                            sucmsg=" " Enabled="False"/>
-                        <i></i>
-                    </div>
-                    <span class="Validform_checktip">不选择默认当前发布时间</span>
-                </dd>
-            </dl>
-            <dl>
-                <dt>募集期限</dt>
-                <dd>
-                    <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
-                        sucmsg=" " Enabled="False"></asp:TextBox>天
-                <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
-                </dd>
-            </dl>
+            <div runat="server" id="div_fabiao" Visible="False">
+                <dl>
+                    <dt>借款标识</dt>
+                    <dd>
+                        <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
+                            <asp:RadioButtonList ID="rblTag" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                            </asp:RadioButtonList>
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>发布时间</dt>
+                    <dd>
+                        <div class="input-date">
+                            <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+                                datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                                sucmsg=" "/>
+                            <i></i>
+                        </div>
+                        <span class="Validform_checktip">不选择默认当前发布时间</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>募集期限</dt>
+                    <dd>
+                        <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
+                            sucmsg=" "></asp:TextBox>天
+                    <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
+                    </dd>
+                </dl>
+            </div>
         </div>
         <!--/内容-->
 
@@ -429,11 +467,13 @@
         <div class="page-footer">
             <div class="btn-list">
                 <asp:LinkButton runat="server"></asp:LinkButton>
+                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnAudit','是否确定审核通过？');" OnClick="btnAudit_OnClick" Visible="False"/>
+                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnNotAudit','是否确定审核不通过？');" OnClick="btnNotAudit_OnClick" Visible="False"/>
                 <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
                 <asp:Button ID="btnApplyOnTime" runat="server" Text="定时发布" CssClass="btn" OnClick="btnApplyOnTime_OnClick" Visible="False" />
                 <asp:Button ID="btnDrop" runat="server" Text="撤销" OnClientClick="return ExeNoCheckPostBack('btnDrop','是否确定撤销该借款？');" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
                 <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
-                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
+                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />                
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='javascript:history.back(-1);'" />
             </div>

@@ -64,13 +64,13 @@
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
-                        <th width="5%">操作</th>
+                        <th width="8%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="repay_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
+                    <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Principal")%></td>
                     <td><%#Eval("Interest")%></td>
@@ -82,7 +82,7 @@
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
-                        <a href="">还款</a>
+                        <a href="">还款</a>  <a href="">提前还款</a>
                     </td>
                 </tr>
             </ItemTemplate>
