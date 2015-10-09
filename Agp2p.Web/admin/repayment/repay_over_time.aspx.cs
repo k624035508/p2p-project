@@ -106,38 +106,30 @@ namespace Agp2p.Web.admin.repayment
             PageSize = new BLL.channel().GetPageSize(ChannelName);
             var query =
                 context.li_repayment_tasks.Where(
-                    r =>
-                        r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time &&
+                    r => DateTime.Now > r.should_repay_time &&
                         (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)));
 
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
             //逾期未还
             if (rblStatus.SelectedValue == "0")
-                query = query.Where(r => r.repay_at == null);
+                query = query.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null);
             //逾期已还
             else if (rblStatus.SelectedValue == "1")
-                query = query.Where(r => r.repay_at != null);
+                query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid && r.repay_at != null);
             //垫付借款
             else if (rblStatus.SelectedValue == "2")
-                query = query.Where(r => r.prepay != null);
+                query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid && r.prepay != null);
 
             var repayList = query.AsEnumerable().Select(r =>
                     {
                         var repay = new RepayOverTime();
                         var loaner = r.li_projects.li_risks.li_loaners.dt_users;
                         repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
-                        repay.Amount = r.repay_interest + r.repay_principal;
-                        repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
-                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");
-                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";
-                        if (r.repay_at == null)
-                            repay.OverDayCount = DateTime.Now.DayOfYear - r.should_repay_time.DayOfYear;
-                        else
-                            repay.OverDayCount = ((DateTime)r.repay_at).DayOfYear - r.should_repay_time.DayOfYear;
-                        //TODO 逾期罚金计算
-                        repay.Forfeit = 0;
-
+                        repay.Amount = r.repay_interest + r.repay_principal;//应还金额
+                        repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";//逾期期数
+                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");//应还时间
+                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";//实还时间
                         repay.Category = r.li_projects.category_id;
                         repay.ProfitRate = r.li_projects.profit_rate_year;
                         repay.RepaymentType =
@@ -147,6 +139,13 @@ namespace Agp2p.Web.admin.repayment
                         repay.ProjectStatus = r.li_projects.status;
                         repay.RepayStatus = r.status;
                         repay.RepayId = r.id;
+
+                        if (r.repay_at == null)
+                            repay.OverDayCount = DateTime.Now.DayOfYear - r.should_repay_time.DayOfYear;//逾期未还 天数
+                        else
+                            repay.OverDayCount = ((DateTime)r.repay_at).DayOfYear - r.should_repay_time.DayOfYear;//逾期已还 天数
+                        //TODO 逾期罚金计算
+                        repay.Forfeit = 0;
 
                         return repay;
                     });

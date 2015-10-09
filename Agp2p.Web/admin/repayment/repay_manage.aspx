@@ -39,7 +39,7 @@
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
@@ -61,7 +61,6 @@
                         <th align="left" width="6%">还款期数</th>
                         <th align="left" width="8%">应还时间</th>
                         <th align="left" width="8%">实还时间</th>
-                        <th align="left" width="6%">垫付金额(元)</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
@@ -78,7 +77,6 @@
                     <td><%#Eval("TimeTerm")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
-                    <td><%#Eval("Cost")%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("Category")))%></td>
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>

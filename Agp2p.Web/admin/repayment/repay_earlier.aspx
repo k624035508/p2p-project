@@ -29,7 +29,7 @@
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
@@ -49,9 +49,9 @@
                         <th align="left" width="8%">应还金额(元)</th>
                         <th align="left" width="8%">实还金额(元)</th>
                         <th align="left" width="8%">罚息(元)</th>
+                        <th align="left" width="6%">提前天数</th>
                         <th align="left" width="8%">应还时间</th>
                         <th align="left" width="8%">实还时间</th>
-                        <th align="left" width="6%">提前天数</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
@@ -63,11 +63,11 @@
                     <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Amount")%></td>
-                    <td><%#Eval("Forfeit")%></td>
-                    <td></td>
+                    <td><%#Eval("FactAmount")%></td>
+                    <td><%#Eval("Cost")%></td>
+                    <td><%#Eval("DayCount")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
-                    <td><%#Eval("OverDayCount")%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("Category")))%></td>
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>

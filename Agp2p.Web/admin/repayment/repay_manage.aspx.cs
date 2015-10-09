@@ -126,7 +126,6 @@ namespace Agp2p.Web.admin.repayment
                         repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
                         repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");
                         repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";
-                        repay.Cost = r.cost ?? 0;
                         repay.Category = r.li_projects.category_id;
                         repay.ProfitRate = r.li_projects.profit_rate_year;
                         repay.RepaymentType =
@@ -185,7 +184,6 @@ namespace Agp2p.Web.admin.repayment
             public string TimeTerm { get; set; }//还款期数
             public string ShouldRepayTime { get; set; }//应还时间
             public string RepayTime { get; set; }//实还时间
-            public decimal Cost { get; set; }//垫付金额
             public int Category { get; set; }//产品
             public int ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率

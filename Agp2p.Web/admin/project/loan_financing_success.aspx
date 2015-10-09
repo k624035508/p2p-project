@@ -69,12 +69,12 @@
                         <th align="left" width="8%">完成时间</th>
                         <% } %>
                         <th align="left" width="8%">发布时间</th>
-                        <th align="left" width="5%">状态</th>
-                        <th align="left" width="8%">借款产品</th>
+                        <th align="left" width="8%">产品</th>
                         <th align="left" width="10%">借款金额(元)</th>
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>
+                        <th align="left" width="5%">状态</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -95,12 +95,12 @@
                     <td><%#string.Format("{0:g}",Eval("complete_time"))%></td>
                     <% } %>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
