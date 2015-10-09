@@ -13,17 +13,18 @@ export default class TransactionTable extends React.Component {
         }
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory";
         $.ajax({
             type: "post",
             dataType: "json",
             contentType: "application/json",
-            url: this.props.url,
+            url: url,
             data: JSON.stringify({type: type, pageIndex: pageIndex, pageSize: 10, startTime: startTime, endTime: endTime}),
             success: function(data) {
                 this.setState({data: JSON.parse(data.d)});
             }.bind(this),
             error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
+                console.error(url, status, err.toString());
             }.bind(this)
         });
     }

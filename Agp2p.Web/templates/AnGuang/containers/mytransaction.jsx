@@ -19,7 +19,6 @@ export default class MyTransaction extends React.Component {
 					<div style={{clear: "both"}}></div>
 				</div>
 	        	<TransactionTable
-		        	url={USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory"}
 		        	type={this.state.type}
 		        	pageIndex={this.state.pageIndex}
 		        	startTime={this.state.startTime}
