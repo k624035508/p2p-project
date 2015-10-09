@@ -53,7 +53,7 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="2%"></th>
+                        <th width="3%">序号</th>
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="10%">借款人</th>
                         <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
@@ -79,7 +79,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)

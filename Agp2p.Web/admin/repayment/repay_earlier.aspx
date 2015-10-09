@@ -43,7 +43,7 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="2%"></th>
+                        <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="10%">借款人</th>
                         <th align="left" width="8%">应还金额(元)</th>
@@ -59,7 +59,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Amount")%></td>

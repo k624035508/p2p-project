@@ -53,7 +53,7 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="2%"></th>
+                        <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="8%">借款产品</th>
                         <th align="left" width="6%">状态</th>
@@ -71,7 +71,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>

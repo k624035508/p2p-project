@@ -107,7 +107,7 @@ namespace Agp2p.Web.admin.project
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
             if (_project.tag != null)
-                spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum) _project.tag);
+                spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum) _project.tag);
             spa_financing_day.InnerText = _project.financing_day.ToString();
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间

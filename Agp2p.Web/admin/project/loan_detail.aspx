@@ -13,12 +13,6 @@
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 </head>
-<script type="text/javascript">
-    $(function() {
-        //初始化表单验证
-        $("#form1").initValidform();
-    });
-</script>
 <body class="mainbody">
     <form id="form1" runat="server">
         <!--导航栏-->

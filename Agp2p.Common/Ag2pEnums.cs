@@ -52,12 +52,12 @@ namespace Agp2p.Common
             /// <summary>
             /// 借款申请审核中
             /// </summary>
-            [Description("初审中")]
+            [Description("审核中")]
             FinancingApplicationChecking = 2,
             /// <summary>
             /// 借款申请审核不通过
             /// </summary>
-            [Description("初审失败")]
+            [Description("审核失败")]
             FinancingApplicationFail = 3,
             /// <summary>
             /// 借款申请审核通过

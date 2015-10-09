@@ -146,6 +146,7 @@ namespace Agp2p.Web.admin.repayment
                         repay.ProjectTitle = r.li_projects.title;
                         repay.ProjectStatus = r.li_projects.status;
                         repay.RepayStatus = r.status;
+                        repay.RepayId = r.id;
 
                         return repay;
                     });
@@ -186,6 +187,7 @@ namespace Agp2p.Web.admin.repayment
 
         class RepayOverTime
         {
+            public int RepayId { get; set; }
             public int ProjectId { get; set; }
             public string ProjectTitle { get; set; }
             public string Loaner { get; set; }
@@ -205,6 +207,38 @@ namespace Agp2p.Web.admin.repayment
         protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             RptBind();
+        }
+
+        /// <summary>
+        /// 垫付
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbt_prepay_OnClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 还款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbt_repay_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+                //TODO 扣除借款人托管账户钱 计算罚款
+                context.ExecuteRepaymentTask(repayId, false);
+                JscriptMsg("还款成功！",
+                    Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",
+                        this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));
+            }
+            catch (Exception)
+            {
+                JscriptMsg("还款失败！", "back", "Error");
+            }
         }
     }
 }
