@@ -8,13 +8,7 @@ export default class UserCenterPage extends React.Component {
 	}
 	componentDidMount() {
 		var $mountNode = $("#app");
-		this.setState({
-			totalMoney: $mountNode.data("total-money"),
-			userName: $mountNode.data("username"),
-			prevLoginTime: $mountNode.data("prev-login-time"),
-			idleMoney: $mountNode.data("idle-money"),
-			lockedMoney: $mountNode.data("locked-money"),
-		});
+		this.setState($mountNode.data());
 	}
 	render() {
 		return (
