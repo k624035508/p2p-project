@@ -68,8 +68,8 @@ export default class UserCenterPage extends React.Component {
 			                <p className="balance-frozen">冻结金额： <span>{this.state.lockedMoney}</span></p>
 			            </div>
 			            <div className="head-right pull-right">
-			                <a href="#" className="recharge">充 值</a>
-			                <a href="#" className="withdraw">提 现</a>
+			            	<Link to="/recharge" className="recharge">充 值</Link>
+			            	<Link to="/withdraw" className="withdraw">提 现</Link>
 			            </div>
 			        </div>
 

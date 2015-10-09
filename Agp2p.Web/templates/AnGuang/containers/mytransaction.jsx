@@ -1,6 +1,6 @@
 import React from "react";
 
-import Picker from "../components/type-timespan-picker.jsx"
+import Picker from "../components/dropdown-date-picker.jsx"
 import TransactionTable from "../components/transactions-table.jsx"
 
 export default class MyTransaction extends React.Component {
@@ -12,8 +12,7 @@ export default class MyTransaction extends React.Component {
 		var _this = this;
 		return (
 			<div>
-	        	<Picker url={USER_CENTER_ASPX_PATH + "/AjaxQueryEnumInfo"}
-	        			enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"
+	        	<Picker enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum"
 	        			onTypeChange={newType => _this.setState({type: newType}) }
 	        			onStartTimeChange={newStartTime => _this.setState({startTime: newStartTime})}
 	        			onEndTimeChange={newEndTime => _this.setState({endTime: newEndTime})} />
