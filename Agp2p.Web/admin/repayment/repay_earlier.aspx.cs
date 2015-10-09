@@ -126,16 +126,16 @@ namespace Agp2p.Web.admin.repayment
                 repay.DayCount = r.should_repay_time.DayOfYear - repayInvalid.Last().should_repay_time.DayOfYear;//提前天数
                 repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");//应还时间
                 repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";//实还时间
-                //TODO 逾期罚息计算
-                repay.Cost = 0;
-
                 repay.Category = r.li_projects.category_id;
                 repay.ProfitRate = r.li_projects.profit_rate_year;
                 repay.RepaymentType =
                     Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)r.li_projects.repayment_type);
-
                 repay.ProjectId = r.li_projects.id;
                 repay.ProjectTitle = r.li_projects.title;
+                repay.ProjectStatus = r.li_projects.status;
+                repay.RepayStatus = r.status;
+                //TODO 逾期罚息计算
+                repay.Cost = 0;
 
                 return repay;
             });
@@ -188,6 +188,8 @@ namespace Agp2p.Web.admin.repayment
             public int Category { get; set; }//产品
             public int ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率
+            public int ProjectStatus { get; set; }//项目状态
+            public int RepayStatus { get; set; }//还款状态
         }
     }
 }

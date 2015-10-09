@@ -39,7 +39,7 @@
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
-                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
@@ -53,15 +53,15 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="2%"></th>
+                        <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="10%">借款人</th>
                         <th align="left" width="8%">应还金额(元)</th>
                         <th align="left" width="8%">逾期罚金(元)</th>
                         <th align="left" width="6%">逾期期数</th>
+                        <th align="left" width="6%">逾期天数</th>
                         <th align="left" width="8%">应还时间</th>
                         <th align="left" width="8%">实还时间</th>
-                        <th align="left" width="6%">逾期天数</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
@@ -70,20 +70,27 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td></td>
-                    <td><a href="repay_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>"><%#Eval("ProjectTitle")%></a></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
+                    <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
                     <td><%#Eval("Amount")%></td>
                     <td><%#Eval("Forfeit")%></td>
                     <td><%#Eval("OverTimeTerm")%></td>
+                    <td><%#Eval("OverDayCount")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
-                    <td><%#Eval("OverDayCount")%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("Category")))%></td>
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
-                        <a href="">垫付</a>
+                        <% if (rblStatus.SelectedValue == "0")
+                           { %>
+                        <asp:LinkButton ID="lbt_prepay" runat="server" Text="垫付" OnClientClick="return confirm('确定垫付吗?');" 
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_prepay_OnClick" ></asp:LinkButton> 
+                        &nbsp;
+                        <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick"></asp:LinkButton>
+                        <% } %>
                     </td>
                 </tr>
             </ItemTemplate>

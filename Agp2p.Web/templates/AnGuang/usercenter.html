@@ -25,7 +25,7 @@
 <!--面包屑导航 end-->
 
 <div id="app" data-total-money="<%=GetTotalMoney()%>"
-     data-username="<%=!string.IsNullOrEmpty(userModel.nick_name)?userModel.nick_name:userModel.user_name%>"
+     data-user-name="<%=!string.IsNullOrEmpty(userModel.nick_name)?userModel.nick_name:userModel.user_name%>"
      data-prev-login-time="{pre_login_time}"
      data-idle-money='<%=string.Format("{0:N}",wallet.idle_money)%>' data-locked-money='<%=string.Format("{0:N}",wallet.locked_money)%>'>
 </div>

@@ -69,7 +69,8 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="6%">选择</th>
+                        <th width="3%">选择</th>
+                        <th width="4%">序号</th>
                         <th align="left" width="16%">标题</th>
                         <th align="left" width="10%">借款人</th>
                         <th align="left" width="8%">产品</th>
@@ -87,7 +88,8 @@
                         <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
                         <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
                     </td>
-                    <td><a href="loan_audit_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
+                    <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>

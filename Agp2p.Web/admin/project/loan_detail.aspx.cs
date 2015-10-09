@@ -12,12 +12,13 @@ using Agp2p.Core;
 
 namespace Agp2p.Web.admin.project
 {
-    public partial class loan_financing_detail : Web.UI.ManagePage
+    public partial class loan_detail : Web.UI.ManagePage
     {
         protected int ChannelId;
         protected int ProjectId = 0;
-        protected int LoanType = 0;
+        protected int RepayId = 0;
         protected int ProjectStatus;
+        protected int LoanType = 0;
         protected  BLL.loan Loan;
 
         public Agp2pDataContext LqContext = new Agp2pDataContext();
@@ -25,7 +26,7 @@ namespace Agp2p.Web.admin.project
         //页面初始化事件
         public virtual void Page_Init(object sernder, EventArgs e)
         {
-            ChkAdminLevel("loan_financing_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
+            ChkAdminLevel("loan_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             if (this.ChannelId == 0)
             {
@@ -63,12 +64,19 @@ namespace Agp2p.Web.admin.project
         {
             switch (ProjectStatus)
             {
+                case (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking:
+                    btnAudit.Visible = true;
+                    btnNotAudit.Visible = true;
+                    break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess:
-                    rblTag.Enabled = true;
-                    txtPublishTime.Enabled = true;
-                    txt_financing_day.Enabled = true;
+                    div_fabiao.Visible = true;
                     btnApply.Visible = true;
                     btnApplyOnTime.Visible = true;
+                    //借款标识
+                    rblTag.Items.AddRange(
+                        Utils.GetEnumValues<Agp2pEnums.ProjectTagEnum>()
+                            .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
+                            .ToArray());
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.Financing:
                     btnDrop.Visible = true;
@@ -89,12 +97,6 @@ namespace Agp2p.Web.admin.project
         /// <param name="_project"></param>
         public virtual void ShowInfo(li_projects _project)
         {
-            rblTag.Items.AddRange(
-                        Utils.GetEnumValues<Agp2pEnums.ProjectTagEnum>()
-                            .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
-                            .ToArray());
-            rblTag.SelectedValue = _project.tag?.ToString()??"0";
-
             spa_category.InnerText = new article_category().GetTitle(_project.category_id);//项目类别
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
@@ -104,8 +106,12 @@ namespace Agp2p.Web.admin.project
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
+            if (_project.tag != null)
+                spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum) _project.tag);
+            spa_financing_day.InnerText = _project.financing_day.ToString();
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
-            txt_financing_day.Text = _project.financing_day.ToString();
+            spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
+            spa_make_loan_time.InnerText = _project.make_loan_time?.ToString("yyyy-MM-dd HH:mm:ss");//放款时间
 
             ShowRiskInfo(_project);
         }
@@ -169,6 +175,35 @@ namespace Agp2p.Web.admin.project
             var allMortgages = Loan.LoadMortgageList(loaner.id, riskId);
             rptList.DataSource = allMortgages;
             rptList.DataBind();
+        }
+
+        protected void btnAudit_OnClick(object sender, EventArgs e)
+        {
+            do_loan_audit(true);
+        }
+
+        protected void btnNotAudit_OnClick(object sender, EventArgs e)
+        {
+            do_loan_audit(false);
+        }
+
+        private void do_loan_audit(bool auditSuccess)
+        {
+            ChkAdminLevel("loan_audit", DTEnums.ActionEnum.Audit.ToString()); //检查权限
+            var project = LqContext.li_projects.FirstOrDefault(p => p.id == ProjectId);
+            if (project != null)
+            {
+                project.status = auditSuccess
+                    ? (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess
+                    : (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail;
+                LqContext.SubmitChanges();
+                AddAdminLog(DTEnums.ActionEnum.Audit.ToString(), "审核操作成功！"); //记录日志
+                JscriptMsg("审核操作成功！", Utils.CombUrlTxt("loan_audit.aspx", "channel_id={0}", this.ChannelId.ToString()));
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
         }
 
         /// <summary>

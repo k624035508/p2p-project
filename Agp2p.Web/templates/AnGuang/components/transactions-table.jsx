@@ -1,6 +1,8 @@
 ﻿import React from "react";
 import $ from "jquery";
 import isEqual from "lodash/lang/isEqual"
+import omit from "lodash/object/omit"
+import isFunction from "lodash/lang/isFunction"
 
 export default class TransactionTable extends React.Component {
     constructor(props) {
@@ -8,31 +10,39 @@ export default class TransactionTable extends React.Component {
         this.state = {data: []};
     }
     componentWillReceiveProps(nextProps) {
-        if (!isEqual(this.props, nextProps)) {
+        if (!isEqual(omit(this.props, isFunction), omit(nextProps, isFunction))) {
             this.fetch(nextProps.type, nextProps.pageIndex, nextProps.startTime, nextProps.endTime);
         }
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory", pageSize = 10;
         $.ajax({
             type: "post",
             dataType: "json",
             contentType: "application/json",
-            url: this.props.url,
-            data: JSON.stringify({type: type, pageIndex: pageIndex, pageSize: 10, startTime: startTime, endTime: endTime}),
-            success: function(data) {
-                this.setState({data: JSON.parse(data.d)});
+            url: url,
+            data: JSON.stringify({type: type, pageIndex: pageIndex, pageSize: pageSize, startTime: startTime, endTime: endTime}),
+            success: function(result) {
+                let {totalCount, data} = JSON.parse(result.d);
+                this.setState({data: data});
+                this.props.onPageLoaded(Math.ceil(totalCount / pageSize));
             }.bind(this),
             error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
+                console.error(url, status, err.toString());
             }.bind(this)
         });
     }
     componentDidMount() {
         this.fetch(this.props.type, this.props.pageIndex);
     }
+    onDetailRowClick(ev) { //交易明细 详情符号翻转
+        let $tr = $(ev.target.parentElement);
+        $tr.next("tr").toggle();
+        $tr.find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
+    }
     render() {
         return (
-            <table className="table trade-tb" ref="table">
+            <table className="table trade-tb">
                 <thead>
                     <tr>
                         <th>交易类型</th>
@@ -45,7 +55,7 @@ export default class TransactionTable extends React.Component {
                 </thead>
                 <tbody>
                 	{ this.state.data.map(tr => [
-                        <tr className="detailRow">
+                        <tr className="detailRow" onClick={this.onDetailRowClick}>
                             <td>{tr.type}</td>
                             <td>{tr.income}</td>
                             <td>{tr.outcome}</td>
@@ -57,12 +67,5 @@ export default class TransactionTable extends React.Component {
                     )}
                 </tbody>
             </table>);
-    }
-    componentDidUpdate() {
-        //交易明细 详情符号翻转
-        $(this.refs.table.getDOMNode()).find(".detailRow").click(function(){
-        	$(this).next("tr").toggle();
-        	$(this).find(".glyphicon-triangle-bottom").toggleClass("glyphicon-triangle-top");
-        });
     }
 };
