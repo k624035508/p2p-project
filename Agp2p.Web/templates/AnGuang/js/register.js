@@ -45,8 +45,8 @@ $(function(){
         var $status = $("#psw2").next();
         if (psw2 == ""){
             $status.removeClass("right-tips");
-            $status.removeClass("error-tips");
-            $status.text("");
+            $status.addClass("error-tips");
+            $status.text("请输入6~16位密码");
         } else if(psw2 == psw){
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
@@ -83,7 +83,11 @@ $(function(){
         var smsCode = $("#sms-code").val().length;
         var $status = $("#sms-code").siblings(".status");
         if(smsCode == 0){
-            alert("请输入短信验证码！");
+            $status.addClass("error-tips");
+            $status.text("请输入短信验证码");
+        }else {
+            $status.removeClass("error-tips");
+            $status.text("");
         }
     });
 
