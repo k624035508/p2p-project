@@ -22,7 +22,7 @@ export default class UserCenterPage extends React.Component {
 			            <li><a href="#" className="account-link">账户总览</a></li>
 			            <li><a className="funds">资金管理</a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><Link to="/mytrade" activeClassName="nav-active">资金明细</Link></li>
+			                    <li><Link to="/mytrade" activeClassName="nav-active">交易明细</Link></li>
 			                    <li><Link to="/recharge" activeClassName="nav-active">我要充值</Link></li>
 			                    <li><Link to="/withdraw" activeClassName="nav-active">我要提现</Link></li>
 			                </ul>
