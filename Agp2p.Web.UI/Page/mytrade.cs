@@ -141,7 +141,7 @@ namespace Agp2p.Web.UI.Page
                 createTime = h.create_time.ToString("yyyy/MM/dd HH:mm"),
                 remark = QueryRemark(h)
             });
-            return JsonConvert.SerializeObject(os);
+            return JsonConvert.SerializeObject(new { totalCount = count, data = os });
         }
     }
 }
