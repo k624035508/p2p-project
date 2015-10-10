@@ -3,6 +3,7 @@
 import HorizontalPicker from "../components/horizontal-picker.jsx"
 import DatePicker from "../components/date-picker.jsx"
 import Table from "../components/investRecord-table.jsx"
+import Pagination from "../components/pagination.jsx"
 
 export default class MyTransaction extends React.Component {
     constructor(props) {
@@ -24,6 +25,8 @@ export default class MyTransaction extends React.Component {
                     startTime={this.state.startTime}
                     endTime={this.state.endTime}
                     onPageLoaded={this.state.onPageLoaded} />
+                <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+                    onPageSelected={pageIndex => this.setState({pageIndex: pageIndex})}/>
             </div>);
     }
 }
