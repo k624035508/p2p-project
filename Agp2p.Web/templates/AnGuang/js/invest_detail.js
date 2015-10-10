@@ -27,4 +27,7 @@ $(function () {
         selectedAppliedTo : 'a',
         animationTime     : 600,
     });
+
+    //点击投资按后钮触发弹窗
+
 });
