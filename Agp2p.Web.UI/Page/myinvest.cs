@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Services;
 using Agp2p.Common;
+using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 
@@ -56,8 +57,8 @@ namespace Agp2p.Web.UI.Page
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <returns></returns>
-        protected static List<li_project_transactions> query_investment(int userId, Agp2pEnums.MyInvestRadioBtnTypeEnum type,
-            int pageIndex, long startTick, long endTick, short pageSize, out int count)
+        protected static List<li_project_transactions> QueryInvestment(int userId, Agp2pEnums.MyInvestRadioBtnTypeEnum type,
+            int pageIndex, string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
             var query =
@@ -67,17 +68,17 @@ namespace Agp2p.Web.UI.Page
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success);
             if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
                 query = query.Where(tr => MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(tr.li_projects.status));
-            if (startTick != 0)
-                query = query.Where(tr => new DateTime(startTick) <= tr.create_time);
-            if (endTick != 0)
-                query = query.Where(tr => tr.create_time <= new DateTime(endTick));
+            if (!string.IsNullOrWhiteSpace(startTime))
+                query = query.Where(tr => Convert.ToDateTime(startTime) <= tr.create_time);
+            if (!string.IsNullOrWhiteSpace(endTime))
+                query = query.Where(tr => tr.create_time <= Convert.ToDateTime(endTime));
 
             count = query.Count();
             return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();
         }
 
         [WebMethod]
-        public static string AjaxQueryInvestment(byte type, short pageIndex, short pageSize)
+        public new static string AjaxQueryInvestment(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -87,14 +88,27 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             int count;
-            var ptrs = query_investment(userInfo.id, (Agp2pEnums.MyInvestRadioBtnTypeEnum) type, pageIndex, 0, 0, pageSize, out count);
-            var result = ptrs.Select(ptr => new
+            var ptrs = QueryInvestment(userInfo.id, (Agp2pEnums.MyInvestRadioBtnTypeEnum) type, pageIndex, startTime, endTime, pageSize, out count);
+
+            var now = DateTime.Now;
+            var result = ptrs.Select(ptr =>
             {
-                projectName = ptr.li_projects.title,
-                investTime = ptr.create_time.ToString("yyyy-MM-dd HH:mm"),
-                investValue = ptr.principal.ToString("c")
+                var proj = ptr.li_projects;
+                var profit = proj.profit_rate == 0
+                    ? Math.Round(ptr.principal * TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span, proj.repayment_term_span_count), 2)
+                    : Math.Round(proj.profit_rate * ptr.principal, 2);
+                return new
+                {
+                    projectName = proj.title,
+                    projectProfitRateYearly = proj.profit_rate_year,
+                    term = proj.repayment_term_span + proj.GetProjectTermSpanEnumDesc(),
+                    investTime = ptr.create_time.ToString("yyyy-MM-dd HH:mm"),
+                    investValue = ptr.principal.ToString("c"),
+                    profit,
+                    status = proj.GetProjectStatusDesc(),
+                };
             });
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(new {totalCount = count, data = result});
         }
     }
 }

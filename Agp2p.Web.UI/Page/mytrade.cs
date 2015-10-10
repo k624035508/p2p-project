@@ -98,7 +98,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <returns></returns>
-        protected static List<li_wallet_histories> query_transaction_history(int userId, Agp2pEnums.TransactionDetailsDropDownListEnum type, int pageIndex,
+        protected static List<li_wallet_histories> QueryTransactionHistory(int userId, Agp2pEnums.TransactionDetailsDropDownListEnum type, int pageIndex,
             string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
@@ -110,9 +110,9 @@ namespace Agp2p.Web.UI.Page
 
             if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
                 query = query.Where(w => MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(w.action_type));
-            if (startTime != "")
+            if (!string.IsNullOrWhiteSpace(startTime))
                 query = query.Where(h => Convert.ToDateTime(startTime) <= h.create_time);
-            if (endTime != "")
+            if (!string.IsNullOrWhiteSpace(endTime))
                 query = query.Where(h => h.create_time <= Convert.ToDateTime(endTime));
 
             count = query.Count();
@@ -130,7 +130,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             int count;
-            var his = query_transaction_history(userInfo.id, (Agp2pEnums.TransactionDetailsDropDownListEnum)type, pageIndex, startTime, endTime, pageSize, out count);
+            var his = QueryTransactionHistory(userInfo.id, (Agp2pEnums.TransactionDetailsDropDownListEnum)type, pageIndex, startTime, endTime, pageSize, out count);
             var os = his.Select(h => new
             {
                 h.id,

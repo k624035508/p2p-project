@@ -1006,5 +1006,10 @@ namespace Agp2p.Core
         {
             return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span);
         }
+
+        public static string GetProjectStatusDesc(this li_projects proj)
+        {
+            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)proj.status);
+        }
     }
 }

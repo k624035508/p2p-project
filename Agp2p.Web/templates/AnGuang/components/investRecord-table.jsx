@@ -1,11 +1,38 @@
 import React from "react";
+import $ from "jquery";
+import isEqual from "lodash/lang/isEqual"
 
 export default class InvestRecordTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: []};
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (!isEqual(this.props, nextProps)) {
+            this.fetch(nextProps.type, nextProps.pageIndex, nextProps.startTime, nextProps.endTime);
+        }
+    }
+    fetch(type, pageIndex, startTime = "", endTime = "") {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryInvestment", pageSize = 10;
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({type: type, pageIndex: pageIndex, pageSize: pageSize, startTime: startTime, endTime: endTime}),
+            success: function(result) {
+                let {totalCount, data} = JSON.parse(result.d);
+                this.setState({data: data});
+                this.props.onPageLoaded(Math.ceil(totalCount / pageSize));
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+    }
+    componentDidMount() {
+        this.fetch(this.props.type, this.props.pageIndex);
+    }
     render() {
         return (
             <div className="tb-wrap">
@@ -24,20 +51,20 @@ export default class InvestRecordTable extends React.Component {
                     </thead>
                     <tbody>
                     { this.state.data.map(tr =>
-                            <tr className="detailRow">
-                                <td>XXXXXXXX</td>
-                                <td>16%</td>
-                                <td>1个月</td>
-                                <td>10000</td>
-                                <td>133.33</td>
-                                <td>投资中</td>
-                                <td>2015/10/9 17：17</td>
-                                <td><a href="#">查看</a></td>
-                            </tr>
+                        <tr className="detailRow">
+                            <td>{tr.projectName}</td>
+                            <td>{tr.projectProfitRateYearly}%</td>
+                            <td>{tr.term}</td>
+                            <td>{tr.investValue}</td>
+                            <td>{tr.profit}</td>
+                            <td>{tr.status}</td>
+                            <td>{tr.investTime}</td>
+                            <td><a href="javascript:;">查看</a></td>
+                        </tr>
                     )}
                     </tbody>
                 </table>
             </div>
-            );
+        );
     }
 };
