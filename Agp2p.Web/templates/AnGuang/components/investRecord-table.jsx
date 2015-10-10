@@ -50,8 +50,8 @@ export default class InvestRecordTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    { this.state.data.map(tr =>
-                        <tr className="detailRow">
+                    { this.state.data.map((tr, index) =>
+                        <tr className="detailRow" key={index}>
                             <td>{tr.projectName}</td>
                             <td>{tr.projectProfitRateYearly}%</td>
                             <td>{tr.term}</td>
