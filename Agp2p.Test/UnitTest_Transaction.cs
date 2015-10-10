@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Agp2p.Core.AutoLogic;
 using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Test
@@ -72,7 +72,7 @@ namespace Agp2p.Test
 
         }
 
-        private static readonly string str = "server=192.168.5.108;uid=sa;pwd=a123456;database=DTcmsdb3;";
+        private static readonly string str = "server=192.168.5.98;uid=sa;pwd=Zxcvbnm,;database=agrh;";
 
         private static string GetFriendlyUserName(dt_users user)
         {
@@ -84,6 +84,65 @@ namespace Agp2p.Test
         private static string GetUserPassword(dt_users user)
         {
             return DESEncrypt.Decrypt(user.password, user.salt);
+        }
+
+        [TestMethod]
+        public void CleanAllProjectAndTransactionRecord()
+        {
+            var context = new Agp2pDataContext(str);
+            var now = DateTime.Now;
+
+            context.li_projects.ForEach(p =>
+            {
+                context.li_repayment_tasks.DeleteAllOnSubmit(p.li_repayment_tasks);
+
+                p.li_project_transactions.ForEach(ptr =>
+                {
+                    context.li_invitations.DeleteAllOnSubmit(ptr.li_invitations);
+                    context.li_wallet_histories.DeleteAllOnSubmit(ptr.li_wallet_histories);
+                });
+                context.li_project_transactions.DeleteAllOnSubmit(p.li_project_transactions);
+            });
+            context.li_projects.DeleteAllOnSubmit(context.li_projects);
+
+            context.dt_users.ForEach(u =>
+            {
+                var wallet = u.li_wallets;
+                wallet.idle_money = 0;
+                wallet.investing_money = 0;
+                wallet.unused_money = 0;
+                wallet.locked_money = 0;
+                wallet.profiting_money = 0;
+                wallet.last_update_time = now;
+                wallet.total_charge = 0;
+                wallet.total_withdraw = 0;
+                wallet.total_investment = 0;
+                wallet.total_profit = 0;
+
+                u.li_bank_transactions.ForEach(chargeRecord =>
+                {
+                    context.li_wallet_histories.DeleteAllOnSubmit(chargeRecord.li_wallet_histories);
+                });
+                context.li_bank_transactions.DeleteAllOnSubmit(u.li_bank_transactions);
+
+                u.li_bank_accounts.ForEach(account =>
+                {
+                    account.li_bank_transactions.ForEach(withdrawRecord =>
+                    {
+                        context.li_wallet_histories.DeleteAllOnSubmit(withdrawRecord.li_wallet_histories);
+                    });
+                    context.li_bank_transactions.DeleteAllOnSubmit(account.li_bank_transactions);
+                });
+
+                u.li_activity_transactions.ForEach(atr =>
+                {
+                    context.li_wallet_histories.DeleteAllOnSubmit(atr.li_wallet_histories);
+                });
+                context.li_activity_transactions.DeleteAllOnSubmit(u.li_activity_transactions);
+            });
+
+            context.dt_manager_log.DeleteAllOnSubmit(context.dt_manager_log);
+            //context.SubmitChanges();
         }
 
     }
