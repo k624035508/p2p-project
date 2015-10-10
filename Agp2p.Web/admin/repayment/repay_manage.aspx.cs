@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Agp2p.Core;
 
 namespace Agp2p.Web.admin.repayment
 {
@@ -125,7 +126,6 @@ namespace Agp2p.Web.admin.repayment
                         repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
                         repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");
                         repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";
-                        repay.Cost = r.cost ?? 0;
                         repay.Category = r.li_projects.category_id;
                         repay.ProfitRate = r.li_projects.profit_rate_year;
                         repay.RepaymentType =
@@ -134,6 +134,7 @@ namespace Agp2p.Web.admin.repayment
                         repay.ProjectTitle = r.li_projects.title;
                         repay.ProjectStatus = r.li_projects.status;
                         repay.RepayStatus = r.status;
+                        repay.RepayId = r.id;
 
                         return repay;
                     });
@@ -174,6 +175,7 @@ namespace Agp2p.Web.admin.repayment
 
         class RepayOverTime
         {
+            public int RepayId { get; set; }
             public int ProjectId { get; set; }
             public string ProjectTitle { get; set; }
             public string Loaner { get; set; }
@@ -182,7 +184,6 @@ namespace Agp2p.Web.admin.repayment
             public string TimeTerm { get; set; }//还款期数
             public string ShouldRepayTime { get; set; }//应还时间
             public string RepayTime { get; set; }//实还时间
-            public decimal Cost { get; set; }//垫付金额
             public int Category { get; set; }//产品
             public int ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率
@@ -193,6 +194,28 @@ namespace Agp2p.Web.admin.repayment
         protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             RptBind();
+        }
+
+        /// <summary>
+        /// 还款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbt_repay_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                int repayId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);
+                //TODO 扣除借款人托管账户钱
+                context.ExecuteRepaymentTask(repayId, false);
+                JscriptMsg("还款成功！",
+                    Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",
+                        this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));
+            }
+            catch (Exception)
+            {
+                JscriptMsg("还款失败！", "back", "Error");
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Core;
+using Agp2p.Core.Message;
 
 namespace Agp2p.Web.admin.project
 {
@@ -19,7 +20,7 @@ namespace Agp2p.Web.admin.project
         protected int RepayId = 0;
         protected int ProjectStatus;
         protected int LoanType = 0;
-        protected  BLL.loan Loan;
+        protected BLL.loan Loan;
 
         public Agp2pDataContext LqContext = new Agp2pDataContext();
 
@@ -41,7 +42,7 @@ namespace Agp2p.Web.admin.project
             this.ProjectId = DTRequest.GetQueryInt("id");
             this.ProjectStatus = DTRequest.GetQueryInt("status");
             if (!Page.IsPostBack)
-            {         
+            {
                 if (this.ProjectId == 0)
                 {
                     JscriptMsg("传输参数不正确！", "back", "Error");
@@ -107,7 +108,7 @@ namespace Agp2p.Web.admin.project
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
             if (_project.tag != null)
-                spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum) _project.tag);
+                spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum)_project.tag);
             spa_financing_day.InnerText = _project.financing_day.ToString();
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
@@ -127,7 +128,7 @@ namespace Agp2p.Web.admin.project
                 //借款人信息
                 ShowLoanerInfo(risk.li_loaners, risk.id);
                 //债权人信息
-                if (_project.type == (int) Agp2pEnums.LoanTypeEnum.Creditor)
+                if (_project.type == (int)Agp2pEnums.LoanTypeEnum.Creditor)
                 {
                     spa_creditor.InnerText = risk.li_creditors.dt_users.real_name;
                     spa_creditorContent.InnerText = risk.creditor_content;
@@ -152,7 +153,7 @@ namespace Agp2p.Web.admin.project
         /// </summary>
         /// <param name="loaner"></param>
         /// <param name="riskId"></param>
-        private void ShowLoanerInfo(li_loaners loaner,int riskId)
+        private void ShowLoanerInfo(li_loaners loaner, int riskId)
         {
             //借款人信息
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
@@ -218,14 +219,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(rblTag.SelectedValue))
-                        project.tag = Utils.StrToInt(rblTag.SelectedValue, 0);
-                    project.status = (int)Agp2pEnums.ProjectStatusEnum.Financing;
-                    project.publish_time = string.IsNullOrEmpty(txtPublishTime.Text.Trim())
-                        ? DateTime.Now
-                        : DateTime.Parse(txtPublishTime.Text.Trim());
-                    project.financing_day = Convert.ToInt16(txt_financing_day.Text.Trim());
-                    LqContext.SubmitChanges();
+                    PublishProject(project, true);
                     JscriptMsg("发布借款成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
                             ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
@@ -233,6 +227,55 @@ namespace Agp2p.Web.admin.project
                 catch (Exception ex)
                 {
                     JscriptMsg("发布借款失败：" + ex.Message, "back", "Error");
+                }
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
+        }
+
+        private void PublishProject(li_projects project, bool publishdelay)
+        {
+            if (!string.IsNullOrEmpty(rblTag.SelectedValue))
+                project.tag = Utils.StrToInt(rblTag.SelectedValue, 0);
+            project.status = publishdelay ? (int)Agp2pEnums.ProjectStatusEnum.FinancingAtTime : (int)Agp2pEnums.ProjectStatusEnum.Financing;
+            project.publish_time = string.IsNullOrEmpty(txtPublishTime.Text.Trim())
+                ? DateTime.Now
+                : DateTime.Parse(txtPublishTime.Text.Trim());
+            project.financing_day = Convert.ToInt16(txt_financing_day.Text.Trim());
+            LqContext.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 延迟发布借款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnApplyOnTime_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            if (string.IsNullOrWhiteSpace(txtPublishTime.Text))
+            {
+                JscriptMsg("请输入你要延迟发标的准确时间！", "back", "Error");
+                return;
+            }
+            if (project != null)
+            {
+                try
+                {
+                    PublishProject(project, true);
+                    //启动延迟发布进程
+                    TimeSpan time = Convert.ToDateTime(txtPublishTime.Text.Trim()).Subtract(DateTime.Now);
+                    var seconds = Math.Floor(time.TotalMinutes) + 1;
+                    MessageBus.Main.PublishDelay(new ProjectSchedulePublishMsg(project.id), (int)time.TotalMilliseconds);
+                    JscriptMsg("延迟发布借款成功，" + seconds + "分钟后自动发布！",
+                        Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                            ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+                }
+                catch (Exception ex)
+                {
+                    JscriptMsg("延迟发布失败：" + ex.Message, "back", "Error");
                 }
             }
             else
@@ -320,11 +363,6 @@ namespace Agp2p.Web.admin.project
             {
                 JscriptMsg("放款操作失败：" + ex.Message, "back", "Error");
             }
-        }
-
-        protected void btnApplyOnTime_OnClick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
 

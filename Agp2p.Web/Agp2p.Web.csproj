@@ -752,6 +752,8 @@
     <Content Include="templates\AnGuang\containers\UserCenterPage.jsx" />
     <Content Include="templates\AnGuang\components\dropdown-picker.jsx" />
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
+    <Content Include="templates\AnGuang\components\horizontal-picker.jsx" />
+    <Content Include="templates\AnGuang\containers\invest-record.jsx" />
     <Content Include="templates\AnGuang\components\pagination.jsx" />
   </ItemGroup>
   <ItemGroup>

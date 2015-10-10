@@ -10,6 +10,7 @@ import UserCenterPage from "../containers/UserCenterPage.jsx"
 import MyTransaction from "../containers/mytransaction.jsx"
 import RechargePage from "../containers/recharge.jsx"
 import WithdrawPage from "../containers/withdraw.jsx"
+import InvestRecordPage from "../containers/invest-record.jsx"
 
 $(function(){
     //点击导航加载相应内容
@@ -21,6 +22,7 @@ $(function(){
 		    	<Route path="mytrade" component={MyTransaction}/>
 		    	<Route path="recharge" component={RechargePage}/>
 		    	<Route path="withdraw" component={WithdrawPage}/>
+		    	<Route path="invest-record" component={InvestRecordPage}/>
 	    	</Route>
     	</Router>
 	), $mountNode[0]);

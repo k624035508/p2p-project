@@ -48,7 +48,7 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="2%"></th>
+                        <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="5%">状态</th>    
                         <th align="left" width="10%">借款人</th>
@@ -64,7 +64,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td align="center"></td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="loan_financing_detail.aspx?channel_id=<%=this.ChannelId %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>             
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>

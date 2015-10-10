@@ -17,14 +17,12 @@ div.usercenter {
 			background: @red;
 			color: @white;
 			padding: 25px 15px;
-			.account-h {
-				font-size: @font20;
-			}
+			.account-h { font-size: @font20; }
 			.account-num {
-				font-size: @font30;
 				text-align: right;
 				padding-top: 50px;
 				span { font-size: @font15; }
+				& span:first-child { font-size: @font30; }
 			}
 		}
 		.outside-ul {
@@ -109,8 +107,8 @@ div.usercenter {
 				margin: 9px 0 0 85px;
 				font-size: @font18;
 				p {
-					color: @dark-grey;
 					span { color: @red; }
+					& span:first-child { color: @dark-grey; }
 				}
 				.balance-frozen { margin-top: 50px; }
 			}
@@ -134,8 +132,30 @@ div.usercenter {
 			}
 		}
 
-		.content-body { padding: 30px 25px; }
-		//交易明细内容
+		.content-body {
+			padding: 30px 25px;
+			nav {
+				text-align: center;
+				.pagination {
+					& > li > a, & > li > span {
+						width: 25px;
+						height: 25px;
+						padding: 0;
+						margin: 0 2px;
+						line-height: 24px;
+						font-size: @font13;
+						color: @dark-grey;
+						border: @border;
+						border-radius: 0;
+					}
+					.active a, .active span {
+						color: @white;
+						background: @red;
+					}
+				}
+			}
+		}
+		//资金明细内容
 		.controls {
 			font-size: @font13;
 			color: @dark-grey;
@@ -145,6 +165,7 @@ div.usercenter {
                 letter-spacing: 3px;
                 padding-left: 12px;
 				border: @border;
+				outline: none;
 			}
 			.dateSel {
 				& > * {
@@ -171,28 +192,31 @@ div.usercenter {
 				}
 			}
 		}
-		.trade-tb {
-			margin-top: 30px;
-			th, td { text-align: center; }
-			th {
-				color: @darker-grey;
-				border-bottom: 2px solid @blue;
-			}
-			td {
-				height: 39px;
-				color: @dark-grey;
-				border-bottom: 1px solid @blue;
-			}
-			tbody tr {
-				cursor: pointer;
-				&:hover { background: #f1f5ff; }
-			}
-			.detailMark{
-				display: none;
+		.tb-wrap {
+			height: 500px;
+			.trade-tb, .investRecord-tb {
+				margin-top: 30px;
+				th, td { text-align: center; }
+				th {
+					color: @darker-grey;
+					border-bottom: 2px solid @blue;
+				}
 				td {
-					text-align: left;
-					background: #f9f9f9;
-					cursor: default;
+					height: 39px;
+					color: @dark-grey;
+					border-bottom: 1px solid @blue;
+				}
+				tbody tr {
+					cursor: pointer;
+					&:hover { background: #f1f5ff; }
+				}
+				.detailMark{
+					display: none;
+					td {
+						text-align: left;
+						background: #f9f9f9;
+						cursor: default;
+					}
 				}
 			}
 		}
@@ -237,7 +261,7 @@ div.usercenter {
 			#jiaohang { background: url("@{recharge}/jiaohang.png"); }
 			#huaxia { background: url("@{recharge}/huaxia.png"); }
 		}
-		.balance-recharge span, .amount-recharge span {
+		.balance-recharge span:first-child, .amount-recharge span:first-child {
 			display: inline-block;
 			width: 118px;
 			margin-right: 10px;
@@ -395,6 +419,28 @@ div.usercenter {
 				}
 			}
 		}
+
+		//投资记录内容 (投资记录表格样式共用资金明细表格)
+		#typePicker {
+			float: left;
+			& > li {
+				width: 65px;
+				height: 35px;
+				line-height: 34px;
+				text-align: center;
+				border-top: @border;
+				border-right: @border;
+				border-bottom: @border;
+				cursor: pointer;
+				outline: none;
+			}
+			& li:first-child { border-left: @border; }
+			.active {
+				color: @white;
+				background: @red;
+			}
+		}
+
 
 	}
 }
