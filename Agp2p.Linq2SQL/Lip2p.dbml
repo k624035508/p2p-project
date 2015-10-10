@@ -53,16 +53,6 @@
       <Association Name="dt_users_li_bank_transactions" Member="dt_users" ThisKey="charger" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.li_creditors" Member="li_creditors">
-    <Type Name="li_creditors">
-      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="real_name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="id_card_number" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="li_creditors_li_risks" Member="li_risks" ThisKey="user_id" OtherKey="creditor" Type="li_risks" />
-      <Association Name="dt_users_li_creditors" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.li_invitations" Member="li_invitations">
     <Type Name="li_invitations">
       <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -400,9 +390,9 @@
       <Association Name="li_risks_li_risk_mortgage" Member="li_risk_mortgage" ThisKey="id" OtherKey="risk" Type="li_risk_mortgage" />
       <Association Name="li_risks_li_albums" Member="li_albums" ThisKey="id" OtherKey="risk" Type="li_albums" />
       <Association Name="li_risks_li_projects" Member="li_projects" ThisKey="id" OtherKey="risk_id" Type="li_projects" />
-      <Association Name="li_creditors_li_risks" Member="li_creditors" ThisKey="creditor" OtherKey="user_id" Type="li_creditors" IsForeignKey="true" />
       <Association Name="li_guarantors_li_risks" Member="li_guarantors" ThisKey="guarantor_id" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
       <Association Name="li_loaners_li_risks" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
+      <Association Name="li_creditors_li_risks" Member="li_creditors" ThisKey="creditor" OtherKey="user_id" Type="li_creditors" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_albums" Member="li_albums">
@@ -532,7 +522,6 @@
       <Association Name="dt_users_li_activity_transactions" Member="li_activity_transactions" ThisKey="id" OtherKey="user_id" Type="li_activity_transactions" />
       <Association Name="dt_users_li_bank_accounts" Member="li_bank_accounts" ThisKey="id" OtherKey="owner" Type="li_bank_accounts" />
       <Association Name="dt_users_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="charger" Type="li_bank_transactions" />
-      <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
       <Association Name="dt_users_li_invitations" Member="li_invitations" ThisKey="id" OtherKey="user_id" Type="li_invitations" Cardinality="One" />
       <Association Name="dt_users_li_invitations1" Member="li_invitations1" ThisKey="id" OtherKey="inviter" Type="li_invitations" />
       <Association Name="dt_users_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="user_id" Type="li_wallet_histories" />
@@ -543,6 +532,7 @@
       <Association Name="dt_users_li_albums" Member="li_albums" ThisKey="id" OtherKey="the_user" Type="li_albums" />
       <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
+      <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -603,6 +593,18 @@
       <Association Name="li_project_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="project_transaction" Type="li_wallet_histories" />
       <Association Name="dt_users_li_project_transactions" Member="dt_users" ThisKey="investor" OtherKey="id" Type="dt_users" IsForeignKey="true" />
       <Association Name="li_projects_li_project_transactions" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_creditors" Member="li_creditors">
+    <Type Name="li_creditors">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="working_company" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="age" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="job" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="li_creditors_li_risks" Member="li_risks" ThisKey="user_id" OtherKey="creditor" Type="li_risks" />
+      <Association Name="dt_users_li_creditors" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

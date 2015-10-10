@@ -47,9 +47,11 @@ namespace Agp2p.Web.admin.loaner
                 else if (action == DTEnums.ActionEnum.Add.ToString())
                 {
                     var user = context.dt_users.First(u => u.id == Convert.ToInt32(ddlSelectUser.SelectedValue));
-                    lblNickName.Text = user.nick_name;
-                    lblTel.Text = user.mobile;
+                    lblRealName.Text = user.real_name;
                     lblEmail.Text = user.email;
+                    lblIdCardNumber.Text = user.id_card_number;
+                    lblsex.Text = user.sex;
+                    lblTel.Text = user.mobile;
                 }
             }
         }
@@ -67,11 +69,15 @@ namespace Agp2p.Web.admin.loaner
             var model = context.li_creditors.First(q => q.user_id == user_id);
             var user = model.dt_users;
             ddlSelectUser.SelectedValue = user.id.ToString();
-            lblNickName.Text = user.nick_name;
-            lblTel.Text = user.mobile;
+            lblRealName.Text = user.real_name;
             lblEmail.Text = user.email;
-            txtRealName.Text = model.real_name;
-            txtIdCardNumber.Text = model.id_card_number;
+            lblIdCardNumber.Text = user.id_card_number;
+            lblsex.Text = user.sex;
+            lblTel.Text = user.mobile;
+            txtWorkingUnit.Text = model.working_company;
+            txtRemark.Text = model.remark;
+            txtAge.Text = model.age.ToString();
+            txtJob.Text = model.job;
 
             rptIdCardPics.DataSource = model.dt_users.li_albums.Where(a => a.the_user == user_id && a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard);
             rptIdCardPics.DataBind();
@@ -105,17 +111,13 @@ namespace Agp2p.Web.admin.loaner
         #region 增加操作=================================
         private bool DoAdd()
         {
-            var check = context.li_creditors.FirstOrDefault(q => q.id_card_number == txtIdCardNumber.Text.Trim()); //检测用户名是否重复
-            if (check != null)
-            {
-                JscriptMsg("身份证号重复！", "", "Error");
-                return false;
-            }
             var model = new li_creditors
             {
                 user_id = Convert.ToInt32(ddlSelectUser.SelectedValue),
-                real_name = txtRealName.Text.Trim(),
-                id_card_number = txtIdCardNumber.Text.Trim(),
+                age = Convert.ToInt16(txtAge.Text.Trim()),
+                job = txtJob.Text,
+                working_company = txtWorkingUnit.Text,
+                remark = txtRemark.Text,
                 last_update_time = DateTime.Now
             };
             context.li_creditors.InsertOnSubmit(model);
@@ -140,8 +142,10 @@ namespace Agp2p.Web.admin.loaner
             var model = context.li_creditors.First(q => q.user_id == user_id);
 
             model.user_id = Convert.ToInt32(ddlSelectUser.SelectedValue);
-            model.real_name = txtRealName.Text.Trim();
-            model.id_card_number = txtIdCardNumber.Text.Trim();
+            model.age = Convert.ToInt16(txtAge.Text.Trim());
+            model.job = txtJob.Text;
+            model.working_company = txtWorkingUnit.Text;
+            model.remark = txtRemark.Text;
             model.last_update_time = DateTime.Now;
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.IdCard);
@@ -161,6 +165,12 @@ namespace Agp2p.Web.admin.loaner
         //保存
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(lblIdCardNumber.Text) || string.IsNullOrEmpty(lblRealName.Text))
+            {
+                JscriptMsg("关联的会员必须要实名认证！", "", "Error");
+                return;
+            }
+
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
                 ChkAdminLevel("loan_creditor", DTEnums.ActionEnum.Edit.ToString()); //检查权限
@@ -187,9 +197,11 @@ namespace Agp2p.Web.admin.loaner
         {
             int userId = Convert.ToInt32(ddlSelectUser.SelectedValue);
             var user = context.dt_users.First(u => u.id == userId);
-            lblNickName.Text = user.nick_name;
-            lblTel.Text = user.mobile;
+            lblRealName.Text = user.real_name;
             lblEmail.Text = user.email;
+            lblIdCardNumber.Text = user.id_card_number;
+            lblsex.Text = user.sex;
+            lblTel.Text = user.mobile;
         }
     }
 }

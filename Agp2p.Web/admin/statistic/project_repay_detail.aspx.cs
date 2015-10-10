@@ -160,7 +160,7 @@ namespace Agp2p.Web.admin.statistic
                             Index = ri.index.ToString(),
                             ProjectName = pro.title,
                             RepayAt = r.repay_at == null ? string.Format("预计于 {0:yyyy-MM-dd} 返还", r.should_repay_time.Date) : r.repay_at.ToString(),
-                            CreditorName = pro.li_risks.li_creditors == null ? pro.li_risks.li_loaners.dt_users.real_name : pro.li_risks.li_creditors.real_name,
+                            CreditorName = pro.li_risks.li_creditors == null ? "" : pro.li_risks.li_creditors.dt_users.real_name,
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
                             Term =
