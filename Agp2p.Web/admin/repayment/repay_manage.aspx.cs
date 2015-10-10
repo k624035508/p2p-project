@@ -3,6 +3,7 @@ using Agp2p.Linq2SQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -124,8 +125,8 @@ namespace Agp2p.Web.admin.repayment
                         repay.Principal = r.repay_principal;
                         repay.Interest = r.repay_interest;
                         repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
-                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");
-                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";
+                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");
+                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";
                         repay.Category = r.li_projects.category_id;
                         repay.ProfitRate = r.li_projects.profit_rate_year;
                         repay.RepaymentType =
@@ -140,7 +141,11 @@ namespace Agp2p.Web.admin.repayment
                     });
             
             this.TotalCount = repayList.Count();
-            return repayList.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            if (rblStatus.SelectedValue == "0")
+                return repayList.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            else
+                return repayList.OrderByDescending(q => q.RepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+
         }       
         #endregion
 
@@ -207,7 +212,17 @@ namespace Agp2p.Web.admin.repayment
             {
                 int repayId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);
                 //TODO 扣除借款人托管账户钱
-                context.ExecuteRepaymentTask(repayId, false);
+                //根据时间判断是否提前还款
+                var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
+                Debug.Assert(repay != null, "repay != null");
+                if (repay.should_repay_time >= DateTime.Now)
+                {
+                    decimal cost = (decimal) Costconfig.earlier_pay;
+                    context.EarlierRepayAll(repay.project, cost);
+                }
+                else
+                    context.ExecuteRepaymentTask(repayId, false);
+
                 JscriptMsg("还款成功！",
                     Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",
                         this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));

@@ -139,10 +139,11 @@ namespace Agp2p.Web.admin.project
         private List<li_projects> GetList()
         {
             PageSize = new BLL.channel().GetPageSize(ChannelName);
-            var query = context.li_projects.Where(p => p.status == ProjectStatus && (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
+            var query = context.li_projects.Where(p => p.title.Contains(Keywords) || p.no.Contains(Keywords));
             if (CategoryId > 0)
                 query = query.Where(q => q.category_id == CategoryId);
-            
+            query = ProjectStatus == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime ? query.Where(p => p.status > ProjectStatus) : query.Where(p => p.status == ProjectStatus);
+
             this.TotalCount = query.Count();
             return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
                 .Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();

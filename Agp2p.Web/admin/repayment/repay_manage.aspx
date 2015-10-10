@@ -64,7 +64,7 @@
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
-                        <th width="8%">操作</th>
+                        <th width="6%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -85,8 +85,6 @@
                            { %>
                         <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
                             CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" ></asp:LinkButton> 
-                        &nbsp;
-                        <asp:LinkButton ID="lbt_earlier_repay" runat="server" Text="提前还款"></asp:LinkButton>
                         <% } %>
                     </td>
                 </tr>

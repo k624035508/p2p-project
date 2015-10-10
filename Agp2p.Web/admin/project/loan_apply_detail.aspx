@@ -388,7 +388,7 @@
                 <dt>债权人描述</dt>
                 <dd>
                     <asp:TextBox ID="txtCreditorContent" runat="server" CssClass="input" TextMode="MultiLine"  Width="90%"
-                        datatype="*0-255" sucmsg=" ">债权人为广东汇诚创利电子商务有限公司资产部员工，由公司授权、代表广东汇诚创利电子商务有限公司全权处理与客户的的债权关系。
+                        datatype="*0-255" sucmsg=" ">
                     </asp:TextBox>
                     <span class="Validform_checktip"></span>
                 </dd>

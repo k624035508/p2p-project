@@ -128,8 +128,8 @@ namespace Agp2p.Web.admin.repayment
                         repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
                         repay.Amount = r.repay_interest + r.repay_principal;//应还金额
                         repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";//逾期期数
-                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");//应还时间
-                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";//实还时间
+                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");//应还时间
+                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";//实还时间
                         repay.Category = r.li_projects.category_id;
                         repay.ProfitRate = r.li_projects.profit_rate_year;
                         repay.RepaymentType =
