@@ -2462,8 +2462,8 @@ namespace Agp2p.Web.tools
                 string titletxt = mailModel.maill_title;
                 string bodytxt = mailModel.content;
                 //甲方信息
-                bodytxt = bodytxt.Replace("{jiafang_name}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.real_name : "");
-                bodytxt = bodytxt.Replace("{jiafang_id_card}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.id_card_number : "");
+                bodytxt = bodytxt.Replace("{jiafang_name}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.real_name : "");
+                bodytxt = bodytxt.Replace("{jiafang_id_card}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.id_card_number : "");
                 //项目信息
                 bodytxt = bodytxt.Replace("{project_name}", project.title);
                 bodytxt = bodytxt.Replace("{project_rate}", project.profit_rate_year.ToString());

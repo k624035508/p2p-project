@@ -118,7 +118,7 @@ namespace Agp2p.Web.admin.project
             ddlCreditor.Items.Clear();
             ddlCreditor.Items.Add(new ListItem("请选择债权人...", ""));
             var dtCreditor = LqContext.li_creditors.OrderByDescending(q => q.last_update_time)
-                .Select(c => new ListItem(c.real_name, c.user_id.ToString())).ToArray();
+                .Select(c => new ListItem(c.dt_users.real_name, c.user_id.ToString())).ToArray();
             ddlCreditor.Items.AddRange(dtCreditor);
         }
 

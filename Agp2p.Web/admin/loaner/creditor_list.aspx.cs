@@ -57,13 +57,13 @@ namespace Agp2p.Web.admin.loaner
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             var query = from c in context.li_creditors
-                        where c.real_name.Contains(txtKeywords.Text) || c.dt_users.mobile.Contains(txtKeywords.Text) || c.id_card_number.Contains(txtKeywords.Text)
+                        where c.dt_users.real_name.Contains(txtKeywords.Text) || c.dt_users.mobile.Contains(txtKeywords.Text) || c.dt_users.id_card_number.Contains(txtKeywords.Text)
                         select new Creditor
                         {
                             user_id = c.user_id,
-                            real_name = c.real_name,
+                            real_name = c.dt_users.real_name,
                             tel = c.dt_users.mobile,
-                            id_card_number = c.id_card_number,
+                            id_card_number = c.dt_users.id_card_number,
                             email = c.dt_users.email,
                             last_update_time = c.last_update_time
                         };
