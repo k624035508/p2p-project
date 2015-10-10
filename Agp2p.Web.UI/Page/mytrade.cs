@@ -49,8 +49,8 @@ namespace Agp2p.Web.UI.Page
                 return
                     string.Format(
                         his.li_project_transactions.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                            ? "投资项目[{0}]"
-                            : "投资放款[{0}]", his.li_project_transactions.li_projects.title);
+                            ? "投资项目 [{0}]"
+                            : "投资放款 [{0}]  {1}", his.li_project_transactions.li_projects.title, his.li_project_transactions.remark);
             }
             if (his.li_bank_transactions != null)
                 return his.li_bank_transactions.remarks;
@@ -120,7 +120,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryTransactionHistory(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
+        public new static string AjaxQueryTransactionHistory(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)

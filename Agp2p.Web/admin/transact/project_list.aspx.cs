@@ -114,5 +114,20 @@ namespace Agp2p.Web.admin.transact
                 JscriptMsg("截标失败！" + ex.Message, Utils.CombUrlTxt("project_list.aspx", "page={0}&keywords={1}", page.ToString(), txtKeywords.Text), "Failure");
             }
         }
+
+        protected void btnEarlierRepay_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                int projectId = Convert.ToInt32(((Button)sender).CommandArgument);
+                var pro = context.EarlierRepayAll(projectId, 0.6m);
+                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "提前还款成功：" + pro.title + " 保留 60% 利润"); //记录日志
+                JscriptMsg("提前还款成功：" + pro.title + " 保留 60% 利润", Utils.CombUrlTxt("project_list.aspx", "page={0}&keywords={1}", page.ToString(), txtKeywords.Text), "Success");
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("提前还款失败！" + ex.Message, Utils.CombUrlTxt("project_list.aspx", "page={0}&keywords={1}", page.ToString(), txtKeywords.Text), "Failure");
+            }
+        }
     }
 }

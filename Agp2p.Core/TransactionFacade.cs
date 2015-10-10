@@ -694,7 +694,7 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="projectId"></param>
         /// <param name="remainProfitRate">剩余利息比率</param>
-        public static void EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainProfitRate)
+        public static li_projects EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainProfitRate)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
             var unpaidTasks = project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
@@ -757,6 +757,8 @@ namespace Agp2p.Core
                 context.li_wallet_histories.InsertOnSubmit(his);
             });
             context.SubmitChanges();
+
+            return project;
         }
 
         /// <summary>

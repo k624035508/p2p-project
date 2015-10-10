@@ -51,6 +51,7 @@
     <th align="left" width="5%">融资情况</th>
     <th align="left" width="5%">放款情况</th>
     <th align="left" width="5%">截标操作</th>
+    <th align="left" width="5%">提前还款</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -67,6 +68,8 @@
     <td><a href="project_repayment_list.aspx?project_id=<%#Eval("id")%>"><%# QueryRepaymentProgress((li_projects) Container.DataItem) %></a></td>
     <td><asp:Button ID="btnFinishInvestment" runat="server" Text="截标" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClick="btnFinishInvestment_OnClick"
                 OnClientClick="return ExeNoCheckPostBack(this.name, '确认截标？');" Visible='<%# Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.ProjectStatusEnum.Financing %>'/></td>
+    <td><asp:Button ID="btnEarlierRepay" runat="server" Text="提前还款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClick="btnEarlierRepay_OnClick"
+                    OnClientClick="return ExeNoCheckPostBack(this.name, '确认提前还款？');" Visible='<%# Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.ProjectStatusEnum.ProjectRepaying %>'/></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
