@@ -27,4 +27,9 @@ $(function(){
             }
         });
     });
+    $("#psw").keyup(function (e) {
+        if (e.keyCode == 13) {
+            $("#loginBtn").click();
+        }
+    });
 });
