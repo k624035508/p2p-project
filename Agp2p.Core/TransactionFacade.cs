@@ -718,7 +718,7 @@ namespace Agp2p.Core
                 repay_at = project.complete_time,
                 repay_interest = Math.Round(unpaidInterest * remainProfitRate, 2),
                 repay_principal = unpaidPrincipal,
-                should_repay_time = project.complete_time.Value,
+                should_repay_time = unpaidTasks.Last().should_repay_time,
                 term = unpaidTasks.First().term,
                 status = (byte) Agp2pEnums.RepaymentStatusEnum.EarlierPaid,
             };
