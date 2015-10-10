@@ -10,6 +10,12 @@ export default class UserCenterPage extends React.Component {
 		var $mountNode = $("#app");
 		this.setState($mountNode.data());
 	}
+	changeNavActiveState(elem) {
+		var $nav = $(".inner-ul li");
+		$nav.removeClass("nav-active");
+		elem.parent().addClass("nav-active");
+	}
+
 	render() {
 		return (
 			<div className="content-wrap usercenter">
@@ -22,15 +28,15 @@ export default class UserCenterPage extends React.Component {
 			            <li><a href="#" className="account-link">账户总览</a></li>
 			            <li><a className="funds">资金管理</a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><Link to="/mytrade" activeClassName="nav-active">交易明细</Link></li>
-			                    <li><Link to="/recharge" activeClassName="nav-active">我要充值</Link></li>
-			                    <li><Link to="/withdraw" activeClassName="nav-active">我要提现</Link></li>
+			                    <li><Link to="/mytrade" onClick={}>交易明细</Link></li>
+			                    <li><Link to="/recharge">我要充值</Link></li>
+			                    <li><Link to="/withdraw">我要提现</Link></li>
 			                </ul>
 			            </li>
 			            <li><a className="investing">投资管理</a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><a href="#">我的投资</a></li>
-			                    <li><Link to="/invest-record" activeClassName="nav-active">投资记录</Link></li>
+			                    <li><Link to="/invest-record">投资记录</Link></li>
 			                    <li><a href="#">回款计划</a></li>
 			                </ul>
 			            </li>
