@@ -1,8 +1,6 @@
 ﻿import React from "react";
 import $ from "jquery";
 import isEqual from "lodash/lang/isEqual"
-import omit from "lodash/object/omit"
-import isFunction from "lodash/lang/isFunction"
 
 export default class TransactionTable extends React.Component {
     constructor(props) {
@@ -10,7 +8,7 @@ export default class TransactionTable extends React.Component {
         this.state = {data: []};
     }
     componentWillReceiveProps(nextProps) {
-        if (!isEqual(omit(this.props, isFunction), omit(nextProps, isFunction))) {
+        if (!isEqual(this.props, nextProps)) {
             this.fetch(nextProps.type, nextProps.pageIndex, nextProps.startTime, nextProps.endTime);
         }
     }

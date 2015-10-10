@@ -8,7 +8,7 @@ import Pagination from "../components/pagination.jsx"
 export default class MyTransaction extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {type: 0, startTime: "", endTime: "", pageIndex: 0, pageCount: 0};
+		this.state = {type: 0, startTime: "", endTime: "", pageIndex: 0, pageCount: 0, onPageLoaded: pageCount => this.setState({pageCount: pageCount})};
 	}
 	render() {
 		return (
@@ -27,7 +27,7 @@ export default class MyTransaction extends React.Component {
 		        	pageIndex={this.state.pageIndex}
 		        	startTime={this.state.startTime}
 		        	endTime={this.state.endTime}
-		        	onPageLoaded={pageCount => this.setState({pageCount: pageCount})} />
+		        	onPageLoaded={this.state.onPageLoaded} />
 		        <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
 		        	onPageSelected={pageIndex => this.setState({pageIndex: pageIndex})}/>
 			</div>);
