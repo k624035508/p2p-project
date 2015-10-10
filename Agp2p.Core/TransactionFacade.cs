@@ -645,11 +645,25 @@ namespace Agp2p.Core
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
             if (pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
-                pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime; // TODO 考虑放款的3种情况
+                pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
             }
             return repaymentTask;
+        }
+
+        private static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
+        {
+            // 查询每个用户的投资记录（一个用户可能投资多次）
+            var investRecord = proj.li_project_transactions.Where(
+                    tr =>
+                        tr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        tr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    .ToLookup(tr => tr.dt_users);
+            // 计算出每个用户的投资占比
+            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
+                records => records.Sum(tr => tr.principal) / proj.investment_amount); // 公式：用户投资总额 / 项目投资总额
+            return moneyRepayRatio;
         }
 
         /// <summary>
@@ -660,26 +674,89 @@ namespace Agp2p.Core
         /// <returns></returns>
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime)
         {
-            // 查询每个用户的投资记录（一个用户可能投资多次）
-            var investRecord = repaymentTask.li_projects.li_project_transactions.Where(
-                    tr =>
-                        tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .ToLookup(tr => tr.dt_users);
-            // 计算出每个用户的投资占比
-            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
-                records => records.Sum(tr => tr.principal)/repaymentTask.li_projects.investment_amount); // 公式：用户投资总额 / 项目投资总额
+            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
             return moneyRepayRatio.Select(r => new li_project_transactions
             {
                 create_time = transactTime, // 变更时间应该等于还款计划的还款时间
-                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
+                type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
                 project = repaymentTask.project,
                 dt_users = r.Key,
-                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                principal = Math.Round(r.Value*repaymentTask.repay_principal, 2),
-                interest = Math.Round(r.Value*repaymentTask.repay_interest, 2)
+                status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                principal = Math.Round(r.Value * repaymentTask.repay_principal, 2),
+                interest = Math.Round(r.Value * repaymentTask.repay_interest, 2)
             }).ToList();
+        }
+
+        /// <summary>
+        /// 提前还款，之后未还的还款计划作废，全部投资者减去该项目剩余的待收益金额，执行还款转账操作
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="projectId"></param>
+        /// <param name="remainProfitRate">剩余利息比率</param>
+        public static void EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainProfitRate)
+        {
+            var project = context.li_projects.Single(p => p.id == projectId);
+            var unpaidTasks = project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
+            if (!unpaidTasks.Any()) throw new Exception("全部还款计划均已执行，不能进行提前还款");
+            if (remainProfitRate < 0 || 1 < remainProfitRate) throw new Exception("剩余利息比率不正常");
+
+            // 项目状态设为提前还款
+            project.complete_time = DateTime.Now;
+            project.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier;
+
+            unpaidTasks.ForEach(t => t.status = (byte) Agp2pEnums.RepaymentStatusEnum.Invalid); // 原计划作废
+
+            var unpaidPrincipal = unpaidTasks.Sum(t => t.repay_principal);
+            var unpaidInterest = unpaidTasks.Sum(t => t.repay_interest);
+
+            // 生成新的计划
+            var earlierRepayTask = new li_repayment_tasks
+            {
+                li_projects = project,
+                cost = unpaidInterest - Math.Round(unpaidInterest*remainProfitRate, 2),
+                repay_at = project.complete_time,
+                repay_interest = Math.Round(unpaidInterest * remainProfitRate, 2),
+                repay_principal = unpaidPrincipal,
+                should_repay_time = project.complete_time.Value,
+                term = unpaidTasks.First().term,
+                status = (byte) Agp2pEnums.RepaymentStatusEnum.EarlierPaid,
+            };
+            context.li_repayment_tasks.InsertOnSubmit(earlierRepayTask);
+
+            var investRatio = GetInvestRatio(project);
+            // 生成项目交易记录
+            var projectTransactions = investRatio.Select(r => new li_project_transactions
+            {
+                create_time = project.complete_time.Value, // 变更时间应该等于还款计划的还款时间
+                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
+                project = project.id,
+                dt_users = r.Key,
+                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                principal = Math.Round(r.Value*earlierRepayTask.repay_principal, 2),
+                interest = Math.Round(r.Value*earlierRepayTask.repay_interest, 2),
+                remark = string.Format("最后 {0} 期提前还款：实际得到收益 {1:c}，原来的剩余待收益 {2:c}", unpaidTasks.Count,
+                    Math.Round(r.Value * earlierRepayTask.repay_interest, 2), Math.Round(r.Value * unpaidInterest, 2))
+            }).ToList();
+            context.li_project_transactions.InsertAllOnSubmit(projectTransactions);
+
+            // 生成钱包历史
+            projectTransactions.ForEach(ptr =>
+            {
+                // 增加钱包空闲金额与减去待收本金和待收利润
+                var wallet = ptr.dt_users.li_wallets;
+                wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
+                wallet.investing_money -= ptr.principal;
+                wallet.profiting_money -= Math.Round(unpaidInterest*investRatio[ptr.dt_users], 2); // 减去原先的待收益
+                wallet.total_profit += ptr.interest.GetValueOrDefault(0);
+                wallet.last_update_time = ptr.create_time;
+
+                // 添加钱包历史
+                var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(ptr));
+                his.li_project_transactions = ptr;
+                context.li_wallet_histories.InsertOnSubmit(his);
+            });
+            context.SubmitChanges();
         }
 
         /// <summary>
