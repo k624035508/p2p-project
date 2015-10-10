@@ -7,9 +7,16 @@
 
         <div class="pull-right">
             <ul class="list-inline">
+                <%set var _userModel=GetUserInfo()%>
+                <%if(_userModel==null)%>
                 <li><a id="login" href='<%linkurl("login")%>'>登录</a></li>
                 <li class="hr-line">|</li>
                 <li><a id="register" href='<%linkurl("register")%>'>注册</a></li>
+                <%else%>
+                <li><a href='<%linkurl("usercenter","index")%>'><%=_userModel.user_name%></a></li>
+                <li class="hr-line">|</li>
+                <li><a id="logout" href='<%linkurl("usercenter","exit")%>'>登出</a></li>
+                <%/if%>
                 <li class="hr-line">|</li>
                 <li><a id="help" href="#">帮助</a></li>
             </ul>
