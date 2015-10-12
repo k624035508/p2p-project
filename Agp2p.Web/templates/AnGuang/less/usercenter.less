@@ -322,12 +322,10 @@ div.usercenter {
 			& > div {
 				margin-bottom: 30px;
 				& > * { display: inline-block; }
-				span {
+				& > span:first-child {
+					width: 122px;
 					font-size: @font15;
 					color: @dark-grey;
-				}
-				& span:first-child {
-					width: 122px;
 					text-align: right;
 					margin-right: 10px;
 					i {
@@ -349,7 +347,10 @@ div.usercenter {
 					border-radius: 5px;
 				}
 			}
-			.balance-withdraw, .recorded-date { color: @red; }
+			.balance-withdraw, .recorded-date {
+				span { color: @red;}
+				& span:first-child { color: @dark-grey; }
+			}
 			.withdrawBtn {
 				margin-left: 132px;
 				margin-bottom: 0;
@@ -387,7 +388,7 @@ div.usercenter {
 						cursor: pointer;
 						vertical-align: top;
 						p {
-							margin: 3px 0 0 1px;
+							margin: 4px 0 0 0;
 							padding-left: 65px;
 						}
 						.card-num span {
@@ -396,7 +397,7 @@ div.usercenter {
 						}
 						img {
 							position: relative;
-							margin-top: -62px;
+							margin-top: -68px;
 							margin-left: -5px;
 						}
 					}
