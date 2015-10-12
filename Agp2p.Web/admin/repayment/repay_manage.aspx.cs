@@ -210,6 +210,7 @@ namespace Agp2p.Web.admin.repayment
         {
             try
             {
+                ChkAdminLevel("repay_manage", DTEnums.ActionEnum.Add.ToString());
                 int repayId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);
                 //TODO 扣除借款人托管账户钱
                 //根据时间判断是否提前还款

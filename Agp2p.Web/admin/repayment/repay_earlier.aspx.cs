@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.repayment
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_over_time", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("repay_earlier", DTEnums.ActionEnum.View.ToString()); //检查权限
                 TreeBind(); //绑定类别
                 RptBind();
             }

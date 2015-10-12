@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.repayment
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_over_time", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.View.ToString()); //检查权限
                 TreeBind(); //绑定类别
                 RptBind();
             }
@@ -215,6 +215,7 @@ namespace Agp2p.Web.admin.repayment
         /// <param name="e"></param>
         protected void lbt_prepay_OnClick(object sender, EventArgs e)
         {
+            ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.Edit.ToString());
             throw new NotImplementedException();
         }
 
@@ -227,6 +228,7 @@ namespace Agp2p.Web.admin.repayment
         {
             try
             {
+                ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.Add.ToString());
                 int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
                 //TODO 扣除借款人托管账户钱 计算罚款
                 context.ExecuteRepaymentTask(repayId, false);

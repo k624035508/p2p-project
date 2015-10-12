@@ -28,7 +28,7 @@ namespace Agp2p.Web.admin.loaner
             pageSize = GetPageSize(10); //每页数量
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("organization_manage", DTEnums.ActionEnum.View.ToString()); //检查权限
                 var keywords = DTRequest.GetQueryString("keywords");
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
@@ -94,7 +94,7 @@ namespace Agp2p.Web.admin.loaner
         //批量删除
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            ChkAdminLevel("organization_manage", DTEnums.ActionEnum.Delete.ToString()); //检查权限
             int sucCount = 0;
             int errorCount = 0;
             for (int i = 0; i < rptList.Items.Count; i++)
