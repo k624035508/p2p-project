@@ -43,7 +43,8 @@ namespace Agp2p.Web.admin.project
             {
                 CategoryDDLBind(this.channel_id);
                 CreditorDDLBind();
-                LoanerDDLBind();                
+                LoanerDDLBind();
+                GuarantorDDLBind();
 
                 if (!string.IsNullOrEmpty(action) && action == DTEnums.ActionEnum.Edit.ToString())
                 {                    
@@ -122,6 +123,18 @@ namespace Agp2p.Web.admin.project
             ddlCreditor.Items.AddRange(dtCreditor);
         }
 
+        /// <summary>
+        /// 初始化借款人
+        /// </summary>
+        protected void GuarantorDDLBind()
+        {
+            ddl_guarantor.Items.Clear();
+            ddl_guarantor.Items.Add(new ListItem("请选择担保机构...", ""));
+            var models =
+                LqContext.li_guarantors.OrderBy(l => l.id)
+                    .Select(l => new ListItem(l.name, l.id.ToString())).ToArray();
+            ddl_guarantor.Items.AddRange(models);
+        }
         #endregion
 
         /// <summary>
@@ -169,6 +182,8 @@ namespace Agp2p.Web.admin.project
                     ddlCreditor.SelectedValue = risk.creditor.ToString();
                     txtCreditorContent.Text = risk.creditor_content;
                 }
+                if (risk.guarantor_id != null)
+                    ddl_guarantor.SelectedValue = risk.guarantor_id.ToString();
                 //txtCreditRating.Text = risk.credit_rating;
                 txtRepaymentSource.Text = risk.source_of_repayment;//还款来源
                 txtLoanUse.Text = risk.loan_usage;//借款用途
@@ -260,6 +275,8 @@ namespace Agp2p.Web.admin.project
             risk.source_of_repayment = txtRepaymentSource.Text;
             risk.risk_content = txtRiskContent.Value;
             risk.last_update_time = DateTime.Now;
+            if (ddl_guarantor.SelectedIndex > 0)
+                risk.guarantor_id = Utils.StrToInt(ddl_guarantor.SelectedValue, 0);
             //相关图片资料
             Loan.LoadAlbum(risk, Agp2pEnums.AlbumTypeEnum.LoanAgreement, 0, Request);
             Loan.LoadAlbum(risk, Agp2pEnums.AlbumTypeEnum.MortgageContract, 1, Request);
