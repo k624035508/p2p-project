@@ -119,13 +119,16 @@ namespace Agp2p.Web.admin.repayment
                 var loaner = r.li_projects.li_risks.li_loaners.dt_users;
                 repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
                 //计算原来的还款计划应还总额
-                var repayInvalid =
-                    r.li_projects.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Invalid).OrderBy(t => t.should_repay_time);//作废的计划
-                repay.Amount = repayInvalid.Sum(t => t.repay_interest + t.repay_principal);//应还款
-                repay.FactAmount = r.repay_interest + r.repay_principal;//实还款
-                repay.DayCount = r.should_repay_time.DayOfYear - repayInvalid.Last().should_repay_time.DayOfYear;//提前天数
-                repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd hh:mm");//应还时间
-                repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd hh:mm") ?? "";//实还时间
+                var repayOld =
+                    r.li_projects.li_repayment_tasks.Where(t => t.project == r.project && t.status != (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid).OrderBy(t => t.should_repay_time);//旧计划
+                repay.Amount = repayOld.Sum(t => t.repay_interest + t.repay_principal);//应还款
+                repay.FactAmount = (r.repay_interest + r.repay_principal) +
+                                   (repayOld.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
+                                       .Sum(t => t.repay_interest + t.repay_principal));//实还款
+                repay.Cost = r.repay_interest;
+                repay.DayCount = (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days;//提前天数
+                repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");//应还时间
+                repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";//实还时间
                 repay.Category = r.li_projects.category_id;
                 repay.ProfitRate = r.li_projects.profit_rate_year;
                 repay.RepaymentType =
@@ -134,14 +137,12 @@ namespace Agp2p.Web.admin.repayment
                 repay.ProjectTitle = r.li_projects.title;
                 repay.ProjectStatus = r.li_projects.status;
                 repay.RepayStatus = r.status;
-                //TODO 逾期罚息计算
-                repay.Cost = 0;
 
                 return repay;
             });
 
             this.TotalCount = repayList.Count();
-            return repayList.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            return repayList.OrderByDescending(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
