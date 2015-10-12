@@ -99,7 +99,35 @@
             <div class="account-balance">
                 <div><span>账户余额 {idle_money} 元</span><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a></div>
                 <input type="text" placeholder="请输入投资金额"/>
-                <button type="button" class="btn-common investing-btn">投 资</button>
+                <button type="button" class="btn-common investing-btn" data-toggle="modal" data-target="#investConfirm">投 资</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
+                <div class="modal-dialog investConfirm-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">确认投资</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-unstyled">
+                                <li><span>项目标题：</span><span>石化供应链系列--XXX公司应收</span></li>
+                                <li><span>年利率：</span><span class="rate">15%</span></li>
+                                <li><span>还款期限：</span><span>1个月</span></li>
+                                <li><span>还款方式：</span><span>先息后本</span></li>
+                                <li><span>投资金额：</span><span>100000.00</span></li>
+                                <li><span>保障方式：</span><span>本金 + 利息</span></li>
+                            </ul>
+                        </div>
+                        <div class="profit-wrap"><span>预期收益：</span><span class="profit">320.00</span></div>
+                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password"/></div>
+                        <div class="agreement"><input type="checkbox"/><span>我已经阅读并同意<a href="#">《投资协议》</a></span></div>
+                        <div class="modal-footer">
+                            <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>
+                            <button type="button" class="confirm-btn">确 认</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <%/if%>
         </div>

@@ -164,6 +164,110 @@ div.tender-content {
 					color: @darker-grey;
 				}
 			}
+			//投资确认弹窗样式
+			.investConfirm-dialog {
+				left: 50%;
+				margin: 192px 0 0 -370px;
+				.titleSpan {
+					display: inline-block;
+					width: 75px;
+					margin-right: 20px;
+					line-height: 40px;
+					text-align: right;
+				}
+				.modal-content {
+					padding: 0 15px;
+					.modal-header {
+						h4 { font-weight: bold; }
+					}
+					.modal-body {
+						ul {
+							font-size: @font15;
+							color: @dark-grey;
+							li {
+								& span:first-child { .titleSpan; }
+								.rate { color: @red; }
+							}
+						}
+					}
+					.profit-wrap {
+						font-size: @font15;
+						color: @dark-grey;
+						padding: 12px 15px;
+						margin-bottom: 25px;
+						border-top: 1px dashed #e5e5e5;
+						border-bottom: 1px dashed #e5e5e5;
+						& span:first-child { .titleSpan; }
+						.profit { color: @red; }
+					}
+					.pswInput {
+						font-size: @font15;
+						color: @dark-grey;
+						i {
+							.inline-block;
+							margin-right: 8px;
+							font-size: @font18;
+							font-weight: bolder;
+							color: @red;
+						}
+						span { .titleSpan; }
+						input {
+							width: 200px;
+							height: 40px;
+							line-height: 40px;
+							border: @border;
+							border-radius: 4px;
+							padding-left: 10px;
+						}
+					}
+					.agreement {
+						font-size: @font13;
+						color: @dark-grey;
+						margin-top: 25px;
+						input {
+							display: inline-block;
+							-webkit-appearance: none;
+							width: 15px;
+							height: 15px;
+							margin: 0 10px 0 18px;
+							border: @border;
+							border-radius: 0;
+							outline: none;
+							&:checked {
+								background: url("../imgs/register/red-tick.png") no-repeat;
+							}
+						}
+						span {
+							color: @grey;
+							a { color: @red; }
+						}
+					}
+					.modal-footer {
+						text-align: center;
+						border-top: 0;
+						padding: 0;
+						margin: 35px auto;
+						button {
+							margin: 0 15px;
+							width: 100px;
+							height: 35px;
+							font-size: @font15;
+							border: none;
+							border-radius: 4px;
+						}
+						.confirm-btn {
+							color: @white;
+							background: @red;
+						}
+						.cancel-btn {
+							color: @dark-grey;
+							background: #e6e6e6;
+						}
+					}
+				}
+
+			}
+
 			.account-balance-unlogin {
 				//未满标 未登录
 				div {
