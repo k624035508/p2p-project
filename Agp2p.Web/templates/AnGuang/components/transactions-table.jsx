@@ -53,8 +53,8 @@ export default class TransactionTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    { this.state.data.map((tr, index) => [
-                        <tr className="detailRow" onClick={this.onDetailRowClick} key={"a" + index}>
+                    { this.state.data.map(tr => [
+                        <tr className="detailRow" onClick={this.onDetailRowClick} key={"a" + tr.id}>
                             <td>{tr.type}</td>
                             <td>{tr.income}</td>
                             <td>{tr.outcome}</td>
@@ -62,7 +62,7 @@ export default class TransactionTable extends React.Component {
                             <td>{tr.createTime}</td>
                             <td>详情 <span className="glyphicon glyphicon-triangle-bottom" data-toggle="glyphicon-triangle-top"></span></td>
                         </tr>,
-                        <tr className="detailMark" key={"b" + index}><td colSpan="6">备注：{tr.remark}</td></tr>]
+                        <tr className="detailMark" key={"b" + tr.id}><td colSpan="6">备注：{tr.remark}</td></tr>]
                     )}
                     </tbody>
                 </table>
