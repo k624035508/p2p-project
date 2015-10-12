@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.project
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_financing_success", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("loan_success", DTEnums.ActionEnum.View.ToString()); //检查权限
                 ShowProjectStatus();
                 TreeBind(); //绑定类别
                 RptBind();

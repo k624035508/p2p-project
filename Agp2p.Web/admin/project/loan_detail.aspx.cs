@@ -27,7 +27,7 @@ namespace Agp2p.Web.admin.project
         //页面初始化事件
         public virtual void Page_Init(object sernder, EventArgs e)
         {
-            ChkAdminLevel("loan_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
+            ChkAdminLevel("loan_audit", DTEnums.ActionEnum.View.ToString()); //检查权限      
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             if (this.ChannelId == 0)
             {
@@ -237,6 +237,7 @@ namespace Agp2p.Web.admin.project
 
         private void PublishProject(li_projects project, bool publishdelay)
         {
+            ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Add.ToString());
             if (!string.IsNullOrEmpty(rblTag.SelectedValue))
                 project.tag = Utils.StrToInt(rblTag.SelectedValue, 0);
             project.status = publishdelay ? (int)Agp2pEnums.ProjectStatusEnum.FinancingAtTime : (int)Agp2pEnums.ProjectStatusEnum.Financing;
@@ -296,6 +297,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
+                    ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Edit.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail;
                     LqContext.SubmitChanges();
                     JscriptMsg("撤销借款成功！",
@@ -325,6 +327,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
+                    ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingFail;
                     //TODO 资金原路退回投资者账户
                     LqContext.ProjectFinancingFail(project.id);
@@ -353,6 +356,7 @@ namespace Agp2p.Web.admin.project
         {
             try
             {
+                ChkAdminLevel("make_loan_audit", DTEnums.ActionEnum.Audit.ToString());
                 //TODO 资金打入借款人账户
                 LqContext.StartRepayment(ProjectId);
                 JscriptMsg("放款操作成功！",

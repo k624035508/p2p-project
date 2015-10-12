@@ -371,7 +371,10 @@ div.usercenter {
 					position: relative;
 					top: 15px;
 				}
-				& > div { width: 670px; }
+				& > div {
+					width: 670px;
+					vertical-align: top;
+				}
 				.ul-withdraw {
 					margin-left: 0;
 					& > li {
@@ -379,13 +382,14 @@ div.usercenter {
 						height: 50px;
 						background-repeat: no-repeat;
 						margin-right: 20px;
+						margin-bottom: 25px;
 						cursor: pointer;
 						vertical-align: top;
 						p {
-							margin: 4px 0 0;
+							margin: 3px 0 0 1px;
 							padding-left: 65px;
 						}
-						.card-num {
+						.card-num span {
 							font-size: @font12;
 							color: @grey;
 						}
