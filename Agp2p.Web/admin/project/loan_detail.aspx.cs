@@ -219,7 +219,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
-                    PublishProject(project, true);
+                    PublishProject(project, false);
                     JscriptMsg("发布借款成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
                             ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));

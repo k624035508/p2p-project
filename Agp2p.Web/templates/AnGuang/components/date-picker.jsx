@@ -1,8 +1,9 @@
 ﻿import React from "react";
 import $ from "jquery";
-import "../less/bootstrap-datetimepicker.css";
-import "../js/bootstrap-datetimepicker.js";
-import "../js/bootstrap-datetimepicker.zh-CN.js";
+
+import "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css"
+import "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js"
+import "bootstrap-datetime-picker/js/locales/bootstrap-datetimepicker.zh-CN.js"
 
 
 export default class DatePicker extends React.Component {

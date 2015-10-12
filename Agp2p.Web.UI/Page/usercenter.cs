@@ -7,6 +7,7 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Linq;
 using System.Net;
+using System.Web.Script.Services;
 using System.Web.Services;
 using Newtonsoft.Json;
 
@@ -80,6 +81,13 @@ namespace Agp2p.Web.UI.Page
         public static string AjaxQueryInvestment(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
             return myinvest.AjaxQueryInvestment(type, pageIndex, pageSize, startTime, endTime);
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryBankAccount()
+        {
+            return withdraw.AjaxQueryBankAccount();
         }
 
         [WebMethod]
