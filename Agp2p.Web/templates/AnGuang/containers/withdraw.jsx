@@ -4,7 +4,24 @@ import $ from "jquery";
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {cards: []};
+	}
+	fetchCards() {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryBankAccount"
+		$.ajax({
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: "",
+            success: function(result) {
+                let data = JSON.parse(result.d);
+                this.setState({cards: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
 	}
 	render() {
 		return (
@@ -12,6 +29,12 @@ export default class WithdrawPage extends React.Component {
 				<div className="withdraw">
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
+				        {this.state.cards.map((c, index) => 
+				            <li className="card zhonghang">
+				                <p className="bank-name">{c.bankName}</p>
+				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
+				            </li>
+			        	)}
 				            <li className="card zhonghang">
 				                <p className="bank-name">中国银行</p>
 				                <p className="card-num">尾号 3444 储蓄卡</p>
@@ -39,6 +62,8 @@ export default class WithdrawPage extends React.Component {
 		);
 	}
 	componentDidMount() {
+		this.fetchCards();
+
 		//提现银行卡选择
         var $card = $(this.refs.root.getDOMNode()).find(".ul-withdraw .card");
 		
