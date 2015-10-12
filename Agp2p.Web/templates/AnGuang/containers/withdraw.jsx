@@ -4,7 +4,10 @@ import $ from "jquery";
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {cards: [], realityWithdraw: 0,
+		this.state = {
+			cards: [],
+			selectedCardIndex: -1,
+			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
 			idleMoney: 0
 		};
@@ -60,33 +63,50 @@ export default class WithdrawPage extends React.Component {
             }.bind(this)
         });
 	}
+	getBankDomClassByName(bankName) {
+		return {
+			"中国银行" : "zhonghang",
+			"中国工商银行" : "gonghang",
+			"中国建设银行" : "jianhang",
+			"中国农业银行" : "nonghang",
+			"招商银行" : "zhaohang",
+			"中国邮政储蓄银行" : "youzheng",
+			"中国光大银行" : "guangda",
+			"中信银行" : "zhongxin",
+			"浦发银行" : "pufa",
+			"中国民生银行" : "minsheng",
+			"广发银行" : "guangfa",
+			"兴业银行" : "xingye",
+			"平安银行" : "pingan",
+			"交通银行" : "jiaohang",
+			"华夏银行" : "huaxia",
+		}[bankName];
+	}
 	doWithdraw(ev) {
 	}
 	render() {
 		return (
-			<div ref="root">
+			<div>
 				<div className="withdraw">
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
 				        {this.state.cards.map((c, index) => 
-				            <li className="card zhonghang" key={index}>
+				            <li className={"card " + this.getBankDomClassByName(c.bankName)} key={index}
+					            onClick={ev => this.setState({selectedCardIndex: index})}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
+				                {this.state.selectedCardIndex == index
+				                	? <img src={TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png"} />
+				                	: null
+				                }
 				            </li>
 			        	)}
-				            <li className="card zhonghang">
-				                <p className="bank-name">中国银行</p>
-				                <p className="card-num">尾号 3444 储蓄卡</p>
-				            </li>
-				            <li className="card jianhang">
-				                <p className="bank-name">中国建设银行</p>
-				                <p className="card-num">尾号 8075 储蓄卡</p>
-				            </li>
-				            <li className="add-card">添加银行卡</li>
+				            <li className="add-card" key="append-card">添加银行卡</li>
 				        </ul>
 				    </div></div>
 				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.state.idleMoney}</div>
-				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span><input type="text" onBlur={this.displayHandlingFee.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
+				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
+				    	<input type="text" onBlur={this.displayHandlingFee.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay} （1-2个工作日内到账，双休日和法定节假日除外）</div>
 				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password"/></div>
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw}>确认提交</a></div>
@@ -103,15 +123,5 @@ export default class WithdrawPage extends React.Component {
 	componentDidMount() {
 		this.fetchUserInfo();
 		this.fetchCards();
-
-		//提现银行卡选择
-        var $card = $(this.refs.root.getDOMNode()).find(".ul-withdraw .card");
-		
-        $card.click(function(){
-            $card.find("img").remove();
-            var img = document.createElement("img");
-            img.src = TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png";
-            this.appendChild(img);
-        });
     }
 }

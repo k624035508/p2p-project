@@ -33,7 +33,7 @@ export default class UserCenterPage extends React.Component {
 		var _this = this, prevFetchTime = 0;
 		window.onfocus = function () { 
 			var fetchAt = new Date().getTime();
-			if (10000 < fetchAt - prevFetchTime) {
+			if (30000 < fetchAt - prevFetchTime) {
 				prevFetchTime = fetchAt;
 				_this.fetchUserInfo();
 			}
