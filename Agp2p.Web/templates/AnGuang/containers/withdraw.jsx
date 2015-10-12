@@ -4,7 +4,10 @@ import $ from "jquery";
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {cards: []};
+		this.state = {cards: [], realityWithdraw: 0,
+			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
+			idleMoney: 0
+		};
 	}
 	fetchCards() {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryBankAccount"
@@ -23,6 +26,42 @@ export default class WithdrawPage extends React.Component {
             }.bind(this)
         });
 	}
+	displayHandlingFee(ev) {
+		var toWithdraw = parseFloat(ev.target.value);
+        $.ajax({
+            type: "get",
+            url: "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw,
+            dataType: "json",
+            timeout: 10000,
+            success: function (data) {
+                var fee = parseFloat(data.handlingFee);
+                this.setState({realityWithdraw: toWithdraw - fee});
+                console.log(data.msg);
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+	}
+	fetchUserInfo() {
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserInfo"
+		$.ajax({
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: "",
+            success: function(result) {
+                let data = JSON.parse(result.d);
+                this.setState(data);
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+	}
+	doWithdraw(ev) {
+	}
 	render() {
 		return (
 			<div ref="root">
@@ -30,7 +69,7 @@ export default class WithdrawPage extends React.Component {
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
 				        {this.state.cards.map((c, index) => 
-				            <li className="card zhonghang">
+				            <li className="card zhonghang" key={index}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
 				            </li>
@@ -46,11 +85,11 @@ export default class WithdrawPage extends React.Component {
 				            <li className="add-card">添加银行卡</li>
 				        </ul>
 				    </div></div>
-				    <div className="balance-withdraw"><span>可用余额：</span>￥0.00</div>
-				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span><input type="text"/><span>实际到账：99.00 元</span></div>
-				    <div className="recorded-date"><span>预计到账日期：</span>2015-09-30 （1-2个工作日内到账，双休日和法定节假日除外）</div>
+				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.state.idleMoney}</div>
+				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span><input type="text" onBlur={this.displayHandlingFee.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
+				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay} （1-2个工作日内到账，双休日和法定节假日除外）</div>
 				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password"/></div>
-				    <div className="withdrawBtn"><a href="#">确认提交</a></div>
+				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw}>确认提交</a></div>
 				</div>
 				<div className="bank-chose-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
@@ -62,6 +101,7 @@ export default class WithdrawPage extends React.Component {
 		);
 	}
 	componentDidMount() {
+		this.fetchUserInfo();
 		this.fetchCards();
 
 		//提现银行卡选择

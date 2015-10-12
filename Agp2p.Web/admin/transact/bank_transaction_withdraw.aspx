@@ -22,7 +22,7 @@
                 withdrawVal.val(idleMoney.text());
             }
             $.getJSON('../../tools/calc_stand_guard_fee.ashx?user_id=' + <%=userId %> + '&withdraw_value=' + withdrawVal.val(), function(data) {
-                feeHint.text(data.fee);
+                feeHint.text(data.msg);
                 feeHint.show();
             });
         } else {
