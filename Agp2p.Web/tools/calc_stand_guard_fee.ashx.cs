@@ -8,15 +8,16 @@ using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
+using Agp2p.Web.UI;
+using Newtonsoft.Json;
 
 namespace Agp2p.Web.tools
 {
     /// <summary>
     /// calc_stand_guard_fee 的摘要说明
     /// </summary>
-    public class calc_stand_guard_fee : IHttpHandler
+    public class calc_stand_guard_fee : IHttpHandler, IRequiresSessionState
     {
-        Agp2pDataContext context = new Agp2pDataContext();
 
         public void ProcessRequest(HttpContext httpContext)
         {
@@ -26,13 +27,24 @@ namespace Agp2p.Web.tools
             CalcStandGuardFee((statusCode, handlingFee, msg) =>
             {
                 httpContext.Response.StatusCode = statusCode;
-                httpContext.Response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(new {fee = msg, value = handlingFee}));
+                httpContext.Response.Write(JsonConvert.SerializeObject(new {msg, handlingFee}));
             });
         }
 
         protected void CalcStandGuardFee(Action<int, decimal, string> callback)
         {
             var userId = DTRequest.GetQueryInt("user_id");
+            if (userId == 0)
+            {
+                var userInfo = BasePage.GetUserInfo();
+                if (userInfo == null)
+                {
+                    callback((int)HttpStatusCode.Unauthorized, 0, "请先登录");
+                    return;
+                }
+                userId = userInfo.id;
+            }
+
             var withdrawValue = DTRequest.GetQueryDecimal("withdraw_value", 0);
 
             if (withdrawValue <= 0)
@@ -42,7 +54,7 @@ namespace Agp2p.Web.tools
             }
             try
             {
-                var standGuardFee = context.CalcStandGuardFee(userId, Convert.ToDecimal(withdrawValue));
+                var standGuardFee = new Agp2pDataContext().CalcStandGuardFee(userId, Convert.ToDecimal(withdrawValue));
                 if (standGuardFee == 0)
                 {
                     callback((int)HttpStatusCode.OK, TransactionFacade.DefaultHandlingFee, "提现手续费 " + TransactionFacade.DefaultHandlingFee.ToString("c"));

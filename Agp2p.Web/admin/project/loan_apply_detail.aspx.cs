@@ -23,7 +23,7 @@ namespace Agp2p.Web.admin.project
         //页面初始化事件
         public virtual void Page_Init(object sernder, EventArgs e)
         {
-            ChkAdminLevel("loan_apply_detail", DTEnums.ActionEnum.View.ToString()); //检查权限      
+            ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString()); //检查权限      
             this.channel_id = DTRequest.GetQueryInt("channel_id");
             if (this.channel_id == 0)
             {
@@ -325,7 +325,7 @@ namespace Agp2p.Web.admin.project
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
-                ChkAdminLevel("loan_apply_detail", DTEnums.ActionEnum.Edit.ToString()); //检查权限
+                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Edit.ToString()); //检查权限
                 if (!DoEdit(this.project_id))
                 {
                     JscriptMsg("保存过程中发生错误啦！", "", "Error");
@@ -335,7 +335,7 @@ namespace Agp2p.Web.admin.project
             }
             else //添加
             {
-                ChkAdminLevel("loan_apply_detail", DTEnums.ActionEnum.Add.ToString()); //检查权限
+                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Add.ToString()); //检查权限
                 if (!DoAdd())
                 {
                     JscriptMsg("保存过程中发生错误啦！", "", "Error");

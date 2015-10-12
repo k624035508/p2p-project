@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.loaner
             }
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("organization_manage", DTEnums.ActionEnum.View.ToString()); //检查权限
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
                 {
                     ShowInfo(id);
@@ -190,7 +190,7 @@ namespace Agp2p.Web.admin.loaner
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
-                ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.Edit.ToString()); //检查权限
+                ChkAdminLevel("organization_manage", DTEnums.ActionEnum.Edit.ToString()); //检查权限
                 if (!DoEdit(id))
                 {
                     JscriptMsg("保存过程中发生错误！", "", "Error");
@@ -200,7 +200,7 @@ namespace Agp2p.Web.admin.loaner
             }
             else //添加
             {
-                ChkAdminLevel("loan_guarantor", DTEnums.ActionEnum.Add.ToString()); //检查权限
+                ChkAdminLevel("organization_manage", DTEnums.ActionEnum.Add.ToString()); //检查权限
                 if (!DoAdd())
                 {
                     JscriptMsg("保存过程中发生错误！", "", "Error");

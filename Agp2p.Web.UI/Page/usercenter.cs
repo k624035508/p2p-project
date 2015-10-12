@@ -22,10 +22,9 @@ namespace Agp2p.Web.UI.Page
         protected int total_order;
         protected int total_msg;
 
-        protected li_wallets wallet;//用户钱包
-
         protected string GetTotalMoney()
         {
+            var wallet = userModel.li_wallets;
             var total = wallet.idle_money + wallet.investing_money + wallet.locked_money + wallet.profiting_money;
             return 1e6m < total ? Math.Floor(total).ToString("N0") : total.ToString("N2");
         }
@@ -65,10 +64,23 @@ namespace Agp2p.Web.UI.Page
                 //自动登录,跳转URL
                 HttpContext.Current.Response.Redirect(linkurl("login"));
             }
+        }
 
-            //查询用户钱包
-            var context = new Linq2SQL.Agp2pDataContext();
-            wallet = context.li_wallets.FirstOrDefault(w => w.user_id == userModel.id);
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryUserInfo()
+        {
+            var userInfo = GetUserInfoByLinq();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var wallet = userInfo.li_wallets;
+            var totalMoney = wallet.idle_money + wallet.investing_money + wallet.locked_money + wallet.profiting_money; // TODO 大于 1e6m 时不显示小数
+            return JsonConvert.SerializeObject(new {totalMoney, idleMoney = wallet.idle_money, lockedMoney = wallet.locked_money});
         }
 
         [WebMethod]
