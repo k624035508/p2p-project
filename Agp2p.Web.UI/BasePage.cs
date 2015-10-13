@@ -208,7 +208,7 @@ namespace Agp2p.Web.UI
             return null;
         }
 
-        public static dt_users GetUserInfoByLinq()
+        public static dt_users GetUserInfoByLinq(Agp2pDataContext context = null)
         {
             if (IsUserLogin())
             {
@@ -216,7 +216,11 @@ namespace Agp2p.Web.UI
                 if (model != null)
                 {
                     //为了能查询到最新的用户信息，必须查询最新的用户资料
-                    return new Agp2pDataContext().dt_users.SingleOrDefault(u => u.id == model.id);
+                    if (context == null)
+                    {
+                        context = new Agp2pDataContext();
+                    }
+                    return context.dt_users.SingleOrDefault(u => u.id == model.id);
                 }
             }
             return null;

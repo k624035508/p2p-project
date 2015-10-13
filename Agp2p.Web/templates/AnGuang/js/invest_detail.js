@@ -28,6 +28,70 @@ $(function () {
         animationTime     : 600,
     });
 
-    //点击投资按后钮触发弹窗
+    var $displayField = $("#investAmount");
+    if ($displayField.length != 0) {
+        var $investAmountInput = $("#investAmount-input");
+        $investAmountInput.blur(function () {
+            $displayField.text($(this).val() + " 元");
+        });
 
+        // 打开投资对话框
+        var $investBtn = $("button.investing-btn");
+        $investBtn.click(function () {
+            var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
+            if (!hasPayPassword) {
+                alert("请到安全中心设置交易密码");
+                return;
+            }
+            var investAmount = parseFloat($investAmountInput.val());
+            if (investAmount < 100) {
+                alert("对不起，最少100元起投");
+                return;
+            }
+            if (investAmount != ~~investAmount) {
+                alert("对不起，请输入整数金额");
+                return;
+            }
+            if (parseFloat($(this).data()["idleMoney"]) < investAmount) {
+                alert("余额不足，请先充值");
+                return;
+            }
+
+            // 计算预期收益
+            var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
+            $("span.profit").text(profit.toFixed(2) + " 元");
+            $("#investConfirm").modal();
+        });
+
+        // 进行投资操作
+        $("button.confirm-btn").click(function () {
+        	var transactPassword = $("div.pswInput input[type=password]").val();
+        	if (transactPassword == "") {
+        		alert("请先填写支付密码");
+        		return;
+        	}
+        	if (!$("div.agreement input[type=checkbox]")[0].checked) {
+        		alert("请先同意投资协议");
+        		return;
+        	}
+            var investAmount = parseFloat($investAmountInput.val());
+        	$.ajax({
+        		type: "post",
+        		dataType: "json",
+        		url: "/tools/submit_ajax.ashx?action=invest_project",
+        		data: {investingAmount: investAmount, projectId: $investBtn.data()["projectId"], transactPassword: transactPassword},
+        		timeout: 10000,
+        		success: function(result) {
+        			alert(result.msg);
+        			if (result.status == 1) {
+        				location.reload();
+        			}
+        		}.bind(this),
+        		error: function(xhr, status, err) {
+        			alert("操作失败，请重试");
+        			console.error(url, status, err.toString());
+        		}.bind(this)
+        	});
+        });
+    };
 });
