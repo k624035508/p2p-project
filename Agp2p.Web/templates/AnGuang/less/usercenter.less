@@ -423,6 +423,59 @@ div.usercenter {
 						background: url("@{withdraw}/add.png");
 					}
 				}
+				#addCards {
+					top: 100px;
+					.modal-content {
+						width: 600px;
+						padding: 0 25px;
+						.modal-header {
+							h4 { font-weight: bold; }
+						}
+						.modal-body {
+							ul {
+								li {
+									margin: 16px 0;
+									& span:first-child {
+										.inline-block;
+										width: 105px;
+										text-align: right;
+										margin-right: 20px;
+										font-size: @font15;
+										color: @dark-grey;
+									}
+									#bankSelect, input {
+										width: 200px;
+										height: 40px;
+										line-height: 40px;
+										padding-left: 10px;
+										border: @border;
+										border-radius: 4px;
+										option { margin: 8px 0; }
+									}
+									.selectDist {
+										display: inline-block;
+										.form-control {
+											display: inline-block;
+											width: 120px;
+											margin-right: 10px;
+											padding: 6px 8px;
+										}
+									}
+								}
+							}
+							button {
+								width: 100px;
+								height: 35px;
+								margin: 20px 0 30px 125px;
+								color: @white;
+								font-size: @font15;
+								border: none;
+								border-radius: 4px;
+								background: @red;
+							}
+						}
+					}
+				}
 			}
 		}
 

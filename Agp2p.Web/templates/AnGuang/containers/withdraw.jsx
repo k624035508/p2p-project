@@ -1,5 +1,6 @@
 import React from "react";
 import $ from "jquery";
+import "../js/jquery.cityselect.js";
 
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
@@ -101,8 +102,58 @@ export default class WithdrawPage extends React.Component {
 				                }
 				            </li>
 			        	)}
-				            <li className="add-card" key="append-card">添加银行卡</li>
+				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        </ul>
+						{/*添加银行卡弹窗*/}
+						<div className="modal fade" id="addCards" tabindex="-1" role="dialog" aria-labelledby="addCardsLabel">
+							<div className="modal-dialog" role="document">
+								<div className="modal-content">
+									<div className="modal-header">
+										<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 className="modal-title" id="addCardsLabel">新增银行卡</h4>
+									</div>
+									<div className="modal-body">
+										<ul className="list-unstyled">
+											<li><span>开户名：</span><span>*嘉敏</span></li>
+											<li><span>选择银行：</span><select id="bankSelect">
+												<option value="">中国银行</option>
+												<option value="">中国工商银行</option>
+												<option value="">中国建设银行</option>
+												<option value="">中国农业银行</option>
+												<option value="">招商银行</option>
+												<option value="">中国邮政储蓄银行</option>
+												<option value="">中国光大银行</option>
+												<option value="">中国民生银行</option>
+												<option value="">中信银行</option>
+												<option value="">广发银行</option>
+												<option value="">浦发银行</option>
+												<option value="">兴业银行</option>
+												<option value="">平安银行</option>
+												<option value="">交通银行</option>
+												<option value="">华夏银行</option>
+												</select></li>
+											<li><span>开户行所在地：</span>
+													<div className="selectDist">
+														<select className="form-control prov" id="province" name="province">
+															<option value="">请选择省份</option>
+														</select>
+														<select className="form-control city" id="province" name="city">
+															<option value="">请先选择市</option>
+														</select>
+														<select className="form-control dist" id="province" name="area">
+															<option value="">请先选择区</option>
+														</select>
+													</div>
+												</li>
+											<li><span>开户行名称：</span><input type="text"/></li>
+											<li><span>银行卡号：</span><input type="text"/></li>
+											<li><span>确认卡号：</span><input type="text"/></li>
+										</ul>
+										<button type="button">提 交</button>
+									</div>
+								</div>
+							</div>
+						</div>
 				    </div></div>
 				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.state.idleMoney}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
