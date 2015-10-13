@@ -358,9 +358,7 @@ namespace Agp2p.Core
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int)Agp2pEnums.ProjectStatusEnum.Financing)
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
-            project.status = (int) (project.investment_amount < project.financing_amount
-                ? Agp2pEnums.ProjectStatusEnum.FinancingTimeout
-                : Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
+            project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
             if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
             {
