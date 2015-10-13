@@ -42,16 +42,16 @@ export default class InvestRecordTable extends React.Component {
                         <th>项目名称</th>
                         <th>年利率</th>
                         <th>期限</th>
-                        <th>投资金额</th>
-                        <th>利息</th>
+                        <th>投资金额（元）</th>
+                        <th>利息（元）</th>
                         <th>状态</th>
                         <th>投资日期</th>
                         <th>投标协议</th>
                     </tr>
                     </thead>
                     <tbody>
-                    { this.state.data.map((tr, index) =>
-                        <tr className="detailRow" key={index}>
+                    { this.state.data.map(tr =>
+                        <tr className="detailRow" key={tr.ptrId}>
                             <td>{tr.projectName}</td>
                             <td>{tr.projectProfitRateYearly}%</td>
                             <td>{tr.term}</td>

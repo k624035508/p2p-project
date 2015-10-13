@@ -137,7 +137,7 @@ namespace Agp2p.Web.UI.Page
                 type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) h.action_type),
                 income = QueryTransactionIncome(h),
                 outcome = QueryTransactionOutcome(h),
-                idleMoney = h.idle_money.ToString("c"),
+                idleMoney = h.idle_money,
                 createTime = h.create_time.ToString("yyyy/MM/dd HH:mm"),
                 remark = QueryRemark(h)
             });

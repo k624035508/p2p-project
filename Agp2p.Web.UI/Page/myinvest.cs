@@ -99,12 +99,13 @@ namespace Agp2p.Web.UI.Page
                     : Math.Round(proj.profit_rate * ptr.principal, 2);
                 return new
                 {
+                    ptrId = ptr.id,
                     projectName = proj.title,
                     projectProfitRateYearly = proj.profit_rate_year,
                     term = proj.repayment_term_span + proj.GetProjectTermSpanEnumDesc(),
                     investTime = ptr.create_time.ToString("yyyy-MM-dd HH:mm"),
-                    investValue = ptr.principal.ToString("c"),
-                    profit = profit.ToString("c"),
+                    investValue = ptr.principal,
+                    profit,
                     status = proj.GetProjectStatusDesc(),
                 };
             });

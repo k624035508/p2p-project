@@ -45,9 +45,9 @@ export default class TransactionTable extends React.Component {
                     <thead>
                     <tr>
                         <th>交易类型</th>
-                        <th>收入(元)</th>
-                        <th>支出(元)</th>
-                        <th>余额(元)</th>
+                        <th>收入（元）</th>
+                        <th>支出（元）</th>
+                        <th>余额（元）</th>
                         <th>时间</th>
                         <th>操作</th>
                     </tr>
