@@ -361,7 +361,7 @@
                                 </td>
                                 <td><%# Eval("name")%></td>
                                 <td><%# Eval("typeName")%></td>
-                                <td><%# Eval("valuation")%></td>
+                                <td><%#string.Format("{0:c}", Eval("valuation"))%></td>
                                 <td title="<%# Loan.QueryUsingProject(((Agp2p.BLL.loan.MortgageItem) Container.DataItem).id)%>"><%# Utils.GetAgp2pEnumDes((Agp2pEnums.MortgageStatusEnum)Convert.ToByte(Eval("status")))%></td>
                             </tr>
                         </ItemTemplate>
@@ -425,6 +425,15 @@
                     <span class="Validform_checktip"></span>
                 </dd>
             </dl>--%>
+            <dl>
+                <dt>担保机构</dt>
+                <dd>
+                    <div class="rule-single-select">
+                        <asp:DropDownList ID="ddl_guarantor" runat="server" sucmsg=" " >
+                        </asp:DropDownList>
+                    </div>
+                </dd>
+            </dl>
             <dl>
                 <dt>风控描述</dt>
                 <dd>

@@ -173,8 +173,7 @@ namespace Agp2p.Web.admin.project
                 sp_company_setup_time.InnerText = loaner.li_loaner_companies.setup_time.ToString("yyyy年MM月dd日");
             }
 
-            var allMortgages = Loan.LoadMortgageList(loaner.id, riskId);
-            rptList.DataSource = allMortgages;
+            rptList.DataSource = Loan.LoadMortgageList(loaner.id, riskId);
             rptList.DataBind();
         }
 
