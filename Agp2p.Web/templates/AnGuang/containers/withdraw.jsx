@@ -1,6 +1,5 @@
 import React from "react";
 import $ from "jquery";
-import "../js/jquery.cityselect.js";
 
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
