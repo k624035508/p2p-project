@@ -753,6 +753,7 @@
     <Content Include="templates\AnGuang\containers\invest-record.jsx" />
     <Content Include="templates\AnGuang\components\pagination.jsx" />
     <Content Include="templates\AnGuang\components\investRecord-table.jsx" />
+    <Content Include="templates\AnGuang\components\city-picker.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

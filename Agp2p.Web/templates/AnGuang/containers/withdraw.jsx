@@ -1,5 +1,6 @@
 import React from "react";
 import $ from "jquery";
+import CityPicker from "../components/city-picker.jsx"
 
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
@@ -115,6 +116,7 @@ export default class WithdrawPage extends React.Component {
 										<ul className="list-unstyled">
 											<li><span>开户名：</span><span>*嘉敏</span></li>
 											<li><span>选择银行：</span><select id="bankSelect">
+												<option value="">请选择银行</option>
 												<option value="">中国银行</option>
 												<option value="">中国工商银行</option>
 												<option value="">中国建设银行</option>
@@ -132,17 +134,7 @@ export default class WithdrawPage extends React.Component {
 												<option value="">华夏银行</option>
 												</select></li>
 											<li><span>开户行所在地：</span>
-													<div className="selectDist">
-														<select className="form-control prov" id="province" name="province">
-															<option value="">请选择省份</option>
-														</select>
-														<select className="form-control city" id="province" name="city">
-															<option value="">请先选择市</option>
-														</select>
-														<select className="form-control dist" id="province" name="area">
-															<option value="">请先选择区</option>
-														</select>
-													</div>
+													<CityPicker   />
 												</li>
 											<li><span>开户行名称：</span><input type="text"/></li>
 											<li><span>银行卡号：</span><input type="text"/></li>
