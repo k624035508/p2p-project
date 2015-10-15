@@ -644,6 +644,7 @@ namespace Agp2p.Core
             if (pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
             }
