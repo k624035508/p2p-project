@@ -369,7 +369,7 @@ namespace Agp2p.Core
                 return project;
             }
 
-            // 项目完成时间应该等于最后一个人的投资时间
+            // 项目投资完成时间应该等于最后一个人的投资时间
             var lastInvestment =
                 project.li_project_transactions.LastOrDefault(
                     tr =>

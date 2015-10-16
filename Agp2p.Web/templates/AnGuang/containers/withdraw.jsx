@@ -10,7 +10,8 @@ export default class WithdrawPage extends React.Component {
 			selectedCardIndex: -1,
 			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
-			idleMoney: 0
+			idleMoney: 0,
+			selectedLocation: []
 		};
 	}
 	fetchCards() {
@@ -105,7 +106,7 @@ export default class WithdrawPage extends React.Component {
 				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        </ul>
 						{/*添加银行卡弹窗*/}
-						<div className="modal fade" id="addCards" tabindex="-1" role="dialog" aria-labelledby="addCardsLabel">
+						<div className="modal fade" id="addCards" tabIndex="-1" role="dialog" aria-labelledby="addCardsLabel">
 							<div className="modal-dialog" role="document">
 								<div className="modal-content">
 									<div className="modal-header">
@@ -134,7 +135,7 @@ export default class WithdrawPage extends React.Component {
 												<option value="">华夏银行</option>
 												</select></li>
 											<li><span>开户行所在地：</span>
-													<CityPicker   />
+													<CityPicker onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})} />
 												</li>
 											<li><span>开户行名称：</span><input type="text"/></li>
 											<li><span>银行卡号：</span><input type="text"/></li>
