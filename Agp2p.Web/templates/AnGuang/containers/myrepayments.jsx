@@ -2,19 +2,19 @@
 
 import HorizontalPicker from "../components/horizontal-picker.jsx"
 import DatePicker from "../components/date-picker.jsx"
-import Table from "../components/investRecord-table.jsx"
+import Table from "../components/repayments-table.jsx"
 import Pagination from "../components/pagination.jsx"
 
 export default class MyTransaction extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {type: 0, startTime: "", endTime: "", pageIndex: 0, onPageLoaded: pageCount => this.setState({pageCount: pageCount})};
+        this.state = {type: 1, startTime: "", endTime: "", pageIndex: 0, onPageLoaded: pageCount => this.setState({pageCount: pageCount})};
     }
     render() {
         return (
             <div>
                 <div className="controls">
-                    <HorizontalPicker onTypeChange={newType => this.setState({type: newType}) } enumFullName="Agp2p.Common.Agp2pEnums+MyInvestRadioBtnTypeEnum" />
+                    <HorizontalPicker onTypeChange={newType => this.setState({type: newType}) } enumFullName="Agp2p.Common.Agp2pEnums+MyRepaymentQueryTypeEnum" />
                     <DatePicker onStartTimeChange={newStartTime => this.setState({startTime: newStartTime})} onEndTimeChange={newEndTime => this.setState({endTime: newEndTime})}/>
                     <div style={{clear: "both"}}></div>
                 </div>

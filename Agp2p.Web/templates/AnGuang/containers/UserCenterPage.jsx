@@ -81,7 +81,7 @@ export default class UserCenterPage extends React.Component {
 			                <ul className="list-unstyled inner-ul">
 			                    <li><a href="#">我的投资</a></li>
 			                    <li><Link to="/invest-record" activeClassName="active-link">投资记录</Link></li>
-			                    <li><a href="#">回款计划</a></li>
+			                    <li><Link to="/myrepayments" activeClassName="active-link">回款计划</Link></li>
 			                </ul>
 			            </li>
 			            <li><a className="account">账户管理</a>

@@ -11,6 +11,7 @@ import MyTransaction from "../containers/mytransaction.jsx"
 import RechargePage from "../containers/recharge.jsx"
 import WithdrawPage from "../containers/withdraw.jsx"
 import InvestRecordPage from "../containers/invest-record.jsx"
+import MyRepaymentsPage from "../containers/myrepayments.jsx"
 
 import { setHeaderHighlight } from "./header.js"
 
@@ -23,6 +24,7 @@ $(function(){
 		    	<Route path="recharge" component={RechargePage}/>
 		    	<Route path="withdraw" component={WithdrawPage}/>
 		    	<Route path="invest-record" component={InvestRecordPage}/>
+		    	<Route path="myrepayments" component={MyRepaymentsPage}/>
 	    	</Route>
     	</Router>
 	), document.getElementById("app"));

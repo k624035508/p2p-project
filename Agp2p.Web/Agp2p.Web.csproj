@@ -704,6 +704,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
+    <Content Include="templates\AnGuang\js\city.min.js" />
     <Content Include="templates\AnGuang\js\es5-sham.min.js" />
     <Content Include="templates\AnGuang\js\es5-shim.min.js" />
     <Content Include="templates\AnGuang\js\header.js" />
@@ -754,6 +755,9 @@
     <Content Include="templates\AnGuang\components\pagination.jsx" />
     <Content Include="templates\AnGuang\components\investRecord-table.jsx" />
     <Content Include="templates\AnGuang\components\city-picker.jsx" />
+    <Content Include="templates\AnGuang\js\bank-list.jsx" />
+    <Content Include="templates\AnGuang\containers\myrepayments.jsx" />
+    <Content Include="templates\AnGuang\components\repayments-table.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
