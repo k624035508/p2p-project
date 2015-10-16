@@ -103,6 +103,28 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
+        public static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
+        {
+            return mycard.AjaxAppendCard(cardNumber, bankName, bankLocation, openingBank);
+        }
+
+        [WebMethod]
+        public static string AjaxQueryRepayments(short type, short pageSize, short pageIndex, string startTime="", string endTime="")
+        {
+            var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo.id, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
+            var repayments = myRepayments.Skip(pageSize * pageIndex).Take(pageSize);
+            return JsonConvert.SerializeObject(new {totalCount = myRepayments.Count, data = repayments});
+        }
+
+        [WebMethod]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {
             var userInfo = GetUserInfo();

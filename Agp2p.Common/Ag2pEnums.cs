@@ -509,6 +509,17 @@ namespace Agp2p.Common
         }
 
         /// <summary>
+        /// 回款计划查询状态枚举
+        /// </summary>
+        public enum MyRepaymentQueryTypeEnum
+        {
+            [Description("未还款")]
+            Unpaid = 1,
+            [Description("已还款")]
+            Paid = 2,
+        }
+
+        /// <summary>
         /// 连连支付银行代码枚举
         /// </summary>
         public enum LianlianpayBankCodeEnum

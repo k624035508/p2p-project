@@ -1,6 +1,80 @@
 import React from "react";
 import $ from "jquery";
 import CityPicker from "../components/city-picker.jsx"
+import bank from "../js/bank-list.jsx"
+
+class AppendingCardDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			bank: "",
+			selectedLocation: [],
+			openingBank: "",
+			cardNumber: "",
+			cardNumber2: ""
+		};
+	}
+	doAppendCard() {
+		if (this.state.cardNumber2 == "") {
+			alert("两次输入的卡号不一致");
+			return;
+		}
+		let url = USER_CENTER_ASPX_PATH + "/AjaxAppendCard";
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({cardNumber: this.state.cardNumber, bankName: this.state.bank,
+            	bankLocation: this.state.selectedLocation.join(";"), openingBank: this.state.openingBank}),
+            success: function (data) {
+                alert(data.d);
+                this.props.onAppendSuccess();
+            }.bind(this),
+            error: function (xhr, status, err) {
+            	alert(xhr.responseJSON);
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+        $(this.refs.dialog.getDOMNode()).modal("hide");
+	}
+	render() {
+		return (
+			<div className="modal fade" id="addCards" tabIndex="-1" role="dialog" aria-labelledby="addCardsLabel" ref="dialog">
+				<div className="modal-dialog" role="document">
+					<div className="modal-content">
+						<div className="modal-header">
+							<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 className="modal-title" id="addCardsLabel">新增银行卡</h4>
+						</div>
+						<div className="modal-body">
+							<ul className="list-unstyled">
+								<li><span>开户名：</span><span>（实名认证后的姓名）</span></li>
+								<li><span>选择银行：</span><select id="bankSelect" onChange={ev => this.setState({bank: ev.target.value})}>
+									<option value="">请选择银行</option>
+									{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
+									</select></li>
+								<li><span>开户行所在地：</span>
+										<CityPicker onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})} />
+									</li>
+								<li><span>开户行名称：</span><input type="text" onBlur={ev => this.setState({openingBank: ev.target.value})} /></li>
+								<li><span>银行卡号：</span><input type="text" onBlur={ev => this.setState({cardNumber: ev.target.value})} /></li>
+								<li><span>确认卡号：</span><input type="text" onBlur={ev => {
+									if (ev.target.value != this.state.cardNumber) {
+										alert("两次输入的卡号不一致");
+										ev.target.value = "";
+									}
+									this.setState({cardNumber2: ev.target.value});
+								}} /></li>
+							</ul>
+							<button type="button" onClick={this.doAppendCard.bind(this)}>提 交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
 
 export default class WithdrawPage extends React.Component {
 	constructor(props) {
@@ -8,9 +82,11 @@ export default class WithdrawPage extends React.Component {
 		this.state = {
 			cards: [],
 			selectedCardIndex: -1,
+			toWithdraw: 0,
 			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
-			idleMoney: 0
+			idleMoney: 0,
+			transactPassword: ""
 		};
 	}
 	fetchCards() {
@@ -30,11 +106,14 @@ export default class WithdrawPage extends React.Component {
             }.bind(this)
         });
 	}
-	displayHandlingFee(ev) {
-		var toWithdraw = parseFloat(ev.target.value);
+	onWithdrawAmountSetted(ev) {
+		var toWithdraw = parseFloat(ev.target.value) || 0;
+		this.setState({toWithdraw: toWithdraw});
+
+		var url = "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw;
         $.ajax({
             type: "get",
-            url: "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw,
+            url: url,
             dataType: "json",
             timeout: 10000,
             success: function (data) {
@@ -64,27 +143,32 @@ export default class WithdrawPage extends React.Component {
             }.bind(this)
         });
 	}
-	getBankDomClassByName(bankName) {
-		return {
-			"中国银行" : "zhonghang",
-			"中国工商银行" : "gonghang",
-			"中国建设银行" : "jianhang",
-			"中国农业银行" : "nonghang",
-			"招商银行" : "zhaohang",
-			"中国邮政储蓄银行" : "youzheng",
-			"中国光大银行" : "guangda",
-			"中信银行" : "zhongxin",
-			"浦发银行" : "pufa",
-			"中国民生银行" : "minsheng",
-			"广发银行" : "guangfa",
-			"兴业银行" : "xingye",
-			"平安银行" : "pingan",
-			"交通银行" : "jiaohang",
-			"华夏银行" : "huaxia",
-		}[bankName];
-	}
 	doWithdraw(ev) {
+		if (this.state.selectedCardIndex == -1) {
+			alert("请先选择银行卡");
+			return;
+		}
+		if (this.state.toWithdraw <= 0) {
+			alert("请填写正确的提现金额");
+			return;
+		}
+		$.post("/tools/submit_ajax.ashx?action=withdraw", {
+			cardId: this.state.cards[this.state.selectedCardIndex].accountId,
+			howmany: this.state.toWithdraw,
+			transactPassword: this.state.transactPassword
+		}, function(data) {
+			alert(data.msg);
+			if (data.status == 1) {
+				location.reload();
+			}
+		}, "json").fail(function() {
+			alert("提交失败，请重试");
+		});
 	}
+	componentDidMount() {
+		this.fetchUserInfo();
+		this.fetchCards();
+    }
 	render() {
 		return (
 			<div>
@@ -92,7 +176,7 @@ export default class WithdrawPage extends React.Component {
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
 				        {this.state.cards.map((c, index) => 
-				            <li className={"card " + this.getBankDomClassByName(c.bankName)} key={index}
+				            <li className={"card " + bank.classMapping[c.bankName]} key={index}
 					            onClick={ev => this.setState({selectedCardIndex: index})}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
@@ -104,54 +188,14 @@ export default class WithdrawPage extends React.Component {
 			        	)}
 				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        </ul>
-						{/*添加银行卡弹窗*/}
-						<div className="modal fade" id="addCards" tabindex="-1" role="dialog" aria-labelledby="addCardsLabel">
-							<div className="modal-dialog" role="document">
-								<div className="modal-content">
-									<div className="modal-header">
-										<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										<h4 className="modal-title" id="addCardsLabel">新增银行卡</h4>
-									</div>
-									<div className="modal-body">
-										<ul className="list-unstyled">
-											<li><span>开户名：</span><span>*嘉敏</span></li>
-											<li><span>选择银行：</span><select id="bankSelect">
-												<option value="">请选择银行</option>
-												<option value="">中国银行</option>
-												<option value="">中国工商银行</option>
-												<option value="">中国建设银行</option>
-												<option value="">中国农业银行</option>
-												<option value="">招商银行</option>
-												<option value="">中国邮政储蓄银行</option>
-												<option value="">中国光大银行</option>
-												<option value="">中国民生银行</option>
-												<option value="">中信银行</option>
-												<option value="">广发银行</option>
-												<option value="">浦发银行</option>
-												<option value="">兴业银行</option>
-												<option value="">平安银行</option>
-												<option value="">交通银行</option>
-												<option value="">华夏银行</option>
-												</select></li>
-											<li><span>开户行所在地：</span>
-													<CityPicker   />
-												</li>
-											<li><span>开户行名称：</span><input type="text"/></li>
-											<li><span>银行卡号：</span><input type="text"/></li>
-											<li><span>确认卡号：</span><input type="text"/></li>
-										</ul>
-										<button type="button">提 交</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						<AppendingCardDialog onAppendSuccess={this.fetchCards} />
 				    </div></div>
 				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.state.idleMoney}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
-				    	<input type="text" onBlur={this.displayHandlingFee.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
+				    	<input type="text" onBlur={this.onWithdrawAmountSetted.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay} （1-2个工作日内到账，双休日和法定节假日除外）</div>
-				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password"/></div>
-				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw}>确认提交</a></div>
+				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password" onBlur={ev => this.setState({transactPassword: ev.target.value})}/></div>
+				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
 				</div>
 				<div className="bank-chose-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
@@ -162,8 +206,4 @@ export default class WithdrawPage extends React.Component {
 			</div>
 		);
 	}
-	componentDidMount() {
-		this.fetchUserInfo();
-		this.fetchCards();
-    }
 }
