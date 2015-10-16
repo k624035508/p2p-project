@@ -6,7 +6,6 @@ export default class HorizontalPicker extends React.Component {
         super(props);
         this.state = {options: [], type: -1};
     }
-
     componentDidMount() {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryEnumInfo";
         $.ajax({

@@ -103,6 +103,12 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
+        public static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
+        {
+            return mycard.AjaxAppendCard(cardNumber, bankName, bankLocation, openingBank);
+        }
+
+        [WebMethod]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {
             var userInfo = GetUserInfo();

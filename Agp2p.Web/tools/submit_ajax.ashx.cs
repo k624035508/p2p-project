@@ -139,8 +139,8 @@ namespace Agp2p.Web.tools
                 case "add_bank_card":   //新增银行卡
                     add_bank_card(context);
                     break;
-                case "witdh_draw":   //客户提现
-                    witdh_draw(context);
+                case "withdraw":   //客户提现
+                    withdraw(context);
                     break;
                 case "user_bank_card_delete": //删除客户银行卡
                     user_bank_card_delete(context);
@@ -2272,7 +2272,7 @@ namespace Agp2p.Web.tools
         /// 客户提现
         /// </summary>
         /// <param name="context"></param>
-        private void witdh_draw(HttpContext context)
+        private void withdraw(HttpContext context)
         {            
             var user = BasePage.GetUserInfoByLinq();
             if (string.IsNullOrEmpty(user.pay_password))
@@ -2293,10 +2293,9 @@ namespace Agp2p.Web.tools
             
             try
             {
-                var linq_context = new Agp2pDataContext();
-                int cardId = DTRequest.GetFormInt("card_id", 0);
-                decimal howmany = DTRequest.GetFormDecimal("howmany", 0);
-                string pw = DTRequest.GetFormString("txtPassword");
+                var cardId = DTRequest.GetFormInt("cardId", 0);
+                var howmany = DTRequest.GetFormDecimal("howmany", 0);
+                var pw = DTRequest.GetFormString("transactPassword");
 
                 if (cardId <= 0)
                 {
@@ -2319,7 +2318,7 @@ namespace Agp2p.Web.tools
                     return;
                 }
                     
-                linq_context.Withdraw(cardId, howmany);
+                new Agp2pDataContext().Withdraw(cardId, howmany);
 
                 //发送提现短信
                 var smsModel = new sms_template().GetModel("user_withdraw_info");
@@ -2342,7 +2341,7 @@ namespace Agp2p.Web.tools
                     }
                     catch (Exception e)
                     {
-                        new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
+                        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
                     }
                 }
 
