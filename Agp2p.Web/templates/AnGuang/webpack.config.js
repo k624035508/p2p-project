@@ -10,7 +10,8 @@ module.exports = {
         invest_detail: "./js/invest_detail.js",
         register: "./js/register.js",
         login: "./js/login.js",
-        usercenter: "./js/usercenter.jsx"
+        usercenter: "./js/usercenter.jsx",
+        invest: "./js/invest.js"
     },
     output: {
         path: path.join(__dirname, './build'),

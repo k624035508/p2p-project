@@ -1,0 +1,44 @@
+@import "common-style";
+
+body { background: @body-color; }
+
+.select-box {
+	* {
+		font-size: @font15;
+		color: @dark-grey;
+	}
+	height: 270px;
+	border: @border;
+	background: @white;
+	.project-time {
+		height: 50px;
+		line-height: 50px;
+		padding: 0 30px;
+		border-bottom: @border;
+		a {
+			color: @blue;
+			text-decoration: none;
+		}
+	}
+	.type-select {
+		padding: 0 30px;
+		div {
+			margin: 23px 0;
+			& > * { .inline-block; }
+			& > span:first-child { margin-right: 45px; }
+			ul {
+				li {
+					min-width: 90px;
+					span {
+						padding: 2px 8px;
+						cursor: pointer;
+					}
+					.selected {
+						background-color: @red;
+						color: white;
+					}
+				}
+			}
+		}
+	}
+}
