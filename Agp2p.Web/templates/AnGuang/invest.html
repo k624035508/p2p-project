@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我要理财</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/js/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/js/es5-sham.min.js"></script>
+    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/invest.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<!--面包屑导航-->
+<div class="breadcrumbs">
+    <a href="#">首页</a>
+    <span> > </span>
+    <span>我要理财</span>
+</div>
+<!--面包屑导航 end-->
+
+<div class="select-box content-wrap">
+    <div class="project-time">项目发布时间为 10:30，12:30，14:30，16:30 <a href="#" class="pull-right">这些项目是什么</a></div>
+    <div class="type-select">
+        <div class="project-status"><span>项目状态</span>
+            <ul class="list-unstyled list-inline">
+                <li><span class="selected">全部</span></li>
+                <li><span>可投标</span></li>
+                <li><span>已满标</span></li>
+                <li><span>还款中</span></li>
+                <li><span>还款完成</span></li>
+            </ul>
+        </div>
+        <div class="project-types"><span>项目类型</span>
+            <ul class="list-unstyled list-inline">
+                <li><span class="selected">全部</span></li>
+                <li><span>房贷宝</span></li>
+                <li><span>车贷宝</span></li>
+                <li><span>物贷宝</span></li>
+                <li><span>流通宝</span></li>
+                <li><span>订单宝</span></li>
+                <li><span>银票宝</span></li>
+                <li><span>债权宝</span></li>
+            </ul>
+        </div>
+        <div class="project-profit"><span>项目收益</span>
+            <ul class="list-unstyled list-inline">
+                <li><span class="selected">全部</span></li>
+                <li><span>13%</span></li>
+                <li><span>14%</span></li>
+                <li><span>15%</span></li>
+                <li><span>16%</span></li>
+            </ul>
+        </div>
+        <div class="project-deadline"><span>项目期限</span>
+            <ul class="list-unstyled list-inline">
+                <li><span class="selected">全部</span></li>
+                <li><span>1-3个月</span></li>
+                <li><span>4-6个月</span></li>
+                <li><span>7-12个月</span></li>
+                <li><span>12个月以上</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<%foreach(DataRow dr in get_project_list(6,0,0,0,0).Rows)%>
+<div class="invest-cell">
+    <div class="invest-title-wrap">
+        <span class="invest-style-tab">房贷宝</span>
+        <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
+        <%if(dr["tag"].ToString()=="1")%>
+        <span class="invest-list-icon yue-icon"></span>
+        <%else if(dr["tag"].ToString()=="2")%>
+        <span class="invest-list-icon jian-icon"></span>
+        <%/if%>
+        <span class="invest-list-icon xin-icon"></span>
+    </div>
+    <div class="invest-content">
+        <div class="apr">
+            <div class="red25px margin-bottom10px">{dr[profit_rate_year]}<span class="red15px">%</span></div>
+            <div class="grey13px">年化利率</div>
+        </div>
+        <div class="deadline">
+            <div class="grey25px margin-bottom10px">{dr[repayment_number]}<span
+                    class="grey15px">{dr[repayment_term]}</span></div>
+            <div class="grey13px">期限</div>
+        </div>
+        <div class="sum">
+            <div class="grey25px margin-bottom10px">{dr[project_amount_str]}<span class="grey15px">万</span></div>
+            <div class="grey13px">借款金额</div>
+        </div>
+        <div class="repayment">
+            <div class="progress progress-custom">
+                <div class="progress-bar progress-bar-info" role="progressbar"
+                     aria-valuenow="{dr[project_investment_progress]}"
+                     aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}%">
+                    <span class="sr-only">20% Complete</span>
+                </div>
+            </div>
+            <div class="grey13px margin-bottom10px">可投金额 : <span
+                    class="dark-grey13px">{dr[project_investment_balance]}</span></div>
+            <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span>
+            </div>
+            <!--满标人数显示-->
+            <div class="grey13px">到期还本付息</div>
+        </div>
+        <div class="invest-btn pull-right">
+            <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
+            <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+            <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
+            <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
+            <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+            <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
+            <%/if%>
+        </div>
+    </div>
+</div>
+<%/foreach%>
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>
