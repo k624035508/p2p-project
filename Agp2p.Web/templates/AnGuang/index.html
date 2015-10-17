@@ -83,17 +83,18 @@
 
 <!--invest list-->
 <div class="container-fluid">
+    <%set var articleCategory=new Agp2p.BLL.article_category()%>
     <%foreach(DataRow dr in get_project_list(5,0,0,0,0).Rows)%>
     <div class="invest-cell">
         <div class="invest-title-wrap">
-            <span class="invest-style-tab">房贷宝</span>
+            <span class="invest-style-tab"><%=articleCategory.GetTitle((int)dr["category_id"])%></span>
             <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
             <%if(dr["tag"].ToString()=="1")%>
             <span class="invest-list-icon yue-icon"></span>
             <%else if(dr["tag"].ToString()=="2")%>
             <span class="invest-list-icon jian-icon"></span>
-            <%/if%>
             <span class="invest-list-icon xin-icon"></span>
+            <%/if%>
         </div>
         <div class="invest-content">
             <div class="apr">
@@ -135,9 +136,7 @@
         </div>
     </div>
     <%/foreach%>
-    <div class="more-projects">
-        <a href='<%linkurl("invest")%>'>查看更多投资理财项目</a>
-    </div>
+    <div class="more-projects"><a href='<%linkurl("invest_list")%>'>查看更多投资理财项目</a></div>
 </div>
 <!--invest list end-->
 

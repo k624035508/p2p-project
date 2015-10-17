@@ -703,7 +703,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
-    <Content Include="templates\AnGuang\invest.html" />
+    <Content Include="templates\AnGuang\invest_list.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\city.min.js" />
     <Content Include="templates\AnGuang\js\es5-sham.min.js" />

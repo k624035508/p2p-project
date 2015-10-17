@@ -9,13 +9,13 @@ namespace Agp2p.Web.UI
 {
     public partial class BasePage : System.Web.UI.Page
     {
-        protected DataTable get_project_list(int top, int category_id, int profit_rate_index, int repayment_index, int amount_index)
+        protected DataTable get_project_list(int top, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
             int total = 0;
-            return get_project_list(top, 1, out total, category_id, profit_rate_index, repayment_index, amount_index);
+            return get_project_list(top, 1, out total, category_id, profit_rate_index, repayment_index, status_index);
         }
 
-        protected static DataTable get_project_list(int pageSize, int pageIndex, out int total, int category_id, int profit_rate_index, int repayment_index, int amount_index)
+        protected static DataTable get_project_list(int pageSize, int pageIndex, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
             total = 0;
             var context = new Agp2pDataContext();
@@ -27,54 +27,43 @@ namespace Agp2p.Web.UI
             if (category_id > 0)
                 query = query.Where(p => p.category_id == category_id);
             //项目筛选暂写死逻辑在此
-            if (profit_rate_index > 0)//年化利率条件
+            if (0 < profit_rate_index)//年化利率条件
             {
-                switch (profit_rate_index)
+                query = query.Where(p => p.profit_rate_year == profit_rate_index);
+            }
+            if (0 < repayment_index)//借款期限条件
+            {
+                switch ((Agp2pEnums.RepaymentTermEnum)repayment_index)
                 {
-                    case 1:
-                        query = query.Where(p => p.profit_rate_year == 15);
+                    case Agp2pEnums.RepaymentTermEnum.OneMonth:
+                        query = query.Where(p => p.repayment_term_span_count == 1 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
                         break;
-                    case 2:
-                        query = query.Where(p => p.profit_rate_year == 16);
+                    case Agp2pEnums.RepaymentTermEnum.TwoMonth:
+                        query = query.Where(p => p.repayment_term_span_count == 2 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
                         break;
-                    case 3:
-                        query = query.Where(p => p.profit_rate_year == 17);
+                    case Agp2pEnums.RepaymentTermEnum.ThreeMonth:
+                        query = query.Where(p => p.repayment_term_span_count == 3 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
                         break;
-                    case 4:
-                        query = query.Where(p => p.profit_rate_year == 18);
+                    case Agp2pEnums.RepaymentTermEnum.Others:
+                        query = query.Where(p => 3 < p.repayment_term_span_count && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
                         break;
                 }
             }
-            if (repayment_index > 0)//借款期限条件
+            if (0 < status_index)// 状态条件
             {
-                switch (repayment_index)
+                switch ((Agp2pEnums.ProjectStatusQueryTypeEnum) status_index)
                 {
-                    case 1:
-                        query = query.Where(p => p.repayment_term_span_count == 1);
+                    case Agp2pEnums.ProjectStatusQueryTypeEnum.Financing:
+                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
                         break;
-                    case 2:
-                        query = query.Where(p => p.repayment_term_span_count == 2);
+                    case Agp2pEnums.ProjectStatusQueryTypeEnum.FinancingSuccess:
+                        query = query.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
                         break;
-                    case 3:
-                        query = query.Where(p => p.repayment_term_span_count == 3);
+                    case Agp2pEnums.ProjectStatusQueryTypeEnum.ProjectRepaying:
+                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
                         break;
-                }
-            }
-            if (amount_index > 0)//金额条件
-            {
-                switch (amount_index)
-                {
-                    case 1:
-                        query = query.Where(p => p.financing_amount <= 100000);
-                        break;
-                    case 2:
-                        query = query.Where(p => p.financing_amount > 100000 && p.financing_amount <= 250000);
-                        break;
-                    case 3:
-                        query = query.Where(p => p.financing_amount > 250000 && p.financing_amount <= 500000);
-                        break;
-                    case 4:
-                        query = query.Where(p => p.financing_amount > 500000);
+                    case Agp2pEnums.ProjectStatusQueryTypeEnum.ProjectRepayComplete:
+                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime <= p.status);
                         break;
                 }
             }

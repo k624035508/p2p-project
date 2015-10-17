@@ -409,20 +409,37 @@ namespace Agp2p.Common
         }
 
         /// <summary>
+        /// 项目状态查询枚举
+        /// </summary>
+        public enum ProjectStatusQueryTypeEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("可投标")]
+            Financing = 1,
+            [Description("已满标")]
+            FinancingSuccess = 2,
+            [Description("还款中")]
+            ProjectRepaying = 3,
+            [Description("还款完成")]
+            ProjectRepayComplete = 4,
+        }
+
+        /// <summary>
         /// 年化利率筛选枚举
         /// </summary>
         public enum InterestRateTypeEnum
         {
             [Description("全部")]
-            all = 0,
+            All = 0,
+            [Description("13%")]
+            ProfitRate_13 = 13,
+            [Description("14%")]
+            ProfitRate_14 = 14,
             [Description("15%")]
-            one = 1,
+            ProfitRate_15 = 15,
             [Description("16%")]
-            two = 2,
-            [Description("17%")]
-            three = 3,
-            [Description("18%")]
-            four = 4
+            ProfitRate_16 = 16
         }
 
         /// <summary>
@@ -431,13 +448,15 @@ namespace Agp2p.Common
         public enum RepaymentTermEnum
         {
             [Description("全部")]
-            all = 0,
+            All = 0,
             [Description("1个月")]
-            one = 1,
+            OneMonth = 1,
             [Description("2个月")]
-            two = 2,
+            TwoMonth = 2,
             [Description("3个月")]
-            three = 3
+            ThreeMonth = 3,
+            [Description("其他")]
+            Others = 4
         }
 
         /// <summary>
