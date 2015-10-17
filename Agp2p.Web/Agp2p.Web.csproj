@@ -761,6 +761,9 @@
     <Content Include="templates\AnGuang\js\bank-list.jsx" />
     <Content Include="templates\AnGuang\containers\myrepayments.jsx" />
     <Content Include="templates\AnGuang\components\repayments-table.jsx" />
+    <Content Include="templates\AnGuang\containers\user-status.jsx" />
+    <Content Include="templates\AnGuang\containers\myaccount.jsx" />
+    <Content Include="templates\AnGuang\containers\safe.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
