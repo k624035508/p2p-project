@@ -28,6 +28,10 @@ namespace Agp2p.Web.UI.Page
         protected int project_repayment_index; //还款期限序号
         protected int project_status_index; // 项目状态
 
+        protected Dictionary<int, string> CategoryIdTitleMap =
+            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
+                .ToDictionary(c => c.id, c => c.title);
+
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
         /// </summary>

@@ -23,9 +23,13 @@ namespace Agp2p.Web.admin.project
         protected string Keywords = string.Empty;
 
         private Agp2pDataContext context = new Agp2pDataContext();
+        protected Dictionary<int, string> CategoryIdTitleMap;
+            
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
+
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             this.CategoryId = DTRequest.GetQueryInt("category_id");
             this.ProjectStatus = DTRequest.GetQueryInt("project_status");

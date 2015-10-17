@@ -607,4 +607,22 @@
       <Association Name="dt_users_li_creditors" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_article_category" Member="dt_article_category">
+    <Type Name="dt_article_category">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="channel_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="call_index" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="parent_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="class_list" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="class_layer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="link_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="img_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

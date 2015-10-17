@@ -24,7 +24,6 @@
 </div>
 <!--面包屑导航 end-->
 
-<%set var articleCategory=new Agp2p.BLL.article_category()%>
 <div class="select-box content-wrap">
     <div class="project-time">项目发布时间为 10:30，12:30，14:30，16:30 <a href="#" class="pull-right">这些项目是什么</a></div>
     <div class="type-select">
@@ -41,9 +40,9 @@
             <ul class="list-unstyled list-inline">
                 <li><a href='<%linkurl("invest_list",0,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
                        class='<%=0==category_id?"selected":""%>'>全部</a></li>
-                <%foreach(DataRow c in articleCategory.GetList(0,6).Rows)%>
-                <li><a href='<%linkurl("invest_list",c["id"],project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
-                       class='<%=(int)c["id"]==category_id?"selected":""%>'><%=c["title"]%></a></li>
+                <%foreach(var kvp in CategoryIdTitleMap)%>
+                <li><a href='<%linkurl("invest_list",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
+                       class='<%=kvp.Key==category_id?"selected":""%>'><%=kvp.Value%></a></li>
                 <%/foreach%>
             </ul>
         </div>
@@ -71,7 +70,7 @@
 <%foreach(DataRow dr in projectsDataTable.Rows)%>
 <div class="invest-cell">
     <div class="invest-title-wrap">
-        <span class="invest-style-tab"><%=articleCategory.GetTitle((int)dr["category_id"])%></span>
+        <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
         <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
         <%if(dr["tag"].ToString()=="1")%>
         <span class="invest-list-icon yue-icon"></span>

@@ -135,6 +135,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_creditors(li_creditors instance);
     partial void Updateli_creditors(li_creditors instance);
     partial void Deleteli_creditors(li_creditors instance);
+    partial void Insertdt_article_category(dt_article_category instance);
+    partial void Updatedt_article_category(dt_article_category instance);
+    partial void Deletedt_article_category(dt_article_category instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -446,6 +449,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_creditors>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_article_category> dt_article_category
+		{
+			get
+			{
+				return this.GetTable<dt_article_category>();
 			}
 		}
 	}
@@ -13848,6 +13859,380 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_creditors = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_article_category")]
+	public partial class dt_article_category : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _channel_id;
+		
+		private string _title;
+		
+		private string _call_index;
+		
+		private System.Nullable<int> _parent_id;
+		
+		private string _class_list;
+		
+		private System.Nullable<int> _class_layer;
+		
+		private System.Nullable<int> _sort_id;
+		
+		private string _link_url;
+		
+		private string _img_url;
+		
+		private string _content;
+		
+		private string _seo_title;
+		
+		private string _seo_keywords;
+		
+		private string _seo_description;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onchannel_idChanging(int value);
+    partial void Onchannel_idChanged();
+    partial void OntitleChanging(string value);
+    partial void OntitleChanged();
+    partial void Oncall_indexChanging(string value);
+    partial void Oncall_indexChanged();
+    partial void Onparent_idChanging(System.Nullable<int> value);
+    partial void Onparent_idChanged();
+    partial void Onclass_listChanging(string value);
+    partial void Onclass_listChanged();
+    partial void Onclass_layerChanging(System.Nullable<int> value);
+    partial void Onclass_layerChanged();
+    partial void Onsort_idChanging(System.Nullable<int> value);
+    partial void Onsort_idChanged();
+    partial void Onlink_urlChanging(string value);
+    partial void Onlink_urlChanged();
+    partial void Onimg_urlChanging(string value);
+    partial void Onimg_urlChanged();
+    partial void OncontentChanging(string value);
+    partial void OncontentChanged();
+    partial void Onseo_titleChanging(string value);
+    partial void Onseo_titleChanged();
+    partial void Onseo_keywordsChanging(string value);
+    partial void Onseo_keywordsChanged();
+    partial void Onseo_descriptionChanging(string value);
+    partial void Onseo_descriptionChanged();
+    #endregion
+		
+		public dt_article_category()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_channel_id", DbType="Int NOT NULL")]
+		public int channel_id
+		{
+			get
+			{
+				return this._channel_id;
+			}
+			set
+			{
+				if ((this._channel_id != value))
+				{
+					this.Onchannel_idChanging(value);
+					this.SendPropertyChanging();
+					this._channel_id = value;
+					this.SendPropertyChanged("channel_id");
+					this.Onchannel_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="NVarChar(100)")]
+		public string title
+		{
+			get
+			{
+				return this._title;
+			}
+			set
+			{
+				if ((this._title != value))
+				{
+					this.OntitleChanging(value);
+					this.SendPropertyChanging();
+					this._title = value;
+					this.SendPropertyChanged("title");
+					this.OntitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_call_index", DbType="NVarChar(50)")]
+		public string call_index
+		{
+			get
+			{
+				return this._call_index;
+			}
+			set
+			{
+				if ((this._call_index != value))
+				{
+					this.Oncall_indexChanging(value);
+					this.SendPropertyChanging();
+					this._call_index = value;
+					this.SendPropertyChanged("call_index");
+					this.Oncall_indexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_parent_id", DbType="Int")]
+		public System.Nullable<int> parent_id
+		{
+			get
+			{
+				return this._parent_id;
+			}
+			set
+			{
+				if ((this._parent_id != value))
+				{
+					this.Onparent_idChanging(value);
+					this.SendPropertyChanging();
+					this._parent_id = value;
+					this.SendPropertyChanged("parent_id");
+					this.Onparent_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_class_list", DbType="NVarChar(500)")]
+		public string class_list
+		{
+			get
+			{
+				return this._class_list;
+			}
+			set
+			{
+				if ((this._class_list != value))
+				{
+					this.Onclass_listChanging(value);
+					this.SendPropertyChanging();
+					this._class_list = value;
+					this.SendPropertyChanged("class_list");
+					this.Onclass_listChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_class_layer", DbType="Int")]
+		public System.Nullable<int> class_layer
+		{
+			get
+			{
+				return this._class_layer;
+			}
+			set
+			{
+				if ((this._class_layer != value))
+				{
+					this.Onclass_layerChanging(value);
+					this.SendPropertyChanging();
+					this._class_layer = value;
+					this.SendPropertyChanged("class_layer");
+					this.Onclass_layerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sort_id", DbType="Int")]
+		public System.Nullable<int> sort_id
+		{
+			get
+			{
+				return this._sort_id;
+			}
+			set
+			{
+				if ((this._sort_id != value))
+				{
+					this.Onsort_idChanging(value);
+					this.SendPropertyChanging();
+					this._sort_id = value;
+					this.SendPropertyChanged("sort_id");
+					this.Onsort_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_link_url", DbType="NVarChar(255)")]
+		public string link_url
+		{
+			get
+			{
+				return this._link_url;
+			}
+			set
+			{
+				if ((this._link_url != value))
+				{
+					this.Onlink_urlChanging(value);
+					this.SendPropertyChanging();
+					this._link_url = value;
+					this.SendPropertyChanged("link_url");
+					this.Onlink_urlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_url", DbType="NVarChar(255)")]
+		public string img_url
+		{
+			get
+			{
+				return this._img_url;
+			}
+			set
+			{
+				if ((this._img_url != value))
+				{
+					this.Onimg_urlChanging(value);
+					this.SendPropertyChanging();
+					this._img_url = value;
+					this.SendPropertyChanged("img_url");
+					this.Onimg_urlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_content", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		public string content
+		{
+			get
+			{
+				return this._content;
+			}
+			set
+			{
+				if ((this._content != value))
+				{
+					this.OncontentChanging(value);
+					this.SendPropertyChanging();
+					this._content = value;
+					this.SendPropertyChanged("content");
+					this.OncontentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_seo_title", DbType="NVarChar(255)")]
+		public string seo_title
+		{
+			get
+			{
+				return this._seo_title;
+			}
+			set
+			{
+				if ((this._seo_title != value))
+				{
+					this.Onseo_titleChanging(value);
+					this.SendPropertyChanging();
+					this._seo_title = value;
+					this.SendPropertyChanged("seo_title");
+					this.Onseo_titleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_seo_keywords", DbType="NVarChar(255)")]
+		public string seo_keywords
+		{
+			get
+			{
+				return this._seo_keywords;
+			}
+			set
+			{
+				if ((this._seo_keywords != value))
+				{
+					this.Onseo_keywordsChanging(value);
+					this.SendPropertyChanging();
+					this._seo_keywords = value;
+					this.SendPropertyChanged("seo_keywords");
+					this.Onseo_keywordsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_seo_description", DbType="NVarChar(255)")]
+		public string seo_description
+		{
+			get
+			{
+				return this._seo_description;
+			}
+			set
+			{
+				if ((this._seo_description != value))
+				{
+					this.Onseo_descriptionChanging(value);
+					this.SendPropertyChanging();
+					this._seo_description = value;
+					this.SendPropertyChanged("seo_description");
+					this.Onseo_descriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
