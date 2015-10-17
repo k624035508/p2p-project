@@ -4,6 +4,7 @@ import "../less/usercenter.less";
 import "../less/footerSmall.less";
 
 import React from "react"
+import ReactDOM from "react-dom"
 import { Router, Route, Link } from 'react-router'
 
 import UserCenterPage from "../containers/UserCenterPage.jsx"
@@ -17,7 +18,7 @@ import { setHeaderHighlight } from "./header.js"
 
 $(function(){
     //点击导航加载相应内容
-    React.render((
+    ReactDOM.render((
     	<Router>
 	    	<Route path="/" component={UserCenterPage}>
 		    	<Route path="mytrade" component={MyTransaction}/>

@@ -36,7 +36,7 @@ class AppendingCardDialog extends React.Component {
                 console.error(url, status, err.toString());
             }.bind(this)
         });
-        $(this.refs.dialog.getDOMNode()).modal("hide");
+        $(this.refs.dialog).modal("hide");
 	}
 	render() {
 		return (

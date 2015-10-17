@@ -13,7 +13,7 @@ export default class DatePicker extends React.Component {
 	}
 	componentDidMount() {
 		//日期设置
-		var $datepickers = $(this.refs.datepickers.getDOMNode()).find(".form_date").datetimepicker({
+		var $datepickers = $(this.refs.datepickers).find(".form_date").datetimepicker({
 			language: 'zh-CN',
 			format: 'yyyy-mm-dd',
 			weekStart: 1,
@@ -25,8 +25,8 @@ export default class DatePicker extends React.Component {
 			autoclose: 1,
 			minView: 2
 		});
-		$datepickers.eq(0).on("changeDate", this.refs.startTimePicker.props.onBlur);
-		$datepickers.eq(1).on("changeDate", this.refs.endTimePicker.props.onBlur);
+		$datepickers.eq(0).on("changeDate", this.refs.startTimePicker.onBlur);
+		$datepickers.eq(1).on("changeDate", this.refs.endTimePicker.onBlur);
 	}
 	render() {
 		return (
