@@ -25,15 +25,15 @@ export default class DatePicker extends React.Component {
 			autoclose: 1,
 			minView: 2
 		});
-		$datepickers.eq(0).on("changeDate", this.refs.startTimePicker.onBlur);
-		$datepickers.eq(1).on("changeDate", this.refs.endTimePicker.onBlur);
+		$datepickers.eq(0).on("changeDate", (ev) => this.props.onStartTimeChange(ev.target.value));
+		$datepickers.eq(1).on("changeDate", (ev) => this.props.onEndTimeChange(ev.target.value));
 	}
 	render() {
 		return (
 			<div className="dateSel pull-right" ref="datepickers">
-		        <input className="form_date" type="text" ref="startTimePicker" onBlur={(ev) => this.props.onStartTimeChange(ev.target.value) }/>
+		        <input className="form_date" type="text" onBlur={(ev) => this.props.onStartTimeChange(ev.target.value) }/>
 		        到
-		        <input className="form_date" type="text" ref="endTimePicker" onBlur={(ev) => this.props.onEndTimeChange(ev.target.value)} />
+		        <input className="form_date" type="text" onBlur={(ev) => this.props.onEndTimeChange(ev.target.value)} />
 		        <a href="javascript:;">搜 索</a>
 		    </div>
 		);
