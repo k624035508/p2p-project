@@ -33,8 +33,8 @@ module.exports = {
     ],
     module: {
         loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory&stage=0' },
-            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?cacheDirectory&stage=0' },
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
+            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
             { test: /\.jpg$/, loader: "file" },

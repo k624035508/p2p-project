@@ -20,17 +20,7 @@ String.prototype.toNum = function () {
 	return parseFloat(this.replace(/[^0-9\.]+/g,""));
 }
 
-function mapStateToProps(state) {
-	return {
-		userName: state.userInfo.userName,
-		prevLoginTime: state.userInfo.prevLoginTime,
-		idleMoney: state.userInfo.idleMoney,
-		lockedMoney: state.userInfo.lockedMoney,
-	};
-}
-
-@connect(mapStateToProps)
-export default class UserStatus extends React.Component {
+class UserStatus extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -96,3 +86,14 @@ export default class UserStatus extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		userName: state.userInfo.userName,
+		prevLoginTime: state.userInfo.prevLoginTime,
+		idleMoney: state.userInfo.idleMoney,
+		lockedMoney: state.userInfo.lockedMoney,
+	};
+}
+
+export default connect(mapStateToProps)(UserStatus);

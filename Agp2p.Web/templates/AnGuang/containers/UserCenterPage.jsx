@@ -17,14 +17,7 @@ Number.prototype.format = function(n, x) {
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
 };
 
-function mapStateToProps(state) {
-	return {
-		totalMoney: state.userInfo.totalMoney
-	};
-}
-
-@connect(mapStateToProps)
-export default class UserCenterPage extends React.Component {
+class UserCenterPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -80,3 +73,11 @@ export default class UserCenterPage extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		totalMoney: state.userInfo.totalMoney
+	};
+}
+
+export default connect(mapStateToProps)(UserCenterPage);
