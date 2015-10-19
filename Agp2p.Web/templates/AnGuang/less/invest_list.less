@@ -22,23 +22,46 @@ body { background: @body-color; }
 	}
 	.type-select {
 		padding: 0 30px;
-		div {
+		& > div {
 			margin: 23px 0;
 			& > * { .inline-block; }
 			& > span:first-child { margin-right: 45px; }
 			ul {
 				li {
 					min-width: 90px;
-					span {
+					a {
+						text-decoration: none;
 						padding: 2px 8px;
-						cursor: pointer;
+						color: #000;
 					}
 					.selected {
-						background-color: @red;
-						color: white;
-					}
+						 color: white;
+						 background-color: @red;
+					 }
 				}
 			}
 		}
+	}
+}
+
+.pages {
+	margin-top: 30px;
+	text-align: center;
+	& > * {
+		margin: 0 3px;
+		padding: 1.5px 7px;
+		font-size: @font15;
+		color: @dark-grey;
+		border: @border;
+		background: @white;
+	}
+	& span:first-child {
+		border: none;
+		background: none;
+	}
+	a { text-decoration: none; }
+	.current {
+		color: @white;
+		background: @red;
 	}
 }

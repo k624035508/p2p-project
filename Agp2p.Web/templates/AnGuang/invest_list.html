@@ -9,7 +9,7 @@
     <script src="<%templateskin%>/js/respond.min.js"></script>
     <![endif]-->
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
-    <script src="<%templateskin%>/build/invest.bundle.js"></script>
+    <script src="<%templateskin%>/build/invest_list.bundle.js"></script>
 </head>
 <body>
 <!--head-->
@@ -126,7 +126,7 @@
 <%/foreach%>
 
 <!--取得分页页码列表-->
-<%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("invest_list",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%>
+<div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("invest_list",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%></div>
 
 <!--footer-->
 <%template src="_footerSmall.html"%>

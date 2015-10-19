@@ -1,7 +1,7 @@
 ﻿import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/index.less";
-import "../less/invest-list.less";
+import "../less/invest-cell.less";
 import "../less/footer.less";
 
 import $ from "jquery"
