@@ -1,13 +1,11 @@
 ﻿import React from "react";
 import $ from "jquery";
 
-
 export default class DropdownPicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {options: []};
     }
-
     componentDidMount() {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryEnumInfo";
         $.ajax({
@@ -24,7 +22,6 @@ export default class DropdownPicker extends React.Component {
             }.bind(this)
         });
     }
-
     render() {
         return (
             <select name="tradeType" id="typeSel" onChange={(ev) => this.props.onTypeChange(ev.target.value) }>
