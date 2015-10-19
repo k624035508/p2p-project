@@ -752,7 +752,7 @@
     <Content Include="templates\AnGuang\containers\withdraw.jsx" />
     <Content Include="templates\AnGuang\containers\UserCenterPage.jsx" />
     <Content Include="templates\AnGuang\components\dropdown-picker.jsx" />
-    <Content Include="templates\AnGuang\components\date-picker.jsx" />
+    <Content Include="templates\AnGuang\components\date-span-picker.jsx" />
     <Content Include="templates\AnGuang\components\horizontal-picker.jsx" />
     <Content Include="templates\AnGuang\containers\invest-record.jsx" />
     <Content Include="templates\AnGuang\components\pagination.jsx" />
@@ -766,6 +766,7 @@
     <Content Include="templates\AnGuang\containers\safe.jsx" />
     <Content Include="templates\AnGuang\less\invest-cell.less" />
     <Content Include="templates\AnGuang\less\invest_list.less" />
+    <Content Include="templates\AnGuang\components\date-picker.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

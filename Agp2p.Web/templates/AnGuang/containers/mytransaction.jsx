@@ -1,7 +1,7 @@
 import React from "react";
 
 import DropdownPicker from "../components/dropdown-picker.jsx"
-import DatePicker from "../components/date-picker.jsx"
+import DateSpanPicker from "../components/date-span-picker.jsx"
 import TransactionTable from "../components/transactions-table.jsx"
 import Pagination from "../components/pagination.jsx"
 
@@ -17,7 +17,7 @@ export default class MyTransaction extends React.Component {
 					<DropdownPicker
 						onTypeChange={newType => this.setState({type: newType}) }
 						enumFullName="Agp2p.Common.Agp2pEnums+TransactionDetailsDropDownListEnum" />
-					<DatePicker
+					<DateSpanPicker
 						onStartTimeChange={newStartTime => this.setState({startTime: newStartTime})}
 						onEndTimeChange={newEndTime => this.setState({endTime: newEndTime})}/>
 					<div style={{clear: "both"}}></div>
