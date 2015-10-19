@@ -636,6 +636,7 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\about.xml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
+    <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
@@ -710,14 +711,15 @@
     <Content Include="templates\AnGuang\js\es5-shim.min.js" />
     <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\index.js" />
-    <Content Include="templates\AnGuang\js\invest.js" />
     <Content Include="templates\AnGuang\js\invest_detail.js" />
+    <Content Include="templates\AnGuang\js\invest_list.js" />
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\login.html" />
+    <Content Include="templates\AnGuang\reducers\usercenter.js" />
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\webpack.config.js" />
@@ -739,7 +741,6 @@
     <Content Include="templates\AnGuang\less\footer.less" />
     <Content Include="templates\AnGuang\less\head.less" />
     <Content Include="templates\AnGuang\less\index.less" />
-    <Content Include="templates\AnGuang\less\invest-list.less" />
     <Content Include="templates\AnGuang\less\footerSmall.less" />
     <Content Include="templates\AnGuang\less\register.less" />
     <Content Include="templates\AnGuang\less\login.less" />
@@ -757,13 +758,14 @@
     <Content Include="templates\AnGuang\components\pagination.jsx" />
     <Content Include="templates\AnGuang\components\investRecord-table.jsx" />
     <Content Include="templates\AnGuang\components\city-picker.jsx" />
-    <Content Include="templates\AnGuang\less\invest.less" />
     <Content Include="templates\AnGuang\js\bank-list.jsx" />
     <Content Include="templates\AnGuang\containers\myrepayments.jsx" />
     <Content Include="templates\AnGuang\components\repayments-table.jsx" />
     <Content Include="templates\AnGuang\containers\user-status.jsx" />
     <Content Include="templates\AnGuang\containers\myaccount.jsx" />
     <Content Include="templates\AnGuang\containers\safe.jsx" />
+    <Content Include="templates\AnGuang\less\invest-cell.less" />
+    <Content Include="templates\AnGuang\less\invest_list.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
