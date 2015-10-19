@@ -14,6 +14,7 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
@@ -32,8 +33,8 @@ namespace Agp2p.Web.admin.statistic
                 var m = DTRequest.GetQueryString("month");
 
                 //txtKeywords.Text = keywords;
-                txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
-                txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
+                txtYear.Text = y == "" ? "-" : y;
+                txtMonth.Text = m == "" ? "-" : m;
 
                 var status = DTRequest.GetQueryString("status");
                 if (!string.IsNullOrEmpty(status))
@@ -53,12 +54,12 @@ namespace Agp2p.Web.admin.statistic
         {
             public string Index { get; set; }
             public string Name { get; set; }
+            public String Category { get; set; }
             public decimal? FinancingAmount { get; set; }
             public string ProfitRateYear { get; set; }
             public string Term { get; set; }
             public DateTime? InvestCompleteTime { get; set; }
             public DateTime? RepayCompleteTime { get; set; }
-            public string LoanContractNumber { get; set; }
             public string Creditor { get; set; }
         }
         protected class RepaymentTaskAmountDetail
@@ -69,12 +70,14 @@ namespace Agp2p.Web.admin.statistic
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
             public decimal RepayTotal { get; set; }
+            public String RepayTerm { get; set; }
         }
 
         #region 数据绑定=================================
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
             rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
@@ -133,6 +136,7 @@ namespace Agp2p.Web.admin.statistic
                     Index = rgi.i.ToString(),
                     Name = p.title,
                     FinancingAmount = p.financing_amount == 0 ? (decimal?) null : p.financing_amount,
+                    Category = CategoryIdTitleMap[p.category_id],
                     ProfitRateYear = p.profit_rate_year.ToString(),
                     Term =
                         p.repayment_term_span_count + " " +
@@ -150,6 +154,7 @@ namespace Agp2p.Web.admin.statistic
                     RepayPrincipal = rg.repay_principal,
                     RepayInterest = rg.repay_interest,
                     RepayTotal = (rg.repay_interest + rg.repay_principal),
+                    RepayTerm = rg.term + "/" + rg.li_projects.repayment_term_span_count
                 });
             });
         }
@@ -245,11 +250,10 @@ namespace Agp2p.Web.admin.statistic
                 d.RepayPrincipal,
                 d.RepayInterest,
                 d.RepayTotal,
-                d.Project.LoanContractNumber,
                 d.Project.Creditor,
             });
 
-            var titles = new[] { "序号", "项目名称", "融资金额", "年利率", "期限", "满标日", "到期日", "应付本息时间", "状态", "应付本金", "应付利息", "本息合计", "对应借款合同号", "债权人" };
+            var titles = new[] { "序号", "项目名称", "融资金额", "年利率", "期限", "满标时间", "到期日", "应付时间", "状态", "应还本金", "应还利息", "本息合计", "债权人" };
             Utils.ExportXls("项目投资明细", titles, lsData, Response);
         }
 
