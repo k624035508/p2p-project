@@ -22,21 +22,22 @@ body { background: @body-color; }
 	}
 	.type-select {
 		padding: 0 30px;
-		div {
+		& > div {
 			margin: 23px 0;
 			& > * { .inline-block; }
 			& > span:first-child { margin-right: 45px; }
 			ul {
 				li {
 					min-width: 90px;
-					span {
+					a {
+						text-decoration: none;
 						padding: 2px 8px;
-						cursor: pointer;
+						color: #000;
 					}
 					.selected {
-						background-color: @red;
-						color: white;
-					}
+						 color: white;
+						 background-color: @red;
+					 }
 				}
 			}
 		}
