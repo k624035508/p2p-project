@@ -43,3 +43,25 @@ body { background: @body-color; }
 		}
 	}
 }
+
+.pages {
+	margin-top: 30px;
+	text-align: center;
+	& > * {
+		margin: 0 3px;
+		padding: 1.5px 7px;
+		font-size: @font15;
+		color: @dark-grey;
+		border: @border;
+		background: @white;
+	}
+	& span:first-child {
+		border: none;
+		background: none;
+	}
+	a { text-decoration: none; }
+	.current {
+		color: @white;
+		background: @red;
+	}
+}
