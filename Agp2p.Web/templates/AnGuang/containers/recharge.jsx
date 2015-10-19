@@ -1,31 +1,23 @@
 ﻿import React from "react";
-import $ from "jquery";
+import { classMapping } from "../js/bank-list.jsx"
+import keys from "lodash/object/keys"
 
 export default class RechargePage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { selectedBankId: "" };
 	}
 	render() { //我要充值 内容
 		return (
-			<div ref="root">
+			<div>
 				<div className="bank-chose-th"><span>选择银行</span></div>
 				<ul className="list-unstyled list-inline bank-select">
-				    <li id="zhonghang"></li>
-				    <li id="gonghang"></li>
-				    <li id="jianhang"></li>
-				    <li id="nonghang"></li>
-				    <li id="zhaohang"></li>
-				    <li id="youzheng"></li>
-				    <li id="guangda"></li>
-				    <li id="zhongxin"></li>
-				    <li id="pufa"></li>
-				    <li id="minsheng"></li>
-				    <li id="guangfa"></li>
-				    <li id="xingye"></li>
-				    <li id="pingan"></li>
-				    <li id="jiaohang"></li>
-				    <li id="huaxia"></li>
+					{keys(classMapping).map(k => {
+						return (
+							<li id={classMapping[k]} key={classMapping[k]} onClick={ev => this.setState({selectedBankId: classMapping[k]})}>
+							{this.state.selectedBankId == classMapping[k] ? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png"} /> : null}
+							</li>);
+					})}
 				</ul>
 				<div className="balance-recharge"><span>账户余额：</span>￥0.00</div>
 				<div className="amount-recharge">
@@ -41,16 +33,5 @@ export default class RechargePage extends React.Component {
 				</div>
 			</div>
 		);
-	}
-	componentDidMount() {
-		//充值选择银行
-		var $bank = $(this.refs.root).find(".bank-select li");
-		
-		$bank.click(function(){
-			$bank.find("img").remove();
-			var img = document.createElement("img");
-			img.src = TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png";
-			this.appendChild(img);
-		});
 	}
 }
