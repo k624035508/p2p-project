@@ -17,18 +17,22 @@
     "webpack": "^1.11.0"
   },
   "dependencies": {
+    "babel-core": "^5.8.25",
     "bootstrap": "^3.3.5",
     "bootstrap-datetime-picker": "git+https://github.com/smalot/bootstrap-datetimepicker.git",
     "bootstrap-webpack": "0.0.3",
     "css-loader": "^0.16.0",
     "file-loader": "^0.8.4",
+    "immutable": "^3.7.5",
     "jquery": "^1.11.3",
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
     "lodash": "^3.10.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
+    "react-redux": "^4.0.0",
     "react-router": "^1.0.0-rc3",
+    "redux": "^3.0.2",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.6",
     "visualnav": "^2.5.1"

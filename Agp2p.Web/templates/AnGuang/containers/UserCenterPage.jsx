@@ -1,10 +1,29 @@
 ﻿import React from "react";
 import { Link } from 'react-router'
 import $ from "jquery";
+import { connect } from 'react-redux';
 
 import StatusContainer from "../containers/user-status.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
 
+/**
+ * Number.prototype.format(n, x)
+ * 
+ * @param integer n: length of decimal
+ * @param integer x: length of sections
+ */
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+
+function mapStateToProps(state) {
+	return {
+		totalMoney: state.userInfo.totalMoney
+	};
+}
+
+@connect(mapStateToProps)
 export default class UserCenterPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,7 +39,9 @@ export default class UserCenterPage extends React.Component {
 			    <div className="nav-left">
 			        <div className="total-account">
 			            <p className="account-h">账户总额</p>
-			            <p className="account-num"><span id="totalMoney"></span><span>&nbsp;元</span></p>
+			            <p className="account-num">{this.props.totalMoney < 1e6
+			            	? this.props.totalMoney.format(2)
+			            	: Math.floor(this.props.totalMoney).format()}<span>&nbsp;元</span></p>
 			        </div>
 			        <ul className="list-unstyled outside-ul">
 			            <li><Link to="/myaccount" className="account-link">账户总览</Link></li>
