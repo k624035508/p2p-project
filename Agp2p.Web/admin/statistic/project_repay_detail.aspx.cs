@@ -15,6 +15,7 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
@@ -22,6 +23,7 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(10); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -48,6 +50,7 @@ namespace Agp2p.Web.admin.statistic
             public string ProjectName { get; set; }
             public string CreditorName { get; set; }
             public decimal? FinancingAmount { get; set; }
+            public String Category { get; set; }
 
             public string ProfitRateYear { get; set; }
             public string Term { get; set; }
@@ -61,7 +64,7 @@ namespace Agp2p.Web.admin.statistic
             public string InvestorUserName { get; set; }
             public decimal? InvestValue { get; set; }
             public string InvestTime { get; set; }
-
+            
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
             public decimal RepayTotal { get; set; }
@@ -71,7 +74,6 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryRepayDetails();
-
             totalCount = beforePaging.Count();
             rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
@@ -159,15 +161,17 @@ namespace Agp2p.Web.admin.statistic
                         {
                             Index = ri.index.ToString(),
                             ProjectName = pro.title,
-                            RepayAt = r.repay_at == null ? string.Format("预计于 {0:yyyy-MM-dd} 返还", r.should_repay_time.Date) : r.repay_at.ToString(),
+                            Category = CategoryIdTitleMap[pro.category_id],
+                            RepayAt = r.repay_at == null ? string.Format("预计于 {0:yyyy-MM-dd} 返还", r.should_repay_time.Date) : ((DateTime)r.repay_at).ToString("yyyy-MM-dd"),
                             CreditorName = pro.li_risks.li_creditors == null ? "" : pro.li_risks.li_creditors.dt_users.real_name,
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
-                            Term =
-                                pro.repayment_term_span_count + " " +
-                                Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) pro.repayment_term_span),
+                            //Term =
+                            //    pro.repayment_term_span_count + " " +
+                            //    Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) pro.repayment_term_span),
+                            Term = r.term + "/" + pro.repayment_term_span_count,
                             InvestCompleteTime = pro.invest_complete_time.ToString(),
-                            RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString(),
+                            RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),
                         }; // 首个记录显示项目信息
                         return repaymentDetails.Concat(new[]
                         {
