@@ -686,6 +686,16 @@
     <Content Include="templates\AnGuang\imgs\usercenter\middle.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\news.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\overview.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\mail-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\mail.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\name-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\name.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\phone-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\phone.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\guangda.png" />

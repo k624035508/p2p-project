@@ -1,7 +1,8 @@
 ﻿@import "common-style";
-@images: "../imgs/usercenter";
+@usercenter: "../imgs/usercenter";
 @recharge: "../imgs/usercenter/recharge-icons";
 @withdraw: "../imgs/usercenter/withdraw-icons";
+@safe: "../imgs/usercenter/safe";
 
 body { background: @body-color; }
 div.usercenter {
@@ -46,11 +47,11 @@ div.usercenter {
 					.account-link { .active; }
 				}
 			}
-			.account-link { background: url("@{images}/overview.png") no-repeat; }
-			.funds { background: url("@{images}/funds.png") no-repeat; }
-			.investing { background: url("@{images}/investing.png") no-repeat; }
-			.account { background: url("@{images}/account.png") no-repeat; }
-			.news { background: url("@{images}/news.png") no-repeat; }
+			.account-link { background: url("@{usercenter}/overview.png") no-repeat; }
+			.funds { background: url("@{usercenter}/funds.png") no-repeat; }
+			.investing { background: url("@{usercenter}/investing.png") no-repeat; }
+			.account { background: url("@{usercenter}/account.png") no-repeat; }
+			.news { background: url("@{usercenter}/news.png") no-repeat; }
 		}
 		.inner-ul {
 			& > li {
@@ -64,6 +65,7 @@ div.usercenter {
 			}
 		}
 	}
+
 	.content-right {
 		width: 855px;
 		background: @white;
@@ -93,9 +95,9 @@ div.usercenter {
 						margin-left: 10px;
 						background-repeat: no-repeat;
 					}
-					.low { background: url("@{images}/low.png"); }
-					.middle { background: url("@{images}/middle.png"); }
-					.high { background: url("@{images}/high.png"); }
+					.low { background: url("@{usercenter}/low.png"); }
+					.middle { background: url("@{usercenter}/middle.png"); }
+					.high { background: url("@{usercenter}/high.png"); }
 				}
 				.login-time {
 					font-size: @font18;
@@ -179,7 +181,7 @@ div.usercenter {
 					padding-left: 10px;
 					border: @border;
                     cursor: pointer;
-					background: url("@{images}/date.png") 95% center no-repeat;
+					background: url("@{usercenter}/date.png") 95% center no-repeat;
 				}
 				a {
 					width: 70px;
@@ -222,7 +224,7 @@ div.usercenter {
 		}
 
         //我要充值内容
-		.bank-chose-th, .bank-chose-tips {
+		.th-style {  //红灰双色标题样式
 			padding-bottom: 6px;
 			border-bottom: 2px solid @light-grey;
 			span {
@@ -232,6 +234,7 @@ div.usercenter {
 				border-bottom: 2px solid @red;
 			}
 		}
+		.bank-chose-th, .warm-tips { .th-style; }
 		.bank-select {
 			padding: 35px 15px 5px 135px;
 			li {
@@ -528,5 +531,132 @@ div.usercenter {
 
 		//回款计划内容
 
+
+	}
+
+	//个人中心
+	.personal-info-content {
+		width: 855px;
+		.th-style {  //红灰双色标题样式
+			padding-bottom: 11px;
+			border-bottom: 2px solid @light-grey;
+			span {
+				font-size: @font18;
+				color: @dark-grey;
+				padding-bottom: 12px;
+				border-bottom: 2px solid @red;
+			}
+		}
+		& > div {
+			width: 100%;
+			border: @border;
+			background: @white;
+		}
+		.personal-info {
+			padding: 15px 20px;
+			.personal-info-th {
+				.th-style;
+				color: @red;
+				a {
+					padding: 3px 8px;
+					text-decoration: none;
+					color: @white;
+					font-size: @font15;
+					background: @red;
+				}
+			}
+			.personal-info-list {
+				margin-top: 30px;
+				ul {
+					li {
+						width: 400px;
+						& > * { display: inline-block; }
+						span {
+							width: 75px;
+							color: @dark-grey;
+							text-align: right;
+							margin-right: 10px;
+						}
+						.input-box {
+							width: 200px;
+							height: 40px;
+							line-height: 40px;
+							border: @border;
+							border-radius: 4px;
+							margin-bottom: 15px;
+							padding-left: 10px;
+						}
+						form span { margin-right: 40px; }
+						.selectDist {
+							select {
+								height: 40px;
+								line-height: 45px;
+								border: @border;
+								border-radius: 4px;
+								margin-right: 5px;
+							}
+							& select:first-child, & select:first-child + select { width: 83px; }
+							& select:first-child + select + select { width: 120px; }
+						}
+					}
+				}
+			}
+			.btn-wrap {
+				text-align: center;
+				a {
+					display: inline-block;
+					margin: 13px auto;
+					width: 135px;
+					height: 35px;
+					line-height: 35px;
+					color: @white;
+					font-size: @font20;
+					text-decoration: none;
+					border-radius: 4px;
+					background: @red;
+				}
+			}
+		}
+		.safe-center {
+			margin-top: 25px;
+			padding: 15px 20px 56px 20px;
+			.safe-center-th { .th-style; }
+			.setting-list {
+				ul {
+					li {
+						padding: 0 25px;
+						line-height: 70px;
+						border-bottom: @border;
+						& > span { .inline-block; }
+						& span:first-child {
+							width: 25px;
+							height: 30px;
+							margin-right: 40px;
+							background-position: center;
+						}
+						.mail { background: url("@{safe}/mail.png") no-repeat; }
+						.phone { background: url("@{safe}/phone.png") no-repeat; }
+						.name { background: url("@{safe}/name.png") no-repeat; }
+						.psw-login { background: url("@{safe}/psw-login.png") no-repeat; }
+						.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
+						.list-th {
+							color: @dark-grey;
+							font-size: @font15;
+							font-weight: bold;
+							margin-right: 35px;
+						}
+						.list-tips {
+							color: @grey;
+							font-size: @font13;
+						}
+						.pull-right a {
+							color: @blue;
+							font-size: @font15;
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
 	}
 }

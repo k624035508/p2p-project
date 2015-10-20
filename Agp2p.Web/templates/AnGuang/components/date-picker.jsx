@@ -27,6 +27,6 @@ export default class DatePicker extends React.Component {
 		}).on("changeDate", (ev) => this.props.onTimeChange(ev.target.value));
 	}
 	render() {
-		return <input type="text" ref="picker" onBlur={(ev) => this.props.onTimeChange(ev.target.value) }/>;
+		return <input type="text" ref="picker" className={this.props.className} onBlur={(ev) => this.props.onTimeChange(ev.target.value) }/>;
 	}
 }

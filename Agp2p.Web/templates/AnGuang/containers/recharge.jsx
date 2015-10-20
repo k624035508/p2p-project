@@ -25,7 +25,7 @@ export default class RechargePage extends React.Component {
 				    <input type="text"/>
 				</div>
 				<div className="rechargeBtn"><a href="#">确认充值</a></div>
-				<div className="bank-chose-tips"><span>温馨提示</span></div>
+				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
 				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
 				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
