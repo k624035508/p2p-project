@@ -49,7 +49,8 @@ export default class TransactionTable extends React.Component {
                     </thead>
                     <tbody>
                     { this.state.data.map((tr, index) =>
-                        [<tr className="detailRow" onClick={ev => this.setState({currentShowRemarkIndex: index})} key={"a" + tr.id}>
+                        [<tr className="detailRow" onClick={ev => this.setState({currentShowRemarkIndex: this.state.currentShowRemarkIndex == index ? -1 : index})}
+                            key={"a" + tr.id}>
                             <td>{tr.type}</td>
                             <td>{tr.income}</td>
                             <td>{tr.outcome}</td>
