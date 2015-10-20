@@ -22,6 +22,7 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(10); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -77,7 +78,6 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
             rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
