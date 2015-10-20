@@ -624,6 +624,7 @@ div.usercenter {
 		.safe-center {
 			margin-top: 25px;
 			padding: 15px 20px 56px 20px;
+			* { font-size: @font15; }
 			.safe-center-th { .th-style; }
 			.setting-list {
 				ul {
@@ -646,7 +647,6 @@ div.usercenter {
 							.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
 							.list-th {
 								color: @dark-grey;
-								font-size: @font15;
 								font-weight: bold;
 								margin-right: 35px;
 							}
@@ -656,13 +656,12 @@ div.usercenter {
 							}
 							.pull-right a {
 								color: @blue;
-								font-size: @font15;
 								text-decoration: none;
 							}
 						}
 
 						//设置弹窗
-						.mail-setting-wrap {
+						.setting-wrap {
 							.cancel {
 								line-height: 30px;
 								padding: 0 10px 0 25px;
@@ -670,6 +669,11 @@ div.usercenter {
 								.th-setting {
 									color: @dark-grey;
 									font-size: @font15;
+									margin-right: 20px;
+								}
+								.tips {
+									color: @grey;
+									font-size: @font13;
 								}
 								.cancel-btn {
 									margin: 8px auto;
@@ -678,28 +682,78 @@ div.usercenter {
 									cursor: pointer;
 								}
 							}
-							.mail-setting {
+							.settings {
 								padding: 25px 0;
 								text-align: center;
+								.label-style { //设置label样式
+									color: @dark-grey;
+									font-weight: normal;
+									margin-right: 10px;
+								}
+								.input-style { //设置input公共样式
+									height: 30px;
+									line-height: 30px;
+									padding: 10px;
+									border: @border;
+									border-radius: 4px;
+								}
 								.form-group {
-
-									label {
-										color: @dark-grey;
-										font-weight: normal;
-										margin-right: 10px;
-									}
-									input#email {
+									label { .label-style; }
+									input {
 										width: 200px;
+										.input-style;
+									}
+								}
+								.code-group {
+									label { .label-style; }
+									input {
+										width: 95px;
+										.input-style;
+										margin-bottom: 20px;
+										margin-right: 5px;
+									}
+									span {
+										display: inline-block;
+										vertical-align: top;
+										width: 100px;
+										height: 30px;
+										line-height: 28px;
+										border: @border;
+										text-align: center;
+										margin-right: 8px;
+									}
+									a.img-change {
+										color: @blue;
+										font-size: @font13;
+									}
+									a.sms-code-btn {
+										display: inline-block;
+										vertical-align: top;
+										width: 100px;
 										height: 30px;
 										line-height: 30px;
-										padding: 10px;
-										border: @border;
-										border-radius: 4px;
+										text-decoration: none;
+										color: @blue;
+										background: @body-color;
+									}
+								}
+								.img-code-wrap { padding-left: 50px !important; }
+								.oldPhone {
+									& span:first-child {
+										color: @dark-grey;
+										margin-right: 10px;
+									}
+									.phoneNum {
+										display: inline-block;
+										width: 200px;
+										padding-left: 10px;
+										text-align: left;
+										margin-bottom: 20px;
 									}
 								}
 								.btn-wrap {
 									text-align: center;
-									padding-left: 15px;
+									padding-left: 20px;
 									a {
 										.submitBtn;
 										margin: 5px 0 0 0;
@@ -707,6 +761,7 @@ div.usercenter {
 								}
 							}
 						}
+						#phone-setting .settings .btn-wrap { padding-left: 35px !important; }
 					}
 				}
 			}
