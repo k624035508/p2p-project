@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { Link } from 'react-router'
 import $ from "jquery";
-import { connect } from 'react-redux';
+import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js"
 
 import StatusContainer from "../containers/user-status.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
@@ -15,6 +15,45 @@ class UserCenterPage extends React.Component {
 	componentDidUpdate() {
 		$(".inner-ul li.nav-active").removeClass("nav-active");
 		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
+	}
+	componentDidMount() {
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime } = $("#app").data();
+		var walletInfo = {
+			idleMoney : idleMoney.toNum(),
+			lockedMoney : lockedMoney.toNum(),
+			investingMoney : investingMoney.toNum(),
+			profitingMoney : profitingMoney.toNum()
+		};
+		this.props.dispatch(updateWalletInfo(walletInfo));
+		this.props.dispatch(updateUserInfo({ userName, prevLoginTime }));
+
+		// 得到焦点自动刷新余额
+		var _this = this, prevFetchTime = 0;
+		window.onfocus = function () { 
+			var fetchAt = new Date().getTime();
+			if (30000 < fetchAt - prevFetchTime) {
+				prevFetchTime = fetchAt;
+				_this.fetchUserInfo();
+			}
+		};
+	}
+	fetchUserInfo() {
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserInfo"
+		$.ajax({
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: "",
+            success: function(result) {
+                let data = JSON.parse(result.d);
+                this.props.dispatch(updateWalletInfo(data.walletInfo));
+                this.props.dispatch(updateUserInfo(data.userInfo));
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
 	}
 	render() {
 		return (
@@ -66,9 +105,11 @@ class UserCenterPage extends React.Component {
 }
 
 function mapStateToProps(state) {
+	var walletInfo = state.walletInfo;
 	return {
-		totalMoney: state.userInfo.totalMoney
+		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney
 	};
 }
 
+import { connect } from 'react-redux';
 export default connect(mapStateToProps)(UserCenterPage);

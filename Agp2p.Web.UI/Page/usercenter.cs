@@ -79,8 +79,29 @@ namespace Agp2p.Web.UI.Page
             }
 
             var wallet = userInfo.li_wallets;
-            var totalMoney = wallet.idle_money + wallet.investing_money + wallet.locked_money + wallet.profiting_money; // TODO 大于 1e6m 时不显示小数
-            return JsonConvert.SerializeObject(new {totalMoney, idleMoney = wallet.idle_money, lockedMoney = wallet.locked_money});
+            return JsonConvert.SerializeObject(new
+            {
+                walletInfo = new
+                {
+                    idleMoney = wallet.idle_money,
+                    lockedMoney = wallet.locked_money,
+                    investingMoney = wallet.investing_money,
+                    profitingMoney = wallet.profiting_money,
+                },
+                userInfo = new
+                {
+                    nickName = userInfo.nick_name,
+                    realName = userInfo.real_name,
+                    idCardNumber = userInfo.id_card_number,
+                    userInfo.mobile,
+                    userInfo.email,
+                    userInfo.qq,
+                    userInfo.sex,
+                    userInfo.birthday,
+                    userInfo.area,
+                    userInfo.address
+                }
+            });
         }
 
         [WebMethod]

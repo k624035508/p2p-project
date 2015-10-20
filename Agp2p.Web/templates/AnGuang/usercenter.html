@@ -27,7 +27,11 @@
 <div id="app" data-total-money="<%=GetTotalMoney()%>"
      data-user-name="<%=!string.IsNullOrEmpty(userModel.nick_name)?userModel.nick_name:userModel.user_name%>"
      data-prev-login-time="{pre_login_time}"
-     data-idle-money='<%=string.Format("{0:N}",userModel.li_wallets.idle_money)%>' data-locked-money='<%=string.Format("{0:N}",userModel.li_wallets.locked_money)%>'>
+     data-idle-money='<%=string.Format("{0:N}",userModel.li_wallets.idle_money)%>'
+     data-locked-money='<%=string.Format("{0:N}",userModel.li_wallets.locked_money)%>'
+     data-investing-money='<%=string.Format("{0:N}",userModel.li_wallets.investing_money)%>'
+     data-profiting-money='<%=string.Format("{0:N}",userModel.li_wallets.profiting_money)%>'
+     >
 </div>
 
 <!--footer-->

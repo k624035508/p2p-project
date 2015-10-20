@@ -1,9 +1,5 @@
 import React from "react";
 import { Link } from 'react-router'
-import $ from "jquery";
-import assign from "lodash/Object/assign"
-import refreshUserInfo from "../actions/usercenter.js"
-import { connect } from 'react-redux';
 
 /**
  * Number.prototype.format(n, x)
@@ -24,41 +20,6 @@ class UserStatus extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-	}
-	componentDidMount() {
-		var $mountNode = $("#app");
-		var nodeData = assign({}, $mountNode.data()); // 避免修改原 data
-		nodeData.totalMoney = nodeData.totalMoney.toNum();
-		nodeData.idleMoney = nodeData.idleMoney.toNum();
-		nodeData.lockedMoney = nodeData.lockedMoney.toNum();
-		this.props.dispatch(refreshUserInfo(nodeData));
-
-		// 得到焦点自动刷新余额
-		var _this = this, prevFetchTime = 0;
-		window.onfocus = function () { 
-			var fetchAt = new Date().getTime();
-			if (30000 < fetchAt - prevFetchTime) {
-				prevFetchTime = fetchAt;
-				_this.fetchUserInfo();
-			}
-		};
-	}
-	fetchUserInfo() {
-		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserInfo"
-		$.ajax({
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            url: url,
-            data: "",
-            success: function(result) {
-                let data = JSON.parse(result.d);
-                this.props.dispatch(refreshUserInfo(data));
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
 	}
 	render() {
 		return (
@@ -88,12 +49,14 @@ class UserStatus extends React.Component {
 }
 
 function mapStateToProps(state) {
+	var walletInfo = state.walletInfo, userInfo = state.userInfo;
 	return {
-		userName: state.userInfo.userName,
-		prevLoginTime: state.userInfo.prevLoginTime,
-		idleMoney: state.userInfo.idleMoney,
-		lockedMoney: state.userInfo.lockedMoney,
+		userName: userInfo.userName,
+		prevLoginTime: userInfo.prevLoginTime,
+		idleMoney: walletInfo.idleMoney,
+		lockedMoney: walletInfo.lockedMoney,
 	};
 }
 
+import { connect } from 'react-redux';
 export default connect(mapStateToProps)(UserStatus);
