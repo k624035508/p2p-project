@@ -37,8 +37,8 @@ namespace Agp2p.Web.admin.statistic
                 var m = DTRequest.GetQueryString("month");
 
                 txtKeywords.Text = keywords;
-                txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
-                txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
+                txtYear.Text = y == "" ? "-" : y;
+                txtMonth.Text = m == "" ? "-" : m;
                 RptBind();
             }
         }
