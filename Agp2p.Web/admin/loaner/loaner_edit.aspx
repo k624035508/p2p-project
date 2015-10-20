@@ -62,7 +62,7 @@
 <div class="tab-content">
   <dl>
     <dt>姓名</dt>
-      <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="False"/><span class="Validform_checktip">要修改灰色字段请在会员管理页面修改</span></dd>
+      <dd><asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="False"/><span class="Validform_checktip">用户姓名或账号</span></dd>
   </dl>
   <dl>
     <dt>性别</dt>
@@ -78,7 +78,7 @@
   </dl>
   <dl>
     <dt>电话</dt>
-    <dd><asp:TextBox ID="txtTel" runat="server" CssClass="input normal" Enabled="False"></asp:TextBox><span class="Validform_checktip"> 11位手机号</span></dd>
+    <dd><asp:TextBox ID="txtTel" runat="server" CssClass="input normal" Enabled="False"></asp:TextBox><span class="Validform_checktip"> 要修改灰色字段请在会员管理页面修改</span></dd>
   </dl>
   <dl>
     <dt>身份证号码</dt>

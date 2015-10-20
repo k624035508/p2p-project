@@ -5,7 +5,7 @@ import isEqual from "lodash/lang/isEqual"
 export default class TransactionTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {data: []};
+        this.state = {data: [], currentShowRemarkIndex: -1};
     }
     componentWillReceiveProps(nextProps) {
         if (!isEqual(this.props, nextProps)) {
@@ -22,7 +22,7 @@ export default class TransactionTable extends React.Component {
             data: JSON.stringify({type: type, pageIndex: pageIndex, pageSize: pageSize, startTime: startTime, endTime: endTime}),
             success: function(result) {
                 let {totalCount, data} = JSON.parse(result.d);
-                this.setState({data: data});
+                this.setState({data: data, currentShowRemarkIndex: -1});
                 this.props.onPageLoaded(Math.ceil(totalCount / pageSize));
             }.bind(this),
             error: function(xhr, status, err) {
@@ -32,11 +32,6 @@ export default class TransactionTable extends React.Component {
     }
     componentDidMount() {
         this.fetch(this.props.type, this.props.pageIndex);
-    }
-    onDetailRowClick(index) {
-        var tmp = this.state.data;
-        tmp[index].showRemark = !tmp[index].showRemark;
-        this.setState({data: tmp});
     }
     render() {
         return (
@@ -54,16 +49,17 @@ export default class TransactionTable extends React.Component {
                     </thead>
                     <tbody>
                     { this.state.data.map((tr, index) =>
-                        [<tr className="detailRow" onClick={ev => this.onDetailRowClick(index)} key={"a" + tr.id}>
+                        [<tr className="detailRow" onClick={ev => this.setState({currentShowRemarkIndex: this.state.currentShowRemarkIndex == index ? -1 : index})}
+                            key={"a" + tr.id}>
                             <td>{tr.type}</td>
                             <td>{tr.income}</td>
                             <td>{tr.outcome}</td>
                             <td>{tr.idleMoney}</td>
                             <td>{tr.createTime}</td>
-                            <td>详情 <span className={"glyphicon glyphicon-triangle-bottom " + (tr.showRemark ? "glyphicon-triangle-top" : "") }
+                            <td>详情 <span className={"glyphicon glyphicon-triangle-bottom " + (this.state.currentShowRemarkIndex == index ? "glyphicon-triangle-top" : "") }
                                 data-toggle="glyphicon-triangle-top"></span></td>
                         </tr>,
-                        <tr className="detailMark" key={"b" + tr.id} style={ tr.showRemark ? {display: "table-row"} : {display: "none"} }
+                        <tr className="detailMark" key={"b" + tr.id} style={ this.state.currentShowRemarkIndex == index ? {display: "table-row"} : {display: "none"} }
                             ><td colSpan="6">备注：{tr.remark}</td></tr>]
                     ) }
                     </tbody>

@@ -35,6 +35,10 @@ namespace Agp2p.Web.admin.loaner
                     return;
                 }
             }
+            else // Add
+            {
+                txtName.Enabled = true;
+            }
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.View.ToString()); //检查权限
@@ -95,19 +99,27 @@ namespace Agp2p.Web.admin.loaner
         #region 增加操作=================================
         private bool DoAdd()
         {
-            //var check = context.li_loaners.FirstOrDefault(q => q.id_card_number == txtIdCardNumber.Text.Trim()); //检测用户名是否重复
-            //if (check != null)
-            //{
-            //    JscriptMsg("身份证号重复！", "", "Error");
-            //    return false;
-            //}
+            // 查找用户
+            var users = context.dt_users.Where(u => u.real_name == txtName.Text || u.user_name == txtName.Text).Take(2);
+            if (!users.Any())
+            {
+                JscriptMsg("不存在该用户", "", "Error");
+                return false;
+            }
+            else if (users.Count() == 2)
+            {
+                JscriptMsg("此姓名匹配了多个用户，请输入会员账号（手机号）来匹配", "", "Error");
+                return false;
+            }
             var model = new li_loaners
             {
+                dt_users = users.First(),
                 //name = txtName.Text.Trim(),
                 //tel = txtTel.Text.Trim(),
                 age = Convert.ToInt16(txtAge.Text.Trim()),
                 //gender = Convert.ToByte(rblGender.SelectedValue),
                 //cencus = txtCencus.Text.Trim(),
+                native_place = txtCencus.Text.Trim(),
                 job = txtJob.Text.Trim(),
                 working_at = txtWorkingAt.Text.Trim(),
                 working_company = txtWorkingUnit.Text.Trim(),

@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>线上投资项目明细表</title>
+<title>应还款明细</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -25,7 +25,7 @@ td.center { text-align: center; }
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>线上投资项目明细表</span>
+  <span>应还款明细</span>
 </div>
 <!--/导航栏-->
 
@@ -43,8 +43,8 @@ td.center { text-align: center; }
                 <div class="menu-list" style="display: inline-block; float: left; margin-right: 8px; margin-left: 8px;">
                     <div class="rule-single-select">
                         <asp:DropDownList ID="ddlOrderBy" AutoPostBack="True" runat="server" OnSelectedIndexChanged="ddlOrderBy_SelectedIndexChanged">
-                            <asp:ListItem Text="满标时间" Value="invest_complete_time" Selected="True"></asp:ListItem>
-                            <asp:ListItem Text="还款时间" Value="should_repay_time"></asp:ListItem>
+                            <asp:ListItem Text="还款时间" Value="should_repay_time" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="满标时间" Value="invest_complete_time" ></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -61,8 +61,8 @@ td.center { text-align: center; }
                 <div style="display: inline-block; padding-left: 2em;" class="rl">状态：</div>
                 <div class="rule-multi-radio" style="display: inline-block;float: left; margin-right:10px;">
                     <asp:RadioButtonList ID="rblRepaymentStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblRepaymentStatus_OnSelectedIndexChanged">
-                        <asp:ListItem Value="0" Selected="True">不限</asp:ListItem>
-                        <asp:ListItem Value="1">待还款</asp:ListItem>
+                        <asp:ListItem Value="0">不限</asp:ListItem>
+                        <asp:ListItem Value="1" Selected="True">待还款</asp:ListItem>
                         <asp:ListItem Value="10">已还款</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
@@ -82,40 +82,39 @@ td.center { text-align: center; }
   <tr>
     <th width="5%">序号</th>
     <th align="left">项目名称</th>
+    <th align="center">债权/借款人</th>
+    <th align="center">产品</th>
     <th align="right">融资金额</th>
     <th align="center">年利率</th>
-    <th align="left">期限</th>
-
-    <th align="left">满标日</th>
-    <th align="left">到期日</th>
-    <th align="left">应付本息时间</th>
+    <th align="center">期限</th>
+    <th align="center">满标时间</th>
+    <th align="center">到期日</th>
+    <th align="center">期数</th>
+    <th align="center">应还时间</th>
     <th align="left">状态</th>
-    <th align="right">应付本金</th>
-
-    <th align="right">应付利息</th>
+    <th align="right">应还本金</th>
+    <th align="right">应还利息</th>
     <th align="right">本息合计</th>
-    <th align="center">对应借款合同号</th>
-    <th align="left">债权人</th>
+    
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
   <tr>
     <td class="center"><%# Eval("Project.Index")%></td>
     <td><%# Eval("Project.Name")%></td>
+    <td align="center"><%# Eval("Project.Creditor")%></td>
+    <td align="center"><%#Eval("Project.Category")%></td>
     <td class="money"><%# Eval("Project.FinancingAmount") != null ? Convert.ToDecimal(Eval("Project.FinancingAmount")).ToString("c") : "" %></td>
     <td class="center"><%# Eval("Project.ProfitRateYear")%></td>
-    <td><%# Eval("Project.Term")%></td>
-    <td><%# Eval("Project.InvestCompleteTime")%></td>
-    <td><%# Eval("Project.RepayCompleteTime")%></td>
-
-    <td><%# Eval("RepayTime")%></td>
+    <td align="center"><%# Eval("Project.Term")%></td>
+    <td align="center"><%# Eval("Project.InvestCompleteTime")%></td>
+    <td align="center"><%# Eval("Project.RepayCompleteTime") != null ? ((DateTime)Eval("Project.RepayCompleteTime")).ToString("yyyy-MM-dd") : ""%></td>
+    <td align="center"><%# Eval("RepayTerm")%></td>
+    <td align="center"><%# ((DateTime)Eval("RepayTime")).ToString("yyyy-MM-dd")%></td>
     <td><%# Eval("Status")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayInterest")).ToString("c")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayTotal")).ToString("c")%></td>
-
-    <td class="center"><%# Eval("Project.LoanContractNumber")%></td>
-    <td><%# Eval("Project.Creditor")%></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
