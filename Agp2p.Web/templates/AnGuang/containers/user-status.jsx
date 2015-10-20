@@ -62,7 +62,7 @@ class UserStatus extends React.Component {
 	}
 	render() {
 		return (
-			<div className="content-right pull-right">
+			<div className="content-right">
 		        <div className="overview-head">
 		            <div className="head-left">
 		                <p className="username">您好！ {this.props.userName}</p>
@@ -82,7 +82,7 @@ class UserStatus extends React.Component {
 		        <div className="content-body">
 		        {this.props.children}
 		        </div>
-		    </div>
+			</div>
 		);
 	}
 }

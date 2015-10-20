@@ -7,12 +7,14 @@
 body { background: @body-color; }
 div.usercenter {
 	& > div {
-		.inline-block;
-		height: 877px;
+		display: inline-block;
+		vertical-align: top;
+		min-height: 877px;
 	}
 	.nav-left {
 		border: 1px solid @red;
 		width: 230px;
+		margin-right: 15px;
 		.total-account {
 			height: 180px;
 			background: @red;
@@ -136,6 +138,7 @@ div.usercenter {
 
 		.content-body {
 			padding: 30px 25px;
+			height: 699px;
 			nav {
 				text-align: center;
 				.pagination {
@@ -537,6 +540,18 @@ div.usercenter {
 	//个人中心
 	.personal-info-content {
 		width: 855px;
+		.submitBtn { //个人中心页面提交按钮样式
+			display: inline-block;
+			margin: 13px auto;
+			width: 135px;
+			height: 35px;
+			line-height: 35px;
+			color: @white;
+			font-size: @font20;
+			text-decoration: none;
+			border-radius: 4px;
+			background: @red;
+		}
 		.th-style {  //红灰双色标题样式
 			padding-bottom: 11px;
 			border-bottom: 2px solid @light-grey;
@@ -603,18 +618,7 @@ div.usercenter {
 			}
 			.btn-wrap {
 				text-align: center;
-				a {
-					display: inline-block;
-					margin: 13px auto;
-					width: 135px;
-					height: 35px;
-					line-height: 35px;
-					color: @white;
-					font-size: @font20;
-					text-decoration: none;
-					border-radius: 4px;
-					background: @red;
-				}
+				a { .submitBtn; }
 			}
 		}
 		.safe-center {
@@ -624,35 +628,84 @@ div.usercenter {
 			.setting-list {
 				ul {
 					li {
-						padding: 0 25px;
-						line-height: 70px;
-						border-bottom: @border;
-						& > span { .inline-block; }
-						& span:first-child {
-							width: 25px;
-							height: 30px;
-							margin-right: 40px;
-							background-position: center;
+						border-bottom: @border-dashed;
+						.list-cell {
+							padding: 0 10px 0 25px;
+							line-height: 70px;
+							& > span { .inline-block; }
+							& span:first-child {
+								width: 25px;
+								height: 30px;
+								margin-right: 40px;
+								background-position: center;
+							}
+							.mail { background: url("@{safe}/mail.png") no-repeat; }
+							.phone { background: url("@{safe}/phone.png") no-repeat; }
+							.name { background: url("@{safe}/name.png") no-repeat; }
+							.psw-login { background: url("@{safe}/psw-login.png") no-repeat; }
+							.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
+							.list-th {
+								color: @dark-grey;
+								font-size: @font15;
+								font-weight: bold;
+								margin-right: 35px;
+							}
+							.list-tips {
+								color: @grey;
+								font-size: @font13;
+							}
+							.pull-right a {
+								color: @blue;
+								font-size: @font15;
+								text-decoration: none;
+							}
 						}
-						.mail { background: url("@{safe}/mail.png") no-repeat; }
-						.phone { background: url("@{safe}/phone.png") no-repeat; }
-						.name { background: url("@{safe}/name.png") no-repeat; }
-						.psw-login { background: url("@{safe}/psw-login.png") no-repeat; }
-						.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
-						.list-th {
-							color: @dark-grey;
-							font-size: @font15;
-							font-weight: bold;
-							margin-right: 35px;
-						}
-						.list-tips {
-							color: @grey;
-							font-size: @font13;
-						}
-						.pull-right a {
-							color: @blue;
-							font-size: @font15;
-							text-decoration: none;
+
+						//设置弹窗
+						.mail-setting-wrap {
+							.cancel {
+								line-height: 30px;
+								padding: 0 10px 0 25px;
+								background: @body-color;
+								.th-setting {
+									color: @dark-grey;
+									font-size: @font15;
+								}
+								.cancel-btn {
+									margin: 8px auto;
+									font-size: @font13;
+									color: @grey;
+									cursor: pointer;
+								}
+							}
+							.mail-setting {
+								padding: 25px 0;
+								text-align: center;
+								.form-group {
+
+									label {
+										color: @dark-grey;
+										font-weight: normal;
+										margin-right: 10px;
+									}
+									input#email {
+										width: 200px;
+										height: 30px;
+										line-height: 30px;
+										padding: 10px;
+										border: @border;
+										border-radius: 4px;
+									}
+								}
+								.btn-wrap {
+									text-align: center;
+									padding-left: 15px;
+									a {
+										.submitBtn;
+										margin: 5px 0 0 0;
+									}
+								}
+							}
 						}
 					}
 				}

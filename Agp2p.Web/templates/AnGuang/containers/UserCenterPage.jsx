@@ -59,6 +59,7 @@ class UserCenterPage extends React.Component {
 			        </ul>
 			    </div>
 		        {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
+
 			</div>
 		);
 	}
