@@ -102,7 +102,7 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
     <td><%# Eval("RepaymentTask.InvestCompleteTime")%></td>
     <td><%# Eval("RepaymentTask.RepayCompleteTime")%></td>
     <td><%# Eval("RepaymentTask.Term")%></td>
-    <td><%# Eval("RepaymentTask.RepayAt")%></td>
+    <td><%# Eval("RepaymentTask.ShouldRepayAt")%></td>
     <td align="center"><%# Eval("RepaymentTask.OverTimeDay")%></td>
     <td><%# Eval("InvestorRealName") != null && Eval("InvestorRealName") != "" ? Eval("InvestorRealName") : Eval("InvestorUserName")%></td>
     <%--<td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>

@@ -122,11 +122,11 @@ namespace Agp2p.Web.admin.statistic
             var query2 = query1.GroupBy(rt => rt.project);
             if (ddlOrderBy.SelectedValue == "invest_complete_time")
             {
-                query2 = query2.OrderBy(g => g.First().li_projects.invest_complete_time);
+                query2 = query2.OrderBy(g => g.First(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid).li_projects.invest_complete_time);
             }
             else if (ddlOrderBy.SelectedValue == "should_repay_time")
             {
-                query2 = query2.OrderBy(g => g.First().should_repay_time);
+                query2 = query2.OrderBy(g => g.First(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid).should_repay_time);
             }
 
             return query2.AsEnumerable().Zip(Utils.Infinite(1), (rg, i) => new {rg, i}).SelectMany(rgi =>

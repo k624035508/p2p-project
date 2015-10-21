@@ -46,7 +46,7 @@ namespace Agp2p.Web.admin.statistic
         protected class RepaymentTaskDetail
         {
             public string Index { get; set; }
-            public string RepayAt { get; set; }
+            public string ShouldRepayAt { get; set; }
             public string ProjectName { get; set; }
             public string CreditorName { get; set; }
             public decimal? FinancingAmount { get; set; }
@@ -112,9 +112,9 @@ namespace Agp2p.Web.admin.statistic
             if (txtMonth.Text != "-")
                 query = query.Where(t => t.should_repay_time.Month == Convert.ToInt32(txtMonth.Text));
 
-            var appendedSums =
-                query.OrderBy(r => r.should_repay_time)
-                    .AsEnumerable()
+            var sorted = query.OrderBy(r => r.should_repay_time).AsEnumerable();
+
+            var appendedSums = sorted
                     .Zip(Utils.Infinite(1), (repayment, index) => new {repayment, index})
                     .SelectMany(ri =>
                     {
@@ -163,7 +163,7 @@ namespace Agp2p.Web.admin.statistic
                             Index = ri.index.ToString(),
                             ProjectName = pro.title,
                             Category = CategoryIdTitleMap[pro.category_id],
-                            RepayAt = r.repay_at == null ? r.should_repay_time.ToString("yyyy-MM-dd") : ((DateTime)r.repay_at).ToString("yyyy-MM-dd"),
+                            ShouldRepayAt = r.should_repay_time.ToString("yyyy-MM-dd"),
                             CreditorName = pro.li_risks.li_creditors == null ? pro.li_risks.li_loaners.dt_users.real_name : pro.li_risks.li_creditors.dt_users.real_name,
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
@@ -301,7 +301,7 @@ namespace Agp2p.Web.admin.statistic
             var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
             {
                 d.RepaymentTask.Index,
-                d.RepaymentTask.RepayAt,
+                d.RepaymentTask.ShouldRepayAt,
                 d.RepaymentTask.ProjectName,
                 d.RepaymentTask.CreditorName,
                 d.RepaymentTask.FinancingAmount,
@@ -318,7 +318,7 @@ namespace Agp2p.Web.admin.statistic
                 d.RepayTotal
             });
             var titles = new[] {
-                "序号", "返还时间", "项目名称", "债权人", "项目总金额", "年利率", "期限", "满标日", "到期日", "投资人姓名", "会员号", "投资金额", "投资时间", "返还本金", "返还利息", "返还本息合计"
+                "序号", "应还时间", "项目名称", "债权人", "项目总金额", "年利率", "期限", "满标日", "到期日", "投资人姓名", "会员号", "投资金额", "投资时间", "返还本金", "返还利息", "返还本息合计"
             };
             Utils.ExportXls("项目投资人兑付明细", titles, lsData, Response);
         }
