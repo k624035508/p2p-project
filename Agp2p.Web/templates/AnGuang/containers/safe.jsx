@@ -61,14 +61,14 @@ class SafeCenter extends React.Component {
 					<div className="personal-info-th">
 						<span>个人信息</span>
 						<a href="javascript:;" onClick={ev => this.setState({editing: !this.state.editing })}
-							className="pull-right">{this.state.editing ? "取消修改" : "修改"}</a>
+							className="pull-right">{this.state.editing ? "取消修改" : "修改信息"}</a>
 					</div>
 					<div className="personal-info-list">
 						<ul className="list-unstyled list-inline">
-							<li><span>用户名：</span>{ this.props.userName }</li>
-							<li><span>昵称：</span>{ this.genInputBox("nickName") }</li>
-							<li><span>姓名：</span>{ this.props.realName }</li>
-							<li><span>性别：</span>{ this.state.editing
+							<li><span>用 户 名：</span>{ this.props.userName }</li>
+							<li><span>昵　　称：</span>{ this.genInputBox("nickName") }</li>
+							<li><span>姓　　名：</span>{ this.props.realName }</li>
+							<li><span>性　　别：</span>{ this.state.editing
 								? <form>{ ["保密", "男", "女"].map(v =>
 									[<input type="radio" name="sex" value={v} key={v} checked={this.props.sex == v}
 										onChange={ev => this.onUserInfoModify("sex", v)} />, v])}</form>
@@ -78,7 +78,7 @@ class SafeCenter extends React.Component {
 								? <DatePicker className="input-box" onBlur={ev => this.onUserInfoModify("birthday", ev.target.value)}
 									defaultValue={this.props.birthday} />
 								: this.props.birthday }</li>
-							<li><span>QQ号码：</span>{ this.genInputBox("qq") }</li>
+							<li><span>QQ 号码：</span>{ this.genInputBox("qq") }</li>
 							<li><span>所在城市：</span>{ this.state.editing
 								? <CityPicker defaultValue={this.props.area.split(",")}
 									onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
@@ -131,17 +131,17 @@ class SafeCenter extends React.Component {
 											<span className="phoneNum">13590609455</span>
 										</div>
 										<div className="form-group">
-											<label for="phone">新手机号码：</label>
+											<label htmlFor="phone">新手机号码：</label>
 											<input type="text" id="phone" />
 										</div>
 										<div className="code-group img-code-wrap">
-											<label for="img-code">图形验证码：</label>
+											<label htmlFor="img-code">图形验证码：</label>
 											<input type="text" id="img-code" />
 											<span>图形验证码</span>
 											<a href="#" className="img-change">换一张</a>
 										</div>
 										<div className="code-group">
-											<label for="sms-code">短信验证码：</label>
+											<label htmlFor="sms-code">短信验证码：</label>
 											<input type="text" id="sms-code" />
 											<a href="#" className="sms-code-btn">获取验证码</a>
 										</div>
@@ -164,11 +164,11 @@ class SafeCenter extends React.Component {
 									</div>
 									<div className="settings">
 										<div className="form-group">
-											<label for="email">真实姓名：</label>
+											<label htmlFor="email">真实姓名：</label>
 											<input type="text" id="email" />
 										</div>
 										<div className="form-group">
-											<label for="personalID">身份证号：</label>
+											<label htmlFor="personalID">身份证号：</label>
 											<input type="text" id="personalID" />
 										</div>
 										<div className="btn-wrap"><a href="#">提 交</a></div>
@@ -189,15 +189,15 @@ class SafeCenter extends React.Component {
 									</div>
 									<div className="settings">
 										<div className="form-group">
-											<label for="pswLogin">原密码：</label>
+											<label htmlFor="pswLogin">原密码：</label>
 											<input type="text" id="pswLogin" />
 										</div>
 										<div className="form-group">
-											<label for="pswLogin-new">新密码：</label>
+											<label htmlFor="pswLogin-new">新密码：</label>
 											<input type="text" id="pswLogin-new" />
 										</div>
 										<div className="form-group pswLogin-new-confirm">
-											<label for="pswLogin-new2">确认新密码：</label>
+											<label htmlFor="pswLogin-new2">确认新密码：</label>
 											<input type="text" id="pswLogin-new2" />
 										</div>
 										<div className="btn-wrap"><a href="#">提 交</a></div>
@@ -219,15 +219,15 @@ class SafeCenter extends React.Component {
 									</div>
 									<div className="settings">
 										<div className="form-group">
-											<label for="pswTrade">原交易密码：</label>
+											<label htmlFor="pswTrade">原交易密码：</label>
 											<input type="text" id="pswTrade" />
 										</div>
 										<div className="form-group">
-											<label for="pswTrade-new">新交易密码：</label>
+											<label htmlFor="pswTrade-new">新交易密码：</label>
 											<input type="text" id="pswTrade-new" />
 										</div>
 										<div className="form-group pswTrade-new-confirm">
-											<label for="pswTrade-new2">确认新交易密码：</label>
+											<label htmlFor="pswTrade-new2">确认新交易密码：</label>
 											<input type="text" id="pswTrade-new2" />
 										</div>
 										<div className="btn-wrap"><a href="#">提 交</a></div>

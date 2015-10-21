@@ -20,6 +20,7 @@ import InvestRecordPage from "../containers/invest-record.jsx"
 import MyRepaymentsPage from "../containers/myrepayments.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
 import SafeCenterPage from "../containers/safe.jsx"
+import BankAccountPage from "../containers/bankaccount.jsx"
 
 import { setHeaderHighlight } from "./header.js"
 
@@ -37,7 +38,8 @@ $(function(){
 				    	<Route path="/invest-record" component={InvestRecordPage}/>
 				    	<Route path="/myrepayments" component={MyRepaymentsPage}/>
 				    	<Route path="/myaccount" component={MyAccountPage}/>
-		    		</Route>
+						<Route path="/bankaccount" component={BankAccountPage}/>
+					</Route>
 			    	<Route path="/safe" component={SafeCenterPage}/>
 		    	</Route>
 	    	</Router>

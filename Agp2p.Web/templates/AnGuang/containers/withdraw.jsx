@@ -50,7 +50,7 @@ class AppendingCardDialog extends React.Component {
 						<div className="modal-body">
 							<ul className="list-unstyled">
 								<li><span>开户名：</span><span>（实名认证后的姓名）</span></li>
-								<li><span>选择银行：</span><select id="bankSelect" onChange={ev => this.setState({bank: ev.target.value})}>
+								<li><span>选择银行：</span><select className="bankSelect" onChange={ev => this.setState({bank: ev.target.value})}>
 									<option value="">请选择银行</option>
 									{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
 									</select></li>

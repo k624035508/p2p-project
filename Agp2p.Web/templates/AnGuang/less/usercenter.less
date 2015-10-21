@@ -6,6 +6,112 @@
 
 body { background: @body-color; }
 div.usercenter {
+	//红灰双色底线灰色标题样式
+	.th-grey-style {
+		padding-bottom: 6px;
+		border-bottom: 2px solid @light-grey;
+		span {
+			font-size: @font18;
+			color: @dark-grey;
+			padding-bottom: 7px;
+			border-bottom: 2px solid @red;
+		}
+	}
+	//红灰双色底线红色标题样式
+	.th-red-style {
+		padding-bottom: 11px;
+		border-bottom: 2px solid @light-grey;
+		span {
+			font-size: @font18;
+			color: @dark-grey;
+			padding-bottom: 12px;
+			border-bottom: 2px solid @red;
+		}
+	}
+	//银行卡图标-大，应用于提现页面以及银行账户页面
+	.zhonghang { background: url("@{withdraw}/zhonghang.png"); }
+	.gonghang { background: url("@{withdraw}/gonghang.png"); }
+	.jianhang { background: url("@{withdraw}/jianhang.png"); }
+	.nonghang { background: url("@{withdraw}/nonghang.png"); }
+	.zhaohang { background: url("@{withdraw}/zhaohang.png"); }
+	.youzheng { background: url("@{withdraw}/youzheng.png"); }
+	.guangda { background: url("@{withdraw}/guangda.png"); }
+	.zhongxin { background: url("@{withdraw}/zhongxin.png"); }
+	.pufa { background: url("@{withdraw}/pufa.png"); }
+	.minsheng { background: url("@{withdraw}/minsheng.png"); }
+	.guangfa { background: url("@{withdraw}/guangfa.png"); }
+	.xingye { background: url("@{withdraw}/xingye.png"); }
+	.jiaohang { background: url("@{withdraw}/jiaohang.png"); }
+	.huaxia { background: url("@{withdraw}/huaxia.png"); }
+	.pingan {
+		background: url("@{withdraw}/pingan.png");
+		p { padding-left: 75px !important; }
+	}
+	////银行卡图标-大之窗口li及文本样式
+	.bank-icon-container {
+		width: 200px;
+		height: 50px;
+		background-repeat: no-repeat;
+		vertical-align: top;
+		cursor: pointer;
+		p {
+			margin: 4px 0 0 0;
+			padding-left: 65px;
+			span {
+				font-size: @font12;
+				color: @grey;
+			}
+		}
+	}
+	// 增加新银行卡表单样式
+	.add-cards-form {
+		ul {
+			li {
+				margin: 16px 0;
+				& span:first-child {
+					.inline-block;
+					width: 105px;
+					text-align: right;
+					margin-right: 20px;
+					font-size: @font15;
+					color: @dark-grey;
+				}
+				.bankSelect, input {
+					width: 200px;
+					height: 40px;
+					line-height: 40px;
+					padding-left: 10px;
+					border: @border;
+					border-radius: 4px;
+					option { margin: 8px 0; }
+				}
+				.selectDist {
+					display: inline-block;
+					.form-control-custom {
+						display: inline-block;
+						width: 120px;
+						height: 40px;
+						line-height: 39px;
+						margin-right: 10px;
+						padding-left: 8px;
+						border: @border;
+						border-radius: 4px;
+					}
+				}
+			}
+		}
+		button {
+			width: 100px;
+			height: 35px;
+			margin: 10px 0 30px 125px;
+			color: @white;
+			font-size: @font15;
+			border: none;
+			border-radius: 4px;
+			background: @red;
+		}
+	}
+
 	& > div {
 		display: inline-block;
 		vertical-align: top;
@@ -63,6 +169,7 @@ div.usercenter {
 				&:hover, &:focus, &.nav-active {
 					background: #e1e1e1;
 					border-left: 3px solid @red;
+					a { outline: 0; }
 				}
 			}
 		}
@@ -227,17 +334,7 @@ div.usercenter {
 		}
 
         //我要充值内容
-		.th-style {  //红灰双色标题样式
-			padding-bottom: 6px;
-			border-bottom: 2px solid @light-grey;
-			span {
-				font-size: @font18;
-				color: @dark-grey;
-				padding-bottom: 7px;
-				border-bottom: 2px solid @red;
-			}
-		}
-		.bank-chose-th, .warm-tips { .th-style; }
+		.bank-chose-th, .warm-tips { .th-grey-style; }
 		.bank-select {
 			padding: 35px 15px 5px 135px;
 			li {
@@ -386,42 +483,14 @@ div.usercenter {
 				.ul-withdraw {
 					margin-left: 0;
 					& > li {
-						width: 200px;
-						height: 50px;
-						background-repeat: no-repeat;
-						margin-right: 20px;
-						margin-bottom: 25px;
-						cursor: pointer;
-						vertical-align: top;
-						p {
-							margin: 4px 0 0 0;
-							padding-left: 65px;
-						}
-						.card-num span {
-							font-size: @font12;
-							color: @grey;
-						}
+						.bank-icon-container;
+						margin: 0 20px 25px 0;
 						img {
 							position: relative;
 							margin-top: -68px;
 							margin-left: -5px;
 						}
 					}
-					.zhonghang { background: url("@{withdraw}/zhonghang.png"); }
-					.gonghang { background: url("@{withdraw}/gonghang.png"); }
-					.jianhang { background: url("@{withdraw}/jianhang.png"); }
-					.nonghang { background: url("@{withdraw}/nonghang.png"); }
-					.zhaohang { background: url("@{withdraw}/zhaohang.png"); }
-					.youzheng { background: url("@{withdraw}/youzheng.png"); }
-					.guangda { background: url("@{withdraw}/guangda.png"); }
-					.zhongxin { background: url("@{withdraw}/zhongxin.png"); }
-					.pufa { background: url("@{withdraw}/pufa.png"); }
-					.minsheng { background: url("@{withdraw}/minsheng.png"); }
-					.guangfa { background: url("@{withdraw}/guangfa.png"); }
-					.xingye { background: url("@{withdraw}/xingye.png"); }
-					.pingan { background: url("@{withdraw}/pingan.png"); }
-					.jiaohang { background: url("@{withdraw}/jiaohang.png"); }
-					.huaxia { background: url("@{withdraw}/huaxia.png"); }
 					.add-card {
 						text-align: center;
 						line-height: 50px;
@@ -434,56 +503,12 @@ div.usercenter {
 					.modal-content {
 						width: 600px;
 						padding: 0 25px;
+						left: 50%;
+						margin-left: -305px;
 						.modal-header {
 							h4 { font-weight: bold; }
 						}
-						.modal-body {
-							ul {
-								li {
-									margin: 16px 0;
-									& span:first-child {
-										.inline-block;
-										width: 105px;
-										text-align: right;
-										margin-right: 20px;
-										font-size: @font15;
-										color: @dark-grey;
-									}
-									#bankSelect, input {
-										width: 200px;
-										height: 40px;
-										line-height: 40px;
-										padding-left: 10px;
-										border: @border;
-										border-radius: 4px;
-										option { margin: 8px 0; }
-									}
-									.selectDist {
-										display: inline-block;
-										.form-control-custom {
-											display: inline-block;
-											width: 120px;
-											height: 40px;
-											line-height: 40px;
-											margin-right: 10px;
-											padding: 6px 8px;
-											border: @border;
-											border-radius: 4px;
-										}
-									}
-								}
-							}
-							button {
-								width: 100px;
-								height: 35px;
-								margin: 20px 0 30px 125px;
-								color: @white;
-								font-size: @font15;
-								border: none;
-								border-radius: 4px;
-								background: @red;
-							}
-						}
+						.modal-body { .add-cards-form; }
 					}
 				}
 			}
@@ -552,16 +577,6 @@ div.usercenter {
 			border-radius: 4px;
 			background: @red;
 		}
-		.th-style {  //红灰双色标题样式
-			padding-bottom: 11px;
-			border-bottom: 2px solid @light-grey;
-			span {
-				font-size: @font18;
-				color: @dark-grey;
-				padding-bottom: 12px;
-				border-bottom: 2px solid @red;
-			}
-		}
 		& > div {
 			width: 100%;
 			border: @border;
@@ -570,7 +585,7 @@ div.usercenter {
 		.personal-info {
 			padding: 15px 20px;
 			.personal-info-th {
-				.th-style;
+				.th-red-style;
 				color: @red;
 				a {
 					padding: 3px 8px;
@@ -581,16 +596,19 @@ div.usercenter {
 				}
 			}
 			.personal-info-list {
-				margin-top: 30px;
+				margin: 25px 0 15px 0;
+				padding-left: 15px;
+				font-size: @font15;
 				ul {
 					li {
 						width: 400px;
+						margin: 7px 0;
 						& > * { display: inline-block; }
-						span {
+						& span:first-child {
 							width: 75px;
 							color: @dark-grey;
 							text-align: right;
-							margin-right: 10px;
+							margin: 5px 10px 5px 0;
 						}
 						.input-box {
 							width: 200px;
@@ -598,17 +616,17 @@ div.usercenter {
 							line-height: 40px;
 							border: @border;
 							border-radius: 4px;
-							margin-bottom: 15px;
 							padding-left: 10px;
 						}
 						form span { margin-right: 40px; }
 						.selectDist {
 							select {
 								height: 40px;
-								line-height: 45px;
+								line-height: 39px;
 								border: @border;
 								border-radius: 4px;
 								margin-right: 5px;
+								padding-left: 10px;
 							}
 							& select:first-child, & select:first-child + select { width: 83px; }
 							& select:first-child + select + select { width: 120px; }
@@ -625,7 +643,7 @@ div.usercenter {
 			margin-top: 25px;
 			padding: 15px 20px 56px 20px;
 			* { font-size: @font15; }
-			.safe-center-th { .th-style; }
+			.safe-center-th { .th-red-style; }
 			.setting-list {
 				ul {
 					li {
@@ -692,8 +710,8 @@ div.usercenter {
 								}
 								.input-style { //设置input公共样式
 									height: 30px;
-									line-height: 30px;
-									padding: 10px;
+									line-height: 28px;
+									padding-left: 10px;
 									border: @border;
 									border-radius: 4px;
 								}
@@ -775,4 +793,21 @@ div.usercenter {
 			}
 		}
 	}
+
+	// 银行账户内容样式
+	.bank-account-wrap {
+		.cards-list-th, .add-cards-th { .th-grey-style; }
+		.cards-list-wrap {
+			padding: 25px 35px 15px 35px;
+			ul > li {
+				.bank-icon-container;
+				margin: 0 22px 25px 22px;
+			}
+		}
+		.add-cards-wrap {
+			.add-cards-form;
+			padding: 10px 0 0 55px;
+		}
+	}
+
 }
