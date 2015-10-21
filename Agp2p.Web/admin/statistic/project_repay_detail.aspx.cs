@@ -56,6 +56,7 @@ namespace Agp2p.Web.admin.statistic
             public string Term { get; set; }
             public string InvestCompleteTime { get; set; }
             public string RepayCompleteTime { get; set; }
+            public string OverTimeDay { get; set; }
         }
         protected class RepaymentDetail
         {
@@ -162,14 +163,13 @@ namespace Agp2p.Web.admin.statistic
                             Index = ri.index.ToString(),
                             ProjectName = pro.title,
                             Category = CategoryIdTitleMap[pro.category_id],
-                            RepayAt = r.repay_at == null ? string.Format("预计于 {0:yyyy-MM-dd} 返还", r.should_repay_time.Date) : ((DateTime)r.repay_at).ToString("yyyy-MM-dd"),
-                            CreditorName = pro.li_risks.li_creditors == null ? "" : pro.li_risks.li_creditors.dt_users.real_name,
+                            RepayAt = r.repay_at == null ? r.should_repay_time.ToString("yyyy-MM-dd") : ((DateTime)r.repay_at).ToString("yyyy-MM-dd"),
+                            CreditorName = pro.li_risks.li_creditors == null ? pro.li_risks.li_loaners.dt_users.real_name : pro.li_risks.li_creditors.dt_users.real_name,
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
-                            //Term =
-                            //    pro.repayment_term_span_count + " " +
-                            //    Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) pro.repayment_term_span),
                             Term = r.term + "/" + pro.repayment_term_span_count,
+                            OverTimeDay = r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time 
+                                ? r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days.ToString() : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days.ToString() : "0",
                             InvestCompleteTime = pro.invest_complete_time.ToString(),
                             RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),
                         }; // 首个记录显示项目信息

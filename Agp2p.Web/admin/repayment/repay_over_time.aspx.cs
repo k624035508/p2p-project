@@ -106,7 +106,7 @@ namespace Agp2p.Web.admin.repayment
             PageSize = new BLL.channel().GetPageSize(ChannelName);
             var query =
                 context.li_repayment_tasks.Where(
-                    r => DateTime.Now > r.should_repay_time &&
+                    r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time &&
                         (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)));
 
             if (CategoryId > 0)
@@ -139,11 +139,7 @@ namespace Agp2p.Web.admin.repayment
                         repay.ProjectStatus = r.li_projects.status;
                         repay.RepayStatus = r.status;
                         repay.RepayId = r.id;
-
-                        if (r.repay_at == null)
-                            repay.OverDayCount = DateTime.Now.DayOfYear - r.should_repay_time.DayOfYear;//逾期未还 天数
-                        else
-                            repay.OverDayCount = ((DateTime)r.repay_at).DayOfYear - r.should_repay_time.DayOfYear;//逾期已还 天数
+                        repay.OverDayCount = r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days;
                         //TODO 逾期罚金计算
                         repay.Forfeit = 0;
 
