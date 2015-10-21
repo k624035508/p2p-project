@@ -2569,9 +2569,8 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            int user_id = model.id;
 
-            model.nick_name = DTRequest.GetFormString("nickname");
+            model.nick_name = DTRequest.GetFormString("nickName");
             if (!string.IsNullOrEmpty(model.nick_name) && model.nick_name.Length < 4)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户昵称不能少于4个字符！\"}");
@@ -2595,22 +2594,18 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，生日不能包含特殊字符！\"}");
                 return;
             }
-            DateTime _birthday;
-            if (DateTime.TryParse(birthdayStr, out _birthday))
+            DateTime birthday;
+            if (DateTime.TryParse(birthdayStr, out birthday))
             {
-                model.birthday = _birthday;
+                model.birthday = birthday;
             }
-            string province = DTRequest.GetFormString("province");
-            string city = DTRequest.GetFormString("city");
-            string town = DTRequest.GetFormString("town");
 
-            string astr = province + "," + city + "," + town;
-            if (!xssCheckRegex.IsMatch(astr))
+            model.area = DTRequest.GetFormString("area"); // 逗号隔开
+            if (!xssCheckRegex.IsMatch(model.area))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，所在城市不能包含特殊字符！\"}");
                 return;
             }
-            model.area = astr.Replace("省份,", "").Replace("地级市,", "").Replace("市、县、区", "");
             model.qq = DTRequest.GetFormString("qq");
             if (!xssCheckRegex.IsMatch(model.qq))
             {

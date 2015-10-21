@@ -9,9 +9,9 @@ export default class DateSpanPicker extends React.Component {
 	render() {
 		return (
 			<div className="dateSel pull-right">
-				<DatePicker onTimeChange={this.props.onStartTimeChange} />
+				<DatePicker onBlur={ev => this.props.onStartTimeChange(ev.target.value)} />
 		        到
-				<DatePicker onTimeChange={this.props.onEndTimeChange} />
+				<DatePicker onBlur={ev => this.props.onEndTimeChange(ev.target.value)} />
 		        <a href="javascript:;">搜 索</a>
 		    </div>
 		);

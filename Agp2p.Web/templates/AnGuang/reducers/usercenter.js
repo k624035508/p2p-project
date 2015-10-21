@@ -1,4 +1,4 @@
-import { UPDATE_WALLET_INFO, UPDATE_USER_INFO } from "../actions/usercenter.js"
+import { UPDATE_WALLET_INFO, UPDATE_USER_INFO, UPDATE_USER_INFO_BY_NAME } from "../actions/usercenter.js"
 import Immutable from "immutable"
 
 const initialState = {
@@ -6,9 +6,9 @@ const initialState = {
 	userInfo: {
 		userName: "",
 		prevLoginTime: "",
-		nickName: "",
 		realName: "",
 		idCardNumber: "",
+		nickName: "",
 		mobile: "",
 		email: "",
 		qq: "",
@@ -25,6 +25,8 @@ export default function userCenter(state = initialState, action) {
 		return Immutable.fromJS(state).mergeIn([ "walletInfo" ], action.walletInfo).toJS();
 	case UPDATE_USER_INFO:
 		return Immutable.fromJS(state).mergeIn([ "userInfo" ], action.userInfo).toJS();
+	case UPDATE_USER_INFO_BY_NAME:
+		return Immutable.fromJS(state).setIn([ "userInfo", action.name ], action.value).toJS();
 	default:
 		return state;
 	}

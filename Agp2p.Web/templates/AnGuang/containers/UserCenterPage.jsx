@@ -26,34 +26,6 @@ class UserCenterPage extends React.Component {
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName, prevLoginTime }));
-
-		// 得到焦点自动刷新余额
-		var _this = this, prevFetchTime = 0;
-		window.onfocus = function () { 
-			var fetchAt = new Date().getTime();
-			if (30000 < fetchAt - prevFetchTime) {
-				prevFetchTime = fetchAt;
-				_this.fetchUserInfo();
-			}
-		};
-	}
-	fetchUserInfo() {
-		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserInfo"
-		$.ajax({
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            url: url,
-            data: "",
-            success: function(result) {
-                let data = JSON.parse(result.d);
-                this.props.dispatch(updateWalletInfo(data.walletInfo));
-                this.props.dispatch(updateUserInfo(data.userInfo));
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
 	}
 	render() {
 		return (

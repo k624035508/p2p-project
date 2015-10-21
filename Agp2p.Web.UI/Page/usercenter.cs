@@ -97,7 +97,7 @@ namespace Agp2p.Web.UI.Page
                     userInfo.email,
                     userInfo.qq,
                     userInfo.sex,
-                    userInfo.birthday,
+                    birthday = userInfo.birthday.HasValue ? userInfo.birthday.Value.ToString("yyyy-MM-dd") : "",
                     userInfo.area,
                     userInfo.address
                 }
