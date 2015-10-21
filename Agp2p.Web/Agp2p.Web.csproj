@@ -777,6 +777,7 @@
     <Content Include="templates\AnGuang\less\invest-cell.less" />
     <Content Include="templates\AnGuang\less\invest_list.less" />
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
+    <Content Include="templates\AnGuang\containers\bankaccount.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
