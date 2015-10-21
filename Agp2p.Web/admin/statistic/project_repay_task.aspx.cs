@@ -22,6 +22,7 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(10); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -54,7 +55,7 @@ namespace Agp2p.Web.admin.statistic
         {
             public string Index { get; set; }
             public string Name { get; set; }
-            public String Category { get; set; }
+            public string Category { get; set; }
             public decimal? FinancingAmount { get; set; }
             public string ProfitRateYear { get; set; }
             public string Term { get; set; }
@@ -70,14 +71,14 @@ namespace Agp2p.Web.admin.statistic
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
             public decimal RepayTotal { get; set; }
-            public String RepayTerm { get; set; }
+            public string RepayTerm { get; set; }
+            public int OverTimeDay { get; set; }
         }
 
         #region 数据绑定=================================
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
             rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
@@ -143,7 +144,7 @@ namespace Agp2p.Web.admin.statistic
                         Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) p.repayment_term_span),
                     InvestCompleteTime = p.invest_complete_time,
                     RepayCompleteTime = p.li_repayment_tasks.Select(r => r.should_repay_time).Last(),
-                    Creditor = p.li_risks.li_creditors == null ? "" : p.li_risks.li_loaners.dt_users.real_name
+                    Creditor = p.li_risks.li_creditors == null ? p.li_risks.li_loaners.dt_users.real_name : p.li_risks.li_creditors.dt_users.real_name
                 };
                 int j = 0;
                 return rgi.rg.Select(rg => new RepaymentTaskAmountDetail
@@ -154,7 +155,9 @@ namespace Agp2p.Web.admin.statistic
                     RepayPrincipal = rg.repay_principal,
                     RepayInterest = rg.repay_interest,
                     RepayTotal = (rg.repay_interest + rg.repay_principal),
-                    RepayTerm = rg.term + "/" + rg.li_projects.repayment_term_span_count
+                    RepayTerm = rg.term + "/" + rg.li_projects.repayment_term_span_count,
+                    OverTimeDay = rg.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > rg.should_repay_time 
+                        ? rg.repay_at == null ? (rg.should_repay_time.Subtract(DateTime.Now)).Days : (rg.should_repay_time.Subtract((DateTime)rg.repay_at)).Days : 0
                 });
             });
         }

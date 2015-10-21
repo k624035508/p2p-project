@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>投资人兑付明细表</title>
+<title>应兑付明细表</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -27,7 +27,7 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>投资人兑付明细表</span>
+  <span>应兑付明细表</span>
 </div>
 <!--/导航栏-->
 
@@ -40,7 +40,7 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
                 </ul>
             </div>
             <div class="r-list">
-                <div style="display: inline-block;" class="rl">按应还款时间查询：</div>
+                <div style="display: inline-block;" class="rl">按应付时间查询：</div>
                 <div style="display: inline-block; float:left;">
                     <asp:TextBox ID="txtYear" runat="server" CssClass="keyword" datatype="/^\d{4}$/" AutoPostBack="True" OnTextChanged="txtYear_OnTextChanged" Width="4em" />
                 </div>
@@ -54,8 +54,8 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
                 <div class="rule-multi-radio" style="display: inline-block;float: left; margin-right:10px;">
                     <asp:RadioButtonList ID="rblRepaymentTaskStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblRepaymentTaskStatus_OnSelectedIndexChanged">
                         <asp:ListItem Value="0">不限</asp:ListItem>
-                        <asp:ListItem Value="1">未还款</asp:ListItem>
-                        <asp:ListItem Value="2" Selected="True">已还款</asp:ListItem>
+                        <asp:ListItem Value="1" Selected="True">未付款</asp:ListItem>
+                        <asp:ListItem Value="2">已付款</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
                 <div style="display: inline-block;">
@@ -73,41 +73,40 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="3%">序号</th>
-    <th align="left">返还时间</th>
-    <th align="left">项目名称</th>
-    <th align="left">债权人</th>
-    <th align="right">项目总金额</th>
-
+    <th align="left">标题</th>
+    <th align="left">债权/借款人</th>
+    <th align="center">产品</th>
+    <th align="right">借款金额</th>
     <th align="center">年利率</th>
-    <th align="left">期限</th>
-    <th align="left">满标日</th>
+    <th align="left">满标时间</th>
     <th align="left">到期日</th>
-    <th align="left">投资人</th>
-
-    <%--<th align="left">会员号</th>--%>
-    <th align="right">投资金额</th>
-    <th align="center">投资时间</th>
-    <th align="right">返还本金</th>
-    <th align="right">返还利息</th>
-    <th align="right" class="padding-right">返还本息合计</th>
+    <th align="left">期数</th>
+    <th align="left">应付日期</th>
+    <th align="center">逾期天数</th>
+    <th align="left">收款人</th>
+    <%--<th align="right">投资金额</th>
+    <th align="center">投资时间</th>--%>
+    <th align="right">兑付本金</th>
+    <th align="right">兑付利息</th>
+    <th align="right" class="padding-right">本息合计</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
   <tr <%# (Eval("RepaymentTask.ProjectName") + "").EndsWith("合计") ? "class='sum'" : ""%>>
     <td style="text-align: center;"><%# Eval("RepaymentTask.Index")%></td>
-    <td><%# Eval("RepaymentTask.RepayAt")%></td>
     <td><%# Eval("RepaymentTask.ProjectName")%></td>
     <td><%# Eval("RepaymentTask.CreditorName")%></td>
+    <td align="center"><%#Eval("RepaymentTask.Category")%></td>
     <td class="money"><%# Eval("RepaymentTask.FinancingAmount") == null ? "" : Convert.ToDecimal(Eval("RepaymentTask.FinancingAmount")).ToString("c")%></td>
     <td class="center"><%# Eval("RepaymentTask.ProfitRateYear")%></td>
-    <td><%# Eval("RepaymentTask.Term")%></td>
     <td><%# Eval("RepaymentTask.InvestCompleteTime")%></td>
     <td><%# Eval("RepaymentTask.RepayCompleteTime")%></td>
-
+    <td><%# Eval("RepaymentTask.Term")%></td>
+    <td><%# Eval("RepaymentTask.RepayAt")%></td>
+    <td align="center"><%# Eval("RepaymentTask.OverTimeDay")%></td>
     <td><%# Eval("InvestorRealName") != null && Eval("InvestorRealName") != "" ? Eval("InvestorRealName") : Eval("InvestorUserName")%></td>
-    <%--<td><%# Eval("InvestorUserName")%></td>--%>
-    <td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
-    <td class="center"><%# Eval("InvestTime")%></td>
+    <%--<td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
+    <td class="center"><%# Eval("InvestTime")%></td>--%>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayInterest")).ToString("c")%></td>
     <td class="money padding-right"><%# Convert.ToDecimal(Eval("RepayTotal")).ToString("c") %></td>

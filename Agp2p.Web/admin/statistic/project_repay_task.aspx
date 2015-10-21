@@ -81,21 +81,20 @@ td.center { text-align: center; }
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="5%">序号</th>
-    <th align="left">项目名称</th>
+    <th align="left">标题</th>
     <th align="center">债权/借款人</th>
     <th align="center">产品</th>
-    <th align="right">融资金额</th>
+    <th align="right">借款金额</th>
     <th align="center">年利率</th>
-    <th align="center">期限</th>
     <th align="center">满标时间</th>
     <th align="center">到期日</th>
     <th align="center">期数</th>
-    <th align="center">应还时间</th>
+    <th align="center">应还日期</th>
+    <th align="center">逾期天数</th>
     <th align="left">状态</th>
     <th align="right">应还本金</th>
     <th align="right">应还利息</th>
     <th align="right">本息合计</th>
-    
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -106,11 +105,11 @@ td.center { text-align: center; }
     <td align="center"><%#Eval("Project.Category")%></td>
     <td class="money"><%# Eval("Project.FinancingAmount") != null ? Convert.ToDecimal(Eval("Project.FinancingAmount")).ToString("c") : "" %></td>
     <td class="center"><%# Eval("Project.ProfitRateYear")%></td>
-    <td align="center"><%# Eval("Project.Term")%></td>
     <td align="center"><%# Eval("Project.InvestCompleteTime")%></td>
     <td align="center"><%# Eval("Project.RepayCompleteTime") != null ? ((DateTime)Eval("Project.RepayCompleteTime")).ToString("yyyy-MM-dd") : ""%></td>
     <td align="center"><%# Eval("RepayTerm")%></td>
     <td align="center"><%# ((DateTime)Eval("RepayTime")).ToString("yyyy-MM-dd")%></td>
+    <td align="center"><%# Eval("OverTimeDay")%></td>
     <td><%# Eval("Status")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayInterest")).ToString("c")%></td>

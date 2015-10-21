@@ -14,6 +14,7 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
@@ -21,6 +22,7 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(10); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -50,6 +52,7 @@ namespace Agp2p.Web.admin.statistic
             public string PublishTime { get; set; }
             public string InvestCompleteTime { get; set; }
             public string RepayCompleteTime { get; set; }
+            public string Category { get; set; }
         }
         protected class InvestorDetail
         {
@@ -133,6 +136,7 @@ namespace Agp2p.Web.admin.statistic
                         {
                             Index = pi.index.ToString(),
                             Name = p.title,
+                            Category = CategoryIdTitleMap[p.category_id],
                             FinancingAmount = p.financing_amount,
                             ProfitRateYear = p.profit_rate_year.ToString(),
                             Term =

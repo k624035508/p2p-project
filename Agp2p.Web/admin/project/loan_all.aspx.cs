@@ -28,8 +28,6 @@ namespace Agp2p.Web.admin.project
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
-
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             this.CategoryId = DTRequest.GetQueryInt("category_id");
             this.ProjectStatus = DTRequest.GetQueryInt("project_status");
@@ -41,6 +39,7 @@ namespace Agp2p.Web.admin.project
                 return;
             }
             this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); //取得频道名称
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -55,28 +54,9 @@ namespace Agp2p.Web.admin.project
         protected void TreeBind()
         {
             //产品
-            BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, this.ChannelId);
-
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
-            foreach (DataRow dr in dt.Rows)
-            {
-                string Id = dr["id"].ToString();
-                int ClassLayer = int.Parse(dr["class_layer"].ToString());
-                string Title = dr["title"].ToString().Trim();
-
-                if (ClassLayer == 1)
-                {
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-                else
-                {
-                    Title = "├ " + Title;
-                    Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-            }
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
 
             //状态
             this.ddlStatus.Items.Clear();
