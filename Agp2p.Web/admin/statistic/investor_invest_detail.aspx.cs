@@ -15,6 +15,7 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
@@ -22,6 +23,7 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(10); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -51,6 +53,7 @@ namespace Agp2p.Web.admin.statistic
             public decimal? InvestValue { get; set; }
             public decimal? RepayTotal { get; set; }
             public decimal? Total { get; set; }
+            public string Category { get; set; }
         }
 
         #region 数据绑定=================================
@@ -133,7 +136,8 @@ namespace Agp2p.Web.admin.statistic
                         ProjectName = proj.title,
                         Term = proj.repayment_term_span_count + Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span),
                         RepayTotal = repayTotal,
-                        Total = tr.principal + repayTotal
+                        Total = tr.principal + repayTotal,
+                        Category = CategoryIdTitleMap[proj.category_id]
                     };
                 });
                 return investorInvestDetails.Concat(Enumerable.Range(0, 1).Select(i =>

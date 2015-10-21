@@ -89,6 +89,7 @@ td { text-align: center; }
             <th width="4%">序号</th>
             <th>用户名</th>
             <th align="left">项目名称</th>
+            <th>产品</th>
             <th>投资时间</th>
             <th>到期时间</th>
             <th>期限</th>
@@ -104,6 +105,7 @@ td { text-align: center; }
     <td style="text-align: center;"><%# Eval("Index")%></td>
     <td><%# string.IsNullOrWhiteSpace((string) Eval("InvestorRealName")) ? Eval("InvestorUserName") : Eval("InvestorRealName") %></td>
     <td style="text-align: left; padding-left:5px;"><%# Eval("ProjectName")%></td>
+     <td align="center"><%#Eval("Category")%></td>
     <td><%# Eval("InvestTime")%></td>
     <td><%# Eval("ProjectCompleteTime")%></td>
     <td><%# Eval("Term")%></td>

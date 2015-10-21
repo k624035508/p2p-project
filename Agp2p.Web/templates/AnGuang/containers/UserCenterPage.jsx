@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { Link } from 'react-router'
 import $ from "jquery";
-import { connect } from 'react-redux';
+import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js"
 
 import StatusContainer from "../containers/user-status.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
@@ -15,6 +15,17 @@ class UserCenterPage extends React.Component {
 	componentDidUpdate() {
 		$(".inner-ul li.nav-active").removeClass("nav-active");
 		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
+	}
+	componentDidMount() {
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime } = $("#app").data();
+		var walletInfo = {
+			idleMoney : idleMoney.toNum(),
+			lockedMoney : lockedMoney.toNum(),
+			investingMoney : investingMoney.toNum(),
+			profitingMoney : profitingMoney.toNum()
+		};
+		this.props.dispatch(updateWalletInfo(walletInfo));
+		this.props.dispatch(updateUserInfo({ userName, prevLoginTime }));
 	}
 	render() {
 		return (
@@ -65,9 +76,11 @@ class UserCenterPage extends React.Component {
 }
 
 function mapStateToProps(state) {
+	var walletInfo = state.walletInfo;
 	return {
-		totalMoney: state.userInfo.totalMoney
+		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney
 	};
 }
 
+import { connect } from 'react-redux';
 export default connect(mapStateToProps)(UserCenterPage);

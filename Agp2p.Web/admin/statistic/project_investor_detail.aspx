@@ -74,6 +74,7 @@ td.center { text-align: center; }
   <tr>
     <th width="5%">序号</th>
     <th align="left">项目名称</th>
+    <th align="center">产品</th>
     <th align="right">融资金额</th>
     <th align="center">年利率</th>
     <th align="left">期限</th>
@@ -93,6 +94,7 @@ td.center { text-align: center; }
   <tr <%# (Eval("Project.Name") + "").EndsWith("合计") ? "class='sum'" : ""%>>
     <td style="text-align: center;"><%# Eval("Project.Index")%></td>
     <td><%# Eval("Project.Name")%></td>
+    <td align="center"><%#Eval("Project.Category")%></td>
     <td class="money"><%# Eval("Project.FinancingAmount") == null ? "" : Convert.ToDecimal(Eval("Project.FinancingAmount")).ToString("c") %></td>
     <td class="center"><%# Eval("Project.ProfitRateYear")%></td>
     <td><%# Eval("Project.Term")%></td>

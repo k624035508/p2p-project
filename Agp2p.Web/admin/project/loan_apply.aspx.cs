@@ -21,6 +21,7 @@ namespace Agp2p.Web.admin.project
         protected int ProjectStatus;
         protected string ChannelName = string.Empty;
         protected string Keywords = string.Empty;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
@@ -36,7 +37,8 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("频道参数不正确！", "back", "Error");
                 return;
             }
-            this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); 
+            this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId);
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString());
@@ -49,28 +51,9 @@ namespace Agp2p.Web.admin.project
 
         protected void TreeBind()
         {
-            BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, this.ChannelId);
-
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
-            foreach (DataRow dr in dt.Rows)
-            {
-                string Id = dr["id"].ToString();
-                int ClassLayer = int.Parse(dr["class_layer"].ToString());
-                string Title = dr["title"].ToString().Trim();
-
-                if (ClassLayer == 1)
-                {
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-                else
-                {
-                    Title = "├ " + Title;
-                    Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-            }
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
         }
 
 

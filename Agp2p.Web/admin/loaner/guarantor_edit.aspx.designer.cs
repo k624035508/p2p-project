@@ -103,24 +103,6 @@ namespace Agp2p.Web.admin.loaner {
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
         
         /// <summary>
-        /// txtShareholdersInfo 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtShareholdersInfo;
-        
-        /// <summary>
-        /// txtCreditSituationInfo 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtCreditSituationInfo;
-        
-        /// <summary>
         /// rptPics 控件。
         /// </summary>
         /// <remarks>
@@ -173,6 +155,24 @@ namespace Agp2p.Web.admin.loaner {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCMCooperationRemainDegree;
+        
+        /// <summary>
+        /// txtShareholdersInfo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtShareholdersInfo;
+        
+        /// <summary>
+        /// txtCreditSituationInfo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtCreditSituationInfo;
         
         /// <summary>
         /// btnSubmit 控件。

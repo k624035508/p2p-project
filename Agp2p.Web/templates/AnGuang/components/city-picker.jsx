@@ -1,11 +1,12 @@
 import React from "react";
 import $ from "jquery";
 import { citylist } from "../js/city.min.js";
+import indexOf  from "lodash/array/indexOf"
 
 export default class CityPicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        var state = {
             province: citylist.map(pobj => pobj.p),
             city: [],
             area: [],
@@ -13,6 +14,24 @@ export default class CityPicker extends React.Component {
             currentCityIndex: -1,
             currentAreaIndex: -1
         };
+        if (this.props.defaultValue) {
+            var [prov, city, area] = this.props.defaultValue;
+            if (prov) {
+                state.currentProvinceIndex = indexOf(state.province, prov);
+                state.city = citylist[state.currentProvinceIndex].c.map(c => c.n);
+                if (city) {
+                    state.currentCityIndex = indexOf(state.city, city);
+                    var areas = citylist[state.currentProvinceIndex].c[state.currentCityIndex].a;
+                    if (areas) {
+                    	state.area = areas.map(a => a.s);
+                    	if (area) {
+                    		state.currentAreaIndex = indexOf(state.area, area);
+                    	}
+                    }
+                }
+            }
+        }
+        this.state = state;
     }
     onProvinceSelected(selectedIndex) {
         var newState = {
@@ -24,9 +43,11 @@ export default class CityPicker extends React.Component {
         };
         if (selectedIndex == -1) {
             this.setState(newState)
+            this.props.onLocationChanged();
         } else {
             newState.city = citylist[selectedIndex].c.map(c => c.n);
             this.setState(newState);
+            this.props.onLocationChanged(this.state.province[selectedIndex]);
         }
     }
     onCitySelected(selectedIndex) {
@@ -35,26 +56,33 @@ export default class CityPicker extends React.Component {
             area: [],
             currentAreaIndex: -1
         };
+        var prov = citylist[this.state.currentProvinceIndex];
         if (selectedIndex == -1) {
             this.setState(newState)
+            this.props.onLocationChanged(prov.p)
         } else {
-            var prov = citylist[this.state.currentProvinceIndex];
             var areas = prov.c[selectedIndex].a;
-            if (!areas) { // 直辖市，只有两个选项，这里直接回调
-                this.props.onLocationChanged(prov.p, prov.c[selectedIndex].n)
-                this.setState(newState);
-            } else {
+            if (areas) {
                 newState.area = areas.map(a => a.s);
-                this.setState(newState);
             }
+            this.setState(newState);
+            this.props.onLocationChanged(prov.p, prov.c[selectedIndex].n)
         }
     }
     onAreaSelected(selectedIndex) {
+        var newState = {
+            currentAreaIndex: selectedIndex
+        }
+        this.setState(newState);
+
         var prov = citylist[this.state.currentProvinceIndex];
         var city = prov.c[this.state.currentCityIndex];
-        var area = city.a[selectedIndex];
-        this.props.onLocationChanged(prov.p, city.n, area.s);
-        this.setState({currentAreaIndex: selectedIndex});
+        if (selectedIndex == -1) {
+            this.props.onLocationChanged(prov.p, city.n);
+        } else {
+            var area = city.a[selectedIndex];
+            this.props.onLocationChanged(prov.p, city.n, area.s);
+        }
     }
     render() {
         return (
