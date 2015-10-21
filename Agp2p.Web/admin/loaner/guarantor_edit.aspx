@@ -67,6 +67,8 @@
     <div class="content-tab-ul-wrap">
       <ul>
         <li><a href="javascript:;" onclick="tabs(this);" class="selected">编辑担保机构</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);">股东信息</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);">银行授信额度情况</a></li>
       </ul>
     </div>
   </div>
@@ -85,7 +87,7 @@
       <dt>类型</dt>
       <dd>
         <div class="rule-multi-radio">
-          <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
+          <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
           <asp:ListItem Value="1" Selected="True">小额贷款公司</asp:ListItem>
           <asp:ListItem Value="2">担保公司</asp:ListItem>
           </asp:RadioButtonList>
@@ -121,18 +123,6 @@
     <dl>
         <dt>描述</dt>
         <dd><asp:TextBox ID="txtDescription" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
-    </dl>
-    <dl>
-      <dt>股东信息</dt>
-      <dd>
-        <textarea id="txtShareholdersInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
-      </dd>
-    </dl>
-    <dl>
-      <dt>银行授信额度情况</dt>
-      <dd>
-        <textarea id="txtCreditSituationInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
-      </dd>
     </dl>
     <dl>
     <dt>担保机构照片</dt>
@@ -177,6 +167,24 @@
     <dl>
       <dt>额度余额</dt>
       <dd><asp:TextBox ID="txtCMCooperationRemainDegree" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox></dd>
+    </dl>
+</div>
+
+
+<div class="tab-content" style="display: none;">
+    <dl>
+      <dt>股东信息</dt>
+      <dd>
+        <textarea id="txtShareholdersInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
+      </dd>
+    </dl>
+</div>
+<div class="tab-content" style="display: none;">
+    <dl>
+      <dt>银行授信额度情况</dt>
+      <dd>
+        <textarea id="txtCreditSituationInfo" class="editor" style="visibility:hidden;" runat="server"></textarea>
+      </dd>
     </dl>
 </div>
 <!--/内容-->
