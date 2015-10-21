@@ -95,7 +95,7 @@
                     <td><%#string.Format("{0:g}",Eval("complete_time"))%></td>
                     <% } %>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
-                    <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
+                    <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>

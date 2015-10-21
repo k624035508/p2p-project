@@ -79,7 +79,7 @@
                     <td><%#Eval("OverDayCount")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
-                    <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("Category")))%></td>
+                    <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("Category"))]%></td>
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">

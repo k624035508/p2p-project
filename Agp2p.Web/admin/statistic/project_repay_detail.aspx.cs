@@ -50,7 +50,7 @@ namespace Agp2p.Web.admin.statistic
             public string ProjectName { get; set; }
             public string CreditorName { get; set; }
             public decimal? FinancingAmount { get; set; }
-            public String Category { get; set; }
+            public string Category { get; set; }
 
             public string ProfitRateYear { get; set; }
             public string Term { get; set; }

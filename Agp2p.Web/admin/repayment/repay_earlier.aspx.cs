@@ -22,6 +22,7 @@ namespace Agp2p.Web.admin.repayment
         protected int ProjectStatus;
         protected string ChannelName = string.Empty;
         protected string Keywords = string.Empty;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         private readonly Agp2pDataContext context = new Agp2pDataContext();
 
@@ -37,6 +38,7 @@ namespace Agp2p.Web.admin.repayment
                 return;
             }
             this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); //取得频道名称
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -48,28 +50,9 @@ namespace Agp2p.Web.admin.repayment
 
         protected void TreeBind()
         {
-            BLL.article_category bll = new BLL.article_category();
-            DataTable dt = bll.GetList(0, this.ChannelId);
-
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
-            foreach (DataRow dr in dt.Rows)
-            {
-                string Id = dr["id"].ToString();
-                int ClassLayer = int.Parse(dr["class_layer"].ToString());
-                string Title = dr["title"].ToString().Trim();
-
-                if (ClassLayer == 1)
-                {
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-                else
-                {
-                    Title = "├ " + Title;
-                    Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
-                    this.ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-            }
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
         }
 
 
@@ -87,7 +70,7 @@ namespace Agp2p.Web.admin.repayment
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
+            string pageUrl = Utils.CombUrlTxt("repay_earlier.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
@@ -149,14 +132,14 @@ namespace Agp2p.Web.admin.repayment
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("repay_earlier.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {            
-            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("repay_earlier.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 
@@ -171,7 +154,7 @@ namespace Agp2p.Web.admin.repayment
                     Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("loan_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
+            Response.Redirect(Utils.CombUrlTxt("repay_earlier.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }
 

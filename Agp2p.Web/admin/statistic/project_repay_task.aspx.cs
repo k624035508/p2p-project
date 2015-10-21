@@ -55,7 +55,7 @@ namespace Agp2p.Web.admin.statistic
         {
             public string Index { get; set; }
             public string Name { get; set; }
-            public String Category { get; set; }
+            public string Category { get; set; }
             public decimal? FinancingAmount { get; set; }
             public string ProfitRateYear { get; set; }
             public string Term { get; set; }
@@ -71,7 +71,7 @@ namespace Agp2p.Web.admin.statistic
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
             public decimal RepayTotal { get; set; }
-            public String RepayTerm { get; set; }
+            public string RepayTerm { get; set; }
             public int OverTimeDay { get; set; }
         }
 

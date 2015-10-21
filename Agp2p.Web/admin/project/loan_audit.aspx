@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>借款初审</title>
+    <title>借款审核</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -38,7 +38,7 @@
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
             <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
             <i class="arrow"></i>
-            <span>借款初审</span>
+            <span>借款审核</span>
         </div>
         <!--/导航栏-->
         <!--工具栏-->
@@ -91,7 +91,7 @@
                     <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
-                    <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
+                    <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>

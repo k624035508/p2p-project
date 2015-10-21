@@ -20,6 +20,7 @@ namespace Agp2p.Web.admin.project
         protected int PageIndex;
         protected int PageSize;
         protected int TotalCount;
+        protected Dictionary<int, string> CategoryIdTitleMap;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,6 +34,7 @@ namespace Agp2p.Web.admin.project
                 return;
             }
             ChannelName = new BLL.channel().GetChannelName(ChannelId); //取得频道名称
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -58,28 +60,9 @@ namespace Agp2p.Web.admin.project
 
         protected void TreeBind()
         {
-            var bll = new article_category();
-            var dt = bll.GetList(0, this.ChannelId);
-
-            ddlCategoryId.Items.Clear();
-            ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
-            foreach (DataRow dr in dt.Rows)
-            {
-                var Id = dr["id"].ToString();
-                var ClassLayer = int.Parse(dr["class_layer"].ToString());
-                var Title = dr["title"].ToString().Trim();
-
-                if (ClassLayer == 1)
-                {
-                    ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-                else
-                {
-                    Title = "├ " + Title;
-                    Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
-                    ddlCategoryId.Items.Add(new ListItem(Title, Id));
-                }
-            }
+            this.ddlCategoryId.Items.Clear();
+            this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
         }
 
         //关健字查询
