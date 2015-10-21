@@ -15,14 +15,17 @@ export default class SafeCenter extends React.Component {
                 <div className="cards-list-wrap">
                     <ul className="list-unstyled list-inline">
                         <li className="zhonghang">
+                            <i className="glyphicon glyphicon-minus-sign pull-right"></i>
                             <p className="bank-name">中国银行</p>
                             <p className="card-num"><span>尾号</span> <span>7855</span> <span>储蓄卡</span></p>
                         </li>
                         <li className="jianhang">
+                            <i className="glyphicon glyphicon-minus-sign pull-right"></i>
                             <p className="bank-name">建设银行</p>
                             <p className="card-num"><span>尾号</span> <span>3444</span> <span>储蓄卡</span></p>
                         </li>
                         <li className="zhaohang">
+                            <i className="glyphicon glyphicon-minus-sign pull-right"></i>
                             <p className="bank-name">招商银行</p>
                             <p className="card-num"><span>尾号</span> <span>2682</span> <span>信用卡</span></p>
                         </li>
