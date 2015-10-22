@@ -155,6 +155,7 @@ class MobileBinding extends React.Component {
             alert(data.msg);
 			this.props.dispatch(fetchWalletAndUserInfo());
 			this.setState({newMobile: "", imgCode: "", smsCode: "", bindingMobile: false});
+			this.setState({bindingMobile: true}); // 清空输入框
         }.bind(this)).fail(function (jqXHR) {
             alert(jqXHR.responseJSON.msg);
         });
@@ -287,6 +288,7 @@ class ResetLoginPassword extends React.Component {
 			alert(data.msg);
 			if (data.status == 1) {
 				this.setState({resetingLoginPassword: false});
+				this.setState({resetingLoginPassword: true}); // 清空输入框
 			}
 		}.bind(this), "json")
 		.fail(function (jqXHR) {
@@ -354,8 +356,9 @@ class ResetTransactPassword extends React.Component {
 			newTransactPassword: this.state.newTransactPassword
 		}, function (data) {
 			alert(data.msg);
-			this.setState({settingTransactionPassword: false});
 			this.props.dispatch(fetchWalletAndUserInfo());
+			this.setState({settingTransactionPassword: false});
+			this.setState({settingTransactionPassword: true}); // 清空输入框
 		}.bind(this), "json")
 		.fail(function (jqXHR) {
 			alert(jqXHR.responseJSON.msg);
