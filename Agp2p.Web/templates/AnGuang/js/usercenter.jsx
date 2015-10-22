@@ -6,7 +6,8 @@ import "../less/footerSmall.less";
 import React from "react"
 import { render } from "react-dom"
 import { Router, Route } from 'react-router'
-import { createStore } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
 import userCenter from "../reducers/usercenter.js"
@@ -26,25 +27,28 @@ import { setHeaderHighlight } from "./header.js"
 
 
 $(function(){
-    //点击导航加载相应内容
-    render((
-    	<Provider store={createStore(userCenter)}>
-	    	<Router>
-		    	<Route path="/" component={UserCenterPage}>
-		    		<Route path="/status" component={StatusContainer}>
-				    	<Route path="/mytrade" component={MyTransaction}/>
-				    	<Route path="/recharge" component={RechargePage}/>
-				    	<Route path="/withdraw" component={WithdrawPage}/>
-				    	<Route path="/invest-record" component={InvestRecordPage}/>
-				    	<Route path="/myrepayments" component={MyRepaymentsPage}/>
-				    	<Route path="/myaccount" component={MyAccountPage}/>
+	const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
+	const store = createStoreWithMiddleware(userCenter);
+	
+	//点击导航加载相应内容
+	render((
+		<Provider store={store}>
+			<Router>
+				<Route path="/" component={UserCenterPage}>
+					<Route path="/status" component={StatusContainer}>
+						<Route path="/mytrade" component={MyTransaction}/>
+						<Route path="/recharge" component={RechargePage}/>
+						<Route path="/withdraw" component={WithdrawPage}/>
+						<Route path="/invest-record" component={InvestRecordPage}/>
+						<Route path="/myrepayments" component={MyRepaymentsPage}/>
+						<Route path="/myaccount" component={MyAccountPage}/>
 						<Route path="/bankaccount" component={BankAccountPage}/>
 					</Route>
-			    	<Route path="/safe" component={SafeCenterPage}/>
-		    	</Route>
-	    	</Router>
-    	</Provider>
+					<Route path="/safe" component={SafeCenterPage}/>
+				</Route>
+			</Router>
+		</Provider>
 	), document.getElementById("app"));
-    
+	
 	setHeaderHighlight(2);
 });

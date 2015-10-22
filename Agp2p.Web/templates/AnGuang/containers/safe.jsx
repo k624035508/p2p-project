@@ -1,8 +1,8 @@
 import React from "react";
 import CityPicker from "../components/city-picker.jsx"
 import DatePicker from "../components/date-picker.jsx"
-import { updateWalletInfo, updateUserInfo, updateUserInfoByName } from "../actions/usercenter.js"
-import { post } from "jquery";
+import { updateWalletInfo, updateUserInfo, updateUserInfoByName, fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import { post, getJSON } from "jquery";
 
 class UserInfoEditor extends React.Component {
 	constructor(props) {
@@ -71,31 +71,82 @@ class UserInfoEditor extends React.Component {
 	}
 }
 
+class EmailBinding extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			bindingEmail: false, newEmail: "", bindingEmailPending: false,
+		};
+	}
+	componentDidMount() {
+		if (window.location.hash.indexOf("code=") != -1) {
+			var cutIndex = window.location.hash.indexOf("?") + 1;
+			this.bindEmail(window.location.hash.substr(cutIndex));
+		}
+	}
+	bindingEmail() {
+		this.setState({bindingEmailPending: true});
+		getJSON('/tools/email_verify.ashx?action=sendVerifyEmail&email=' + this.state.newEmail, function(data) {
+			alert(data.msg);
+			this.setState({bindingEmailPending: false});
+		}.bind(this))
+		.fail(function(jqXHR) {
+			alert(jqXHR.responseJSON.msg);
+			this.setState({bindingEmailPending: false});
+		});
+	}
+	bindEmail(hash) {
+		getJSON('/tools/email_verify.ashx?' + hash, function(data) {
+			alert(data.msg);
+			this.props.dispatch(fetchWalletAndUserInfo());
+		}.bind(this))
+		.fail(function(jqXHR) {
+			alert(jqXHR.responseJSON.msg);
+		});
+	}
+	render() {
+		return (
+			<li>
+				<div className="list-cell">
+					<span className="mail"></span>
+					<span className="list-th">邮箱认证</span>
+					<span className="list-tips">绑定邮箱，获取更多理财信息。</span>
+					<span className="pull-right"><a href="javascript:;" onClick={ev => this.setState({bindingEmail: true})}>立即认证</a></span>
+				</div>
+				<div className="setting-wrap" id="email-setting" style={{display: this.state.bindingEmail ? "block" : "none"}}>
+					<div className="cancel">
+						<span className="th-setting">绑定邮箱</span>
+						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({bindingEmail: false})}></span>
+					</div>
+					<div className="settings">
+						{this.props.email
+							? <div className="form-group"><label htmlFor="email">旧绑定邮箱：</label>{this.props.email}</div>
+							: null}
+						<div className="form-group">
+							<label htmlFor="email">新绑定邮箱：</label>
+							<input type="text" id="email" onBlur={ev => this.setState({newEmail: ev.target.value})}
+								disabled={this.state.bindingEmailPending} />
+						</div>
+						<div className="btn-wrap"><a href="javascript:;" onClick={ev => this.bindingEmail()} >提 交</a></div>
+					</div>
+				</div>
+			</li>
+		);
+	}
+}
+
 class SafeCenter extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			bindingMobile: false,
+			bindingIdCard: false,
+			resetLoginPassword: false,
+			settingTransactionPassword: false
+		};
 	}
 	componentDidMount() {
-		this.fetchUserInfo();
-	}
-	fetchUserInfo() {
-		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserInfo"
-		$.ajax({
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            url: url,
-            data: "",
-            success: function(result) {
-                let data = JSON.parse(result.d);
-                this.props.dispatch(updateWalletInfo(data.walletInfo));
-                this.props.dispatch(updateUserInfo(data.userInfo));
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
+		this.props.dispatch(fetchWalletAndUserInfo());
 	}
 	render() {
 		return (
@@ -105,27 +156,7 @@ class SafeCenter extends React.Component {
 					<div className="safe-center-th"><span>安全中心</span></div>
 					<div className="setting-list">
 						<ul className="list-unstyled">
-							<li>
-								<div className="list-cell">
-									<span className="mail"></span>
-									<span className="list-th">邮箱认证</span>
-									<span className="list-tips">绑定邮箱，获取更多理财信息。</span>
-									<span className="pull-right"><a href="#">立即认证</a></span>
-								</div>
-								<div className="setting-wrap" id="email-setting">
-									<div className="cancel">
-										<span className="th-setting">绑定邮箱</span>
-										<span className="glyphicon glyphicon-remove pull-right cancel-btn"></span>
-									</div>
-									<div className="settings">
-										<div className="form-group">
-											<label htmlFor="email">您的邮箱：</label>
-											<input type="text" id="email" />
-										</div>
-										<div className="btn-wrap"><a href="#">提 交</a></div>
-									</div>
-								</div>
-							</li>
+							<EmailBinding {...this.props} />
 							<li>
 								<div className="list-cell">
 									<span className="phone"></span>
@@ -141,7 +172,7 @@ class SafeCenter extends React.Component {
 									<div className="settings">
 										<div className="oldPhone">
 											<span>原手机号码：</span>
-											<span className="phoneNum">13590609455</span>
+											<span className="phoneNum">{this.props.mobile}</span>
 										</div>
 										<div className="form-group">
 											<label htmlFor="phone">新手机号码：</label>
