@@ -276,6 +276,10 @@ class ResetLoginPassword extends React.Component {
 			alert("两次输入的密码不一致");
 			return;
 		}
+		if (this.state.newPassword.length < 6) {
+			alert("登录密码太短，请设置至少 6 位密码");
+			return;
+		}
 		post('/tools/submit_ajax.ashx?action=user_password_edit', {
 			txtOldPassword: this.state.originalPassword,
 			txtPassword: this.state.newPassword
@@ -325,12 +329,89 @@ class ResetLoginPassword extends React.Component {
 	}
 }
 
-class SafeCenter extends React.Component {
+class ResetTransactPassword extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			settingTransactionPassword: false
+			settingTransactionPassword: false,
+			originalTransactPassword: "",
+			newTransactPassword: "",
+			newTransactPassword2: "",
 		};
+	}
+	resetTransactPassword() {
+		if (this.state.newTransactPassword != this.state.newTransactPassword2) {
+			alert("两次输入的交易密码不同");
+			return;
+		}
+		if (this.state.newTransactPassword.length < 6) {
+			alert("交易密码太短，请设置至少 6 位密码");
+			return;
+		}
+		post('/tools/trade_pwd.ashx', {
+			action: "modify",
+			originalTransactPassword: this.state.originalTransactPassword,
+			newTransactPassword: this.state.newTransactPassword
+		}, function (data) {
+			alert(data.msg);
+			this.setState({settingTransactionPassword: false});
+			this.props.dispatch(fetchWalletAndUserInfo());
+		}.bind(this), "json")
+		.fail(function (jqXHR) {
+			alert(jqXHR.responseJSON.msg);
+		});
+	}
+	forgotTransactPassword() {
+		if (confirm("是否确认重置交易密码？")) { // TODO 待实现
+			post('/tools/trade_pwd.ashx', { action: "reset" }, function (data) {
+				alert(data.msg);
+			}, "json").fail(function (jqXHR) {
+				alert(jqXHR.responseJSON.msg);
+			});
+		}
+	}
+	render() {
+		return (
+			<li>
+				<div className="list-cell">
+					<span className="psw-trade"></span>
+					<span className="list-th">交易密码</span>
+					<span className="list-tips">从平台账户提现时需要输入的密码。</span>
+					<span className="pull-right"><a href="javascript:" onClick={ev => this.setState({settingTransactionPassword: true})}>设置</a></span>
+				</div>
+				{!this.state.settingTransactionPassword ? null :
+				<div className="setting-wrap" id="pswTrade-setting">
+					<div className="cancel">
+						<span className="th-setting">修改交易密码</span>
+						<span className="tips">为确保您的账户安全，请设置交易密码与登录密码不同</span>
+						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({settingTransactionPassword: false})}></span>
+					</div>
+					<div className="settings">
+						<div className="form-group">
+							<label htmlFor="pswTrade">原交易密码：</label>
+							<input type="password" id="pswTrade" onBlur={ev => this.setState({originalTransactPassword: ev.target.value})}
+								disabled={!this.props.hasTransactPassword} placeholder={!this.props.hasTransactPassword ? "（未设置）" : ""} />
+						</div>
+						<div className="form-group">
+							<label htmlFor="pswTrade-new">新交易密码：</label>
+							<input type="password" id="pswTrade-new" onBlur={ev => this.setState({newTransactPassword: ev.target.value})} />
+						</div>
+						<div className="form-group pswTrade-new-confirm">
+							<label htmlFor="pswTrade-new2">确认新交易密码：</label>
+							<input type="password" id="pswTrade-new2" onBlur={ev => this.setState({newTransactPassword2: ev.target.value})} />
+						</div>
+						<div className="btn-wrap"><a href="javascript:" onClick={ev => this.resetTransactPassword()} >提 交</a></div>
+					</div>
+				</div>}
+			</li>
+		);
+	}
+}
+
+class SafeCenter extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
 	}
 	componentDidMount() {
 		this.props.dispatch(fetchWalletAndUserInfo());
@@ -347,36 +428,7 @@ class SafeCenter extends React.Component {
 							<MobileBinding {...this.props} />
 							<IdentityBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
-							<li>
-								<div className="list-cell">
-									<span className="psw-trade"></span>
-									<span className="list-th">交易密码</span>
-									<span className="list-tips">从平台账户提现时需要输入的密码。</span>
-									<span className="pull-right"><a href="javascript:">设置</a></span>
-								</div>
-								<div className="setting-wrap" id="pswTrade-setting">
-									<div className="cancel">
-										<span className="th-setting">修改交易密码</span>
-										<span className="tips">为确保您的账户安全，请设置交易密码与登录密码不同</span>
-										<span className="glyphicon glyphicon-remove pull-right cancel-btn"></span>
-									</div>
-									<div className="settings">
-										<div className="form-group">
-											<label htmlFor="pswTrade">原交易密码：</label>
-											<input type="text" id="pswTrade" />
-										</div>
-										<div className="form-group">
-											<label htmlFor="pswTrade-new">新交易密码：</label>
-											<input type="text" id="pswTrade-new" />
-										</div>
-										<div className="form-group pswTrade-new-confirm">
-											<label htmlFor="pswTrade-new2">确认新交易密码：</label>
-											<input type="text" id="pswTrade-new2" />
-										</div>
-										<div className="btn-wrap"><a href="javascript:">提 交</a></div>
-									</div>
-								</div>
-							</li>
+							<ResetTransactPassword {...this.props} />
 						</ul>
 					</div>
 				</div>
