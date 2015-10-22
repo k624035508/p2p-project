@@ -13,7 +13,6 @@ namespace Agp2p.Web.tools
 {
     public class email_verify : IHttpHandler, IRequiresSessionState
     {
-
         public void ProcessRequest(HttpContext httpContext)
         {
             httpContext.Response.ContentType = "application/json";
@@ -27,15 +26,50 @@ namespace Agp2p.Web.tools
                 return;
             }
 
-            var email = DTRequest.GetQueryString("email");
-            verify_email(model.id, email, (i, s) =>
+            var action = DTRequest.GetQueryString("action");
+            if (action == "sendVerifyEmail")
             {
-                httpContext.Response.StatusCode = i;
-                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = s }));
-            });
+                var email = DTRequest.GetQueryString("email");
+                SendVerifyEmail(model.id, email, (i, s) =>
+                {
+                    httpContext.Response.StatusCode = i;
+                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = s }));
+                });
+            }
+            else if (action == "verifyEmail")
+            {
+                var codeFromEmail = DTRequest.GetQueryString("code");
+
+                var cachedCode = (string)SessionHelper.Get("verifying_email_code");
+                var sendVerifyMailAt = (DateTime?)SessionHelper.Get("last_send_verifying_mail_at");
+                if (sendVerifyMailAt != null
+                    && DateTime.Now.Subtract(sendVerifyMailAt.Value).TotalMinutes < SessionHelper.GetSessionTimeout()
+                    && !string.IsNullOrWhiteSpace(cachedCode) && codeFromEmail == cachedCode)
+                {
+                    var context = new Agp2pDataContext();
+                    var dtUsers = context.dt_users.Single(u => u.id == model.id);
+                    dtUsers.email = model.email = SessionHelper.Get<string>("verifying_email");
+                    context.SubmitChanges();
+                    SessionHelper.Remove("verifying_email");
+                    SessionHelper.Remove("last_send_verifying_mail_at");
+                    SessionHelper.Remove("verifying_email_code");
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "邮箱设置成功" }));
+                }
+                else
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "邮箱验证码已失效" }));
+                }
+            }
+            else
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "参数不正确" }));
+            }
         }
 
-        private void verify_email(int userId, string email, Action<int, string> callback)
+        private void SendVerifyEmail(int userId, string email, Action<int, string> callback)
         {
             if (userId <= 0 || string.IsNullOrWhiteSpace(email))
             {
@@ -85,7 +119,7 @@ namespace Agp2p.Web.tools
                 .Replace("{valid}", SessionHelper.GetSessionTimeout().ToString())
                 .Replace("{linkurl}",
                     "http://" + HttpContext.Current.Request.Url.Authority.ToLower() +
-                    "/user/safe/safe.html?safe_act=verify_email&code=" + strCode);
+                    "/user/center/index.html#/safe?action=verifyEmail&code=" + strCode);
 
             try
             {
@@ -98,7 +132,7 @@ namespace Agp2p.Web.tools
                     titletxt, bodytxt); //发送邮件
                 callback((int) HttpStatusCode.OK, "邮件发送成功，请查收！");
             }
-            catch
+            catch(Exception e)
             {
                 callback((int) HttpStatusCode.InternalServerError, "邮件发送失败，请联系本站管理员！");
             }

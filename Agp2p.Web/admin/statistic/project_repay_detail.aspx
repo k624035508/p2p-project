@@ -82,7 +82,7 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
     <th align="left">到期日</th>
     <th align="left">期数</th>
     <th align="left">应付日期</th>
-    <th align="center">逾期天数</th>
+    <th align="left">实付日期</th>
     <th align="left">收款人</th>
     <%--<th align="right">投资金额</th>
     <th align="center">投资时间</th>--%>
@@ -103,7 +103,7 @@ th.padding-right, td.padding-right { padding-right: 0.5em; }
     <td><%# Eval("RepaymentTask.RepayCompleteTime")%></td>
     <td><%# Eval("RepaymentTask.Term")%></td>
     <td><%# Eval("RepaymentTask.ShouldRepayAt")%></td>
-    <td align="center"><%# Eval("RepaymentTask.OverTimeDay")%></td>
+    <td><%# Eval("RepaymentTask.RepayAt")%></td>
     <td><%# Eval("InvestorRealName") != null && Eval("InvestorRealName") != "" ? Eval("InvestorRealName") : Eval("InvestorUserName")%></td>
     <%--<td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
     <td class="center"><%# Eval("InvestTime")%></td>--%>

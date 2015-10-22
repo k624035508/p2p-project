@@ -251,7 +251,7 @@ namespace Agp2p.Web.admin.settings
                 //判断密码是否更改
                 if (emailpassword.Text.Trim() != defaultpassword)
                 {
-                    model.emailpassword = DESEncrypt.Encrypt(emailpassword.Text, model.sysencryptstring);
+                    model.emailpassword = DESEncrypt.Encrypt(emailpassword.Text);
                 }
                 model.emailnickname = emailnickname.Text;
 

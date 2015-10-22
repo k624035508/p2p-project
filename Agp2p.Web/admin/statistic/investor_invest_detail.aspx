@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>投资人投资明细汇总表</title>
+<title>投资明细</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/tablesorter/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -49,7 +49,7 @@ td { text-align: center; }
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>投资人投资明细汇总表</span>
+  <span>投资明细</span>
 </div>
 <!--/导航栏-->
 
@@ -87,8 +87,8 @@ td { text-align: center; }
     <thead>
         <tr>
             <th width="4%">序号</th>
-            <th>用户名</th>
-            <th align="left">项目名称</th>
+            <th>投资者</th>
+            <th align="left">标题</th>
             <th>产品</th>
             <th>投资时间</th>
             <th>到期时间</th>

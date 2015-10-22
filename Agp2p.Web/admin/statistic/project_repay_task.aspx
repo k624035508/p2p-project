@@ -90,7 +90,7 @@ td.center { text-align: center; }
     <th align="center">到期日</th>
     <th align="center">期数</th>
     <th align="center">应还日期</th>
-    <th align="center">逾期天数</th>
+    <th align="center">实还日期</th>
     <th align="left">状态</th>
     <th align="right">应还本金</th>
     <th align="right">应还利息</th>
@@ -109,7 +109,7 @@ td.center { text-align: center; }
     <td align="center"><%# Eval("Project.RepayCompleteTime") != null ? ((DateTime)Eval("Project.RepayCompleteTime")).ToString("yyyy-MM-dd") : ""%></td>
     <td align="center"><%# Eval("RepayTerm")%></td>
     <td align="center"><%# ((DateTime)Eval("RepayTime")).ToString("yyyy-MM-dd")%></td>
-    <td align="center"><%# Eval("OverTimeDay")%></td>
+    <td align="center"><%# Eval("RepayAt")%></td>
     <td><%# Eval("Status")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayInterest")).ToString("c")%></td>
