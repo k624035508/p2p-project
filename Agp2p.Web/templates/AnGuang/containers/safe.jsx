@@ -187,8 +187,8 @@ class MobileBinding extends React.Component {
 						<div className="code-group img-code-wrap">
 							<label htmlFor="img-code">图形验证码：</label>
 							<input type="text" id="img-code" disabled={this.state.bindingMobilePending} onBlur={ev => this.setState({imgCode: ev.target.value})} />
-							<ImageVerifyCode seed={this.state.imgVerifyCodeSeed} />
-							<a href="javascript:" className="img-change" onClick={ev => this.setState({imgVerifyCodeSeed: Math.random()})}>换一张</a>
+							<span><ImageVerifyCode seed={this.state.imgVerifyCodeSeed} /></span>
+							<a href="javascript:" className="img-change-btn" onClick={ev => this.setState({imgVerifyCodeSeed: Math.random()})}>换一张</a>
 						</div>
 						<div className="code-group">
 							<label htmlFor="sms-code">短信验证码：</label>
@@ -390,10 +390,11 @@ class ResetTransactPassword extends React.Component {
 						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({settingTransactionPassword: false})}></span>
 					</div>
 					<div className="settings">
-						<div className="form-group">
+						<div className="form-group old-psw-trade">
 							<label htmlFor="pswTrade">原交易密码：</label>
 							<input type="password" id="pswTrade" onBlur={ev => this.setState({originalTransactPassword: ev.target.value})}
 								disabled={!this.props.hasTransactPassword} placeholder={!this.props.hasTransactPassword ? "（未设置）" : ""} />
+							<a href="javascript:">忘记密码？</a>
 						</div>
 						<div className="form-group">
 							<label htmlFor="pswTrade-new">新交易密码：</label>

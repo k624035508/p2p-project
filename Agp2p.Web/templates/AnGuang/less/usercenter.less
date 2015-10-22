@@ -645,6 +645,7 @@ div.usercenter {
 			}
 		}
 		.safe-center {
+			min-height: 562px;
 			margin-top: 25px;
 			padding: 15px 20px 56px 20px;
 			* { font-size: @font15; }
@@ -726,6 +727,11 @@ div.usercenter {
 										width: 200px;
 										.input-style;
 									}
+									span {
+										display: inline-block;
+										width: 200px;
+										text-align: left;
+									}
 								}
 								.code-group {
 									label { .label-style; }
@@ -740,12 +746,12 @@ div.usercenter {
 										vertical-align: top;
 										width: 100px;
 										height: 30px;
-										line-height: 28px;
+										line-height: 27px;
 										border: @border;
 										text-align: center;
 										margin-right: 8px;
 									}
-									a.img-change {
+									.img-change-btn {
 										color: @blue;
 										font-size: @font13;
 									}
@@ -776,7 +782,6 @@ div.usercenter {
 								}
 								.btn-wrap {
 									text-align: center;
-									padding-left: 20px;
 									a {
 										.submitBtn;
 										margin: 5px 0 0 0;
@@ -784,12 +789,21 @@ div.usercenter {
 								}
 							}
 						}
+						#email-setting .settings .btn-wrap { padding-left: 10px !important; }
 						#phone-setting .settings .btn-wrap { padding-left: 35px !important; }
+						#name-setting .settings .btn-wrap { padding-left: 20px !important; }
 						#pswLogin-setting .settings {
 							.pswLogin-new-confirm { padding-right: 30px; }
 							 .btn-wrap { padding-left: 8px !important; }
 						}
 						#pswTrade-setting .settings {
+							.old-psw-trade {
+								padding-left: 86px;
+								a {
+									margin-left: 10px;
+									color: @blue;
+								}
+							}
 							.pswTrade-new-confirm { padding-right: 30px; }
 							.btn-wrap { padding-left: 35px !important; }
 						}
@@ -966,4 +980,6 @@ div.usercenter {
 			}
 		}
 	}
+
+	//
 }
