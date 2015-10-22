@@ -46,11 +46,10 @@ namespace Agp2p.Web.tools
                     }
                     httpContext.Session[DTKeys.SESSION_CODE] = null;
 
-                    var sessionIdHash = Convert.ToInt32(nvc["session_id_hash"]);
-                    sendMobileVerifyCode(mobile, sessionIdHash, 60, true, defCallback);
+                    sendMobileVerifyCode(mobile, 60, true, defCallback);
                     break;
                 case "verifyForBindMobile":
-                    var verifyCode = nvc["verify_code"];
+                    var verifyCode = nvc["verifyCode"];
                     SetMobile(verifyCode, defCallback);
                     break;
                 case "sendCodeForResetPwd":
@@ -64,17 +63,16 @@ namespace Agp2p.Web.tools
                     }
                     httpContext.Session[DTKeys.SESSION_CODE] = null;
 
-                    sessionIdHash = Convert.ToInt32(nvc["session_id_hash"]);
                     var context = new Agp2pDataContext();
                     if (!context.dt_users.Any(u => u.mobile == mobile))
                     {
                         defCallback((int) HttpStatusCode.NotFound, "不存在设有该电话号码的用户");
                         return;
                     }
-                    sendMobileVerifyCode(mobile, sessionIdHash, 60 * 2, false, defCallback);
+                    sendMobileVerifyCode(mobile, 60 * 2, false, defCallback);
                     break;
                 case "verifyForResetPwd":
-                    verifyCode = nvc["verify_code"];
+                    verifyCode = nvc["verifyCode"];
                     var pwd = DTRequest.GetFormString("newPwd");
                     SetPasswordByMobile(verifyCode, pwd, defCallback);
                     break;
@@ -148,11 +146,11 @@ namespace Agp2p.Web.tools
             }
         }
 
-        private void sendMobileVerifyCode(string mobile, int sessionIdHash, int sendSecondsSpan, bool checkConflict, Action<int, string> callback)
+        private void sendMobileVerifyCode(string mobile, int sendSecondsSpan, bool checkConflict, Action<int, string> callback)
         {
-            if (GetSessionIDHash() != sessionIdHash || string.IsNullOrWhiteSpace(mobile))
+            if (string.IsNullOrWhiteSpace(mobile))
             {
-                callback((int) HttpStatusCode.Unauthorized, "参数不正确"); // 防止短信轰炸滥用我们平台的发验证码接口
+                callback((int) HttpStatusCode.Unauthorized, "参数不正确");
                 return;
             }
             // verifying_mobile : string | last_send_verifying_sms_at : DateTime? | mobile_verify_code : string
@@ -217,11 +215,6 @@ namespace Agp2p.Web.tools
             {
                 callback((int)HttpStatusCode.InternalServerError, "短信发送失败，请联系本站管理员！");
             }
-        }
-
-        private static int GetSessionIDHash()
-        {
-            return HttpContext.Current.Session.SessionID.GetHashCode();
         }
 
         public bool IsReusable
