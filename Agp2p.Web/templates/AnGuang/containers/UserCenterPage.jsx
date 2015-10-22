@@ -63,7 +63,7 @@ class UserCenterPage extends React.Component {
 			            </li>
 			            <li><a className="news">消息管理</a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><a href="#">我的消息</a></li>
+								<li><Link to="/mynews" activeClassName="active-link">我的消息</Link></li>
 			                    <li><a href="#">通知设置</a></li>
 			                </ul>
 			            </li>

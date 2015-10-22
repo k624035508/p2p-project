@@ -22,6 +22,7 @@ import MyAccountPage from "../containers/myaccount.jsx"
 import SafeCenterPage from "../containers/safe.jsx"
 import BankAccountPage from "../containers/bankaccount.jsx"
 import RecommendPage from "../containers/recommend.jsx"
+import MyNewsPage from "../containers/mynews.jsx"
 
 import { setHeaderHighlight } from "./header.js"
 
@@ -41,6 +42,7 @@ $(function(){
 				    	<Route path="/myaccount" component={MyAccountPage}/>
 						<Route path="/bankaccount" component={BankAccountPage}/>
 						<Route path="/recommend" component={RecommendPage}/>
+						<Route path="/mynews" component={MyNewsPage}/>
 					</Route>
 			    	<Route path="/safe" component={SafeCenterPage}/>
 		    	</Route>
