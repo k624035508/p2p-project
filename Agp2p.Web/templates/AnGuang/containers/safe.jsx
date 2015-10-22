@@ -206,8 +206,25 @@ class IdentityBinding extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bindingIdCard: false
+			bindingIdCard: false, trueName: "", idCardNumber: ""
 		};
+	}
+	componentWillReceiveProps(nextProps) {
+		this.setState({trueName: nextProps.realName, idCardNumber: nextProps.idCardNumber});
+	}
+	bindIdentity() {
+		if (confirm("身份资料填写后则不能再修改，是否确认？")) {
+			post('/tools/submit_ajax.ashx?action=bind_idcard', {
+				trueName: this.state.trueName,
+				idCardNumber: this.state.idCardNumber,
+			}, function (data) {
+				alert(data.msg);
+				this.props.dispatch(fetchWalletAndUserInfo());
+			}.bind(this), "json")
+			.fail(function (jqXHR) {
+				alert(jqXHR.responseJSON.msg);
+			});
+		}
 	}
 	render() {
 		return (
@@ -216,26 +233,30 @@ class IdentityBinding extends React.Component {
 					<span className="name"></span>
 					<span className="list-th">实名认证</span>
 					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
-					<span className="pull-right"><a href="javascript:">立即认证</a></span>
+					<span className="pull-right"><a href="javascript:" onClick={ev => this.setState({bindingIdCard: true})}>立即认证</a></span>
 				</div>
+				{!this.state.bindingIdCard ? null :
 				<div className="setting-wrap" id="name-setting">
 					<div className="cancel">
 						<span className="th-setting">实名认证</span>
 						<span className="tips">为确保您的账户安全，每个身份证号只能绑定一个安广融合账号</span>
-						<span className="glyphicon glyphicon-remove pull-right cancel-btn"></span>
+						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({bindingIdCard: false})}></span>
 					</div>
 					<div className="settings">
 						<div className="form-group">
 							<label htmlFor="email">真实姓名：</label>
-							<input type="text" id="email" />
+							<input type="text" id="email" onBlur={ev => this.setState({trueName: ev.target.value})}
+								defaultValue={this.props.realName} disabled={this.props.realName}/>
 						</div>
 						<div className="form-group">
 							<label htmlFor="personalID">身份证号：</label>
-							<input type="text" id="personalID" />
+							<input type="text" id="personalID" onBlur={ev => this.setState({idCardNumber: ev.target.value})}
+								defaultValue={this.props.idCardNumber} disabled={this.props.idCardNumber} />
 						</div>
-						<div className="btn-wrap"><a href="javascript:">提 交</a></div>
+						<div className="btn-wrap" style={this.props.realName ? {display: "none"} : null}><a href="javascript:"
+							onClick={ev => this.bindIdentity()}>提 交</a></div>
 					</div>
-				</div>
+				</div>}
 			</li>
 		);
 	}

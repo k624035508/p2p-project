@@ -148,8 +148,8 @@ namespace Agp2p.Web.tools
                 case "user_bank_card_show": //显示客户银行卡
                     user_bank_card_show(context);
                     break;
-                case "search_idcard": //查询客户身份证
-                    search_idcard(context);
+                case "bind_idcard": // 实名认证
+                    bind_idcard(context);
                     break;
                 case "user_edit": //修改会员资料
                     user_edit(context);
@@ -2489,10 +2489,10 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
-        /// 查询用户身份证
+        /// 实名认证
         /// </summary>
         /// <param name="context"></param>
-        private void search_idcard(HttpContext context)
+        private void bind_idcard(HttpContext context)
         {
             try
             {
@@ -2504,9 +2504,8 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                var key = DTRequest.GetFormString("key");
-                var idcard = DTRequest.GetFormString("cardno");
-                var truename = DTRequest.GetFormString("truename");
+                var idcard = DTRequest.GetFormString("idCardNumber");
+                var truename = DTRequest.GetFormString("trueName");
                 var licontext = new Agp2pDataContext();
                 // 判断身份证是否重复
                 var count = licontext.dt_users.Count(u => u.id != model.id && u.id_card_number == idcard);
