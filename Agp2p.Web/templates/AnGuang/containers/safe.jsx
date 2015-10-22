@@ -262,11 +262,73 @@ class IdentityBinding extends React.Component {
 	}
 }
 
+class ResetLoginPassword extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			resetingLoginPassword: false,
+			originalPassword: "",
+			newPassword: "", newPassword2: ""
+		};
+	}
+	resetLoginPassword() {
+		if (this.state.newPassword != this.state.newPassword2) {
+			alert("两次输入的密码不一致");
+			return;
+		}
+		post('/tools/submit_ajax.ashx?action=user_password_edit', {
+			txtOldPassword: this.state.originalPassword,
+			txtPassword: this.state.newPassword
+		}, function (data) {
+			alert(data.msg);
+			if (data.status == 1) {
+				this.setState({resetingLoginPassword: false});
+			}
+		}.bind(this), "json")
+		.fail(function (jqXHR) {
+			alert("操作失败，请重试");
+		});
+	}
+	render() {
+		return (
+			<li>
+				<div className="list-cell">
+					<span className="psw-login"></span>
+					<span className="list-th">登录密码</span>
+					<span className="list-tips">定期更换密码让您的账户更安全。</span>
+					<span className="pull-right"><a href="javascript:" onClick={ev => this.setState({resetingLoginPassword: true})}>修改</a></span>
+				</div>
+				{!this.state.resetingLoginPassword ? null :
+				<div className="setting-wrap" id="pswLogin-setting">
+					<div className="cancel">
+						<span className="th-setting">修改登录密码</span>
+						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({resetingLoginPassword: false})}></span>
+					</div>
+					<div className="settings">
+						<div className="form-group">
+							<label htmlFor="pswLogin">原密码：</label>
+							<input type="password" id="pswLogin" onBlur={ev => this.setState({originalPassword: ev.target.value})} />
+						</div>
+						<div className="form-group">
+							<label htmlFor="pswLogin-new">新密码：</label>
+							<input type="password" id="pswLogin-new" onBlur={ev => this.setState({newPassword: ev.target.value})} />
+						</div>
+						<div className="form-group pswLogin-new-confirm">
+							<label htmlFor="pswLogin-new2">确认新密码：</label>
+							<input type="password" id="pswLogin-new2" onBlur={ev => this.setState({newPassword2: ev.target.value})} />
+						</div>
+						<div className="btn-wrap"><a href="javascript:" onClick={ev => this.resetLoginPassword()}>提 交</a></div>
+					</div>
+				</div>}
+			</li>
+		);
+	}
+}
+
 class SafeCenter extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			resetLoginPassword: false,
 			settingTransactionPassword: false
 		};
 	}
@@ -284,35 +346,7 @@ class SafeCenter extends React.Component {
 							<EmailBinding {...this.props} />
 							<MobileBinding {...this.props} />
 							<IdentityBinding {...this.props} />
-							<li>
-								<div className="list-cell">
-									<span className="psw-login"></span>
-									<span className="list-th">登录密码</span>
-									<span className="list-tips">定期更换密码让您的账户更安全。</span>
-									<span className="pull-right"><a href="javascript:">修改</a></span>
-								</div>
-								<div className="setting-wrap" id="pswLogin-setting">
-									<div className="cancel">
-										<span className="th-setting">修改登录密码</span>
-										<span className="glyphicon glyphicon-remove pull-right cancel-btn"></span>
-									</div>
-									<div className="settings">
-										<div className="form-group">
-											<label htmlFor="pswLogin">原密码：</label>
-											<input type="text" id="pswLogin" />
-										</div>
-										<div className="form-group">
-											<label htmlFor="pswLogin-new">新密码：</label>
-											<input type="text" id="pswLogin-new" />
-										</div>
-										<div className="form-group pswLogin-new-confirm">
-											<label htmlFor="pswLogin-new2">确认新密码：</label>
-											<input type="text" id="pswLogin-new2" />
-										</div>
-										<div className="btn-wrap"><a href="javascript:">提 交</a></div>
-									</div>
-								</div>
-							</li>
+							<ResetLoginPassword {...this.props} />
 							<li>
 								<div className="list-cell">
 									<span className="psw-trade"></span>
