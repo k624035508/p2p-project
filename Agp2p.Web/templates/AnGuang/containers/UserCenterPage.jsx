@@ -57,7 +57,7 @@ class UserCenterPage extends React.Component {
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/safe" activeClassName="active-link">个人中心</Link></li>
 			                    <li><Link to="/bankaccount" activeClassName="active-link">银行账户</Link></li>
-			                    <li><a href="#">推荐奖励</a></li>
+			                    <li><Link to="/recommend" activeClassName="active-link">推荐奖励</Link></li>
 			                    <li><a href="#">我的奖券</a></li>
 			                </ul>
 			            </li>

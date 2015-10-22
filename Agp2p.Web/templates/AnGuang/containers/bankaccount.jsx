@@ -2,7 +2,7 @@ import React from "react";
 import bank from "../js/bank-list.jsx"
 import CityPicker from "../components/city-picker.jsx"
 
-export default class SafeCenter extends React.Component {
+export default class BankAccount extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
