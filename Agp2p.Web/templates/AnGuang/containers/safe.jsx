@@ -365,7 +365,7 @@ class ResetTransactPassword extends React.Component {
 		});
 	}
 	forgotTransactPassword() {
-		if (confirm("是否确认重置交易密码？")) { // TODO 待实现
+		if (confirm("是否确认重置交易密码？")) {
 			post('/tools/trade_pwd.ashx', { action: "reset" }, function (data) {
 				alert(data.msg);
 			}, "json").fail(function (jqXHR) {
@@ -394,7 +394,8 @@ class ResetTransactPassword extends React.Component {
 							<label htmlFor="pswTrade">原交易密码：</label>
 							<input type="password" id="pswTrade" onBlur={ev => this.setState({originalTransactPassword: ev.target.value})}
 								disabled={!this.props.hasTransactPassword} placeholder={!this.props.hasTransactPassword ? "（未设置）" : ""} />
-							<a href="javascript:">忘记密码？</a>
+							<a href="javascript:" style={!this.props.hasTransactPassword ? {visibility: "hidden"} : null }
+								onClick={ev => this.forgotTransactPassword()}>忘记密码？</a>
 						</div>
 						<div className="form-group">
 							<label htmlFor="pswTrade-new">新交易密码：</label>
