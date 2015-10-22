@@ -220,6 +220,7 @@ namespace Agp2p.Web.admin.statistic
             {
                 d.Project.Index,
                 d.Project.Name,
+                d.Project.Category,
                 d.Project.FinancingAmount,
                 d.Project.ProfitRateYear,
                 d.Project.Term,
@@ -232,8 +233,8 @@ namespace Agp2p.Web.admin.statistic
                 d.InvestValue,
                 d.InvestTime
             });
-            var titles = new[] { "序号", "项目名称", "融资金额", "年利率", "期限", "发标时间", "满标时间", "到期时间", "投资人姓名", "会员号", "会员组", "投资金额", "投资时间" };
-            Utils.ExportXls("项目满标明细", titles, lsData, Response);
+            var titles = new[] { "序号", "标题", "产品", "融资金额", "年利率", "期限", "发标时间", "满标时间", "到期时间", "投资者", "会员号", "会员组", "投资金额", "投资时间" };
+            Utils.ExportXls("借款满标明细", titles, lsData, Response);
         }
 
         protected void rblProjectStatus_OnSelectedIndexChanged(object sender, EventArgs e)

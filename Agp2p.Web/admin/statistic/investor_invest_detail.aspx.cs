@@ -242,8 +242,8 @@ namespace Agp2p.Web.admin.statistic
             var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
             {
                 d.InvestorRealName,
-                d.InvestorUserName,
                 d.ProjectName,
+                d.Category,
                 d.InvestTime,
                 d.ProjectCompleteTime,
                 d.Term,
@@ -253,7 +253,7 @@ namespace Agp2p.Web.admin.statistic
                 d.Total
             });
             var titles = new[] {
-                "投资者姓名", "会员名", "项目名称", "投资时间", "到期时间", "投资期限", "年利率", "投资本金", "利息", "合计"
+                "投资者", "标题", "产品", "投资时间", "到期时间", "期限", "年利率", "投资本金", "利息", "合计"
             };
             Utils.ExportXls("投资人投资明细汇总", titles, lsData, Response);
         }

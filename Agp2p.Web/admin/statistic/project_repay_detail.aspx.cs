@@ -57,6 +57,7 @@ namespace Agp2p.Web.admin.statistic
             public string InvestCompleteTime { get; set; }
             public string RepayCompleteTime { get; set; }
             public string OverTimeDay { get; set; }
+            public string RepayAt { get; set; }
         }
         protected class RepaymentDetail
         {
@@ -168,8 +169,10 @@ namespace Agp2p.Web.admin.statistic
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
                             Term = r.term + "/" + pro.repayment_term_span_count,
-                            OverTimeDay = r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time 
-                                ? r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days.ToString() : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days.ToString() : "0",
+                            RepayAt = r.repay_at != null ? ((DateTime)r.repay_at).ToString("yyyy-MM-dd") : "",
+                            //OverTimeDay = r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time 
+                            //    ? r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days.ToString() : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days.ToString() : "0",
+
                             InvestCompleteTime = pro.invest_complete_time.ToString(),
                             RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),
                         }; // 首个记录显示项目信息
@@ -301,26 +304,25 @@ namespace Agp2p.Web.admin.statistic
             var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
             {
                 d.RepaymentTask.Index,
-                d.RepaymentTask.ShouldRepayAt,
                 d.RepaymentTask.ProjectName,
                 d.RepaymentTask.CreditorName,
+                d.RepaymentTask.Category,
                 d.RepaymentTask.FinancingAmount,
                 d.RepaymentTask.ProfitRateYear,
-                d.RepaymentTask.Term,
                 d.RepaymentTask.InvestCompleteTime,
                 d.RepaymentTask.RepayCompleteTime,
+                d.RepaymentTask.Term,
+                d.RepaymentTask.ShouldRepayAt,
+                d.RepaymentTask.RepayAt,
                 d.InvestorRealName,
-                d.InvestorUserName,
-                d.InvestValue,
-                d.InvestTime,
                 d.RepayPrincipal,
                 d.RepayInterest,
                 d.RepayTotal
             });
             var titles = new[] {
-                "序号", "应还时间", "项目名称", "债权人", "项目总金额", "年利率", "期限", "满标日", "到期日", "投资人姓名", "会员号", "投资金额", "投资时间", "返还本金", "返还利息", "返还本息合计"
+                "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "满标时间", "到期日", "期数", "应付时间", "实付时间", "收款人", "兑付本金", "兑付利息", "本息合计"
             };
-            Utils.ExportXls("项目投资人兑付明细", titles, lsData, Response);
+            Utils.ExportXls("应兑付明细", titles, lsData, Response);
         }
 
         protected void rblRepaymentTaskStatus_OnSelectedIndexChanged(object sender, EventArgs e)
