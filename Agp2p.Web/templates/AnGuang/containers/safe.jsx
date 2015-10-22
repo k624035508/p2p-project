@@ -4,12 +4,13 @@ import DatePicker from "../components/date-picker.jsx"
 import { updateWalletInfo, updateUserInfo, updateUserInfoByName } from "../actions/usercenter.js"
 import { post } from "jquery";
 
-class SafeCenter extends React.Component {
+class UserInfoEditor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { editing: false, modified: false, saving: false };
 	}
 	onUserInfoModify(fieldName, value) {
+		if (this.props[fieldName] == value) return;
 		this.props.dispatch(updateUserInfoByName(fieldName, value));
 		this.setState({modified: true});
 	}
@@ -32,6 +33,48 @@ class SafeCenter extends React.Component {
 			alert(data.msg);
 			this.setState({saving: false, modified: false, editing: false});
 		}.bind(this), "json");
+	}
+	render() {
+		return (
+			<div className="personal-info">
+				<div className="personal-info-th">
+					<span>个人信息</span>
+					<a href="javascript:;" onClick={ev => this.setState({editing: !this.state.editing })}
+						className="pull-right">{this.state.editing ? "取消修改" : "修改信息"}</a>
+				</div>
+				<div className="personal-info-list">
+					<ul className="list-unstyled list-inline">
+						<li><span>用 户 名：</span>{ this.props.userName }</li>
+						<li><span>昵　　称：</span>{ this.genInputBox("nickName") }</li>
+						<li><span>姓　　名：</span>{ this.props.realName }</li>
+						<li><span>性　　别：</span>{ this.state.editing
+							? <form>{ ["保密", "男", "女"].map(v =>
+								[<input type="radio" name="sex" value={v} key={v} checked={this.props.sex == v}
+									onChange={ev => this.onUserInfoModify("sex", v)} />, v])}</form>
+							: this.props.sex }</li>
+						<li><span>邮箱地址：</span>{ this.props.email }</li>
+						<li><span>出生日期：</span>{ this.state.editing
+							? <DatePicker className="input-box" onBlur={ev => this.onUserInfoModify("birthday", ev.target.value)}
+								defaultValue={this.props.birthday} />
+							: this.props.birthday }</li>
+						<li><span>QQ 号码：</span>{ this.genInputBox("qq") }</li>
+						<li><span>所在城市：</span>{ this.state.editing
+							? <CityPicker defaultValue={this.props.area.split(",")}
+								onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
+							: this.props.area.replace(/,/g, "")}</li>
+					</ul>
+				</div>
+				{ this.state.modified ? <div className="btn-wrap"><a href="javascript:;" onClick={ev => this.saveUserInfo()}
+					disabled={this.state.saving}>提 交</a></div> : null }
+			</div>
+		);
+	}
+}
+
+class SafeCenter extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
 	}
 	componentDidMount() {
 		this.fetchUserInfo();
@@ -57,37 +100,7 @@ class SafeCenter extends React.Component {
 	render() {
 		return (
 			<div className="personal-info-content">
-				<div className="personal-info">
-					<div className="personal-info-th">
-						<span>个人信息</span>
-						<a href="javascript:;" onClick={ev => this.setState({editing: !this.state.editing })}
-							className="pull-right">{this.state.editing ? "取消修改" : "修改信息"}</a>
-					</div>
-					<div className="personal-info-list">
-						<ul className="list-unstyled list-inline">
-							<li><span>用 户 名：</span>{ this.props.userName }</li>
-							<li><span>昵　　称：</span>{ this.genInputBox("nickName") }</li>
-							<li><span>姓　　名：</span>{ this.props.realName }</li>
-							<li><span>性　　别：</span>{ this.state.editing
-								? <form>{ ["保密", "男", "女"].map(v =>
-									[<input type="radio" name="sex" value={v} key={v} checked={this.props.sex == v}
-										onChange={ev => this.onUserInfoModify("sex", v)} />, v])}</form>
-								: this.props.sex }</li>
-							<li><span>邮箱地址：</span>{ this.props.email }</li>
-							<li><span>出生日期：</span>{ this.state.editing
-								? <DatePicker className="input-box" onBlur={ev => this.onUserInfoModify("birthday", ev.target.value)}
-									defaultValue={this.props.birthday} />
-								: this.props.birthday }</li>
-							<li><span>QQ 号码：</span>{ this.genInputBox("qq") }</li>
-							<li><span>所在城市：</span>{ this.state.editing
-								? <CityPicker defaultValue={this.props.area.split(",")}
-									onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
-								: this.props.area.replace(/,/g, "")}</li>
-						</ul>
-					</div>
-					{ this.state.modified ? <div className="btn-wrap"><a href="javascript:;" onClick={ev => this.saveUserInfo()}
-						disabled={this.state.saving}>提 交</a></div> : null }
-				</div>
+				<UserInfoEditor {...this.props} />
 				<div className="safe-center">
 					<div className="safe-center-th"><span>安全中心</span></div>
 					<div className="setting-list">
@@ -243,7 +256,7 @@ class SafeCenter extends React.Component {
 }
 
 function mapStateToProps(state) {
-	return {...state.userInfo};
+	return state.userInfo;
 }
 
 import { connect } from 'react-redux';
