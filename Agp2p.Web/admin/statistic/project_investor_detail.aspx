@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>项目满标明细表</title>
+<title>借款满标明细</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -26,7 +26,7 @@ td.center { text-align: center; }
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>项目满标明细表</span>
+  <span>借款满标明细</span>
 </div>
 <!--/导航栏-->
 
@@ -73,7 +73,7 @@ td.center { text-align: center; }
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="5%">序号</th>
-    <th align="left">项目名称</th>
+    <th align="left">标题</th>
     <th align="center">产品</th>
     <th align="right">融资金额</th>
     <th align="center">年利率</th>
@@ -82,7 +82,7 @@ td.center { text-align: center; }
     <th align="left">发标时间</th>
     <th align="left">满标时间</th>
     <th align="left">到期时间</th>
-    <th align="left">投资人姓名</th>
+    <th align="left">投资者</th>
     <%--<th align="left">会员号</th>--%>
     <th align="left">会员组</th>
     <th align="right">投资金额</th>
