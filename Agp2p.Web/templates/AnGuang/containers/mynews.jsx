@@ -30,7 +30,7 @@ export default class MyNews extends React.Component {
                         <span className="detail">详细</span>
                     </div>
                     <div className="news-body">
-                        <div className="overview">
+                        <div className="overview">{ /*消息打开状态时background：#f7f7f7*/}
                             <span className="checkbox"><input type="checkbox"/></span>
                             <span className="state read-icon"></span>
                             <span className="th">注册成功</span>
@@ -38,7 +38,7 @@ export default class MyNews extends React.Component {
                             <span className="time">2015/10/22 14:25</span>
                             <span className="detail close-icon"></span>
                         </div>
-                        <div className="news-detail">
+                        <div className="news-detail hidden">
                             <p className="appellation">亲爱的会员XXX：</p>
                             <p className="txt">您好！感谢您注册安广融合账号！</p>
                             <p className="txt">您在安广融合可以将自己的闲散资金出借给有需要的人以此获得资金回报。</p>
