@@ -982,5 +982,49 @@ div.usercenter {
 		}
 	}
 
-	//
+	// 通知设置
+	.settings-wrap {
+		* {
+			color: @dark-grey;
+			font-size: @font15;
+		}
+		.news-tb {
+			margin-top: 20px;
+			table {
+				thead > tr > th {
+					border-bottom-width: 1px;
+					background-color: @body-color;
+					font-weight: normal;
+				}
+				th, td { text-align: center; }
+				tr th:first-child, tr td:first-child {
+					text-align: left;
+					width: 30%;
+					padding-left: 5%;
+				}
+				tbody > tr td input { outline: none; }
+			}
+			.table-bordered {
+				thead > tr > th, tbody > tr > td {
+					border: none;
+					border-top: @border;
+				}
+			}
+		}
+		.btn-wrap {
+			margin-top: 40px;
+			text-align: center;
+			a {
+				display: inline-block;
+				width: 130px;
+				height: 45px;
+				line-height: 45px;
+				text-decoration: none;
+				color: @white;
+				font-size: @font20;
+				border-radius: 4px;
+				background: @red;
+			}
+		}
+	}
 }

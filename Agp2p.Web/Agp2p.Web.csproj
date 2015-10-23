@@ -186,6 +186,7 @@
     <Content Include="admin\skin\layout.css" />
     <Content Include="admin\statistic\investor_invest_detail.aspx" />
     <Content Include="admin\statistic\project_repay_detail.aspx" />
+    <Content Include="admin\statistic\repay_summary.aspx" />
     <Content Include="admin\statistic\project_repay_task.aspx" />
     <Content Include="admin\statistic\project_investor_detail.aspx" />
     <Content Include="admin\statistic\investment_rank_list.aspx" />
@@ -793,6 +794,8 @@
     <Content Include="templates\AnGuang\components\card-editor.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
     <Content Include="templates\AnGuang\containers\mynews.jsx" />
+    <Content Include="templates\AnGuang\containers\mynews.jsx" />
+    <Content Include="templates\AnGuang\containers\settings.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1283,6 +1286,13 @@
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.designer.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\repay_summary.aspx.cs">
+      <DependentUpon>repay_summary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\statistic\repay_summary.aspx.designer.cs">
+      <DependentUpon>repay_summary.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\statistic\project_repay_task.aspx.cs">
       <DependentUpon>project_repay_task.aspx</DependentUpon>
