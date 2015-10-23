@@ -23,7 +23,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
+        public new static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -75,36 +75,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true)]
-        public static string AjaxQueryCardInfo(int cardId)
-        {
-            var userInfo = GetUserInfo();
-            if (userInfo == null)
-            {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return "请先登录";
-            }
-
-            var context = new Agp2pDataContext();
-            var card = context.li_bank_accounts.SingleOrDefault(c => c.owner == userInfo.id && c.id == cardId);
-            if (card == null)
-            {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                return "找不到卡的信息";
-            }
-            return JsonConvert.SerializeObject(new
-            {
-                CardNumber = card.account,
-                BankName = card.bank,
-                OpeningBank = card.opening_bank,
-                BankLocation = card.location
-            });
-        }
-
-        [WebMethod]
-        public static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank)
+        public new static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank, string cardNumber)
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -140,16 +111,24 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "开户行名称格式不正确";
             }
+            if (!new Regex(@"^\d{16,}$").IsMatch(cardNumber))
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return "银行卡号格式不正确";
+            }
 
             card.bank = bankName;
             card.location = bankLocation;
             card.opening_bank = openingBank;
+            card.account = cardNumber;
+
             context.SubmitChanges();
             return "修改成功";
         }
 
         [WebMethod]
-        public static string AjaxDeleteCardInfo(int cardId)
+        public new static string AjaxDeleteCard(int cardId)
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)

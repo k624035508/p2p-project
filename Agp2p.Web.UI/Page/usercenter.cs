@@ -119,15 +119,27 @@ namespace Agp2p.Web.UI.Page
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true)]
-        public static string AjaxQueryBankAccount()
+        public static string AjaxQueryBankCards()
         {
-            return withdraw.AjaxQueryBankAccount();
+            return withdraw.AjaxQueryBankCards();
         }
 
         [WebMethod]
         public static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
         {
             return mycard.AjaxAppendCard(cardNumber, bankName, bankLocation, openingBank);
+        }
+
+        [WebMethod]
+        public static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank, string cardNumber)
+        {
+            return mycard.AjaxModifyCard(cardId, bankName, bankLocation, openingBank, cardNumber);
+        }
+
+        [WebMethod]
+        public static string AjaxDeleteCard(int cardId)
+        {
+            return mycard.AjaxDeleteCard(cardId);
         }
 
         [WebMethod]

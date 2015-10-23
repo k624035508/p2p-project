@@ -1,44 +1,14 @@
 import React from "react";
 import $ from "jquery";
-import CityPicker from "../components/city-picker.jsx"
 import bank from "../js/bank-list.jsx"
+import CardEditor from "../components/card-editor.jsx"
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
-import { fetchBankCards, appendBankCard } from "../actions/bankcard.js"
+import { fetchBankCards } from "../actions/bankcard.js"
 
 class AppendingCardDialog extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			bank: "",
-			selectedLocation: [],
-			openingBank: "",
-			cardNumber: "",
-			cardNumber2: ""
-		};
-	}
-	doAppendCard() {
-		if (!this.state.bank) {
-			alert("请先选择银行");
-			return;
-		}
-		if (this.state.selectedLocation.length < 2) {
-			alert("请先选择开户行所在地");
-			return;
-		}
-		if (!this.state.openingBank) {
-			alert("请先填写开户行");
-			return;
-		}
-		if (this.state.cardNumber2 != this.state.cardNumber) {
-			alert("两次输入的卡号不一致");
-			return;
-		}
-		if (!this.state.cardNumber2) {
-			alert("请先输入卡号");
-			return;
-		}
-		var promise = this.props.dispatch(appendBankCard(this.state.cardNumber, this.state.bank, this.state.selectedLocation, this.state.openingBank));
-		promise.done(() => $(this.refs.dialog).modal("hide"));
+		this.state = { };
 	}
 	render() {
 		return (
@@ -49,28 +19,7 @@ class AppendingCardDialog extends React.Component {
 							<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 className="modal-title" id="addCardsLabel">新增银行卡</h4>
 						</div>
-						<div className="modal-body">
-							<ul className="list-unstyled">
-								<li><span>开户名：</span><span>{this.props.realName || "（实名认证后的姓名）"}</span></li>
-								<li><span>选择银行：</span><select className="bankSelect" onChange={ev => this.setState({bank: ev.target.value})}>
-									<option value="">请选择银行</option>
-									{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
-									</select></li>
-								<li><span>开户行所在地：</span>
-										<CityPicker onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})} />
-									</li>
-								<li><span>开户行名称：</span><input type="text" onBlur={ev => this.setState({openingBank: ev.target.value})} /></li>
-								<li><span>银行卡号：</span><input type="text" onBlur={ev => this.setState({cardNumber: ev.target.value})} /></li>
-								<li><span>确认卡号：</span><input type="text" onBlur={ev => {
-									if (ev.target.value != this.state.cardNumber) {
-										alert("两次输入的卡号不一致");
-										ev.target.value = "";
-									}
-									this.setState({cardNumber2: ev.target.value});
-								}} /></li>
-							</ul>
-							<button type="button" onClick={this.doAppendCard.bind(this)}>提 交</button>
-						</div>
+						<CardEditor rootClass="modal-body" onOperationSuccess={() => $(this.refs.dialog).modal("hide")} />
 					</div>
 				</div>
 			</div>
@@ -151,7 +100,7 @@ class WithdrawPage extends React.Component {
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
 				        {this.props.cards.map((c, index) =>
-				            <li className={"card " + bank.classMapping[c.bankName]} key={index}
+				            <li className={"card " + bank.classMapping[c.bankName]} key={c.cardId}
 					            onClick={ev => this.setState({selectedCardIndex: index})}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>

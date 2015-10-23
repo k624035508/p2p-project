@@ -21,7 +21,7 @@ namespace Agp2p.Web.UI.Page
             
         }
 
-        public new static string AjaxQueryBankAccount()
+        public new static string AjaxQueryBankCards()
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -34,9 +34,12 @@ namespace Agp2p.Web.UI.Page
             var context = new Agp2pDataContext();
             var data = context.li_bank_accounts.Where(a => a.owner == userInfo.id).Select(a => new
             {
-                accountId = a.id,
+                cardId = a.id,
                 bankName = a.bank,
-                last4Char = a.account.Substring(a.account.Length - 4)
+                last4Char = a.account.Substring(a.account.Length - 4),
+                cardNumber = a.account,
+                openingBank = a.opening_bank,
+                bankLocation = a.location
             });
             return JsonConvert.SerializeObject(data);
         }
