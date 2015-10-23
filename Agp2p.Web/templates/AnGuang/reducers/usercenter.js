@@ -1,4 +1,5 @@
 import { UPDATE_WALLET_INFO, UPDATE_USER_INFO, UPDATE_USER_INFO_BY_NAME } from "../actions/usercenter.js"
+import { UPDATE_BANK_CARDS } from "../actions/bankcard.js"
 import Immutable from "immutable"
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
 		area: "",
 		address: "",
 		hasTransactPassword: false
-	}
+	},
+	bankCards: [],
 }
 
 export default function userCenter(state = initialState, action) {
@@ -28,6 +30,8 @@ export default function userCenter(state = initialState, action) {
 		return Immutable.fromJS(state).mergeIn([ "userInfo" ], action.userInfo).toJS();
 	case UPDATE_USER_INFO_BY_NAME:
 		return Immutable.fromJS(state).setIn([ "userInfo", action.name ], action.value).toJS();
+	case UPDATE_BANK_CARDS:
+		return Immutable.fromJS(state).setIn([ "bankCards"], action.bankCards).toJS();
 	default:
 		return state;
 	}
