@@ -99,7 +99,8 @@ namespace Agp2p.Web.UI.Page
                     userInfo.sex,
                     birthday = userInfo.birthday.HasValue ? userInfo.birthday.Value.ToString("yyyy-MM-dd") : "",
                     userInfo.area,
-                    userInfo.address
+                    userInfo.address,
+                    hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password)
                 }
             });
         }

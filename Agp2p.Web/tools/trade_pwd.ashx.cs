@@ -29,20 +29,11 @@ namespace Agp2p.Web.tools
             }
 
             string act = DTRequest.GetFormString("action");
-            if (act == "set")
+            if (act == "modify")
             {
-                string tradePwd = DTRequest.GetFormString("tradepwdVal");
-                setTradePassword(model.id, tradePwd, (i, s) =>
-                {
-                    httpContext.Response.StatusCode = i;
-                    httpContext.Response.Write(JsonConvert.SerializeObject(new {msg = s}));
-                });
-            }
-            else if (act == "mod")
-            {
-                string oldTradePwd = DTRequest.GetFormString("oldtpwdVal");
-                string newTradePwd = DTRequest.GetFormString("newtpwdVal");
-                modTradePassword(model.id, oldTradePwd, newTradePwd, (i, s) =>
+                string oldTradePwd = DTRequest.GetFormString("originalTransactPassword");
+                string newTradePwd = DTRequest.GetFormString("newTransactPassword");
+                ModifyTradePassword(model.id, oldTradePwd, newTradePwd, (i, s) =>
                 {
                     httpContext.Response.StatusCode = i;
                     httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = s }));
@@ -127,34 +118,7 @@ namespace Agp2p.Web.tools
             }
         }
 
-        protected void setTradePassword(int userId, string tradePwd, Action<int, string> callback)
-        {
-            if (string.IsNullOrWhiteSpace(tradePwd))
-            {
-                callback((int) HttpStatusCode.LengthRequired, "交易密码不能为空");
-                return;
-            }
-            try
-            {
-                //为了能查询到最新的用户信息，必须查询最新的用户资料
-                var context = new Agp2pDataContext();
-                var user = context.dt_users.Single(u => u.id == userId);
-                if (!string.IsNullOrWhiteSpace(user.pay_password)) // 原先已经设置过了就不能再设置，只能修改
-                {
-                    callback((int)HttpStatusCode.Unauthorized, "你已经设置过交易密码了，不能再设置；只能输入旧密码再修改");
-                    return;
-                }
-                user.pay_password = Utils.MD5(tradePwd);
-                context.SubmitChanges();
-                callback((int) HttpStatusCode.OK, "设置交易密码成功，请记住新密码");
-            }
-            catch (Exception ex)
-            {
-                callback((int) HttpStatusCode.InternalServerError, "设置交易密码失败，请联系客服");
-            }
-        }
-
-        protected void modTradePassword(int userId, string oldTradePwd, string newTradePwd, Action<int, string> callback)
+        protected void ModifyTradePassword(int userId, string oldTradePwd, string newTradePwd, Action<int, string> callback)
         {
             if (string.IsNullOrWhiteSpace(newTradePwd))
             {
@@ -165,9 +129,9 @@ namespace Agp2p.Web.tools
             {
                 var context = new Agp2pDataContext();
                 var user = context.dt_users.Single(u => u.id == userId);
-                if (Utils.MD5(oldTradePwd) != user.pay_password)
+                if (!string.IsNullOrWhiteSpace(user.pay_password) && Utils.MD5(oldTradePwd) != user.pay_password)
                 {
-                    callback((int)HttpStatusCode.OK, "旧交易密码错误");
+                    callback((int)HttpStatusCode.BadRequest, "旧交易密码错误");
                     return;
                 }
                 user.pay_password = Utils.MD5(newTradePwd);

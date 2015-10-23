@@ -16,6 +16,7 @@ const initialState = {
 		birthday: "",
 		area: "",
 		address: "",
+		hasTransactPassword: false
 	}
 }
 

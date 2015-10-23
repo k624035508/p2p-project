@@ -645,6 +645,7 @@ div.usercenter {
 			}
 		}
 		.safe-center {
+			min-height: 562px;
 			margin-top: 25px;
 			padding: 15px 20px 56px 20px;
 			* { font-size: @font15; }
@@ -726,6 +727,11 @@ div.usercenter {
 										width: 200px;
 										.input-style;
 									}
+									span {
+										display: inline-block;
+										width: 200px;
+										text-align: left;
+									}
 								}
 								.code-group {
 									label { .label-style; }
@@ -740,12 +746,12 @@ div.usercenter {
 										vertical-align: top;
 										width: 100px;
 										height: 30px;
-										line-height: 28px;
+										line-height: 27px;
 										border: @border;
 										text-align: center;
 										margin-right: 8px;
 									}
-									a.img-change {
+									.img-change-btn {
 										color: @blue;
 										font-size: @font13;
 									}
@@ -776,7 +782,6 @@ div.usercenter {
 								}
 								.btn-wrap {
 									text-align: center;
-									padding-left: 20px;
 									a {
 										.submitBtn;
 										margin: 5px 0 0 0;
@@ -784,12 +789,22 @@ div.usercenter {
 								}
 							}
 						}
+						#email-setting .settings .btn-wrap { padding-left: 10px !important; }
 						#phone-setting .settings .btn-wrap { padding-left: 35px !important; }
+						#name-setting .settings .btn-wrap { padding-left: 20px !important; }
 						#pswLogin-setting .settings {
 							.pswLogin-new-confirm { padding-right: 30px; }
 							 .btn-wrap { padding-left: 8px !important; }
 						}
 						#pswTrade-setting .settings {
+							.old-psw-trade {
+								padding-left: 78px;
+								a {
+									margin-left: 10px;
+									color: @blue;
+									font-size: @font13;
+								}
+							}
 							.pswTrade-new-confirm { padding-right: 30px; }
 							.btn-wrap { padding-left: 35px !important; }
 						}
@@ -889,5 +904,127 @@ div.usercenter {
 		}
 		.warm-tips-th { .th-grey-style; }
 		.warmTips { .warm-tips-style; }
+	}
+
+	// 我的消息内容样式
+	.news-wrap {
+		.controls-custom {
+			& > div { .inline-block; }
+			.controls-list {
+				& > span {
+					.inline-block;
+					height: 35px;
+					line-height: 34px;
+					padding: 0 10px;
+					margin-left: 12px;
+					border: @border;
+					cursor: pointer;
+				}
+			}
+		}
+		.news-cell {
+			border: @border;
+			margin-top: 25px;
+			* {
+				color: @dark-grey;
+				font-size: @font15;
+			}
+			.row-spans {
+				& > span {
+					.inline-block;
+					padding-right: 3%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				.checkbox {
+					width: 7%;
+					margin-left: 3%;
+					input {
+						position: relative;
+						margin: 0;
+					}
+				}
+				.state { width: 10%; }
+				.th { width: 20%; }
+				.content { width: 32%; }
+				.time { width: 20%; }
+				.detail { width: 8%; }
+			}
+			.news-th {
+				height: 35px;
+				background: @body-color;
+				border-bottom: @border;
+				.row-spans;
+			}
+			.news-body {
+				.overview {
+					line-height: 40px;
+					.row-spans;
+					.state { height: 27px; }
+					.read-icon { background: url("@{usercenter}/read.png") no-repeat; }
+					.unread-icon { background: url("@{usercenter}/unread.png") no-repeat; }
+					.detail {
+						height: 13px;
+						cursor: pointer;
+					}
+					.close-icon { background: url("@{usercenter}/close.png") no-repeat; }
+					.open-icon { background: url("@{usercenter}/open.png") no-repeat; }
+				}
+				.news-detail {
+					border-top: @border;
+					padding: 3px 3%;
+					p { margin: 10px 0; }
+					.txt { text-indent: 30px; }
+					.sender { text-align: right; }
+				}
+			}
+		}
+	}
+
+	// 通知设置
+	.settings-wrap {
+		* {
+			color: @dark-grey;
+			font-size: @font15;
+		}
+		.news-tb {
+			margin-top: 20px;
+			table {
+				thead > tr > th {
+					border-bottom-width: 1px;
+					background-color: @body-color;
+					font-weight: normal;
+				}
+				th, td { text-align: center; }
+				tr th:first-child, tr td:first-child {
+					text-align: left;
+					width: 30%;
+					padding-left: 5%;
+				}
+				tbody > tr td input { outline: none; }
+			}
+			.table-bordered {
+				thead > tr > th, tbody > tr > td {
+					border: none;
+					border-top: @border;
+				}
+			}
+		}
+		.btn-wrap {
+			margin-top: 40px;
+			text-align: center;
+			a {
+				display: inline-block;
+				width: 130px;
+				height: 45px;
+				line-height: 45px;
+				text-decoration: none;
+				color: @white;
+				font-size: @font20;
+				border-radius: 4px;
+				background: @red;
+			}
+		}
 	}
 }

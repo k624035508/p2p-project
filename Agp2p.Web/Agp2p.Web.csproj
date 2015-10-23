@@ -780,6 +780,8 @@
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
     <Content Include="templates\AnGuang\containers\bankaccount.jsx" />
     <Content Include="templates\AnGuang\containers\recommend.jsx" />
+    <Content Include="templates\AnGuang\containers\mynews.jsx" />
+    <Content Include="templates\AnGuang\containers\settings.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
