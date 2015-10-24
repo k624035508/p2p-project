@@ -159,6 +159,68 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
+        public static string AjaxQueryUserMessages(short type = 1, short pageIndex = 0, short pageSize = 8)
+        {
+            var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var context = new Agp2pDataContext();
+            var queryable = context.dt_user_message.Where(m => m.accept_user_name == userInfo.user_name && m.type == type);
+            var totalCount = queryable.Count();
+            var msgs = queryable.OrderByDescending(m => m.id).AsEnumerable()
+                .Select(m => new
+                {
+                    m.id,
+                    isRead = m.is_read == 1,
+                    m.title,
+                    m.content,
+                    receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
+                    //readTime = m.read_time
+                }).Skip(pageSize * pageIndex).Take(pageSize);
+            return JsonConvert.SerializeObject(new {totalCount, msgs});
+        }
+
+        [WebMethod]
+        public static string AjaxSetMessagesRead(string messageIds)
+        {
+            var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var ids = messageIds.Split(';').Select(str => Convert.ToInt32(str)).ToArray();
+            if (!ids.Any())
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return "请先选择消息";
+            }
+            var context = new Agp2pDataContext();
+            var now = DateTime.Now;
+            context.dt_user_message.Where(m => ids.Contains(m.id)).ForEach(m =>
+            {
+                m.is_read = 1;
+                m.read_time = now;
+            });
+            context.SubmitChanges();
+            return "成功设置消息为已读";
+        }
+
+        [WebMethod]
+        public static string AjaxDeleteMessages(string messageIds)
+        {
+            return usermessage.AjaxDeleteMessages(messageIds);
+        }
+
+        [WebMethod(CacheDuration = 600)]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {
             var userInfo = GetUserInfo();

@@ -539,6 +539,19 @@ namespace Agp2p.Common
         }
 
         /// <summary>
+        /// 用户消息状态筛选枚举
+        /// </summary>
+        public enum UserMessageTypeEnum
+        {
+            [Description("系统消息")]
+            SystemMessage = 1,
+            [Description("收件箱")]
+            ReceivingBox = 2,
+            [Description("发件箱")]
+            SendingBox = 3,
+        }
+
+        /// <summary>
         /// 连连支付银行代码枚举
         /// </summary>
         public enum LianlianpayBankCodeEnum
