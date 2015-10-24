@@ -662,6 +662,9 @@
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\read.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\guangda.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\guangfa.png" />
@@ -686,6 +689,12 @@
     <Content Include="templates\AnGuang\imgs\usercenter\middle.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\news.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\overview.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\more.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\qq.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\qqzone.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\sinaweibo.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\tencentweibo.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\recommend\wechat.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\name-grey.png" />
@@ -696,6 +705,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\unread.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\guangda.png" />
@@ -781,6 +791,8 @@
     <Content Include="templates\AnGuang\containers\recommend.jsx" />
     <Content Include="templates\AnGuang\containers\mynews.jsx" />
     <Content Include="templates\AnGuang\containers\settings.jsx" />
+    <Content Include="templates\AnGuang\containers\mylottery.jsx" />
+    <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
