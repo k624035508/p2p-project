@@ -6,6 +6,9 @@ import indexOf  from "lodash/array/indexOf"
 export default class CityPicker extends React.Component {
     constructor(props) {
         super(props);
+        this.state = this.genStateByValue(this.props.defaultValue);
+    }
+    genStateByValue(val) {
         var state = {
             province: citylist.map(pobj => pobj.p),
             city: [],
@@ -14,8 +17,8 @@ export default class CityPicker extends React.Component {
             currentCityIndex: -1,
             currentAreaIndex: -1
         };
-        if (this.props.defaultValue) {
-            var [prov, city, area] = this.props.defaultValue;
+        if (val) {
+            var [prov, city, area] = val;
             if (prov) {
                 state.currentProvinceIndex = indexOf(state.province, prov);
                 state.city = citylist[state.currentProvinceIndex].c.map(c => c.n);
@@ -23,15 +26,18 @@ export default class CityPicker extends React.Component {
                     state.currentCityIndex = indexOf(state.city, city);
                     var areas = citylist[state.currentProvinceIndex].c[state.currentCityIndex].a;
                     if (areas) {
-                    	state.area = areas.map(a => a.s);
-                    	if (area) {
-                    		state.currentAreaIndex = indexOf(state.area, area);
-                    	}
+                        state.area = areas.map(a => a.s);
+                        if (area) {
+                            state.currentAreaIndex = indexOf(state.area, area);
+                        }
                     }
                 }
             }
         }
-        this.state = state;
+        return state;
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState(this.genStateByValue(nextProps.value));
     }
     onProvinceSelected(selectedIndex) {
         var newState = {

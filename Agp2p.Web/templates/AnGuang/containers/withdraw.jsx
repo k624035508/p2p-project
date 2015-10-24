@@ -1,43 +1,14 @@
 import React from "react";
 import $ from "jquery";
-import CityPicker from "../components/city-picker.jsx"
 import bank from "../js/bank-list.jsx"
+import CardEditor from "../components/card-editor.jsx"
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import { fetchBankCards } from "../actions/bankcard.js"
 
 class AppendingCardDialog extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			bank: "",
-			selectedLocation: [],
-			openingBank: "",
-			cardNumber: "",
-			cardNumber2: ""
-		};
-	}
-	doAppendCard() {
-		if (this.state.cardNumber2 == "") {
-			alert("两次输入的卡号不一致");
-			return;
-		}
-		let url = USER_CENTER_ASPX_PATH + "/AjaxAppendCard";
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            contentType: "application/json",
-            url: url,
-            data: JSON.stringify({cardNumber: this.state.cardNumber, bankName: this.state.bank,
-            	bankLocation: this.state.selectedLocation.join(";"), openingBank: this.state.openingBank}),
-            success: function (data) {
-                alert(data.d);
-                this.props.onAppendSuccess();
-            }.bind(this),
-            error: function (xhr, status, err) {
-            	alert(xhr.responseJSON);
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
-        $(this.refs.dialog).modal("hide");
+		this.state = { };
 	}
 	render() {
 		return (
@@ -48,28 +19,7 @@ class AppendingCardDialog extends React.Component {
 							<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 className="modal-title" id="addCardsLabel">新增银行卡</h4>
 						</div>
-						<div className="modal-body">
-							<ul className="list-unstyled">
-								<li><span>开户名：</span><span>（实名认证后的姓名）</span></li>
-								<li><span>选择银行：</span><select className="bankSelect" onChange={ev => this.setState({bank: ev.target.value})}>
-									<option value="">请选择银行</option>
-									{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
-									</select></li>
-								<li><span>开户行所在地：</span>
-										<CityPicker onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})} />
-									</li>
-								<li><span>开户行名称：</span><input type="text" onBlur={ev => this.setState({openingBank: ev.target.value})} /></li>
-								<li><span>银行卡号：</span><input type="text" onBlur={ev => this.setState({cardNumber: ev.target.value})} /></li>
-								<li><span>确认卡号：</span><input type="text" onBlur={ev => {
-									if (ev.target.value != this.state.cardNumber) {
-										alert("两次输入的卡号不一致");
-										ev.target.value = "";
-									}
-									this.setState({cardNumber2: ev.target.value});
-								}} /></li>
-							</ul>
-							<button type="button" onClick={this.doAppendCard.bind(this)}>提 交</button>
-						</div>
+						<CardEditor rootClass="modal-body" onOperationSuccess={() => $(this.refs.dialog).modal("hide")} />
 					</div>
 				</div>
 			</div>
@@ -81,30 +31,12 @@ class WithdrawPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cards: [],
 			selectedCardIndex: -1,
 			toWithdraw: 0,
 			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
 			transactPassword: ""
 		};
-	}
-	fetchCards() {
-        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryBankAccount"
-		$.ajax({
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            url: url,
-            data: "",
-            success: function(result) {
-                let data = JSON.parse(result.d);
-                this.setState({cards: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(url, status, err.toString());
-            }.bind(this)
-        });
 	}
 	onWithdrawAmountSetted(ev) {
 		var toWithdraw = parseFloat(ev.target.value) || 0;
@@ -136,7 +68,7 @@ class WithdrawPage extends React.Component {
 			return;
 		}
 		$.post("/tools/submit_ajax.ashx?action=withdraw", {
-			cardId: this.state.cards[this.state.selectedCardIndex].accountId,
+			cardId: this.props.cards[this.state.selectedCardIndex].accountId,
 			howmany: this.state.toWithdraw,
 			transactPassword: this.state.transactPassword
 		}, function(data) {
@@ -149,14 +81,17 @@ class WithdrawPage extends React.Component {
 		});
 	}
 	componentDidMount() {
-		this.fetchCards();
+		if (this.props.cards.length == 0) {
+			this.props.dispatch(fetchBankCards());
+		}
+
 		var promise = this.props.dispatch(fetchWalletAndUserInfo());
 		promise.done(data => {
 			if (!this.props.hasTransactPassword) {
 				alert("你未设置交易密码，请先到个人中心设置");
 				window.location.hash = "#/safe";
 			}
-		})
+		});
     }
 	render() {
 		return (
@@ -164,8 +99,8 @@ class WithdrawPage extends React.Component {
 				<div className="withdraw">
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
-				        {this.state.cards.map((c, index) => 
-				            <li className={"card " + bank.classMapping[c.bankName]} key={index}
+				        {this.props.cards.map((c, index) =>
+				            <li className={"card " + bank.classMapping[c.bankName]} key={c.cardId}
 					            onClick={ev => this.setState({selectedCardIndex: index})}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
@@ -177,7 +112,7 @@ class WithdrawPage extends React.Component {
 			        	)}
 				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        </ul>
-						<AppendingCardDialog onAppendSuccess={this.fetchCards} />
+						<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName} onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
 				    </div></div>
 				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.props.idleMoney}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
@@ -201,8 +136,10 @@ class WithdrawPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
+		realName: state.userInfo.realName,
 		idleMoney: state.walletInfo.idleMoney,
-		hasTransactPassword: state.userInfo.hasTransactPassword
+		hasTransactPassword: state.userInfo.hasTransactPassword,
+		cards: state.bankCards,
 	};
 }
 
