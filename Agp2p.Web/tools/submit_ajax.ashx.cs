@@ -820,19 +820,19 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"发送失败，请填写手机号码！\"}");
                 return;
             }
-            // 发送注册验证码时验证图片验证码
-            string code = DTRequest.GetFormString("txtPicCode").Trim();
-            string result0 = verify_code(context, code);
-            if (result0 != "success")
-            {
-                context.Response.Write(result0);
-                return;
-            }
             //检查是否过快
             var sendTime = (DateTime?)SessionHelper.Get(DTKeys.SESSION_SMS_MOBILE_SEND_TIME);
             if (sendTime != null && DateTime.Now.Subtract(sendTime.Value).TotalMinutes < 2)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"刚已发送过短信，请2分钟后再试！\"}");
+                return;
+            }
+            // 发送注册验证码时验证图片验证码
+            string picCode = DTRequest.GetFormString("txtPicCode").Trim();
+            string verifyPicCodeResult = verify_code(context, picCode);
+            if (verifyPicCodeResult != "success")
+            {
+                context.Response.Write(verifyPicCodeResult);
                 return;
             }
             Model.sms_template smsModel = new sms_template().GetModel("usercode"); //取得短信内容
