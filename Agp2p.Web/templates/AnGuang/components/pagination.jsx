@@ -9,7 +9,7 @@ export default class Pagination extends React.Component {
     }
     render() {
     	let {pageIndex, pageCount} = this.props;
-    	let isFirstPage = pageIndex == 0, isLastPage = pageIndex == pageCount - 1;
+    	let isFirstPage = pageIndex == 0, isLastPage = pageCount == 0 || pageIndex == pageCount - 1;
     	return (
     		<nav>
 	    		<ul className="pagination">
