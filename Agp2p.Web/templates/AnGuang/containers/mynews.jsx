@@ -130,36 +130,38 @@ class MyNews extends React.Component {
                         <span onClick={ev => this.deleteSelectedMessages()}>删除</span>
                     </div>
                 </div>
-                <div className="news-cell">
-                    <div className="news-th">
+				<div className="news-list">
+					<div className="news-tb">
+						<div className="news-th">
                         <span className="checkbox"><input type="checkbox"
-	                        checked={this.state.msgs.length == 0 ? false : all(this.state.msgs, m => m.checked)}
-                        	onChange={ev => this.setAllMsgChecked(ev.target.value)}/></span>
-                        <span className="state">状态</span>
-                        <span className="th">标题</span>
-                        <span className="content">内容</span>
-                        <span className="time">时间</span>
-                        <span className="detail">详细</span>
-                    </div>
-	                {this.state.msgs.map((m, index) =>
-                    <div className="news-body" key={m.id}>
-                        <div className="overview" style={index == this.state.readingMsgIndex ? {backgroundColor: "#f7f7f7"} : null}>
+														  checked={this.state.msgs.length == 0 ? false : all(this.state.msgs, m => m.checked)}
+														  onChange={ev => this.setAllMsgChecked(ev.target.value)}/></span>
+							<span className="state">状态</span>
+							<span className="th">标题</span>
+							<span className="content">内容</span>
+							<span className="time">时间</span>
+							<span className="detail">详细</span>
+						</div>
+						{this.state.msgs.map((m, index) =>
+							<div className="news-body" key={m.id}>
+								<div className="overview" style={index == this.state.readingMsgIndex ? {backgroundColor: "#f7f7f7"} : null}>
                             <span className="checkbox"><input type="checkbox" checked={this.state.msgs[index].checked}
-                            	onChange={ev => this.toggleMsgChecked(index)}/></span>
-                            <span className={`state ${m.isRead ? "read-icon" : "unread-icon"}`}></span>
-                            <span className="th">{m.title}</span>
-                            <span className="content">{m.content.length < 20 ? m.content: m.content.substr(0, 20) + "..."}</span>
-                            <span className="time">{m.receiveTime}</span>
-                            <span className="detail close-icon" onClick={ev => this.toggleReading(index)}></span>
-                        </div>
-                        <div className={`news-detail ${this.state.readingMsgIndex == index ? "" : "hidden"}`}>
-                            <p className="appellation">亲爱的会员 {this.props.userName}：</p>
-                            <p className="txt">您好！</p>
-                            <p className="txt">{m.content}</p>
-                            <p className="sender">安广融合团队</p>
-                        </div>
-                    </div>)}
-                </div>
+															  onChange={ev => this.toggleMsgChecked(index)}/></span>
+									<span className={`state ${m.isRead ? "read-icon" : "unread-icon"}`}></span>
+									<span className="th">{m.title}</span>
+									<span className="content">{m.content.length < 20 ? m.content: m.content.substr(0, 20) + "..."}</span>
+									<span className="time">{m.receiveTime}</span>
+									<span className="detail close-icon" onClick={ev => this.toggleReading(index)}></span>
+								</div>
+								<div className={`news-detail ${this.state.readingMsgIndex == index ? "" : "hidden"}`}>
+									<p className="appellation">亲爱的会员 {this.props.userName}：</p>
+									<p className="txt">您好！</p>
+									<p className="txt">{m.content}</p>
+									<p className="sender">安广融合团队</p>
+								</div>
+							</div>)}
+					</div>
+				</div>
                 <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                     onPageSelected={pageIndex => this.fetchMessages(this.state.type, pageIndex)}/>
             </div>
