@@ -232,9 +232,9 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund, "投资撤回 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0} {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 放款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 放款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 放款 {1}"}
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 还款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 还款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 还款 {1}"}
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)

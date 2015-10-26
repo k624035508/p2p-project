@@ -38,7 +38,7 @@ namespace Agp2p.Web.admin.statistic
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("project_repay_task.aspx",
+            string pageUrl = Utils.CombUrlTxt("repay_summary.aspx",
                 "keywords={0}&page={1}", txtKeywords.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
@@ -151,7 +151,7 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("repay_summary.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",txtKeywords.Text));
         }
 
         //设置分页数量
@@ -165,7 +165,7 @@ namespace Agp2p.Web.admin.statistic
                     Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
                 }
             }
-            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}", txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("repay_summary.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}", txtKeywords.Text));
         }
         
 
