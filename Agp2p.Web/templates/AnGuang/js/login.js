@@ -6,6 +6,8 @@ import "../less/footerSmall.less";
 import $ from "jquery";
 
 $(function(){
+    $("#account").focus();
+    
     $("#loginBtn").click(function(){
         $.ajax({
             type: "post",

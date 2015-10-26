@@ -222,6 +222,27 @@ namespace Agp2p.Web.UI.Page
             return usermessage.AjaxDeleteMessages(messageIds);
         }
 
+        [WebMethod]
+        public static string AjaxQueryInvitationInfo(short pageIndex, short pageSize)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var data = userInfo.li_invitations1.Select(i => new
+            {
+                inviteeId = i.user_id,
+                inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
+                firstInvestmentAmount = i.li_project_transactions == null ? 0 : i.li_project_transactions.principal,
+            });
+            return JsonConvert.SerializeObject(new {totalCount = data.Count(), data = data.Skip(pageIndex * pageSize).Take(pageSize)});
+        }
+
         [WebMethod(CacheDuration = 600)]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {

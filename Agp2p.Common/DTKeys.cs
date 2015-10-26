@@ -124,6 +124,7 @@ namespace Agp2p.Common
         /// </summary>
         public const string SESSION_SMS_CODE = "dt_session_sms_code";
         public const string SESSION_SMS_MOBILE_CODE = "dt_session_sms_mobile_code";
+        public const string SESSION_SMS_MOBILE_SEND_TIME = "dt_session_sms_mobile_send_time";
         /// <summary>
         /// 后台管理员
         /// </summary>
