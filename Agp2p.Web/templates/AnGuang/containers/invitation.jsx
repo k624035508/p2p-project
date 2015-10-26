@@ -5,7 +5,7 @@ import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 class InvitationPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {clipboard: null};
 	}
 	getLocationOrigin() {
 		if (!window.location.origin) {
@@ -14,6 +14,11 @@ class InvitationPage extends React.Component {
 			+ (window.location.port ? ':' + window.location.port: '');
 		} else {
 			return location.origin;
+		}
+	}
+	componentWillUnmount() {
+		if (this.state.clipboard) {
+			this.state.clipboard.destroy();
 		}
 	}
 	componentDidMount() {
@@ -28,20 +33,13 @@ class InvitationPage extends React.Component {
 		} else {
 			var Clipboard = require("clipboard");
 			var clipboard = new Clipboard("#btn-copy");
-			clipboard.on('success', function(e) {
-				console.info('Action:', e.action);
-				console.info('Text:', e.text);
-				console.info('Trigger:', e.trigger);
-
-				e.clearSelection();
-				alert("复制成功");
-			});
-
 			clipboard.on('error', function(e) {
-				console.error('Action:', e.action);
-				console.error('Trigger:', e.trigger);
 				fallback();
+			}).on('success', function(e) {
+				alert("复制成功");
+				e.clearSelection();
 			});
+			this.setState({clipboard: clipboard});
 		}
 
 		if (!this.props.invitationCode) {
