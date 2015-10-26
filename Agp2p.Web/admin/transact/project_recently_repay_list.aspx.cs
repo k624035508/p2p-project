@@ -131,7 +131,7 @@ namespace Agp2p.Web.admin.transact
             {
                 var repaymentTaskId = context.li_projects.Single(p => p.id == projectId)
                     .li_repayment_tasks.First(t => t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && t.should_repay_time.Date <= DateTime.Today).id;
-                var repayment = context.ExecuteRepaymentTask(repaymentTaskId, false);
+                var repayment = context.ExecuteRepaymentTask(repaymentTaskId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 RptBind();
                 var remark = "执行放款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志

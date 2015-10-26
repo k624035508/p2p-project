@@ -210,7 +210,7 @@ namespace Agp2p.Web.admin.repayment
                 ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.Add.ToString());
                 int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
                 //TODO 扣除借款人托管账户钱 计算罚款
-                context.ExecuteRepaymentTask(repayId, false);
+                context.ExecuteRepaymentTask(repayId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 JscriptMsg("还款成功！",
                     Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",
                         this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));
