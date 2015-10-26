@@ -22,7 +22,7 @@ import MyRepaymentsPage from "../containers/myrepayments.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
 import SafeCenterPage from "../containers/safe.jsx"
 import BankAccountPage from "../containers/bankaccount.jsx"
-import RecommendPage from "../containers/recommend.jsx"
+import InvitationPage from "../containers/invitation.jsx"
 import MyNewsPage from "../containers/mynews.jsx"
 import SettingsPage from "../containers/settings.jsx"
 
@@ -46,7 +46,7 @@ $(function(){
 						<Route path="/myrepayments" component={MyRepaymentsPage}/>
 						<Route path="/myaccount" component={MyAccountPage}/>
 						<Route path="/bankaccount" component={BankAccountPage}/>
-						<Route path="/recommend" component={RecommendPage}/>
+						<Route path="/invitation" component={InvitationPage}/>
 						<Route path="/mynews" component={MyNewsPage}/>
 						<Route path="/settings" component={SettingsPage}/>
 					</Route>

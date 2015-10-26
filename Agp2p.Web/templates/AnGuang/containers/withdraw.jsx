@@ -85,6 +85,9 @@ class WithdrawPage extends React.Component {
 			this.props.dispatch(fetchBankCards());
 		}
 
+		if (this.props.hasTransactPassword) {
+			return;
+		}
 		var promise = this.props.dispatch(fetchWalletAndUserInfo());
 		promise.done(data => {
 			if (!this.props.hasTransactPassword) {

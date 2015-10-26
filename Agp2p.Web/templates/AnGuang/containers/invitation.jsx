@@ -1,18 +1,60 @@
 import React from "react"
+import $ from "jquery";
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
-export default class Recommend extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+class InvitationPage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
+	getLocationOrigin() {
+		if (!window.location.origin) {
+			return window.location.protocol + "//" 
+			+ window.location.hostname 
+			+ (window.location.port ? ':' + window.location.port: '');
+		} else {
+			return location.origin;
+		}
+	}
+	componentDidMount() {
+		var fallback = function () {
+			$("#btn-copy").click(function () {
+				var text = $("span.site-link").text();
+				window.prompt("按 Ctrl+C 复制到剪贴板，然后关闭对话框", text);
+			});
+		};
+		if (!document.addEventListener) { // ie8 或以下
+			fallback();
+		} else {
+			var Clipboard = require("clipboard");
+			var clipboard = new Clipboard("#btn-copy");
+			clipboard.on('success', function(e) {
+				console.info('Action:', e.action);
+				console.info('Text:', e.text);
+				console.info('Trigger:', e.trigger);
 
+				e.clearSelection();
+				alert("复制成功");
+			});
+
+			clipboard.on('error', function(e) {
+				console.error('Action:', e.action);
+				console.error('Trigger:', e.trigger);
+				fallback();
+			});
+		}
+
+		if (!this.props.invitationCode) {
+			this.props.dispatch(fetchWalletAndUserInfo());
+		}
+	}
     render(){
         return(
             <div className="recommend-wrap">
                 <div className="recommend-link">
                     <span>我的邀请链接：</span>
-                    <span className="site-link">http://www.agrhp2p.com/</span>
-                    <a href="#">复 制</a>
+                    <span className="site-link">{`${this.getLocationOrigin()}/register.html?invite_code=${this.props.invitationCode}`}</span>
+                    <a id="btn-copy" href="javascript:" data-clipboard-target=".site-link">复 制</a>
                 </div>
                 <div className="shareTo">
                     <span>或分享到：</span>
@@ -66,3 +108,12 @@ export default class Recommend extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        invitationCode: state.userInfo.invitationCode,
+    };
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(InvitationPage);
