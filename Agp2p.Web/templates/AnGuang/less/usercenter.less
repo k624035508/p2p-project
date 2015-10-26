@@ -908,6 +908,10 @@ div.usercenter {
 
 	// 我的奖券内容样式
 	.lotteries-wrap {
+		* {
+			color: @dark-grey;
+			font-size: @font15;
+		}
 		.lottery-cell {
 			width: 235px;
 			height: 130px;
@@ -955,25 +959,41 @@ div.usercenter {
 				}
 			}
 		}
-		.lottery-list {
+		.lottery-content {
 			height: 360px;
-			& > div {
-				display: inline-block;
-				margin: 25px 16px 0 16px;
+			padding-top: 25px;
+			.lottery-list {
+				& > div {
+					display: inline-block;
+					margin: 0 16px;
+				}
+				.lottery-fail {
+					.lottery-cell;
+					border: @border;
+					.lottery-face .lottery-value { color: @grey; }
+					.lottery-state { background: #d2d2d2; }
+				}
+				.lottery-usable {
+					.lottery-cell;
+					border: 1px solid @red;
+					.lottery-face .lottery-value { color: @red; }
+					.lottery-state { background: @red; }
+				}
 			}
-			.lottery-fail {
-				.lottery-cell;
-				border: @border;
-				.lottery-face .lottery-value { color: @grey; }
-				.lottery-state { background: #d2d2d2; }
-			}
-			.lottery-usable {
-				.lottery-cell;
-				border: 1px solid @red;
-				.lottery-face .lottery-value { color: @red; }
-				.lottery-state { background: @red; }
+			.lottery-history {
+				table {
+					border: @border;
+					th, td { padding: 13px 8px 13px 35px; }
+					th {
+						font-weight: normal;
+						border-bottom: @border;
+						background: @body-color;
+					}
+					td { border-top: @border; }
+				}
 			}
 		}
+
 		.use-rules-th { .th-grey-style; }
 		.use-rules { .warm-tips-style; }
 	}
