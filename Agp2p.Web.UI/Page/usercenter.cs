@@ -70,7 +70,8 @@ namespace Agp2p.Web.UI.Page
         [ScriptMethod(UseHttpGet = true)]
         public static string AjaxQueryUserInfo()
         {
-            var userInfo = GetUserInfoByLinq();
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
@@ -79,6 +80,7 @@ namespace Agp2p.Web.UI.Page
             }
 
             var wallet = userInfo.li_wallets;
+            var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userInfo.id && u.type == DTEnums.CodeEnum.Register.ToString());
             return JsonConvert.SerializeObject(new
             {
                 walletInfo = new
@@ -100,6 +102,7 @@ namespace Agp2p.Web.UI.Page
                     birthday = userInfo.birthday.HasValue ? userInfo.birthday.Value.ToString("yyyy-MM-dd") : "",
                     userInfo.area,
                     userInfo.address,
+                    invitationCode = userCode == null ? myreward.GetInviteCode(context) : userCode.str_code,
                     hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password)
                 }
             });
@@ -180,7 +183,6 @@ namespace Agp2p.Web.UI.Page
                     m.title,
                     m.content,
                     receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
-                    //readTime = m.read_time
                 }).Skip(pageSize * pageIndex).Take(pageSize);
             return JsonConvert.SerializeObject(new {totalCount, msgs});
         }

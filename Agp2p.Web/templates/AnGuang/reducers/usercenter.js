@@ -17,6 +17,7 @@ const initialState = {
 		birthday: "",
 		area: "",
 		address: "",
+		invitationCode: "",
 		hasTransactPassword: false
 	},
 	bankCards: [],

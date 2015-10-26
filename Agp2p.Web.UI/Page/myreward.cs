@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Web;
 using Agp2p.Linq2SQL;
 using Agp2p.Common;
 using LitJson;
@@ -67,9 +69,21 @@ namespace Agp2p.Web.UI.Page
             return "";
         }
 
-        protected string get_invite_code()
+        public static string GetInviteCode(Agp2pDataContext context = null)
         {
-            var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userModel.id && u.type == DTEnums.CodeEnum.Register.ToString());
+            if (context == null)
+            {
+                context = new Agp2pDataContext();
+            }
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userInfo.id && u.type == DTEnums.CodeEnum.Register.ToString());
             //新增一个邀请码
             if (userCode == null)
             {
@@ -77,8 +91,8 @@ namespace Agp2p.Web.UI.Page
                 var strCode = Utils.GetCheckCode(8);
                 var codeModel = new Model.user_code
                 {
-                    user_id = userModel.id,
-                    user_name = userModel.user_name,
+                    user_id = userInfo.id,
+                    user_name = userInfo.user_name,
                     type = DTEnums.CodeEnum.Register.ToString(),
                     str_code = strCode,
                     eff_time = DateTime.Now.AddDays(1)
