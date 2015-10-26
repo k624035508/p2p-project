@@ -906,6 +906,98 @@ div.usercenter {
 		.warmTips { .warm-tips-style; }
 	}
 
+	// 我的奖券内容样式
+	.lotteries-wrap {
+		* {
+			color: @dark-grey;
+			font-size: @font15;
+		}
+		.lottery-cell {
+			width: 235px;
+			height: 130px;
+			border-radius: 4px;
+			& > div {
+				display: inline-block;
+				vertical-align: top;
+				height: 100%;
+			}
+			.lottery-face {
+				width: 183px;
+				.lottery-value {
+					font-size: @font32;
+					margin: 13px 10px;
+				}
+				.use-condition {
+					margin: 10px 0 5px 10px;
+					color: @grey;
+				}
+				.use-date {
+					margin:  0 0 0 10px;
+					color: @grey;
+				}
+			}
+			.lottery-state {
+				width: 50px;
+				padding: 25px 16px;
+				color: @white;
+				font-size: @font18;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+		}
+		.lottery-th {
+			padding-bottom: 6px;
+			border-bottom: 2px solid @light-grey;
+			span{
+				margin-right: 20px;
+				a {
+					font-size: @font18;
+					color: @dark-grey;
+					text-decoration: none;
+					padding-bottom: 7px;
+					&.active { border-bottom: 2px solid @red; }
+				}
+			}
+		}
+		.lottery-content {
+			height: 360px;
+			padding-top: 25px;
+			.lottery-list {
+				& > div {
+					display: inline-block;
+					margin: 0 16px;
+				}
+				.lottery-fail {
+					.lottery-cell;
+					border: @border;
+					.lottery-face .lottery-value { color: @grey; }
+					.lottery-state { background: #d2d2d2; }
+				}
+				.lottery-usable {
+					.lottery-cell;
+					border: 1px solid @red;
+					.lottery-face .lottery-value { color: @red; }
+					.lottery-state { background: @red; }
+				}
+			}
+			.lottery-history {
+				table {
+					border: @border;
+					th, td { padding: 13px 8px 13px 35px; }
+					th {
+						font-weight: normal;
+						border-bottom: @border;
+						background: @body-color;
+					}
+					td { border-top: @border; }
+				}
+			}
+		}
+
+		.use-rules-th { .th-grey-style; }
+		.use-rules { .warm-tips-style; }
+	}
+
 	// 我的消息内容样式
 	.news-wrap {
 		.controls-custom {
