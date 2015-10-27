@@ -1,6 +1,5 @@
 import React from "react"
 import $ from "jquery";
-import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 import Pagination from "../components/pagination.jsx"
 
 class InvitationPage extends React.Component {
@@ -43,9 +42,6 @@ class InvitationPage extends React.Component {
 			this.setState({clipboard: clipboard});
 		}
 
-		if (!this.props.invitationCode) {
-			this.props.dispatch(fetchWalletAndUserInfo());
-		}
 		this.fetchInvitationData()
 	}
 	fetchInvitationData(pageIndex = 0) {

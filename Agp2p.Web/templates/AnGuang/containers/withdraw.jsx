@@ -2,7 +2,6 @@ import React from "react";
 import $ from "jquery";
 import bank from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
-import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 import { fetchBankCards } from "../actions/bankcard.js"
 
 class AppendingCardDialog extends React.Component {
@@ -85,16 +84,10 @@ class WithdrawPage extends React.Component {
 			this.props.dispatch(fetchBankCards());
 		}
 
-		if (this.props.hasTransactPassword) {
-			return;
+		if (!this.props.hasTransactPassword) {
+			alert("你未设置交易密码，请先到个人中心设置");
+			window.location.hash = "#/safe";
 		}
-		var promise = this.props.dispatch(fetchWalletAndUserInfo());
-		promise.done(data => {
-			if (!this.props.hasTransactPassword) {
-				alert("你未设置交易密码，请先到个人中心设置");
-				window.location.hash = "#/safe";
-			}
-		});
     }
 	render() {
 		return (

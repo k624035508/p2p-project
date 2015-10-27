@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router'
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
 /**
  * Number.prototype.format(n, x)
@@ -21,13 +22,18 @@ class UserStatus extends React.Component {
 		super(props);
 		this.state = {};
 	}
+	componentDidMount() {
+		if (!this.props.alreadyFetchUserInfo) {
+			this.props.dispatch(fetchWalletAndUserInfo());
+		}
+	}
 	render() {
 		return (
 			<div className="content-right">
 		        <div className="overview-head">
 		            <div className="head-left">
 		                <p className="username">您好！ {this.props.userName}</p>
-		                <p className="save-level">安全级别 <span className="level-icon low"></span></p>
+		                <p className="save-level">安全级别 <span className={"level-icon " + this.props.safeLevel}></span></p>
 		                <p className="login-time">上次登录时间：{this.props.prevLoginTime}</p>
 		            </div>
 		            <div className="head-center">
@@ -50,11 +56,14 @@ class UserStatus extends React.Component {
 
 function mapStateToProps(state) {
 	var walletInfo = state.walletInfo, userInfo = state.userInfo;
+	var safeLevelInt = (userInfo.realName ? 1 : 0) + (userInfo.email ? 1 : 0) + (userInfo.hasTransactPassword ? 1 : 0);
 	return {
 		userName: userInfo.userName,
 		prevLoginTime: userInfo.prevLoginTime,
 		idleMoney: walletInfo.idleMoney,
 		lockedMoney: walletInfo.lockedMoney,
+		alreadyFetchUserInfo: !!userInfo.invitationCode,
+		safeLevel: safeLevelInt <= 1 ? "low" : (safeLevelInt == 2 ? "middle" : "high")
 	};
 }
 
