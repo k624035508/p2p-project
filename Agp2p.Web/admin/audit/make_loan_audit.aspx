@@ -65,7 +65,7 @@
             <ItemTemplate>
                 <tr>
                     <td></td>
-                    <td><a href="../project/loan_financing_detail.aspx?channel_id=6&id=<%#Eval("id")%>&status=<%#Eval("status")%>""><%#Eval("title")%></a></td>
+                    <td><a href="../project/loan_detail.aspx?channel_id=6&id=<%#Eval("id")%>&status=<%#Eval("status")%>""><%#Eval("title")%></a></td>
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#string.Format("{0:g}",Eval("invest_complete_time"))%></td>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
