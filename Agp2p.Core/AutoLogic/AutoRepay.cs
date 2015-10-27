@@ -24,7 +24,7 @@ namespace Agp2p.Core.AutoLogic
                 t =>
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
-            shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id, true));
+            shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
             if (shouldRepayTask.Any())
             {
                 context.AppendAdminLogAndSave("AutoRepay", "今日待放款项目自动放款：" + shouldRepayTask.Count);

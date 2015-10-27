@@ -792,7 +792,6 @@
     <Content Include="templates\AnGuang\less\invest_list.less" />
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
     <Content Include="templates\AnGuang\containers\bankaccount.jsx" />
-    <Content Include="templates\AnGuang\containers\recommend.jsx" />
     <Content Include="templates\AnGuang\components\card-editor.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
     <Content Include="templates\AnGuang\containers\mynews.jsx" />
@@ -800,6 +799,7 @@
     <Content Include="templates\AnGuang\containers\settings.jsx" />
     <Content Include="templates\AnGuang\containers\mylottery.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
+    <Content Include="templates\AnGuang\containers\invitation.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

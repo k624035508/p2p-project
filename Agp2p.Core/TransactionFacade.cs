@@ -606,18 +606,22 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="repaymentId"></param>
         /// <param name="autoPaid"></param>
-        public static li_repayment_tasks ExecuteRepaymentTask(this Agp2pDataContext context, int repaymentId, bool autoPaid)
+        public static li_repayment_tasks ExecuteRepaymentTask(this Agp2pDataContext context, int repaymentId,
+            Agp2pEnums.RepaymentStatusEnum statusAfterPay = Agp2pEnums.RepaymentStatusEnum.AutoPaid)
         {
             var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repaymentId);
             if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)
                 throw new InvalidOperationException("这个还款计划已经执行过了");
 
             // 执行还款
-            repaymentTask.status = autoPaid ? (byte)Agp2pEnums.RepaymentStatusEnum.AutoPaid: (byte)Agp2pEnums.RepaymentStatusEnum.ManualPaid;
+            repaymentTask.status = (byte) statusAfterPay;
             repaymentTask.repay_at = DateTime.Now;
 
             var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
+
+            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
+            var originalRepayInterest = repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest;
 
             foreach (var ptr in ptrs)
             {
@@ -625,7 +629,7 @@ namespace Agp2p.Core
                 var wallet = ptr.dt_users.li_wallets;
                 wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
                 wallet.investing_money -= ptr.principal;
-                wallet.profiting_money -= ptr.interest.GetValueOrDefault(0);
+                wallet.profiting_money -= Math.Round(originalRepayInterest * moneyRepayRatio[ptr.dt_users], 2);
                 wallet.total_profit += ptr.interest.GetValueOrDefault(0);
                 wallet.last_update_time = ptr.create_time;
 
@@ -643,7 +647,9 @@ namespace Agp2p.Core
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
             if (pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
-                pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                pro.status = statusAfterPay == Agp2pEnums.RepaymentStatusEnum.EarlierPaid
+                    ? (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier
+                    : (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
@@ -675,15 +681,28 @@ namespace Agp2p.Core
         {
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
-            return moneyRepayRatio.Select(r => new li_project_transactions
+            return moneyRepayRatio.Select(r =>
             {
-                create_time = transactTime, // 变更时间应该等于还款计划的还款时间
-                type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
-                project = repaymentTask.project,
-                dt_users = r.Key,
-                status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                principal = Math.Round(r.Value * repaymentTask.repay_principal, 2),
-                interest = Math.Round(r.Value * repaymentTask.repay_interest, 2)
+                var realityInterest = Math.Round(r.Value*repaymentTask.repay_interest, 2);
+                string remark = null;
+                if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
+                {
+                    remark = string.Format("提前还款：本期原来的待收益 {0:f2}，实际收益 {1:f2}",
+                        Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
+                        realityInterest);
+                }
+
+                return new li_project_transactions
+                {
+                    create_time = transactTime, // 变更时间应该等于还款计划的还款时间
+                    type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
+                    project = repaymentTask.project,
+                    dt_users = r.Key,
+                    status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    principal = Math.Round(r.Value*repaymentTask.repay_principal, 2),
+                    interest = realityInterest,
+                    remark = remark
+                };
             }).ToList();
         }
 
@@ -692,70 +711,52 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectId"></param>
-        /// <param name="remainProfitRate">剩余利息比率</param>
-        public static li_projects EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainProfitRate)
+        /// <param name="remainTermPrincipalRatePercent">剩余期数的本息百分比率（不包括当前这期）</param>
+        public static li_projects EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainTermPrincipalRatePercent)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
             var unpaidTasks = project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!unpaidTasks.Any()) throw new Exception("全部还款计划均已执行，不能进行提前还款");
-            if (remainProfitRate < 0 || 1 < remainProfitRate) throw new Exception("剩余利息比率不正常");
+            if (remainTermPrincipalRatePercent < 0 || 100 < remainTermPrincipalRatePercent) throw new Exception("剩余利息百分比率不正常");
+            var remainTermPrincipalRate = remainTermPrincipalRatePercent/100;
 
-            // 项目状态设为提前还款
-            project.complete_time = DateTime.Now;
-            project.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier;
+            var currentTask = unpaidTasks.First();
 
-            unpaidTasks.ForEach(t => t.status = (byte) Agp2pEnums.RepaymentStatusEnum.Invalid); // 原计划作废
+            var willInvalidTasks = unpaidTasks.Skip(1).ToList();
+            if (!willInvalidTasks.Any())
+            {
+                context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
+                return project;
+            }
 
-            var unpaidPrincipal = unpaidTasks.Sum(t => t.repay_principal);
-            var unpaidInterest = unpaidTasks.Sum(t => t.repay_interest);
+            willInvalidTasks.ForEach(t => t.status = (byte) Agp2pEnums.RepaymentStatusEnum.Invalid); // 原计划作废
+
+            var remainPrincipal = willInvalidTasks.Sum(t => t.repay_principal);
+            var remainInterest = willInvalidTasks.Sum(t => t.repay_interest);
+
+            var willPayInterest = Math.Round(remainPrincipal * remainTermPrincipalRate, 2); // 未还本金 * 比率
 
             // 生成新的计划
             var earlierRepayTask = new li_repayment_tasks
             {
                 li_projects = project,
-                cost = unpaidInterest - Math.Round(unpaidInterest*remainProfitRate, 2),
-                repay_at = project.complete_time,
-                repay_interest = Math.Round(unpaidInterest * remainProfitRate, 2),
-                repay_principal = unpaidPrincipal,
-                should_repay_time = unpaidTasks.Last().should_repay_time,
-                term = unpaidTasks.First().term,
-                status = (byte) Agp2pEnums.RepaymentStatusEnum.EarlierPaid,
+                cost = remainInterest - willPayInterest,
+                repay_interest = willPayInterest,
+                repay_principal = remainPrincipal,
+                should_repay_time = willInvalidTasks.Last().should_repay_time,
+                term = willInvalidTasks.First().term,
+                status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
             };
+            if (earlierRepayTask.cost < 0)
+            {
+                throw new Exception("数值异常：提前还款后投资者收到利息反而更高");
+            }
             context.li_repayment_tasks.InsertOnSubmit(earlierRepayTask);
 
-            var investRatio = GetInvestRatio(project);
-            // 生成项目交易记录
-            var projectTransactions = investRatio.Select(r => new li_project_transactions
-            {
-                create_time = project.complete_time.Value, // 变更时间应该等于还款计划的还款时间
-                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
-                project = project.id,
-                dt_users = r.Key,
-                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                principal = Math.Round(r.Value*earlierRepayTask.repay_principal, 2),
-                interest = Math.Round(r.Value*earlierRepayTask.repay_interest, 2),
-                remark = string.Format("最后 {0} 期提前还款：实际得到收益 {1:c}，原来的剩余待收益 {2:c}", unpaidTasks.Count,
-                    Math.Round(r.Value * earlierRepayTask.repay_interest, 2), Math.Round(r.Value * unpaidInterest, 2))
-            }).ToList();
-            context.li_project_transactions.InsertAllOnSubmit(projectTransactions);
-
-            // 生成钱包历史
-            projectTransactions.ForEach(ptr =>
-            {
-                // 增加钱包空闲金额与减去待收本金和待收利润
-                var wallet = ptr.dt_users.li_wallets;
-                wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
-                wallet.investing_money -= ptr.principal;
-                wallet.profiting_money -= Math.Round(unpaidInterest*investRatio[ptr.dt_users], 2); // 减去原先的待收益
-                wallet.total_profit += ptr.interest.GetValueOrDefault(0);
-                wallet.last_update_time = ptr.create_time;
-
-                // 添加钱包历史
-                var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(ptr));
-                his.li_project_transactions = ptr;
-                context.li_wallet_histories.InsertOnSubmit(his);
-            });
             context.SubmitChanges();
+
+            context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
+            context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 
             return project;
         }
