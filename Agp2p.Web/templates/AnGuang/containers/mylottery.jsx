@@ -1,13 +1,46 @@
 import React from "react"
+import { ajax } from "jquery"
+import Pagination from "../components/pagination.jsx"
+
+const LotteryStatusEnum = {
+	Acting: 1,
+	Confirm: 2,
+	Cancel: 3,
+};
 
 export default class MyLottery extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { selectedTabIndex: 0 };
-    }
-
-    render() {
-        return(
+	constructor(props) {
+		super(props);
+		this.state = {
+			data: [],
+			pageIndex: 0,
+			pageCount: 0,
+			selectedTabIndex: 0,
+		};
+	}
+	componentDidMount() {
+		this.fetchLotteries(this.state.pageIndex);
+	}
+	fetchLotteries(pageIndex) {
+		this.setState({pageIndex});
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLotteries", pageSize = 5;
+		ajax({
+			type: "post",
+			dataType: "json",
+			contentType: "application/json",
+			url: url,
+			data: JSON.stringify({pageIndex, pageSize}),
+			success: function(result) {
+				let {totalCount, data} = JSON.parse(result.d);
+				this.setState({pageCount: Math.ceil(totalCount / pageSize), data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(url, status, err.toString());
+			}.bind(this)
+		});
+	}
+	render() {
+		return(
             <div className="lotteries-wrap">
                 <div className="lottery-th">
                     {["未使用","已失效", "历史记录"].map((s, index) =>
@@ -15,24 +48,19 @@ export default class MyLottery extends React.Component {
                             onClick={ ev => this.setState({ selectedTabIndex: index }) }>{s}</a></span>)}
                 </div>
                 <div className="lottery-content">
-                    <div className="lottery-list hidden">
-                        <div className="lottery-usable">
+                	{this.state.selectedTabIndex < 2 &&
+                    <div className="lottery-list">
+                    	{this.state.data.map(l => 
+                        <div className={l.status == LotteryStatusEnum.Acting ? "lottery-usable" : "lottery-fail"}>
                             <div className="lottery-face">
-                                <p className="lottery-value">￥30</p>
-                                <p className="use-condition">投资满2000元可用</p>
-                                <p className="use-date">请于2015-10-30前使用</p>
+                                <p className="lottery-value">￥{l.value}</p>
+                                <p className="use-condition">使用条件</p>
+                                <p className="use-date">使用期限</p>
                             </div>
-                            <div className="lottery-state">待使用</div>
-                        </div>
-                        <div className="lottery-fail">
-                            <div className="lottery-face">
-                                <p className="lottery-value">￥30</p>
-                                <p className="use-condition">投资满2000元可用</p>
-                                <p className="use-date">请于2015-10-30前使用</p>
-                            </div>
-                            <div className="lottery-state">已失效</div>
-                        </div>
-                    </div>
+                            <div className="lottery-state">{l.status == LotteryStatusEnum.Acting ? "待使用" : "已失效"}</div>
+                        </div>)}
+                    </div>}
+                    {this.state.selectedTabIndex == 2 &&
                     <div className="lottery-history">
                         <table className="table">
                             <thead>
@@ -45,37 +73,19 @@ export default class MyLottery extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
+                            	{this.state.data.map(l => 
                                 <tr>
-                                    <td>￥30</td>
-                                    <td>新手红包</td>
-                                    <td>投资金额满2000使用</td>
-                                    <td>待使用</td>
-                                    <td>2015-12-25</td>
-                                </tr>
-                                <tr>
-                                    <td>￥20</td>
-                                    <td>投资赠送</td>
-                                    <td>投资金额满1500使用</td>
-                                    <td>待使用</td>
-                                    <td>2015-12-30</td>
-                                </tr>
-                                <tr>
-                                    <td>￥30</td>
-                                    <td>新手红包</td>
-                                    <td>投资金额满2000使用</td>
-                                    <td>待使用</td>
-                                    <td>2015-12-25</td>
-                                </tr>
-                                <tr>
-                                    <td>￥20</td>
-                                    <td>投资赠送</td>
-                                    <td>投资金额满1500使用</td>
-                                    <td>待使用</td>
-                                    <td>2015-12-30</td>
-                                </tr>
+                                    <td>{"￥" + l.value}</td>
+                                    <td>红包来源</td>
+                                    <td>使用规则</td>
+                                    <td>{l.status == LotteryStatusEnum.Acting ? "待使用" : "已失效"}</td>
+                                    <td>有效期限</td>
+                                </tr>)}
                             </tbody>
                         </table>
-                    </div>
+                    </div>}
+	                <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+	                    onPageSelected={pageIndex => this.fetchLotteries(pageIndex)}/>
                 </div>
                 <div className="use-rules-th"><span>使用规则</span></div>
                 <div className="use-rules">
