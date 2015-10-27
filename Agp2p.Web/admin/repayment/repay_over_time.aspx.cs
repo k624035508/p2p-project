@@ -89,8 +89,11 @@ namespace Agp2p.Web.admin.repayment
             PageSize = new BLL.channel().GetPageSize(ChannelName);
             var query =
                 context.li_repayment_tasks.Where(
-                    r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time &&
-                        (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)));
+                    r =>
+                        r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time &&
+                        (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)))
+                    .OrderBy(r => r.should_repay_time)
+                    .AsQueryable();
 
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
@@ -127,10 +130,10 @@ namespace Agp2p.Web.admin.repayment
                         repay.Forfeit = 0;
 
                         return repay;
-                    });
+                    }).AsQueryable();
             
             this.TotalCount = repayList.Count();
-            return repayList.OrderBy(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            return repayList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 

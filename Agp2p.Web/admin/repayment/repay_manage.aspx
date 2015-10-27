@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="repay_manage.aspx.cs" Inherits="Agp2p.Web.admin.repayment.repay_manage" %>
+<%@ Import Namespace="Agp2p.Common" %>
 
 <!DOCTYPE html>
 
@@ -61,6 +62,7 @@
                         <th align="left" width="6%">还款期数</th>
                         <th align="left" width="8%">应还时间</th>
                         <th align="left" width="8%">实还时间</th>
+                        <th align="left" width="6%">状态</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>
@@ -77,6 +79,7 @@
                     <td><%#Eval("TimeTerm")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) Convert.ToInt16(Eval("RepayStatus")))%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("Category"))]%></td>
                     <td><%#Eval("ProfitRate")%></td>
                     <td><%#Eval("RepaymentType")%></td>
