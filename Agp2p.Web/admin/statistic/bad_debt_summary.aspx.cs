@@ -54,9 +54,9 @@ namespace Agp2p.Web.admin.statistic
             {
                 var repayTask = rs.rt;
                 var overTimeRepay =
-                    repayTask.Where(r => r.repay_at != null && r.repay_at > r.should_repay_time).AsQueryable();
+                    repayTask.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid).AsQueryable();
                 var overTimeNotRepay =
-                    repayTask.Where(r => r.repay_at == null && DateTime.Now > r.should_repay_time).AsQueryable();
+                    repayTask.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime).AsQueryable();
                 var badDebtSummary = new BadDebtSummary
                 {
                     Index = rs.no.ToString(),

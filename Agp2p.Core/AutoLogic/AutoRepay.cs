@@ -74,13 +74,13 @@ namespace Agp2p.Core.AutoLogic
                     notice.channel_id = 5;
                     notice.title = add_time.ToString("yyyy年M月d日") + "项目兑付公告";
                     notice.seo_title = notice.title;
-                    notice.seo_keywords = "丰车赚,金汇丰p2p,项目兑付公告";
+                    notice.seo_keywords = "安广融合p2p,项目兑付公告";
                     notice.content = content;
                     
                     var notice_attr = new dt_article_attribute_value();
                     notice_attr.dt_article = notice;
-                    notice_attr.author = "金汇丰";
-                    notice_attr.source = "金汇丰理财平台";
+                    notice_attr.author = "安广融合";
+                    notice_attr.source = "安广融合理财平台";
 
                     context.dt_article.InsertOnSubmit(notice);
                     context.dt_article_attribute_value.InsertOnSubmit(notice_attr);

@@ -96,13 +96,13 @@ namespace Agp2p.Web.admin.repayment
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
             //逾期未还
             if (rblStatus.SelectedValue == "0")
-                query = query.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null);
+                query = query.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
             //逾期已还
             else if (rblStatus.SelectedValue == "1")
-                query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid && r.repay_at != null);
+                query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
             //垫付借款
             else if (rblStatus.SelectedValue == "2")
-                query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid && r.prepay != null);
+                query = query.Where(r => r.prepay != null);
 
             var repayList = query.AsEnumerable().Select(r =>
                     {

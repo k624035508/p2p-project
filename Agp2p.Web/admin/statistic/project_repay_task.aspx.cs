@@ -99,10 +99,25 @@ namespace Agp2p.Web.admin.statistic
 
             var query1 =
                 context.li_repayment_tasks.Where(rt =>
-                    (int) Agp2pEnums.ProjectStatusEnum.Financing < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text))
-                    .Where(r =>
-                        rblRepaymentStatus.SelectedValue == "0" || Convert.ToByte(rblRepaymentStatus.SelectedValue) == r.status
-                        || (Convert.ToByte(rblRepaymentStatus.SelectedValue) == (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid && (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status));
+                    (int) Agp2pEnums.ProjectStatusEnum.Financing < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text));
+
+            if (rblRepaymentStatus.SelectedValue == "20")
+            {
+                query1 =
+                    query1.Where(
+                        r =>
+                            r.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime ||
+                            r.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
+            }
+            else
+            {
+                query1 = query1.Where(r =>
+                    rblRepaymentStatus.SelectedValue == "0" ||
+                    Convert.ToByte(rblRepaymentStatus.SelectedValue) == r.status
+                    ||
+                    (Convert.ToByte(rblRepaymentStatus.SelectedValue) == (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid &&
+                     (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status));
+            }
 
             if (ddlOrderBy.SelectedValue == "invest_complete_time")
             {
