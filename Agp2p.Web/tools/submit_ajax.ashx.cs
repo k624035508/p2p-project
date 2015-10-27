@@ -820,40 +820,41 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"发送失败，请填写手机号码！\"}");
                 return;
             }
-            // 发送注册验证码时验证图片验证码
-            string code = DTRequest.GetFormString("txtPicCode").Trim();
-            string result0 = verify_code(context, code);
-            if (result0 != "success")
-            {
-                context.Response.Write(result0);
-                return;
-            }
             //检查是否过快
-            string cookie = Utils.GetCookie("user_register_sms");
-            if (cookie == mobile)
+            var sendTime = (DateTime?)SessionHelper.Get(DTKeys.SESSION_SMS_MOBILE_SEND_TIME);
+            if (sendTime != null && DateTime.Now.Subtract(sendTime.Value).TotalMinutes < 2)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"刚已发送过短信，请2分钟后再试！\"}");
                 return;
             }
-            Model.sms_template smsModel = new BLL.sms_template().GetModel("usercode"); //取得短信内容
+            // 发送注册验证码时验证图片验证码
+            string picCode = DTRequest.GetFormString("txtPicCode").Trim();
+            string verifyPicCodeResult = verify_code(context, picCode);
+            if (verifyPicCodeResult != "success")
+            {
+                context.Response.Write(verifyPicCodeResult);
+                return;
+            }
+            Model.sms_template smsModel = new sms_template().GetModel("usercode"); //取得短信内容
             if (smsModel == null)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"发送失败，短信模板不存在！\"}");
                 return;
             }
-            if (new BLL.users().ExistsMobile(mobile))
+            if (new users().ExistsMobile(mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，该手机号码已被注册！\"}");
                 return;
             }
             string strcode = Utils.Number(4); //随机验证码
             //替换标签
-            string msgContent = smsModel.content;
-            msgContent = msgContent.Replace("{webname}", siteConfig.webname);
-            msgContent = msgContent.Replace("{weburl}", siteConfig.weburl);
-            msgContent = msgContent.Replace("{webtel}", siteConfig.webtel);
-            msgContent = msgContent.Replace("{code}", strcode);
-            msgContent = msgContent.Replace("{valid}", userConfig.regsmsexpired.ToString());
+            string msgContent = smsModel.content
+                .Replace("{webname}", siteConfig.webname)
+                .Replace("{weburl}", siteConfig.weburl)
+                .Replace("{webtel}", siteConfig.webtel)
+                .Replace("{code}", strcode)
+                .Replace("{valid}", userConfig.regsmsexpired.ToString());
+
             //发送短信
             string tipMsg = string.Empty;
             bool result = SMSHelper.SendSmsCode(mobile, msgContent, out tipMsg);
@@ -865,9 +866,9 @@ namespace Agp2p.Web.tools
             //写入SESSION，保存验证码
             context.Session[DTKeys.SESSION_SMS_CODE] = strcode;
             context.Session[DTKeys.SESSION_SMS_MOBILE_CODE] = mobile;
-            Utils.WriteCookie("user_register_sms", mobile, 2); //2分钟内无重复发送
+            SessionHelper.Set(DTKeys.SESSION_SMS_MOBILE_SEND_TIME, DateTime.Now);
+
             context.Response.Write("{\"status\":1, \"msg\":\"短信发送成功，请注意查收验证码！\"}");
-            return;
         }
         #endregion
 
@@ -2111,6 +2112,7 @@ namespace Agp2p.Web.tools
             }
             context.Session[DTKeys.SESSION_SMS_CODE] = null;
             context.Session[DTKeys.SESSION_SMS_MOBILE_CODE] = null;
+            SessionHelper.Remove(DTKeys.SESSION_SMS_MOBILE_SEND_TIME);
             return "success";
         }
         #endregion END通用方法=================================================

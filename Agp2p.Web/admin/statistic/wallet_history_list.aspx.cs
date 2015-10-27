@@ -232,9 +232,9 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund, "投资撤回 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0} {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 放款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 放款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 放款 {1}"}
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 还款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 还款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 还款 {1}"}
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)
@@ -250,7 +250,7 @@ namespace Agp2p.Web.admin.statistic
                               h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
                               h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
                              h.li_project_transactions.project == his.li_project_transactions.project);
-                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count);
+                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid));
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
                 }
                 return his.li_project_transactions.li_projects.invest_complete_time.HasValue

@@ -205,7 +205,7 @@ namespace Agp2p.Web.admin.repayment
                     context.EarlierRepayAll(repay.project, cost);
                 }
                 else
-                    context.ExecuteRepaymentTask(repayId, false);
+                    context.ExecuteRepaymentTask(repayId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
 
                 JscriptMsg("还款成功！",
                     Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",

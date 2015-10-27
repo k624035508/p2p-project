@@ -120,9 +120,10 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 int projectId = Convert.ToInt32(((Button)sender).CommandArgument);
-                var pro = context.EarlierRepayAll(projectId, 0.6m);
-                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "提前还款成功：" + pro.title + " 保留 60% 利润"); //记录日志
-                JscriptMsg("提前还款成功：" + pro.title + " 保留 60% 利润", Utils.CombUrlTxt("project_list.aspx", "page={0}&keywords={1}", page.ToString(), txtKeywords.Text), "Success");
+                var pro = context.EarlierRepayAll(projectId, (decimal) Costconfig.earlier_pay);
+                AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "提前还款成功：" + pro.title + " 保留 " + Costconfig.earlier_pay + "% 利润"); //记录日志
+                JscriptMsg("提前还款成功：" + pro.title + " 保留 " + Costconfig.earlier_pay + "% 利润",
+                    Utils.CombUrlTxt("project_list.aspx", "page={0}&keywords={1}", page.ToString(), txtKeywords.Text), "Success");
             }
             catch (Exception ex)
             {

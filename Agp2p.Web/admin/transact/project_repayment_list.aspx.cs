@@ -125,7 +125,7 @@ namespace Agp2p.Web.admin.transact
             int repaymentId = Convert.ToInt32(((Button)sender).CommandArgument);
             try
             {
-                var repayment = context.ExecuteRepaymentTask(repaymentId, false);
+                var repayment = context.ExecuteRepaymentTask(repaymentId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 var remark = "执行放款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
                 JscriptMsg(remark, Utils.CombUrlTxt("project_repayment_list.aspx", "project_id={0}", project_id), "Success");

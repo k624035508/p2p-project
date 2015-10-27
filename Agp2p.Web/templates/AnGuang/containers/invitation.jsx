@@ -1,11 +1,12 @@
 import React from "react"
 import $ from "jquery";
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import Pagination from "../components/pagination.jsx"
 
 class InvitationPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {clipboard: null, data: [], pageIndex: 0, pageCount: 0};
 	}
 	getLocationOrigin() {
 		if (!window.location.origin) {
@@ -14,6 +15,11 @@ class InvitationPage extends React.Component {
 			+ (window.location.port ? ':' + window.location.port: '');
 		} else {
 			return location.origin;
+		}
+	}
+	componentWillUnmount() {
+		if (this.state.clipboard) {
+			this.state.clipboard.destroy();
 		}
 	}
 	componentDidMount() {
@@ -28,32 +34,45 @@ class InvitationPage extends React.Component {
 		} else {
 			var Clipboard = require("clipboard");
 			var clipboard = new Clipboard("#btn-copy");
-			clipboard.on('success', function(e) {
-				console.info('Action:', e.action);
-				console.info('Text:', e.text);
-				console.info('Trigger:', e.trigger);
-
-				e.clearSelection();
-				alert("复制成功");
-			});
-
 			clipboard.on('error', function(e) {
-				console.error('Action:', e.action);
-				console.error('Trigger:', e.trigger);
 				fallback();
+			}).on('success', function(e) {
+				alert("复制成功");
+				e.clearSelection();
 			});
+			this.setState({clipboard: clipboard});
 		}
 
 		if (!this.props.invitationCode) {
 			this.props.dispatch(fetchWalletAndUserInfo());
 		}
+		this.fetchInvitationData()
+	}
+	fetchInvitationData(pageIndex = 0) {
+		this.setState({pageIndex});
+
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryInvitationInfo", pageSize = 5;
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({ pageIndex, pageSize}),
+            success: function(result) {
+                let {totalCount, data} = JSON.parse(result.d);
+                this.setState({data: data, pageCount: Math.ceil(totalCount / pageSize)});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
 	}
     render(){
         return(
             <div className="recommend-wrap">
                 <div className="recommend-link">
                     <span>我的邀请链接：</span>
-                    <span className="site-link">{`${this.getLocationOrigin()}/register.html?invite_code=${this.props.invitationCode}`}</span>
+                    <span className="site-link">{`${this.getLocationOrigin()}/register.html?inviteCode=${this.props.invitationCode}`}</span>
                     <a id="btn-copy" href="javascript:" data-clipboard-target=".site-link">复 制</a>
                 </div>
                 <div className="shareTo">
@@ -77,26 +96,17 @@ class InvitationPage extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>135****7850</td>
-                                <td>10000.00</td>
-                                <td>15.00</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>138****7315</td>
-                                <td>10000.00</td>
-                                <td>15.00</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>138****7315</td>
-                                <td>10000.00</td>
-                                <td>15.00</td>
-                            </tr>
+                        	{this.state.data.map((inv, index) => 
+                            <tr key={inv.inviteeId}>
+                                <td>{index + 1}</td>
+                                <td>{inv.inviteeName}</td>
+                                <td>{inv.firstInvestmentAmount}</td>
+                                <td></td>
+                            </tr>)}
                         </tbody>
                     </table>
+	                <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+	                    onPageSelected={pageIndex => this.fetchInvitationData(pageIndex)}/>
                 </div>
                 <div className="warm-tips-th"><span>温馨提示</span></div>
                 <div className="warmTips">

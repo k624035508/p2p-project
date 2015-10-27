@@ -6,7 +6,7 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.statistic
 {
-    public partial class repay_summary : UI.ManagePage
+    public partial class bad_debt_summary : UI.ManagePage
     {
         protected int totalCount;
         protected int page;
@@ -32,7 +32,7 @@ namespace Agp2p.Web.admin.statistic
         #region 数据绑定=================================
         private void RptBind()
         {
-            var beforePaging = GetRepaySummaryList();
+            var beforePaging = GetSummaryList();
             rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
@@ -43,7 +43,7 @@ namespace Agp2p.Web.admin.statistic
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
-        private IEnumerable<RepaySummary> GetRepaySummaryList()
+        private IEnumerable<BadDebtSummary> GetSummaryList()
         {
             var allRepayTask =
                 context.li_repayment_tasks.Where(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
@@ -53,83 +53,42 @@ namespace Agp2p.Web.admin.statistic
             var query3 = query2.AsEnumerable().OrderByDescending(r => r.Key).Zip(Utils.Infinite(1), (rt, no) => new { rt, no }).Select(rs =>
             {
                 var repayTask = rs.rt;
-                var alreadyRepayQuery = repayTask.Where(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).AsQueryable();//已还借款数
-                var repaySummary = new RepaySummary
+                var overTimeRepay =
+                    repayTask.Where(r => r.repay_at != null && r.repay_at > r.should_repay_time).AsQueryable();
+                var overTimeNotRepay =
+                    repayTask.Where(r => r.repay_at == null && DateTime.Now > r.should_repay_time).AsQueryable();
+                var badDebtSummary = new BadDebtSummary
                 {
                     Index = rs.no.ToString(),
-                    YearMonth = repayTask.Key,
-                    ShouldRepayCount = repayTask.Count(),
-                    ShouldRepayAmount = repayTask.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
-                    RepayCount = alreadyRepayQuery.Count(),
-                    RepayAmount = alreadyRepayQuery.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
-                    RepayOnTimeCount = alreadyRepayQuery.Count(r => r.repay_at <= r.should_repay_time),
-                    OverNoRepayCount = repayTask.Count(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null && DateTime.Now > r.should_repay_time), 
+                    YearMonth = rs.rt.Key,
+                    TotalCount = overTimeRepay.Count() + overTimeNotRepay.Count(),
+                    TotalAmount = (overTimeRepay.Sum(o => o.repay_interest + o.repay_principal) + overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal)).ToString("N"),
+                    NotRepayCount = overTimeNotRepay.Count(),
+                    NotRepayAmount = overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal).ToString("N"),
+                    PepayCount = repayTask.Count(r => r.prepay != null),
+                    PepayAmount = repayTask.Where(r => r.prepay != null).Sum(r => r.prepay)?.ToString("N"),
+                    Cost = repayTask.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.EarlierPaid).Sum(r => r.cost)?.ToString("N")
                 };
-                repaySummary.RepayRate = (repaySummary.RepayCount/repaySummary.ShouldRepayCount).ToString("P1");
-                repaySummary.RepayOnTimeRate =
-                    (repaySummary.RepayOnTimeCount/repaySummary.ShouldRepayCount).ToString("P1");
-                repaySummary.OverNoRepayRate =
-                    (repaySummary.OverNoRepayCount/repaySummary.ShouldRepayCount).ToString("P1");
-                repaySummary.OverCount = repaySummary.RepayCount - repaySummary.RepayOnTimeCount +
-                                         repaySummary.OverNoRepayCount;
-                repaySummary.OverRate = (repaySummary.OverCount/repaySummary.ShouldRepayCount).ToString("P1");
-                return repaySummary;
+                badDebtSummary.Rate = (badDebtSummary.TotalCount/repayTask.Count()).ToString("P1");
+
+                return badDebtSummary;
             }).AsQueryable();
             totalCount = query3.Count();
             return query3;
         }
 
-        public class RepaySummary
+        public class BadDebtSummary
         {
             public string Index { get; set; }
-            /// <summary>
-            /// 统计年月
-            /// </summary>
             public string YearMonth { get; set; }
-            /// <summary>
-            /// 应还总数
-            /// </summary>
-            public decimal ShouldRepayCount { get; set; }
-            /// <summary>
-            /// 应还总额
-            /// </summary>
-            public string ShouldRepayAmount { get; set; }
-            /// <summary>
-            /// 已还款数
-            /// </summary>
-            public decimal RepayCount { get; set; }
-            /// <summary>
-            /// 已还款金额
-            /// </summary>
-            public string RepayAmount { get; set; }
-            /// <summary>
-            /// 已还款完成率
-            /// </summary>
-            public string RepayRate { get; set; }
-            /// <summary>
-            /// 按时还款数
-            /// </summary>
-            public decimal RepayOnTimeCount { get; set; }
-            /// <summary>
-            /// 按时完成率
-            /// </summary>
-            public string RepayOnTimeRate { get; set; }
-            /// <summary>
-            /// 逾期还款数
-            /// </summary>
-            public decimal OverCount { get; set; }
-            /// <summary>
-            /// 逾期占比
-            /// </summary>
-            public string OverRate { get; set; }
-            /// <summary>
-            /// 逾期未还数
-            /// </summary>
-            public decimal OverNoRepayCount { get; set; }
-            /// <summary>
-            /// 逾期未还占比
-            /// </summary>
-            public string OverNoRepayRate { get; set; }
+            public int TotalCount { get; set; }
+            public string TotalAmount { get; set; }
+            public int NotRepayCount { get; set; }
+            public string NotRepayAmount { get; set; }
+            public int PepayCount { get; set; }
+            public string PepayAmount { get; set; }
+            public string Cost { get; set; }
+            public string Rate { get; set; }
         }
         #endregion
 
