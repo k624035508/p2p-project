@@ -250,7 +250,7 @@ namespace Agp2p.Web.admin.statistic
                               h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
                               h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
                              h.li_project_transactions.project == his.li_project_transactions.project);
-                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count);
+                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid));
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
                 }
                 return his.li_project_transactions.li_projects.invest_complete_time.HasValue
