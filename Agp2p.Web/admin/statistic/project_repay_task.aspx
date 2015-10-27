@@ -64,6 +64,7 @@ td.center { text-align: center; }
                         <asp:ListItem Value="0">不限</asp:ListItem>
                         <asp:ListItem Value="1" Selected="True">待还款</asp:ListItem>
                         <asp:ListItem Value="10">已还款</asp:ListItem>
+                        <asp:ListItem Value="20">逾期还款</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
                 <div style="display: inline-block;">

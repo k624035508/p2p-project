@@ -105,7 +105,7 @@ namespace Agp2p.Web.admin.statistic
                 if (rblRepaymentTaskStatus.SelectedValue == "2") // 已还款
                     query = query.Where(r => (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status);
                 else
-                    query = query.Where(r => Convert.ToByte(rblRepaymentTaskStatus.SelectedValue) == r.status);
+                    query = query.Where(r => Convert.ToByte(rblRepaymentTaskStatus.SelectedValue) == r.status || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
             }
 
             if (txtYear.Text != "-")

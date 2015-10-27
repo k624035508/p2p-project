@@ -53,7 +53,7 @@ namespace Agp2p.Web.admin.statistic
             var query3 = query2.AsEnumerable().OrderByDescending(r => r.Key).Zip(Utils.Infinite(1), (rt, no) => new { rt, no }).Select(rs =>
             {
                 var repayTask = rs.rt;
-                var alreadyRepayQuery = repayTask.Where(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).AsQueryable();//已还借款数
+                var alreadyRepayQuery = repayTask.Where(r => r.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid).AsQueryable();//已还借款数
                 var repaySummary = new RepaySummary
                 {
                     Index = rs.no.ToString(),
@@ -62,8 +62,8 @@ namespace Agp2p.Web.admin.statistic
                     ShouldRepayAmount = repayTask.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
                     RepayCount = alreadyRepayQuery.Count(),
                     RepayAmount = alreadyRepayQuery.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
-                    RepayOnTimeCount = alreadyRepayQuery.Count(r => r.repay_at <= r.should_repay_time),
-                    OverNoRepayCount = repayTask.Count(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null && DateTime.Now > r.should_repay_time), 
+                    RepayOnTimeCount = alreadyRepayQuery.Count(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid),
+                    OverNoRepayCount = repayTask.Count(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime), 
                 };
                 repaySummary.RepayRate = (repaySummary.RepayCount/repaySummary.ShouldRepayCount).ToString("P1");
                 repaySummary.RepayOnTimeRate =

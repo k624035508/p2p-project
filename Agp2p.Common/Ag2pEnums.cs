@@ -313,12 +313,16 @@ namespace Agp2p.Common
             Unpaid = 1,
             [Description("作废")] // 提前还款后，某些还款计划可能作废
             Invalid = 2,
+            [Description("逾期")]
+            OverTime = 3,
             [Description("已手动还款")]
             ManualPaid = 10,
             [Description("已自动还款")]
             AutoPaid = 11,
             [Description("提前还款")]
-            EarlierPaid = 20
+            EarlierPaid = 20,
+            [Description("逾期已还")]
+            OverTimePaid = 30
         }
 
         /// <summary>
