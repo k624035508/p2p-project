@@ -449,14 +449,21 @@ namespace Agp2p.Core
             return project;
         }
 
-        private static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
+        /// <summary>
+        /// 完整分割 10 / 3 => 3.33 + 3.33 + 3.34
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="splitCount"></param>
+        /// <param name="toFixed"></param>
+        /// <returns></returns>
+        public static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
         {
             if (splitCount <= 0)
             {
                 throw new Exception("无法分割为 0 份");
             }
             var part = Math.Round(amount/splitCount, toFixed);
-            var finalPart = amount - part * splitCount + part;
+            var finalPart = amount - part * (splitCount - 1);
             return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
         }
 
