@@ -1,6 +1,7 @@
 ﻿import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/usercenter.less";
+import "../less/invest-cell.less";
 import "../less/footerSmall.less";
 
 import React from "react"
