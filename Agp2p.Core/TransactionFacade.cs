@@ -407,31 +407,34 @@ namespace Agp2p.Core
             var repayPrincipal = project.investment_amount; // 本金投资总额
             var interestAmount = project.profit_rate * repayPrincipal; // 利息总额
 
-            var repayInterestEachTerm = Math.Round(interestAmount / termCount, 2); // 每期返还的利息
             List<li_repayment_tasks> repaymentTasks;
             if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.DengEr) // 等额本息
             {
-                var repayPrincipalEachTerm = Math.Round(repayPrincipal / termCount, 2); // 每期返还的本金
-                repaymentTasks = Enumerable.Range(1, termCount).Select(termNumber => new li_repayment_tasks
+                repaymentTasks = Enumerable.Range(1, termCount)
+                    .Zip(interestAmount.GetPerfectSplitStream(termCount), (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
+                    .Zip(repayPrincipal.GetPerfectSplitStream(termCount), (a, repayPrincipalEachTerm) => new { a.termNumber, a.repayInterestEachTerm, repayPrincipalEachTerm})
+                    .Select(term => new li_repayment_tasks
                 {
                     project = projectId,
-                    repay_interest = repayInterestEachTerm,
-                    repay_principal = repayPrincipalEachTerm,
+                    repay_interest = term.repayInterestEachTerm,
+                    repay_principal = term.repayPrincipalEachTerm,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                    term = (short) termNumber,
-                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, termNumber, termCount)
+                    term = (short) term.termNumber,
+                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
                 }).ToList();
             }
             else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.XianXi) // 先息后本
             {
-                repaymentTasks = Enumerable.Range(1, termCount).Select(termNumber => new li_repayment_tasks
+                repaymentTasks = Enumerable.Range(1, termCount)
+                    .Zip(interestAmount.GetPerfectSplitStream(termCount), (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
+                    .Select(term => new li_repayment_tasks
                 {
                     project = projectId,
-                    repay_interest = repayInterestEachTerm, // 只付利息
+                    repay_interest = term.repayInterestEachTerm, // 只付利息
                     repay_principal = 0,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                    term = (short) termNumber,
-                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, termNumber, termCount)
+                    term = (short) term.termNumber,
+                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
                 }).ToList();
                 repaymentTasks.Last().repay_principal = repayPrincipal; // 最后额外添加一期返还全部本金
             }
@@ -444,6 +447,17 @@ namespace Agp2p.Core
 
             MessageBus.Main.PublishAsync(new ProjectInvestCompletedMsg(projectId)); // 广播项目投资完成的消息
             return project;
+        }
+
+        private static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
+        {
+            if (splitCount <= 0)
+            {
+                throw new Exception("无法分割为 0 份");
+            }
+            var part = Math.Round(amount/splitCount, toFixed);
+            var finalPart = amount - part * splitCount + part;
+            return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
         }
 
         /// <summary>
