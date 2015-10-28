@@ -41,7 +41,7 @@ let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotter
 class MyAccount extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {option: null, recommendProjects: null};
+		this.state = {option: null, recommendProjects: []};
 	}
 	componentDidMount() {
 		this.renderChart(genOption(this.props));
@@ -70,7 +70,7 @@ class MyAccount extends React.Component {
 			data: JSON.stringify({ pageIndex: 0, pageSize: 1}),
 			success: function(result) {
 				let {totalCount, data} = JSON.parse(result.d);
-				this.setState({recommendProjects: data});
+				this.setState({recommendProjects: data || []});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(url, status, err.toString());
@@ -87,7 +87,9 @@ class MyAccount extends React.Component {
 					<p>总资产</p>
 				</div>
 				<div className="recommend-project"><span>推荐项目</span></div>
-				{this.state.recommendProjects == null ? null : this.state.recommendProjects.map(pro => 
+				{this.state.recommendProjects.length == 0
+					? <div style={{textAlign: "center", lineHeight: "60px", color: "#646464", fontSize: "15px"}}>暂无项目</div>
+					: this.state.recommendProjects.map(pro => 
 				<div className="invest-cell invest-cell-custom" key={pro.id}>
 					<div className="invest-title-wrap">
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
