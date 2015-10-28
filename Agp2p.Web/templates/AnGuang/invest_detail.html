@@ -223,7 +223,7 @@
                 <%foreach(var picture in albums_pictures)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
@@ -231,7 +231,7 @@
                 <%foreach(var picture in albums_credit)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
@@ -239,7 +239,7 @@
                 <%foreach(var picture in albums_mortgage)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
