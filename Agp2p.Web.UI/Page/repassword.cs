@@ -31,11 +31,5 @@ namespace Agp2p.Web.UI.Page
                 }
             }
         }
-
-        protected static int GetSessionIDHash()
-        {
-            return HttpContext.Current.Session.SessionID.GetHashCode();
-        }
-
     }
 }

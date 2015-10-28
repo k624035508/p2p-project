@@ -11,6 +11,10 @@ namespace Agp2p.Web.UI.Page
 {
     public partial class index : Web.UI.BasePage
     {
+        protected Dictionary<int, string> CategoryIdTitleMap =
+            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
+                .ToDictionary(c => c.id, c => c.title);
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //微信自动登录
