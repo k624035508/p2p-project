@@ -96,7 +96,7 @@ namespace Agp2p.Web.admin.statistic
             loadOptions.LoadWith<li_project_transactions>(t => t.dt_users);
             context.LoadOptions = loadOptions;
 
-            var query = context.li_repayment_tasks.Where(r => r.li_projects.title.Contains(txtKeywords.Text));
+            var query = context.li_repayment_tasks.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid && r.li_projects.title.Contains(txtKeywords.Text));
             // 限制当前管理员对会员的查询
             var canAccessGroups = context.li_user_group_access_keys.Where(k => k.owner_manager == GetAdminInfo().id).Select(k => k.user_group).ToArray();
 
@@ -122,7 +122,7 @@ namespace Agp2p.Web.admin.statistic
                         var r = ri.repayment;
                         var pro = r.li_projects;
                         List<li_project_transactions> profiting;
-                        if (ri.repayment.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                        if (ri.repayment.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                         {
                             // 查询所有收益记录
                             profiting = pro.li_project_transactions.Where(

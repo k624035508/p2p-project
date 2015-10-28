@@ -48,6 +48,7 @@ export default class TransactionTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
+                    {this.state.data.length != 0 ? null : <tr><td colSpan="6">暂无数据</td></tr>}
                     { this.state.data.map((tr, index) =>
                         [<tr className="detailRow" onClick={ev => this.setState({currentShowRemarkIndex: this.state.currentShowRemarkIndex == index ? -1 : index})}
                             key={"a" + tr.id}>

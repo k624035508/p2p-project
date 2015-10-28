@@ -113,7 +113,7 @@ namespace Agp2p.Web.admin.statistic
         {
             var pro = repayment.li_projects;
             List<li_project_transactions> profiting;
-            if (repayment.status != (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+            if (repayment.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid)
             {
                 // 查询所有收益记录
                 profiting = pro.li_project_transactions.Where(
