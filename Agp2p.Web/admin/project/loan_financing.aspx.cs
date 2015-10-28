@@ -182,10 +182,10 @@ namespace Agp2p.Web.admin.project
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        protected string getInvestmentProgress(int projectId)
+        protected string getInvestmentProgress(li_projects pro)
         {
             return
-                context.GetInvestmentProgress(projectId,
+                pro.GetInvestmentProgress(
                     (total, projectAmount) =>
                         new BasePage.ProjectInvestmentProgress {total = total, projectAmount = projectAmount})
                     .GetInvestmentProgress() + "%";

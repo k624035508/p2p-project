@@ -281,6 +281,19 @@ namespace Agp2p.Web.UI.Page
             return JsonConvert.SerializeObject(new {totalCount, data});
         }
 
+        [WebMethod]
+        public static string AjaxQueryProjectsDetail(short pageIndex, short pageSize)
+        {
+            int totalCount;
+            var config = new BLL.siteconfig().loadConfig();
+            var data = QueryProjects(pageSize, pageIndex, out totalCount).Select(p =>
+            {
+                p.linkurl = linkurl(config, "invest_detail", p.id);
+                return p;
+            });
+            return JsonConvert.SerializeObject(new {totalCount, data});
+        }
+
         [WebMethod(CacheDuration = 600)]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {

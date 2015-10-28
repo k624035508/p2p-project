@@ -56,7 +56,7 @@ namespace Agp2p.Web.UI.Page
             }
             else
             {
-                var pr = GetProjectInvestmentProgress(context, project_id);
+                var pr = GetProjectInvestmentProgress(projectModel);
                 //投资进度
                 investmentProgress = pr.GetInvestmentProgress();
                 //剩余金额

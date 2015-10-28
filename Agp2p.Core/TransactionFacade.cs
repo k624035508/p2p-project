@@ -855,9 +855,8 @@ namespace Agp2p.Core
         /// <param name="projectId"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static T GetInvestmentProgress<T>(this Agp2pDataContext context, int projectId, Func<decimal, decimal, T> callback)
+        public static T GetInvestmentProgress<T>(this li_projects pro, Func<decimal, decimal, T> callback)
         {
-            var pro = context.li_projects.Single(a => a.id == projectId);
             Debug.Assert(pro.investment_amount <= pro.financing_amount);
             return callback(pro.investment_amount, pro.financing_amount);
         }
@@ -865,12 +864,10 @@ namespace Agp2p.Core
         /// <summary>
         /// 获取投资人数
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="projectId"></param>
+        /// <param name="pro"></param>
         /// <returns></returns>
-        public static int GetInvestedUserCount(this Agp2pDataContext context, int projectId)
+        public static int GetInvestedUserCount(this li_projects pro)
         {
-            var pro = context.li_projects.Single(a => a.id == projectId);
             return pro.li_project_transactions.Where(t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                                           t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                                                           .GroupBy(t => t.investor)
@@ -1025,7 +1022,10 @@ namespace Agp2p.Core
 
         public static string GetProjectTermSpanEnumDesc(this li_projects proj)
         {
-            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span);
+            var desc = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span);
+            /*if ((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span == Agp2pEnums.ProjectRepaymentTermSpanEnum.Month)
+                return "个" + desc;*/
+            return desc;
         }
 
         public static string GetProjectStatusDesc(this li_projects proj)

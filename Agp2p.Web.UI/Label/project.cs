@@ -3,10 +3,37 @@ using System.Linq;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System;
+using System.Collections.Generic;
 using Agp2p.Core;
 
 namespace Agp2p.Web.UI
 {
+    public class ProjectDetail
+    {
+        public DateTime add_time { get; set; }
+        public decimal amount { get; set; }
+        public int category_id { get; set; }
+        public int id { get; set; }
+        public string img_url { get; set; }
+        public string no { get; set; }
+        public int profit_rate_year { get; set; }
+        public string project_amount_str { get; set; }
+        public string project_investment_balance { get; set; }
+        public int project_investment_count { get; set; }
+        public string project_investment_progress { get; set; }
+        //public string project_repayment { get; set; }
+        public DateTime? publish_time { get; set; }
+        public int repayment_number { get; set; }
+        public string repayment_term { get; set; }
+        public int repayment_type { get; set; }
+        public int? sort_id { get; set; }
+        public int status { get; set; }
+        public int? tag { get; set; }
+        public string title { get; set; }
+        public string categoryTitle { get; set; }
+        public string linkurl { get; set; }
+    }
+
     public partial class BasePage : System.Web.UI.Page
     {
         protected DataTable get_project_list(int top, int category_id, int profit_rate_index, int repayment_index, int status_index)
@@ -15,25 +42,32 @@ namespace Agp2p.Web.UI
             return get_project_list(top, 1, out total, category_id, profit_rate_index, repayment_index, status_index);
         }
 
-        protected static DataTable get_project_list(int pageSize, int pageIndex, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
+        protected static DataTable get_project_list(int pageSize, int pageNum, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
-            total = 0;
+            var queryToNewObj = QueryProjects(pageSize, pageNum - 1, out total, category_id, profit_rate_index, repayment_index, status_index);
+
+            var dt = queryToNewObj.ToDataTable(p => new object[] { queryToNewObj });
+            return dt ?? new DataTable();
+        }
+
+        public static IEnumerable<ProjectDetail> QueryProjects(int pageSize, int pageIndex, out int total, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
+        {
             var context = new Agp2pDataContext();
             //查出所以项目类别
             //var categoryList = get_category_list(channel_name, 0);
             var query =
-                context.li_projects.Where(p => p.status >= (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime)
+                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status)
                     .Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
-            if (category_id > 0)
-                query = query.Where(p => p.category_id == category_id);
+            if (0 < categoryId)
+                query = query.Where(p => p.category_id == categoryId);
             //项目筛选暂写死逻辑在此
-            if (0 < profit_rate_index)//年化利率条件
+            if (0 < profitRateIndex)//年化利率条件
             {
-                query = query.Where(p => p.profit_rate_year == profit_rate_index);
+                query = query.Where(p => p.profit_rate_year == profitRateIndex);
             }
-            if (0 < repayment_index)//借款期限条件
+            if (0 < repaymentIndex)//借款期限条件
             {
-                switch ((Agp2pEnums.RepaymentTermEnum)repayment_index)
+                switch ((Agp2pEnums.RepaymentTermEnum)repaymentIndex)
                 {
                     case Agp2pEnums.RepaymentTermEnum.OneMonth:
                         query = query.Where(p => p.repayment_term_span_count == 1 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
@@ -49,9 +83,9 @@ namespace Agp2p.Web.UI
                         break;
                 }
             }
-            if (0 < status_index)// 状态条件
+            if (0 < statusIndex)// 状态条件
             {
-                switch ((Agp2pEnums.ProjectStatusQueryTypeEnum) status_index)
+                switch ((Agp2pEnums.ProjectStatusQueryTypeEnum) statusIndex)
                 {
                     case Agp2pEnums.ProjectStatusQueryTypeEnum.Financing:
                         query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
@@ -67,17 +101,19 @@ namespace Agp2p.Web.UI
                         break;
                 }
             }
-            total = query.Count();            
+            total = query.Count();
+
+            Dictionary<int, string> CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
 
             //将对象列表转换成DataTable
             var queryToNewObj = query.OrderBy(q => q.status)
                 .ThenByDescending(q => q.sort_id)
                 .ThenByDescending(q => q.add_time)
                 .ThenByDescending(q => q.id)
-                .Skip(pageSize * (pageIndex - 1)).Take(pageSize).AsEnumerable().Select(p =>
+                .Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(p =>
                 {
-                    var pr = GetProjectInvestmentProgress(context, p.id);
-                    return new
+                    var pr = GetProjectInvestmentProgress(p);
+                    return new ProjectDetail
                     {
                         id = p.id,
                         img_url = GetProjectImageUrl(p.img_url, p.category_id),
@@ -86,25 +122,24 @@ namespace Agp2p.Web.UI
                         status = p.status,
                         sort_id = p.sort_id,
                         repayment_type = p.repayment_type,
-                        repayment_term = Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)p.repayment_term_span),
+                        repayment_term = p.GetProjectTermSpanEnumDesc(),
                         repayment_number = p.repayment_term_span_count,
                         profit_rate_year = p.profit_rate_year,
                         category_id = p.category_id,
+                        categoryTitle = CategoryIdTitleMap[p.category_id],
                         amount = p.financing_amount,
                         add_time = p.publish_time ?? p.add_time,
                         publish_time = p.publish_time,
                         tag = p.tag,
                         //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
-                        project_repayment = get_project_repayment_str(p.repayment_term_span),//项目还款期限单位
+                        //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
                         project_amount_str = string.Format("{0:0.0}", p.financing_amount / 10000),//项目金额字符
                         project_investment_progress = pr.GetInvestmentProgress(),//项目进度
                         project_investment_balance = pr.GetInvestmentBalance(),//项目投资剩余金额
-                        project_investment_count = context.GetInvestedUserCount(p.id)//项目投资人数
+                        project_investment_count = p.GetInvestedUserCount()//项目投资人数
                     };
                 });
-
-            var dt = queryToNewObj.ToDataTable(p => new object[] { queryToNewObj });
-            return dt ?? new DataTable();
+            return queryToNewObj;
         }
 
         protected static string GetProjectImageUrl(string url, int category_id)
@@ -123,22 +158,9 @@ namespace Agp2p.Web.UI
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        protected static ProjectInvestmentProgress GetProjectInvestmentProgress(Agp2pDataContext context, int projectId)
+        protected static ProjectInvestmentProgress GetProjectInvestmentProgress(li_projects pro)
         {
-            return context.GetInvestmentProgress(projectId, (total, projectAmount) => new ProjectInvestmentProgress{ total = total, projectAmount = projectAmount });
-        }
-
-        /// <summary>
-        /// 获取项目还款期限字符串
-        /// </summary>
-        /// <param name="repaymentNumber"></param>
-        /// <param name="repaymentTerm"></param>
-        /// <returns></returns>
-        protected static string get_project_repayment_str(int repaymentTerm)
-        {
-            var repaymentTermEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum)repaymentTerm;
-            string repaymentstr = repaymentTermEnum == Agp2pEnums.ProjectRepaymentTermSpanEnum.Month ? "个" : "";
-            return repaymentstr + Utils.GetAgp2pEnumDes(repaymentTermEnum);
+            return pro.GetInvestmentProgress((total, projectAmount) => new ProjectInvestmentProgress{ total = total, projectAmount = projectAmount });
         }
 
         public class ProjectInvestmentProgress
@@ -223,4 +245,5 @@ namespace Agp2p.Web.UI
             return dt;
         }
     }
+    
 }

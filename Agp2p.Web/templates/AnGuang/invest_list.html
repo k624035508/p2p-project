@@ -98,11 +98,10 @@
                 <div class="progress-bar progress-bar-info" role="progressbar"
                      aria-valuenow="{dr[project_investment_progress]}"
                      aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}%">
-                    <span class="sr-only">20% Complete</span>
+                    <span class="sr-only">{dr[project_investment_progress]}% Complete</span>
                 </div>
             </div>
-            <div class="grey13px margin-bottom10px">可投金额 : <span
-                    class="dark-grey13px">{dr[project_investment_balance]}</span></div>
+            <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{dr[project_investment_balance]}</span></div>
             <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span>
             </div>
             <!--满标人数显示-->

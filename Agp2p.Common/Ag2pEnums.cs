@@ -18,6 +18,8 @@ namespace Agp2p.Common
             Hot = 2,
             [Description("新手体验标")]
             Trial = 3,
+            [Description("推荐")]
+            Recommend = 4,
         }
 
         public enum LoanTypeEnum

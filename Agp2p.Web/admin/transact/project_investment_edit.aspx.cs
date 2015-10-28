@@ -38,7 +38,7 @@ namespace Agp2p.Web.admin.transact
                 {
                     var article = context.li_projects.First(u => u.id == projectId);
                     lblProject.Text = article.title;
-                    lblRemainCredits.Text = context.GetInvestmentProgress(projectId, (invested, total) => total - invested).ToString("c");
+                    lblRemainCredits.Text = article.GetInvestmentProgress((invested, total) => total - invested).ToString("c");
                 }
             }
         }

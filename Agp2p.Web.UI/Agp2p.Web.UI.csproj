@@ -89,9 +89,7 @@
     <Compile Include="Label\plugin.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Label\project.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Label\project.cs" />
     <Compile Include="Label\shoppingcart.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
