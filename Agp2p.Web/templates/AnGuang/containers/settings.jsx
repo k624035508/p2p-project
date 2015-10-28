@@ -15,7 +15,7 @@ export default  class Settings extends React.Component {
                         <thead>
                             <tr>
                                 <th>通知类型</th>
-                                <th>电子邮件</th>
+                                <th>站内消息</th>
                                 <th>短信</th>
                             </tr>
                         </thead>
@@ -32,33 +32,23 @@ export default  class Settings extends React.Component {
                             </tr>
                             <tr>
                                 <td>提现失败</td>
-                                <td></td>
-                                <td><input type="checkbox"/></td>
-                            </tr>
-                            <tr>
-                                <td>借款标回款</td>
                                 <td><input type="checkbox"/></td>
                                 <td><input type="checkbox"/></td>
                             </tr>
                             <tr>
-                                <td>提前回款</td>
+                                <td>项目还款</td>
                                 <td><input type="checkbox"/></td>
                                 <td><input type="checkbox"/></td>
                             </tr>
                             <tr>
-                                <td>逾期垫付回款</td>
-                                <td><input type="checkbox"/></td>
-                                <td><input type="checkbox"/></td>
-                            </tr>
-                            <tr>
-                                <td>电子账单</td>
+                                <td>系统消息</td>
                                 <td><input type="checkbox"/></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>红包过期提醒</td>
                                 <td><input type="checkbox"/></td>
-                                <td><input type="checkbox"/></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
