@@ -67,7 +67,7 @@ class WithdrawPage extends React.Component {
 			return;
 		}
 		$.post("/tools/submit_ajax.ashx?action=withdraw", {
-			cardId: this.props.cards[this.state.selectedCardIndex].accountId,
+			cardId: this.props.cards[this.state.selectedCardIndex].cardId,
 			howmany: this.state.toWithdraw,
 			transactPassword: this.state.transactPassword
 		}, function(data) {
