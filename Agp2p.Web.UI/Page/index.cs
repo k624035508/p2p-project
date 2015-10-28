@@ -24,7 +24,7 @@ namespace Agp2p.Web.UI.Page
             }
         }
 
-        protected li_projects QueryFirstTrialProject()
+        /*protected li_projects QueryFirstTrialProject()
         {
             var context = new Agp2pDataContext();
             var trialProject =
@@ -35,7 +35,7 @@ namespace Agp2p.Web.UI.Page
                     .OrderByDescending(p => p.publish_time)
                     .FirstOrDefault();
             return trialProject;
-        }
+        }*/
 
     }
 

@@ -165,7 +165,7 @@ namespace Agp2p.Web.UI.Page
             }
         }
 
-        //投标记录
+        // 标书的投标记录
         protected List<ProjectTransactions> query_investment( li_projects projectModel, int pageIndex, short pageSize, out int count)
         {
             return query_projecttransactions(projectModel, out count).Skip(pageSize * pageIndex).Take(pageSize).ToList(); 

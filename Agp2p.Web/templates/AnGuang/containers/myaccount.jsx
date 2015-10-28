@@ -3,6 +3,14 @@ import echarts from 'echarts/src/echarts';
 import 'echarts/src/chart/pie';
 import isEqual from "lodash/lang/isEqual"
 
+const ProjectTagEnum = {
+	Ordered : 1,
+	Recommend : 2,
+	CreditGuarantee : 4,
+	Hot : 8,
+	Trial : 16,
+}
+
 let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotteriesValue}) => ({
 	color: ["#ff404a", "#f7a543", "#a5d858", "#35aaf1", "#fce435"],
 	tooltip : {
@@ -70,7 +78,7 @@ class MyAccount extends React.Component {
 		});
 	}
 	render() {
-		var totalMoneySplitted = this.props.totalMoney.toString().split(".");
+		var totalMoneySplitted = this.props.totalMoney.toFixed(2).toString().split(".");
 		return(
 			<div className="overview-wrap">
 				<div id="data-pie" ref="chartBox"></div>
@@ -84,9 +92,9 @@ class MyAccount extends React.Component {
 					<div className="invest-title-wrap">
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
 						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
-						<span className="invest-list-icon jian-icon"></span>
-						<span className="invest-list-icon yue-icon"></span>
-						<span className="invest-list-icon xin-icon"></span>
+						{(pro.tag & ProjectTagEnum.Recommend) != 0 && <span className="invest-list-icon jian-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Ordered != 0) && <span className="invest-list-icon yue-icon"></span>}
+						{(pro.tag & ProjectTagEnum.CreditGuarantee) != 0 && <span className="invest-list-icon xin-icon"></span>}
 					</div>
 					<div className="invest-content">
 						<div className="apr">

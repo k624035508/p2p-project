@@ -14,12 +14,14 @@ namespace Agp2p.Common
         {
             [Description("特约标")]
             Ordered = 1,
-            [Description("火爆")]
-            Hot = 2,
-            [Description("新手体验标")]
-            Trial = 3,
             [Description("推荐")]
-            Recommend = 4,
+            Recommend = 2,
+            [Description("信用保障")]
+            CreditGuarantee = 4,
+            [Description("火爆")]
+            Hot = 8,
+            [Description("新手体验标")]
+            Trial = 16,
         }
 
         public enum LoanTypeEnum

@@ -28,7 +28,7 @@ namespace Agp2p.Web.UI
         public int repayment_type { get; set; }
         public int? sort_id { get; set; }
         public int status { get; set; }
-        public int? tag { get; set; }
+        public int tag { get; set; }
         public string title { get; set; }
         public string categoryTitle { get; set; }
         public string linkurl { get; set; }
@@ -56,8 +56,8 @@ namespace Agp2p.Web.UI
             //查出所以项目类别
             //var categoryList = get_category_list(channel_name, 0);
             var query =
-                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status)
-                    .Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
+                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status);
+                    //.Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
             if (0 < categoryId)
                 query = query.Where(p => p.category_id == categoryId);
             //项目筛选暂写死逻辑在此
@@ -130,7 +130,7 @@ namespace Agp2p.Web.UI
                         amount = p.financing_amount,
                         add_time = p.publish_time ?? p.add_time,
                         publish_time = p.publish_time,
-                        tag = p.tag,
+                        tag = p.tag.GetValueOrDefault(),
                         //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
                         //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
                         project_amount_str = string.Format("{0:0.0}", p.financing_amount / 10000),//项目金额字符

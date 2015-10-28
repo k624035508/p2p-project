@@ -360,14 +360,14 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
-            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
+            /*if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
             {
                 var now = DateTime.Now;
                 project.invest_complete_time = now;
                 project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
                 context.SubmitChanges();
                 return project;
-            }
+            }*/
 
             // 项目投资完成时间应该等于最后一个人的投资时间
             var lastInvestment =
