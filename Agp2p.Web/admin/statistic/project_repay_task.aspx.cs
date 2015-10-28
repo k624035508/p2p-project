@@ -103,6 +103,7 @@ namespace Agp2p.Web.admin.statistic
 
             if (rblRepaymentStatus.SelectedValue == "20")
             {
+                //逾期还款
                 query1 =
                     query1.Where(
                         r =>
@@ -115,6 +116,8 @@ namespace Agp2p.Web.admin.statistic
                     rblRepaymentStatus.SelectedValue == "0" ||
                     Convert.ToByte(rblRepaymentStatus.SelectedValue) == r.status
                     ||
+                    (Convert.ToByte(rblRepaymentStatus.SelectedValue) == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                     (int) Agp2pEnums.RepaymentStatusEnum.OverTime == r.status) ||
                     (Convert.ToByte(rblRepaymentStatus.SelectedValue) == (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid &&
                      (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status));
             }

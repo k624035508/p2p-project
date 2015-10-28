@@ -81,11 +81,11 @@ namespace Agp2p.Web.admin.statistic
         {
             public string Index { get; set; }
             public string YearMonth { get; set; }
-            public int TotalCount { get; set; }
+            public decimal TotalCount { get; set; }
             public string TotalAmount { get; set; }
-            public int NotRepayCount { get; set; }
+            public decimal NotRepayCount { get; set; }
             public string NotRepayAmount { get; set; }
-            public int PepayCount { get; set; }
+            public decimal PepayCount { get; set; }
             public string PepayAmount { get; set; }
             public string Cost { get; set; }
             public string Rate { get; set; }
