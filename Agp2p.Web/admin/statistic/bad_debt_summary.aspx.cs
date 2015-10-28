@@ -130,7 +130,23 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            
+            var beforePaging = GetSummaryList();
+            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => new
+            {
+                d.Index,
+                d.YearMonth,
+                d.TotalCount,
+                d.TotalAmount,
+                d.NotRepayCount,
+                d.NotRepayAmount,
+                d.PepayCount,
+                d.PepayAmount,
+                d.Cost,
+                d.Rate
+            });
+
+            var titles = new[] { "序号", "时间", "坏账总数", "坏账总金额", "未还坏账数", "未还坏账金额", "垫付坏账数", "垫付坏账金额", "坏账罚金", "坏账率" };
+            Utils.ExportXls("坏账汇总", titles, lsData, Response);
         }
     }
 }

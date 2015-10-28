@@ -91,7 +91,7 @@ namespace Agp2p.Web.admin.repayment
                 context.li_repayment_tasks.Where(
                     r =>
                         r.status == (int)Agp2pEnums.RepaymentStatusEnum.EarlierPaid &&
-                        (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)));
+                        (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords))).OrderBy(r => r.should_repay_time).AsQueryable();
 
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
@@ -120,12 +120,13 @@ namespace Agp2p.Web.admin.repayment
                 repay.ProjectTitle = r.li_projects.title;
                 repay.ProjectStatus = r.li_projects.status;
                 repay.RepayStatus = r.status;
+                repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
 
                 return repay;
-            });
+            }).AsQueryable();
 
             this.TotalCount = repayList.Count();
-            return repayList.OrderByDescending(q => q.ShouldRepayTime).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            return repayList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
@@ -174,6 +175,7 @@ namespace Agp2p.Web.admin.repayment
             public string RepaymentType { get; set; }//年化利率
             public int ProjectStatus { get; set; }//项目状态
             public int RepayStatus { get; set; }//还款状态
+            public string TimeTerm { get; set; }//期数
         }
     }
 }

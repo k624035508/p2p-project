@@ -220,7 +220,26 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            
+            var beforePaging = GetRepaySummaryList();
+            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => new
+            {
+                d.Index,
+                d.YearMonth,
+                d.ShouldRepayCount,
+                d.ShouldRepayAmount,
+                d.RepayCount,
+                d.RepayAmount,
+                d.RepayRate,
+                d.RepayOnTimeCount,
+                d.RepayOnTimeRate,
+                d.OverCount,
+                d.OverRate,
+                d.OverNoRepayCount,
+                d.OverNoRepayRate
+            });
+
+            var titles = new[] { "序号", "时间", "应兑付总数", "应兑付总金额", "已兑付数", "已兑付金额", "已兑付完成率", "按时兑付数", "按时兑付占比", "逾期兑付数", "逾期兑付占比", "逾期未兑付数", "逾期未兑付占比" };
+            Utils.ExportXls("应兑付汇总", titles, lsData, Response);
         }
     }
 }

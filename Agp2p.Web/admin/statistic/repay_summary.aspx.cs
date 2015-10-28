@@ -171,7 +171,26 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            
+            var beforePaging = GetRepaySummaryList();
+            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => new
+            {
+                d.Index,
+                d.YearMonth,
+                d.ShouldRepayCount,
+                d.ShouldRepayAmount,
+                d.RepayCount,
+                d.RepayAmount,
+                d.RepayRate,
+                d.RepayOnTimeCount,
+                d.RepayOnTimeRate,
+                d.OverCount,
+                d.OverRate,
+                d.OverNoRepayCount,
+                d.OverNoRepayRate
+            });
+
+            var titles = new[] { "序号", "时间", "应还款总数", "应还总金额", "已还款数", "已还金额", "已还完成率", "按时还款数", "按时还款占比", "逾期还款数", "逾期还款占比", "逾期未还款数", "逾期未还款占比" };
+            Utils.ExportXls("应还款汇总", titles, lsData, Response);
         }
     }
 }
