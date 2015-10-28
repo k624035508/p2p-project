@@ -12,12 +12,6 @@ class CardEditor extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState(this.genStateByValue(nextProps.value));
     }
-    componentDidMount() {
-    	if (!this.props.realName) {
-    		alert("你未进行实名认证，请先到个人中心进行认证");
-    		window.location.hash = "#/safe";
-    	}
-	}
 	genStateByValue(val) {
 		var state = {
 			bank: "",
@@ -68,20 +62,26 @@ class CardEditor extends React.Component {
 		return (
 			<div className={this.props.rootClass}>
 				<ul className="list-unstyled">
-					<li><span>开户名：</span><span>{this.props.realName || "（实名认证后的姓名）"}</span></li>
-					<li><span>选择银行：</span><select className="bankSelect" value={this.state.bank} onChange={ev => this.setState({bank: ev.target.value})}>
+					<li><span>开户名：</span><span style={this.props.realName ? null : {color: "red"}} >
+						{this.props.realName || "（请先到 “个人中心 -> 安全中心” 进行实名认证）"}</span></li>
+					<li><span>选择银行：</span><select className="bankSelect" value={this.state.bank}
+						onChange={ev => this.setState({bank: ev.target.value})} disabled={!this.props.realName}>
 						<option value="">请选择银行</option>
 						{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
 						</select></li>
 					<li><span>开户行所在地：</span>
-						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})} />
+						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})}
+							disabled={!this.props.realName} />
 					</li>
-					<li><span>开户行名称：</span><input type="text" value={this.state.openingBank} onChange={ev => this.setState({openingBank: ev.target.value})} /></li>
-					<li><span>银行卡号：</span><input type="text" value={this.state.cardNumber} onChange={ev => this.setState({cardNumber: ev.target.value})} /></li>
+					<li><span>开户行名称：</span><input type="text" value={this.state.openingBank}
+						onChange={ev => this.setState({openingBank: ev.target.value})} disabled={!this.props.realName} /></li>
+					<li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>
 					{this.props.value ? null :
-					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2} onChange={ev => this.setState({cardNumber2: ev.target.value})} /></li>}
+					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
+						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /></li>}
 				</ul>
-				<button type="button" onClick={this.doSaveCard.bind(this)}>提 交</button>
+				<button type="button" onClick={this.doSaveCard.bind(this)} disabled={!this.props.realName}>提 交</button>
 			</div>
 		);
 	}

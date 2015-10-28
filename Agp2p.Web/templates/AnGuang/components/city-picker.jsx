@@ -93,21 +93,21 @@ export default class CityPicker extends React.Component {
     render() {
         return (
             <div className="selectDist">
-                <select className="form-control-custom prov" id="province" name="province"
+                <select className="form-control-custom prov" id="province" name="province" disabled={this.props.disabled}
                     value={this.state.currentProvinceIndex} onChange={ev => this.onProvinceSelected(ev.target.value)}>
                     <option value="-1" key={-1}>请选择省</option>
                     {this.state.province.map((p, index) => {
                         return <option value={index} key={index}>{p}</option>
                     })}
                 </select>
-                <select className="form-control-custom city" id="city" name="city"
+                <select className="form-control-custom city" id="city" name="city" disabled={this.props.disabled}
                     value={this.state.currentCityIndex} onChange={ev => this.onCitySelected(ev.target.value)}>
                     {this.state.city.length == 0 ? null : <option value="-1" key={-1}>请选择市</option>}
                     {this.state.city.map((c, index) => {
                         return <option value={index} key={index}>{c}</option>
                     })}
                 </select>
-                <select className="form-control-custom dist" id="area" name="area"
+                <select className="form-control-custom dist" id="area" name="area" disabled={this.props.disabled}
                     value={this.state.currentAreaIndex} onChange={ev => this.onAreaSelected(ev.target.value)}>
                     {this.state.area.length == 0 ? null : <option value="-1" key={-1}>请选择区</option>}
                     {this.state.area.map((a, index) => {
