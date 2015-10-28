@@ -2,20 +2,6 @@ import React from "react";
 import { Link } from 'react-router'
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
-/**
- * Number.prototype.format(n, x)
- * 
- * @param integer n: length of decimal
- * @param integer x: length of sections
- */
-Number.prototype.format = function(n, x) {
-    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
-    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
-};
-
-String.prototype.toNum = function () {
-	return parseFloat(this.replace(/[^0-9\.]+/g,""));
-}
 
 class UserStatus extends React.Component {
 	constructor(props) {

@@ -1,100 +1,63 @@
 import React from "react";
 import echarts from 'echarts/src/echarts';
 import 'echarts/src/chart/pie';
+import isEqual from "lodash/lang/isEqual"
 
-let option = {
+let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotteriesValue}) => ({
+	color: ["#ff404a", "#f7a543", "#a5d858", "#35aaf1", "#fce435"],
 	tooltip : {
-		//关闭提示框
-		show: false,
+		show: true,
 		trigger: 'item',
-		formatter: "{a} <br/>{b} : {c} ({d}%)"
+		formatter: "{d}%"
 	},
-	legend: {
-		//关闭左侧图例说明
-		show: false,
-		orient : 'vertical',
-		x : 'left',
-		data:['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他']
-	},
-	toolbox: {
-		//关闭顶部工具栏
-		show : false,
-		feature : {
-			mark : {show: true},
-			dataView : {show: true, readOnly: false},
-			magicType : {
-				show: true,
-				type: ['pie', 'funnel']
-			},
-			restore : {show: true},
-			saveAsImage : {show: true}
-		}
-	},
-	calculable : false,
+	legend: { show: false, data:[]},
 	series : [
-		{
-			name:'访问来源',
-			type:'pie',
-			selectedMode: 'single',
-			radius : [0, 70],
+	{
+		name:'我的账户',
+		type:'pie',
+		radius : [112, 125],
+		minAngle: 5,
 
-			// for funnel
-			x: '20%',
-			width: '40%',
-			funnelAlign: 'right',
-			max: 1548,
-
-			itemStyle : {
-				normal : {
-					label : {
-						position : 'inner'
-					},
-					labelLine : {
-						show : false
-					}
-				}
-			},
-			//内环数据
-			data:[]
-		},
-		{
-			name:'访问来源',
-			type:'pie',
-			radius : [112, 125],
-
-			// for funnel
-			x: '60%',
-			width: '30%',
-			funnelAlign: 'left',
-			max: 1048,
-
-			data:[
-				{value:500, name:'可用余额：500元'},
-				{value:300, name:'冻结金额：300元'},
-				{value:100, name:'红包金额：100元'},
-				{value:100, name:'待收益：100元'},
-				{value:100, name:'待收本金：100元'}
-			]
-		}
+		data:[
+			{value: Math.max(0.001, idleMoney), name: `可用余额：${idleMoney} 元`},
+			{value: Math.max(0.001, lockedMoney), name: `冻结金额：${lockedMoney} 元`},
+			{value: Math.max(0.001, investingMoney), name: `红包金额：${investingMoney} 元`},
+			{value: Math.max(0.001, profitingMoney), name: `待收益：${profitingMoney} 元 `},
+			{value: Math.max(0.001, lotteriesValue), name: `待收本金：${lotteriesValue} 元 `}
+		]
+	}
 	]
-};
+});
 
 
-export default class MyAccount extends React.Component {
+class MyAccount extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {option: null};
 	}
 	componentDidMount() {
-		let mychart = echarts.init(document.getElementById("data-pie"));
-		mychart.setOption(option);
+		this.renderChart(genOption(this.props))
+	}
+	componentWillReceiveProps(nextProps) {
+        if (!isEqual(this.props, nextProps)) {
+        	var newOption = genOption(nextProps);
+        	if (!isEqual(this.state.option, newOption)) {
+        		this.renderChart(newOption);
+        	}
+        }
+	}
+	renderChart(option) {
+		this.setState({option: option});
+		let myChart = echarts.init(document.getElementById("data-pie"));
+		myChart.setOption(option);
 	}
 	render() {
+		var totalMoneySplitted = this.props.totalMoney.toString().split(".");
 		return(
 			<div className="overview-wrap">
 				<div id="data-pie"></div>
 				<div className="total-amount">
-					<p><span>0</span>.00元</p>
+					<p>{totalMoneySplitted[0]}{"." + (totalMoneySplitted[1] || "00") + "元"}</p>
 					<p>总资产</p>
 				</div>
 				<div className="recommend-project"><span>推荐项目</span></div>
@@ -140,3 +103,14 @@ export default class MyAccount extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	var walletInfo = state.walletInfo;
+	return {
+		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney + walletInfo.lotteriesValue,
+		...walletInfo
+	};
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(MyAccount);

@@ -23,11 +23,11 @@ namespace Agp2p.Web.UI.Page
         protected int total_order;
         protected int total_msg;
 
-        protected string GetTotalMoney()
+        protected decimal GetLotteriesValue()
         {
-            var wallet = userModel.li_wallets;
-            var total = wallet.idle_money + wallet.investing_money + wallet.locked_money + wallet.profiting_money;
-            return 1e6m < total ? Math.Floor(total).ToString("N0") : total.ToString("N2");
+            return GetUserInfoByLinq().li_activity_transactions
+                .Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .Aggregate(0m, (sum, a) => sum + a.value);
         }
 
         /// <summary>
@@ -82,6 +82,8 @@ namespace Agp2p.Web.UI.Page
 
             var wallet = userInfo.li_wallets;
             var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userInfo.id && u.type == DTEnums.CodeEnum.Register.ToString());
+            var lotteriesValue = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .Aggregate(0m, (sum, a) => sum + a.value);
             return JsonConvert.SerializeObject(new
             {
                 walletInfo = new
@@ -90,6 +92,7 @@ namespace Agp2p.Web.UI.Page
                     lockedMoney = wallet.locked_money,
                     investingMoney = wallet.investing_money,
                     profitingMoney = wallet.profiting_money,
+                    lotteriesValue
                 },
                 userInfo = new
                 {
