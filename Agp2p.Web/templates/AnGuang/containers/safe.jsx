@@ -112,7 +112,8 @@ class EmailBinding extends React.Component {
 					<span className="mail"></span>
 					<span className="list-th">邮箱认证</span>
 					<span className="list-tips">绑定邮箱，获取更多理财信息。</span>
-					<span className="pull-right"><a href="javascript:;" onClick={ev => this.setState({bindingEmail: true})}>立即认证</a></span>
+					<span className="pull-right"><a href="javascript:;" style={this.props.email ? null : {color: "red"}}
+						onClick={ev => this.setState({bindingEmail: true})}>{this.props.email ? "重新绑定" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingEmail ? null :
 				<div className="setting-wrap" id="email-setting">
@@ -167,7 +168,8 @@ class MobileBinding extends React.Component {
 					<span className="phone"></span>
 					<span className="list-th">手机认证</span>
 					<span className="list-tips">绑定手机，账户资金变动实时通知。</span>
-					<span className="pull-right"><a href="javascript:;" onClick={ev => this.setState({bindingMobile: true})}>修改</a></span>
+					<span className="pull-right"><a href="javascript:;" style={this.props.mobile ? null : {color: "red"}}
+						onClick={ev => this.setState({bindingMobile: true})}>{this.props.mobile ? "修改" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingMobile ? null :
 				<div className="setting-wrap" id="phone-setting">
@@ -234,7 +236,8 @@ class IdentityBinding extends React.Component {
 					<span className="name"></span>
 					<span className="list-th">实名认证</span>
 					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
-					<span className="pull-right"><a href="javascript:" onClick={ev => this.setState({bindingIdCard: true})}>立即认证</a></span>
+					<span className="pull-right"><a href="javascript:" style={this.props.realName ? null : {color: "red"}}
+						onClick={ev => this.setState({bindingIdCard: true})}>{this.props.realName ? "查看" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingIdCard ? null :
 				<div className="setting-wrap" id="name-setting">
@@ -380,7 +383,8 @@ class ResetTransactPassword extends React.Component {
 					<span className="psw-trade"></span>
 					<span className="list-th">交易密码</span>
 					<span className="list-tips">从平台账户提现时需要输入的密码。</span>
-					<span className="pull-right"><a href="javascript:" onClick={ev => this.setState({settingTransactionPassword: true})}>设置</a></span>
+					<span className="pull-right"><a href="javascript:" style={this.props.hasTransactPassword ? null : {color: "red"}}
+						onClick={ev => this.setState({settingTransactionPassword: true})}>{this.props.hasTransactPassword ? "设置" : "重新设置"}</a></span>
 				</div>
 				{!this.state.settingTransactionPassword ? null :
 				<div className="setting-wrap" id="pswTrade-setting">

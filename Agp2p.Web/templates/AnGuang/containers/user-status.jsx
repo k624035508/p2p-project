@@ -1,25 +1,17 @@
 import React from "react";
 import { Link } from 'react-router'
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
-/**
- * Number.prototype.format(n, x)
- * 
- * @param integer n: length of decimal
- * @param integer x: length of sections
- */
-Number.prototype.format = function(n, x) {
-    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
-    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
-};
-
-String.prototype.toNum = function () {
-	return parseFloat(this.replace(/[^0-9\.]+/g,""));
-}
 
 class UserStatus extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
+	}
+	componentDidMount() {
+		if (!this.props.alreadyFetchUserInfo) {
+			this.props.dispatch(fetchWalletAndUserInfo());
+		}
 	}
 	render() {
 		return (
@@ -27,7 +19,8 @@ class UserStatus extends React.Component {
 		        <div className="overview-head">
 		            <div className="head-left">
 		                <p className="username">您好！ {this.props.userName}</p>
-		                <p className="save-level">安全级别 <span className="level-icon low"></span></p>
+		                <p className="save-level">安全级别 <Link className={"level-icon " + this.props.safeLevel}
+		                	title="到 “个人中心 -> 安全中心” 进行相关设置以提高安全等级" to="/safe"></Link></p>
 		                <p className="login-time">上次登录时间：{this.props.prevLoginTime}</p>
 		            </div>
 		            <div className="head-center">
@@ -50,11 +43,14 @@ class UserStatus extends React.Component {
 
 function mapStateToProps(state) {
 	var walletInfo = state.walletInfo, userInfo = state.userInfo;
+	var safeLevelInt = (userInfo.realName ? 1 : 0) + (userInfo.email ? 1 : 0) + (userInfo.hasTransactPassword ? 1 : 0);
 	return {
 		userName: userInfo.userName,
 		prevLoginTime: userInfo.prevLoginTime,
 		idleMoney: walletInfo.idleMoney,
 		lockedMoney: walletInfo.lockedMoney,
+		alreadyFetchUserInfo: !!userInfo.invitationCode,
+		safeLevel: safeLevelInt <= 1 ? "low" : (safeLevelInt == 2 ? "middle" : "high")
 	};
 }
 

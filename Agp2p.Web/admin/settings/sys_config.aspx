@@ -46,7 +46,7 @@
         <li><a href="javascript:;" onclick="tabs(this);">短信平台设置</a></li>
         <li><a href="javascript:;" onclick="tabs(this);">邮件发送设置</a></li>
         <li><a href="javascript:;" onclick="tabs(this);">文件上传设置</a></li>
-        <li><a href="javascript:;" onclick="tabs(this);">自动放款设置</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);">自动任务设置</a></li>
       </ul>
     </div>
   </div>
@@ -525,7 +525,7 @@
 </div>
 <!--/上传配置-->
 
-<!--自动放款设置-->
+<!--自动任务设置-->
 <div class="tab-content" style="display:none">
     <dl>
         <dt>每天计时器触发时间</dt>
@@ -535,16 +535,16 @@
         </dd>
     </dl>
     <dl>
-        <dt>是否启用自动放款</dt>
+        <dt>是否启用自动任务</dt>
         <dd>
             <div class="rule-single-checkbox">
                 <asp:CheckBox ID="enableAutoRepay" runat="server" />
             </div>
-            <span class="Validform_checktip">*</span>
+            <span class="Validform_checktip">*包括自动还款、检查募资到期、检查逾期</span>
         </dd>
     </dl>
     <dl>
-        <dt>是否自动发送放款通知短信</dt>
+        <dt>是否自动发送还款短信</dt>
         <dd>
             <div class="rule-single-checkbox">
                 <asp:CheckBox ID="sendShortMsgAfterRepay" runat="server" />
@@ -562,7 +562,7 @@
         </dd>
     </dl>
 </div>
-<!--/自动放款设置-->
+<!--/自动任务设置-->
 
 <!--/内容-->
 

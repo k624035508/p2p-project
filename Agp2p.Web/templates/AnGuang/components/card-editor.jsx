@@ -3,7 +3,6 @@ import $ from "jquery";
 import CityPicker from "../components/city-picker.jsx"
 import bank from "../js/bank-list.jsx"
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js"
-import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
 class CardEditor extends React.Component {
 	constructor(props) {
@@ -15,13 +14,8 @@ class CardEditor extends React.Component {
     }
     componentDidMount() {
     	if (!this.props.realName) {
-    		var promise = this.props.dispatch(fetchWalletAndUserInfo());
-    		promise.done(data => {
-    			if (!this.props.realName) {
-    				alert("你未进行实名认证，请先到个人中心进行认证");
-    				window.location.hash = "#/safe";
-    			}
-    		});
+    		alert("你未进行实名认证，请先到个人中心进行认证");
+    		window.location.hash = "#/safe";
     	}
 	}
 	genStateByValue(val) {

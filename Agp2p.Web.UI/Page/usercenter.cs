@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.Linq;
 using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
@@ -22,11 +23,11 @@ namespace Agp2p.Web.UI.Page
         protected int total_order;
         protected int total_msg;
 
-        protected string GetTotalMoney()
+        protected decimal GetLotteriesValue()
         {
-            var wallet = userModel.li_wallets;
-            var total = wallet.idle_money + wallet.investing_money + wallet.locked_money + wallet.profiting_money;
-            return 1e6m < total ? Math.Floor(total).ToString("N0") : total.ToString("N2");
+            return GetUserInfoByLinq().li_activity_transactions
+                .Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .Aggregate(0m, (sum, a) => sum + a.value);
         }
 
         /// <summary>
@@ -81,6 +82,8 @@ namespace Agp2p.Web.UI.Page
 
             var wallet = userInfo.li_wallets;
             var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userInfo.id && u.type == DTEnums.CodeEnum.Register.ToString());
+            var lotteriesValue = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .Aggregate(0m, (sum, a) => sum + a.value);
             return JsonConvert.SerializeObject(new
             {
                 walletInfo = new
@@ -89,6 +92,7 @@ namespace Agp2p.Web.UI.Page
                     lockedMoney = wallet.locked_money,
                     investingMoney = wallet.investing_money,
                     profitingMoney = wallet.profiting_money,
+                    lotteriesValue
                 },
                 userInfo = new
                 {
@@ -175,7 +179,7 @@ namespace Agp2p.Web.UI.Page
             var context = new Agp2pDataContext();
             var queryable = context.dt_user_message.Where(m => m.accept_user_name == userInfo.user_name && m.type == type);
             var totalCount = queryable.Count();
-            var msgs = queryable.OrderByDescending(m => m.id).AsEnumerable()
+            var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
                 .Select(m => new
                 {
                     m.id,
@@ -183,7 +187,7 @@ namespace Agp2p.Web.UI.Page
                     m.title,
                     m.content,
                     receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
-                }).Skip(pageSize * pageIndex).Take(pageSize);
+                });
             return JsonConvert.SerializeObject(new {totalCount, msgs});
         }
 
@@ -234,13 +238,47 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var data = userInfo.li_invitations1.Select(i => new
+            var query = userInfo.li_invitations1;
+            var data = query.Skip(pageIndex * pageSize).Take(pageSize).Select(i => new
             {
                 inviteeId = i.user_id,
                 inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
                 firstInvestmentAmount = i.li_project_transactions == null ? 0 : i.li_project_transactions.principal,
             });
-            return JsonConvert.SerializeObject(new {totalCount = data.Count(), data = data.Skip(pageIndex * pageSize).Take(pageSize)});
+            return JsonConvert.SerializeObject(new {totalCount = query.Count, data});
+        }
+
+        private static readonly int[] LotteryType =
+        {
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial,
+        };
+
+        [WebMethod]
+        public static string AjaxQueryLotteries(short pageIndex, short pageSize)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type));
+            var totalCount = query.Count();
+
+            var data = query.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
+            {
+                a.id,
+                a.activity_type,
+                a.status,
+                a.value,
+                details = string.IsNullOrWhiteSpace(a.details) ? null : JsonConvert.DeserializeObject(a.details),
+                a.create_time,
+                a.transact_time,
+            });
+            return JsonConvert.SerializeObject(new {totalCount, data});
         }
 
         [WebMethod(CacheDuration = 600)]

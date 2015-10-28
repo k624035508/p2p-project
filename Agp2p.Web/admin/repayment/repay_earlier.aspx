@@ -49,6 +49,7 @@
                         <th align="left" width="8%">应还金额(元)</th>
                         <th align="left" width="8%">实还金额(元)</th>
                         <th align="left" width="8%">罚息(元)</th>
+                        <th align="left" width="6%">期数</th>
                         <th align="left" width="6%">提前天数</th>
                         <th align="left" width="8%">应还时间</th>
                         <th align="left" width="8%">实还时间</th>
@@ -65,6 +66,7 @@
                     <td><%#Eval("Amount")%></td>
                     <td><%#Eval("FactAmount")%></td>
                     <td><%#Eval("Cost")%></td>
+                    <td><%#Eval("TimeTerm")%></td>
                     <td><%#Eval("DayCount")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>

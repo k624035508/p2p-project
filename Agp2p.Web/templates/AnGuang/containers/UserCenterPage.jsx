@@ -6,6 +6,25 @@ import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js"
 import StatusContainer from "../containers/user-status.jsx"
 import MyAccountPage from "../containers/myaccount.jsx"
 
+/**
+ * Number.prototype.format(n, x)
+ * 
+ * @param integer n: length of decimal
+ * @param integer x: length of sections
+ */
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+
+Number.prototype.toNum = function () {
+	return this;
+}
+
+String.prototype.toNum = function () {
+	return parseFloat(this.replace(/[^0-9\.]+/g,""));
+}
+
 
 class UserCenterPage extends React.Component {
 	constructor(props) {
@@ -17,12 +36,13 @@ class UserCenterPage extends React.Component {
 		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
 	}
 	componentDidMount() {
-		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime } = $("#app").data();
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue} = $("#app").data();
 		var walletInfo = {
 			idleMoney : idleMoney.toNum(),
 			lockedMoney : lockedMoney.toNum(),
 			investingMoney : investingMoney.toNum(),
-			profitingMoney : profitingMoney.toNum()
+			profitingMoney : profitingMoney.toNum(),
+			lotteriesValue : lotteriesValue.toNum()
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName, prevLoginTime }));

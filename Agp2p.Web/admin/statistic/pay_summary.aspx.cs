@@ -59,79 +59,49 @@ namespace Agp2p.Web.admin.statistic
                     Index = rs.no.ToString(),
                     YearMonth = repayTasks.Key
                 };
-                //按时还款
-                var repayOnTimeTasks =
-                    repayTasks.Where(
-                        r =>
-                            r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at != null &&
-                            r.repay_at <= r.should_repay_time).AsQueryable();
-                int payOnTimeCount = 0;
-                decimal payOnTimeAmount = 0;
-                repayOnTimeTasks.ForEach(rot =>
+                //已付款
+                repayTasks.Where(r => r.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid).ForEach(r =>
                 {
-                    var profiting = getRepayTransactions(rot);
-                    payOnTimeCount += profiting.Count();
-                    payOnTimeAmount += profiting.Sum(p => p.interest + p.principal ?? p.principal);
+                    getRepayTransactions(r).ForEach(p =>
+                    {
+                        paySummary.RepayAmount += p.interest + p.principal ?? p.principal;
+                        paySummary.RepayCount++;
+                    });
                 });
-               
-                //逾期还款
-                var repayOverTimeTasks =
-                    repayTasks.Where(
-                        r =>
-                            r.status != (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at != null &&
-                            r.repay_at > r.should_repay_time).AsQueryable();
-                int payOverTimeCount = 0;
-                decimal payOverTimeAmount = 0;
-                repayOverTimeTasks.ForEach(ro =>
+                //逾期付款
+                int overTimePay = repayTasks.Where(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid).Sum(r => getRepayTransactions(r).Count());
+                //逾期未付款
+                int overTimeNotPay = 0;
+                decimal overTimeNotPayAmount = 0;
+                repayTasks.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime).ForEach(r =>
                 {
-                    var profiting = getRepayTransactions(ro);
-                    payOverTimeCount += profiting.Count();
-                    payOverTimeAmount += profiting.Sum(p => p.interest + p.principal ?? p.principal);
+                    getRepayTransactions(r).ForEach(p =>
+                    {
+                        overTimeNotPayAmount += p.interest + p.principal ?? p.principal;
+                        overTimeNotPay++;
+                    });
                 });
-
-                //逾期未还款
-                var notRepayOverTimeTasks =
-                    repayTasks.Where(
-                        r =>
-                            r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null &&
-                            DateTime.Now > r.should_repay_time).AsQueryable();
-                int notRepayOverTimeCount = 0;
-                decimal notRepayOverTimeAmount = 0;
-                notRepayOverTimeTasks.ForEach(nro =>
+                //未到期付款
+                int noYetPay = 0;
+                decimal noYetPayAmount = 0;
+                repayTasks.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid).ForEach(r =>
                 {
-                    var profiting = getRepayTransactions(nro);
-                    notRepayOverTimeCount += profiting.Count();
-                    notRepayOverTimeAmount += profiting.Sum(p => p.interest + p.principal ?? p.principal);
+                    getRepayTransactions(r).ForEach(p =>
+                    {
+                        noYetPayAmount += p.interest + p.principal ?? p.principal;
+                        noYetPay++;
+                    });
                 });
 
-                //未到期还款
-                var repayNoYetTasks =
-                    repayTasks.Where(
-                        r =>
-                            r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && r.repay_at == null &&
-                            DateTime.Now <= r.should_repay_time).AsQueryable();
-                int repayNoYetCount = 0;
-                decimal repayNoYetAmount = 0;
-                repayNoYetTasks.ForEach(rny =>
-                {
-                    var profiting = getRepayTransactions(rny);
-                    repayNoYetCount += profiting.Count();
-                    repayNoYetAmount += profiting.Sum(p => p.interest + p.principal ?? p.principal);
-                });
-
-                paySummary.ShouldRepayCount = payOnTimeCount + payOverTimeCount + notRepayOverTimeCount +
-                                              repayNoYetCount;
-                paySummary.ShouldRepayAmount = (payOnTimeAmount + payOverTimeAmount + notRepayOverTimeAmount +
-                                               repayNoYetAmount).ToString("N");
-                paySummary.RepayCount = payOnTimeCount + payOverTimeCount;
-                paySummary.RepayAmount = (payOnTimeAmount + payOverTimeAmount + notRepayOverTimeAmount).ToString("N");
+                paySummary.ShouldRepayCount = paySummary.RepayCount + overTimeNotPay + noYetPay;
+                paySummary.ShouldRepayAmount = (paySummary.RepayAmount + overTimeNotPayAmount + noYetPayAmount).ToString("N");
                 paySummary.RepayRate = (paySummary.RepayCount/paySummary.ShouldRepayCount).ToString("P1");
-                paySummary.RepayOnTimeCount = payOnTimeCount;
-                paySummary.RepayOnTimeRate = (payOnTimeCount/paySummary.ShouldRepayCount).ToString("P1");
-                paySummary.OverCount = payOverTimeCount + notRepayOverTimeCount;
+                paySummary.RepayOnTimeCount = paySummary.RepayCount - overTimePay;
+                paySummary.RepayOnTimeRate = (paySummary.RepayOnTimeCount/paySummary.ShouldRepayCount).ToString("P1");
+                paySummary.OverCount = overTimePay + overTimeNotPay;
                 paySummary.OverRate = (paySummary.OverCount/ paySummary.ShouldRepayCount).ToString("P1");
-                paySummary.OverNoRepayCount = notRepayOverTimeCount;
-                paySummary.OverNoRepayRate = (notRepayOverTimeCount/paySummary.ShouldRepayCount).ToString("P1");
+                paySummary.OverNoRepayCount = overTimeNotPay;
+                paySummary.OverNoRepayRate = (overTimeNotPay / paySummary.ShouldRepayCount).ToString("P1");
 
                 return paySummary;
             }).AsQueryable();
@@ -180,7 +150,7 @@ namespace Agp2p.Web.admin.statistic
             /// <summary>
             /// 已还款金额
             /// </summary>
-            public string RepayAmount { get; set; }
+            public decimal RepayAmount { get; set; }
             /// <summary>
             /// 已还款完成率
             /// </summary>
@@ -250,7 +220,26 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            
+            var beforePaging = GetRepaySummaryList();
+            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => new
+            {
+                d.Index,
+                d.YearMonth,
+                d.ShouldRepayCount,
+                d.ShouldRepayAmount,
+                d.RepayCount,
+                d.RepayAmount,
+                d.RepayRate,
+                d.RepayOnTimeCount,
+                d.RepayOnTimeRate,
+                d.OverCount,
+                d.OverRate,
+                d.OverNoRepayCount,
+                d.OverNoRepayRate
+            });
+
+            var titles = new[] { "序号", "时间", "应兑付总数", "应兑付总金额", "已兑付数", "已兑付金额", "已兑付完成率", "按时兑付数", "按时兑付占比", "逾期兑付数", "逾期兑付占比", "逾期未兑付数", "逾期未兑付占比" };
+            Utils.ExportXls("应兑付汇总", titles, lsData, Response);
         }
     }
 }
