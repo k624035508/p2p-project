@@ -168,7 +168,8 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public static string AjaxQueryUserMessages(short type = 1, short pageIndex = 0, short pageSize = 8)
         {
-            var userInfo = GetUserInfo();
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
@@ -176,7 +177,6 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var context = new Agp2pDataContext();
             var queryable = context.dt_user_message.Where(m => m.accept_user_name == userInfo.user_name && m.type == type);
             var totalCount = queryable.Count();
             var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
@@ -297,14 +297,6 @@ namespace Agp2p.Web.UI.Page
         [WebMethod(CacheDuration = 600)]
         public static string AjaxQueryEnumInfo(string enumFullName)
         {
-            var userInfo = GetUserInfo();
-            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-            if (userInfo == null)
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return "请先登录";
-            }
-
             var type = AppDomain.CurrentDomain.GetAssemblies()
                 .Select(assembly => assembly.GetType(enumFullName))
                 .Where(t => t != null).FirstOrDefault(t => t.IsEnum);
@@ -318,6 +310,60 @@ namespace Agp2p.Web.UI.Page
             return
                 JsonConvert.SerializeObject(
                     values.Select(en => new {key = Utils.GetAgp2pEnumDes(en), value = Convert.ToInt32(en)}));
+        }
+
+        [WebMethod]
+        public static string AjaxQueryNotificationSettings()
+        {
+            var userInfo = GetUserInfoByLinq();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var valueTable = Enum.GetValues(typeof (Agp2pEnums.NotificationTypeEnum))
+                .Cast<Agp2pEnums.NotificationTypeEnum>()
+                .Select(e =>
+                {
+                    var split = Utils.GetAgp2pEnumDes(e).Split('-');
+                    return
+                        new
+                        {
+                            row = split[0],
+                            column = split[1],
+                            value = (int) e,
+                        };
+                })
+                .GroupBy(a => a.row)
+                .ToDictionary(g => g.Key, g => g.ToDictionary(a => a.column, a => a.value));
+
+            var enabledNotificationTypes = userInfo.li_notification_settings.Select(n => n.type).ToList();
+
+            return JsonConvert.SerializeObject(new {valueTable, enabledNotificationTypes });
+        }
+
+        [WebMethod]
+        public static string AjaxSaveNotificationSettings(string enabledNotificationTypes)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            context.li_notification_settings.DeleteAllOnSubmit(userInfo.li_notification_settings);
+            var preAdd = enabledNotificationTypes.Split(',')
+                .Select(typeStr => new li_notification_settings {dt_users = userInfo, type = Convert.ToInt32(typeStr)})
+                .ToList();
+            context.li_notification_settings.InsertAllOnSubmit(preAdd);
+            context.SubmitChanges();
+
+            return "保存成功";
         }
     }
 }
