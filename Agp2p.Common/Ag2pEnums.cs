@@ -110,11 +110,6 @@ namespace Agp2p.Common
             /// </summary>
             [Description("已完成")]
             RepayCompleteIntime = 40,
-            /// <summary>
-            /// 提前还款完成
-            /// </summary>
-            [Description("提前还款")]
-            RepayCompleteEarlier = 41
         }
 
         /// <summary>
