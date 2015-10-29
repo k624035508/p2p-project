@@ -110,11 +110,6 @@ namespace Agp2p.Common
             /// </summary>
             [Description("已完成")]
             RepayCompleteIntime = 40,
-            /// <summary>
-            /// 提前还款完成
-            /// </summary>
-            [Description("提前还款")]
-            RepayCompleteEarlier = 41
         }
 
         /// <summary>
@@ -557,6 +552,31 @@ namespace Agp2p.Common
             ReceivingBox = 2,
             [Description("发件箱")]
             SendingBox = 3,
+        }
+
+        public enum NotificationTypeEnum
+        {
+            [Description("充值成功-站内消息")]
+            ChargeSuccessForUserMsg = 1,
+            [Description("提现成功-站内消息")]
+            WithdrawSuccessForUserMsg = 10,
+            [Description("提现失败-站内消息")]
+            WithdrawFailureForUserMsg = 11,
+            [Description("项目还款-站内消息")]
+            ProjectRepaidForUserMsg = 20,
+            [Description("系统消息-站内消息")]
+            SystemMessageForUserMsg = 30,
+            [Description("奖券过期提醒-站内消息")]
+            LotteryWillExpireForUserMsg = 40,
+
+            [Description("充值成功-短信")]
+            ChargeSuccessForSms = 1001,
+            [Description("提现成功-短信")]
+            WithdrawSuccessForSms = 1010,
+            [Description("提现失败-短信")]
+            WithdrawFailureForSms = 1011,
+            [Description("项目还款-短信")]
+            ProjectRepaidForSms = 1020,
         }
 
         /// <summary>

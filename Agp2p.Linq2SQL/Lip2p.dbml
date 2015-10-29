@@ -533,6 +533,7 @@
       <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
+      <Association Name="dt_users_li_notification_settings" Member="li_notification_settings" ThisKey="id" OtherKey="user_id" Type="li_notification_settings" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -623,6 +624,13 @@
       <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_notification_settings" Member="li_notification_settings">
+    <Type Name="li_notification_settings">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="dt_users_li_notification_settings" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

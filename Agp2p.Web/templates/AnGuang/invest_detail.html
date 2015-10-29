@@ -33,12 +33,15 @@
             <span class="invest-style-tab">房贷宝</span>
             <span>{projectModel.title}</span>
             
-            <%if(projectModel.tag.ToString()=="1")%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)!=0)%>
             <span class="invest-list-icon yue-icon"></span>
-            <%else if(projectModel.tag.ToString()=="2")%>
+            <%/if%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)!=0)%>
             <span class="invest-list-icon jian-icon"></span>
             <%/if%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)!=0)%>
             <span class="invest-list-icon xin-icon"></span>
+            <%/if%>
         </div>
         <div class="invest-rules">
             <div class="sum">
@@ -223,7 +226,7 @@
                 <%foreach(var picture in albums_pictures)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
@@ -231,7 +234,7 @@
                 <%foreach(var picture in albums_credit)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
@@ -239,11 +242,26 @@
                 <%foreach(var picture in albums_mortgage)%>
                 <div class="col-md-3 col-xs-3">
                     <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" />
+                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}" data-toggle="modal" data-target="#photoModal" />
                     </a>
                     <div class="photo-title">{picture.remark}</div>
                 </div>
                 <%/foreach%>
+                <div class="modal fade modal-custom" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header modal-header-custom">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4></h4>
+                            </div>
+                            <div class="modal-body modal-body-custom">
+                                <span class="glyphicon glyphicon-chevron-left control-prev"></span>
+                                <img id="modalPic" src="" alt=""/>
+                                <span class="glyphicon glyphicon-chevron-right control-next"></span>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </div>
         </div>
         

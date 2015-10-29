@@ -1571,7 +1571,7 @@ namespace Agp2p.Common
             MemberInfo[] memInfo = type.GetMember(en.ToString());
             if (memInfo.Length > 0)
             {
-                object[] attrs = memInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
+                object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
                 if (attrs.Length > 0)
                     return ((DescriptionAttribute)attrs[0]).Description;
             }

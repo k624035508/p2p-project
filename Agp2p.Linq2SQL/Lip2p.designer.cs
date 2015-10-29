@@ -138,6 +138,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_article_category(dt_article_category instance);
     partial void Updatedt_article_category(dt_article_category instance);
     partial void Deletedt_article_category(dt_article_category instance);
+    partial void Insertli_notification_settings(li_notification_settings instance);
+    partial void Updateli_notification_settings(li_notification_settings instance);
+    partial void Deleteli_notification_settings(li_notification_settings instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -457,6 +460,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_article_category>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_notification_settings> li_notification_settings
+		{
+			get
+			{
+				return this.GetTable<li_notification_settings>();
 			}
 		}
 	}
@@ -11248,6 +11259,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntityRef<li_creditors> _li_creditors;
 		
+		private EntitySet<li_notification_settings> _li_notification_settings;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -11324,6 +11337,7 @@ namespace Agp2p.Linq2SQL
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_creditors = default(EntityRef<li_creditors>);
+			this._li_notification_settings = new EntitySet<li_notification_settings>(new Action<li_notification_settings>(this.attach_li_notification_settings), new Action<li_notification_settings>(this.detach_li_notification_settings));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -12098,6 +12112,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_notification_settings", Storage="_li_notification_settings", ThisKey="id", OtherKey="user_id")]
+		public EntitySet<li_notification_settings> li_notification_settings
+		{
+			get
+			{
+				return this._li_notification_settings;
+			}
+			set
+			{
+				this._li_notification_settings.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -12267,6 +12294,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_project_transactions(li_project_transactions entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_li_notification_settings(li_notification_settings entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_li_notification_settings(li_notification_settings entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -14211,6 +14250,133 @@ namespace Agp2p.Linq2SQL
 					this._seo_description = value;
 					this.SendPropertyChanged("seo_description");
 					this.Onseo_descriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_notification_settings")]
+	public partial class li_notification_settings : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _user_id;
+		
+		private int _type;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onuser_idChanging(int value);
+    partial void Onuser_idChanged();
+    partial void OntypeChanging(int value);
+    partial void OntypeChanged();
+    #endregion
+		
+		public li_notification_settings()
+		{
+			this._dt_users = default(EntityRef<dt_users>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int user_id
+		{
+			get
+			{
+				return this._user_id;
+			}
+			set
+			{
+				if ((this._user_id != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onuser_idChanging(value);
+					this.SendPropertyChanging();
+					this._user_id = value;
+					this.SendPropertyChanged("user_id");
+					this.Onuser_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_notification_settings", Storage="_dt_users", ThisKey="user_id", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.li_notification_settings.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.li_notification_settings.Add(this);
+						this._user_id = value.id;
+					}
+					else
+					{
+						this._user_id = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
 				}
 			}
 		}
