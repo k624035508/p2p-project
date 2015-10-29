@@ -3,6 +3,14 @@ import echarts from 'echarts/src/echarts';
 import 'echarts/src/chart/pie';
 import isEqual from "lodash/lang/isEqual"
 
+const ProjectTagEnum = {
+	Ordered : 1,
+	Recommend : 2,
+	CreditGuarantee : 4,
+	Hot : 8,
+	Trial : 16,
+}
+
 let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotteriesValue}) => ({
 	color: ["#ff404a", "#f7a543", "#a5d858", "#35aaf1", "#fce435"],
 	tooltip : {
@@ -21,9 +29,9 @@ let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotter
 		data:[
 			{value: Math.max(0.001, idleMoney), name: `可用余额：${idleMoney} 元`},
 			{value: Math.max(0.001, lockedMoney), name: `冻结金额：${lockedMoney} 元`},
-			{value: Math.max(0.001, investingMoney), name: `红包金额：${investingMoney} 元`},
+			{value: Math.max(0.001, lotteriesValue), name: `红包金额：${lotteriesValue} 元`},
 			{value: Math.max(0.001, profitingMoney), name: `待收益：${profitingMoney} 元 `},
-			{value: Math.max(0.001, lotteriesValue), name: `待收本金：${lotteriesValue} 元 `}
+			{value: Math.max(0.001, investingMoney), name: `待收本金：${investingMoney} 元 `}
 		]
 	}
 	]
@@ -33,10 +41,11 @@ let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotter
 class MyAccount extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {option: null};
+		this.state = {option: null, recommendProjects: []};
 	}
 	componentDidMount() {
-		this.renderChart(genOption(this.props))
+		this.renderChart(genOption(this.props));
+		this.fetchRecommendProject();
 	}
 	componentWillReceiveProps(nextProps) {
         if (!isEqual(this.props, nextProps)) {
@@ -48,57 +57,77 @@ class MyAccount extends React.Component {
 	}
 	renderChart(option) {
 		this.setState({option: option});
-		let myChart = echarts.init(document.getElementById("data-pie"));
+		let myChart = echarts.init(this.refs.chartBox);
 		myChart.setOption(option);
 	}
+	fetchRecommendProject() {
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryProjectsDetail";
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			contentType: "application/json",
+			url: url,
+			data: JSON.stringify({ pageIndex: 0, pageSize: 1}),
+			success: function(result) {
+				let {totalCount, data} = JSON.parse(result.d);
+				this.setState({recommendProjects: data || []});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(url, status, err.toString());
+			}.bind(this)
+		});
+	}
 	render() {
-		var totalMoneySplitted = this.props.totalMoney.toString().split(".");
+		var totalMoneySplitted = this.props.totalMoney.toFixed(2).toString().split(".");
 		return(
 			<div className="overview-wrap">
-				<div id="data-pie"></div>
+				<div id="data-pie" ref="chartBox"></div>
 				<div className="total-amount">
 					<p>{totalMoneySplitted[0]}{"." + (totalMoneySplitted[1] || "00") + "元"}</p>
 					<p>总资产</p>
 				</div>
 				<div className="recommend-project"><span>推荐项目</span></div>
-				<div className="invest-cell invest-cell-custom">
+				{this.state.recommendProjects.length == 0
+					? <div style={{textAlign: "center", lineHeight: "60px", color: "#646464", fontSize: "15px"}}>暂无项目</div>
+					: this.state.recommendProjects.map(pro => 
+				<div className="invest-cell invest-cell-custom" key={pro.id}>
 					<div className="invest-title-wrap">
-						<span className="invest-style-tab">房贷宝</span>
-						<span className="invest-title"><a href="invest_detail.html">石化供应链系列-XXX公司应收</a></span>
-						<span className="invest-list-icon jian-icon"></span>
-						<span className="invest-list-icon yue-icon"></span>
-						<span className="invest-list-icon xin-icon"></span>
+						<span className="invest-style-tab">{pro.categoryTitle}</span>
+						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
+						{(pro.tag & ProjectTagEnum.Recommend) != 0 && <span className="invest-list-icon jian-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Ordered != 0) && <span className="invest-list-icon yue-icon"></span>}
+						{(pro.tag & ProjectTagEnum.CreditGuarantee) != 0 && <span className="invest-list-icon xin-icon"></span>}
 					</div>
 					<div className="invest-content">
 						<div className="apr">
-							<div className="red25px margin-bottom10px">13.00<span className="red15px">%</span></div>
+							<div className="red25px margin-bottom10px">{pro.profit_rate_year}<span className="red15px">%</span></div>
 							<div className="grey13px">年化利率</div>
 						</div>
 						<div className="deadline">
-							<div className="grey25px margin-bottom10px">1<span className="grey15px">个月</span></div>
+							<div className="grey25px margin-bottom10px">{pro.repayment_number}<span className="grey15px">{pro.repayment_term}</span></div>
 							<div className="grey13px">期限</div>
 						</div>
 						<div className="sum">
-							<div className="grey25px margin-bottom10px">456<span className="grey15px">万</span></div>
+							<div className="grey25px margin-bottom10px">{pro.project_amount_str}<span className="grey15px">万</span></div>
 							<div className="grey13px">借款金额</div>
 						</div>
 						<div className="repayment">
 							<div className="progress progress-custom">
-								<div className="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style={{width: "20%"}}>
-									<span className="sr-only">20% Complete</span>
+								<div className="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+									aria-valuemin="0" aria-valuemax="100" style={{width: pro.project_investment_progress + "%"}}>
+									<span className="sr-only">{`${pro.project_investment_progress}% Complete`}</span>
 								</div>
 							</div>
-							<div className="grey13px margin-bottom10px">可投金额 : <span className="dark-grey13px">2,300,500.00元</span></div>
-							<div className="grey13px margin-bottom10px hidden">投资人数 : <span className="dark-grey13px">25人</span></div>   {/*满标人数显示*/}
+							<div className="grey13px margin-bottom10px">可投金额 : <span className="dark-grey13px">{pro.project_investment_balance}</span></div>
+							<div className="grey13px margin-bottom10px hidden">投资人数 : <span className="dark-grey13px">{pro.project_investment_count}人</span></div>
 							<div className="grey13px">到期还本付息</div>
 						</div>
 						<div className="invest-btn">
-							<button type="button" className="invest-now-btn">立即投资</button>
-							<button type="button" className="invest-full-btn hidden">满标</button>   {/*满标按钮显示*/}
+							<button type="button" className="invest-now-btn" onClick={ev => location.href = pro.linkurl}>立即投资</button>
+							<button type="button" className="invest-full-btn hidden">满标</button>
 						</div>
 					</div>
-				</div>
-
+				</div>)}
 			</div>
 		);
 	}

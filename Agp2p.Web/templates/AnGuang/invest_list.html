@@ -72,10 +72,13 @@
     <div class="invest-title-wrap">
         <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
         <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
-        <%if(dr["tag"].ToString()=="1")%>
+        <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)!=0)%>
         <span class="invest-list-icon yue-icon"></span>
-        <%else if(dr["tag"].ToString()=="2")%>
+        <%/if%>
+        <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Recommend)!=0)%>
         <span class="invest-list-icon jian-icon"></span>
+        <%/if%>
+        <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)!=0)%>
         <span class="invest-list-icon xin-icon"></span>
         <%/if%>
     </div>
@@ -98,11 +101,10 @@
                 <div class="progress-bar progress-bar-info" role="progressbar"
                      aria-valuenow="{dr[project_investment_progress]}"
                      aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}%">
-                    <span class="sr-only">20% Complete</span>
+                    <span class="sr-only">{dr[project_investment_progress]}% Complete</span>
                 </div>
             </div>
-            <div class="grey13px margin-bottom10px">可投金额 : <span
-                    class="dark-grey13px">{dr[project_investment_balance]}</span></div>
+            <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{dr[project_investment_balance]}</span></div>
             <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span>
             </div>
             <!--满标人数显示-->

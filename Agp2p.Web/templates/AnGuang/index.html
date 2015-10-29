@@ -83,16 +83,18 @@
 
 <!--invest list-->
 <div class="container-fluid">
-    <%set var articleCategory=new Agp2p.BLL.article_category()%>
     <%foreach(DataRow dr in get_project_list(5,0,0,0,0).Rows)%>
     <div class="invest-cell">
         <div class="invest-title-wrap">
-            <span class="invest-style-tab"><%=articleCategory.GetTitle((int)dr["category_id"])%></span>
+            <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
             <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
-            <%if(dr["tag"].ToString()=="1")%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)!=0)%>
             <span class="invest-list-icon yue-icon"></span>
-            <%else if(dr["tag"].ToString()=="2")%>
+            <%/if%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Recommend)!=0)%>
             <span class="invest-list-icon jian-icon"></span>
+            <%/if%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)!=0)%>
             <span class="invest-list-icon xin-icon"></span>
             <%/if%>
         </div>

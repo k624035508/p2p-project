@@ -360,14 +360,14 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
-            if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
+            /*if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
             {
                 var now = DateTime.Now;
                 project.invest_complete_time = now;
                 project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
                 context.SubmitChanges();
                 return project;
-            }
+            }*/
 
             // 项目投资完成时间应该等于最后一个人的投资时间
             var lastInvestment =
@@ -668,9 +668,7 @@ namespace Agp2p.Core
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
             if (pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
-                pro.status = statusAfterPay == Agp2pEnums.RepaymentStatusEnum.EarlierPaid
-                    ? (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteEarlier
-                    : (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
@@ -855,9 +853,8 @@ namespace Agp2p.Core
         /// <param name="projectId"></param>
         /// <param name="callback"></param>
         /// <returns></returns>
-        public static T GetInvestmentProgress<T>(this Agp2pDataContext context, int projectId, Func<decimal, decimal, T> callback)
+        public static T GetInvestmentProgress<T>(this li_projects pro, Func<decimal, decimal, T> callback)
         {
-            var pro = context.li_projects.Single(a => a.id == projectId);
             Debug.Assert(pro.investment_amount <= pro.financing_amount);
             return callback(pro.investment_amount, pro.financing_amount);
         }
@@ -865,12 +862,10 @@ namespace Agp2p.Core
         /// <summary>
         /// 获取投资人数
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="projectId"></param>
+        /// <param name="pro"></param>
         /// <returns></returns>
-        public static int GetInvestedUserCount(this Agp2pDataContext context, int projectId)
+        public static int GetInvestedUserCount(this li_projects pro)
         {
-            var pro = context.li_projects.Single(a => a.id == projectId);
             return pro.li_project_transactions.Where(t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                                           t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                                                           .GroupBy(t => t.investor)
@@ -1025,7 +1020,10 @@ namespace Agp2p.Core
 
         public static string GetProjectTermSpanEnumDesc(this li_projects proj)
         {
-            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span);
+            var desc = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span);
+            /*if ((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span == Agp2pEnums.ProjectRepaymentTermSpanEnum.Month)
+                return "个" + desc;*/
+            return desc;
         }
 
         public static string GetProjectStatusDesc(this li_projects proj)

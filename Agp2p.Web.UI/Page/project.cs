@@ -56,7 +56,7 @@ namespace Agp2p.Web.UI.Page
             }
             else
             {
-                var pr = GetProjectInvestmentProgress(context, project_id);
+                var pr = GetProjectInvestmentProgress(projectModel);
                 //投资进度
                 investmentProgress = pr.GetInvestmentProgress();
                 //剩余金额
@@ -165,7 +165,7 @@ namespace Agp2p.Web.UI.Page
             }
         }
 
-        //投标记录
+        // 标书的投标记录
         protected List<ProjectTransactions> query_investment( li_projects projectModel, int pageIndex, short pageSize, out int count)
         {
             return query_projecttransactions(projectModel, out count).Skip(pageSize * pageIndex).Take(pageSize).ToList(); 

@@ -88,15 +88,14 @@ namespace Agp2p.Web.admin.repayment
             PageSize = new BLL.channel().GetPageSize(ChannelName);
             var query =
                 context.li_repayment_tasks.Where(
-                    r => DateTime.Now <= r.should_repay_time &&
-                         (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)))
+                    r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid && (r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords)))
                     .OrderBy(r => r.should_repay_time).AsQueryable();
 
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
             //待还
             if (rblStatus.SelectedValue == "0")
-                query = query.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid);
+                query = query.Where(r => r.status < (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid);
             //已还
             else if (rblStatus.SelectedValue == "1")
                 query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid);

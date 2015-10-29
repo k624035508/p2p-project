@@ -72,7 +72,7 @@
                 <tr>
                     <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("id")%>&status=<%#Eval("status")%>"><%#Eval("title")%></a></td>
-                    <td><%#getInvestmentProgress(Convert.ToInt32(Eval("id"))) %></td>
+                    <td><%#getInvestmentProgress((li_projects) Container.DataItem) %></td>
                     <td><%#Eval("financing_day")%></td>
                     <td><%#string.Format("{0:g}",Eval("publish_time"))%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>

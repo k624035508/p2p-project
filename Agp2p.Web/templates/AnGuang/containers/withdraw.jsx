@@ -3,6 +3,7 @@ import $ from "jquery";
 import bank from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards } from "../actions/bankcard.js"
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
 class AppendingCardDialog extends React.Component {
 	constructor(props) {
@@ -31,15 +32,14 @@ class WithdrawPage extends React.Component {
 		super(props);
 		this.state = {
 			selectedCardIndex: -1,
-			toWithdraw: 0,
+			toWithdraw: "",
 			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
 			transactPassword: ""
 		};
 	}
 	onWithdrawAmountSetted(ev) {
-		var toWithdraw = parseFloat(ev.target.value) || 0;
-		this.setState({toWithdraw: toWithdraw});
+		var toWithdraw = parseFloat(this.state.toWithdraw) || 0;
 
 		var url = "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw;
         $.ajax({
@@ -62,31 +62,28 @@ class WithdrawPage extends React.Component {
 			alert("请先选择银行卡");
 			return;
 		}
-		if (this.state.toWithdraw <= 0) {
+		if ((parseFloat(this.state.toWithdraw) || 0) <= 0) {
 			alert("请填写正确的提现金额");
 			return;
 		}
 		$.post("/tools/submit_ajax.ashx?action=withdraw", {
-			cardId: this.props.cards[this.state.selectedCardIndex].accountId,
+			cardId: this.props.cards[this.state.selectedCardIndex].cardId,
 			howmany: this.state.toWithdraw,
 			transactPassword: this.state.transactPassword
 		}, function(data) {
 			alert(data.msg);
 			if (data.status == 1) {
-				location.reload();
+				this.setState({toWithdraw: "", transactPassword: ""})
+				this.props.dispatch(fetchWalletAndUserInfo());
 			}
-		}, "json").fail(function() {
+		}.bind(this), "json")
+		.fail(function() {
 			alert("提交失败，请重试");
 		});
 	}
 	componentDidMount() {
 		if (this.props.cards.length == 0) {
 			this.props.dispatch(fetchBankCards());
-		}
-
-		if (!this.props.hasTransactPassword) {
-			alert("你未设置交易密码，请先到个人中心设置");
-			window.location.hash = "#/safe";
 		}
     }
 	render() {
@@ -108,14 +105,16 @@ class WithdrawPage extends React.Component {
 			        	)}
 				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        </ul>
-						<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName} onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
+						<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
+							onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
 				    </div></div>
 				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.props.idleMoney}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
-				    	<input type="text" onBlur={this.onWithdrawAmountSetted.bind(this)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
+				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
+				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay} （1-2个工作日内到账，双休日和法定节假日除外）</div>
-				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password"
-				    	onBlur={ev => this.setState({transactPassword: ev.target.value})} disabled={!this.props.hasTransactPassword}
+				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password" value={this.state.transactPassword}
+				    	onChange={ev => this.setState({transactPassword: ev.target.value})} disabled={!this.props.hasTransactPassword}
 				    	placeholder={this.props.hasTransactPassword ? null : "（请先设置交易密码）"} /></div>
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
 				</div>

@@ -145,6 +145,10 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return "该卡已被删除";
             }
+            if (card.li_bank_transactions.Any())
+            {
+                return "该卡已关联有提现操作，无法删除";
+            }
             context.li_bank_accounts.DeleteOnSubmit(card);
             context.SubmitChanges();
             return "删除成功";

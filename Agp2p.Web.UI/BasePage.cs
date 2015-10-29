@@ -44,10 +44,19 @@ namespace Agp2p.Web.UI
         }
 
         #region 页面通用方法==========================================
+
         /// <summary>
         /// 返回URL重写统一链接地址
         /// </summary>
         public string linkurl(string _key, params object[] _params)
+        {
+            return linkurl(config, _key, _params);
+        }
+
+        /// <summary>
+        /// 返回URL重写统一链接地址
+        /// </summary>
+        protected static string linkurl(Model.siteconfig config,string _key, params object[] _params)
         {
             Hashtable ht = new BLL.url_rewrite().GetList(); //获得URL配置列表
             Model.url_rewrite model = ht[_key] as Model.url_rewrite; //查找指定的URL配置节点
@@ -64,7 +73,7 @@ namespace Agp2p.Web.UI
             {
                 currRequestPath = HttpContext.Current.Request.UrlReferrer.AbsolutePath.ToLower(); //获取发起请求的URL地址
             }*/
-            string requestFirstPath = GetFirstPath(currRequestPath);//获得二级目录(不含站点安装目录)
+            string requestFirstPath = GetFirstPath(config, currRequestPath);//获得二级目录(不含站点安装目录)
             string linkStartString = string.Empty; //链接前缀
 
             //检查是否与绑定的域名或者与默认频道分类的目录匹配
@@ -231,7 +240,7 @@ namespace Agp2p.Web.UI
         /// <summary>
         /// 获取访问的频道分类目录(不含安装目录)
         /// </summary>
-        private string GetFirstPath(string requestPath)
+        private static string GetFirstPath(Model.siteconfig config, string requestPath)
         {
             int indexNum = config.webpath.Length; //安装目录长度
             //如果包含安装目录和aspx目录也要过滤掉
