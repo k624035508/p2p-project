@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>担保机构列表</title>
+<title>机构列表</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -20,7 +20,7 @@
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>担保机构列表</span>
+  <span>机构列表</span>
 </div>
 <!--/导航栏-->
 
@@ -48,7 +48,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="5%">选择</th>
-    <th align="left" width="10%">担保机构</th>
+    <th align="left" width="10%">机构名称</th>
     <th align="left" width="10%">注册号</th>
     <th align="left" width="5%">类型</th>
     <th align="left" width="10%">法定代表人</th>

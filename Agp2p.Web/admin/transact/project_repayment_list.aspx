@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>放款情况列表</title>
+<title>还款情况列表</title>
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
@@ -23,7 +23,7 @@
   <i class="arrow"></i>
   <a href="project_list.aspx"><span>项目列表</span></a>
   <i class="arrow"></i>
-  <span>放款情况列表</span>
+  <span>还款情况列表</span>
 </div>
 <!--/导航栏-->
 
@@ -51,7 +51,7 @@
     <td><%# Convert.ToDecimal(Eval("repay_principal")).ToString("c")%></td>
     <td><%# Eval("should_repay_time")%></td>
     <td><%# Eval("repay_at")%></td>
-    <td><asp:Button ID="btnRepayNow" runat="server" Text="马上放款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClientClick="return ExeNoCheckPostBack(this.name, '确认进行放款？');"
+    <td><asp:Button ID="btnRepayNow" runat="server" Text="马上还款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClientClick="return ExeNoCheckPostBack(this.name, '确认进行还款？');"
         OnClick="btnRepayNow_OnClick" Visible='<%# Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid && (Utils.IsDebugging() || Convert.ToDateTime(Eval("should_repay_time")).Date <= DateTime.Today)%>'/></td>
   </tr>
 </ItemTemplate>

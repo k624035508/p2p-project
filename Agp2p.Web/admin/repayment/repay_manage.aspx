@@ -87,7 +87,7 @@
                         <% if (rblStatus.SelectedValue == "0")
                            { %>
                         <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
-                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" ></asp:LinkButton> 
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton> 
                         <% } %>
                     </td>
                 </tr>

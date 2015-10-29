@@ -133,13 +133,13 @@ namespace Agp2p.Web.admin.transact
                     .li_repayment_tasks.First(t => t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && t.should_repay_time.Date <= DateTime.Today).id;
                 var repayment = context.ExecuteRepaymentTask(repaymentTaskId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 RptBind();
-                var remark = "执行放款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
+                var remark = "执行还款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
                 JscriptMsg(remark, Utils.CombUrlTxt("project_recently_repay_list.aspx", "page={0}&keywords={1}&showType={2}&startTime={3}&endTime={4}", page.ToString(), txtKeywords.Text, rblProjectShowType.SelectedValue, txtStartTime.Text, txtEndTime.Text), "Success");
             }
             catch (Exception ex)
             {
-                JscriptMsg("执行放款计划失败！" + ex.Message,
+                JscriptMsg("执行还款计划失败！" + ex.Message,
                     Utils.CombUrlTxt("project_recently_repay_list.aspx", "page={0}&keywords={1}&showType={2}&startTime={3}&endTime={4}",
                         page.ToString(), txtKeywords.Text, rblProjectShowType.SelectedValue, txtStartTime.Text, txtEndTime.Text), "Failure");
             }

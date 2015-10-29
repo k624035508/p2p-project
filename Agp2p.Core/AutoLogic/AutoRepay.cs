@@ -27,7 +27,7 @@ namespace Agp2p.Core.AutoLogic
             shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
             if (shouldRepayTask.Any())
             {
-                context.AppendAdminLogAndSave("AutoRepay", "今日待放款项目自动放款：" + shouldRepayTask.Count);
+                context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
                 SendRepayNotice(shouldRepayTask, context);
             }
         }
