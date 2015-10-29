@@ -392,14 +392,15 @@ div.project-content-wrap {
 		}
         .risk-control-content .span-sec *{ color: @darker-grey; }
 		.photo-cell {
-			margin: 33px 28px 18px 28px;
+			margin: 38px 28px 18px 28px;
 			.col-md-3 {
 				.thumbnail-custom {
-					margin: 6px 0 0 0;
+					margin-bottom: 0;
 					border-radius: 0;
 				}
 				.photo-title {
 					position: relative;
+					height: 21px;
 					top: -22px;
 					color: @white;
 					text-align: center;
@@ -408,6 +409,26 @@ div.project-content-wrap {
 					-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
 					filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
 				}
+			}
+		}
+		.modal-custom {
+			top: 130px;
+			.modal-dialog .modal-content {
+				.modal-header-custom {
+					text-align: center;
+					padding: 10px 15px;
+				}
+			.modal-body-custom {
+				text-align: center;
+				span {
+					.inline-block;
+					width: 9%;
+					cursor: pointer;
+				}
+				.control-prev { text-align: left; }
+				.control-next { text-align: right; }
+				img { max-width: 80%; }
+			}
 			}
 		}
 		.invest-record {

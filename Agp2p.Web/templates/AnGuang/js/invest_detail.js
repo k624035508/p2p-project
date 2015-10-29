@@ -96,5 +96,45 @@ $(function () {
     };
 
     // 相关资料图片点击放大
-    $().data("originSrc")
+    var $thumbnail = $(".photo-cell .thumbnail-custom img");
+    var $prev = $("#photoModal .modal-body .control-prev");
+    var $next = $("#photoModal .modal-body .control-next");
+    var $modalTitle = $("#photoModal .modal-header h4");
+
+    var clickedPicIndex = -1;
+    var photoTitle = "";
+    $thumbnail.click(function(){
+        var currentSrc = $(this).data("originSrc");
+        photoTitle = $(this).data("title");
+        $("#modalPic").attr("src", currentSrc);
+        $modalTitle.html(photoTitle);
+
+        clickedPicIndex = $.inArray(this, $thumbnail);
+    });
+
+    $prev.click(function(){
+        if(clickedPicIndex <= 0){
+            alert("已经是第一张！");
+        }else {
+            clickedPicIndex = clickedPicIndex - 1;
+            var prevSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");
+            photoTitle = $thumbnail.eq(clickedPicIndex).data("title");
+
+            $("#modalPic").attr("src", prevSrc);
+            $modalTitle.html(photoTitle);
+        }
+    });
+
+    $next.click(function(){
+        if(clickedPicIndex >= $thumbnail.length-1){
+            alert("已经是最后一张！");
+        }else {
+            clickedPicIndex = clickedPicIndex + 1;
+            var nextSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");
+            photoTitle = $thumbnail.eq(clickedPicIndex).data("title");
+
+            $("#modalPic").attr("src", nextSrc);
+            $modalTitle.html(photoTitle);
+        }
+    });
 });
