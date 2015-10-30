@@ -37,6 +37,21 @@ let genOption = ({idleMoney, lockedMoney, investingMoney, profitingMoney, lotter
 	]
 });
 
+const ProjectStatusEnum = {
+	FinancingAtTime: 10,
+	Financing: 11,
+	FinancingSuccess: 21,
+	ProjectRepaying: 30,
+	RepayCompleteIntime: 40
+};
+
+const ProjectStatusEnumDesc = {
+	10: "待发标",
+	11: "立即投资",
+	21: "募集结束",
+	30: "还款中",
+	40: "已完成"
+};
 
 class MyAccount extends React.Component {
 	constructor(props) {
@@ -123,8 +138,8 @@ class MyAccount extends React.Component {
 							<div className="grey13px">到期还本付息</div>
 						</div>
 						<div className="invest-btn">
-							<button type="button" className="invest-now-btn" onClick={ev => location.href = pro.linkurl}>立即投资</button>
-							<button type="button" className="invest-full-btn hidden">满标</button>
+							<button type="button" className={pro.status == ProjectStatusEnum.Financing ? "invest-now-btn" : "invest-full-btn"}
+								onClick={ev => location.href = pro.linkurl}>{ProjectStatusEnumDesc[pro.status]}</button>
 						</div>
 					</div>
 				</div>)}
