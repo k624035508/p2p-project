@@ -58,7 +58,7 @@ class UserCenterPage extends React.Component {
 			            	: Math.floor(this.props.totalMoney).format()}<span>&nbsp;元</span></p>
 			        </div>
 			        <ul className="list-unstyled outside-ul">
-			            <li><Link to="/myaccount" className="account-link" activeClassName="active">账户总览</Link></li>
+			            <li><Link to="/myaccount" className={"account-link " + (!!this.props.children ? "" : "active")} activeClassName="active">账户总览</Link></li>
 			            <li><a className="funds">资金管理</a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/mytrade" activeClassName="active-link">交易明细</Link></li>
