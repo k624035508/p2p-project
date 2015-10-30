@@ -609,14 +609,9 @@ namespace Agp2p.Core
                 else if (ptr.interest == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal;
             }
-            else if (ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.LoanerRepay)
+            else if (ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.RepayOverdueFine)
             {
-                if (ptr.principal != 0 && ptr.interest != 0)
-                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipalAndInterest;
-                else if (ptr.principal == 0)
-                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayInterest;
-                else if (ptr.interest == 0)
-                    return Agp2pEnums.WalletHistoryTypeEnum.LoanerRepayPrincipal;
+                return Agp2pEnums.WalletHistoryTypeEnum.RepaidOverdueFine;
             }
             throw new Exception("还款状态异常");
         }
@@ -938,7 +933,6 @@ namespace Agp2p.Core
                 switch (his.li_project_transactions.type)
                 {
                     case (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest:
-                    case (int) Agp2pEnums.ProjectTransactionTypeEnum.LoanerRepay:
                         receivedPrincipal = profited = null;
                         break;
                     default:

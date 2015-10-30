@@ -278,16 +278,19 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectTransactionTypeEnum
         {
+            // 线上（关联投资者）
             [Description("投标")]
             Invest = 1,
             [Description("返还给投资者")]
             RepayToInvestor = 2,
-            [Description("借款人还款")]
-            LoanerRepay = 3,
-            [Description("提前还款罚息")]
-            EarlyRepaymentPenalty = 4,
-            [Description("逾期还款罚款")]
-            LateRepaymentPenalty = 5,
+            [Description("返还逾期罚息")]
+            RepayOverdueFine = 3,
+
+            // 线下（关联借款人）
+            [Description("借款管理费")]
+            ManagementFeeOfLoanning = 10,
+            [Description("逾期管理费")]
+            ManagementFeeOfOverTime = 11,
         }
 
         /// <summary>
@@ -355,13 +358,8 @@ namespace Agp2p.Common
             RepaidPrincipal = 21,
             [Description("返还本息")]
             RepaidPrincipalAndInterest = 22,
-
-            [Description("借款人还利息")]
-            LoanerRepayInterest = 30,
-            [Description("借款人还本金")]
-            LoanerRepayPrincipal = 31,
-            [Description("借款人还本息")]
-            LoanerRepayPrincipalAndInterest = 32,
+            [Description("返还逾期罚息")]
+            RepaidOverdueFine = 23,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -375,6 +373,17 @@ namespace Agp2p.Common
             GainCancel = 44,
             [Description("取消扣取金钱")]
             LostCancel = 45,
+        }
+
+        public enum OfflineTransactionTypeEnum
+        {
+            // 收入
+            [Description("借款管理费")]
+            ManagementFeeOfLoanning = 1,
+            [Description("逾期管理费")]
+            ManagementFeeOfOverTime = 2,
+
+            // 支出
         }
 
         /// <summary>
