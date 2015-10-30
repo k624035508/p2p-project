@@ -20,7 +20,7 @@ namespace Agp2p.Core
 
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserInvestedMsg>(m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成放款计划
+            MessageBus.Main.Subscribe<UserInvestedMsg>(m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成还款计划
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 如果项目满标，则创建放款计划
+        /// 如果项目满标，则创建还款计划
         /// </summary>
         /// <param name="projectTransactionId"></param>
         private static void CreateRepaymentTaskIfProjectBiddingComplete(int projectTransactionId)
@@ -656,7 +656,7 @@ namespace Agp2p.Core
             }
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectRepaidMsg(repaymentId)); // 广播项目放款的消息
+            MessageBus.Main.PublishAsync(new ProjectRepaidMsg(repaymentId)); // 广播项目还款的消息
 
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
@@ -686,7 +686,7 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 生成放款交易记录（未保存）
+        /// 生成还款交易记录（未保存）
         /// </summary>
         /// <param name="repaymentTask"></param>
         /// <param name="transactTime"></param>

@@ -72,9 +72,9 @@
     <th align="left" width="5%">金额</th>
     <th align="left" width="5%">期限</th>
     <th align="left" width="5%">年化收益率</th>
-    <th align="left" width="5%">放款类型</th>
+    <th align="left" width="5%">还款类型</th>
     <th align="left" width="5%">融资情况</th>
-    <th align="left" width="5%">放款情况</th>
+    <th align="left" width="5%">还款情况</th>
     <th align="left" width="5%">操作</th>
   </tr>
 </HeaderTemplate>
@@ -93,7 +93,7 @@
       <td>
           <asp:Button ID="btnRepayNow" runat="server" Text="马上还款" UseSubmitBehavior="False"
               Visible="<%# IsProjectCanRepayToday((li_projects)Container.DataItem) %>"
-              CommandArgument='<%# Eval("id") %>' OnClick="btnRepayNow_OnClick" OnClientClick="return ExeNoCheckPostBack(this.name, '确认放款？');" />
+              CommandArgument='<%# Eval("id") %>' OnClick="btnRepayNow_OnClick" OnClientClick="return ExeNoCheckPostBack(this.name, '确认还款？');" />
       </td>
   </tr>
 </ItemTemplate>

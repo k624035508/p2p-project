@@ -50,7 +50,7 @@ namespace Agp2p.Web.UI.Page
                     string.Format(
                         his.li_project_transactions.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
                             ? "投资项目 [{0}]"
-                            : "投资放款 [{0}]  {1}", his.li_project_transactions.li_projects.title, his.li_project_transactions.remark);
+                            : "还款 [{0}]  {1}", his.li_project_transactions.li_projects.title, his.li_project_transactions.remark);
             }
             if (his.li_bank_transactions != null)
                 return his.li_bank_transactions.remarks;

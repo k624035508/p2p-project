@@ -103,15 +103,6 @@ namespace Agp2p.Web.admin.loaner {
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
         
         /// <summary>
-        /// rptPics 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPics;
-        
-        /// <summary>
         /// txtCMBusinessTypes 控件。
         /// </summary>
         /// <remarks>
@@ -155,6 +146,15 @@ namespace Agp2p.Web.admin.loaner {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCMCooperationRemainDegree;
+        
+        /// <summary>
+        /// rptPics 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPics;
         
         /// <summary>
         /// txtShareholdersInfo 控件。
