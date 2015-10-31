@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Core;
+using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.audit
@@ -169,8 +171,9 @@ namespace Agp2p.Web.admin.audit
                 var doConfirm = ((LinkButton)sender).ID == "btnConfirm";
                 ChkAdminLevel("manage_bank_transaction_charge", (doConfirm ? DTEnums.ActionEnum.Confirm : DTEnums.ActionEnum.Cancel).ToString());
 
-                Agp2p.API.Payment.Ecpss.Service ecpssService = new API.Payment.Ecpss.Service();
-                int sucCount = 0, errorCount = 0;
+                var ecpssService = new API.Payment.Ecpss.Service();
+                var preSaveTransaction = new List<li_bank_transactions>();
+
                 for (int i = 0; i < rptList.Items.Count; i++)
                 {
                     CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
@@ -183,22 +186,21 @@ namespace Agp2p.Web.admin.audit
                         //调用汇潮接口查询订单是否已到账
                         if (pay_type != Utils.GetAgp2pEnumDes(Agp2pEnums.PayApiTypeEnum.Ecpss) || ecpssService.CheckRechargeOrder(no_order))
                         {
-                            context.ConfirmBankTransaction(id, GetAdminInfo().id, false);
-                            sucCount += 1;
+                            preSaveTransaction.Add(context.ConfirmBankTransaction(id, GetAdminInfo().id, false));
                         }
                     }
                     else
                     {
                         if (pay_type != Utils.GetAgp2pEnumDes(Agp2pEnums.PayApiTypeEnum.Ecpss) || !ecpssService.CheckRechargeOrder(no_order))
                         {
-                            context.CancelBankTransaction(id, GetAdminInfo().id, false);
-                            sucCount += 1;
+                            preSaveTransaction.Add(context.CancelBankTransaction(id, GetAdminInfo().id, false));
                         }
                     }                    
                 }
                 context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "审批成功 " + sucCount + " 条，失败 " + errorCount + " 条"); //记录日志
-                JscriptMsg("审批成功" + sucCount + "条，失败" + errorCount + "条！",
+                preSaveTransaction.ForEach(t => MessageBus.Main.Publish(new BankTransactionFinishedMsg(t.id)));
+                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "审批成功 " + preSaveTransaction.Count + " 条，失败 0 条"); //记录日志
+                JscriptMsg("审批成功" + preSaveTransaction.Count + "条，失败 0 条！",
                     Utils.CombUrlTxt("bank_transaction_charging_list.aspx", "status={0}&page={1}", rblBankTransactionStatus.SelectedValue, page.ToString()), "Success");
             }
             catch (Exception)

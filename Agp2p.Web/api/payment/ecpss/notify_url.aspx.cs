@@ -4,6 +4,7 @@ using Agp2p.Linq2SQL;
 using Agp2p.BLL;
 using System.Linq;
 using System.ComponentModel;
+using Agp2p.Core;
 
 namespace Agp2p.Web.api.payment.ecpss
 {
@@ -30,7 +31,7 @@ namespace Agp2p.Web.api.payment.ecpss
                         var order = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
                         if (order != null && order.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
-                            RechargeComplete.DoRecharge(context, order);
+                            context.ConfirmBankTransaction(order.id, null);
                             new BLL.manager_log().Add(1, "admin", "ReCharge", "支付成功（" + billNo + "）！来自异步通知。");
                         }
                     }

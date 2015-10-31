@@ -196,7 +196,11 @@ namespace Agp2p.Core
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
             else throw new InvalidEnumArgumentException("未知银行交易类型");
-            if (saveChange) context.SubmitChanges();
+            if (saveChange) // 注意：外部保存话需要自己发送通知
+            {
+                context.SubmitChanges();
+                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr.id));
+            }
             return tr;
         }
 
@@ -247,7 +251,11 @@ namespace Agp2p.Core
                 his.li_bank_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
-            if (saveChange) context.SubmitChanges();
+            if (saveChange) // 注意：外部保存话需要自己发送通知
+            {
+                context.SubmitChanges();
+                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr.id));
+            }
             return tr;
         }
 
