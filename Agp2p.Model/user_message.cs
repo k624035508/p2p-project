@@ -19,6 +19,8 @@ namespace Agp2p.Model
         private string _content;
         private DateTime _post_time = DateTime.Now;
         private DateTime? _read_time;
+        private int? _receiver = null;
+
         /// <summary>
         /// 自增ID
         /// </summary>
@@ -90,6 +92,15 @@ namespace Agp2p.Model
         {
             set { _read_time = value; }
             get { return _read_time; }
+        }
+
+        /// <summary>
+        /// 收件人（外键）
+        /// </summary>
+        public int? receiver
+        {
+            set { _receiver = value; }
+            get { return _receiver; }
         }
         #endregion Model
 

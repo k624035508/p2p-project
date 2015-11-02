@@ -61,7 +61,8 @@ namespace Agp2p.Core.InitLogic
                 title = "欢迎您成为本站会员",
                 content = ConfigLoader.loadUserConfig().regmsgtxt,
                 post_user_name = "",
-                post_time = newUser.reg_time.Value
+                post_time = newUser.reg_time.Value,
+                receiver = newUser.id
             };
             context.dt_user_message.InsertOnSubmit(dtUserMessage);
 

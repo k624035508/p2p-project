@@ -1833,7 +1833,6 @@
       <DependentUpon>return_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="api\payment\ecpss\RechargeComplete.cs" />
     <Compile Include="api\payment\lianlianpay\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

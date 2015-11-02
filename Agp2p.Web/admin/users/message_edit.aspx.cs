@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.users
 {
@@ -98,30 +100,34 @@ namespace Agp2p.Web.admin.users
         #region 增加操作=================================
         private bool DoAdd()
         {
-            bool result = true;
-            Model.user_message model = new Model.user_message();
-            BLL.user_message bll = new BLL.user_message();
+            var context = new Agp2pDataContext();
 
-            model.title = txtTitle.Text.Trim();
-            model.content = txtContent.Value;
+            var arrUserName = txtUserName.Text.Trim().Split(',');
+            if (!arrUserName.Any()) return true;
 
-            string[] arrUserName = txtUserName.Text.Trim().Split(',');
-            if (arrUserName.Length > 0)
+            var title = txtTitle.Text.Trim();
+            foreach (var username in arrUserName)
             {
-                foreach (string username in arrUserName)
+                var user = context.dt_users.FirstOrDefault(u => u.user_name == username);
+                if (user == null) continue;
+                context.dt_user_message.InsertOnSubmit(new dt_user_message
                 {
-                    if (new BLL.users().Exists(username))
-                    {
-                        model.accept_user_name = username;
-                        if (bll.Add(model) < 1)
-                        {
-                            result = false;
-                        }
-                    }
-                }
+                    accept_user_name = username,
+                    title = title,
+                    content = txtContent.Value,
+                    receiver = user.id
+                });
             }
 
-            return result;
+            try
+            {
+                context.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         #endregion
 

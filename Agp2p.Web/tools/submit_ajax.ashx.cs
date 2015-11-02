@@ -1174,7 +1174,7 @@ namespace Agp2p.Web.tools
             //判断是否发送欢迎消息
             if (userConfig.regmsgstatus == 1) //站内短消息
             {
-                new BLL.user_message().Add(1, "", model.user_name, "欢迎您成为本站会员", userConfig.regmsgtxt);
+                new BLL.user_message().Add(1, "", model.user_name, "欢迎您成为本站会员", userConfig.regmsgtxt, model.id);
             }
             else if (userConfig.regmsgstatus == 2) //发送邮件
             {
@@ -1584,12 +1584,15 @@ namespace Agp2p.Web.tools
                 return;
             }
             //保存数据
-            Model.user_message modelMessage = new Model.user_message();
-            modelMessage.type = 2;
-            modelMessage.post_user_name = model.user_name;
-            modelMessage.accept_user_name = user_name;
-            modelMessage.title = title;
-            modelMessage.content = Utils.ToHtml(content);
+            Model.user_message modelMessage = new Model.user_message
+            {
+                type = 2,
+                post_user_name = model.user_name,
+                accept_user_name = user_name,
+                title = title,
+                content = Utils.ToHtml(content),
+                receiver = model.id
+            };
             new BLL.user_message().Add(modelMessage);
             if (send_save == "true") //保存到收件箱
             {

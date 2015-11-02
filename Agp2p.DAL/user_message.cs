@@ -56,9 +56,9 @@ namespace Agp2p.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into " + databaseprefix + "user_message(");
-            strSql.Append("type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time)");
+            strSql.Append("type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time,receiver)");
             strSql.Append(" values (");
-            strSql.Append("@type,@post_user_name,@accept_user_name,@is_read,@title,@content,@post_time,@read_time)");
+            strSql.Append("@type,@post_user_name,@accept_user_name,@is_read,@title,@content,@post_time,@read_time,@receiver)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@type", SqlDbType.TinyInt,1),
@@ -68,7 +68,9 @@ namespace Agp2p.DAL
 					new SqlParameter("@title", SqlDbType.NVarChar,100),
 					new SqlParameter("@content", SqlDbType.NText),
 					new SqlParameter("@post_time", SqlDbType.DateTime),
-					new SqlParameter("@read_time", SqlDbType.DateTime)};
+					new SqlParameter("@read_time", SqlDbType.DateTime),
+					new SqlParameter("@receiver", SqlDbType.Int, 4),
+            };
             parameters[0].Value = model.type;
             parameters[1].Value = model.post_user_name;
             parameters[2].Value = model.accept_user_name;
@@ -77,6 +79,7 @@ namespace Agp2p.DAL
             parameters[5].Value = model.content;
             parameters[6].Value = model.post_time;
             parameters[7].Value = model.read_time;
+            parameters[8].Value = model.receiver;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -115,6 +118,7 @@ namespace Agp2p.DAL
             strSql.Append("content=@content,");
             strSql.Append("post_time=@post_time,");
             strSql.Append("read_time=@read_time");
+            strSql.Append("receiver=@receiver");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@type", SqlDbType.TinyInt,1),
@@ -125,6 +129,7 @@ namespace Agp2p.DAL
 					new SqlParameter("@content", SqlDbType.NText),
 					new SqlParameter("@post_time", SqlDbType.DateTime),
 					new SqlParameter("@read_time", SqlDbType.DateTime),
+					new SqlParameter("@receiver", SqlDbType.Int, 4),
 					new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.type;
             parameters[1].Value = model.post_user_name;
@@ -134,7 +139,8 @@ namespace Agp2p.DAL
             parameters[5].Value = model.content;
             parameters[6].Value = model.post_time;
             parameters[7].Value = model.read_time;
-            parameters[8].Value = model.id;
+            parameters[8].Value = model.receiver;
+            parameters[9].Value = model.id;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -199,7 +205,7 @@ namespace Agp2p.DAL
         public Model.user_message GetModel(int id)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 id,type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time from " + databaseprefix + "user_message ");
+            strSql.Append("select  top 1 id,type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time,receiver from " + databaseprefix + "user_message ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)};
@@ -245,6 +251,10 @@ namespace Agp2p.DAL
                 {
                     model.read_time = DateTime.Parse(ds.Tables[0].Rows[0]["read_time"].ToString());
                 }
+                if (ds.Tables[0].Rows[0]["receiver"] != null && ds.Tables[0].Rows[0]["receiver"].ToString() != "")
+                {
+                    model.receiver = int.Parse(ds.Tables[0].Rows[0]["receiver"].ToString());
+                }
                 return model;
             }
             else
@@ -264,7 +274,7 @@ namespace Agp2p.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" id,type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time ");
+            strSql.Append(" id,type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time,receiver ");
             strSql.Append(" FROM " + databaseprefix + "user_message ");
             if (strWhere.Trim() != "")
             {

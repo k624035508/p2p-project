@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Linq;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.BLL
 {
@@ -40,7 +42,7 @@ namespace Agp2p.BLL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public int Add(int type, string post_user_name, string accept_user_name, string title, string content)
+        public int Add(int type, string post_user_name, string accept_user_name, string title, string content, int userId)
         {
             Model.user_message model = new Model.user_message
             {
@@ -48,7 +50,8 @@ namespace Agp2p.BLL
                 post_user_name = post_user_name,
                 accept_user_name = accept_user_name,
                 title = title,
-                content = content
+                content = content,
+                receiver = userId
             };
             return Add(model);
         }

@@ -69,9 +69,6 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_wallets(li_wallets instance);
     partial void Updateli_wallets(li_wallets instance);
     partial void Deleteli_wallets(li_wallets instance);
-    partial void Insertdt_user_message(dt_user_message instance);
-    partial void Updatedt_user_message(dt_user_message instance);
-    partial void Deletedt_user_message(dt_user_message instance);
     partial void Insertdt_mail_template(dt_mail_template instance);
     partial void Updatedt_mail_template(dt_mail_template instance);
     partial void Deletedt_mail_template(dt_mail_template instance);
@@ -141,6 +138,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_notification_settings(li_notification_settings instance);
     partial void Updateli_notification_settings(li_notification_settings instance);
     partial void Deleteli_notification_settings(li_notification_settings instance);
+    partial void Insertdt_user_message(dt_user_message instance);
+    partial void Updatedt_user_message(dt_user_message instance);
+    partial void Deletedt_user_message(dt_user_message instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -268,14 +268,6 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_wallets>();
-			}
-		}
-		
-		public System.Data.Linq.Table<dt_user_message> dt_user_message
-		{
-			get
-			{
-				return this.GetTable<dt_user_message>();
 			}
 		}
 		
@@ -468,6 +460,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_notification_settings>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_user_message> dt_user_message
+		{
+			get
+			{
+				return this.GetTable<dt_user_message>();
 			}
 		}
 	}
@@ -4849,260 +4849,6 @@ namespace Agp2p.Linq2SQL
 						this._user_id = default(int);
 					}
 					this.SendPropertyChanged("dt_users");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_user_message")]
-	public partial class dt_user_message : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private System.Nullable<byte> _type;
-		
-		private string _post_user_name;
-		
-		private string _accept_user_name;
-		
-		private System.Nullable<byte> _is_read;
-		
-		private string _title;
-		
-		private string _content;
-		
-		private System.DateTime _post_time;
-		
-		private System.Nullable<System.DateTime> _read_time;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OntypeChanging(System.Nullable<byte> value);
-    partial void OntypeChanged();
-    partial void Onpost_user_nameChanging(string value);
-    partial void Onpost_user_nameChanged();
-    partial void Onaccept_user_nameChanging(string value);
-    partial void Onaccept_user_nameChanged();
-    partial void Onis_readChanging(System.Nullable<byte> value);
-    partial void Onis_readChanged();
-    partial void OntitleChanging(string value);
-    partial void OntitleChanged();
-    partial void OncontentChanging(string value);
-    partial void OncontentChanged();
-    partial void Onpost_timeChanging(System.DateTime value);
-    partial void Onpost_timeChanged();
-    partial void Onread_timeChanging(System.Nullable<System.DateTime> value);
-    partial void Onread_timeChanged();
-    #endregion
-		
-		public dt_user_message()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt")]
-		public System.Nullable<byte> type
-		{
-			get
-			{
-				return this._type;
-			}
-			set
-			{
-				if ((this._type != value))
-				{
-					this.OntypeChanging(value);
-					this.SendPropertyChanging();
-					this._type = value;
-					this.SendPropertyChanged("type");
-					this.OntypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_post_user_name", DbType="NVarChar(100)")]
-		public string post_user_name
-		{
-			get
-			{
-				return this._post_user_name;
-			}
-			set
-			{
-				if ((this._post_user_name != value))
-				{
-					this.Onpost_user_nameChanging(value);
-					this.SendPropertyChanging();
-					this._post_user_name = value;
-					this.SendPropertyChanged("post_user_name");
-					this.Onpost_user_nameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_accept_user_name", DbType="NVarChar(100)")]
-		public string accept_user_name
-		{
-			get
-			{
-				return this._accept_user_name;
-			}
-			set
-			{
-				if ((this._accept_user_name != value))
-				{
-					this.Onaccept_user_nameChanging(value);
-					this.SendPropertyChanging();
-					this._accept_user_name = value;
-					this.SendPropertyChanged("accept_user_name");
-					this.Onaccept_user_nameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_read", DbType="TinyInt")]
-		public System.Nullable<byte> is_read
-		{
-			get
-			{
-				return this._is_read;
-			}
-			set
-			{
-				if ((this._is_read != value))
-				{
-					this.Onis_readChanging(value);
-					this.SendPropertyChanging();
-					this._is_read = value;
-					this.SendPropertyChanged("is_read");
-					this.Onis_readChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="NVarChar(100)")]
-		public string title
-		{
-			get
-			{
-				return this._title;
-			}
-			set
-			{
-				if ((this._title != value))
-				{
-					this.OntitleChanging(value);
-					this.SendPropertyChanging();
-					this._title = value;
-					this.SendPropertyChanged("title");
-					this.OntitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_content", DbType="NText", UpdateCheck=UpdateCheck.Never)]
-		public string content
-		{
-			get
-			{
-				return this._content;
-			}
-			set
-			{
-				if ((this._content != value))
-				{
-					this.OncontentChanging(value);
-					this.SendPropertyChanging();
-					this._content = value;
-					this.SendPropertyChanged("content");
-					this.OncontentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_post_time", DbType="DateTime NOT NULL")]
-		public System.DateTime post_time
-		{
-			get
-			{
-				return this._post_time;
-			}
-			set
-			{
-				if ((this._post_time != value))
-				{
-					this.Onpost_timeChanging(value);
-					this.SendPropertyChanging();
-					this._post_time = value;
-					this.SendPropertyChanged("post_time");
-					this.Onpost_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_read_time", DbType="DateTime")]
-		public System.Nullable<System.DateTime> read_time
-		{
-			get
-			{
-				return this._read_time;
-			}
-			set
-			{
-				if ((this._read_time != value))
-				{
-					this.Onread_timeChanging(value);
-					this.SendPropertyChanging();
-					this._read_time = value;
-					this.SendPropertyChanged("read_time");
-					this.Onread_timeChanged();
 				}
 			}
 		}
@@ -11261,6 +11007,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_notification_settings> _li_notification_settings;
 		
+		private EntitySet<dt_user_message> _dt_user_message;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -11338,6 +11086,7 @@ namespace Agp2p.Linq2SQL
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_creditors = default(EntityRef<li_creditors>);
 			this._li_notification_settings = new EntitySet<li_notification_settings>(new Action<li_notification_settings>(this.attach_li_notification_settings), new Action<li_notification_settings>(this.detach_li_notification_settings));
+			this._dt_user_message = new EntitySet<dt_user_message>(new Action<dt_user_message>(this.attach_dt_user_message), new Action<dt_user_message>(this.detach_dt_user_message));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -12125,6 +11874,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_user_message", Storage="_dt_user_message", ThisKey="id", OtherKey="receiver")]
+		public EntitySet<dt_user_message> dt_user_message
+		{
+			get
+			{
+				return this._dt_user_message;
+			}
+			set
+			{
+				this._dt_user_message.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -12306,6 +12068,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_notification_settings(li_notification_settings entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_dt_user_message(dt_user_message entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_dt_user_message(dt_user_message entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -14375,6 +14149,325 @@ namespace Agp2p.Linq2SQL
 					else
 					{
 						this._user_id = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_user_message")]
+	public partial class dt_user_message : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<byte> _type;
+		
+		private string _post_user_name;
+		
+		private string _accept_user_name;
+		
+		private System.Nullable<byte> _is_read;
+		
+		private string _title;
+		
+		private string _content;
+		
+		private System.DateTime _post_time;
+		
+		private System.Nullable<System.DateTime> _read_time;
+		
+		private System.Nullable<int> _receiver;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OntypeChanging(System.Nullable<byte> value);
+    partial void OntypeChanged();
+    partial void Onpost_user_nameChanging(string value);
+    partial void Onpost_user_nameChanged();
+    partial void Onaccept_user_nameChanging(string value);
+    partial void Onaccept_user_nameChanged();
+    partial void Onis_readChanging(System.Nullable<byte> value);
+    partial void Onis_readChanged();
+    partial void OntitleChanging(string value);
+    partial void OntitleChanged();
+    partial void OncontentChanging(string value);
+    partial void OncontentChanged();
+    partial void Onpost_timeChanging(System.DateTime value);
+    partial void Onpost_timeChanged();
+    partial void Onread_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Onread_timeChanged();
+    partial void OnreceiverChanging(System.Nullable<int> value);
+    partial void OnreceiverChanged();
+    #endregion
+		
+		public dt_user_message()
+		{
+			this._dt_users = default(EntityRef<dt_users>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt")]
+		public System.Nullable<byte> type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_post_user_name", DbType="NVarChar(100)")]
+		public string post_user_name
+		{
+			get
+			{
+				return this._post_user_name;
+			}
+			set
+			{
+				if ((this._post_user_name != value))
+				{
+					this.Onpost_user_nameChanging(value);
+					this.SendPropertyChanging();
+					this._post_user_name = value;
+					this.SendPropertyChanged("post_user_name");
+					this.Onpost_user_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_accept_user_name", DbType="NVarChar(100)")]
+		public string accept_user_name
+		{
+			get
+			{
+				return this._accept_user_name;
+			}
+			set
+			{
+				if ((this._accept_user_name != value))
+				{
+					this.Onaccept_user_nameChanging(value);
+					this.SendPropertyChanging();
+					this._accept_user_name = value;
+					this.SendPropertyChanged("accept_user_name");
+					this.Onaccept_user_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_read", DbType="TinyInt")]
+		public System.Nullable<byte> is_read
+		{
+			get
+			{
+				return this._is_read;
+			}
+			set
+			{
+				if ((this._is_read != value))
+				{
+					this.Onis_readChanging(value);
+					this.SendPropertyChanging();
+					this._is_read = value;
+					this.SendPropertyChanged("is_read");
+					this.Onis_readChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="NVarChar(100)")]
+		public string title
+		{
+			get
+			{
+				return this._title;
+			}
+			set
+			{
+				if ((this._title != value))
+				{
+					this.OntitleChanging(value);
+					this.SendPropertyChanging();
+					this._title = value;
+					this.SendPropertyChanged("title");
+					this.OntitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_content", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		public string content
+		{
+			get
+			{
+				return this._content;
+			}
+			set
+			{
+				if ((this._content != value))
+				{
+					this.OncontentChanging(value);
+					this.SendPropertyChanging();
+					this._content = value;
+					this.SendPropertyChanged("content");
+					this.OncontentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_post_time", DbType="DateTime NOT NULL")]
+		public System.DateTime post_time
+		{
+			get
+			{
+				return this._post_time;
+			}
+			set
+			{
+				if ((this._post_time != value))
+				{
+					this.Onpost_timeChanging(value);
+					this.SendPropertyChanging();
+					this._post_time = value;
+					this.SendPropertyChanged("post_time");
+					this.Onpost_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_read_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> read_time
+		{
+			get
+			{
+				return this._read_time;
+			}
+			set
+			{
+				if ((this._read_time != value))
+				{
+					this.Onread_timeChanging(value);
+					this.SendPropertyChanging();
+					this._read_time = value;
+					this.SendPropertyChanged("read_time");
+					this.Onread_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_receiver", DbType="Int")]
+		public System.Nullable<int> receiver
+		{
+			get
+			{
+				return this._receiver;
+			}
+			set
+			{
+				if ((this._receiver != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnreceiverChanging(value);
+					this.SendPropertyChanging();
+					this._receiver = value;
+					this.SendPropertyChanged("receiver");
+					this.OnreceiverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_user_message", Storage="_dt_users", ThisKey="receiver", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.dt_user_message.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.dt_user_message.Add(this);
+						this._receiver = value.id;
+					}
+					else
+					{
+						this._receiver = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("dt_users");
 				}

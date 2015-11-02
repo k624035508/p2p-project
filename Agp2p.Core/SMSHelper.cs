@@ -27,7 +27,6 @@ namespace Agp2p.Core
             return true;
         }
 
-        #region 九维短信验证码
         /// <summary>
         /// 发送短信验证码，九维接口
         /// </summary>
@@ -37,23 +36,26 @@ namespace Agp2p.Core
         /// <returns></returns>
         public static bool SendSmsCode(string mobile, string content, out string msg)
         {
+            siteconfig siteConfig = ConfigLoader.loadSiteConfig(); //获得站点配置信息
             //检测号码，忽略不合格的
             Regex r = new Regex(@"^1\d{10}$", RegexOptions.IgnoreCase);
-            if (r.Match(mobile) != null)
+            if (r.Match(mobile).Success)
             {
                 //发送短信
                 try
                 {
-                    Guid result = Guid.Empty;
-                    if (Guid.TryParse(ESMRootService.ESMService.Service.SendMsg("hcclcom", "hccl", "hccl1023", mobile, content), out result))
+                    string result = Utils.HttpPost(siteConfig.smsapiurl,
+                        "productid=936245&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword + "&mobile=" + mobile + "&content=" + Utils.UrlEncode(content));
+                    string[] strArr = result.Split(new string[] { "," }, StringSplitOptions.None);
+                    if (strArr[0] != "1")
                     {
-                        msg = "发送短信验证码成功！";
-                        return true;
+                        msg = GetJwErrorType(strArr[0]);
+                        return false;
                     }
                     else
                     {
-                        msg = "发送短信验证码失败！";
-                        return false;
+                        msg = "发送短信验证码成功！";
+                        return true;
                     }
                 }
                 catch (Exception ex)
@@ -68,12 +70,9 @@ namespace Agp2p.Core
                 return false;
             }
         }
-        #endregion
 
-        #region 莫名营销短信
         /// <summary>
-        /// 发送手机短信 2015/3/26 修改为适应九维天地接口
-        /// 发送手机短信 2015/4/25 修改为适应莫名接口
+        /// 发送营销短信 九维天地接口
         /// </summary>
         /// <param name="mobiles">手机号码，以英文“,”逗号分隔开</param>
         /// <param name="content">短信内容</param>
@@ -112,8 +111,7 @@ namespace Agp2p.Core
                         continue;
                     }
                     Regex r = new Regex(pattern, RegexOptions.IgnoreCase); //正则表达式实例，不区分大小写
-                    Match m = r.Match(mobile); //搜索匹配项
-                    if (m != null)
+                    if (r.Match(mobile).Success)
                     {
                         sendCount++;
                         sb.Append(mobile + ",");
@@ -125,46 +123,14 @@ namespace Agp2p.Core
                 {
                     try
                     {
-                        #region 注释九维接口
-                        //string result = Utils.HttpPost(siteConfig.smsapiurl,
-                        //    "productid=621215&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword + "&mobile=" + Utils.DelLastComma(sb.ToString()) + "&content=" + Utils.UrlEncode(content));
-                        //string[] strArr = result.Split(new string[] { "," }, StringSplitOptions.None);
-                        //if (strArr[0] != "1")
-                        //{
-                        //    var errorType = "";
-                        //    if (strArr[0] == "-1")
-                        //        errorType = "用户名或者密码不正确";
-                        //    else if (strArr[0] == "2")
-                        //        errorType = "短信余额不足";
-                        //    else if (strArr[0] == "6")
-                        //        errorType = "有效号码为空";
-                        //    else if (strArr[0] == "7")
-                        //        errorType = "短信内容为空";
-                        //    else if (strArr[0] == "8")
-                        //        errorType = "一级黑词（" + strArr[1] + "）";
-                        //    else if (strArr[0] == "9")
-                        //        errorType = "未开通接口提交权限或用户已被禁用";
-                        //    else if (strArr[0] == "10")
-                        //        errorType = "发送号码过多";
-                        //    else if (strArr[0] == "11")
-                        //        errorType = "产品ID异常";
-                        //    else if (strArr[0] == "12")
-                        //        errorType = "参数异常";
-
-                        //    errorMsg = "提交失败，" + errorType;
-                        //    continue;
-                        //} 
-                        #endregion
-
                         string result = Utils.HttpPost(siteConfig.smsapiurl,
-                            "action=send&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword + "&phone=" + Utils.DelLastComma(sb.ToString()) + "&content=" + Utils.UrlEncode(content) + "&encode=utf8");
-
-                        if (result != "100")
+                            "productid=936245&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword + "&mobile=" + Utils.DelLastComma(sb.ToString()) + "&content=" + Utils.UrlEncode(content));
+                        string[] strArr = result.Split(new string[] { "," }, StringSplitOptions.None);
+                        if (strArr[0] != "1")
                         {
-                            errorMsg = "提交失败，" + GetMoMingErrorType(result);
+                            errorMsg = "提交失败，" + GetJwErrorType(strArr[0]);
                             continue;
                         }
-
                         sucCount += sendCount; //成功数量
                     }
                     catch
@@ -185,8 +151,70 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 查询账户剩余短信数量 2015/3/26 修改为适应九维天地接口
-        /// 查询账户剩余短信数量 2015/4/24 修改为适应莫名接口
+        /// 发送模板短信 九维天地接口（充值、提现、收益）
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="content"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static bool SendTemplateSms(string mobile, string content, out string msg)
+        {
+            siteconfig siteConfig = ConfigLoader.loadSiteConfig();
+            //检测号码，忽略不合格的
+            Regex r = new Regex(@"^1\d{10}$", RegexOptions.IgnoreCase);
+            if (r.Match(mobile).Success)
+            {
+                try
+                {
+                    string result = Utils.HttpPost(siteConfig.smsapiurl,
+                        "productid=936245&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword + "&mobile=" + mobile + "&content=" + HttpUtility.UrlEncode(content));
+                    string[] strArr = result.Split(new string[] { "," }, StringSplitOptions.None);
+                    if (strArr[0] != "1")
+                    {
+                        msg = "发送短信失败，" + GetJwErrorType(strArr[0]);
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    msg = "发送短信失败：" + e.Message;
+                    return false;
+                }
+            }
+
+            msg = "发送短信成功！";
+            return true;
+        }
+
+        private static string GetJwErrorType(string error)
+        {
+            switch (error)
+            {
+                case "-1":
+                    return "用户名或者密码不正确";
+                case "2":
+                    return "短信余额不足";
+                case "6":
+                    return "有效号码为空";
+                case "7":
+                    return "短信内容为空";
+                case "8":
+                    return "一级黑词";
+                case "9":
+                    return "未开通接口提交权限或用户已被禁用";
+                case "10":
+                    return "发送号码过多";
+                case "11":
+                    return "产品ID异常";
+                case "12":
+                    return "参数异常";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// 查询账户剩余短信数量 九维天地接口
         /// </summary>
         public static int GetAccountQuantity(out string code)
         {
@@ -199,27 +227,16 @@ namespace Agp2p.Core
             }
             try
             {
-                //string result = Utils.HttpPost("http://esm2.9wtd.com:9001/balance.do", "productid=621215&username=" + siteConfig.smsusername + "&password=" + 230532);
-                //string[] strArr = result.Split(new string[] { "||" }, StringSplitOptions.None);
-                //var count = Utils.StrToInt(strArr[0], 0);
-                //if (count < 0)
-                //{
-                //    code = count.ToString();
-                //    return 0;
-                //}
-                //code = "100";
-                //return count;
-
-                string result = Utils.HttpPost(siteConfig.smsapiurl, "action=getBalance&username=" + siteConfig.smsusername + "&password=" + siteConfig.smspassword);
+                string result = Utils.HttpPost("http://esm2.9wtd.com:9001/balance.do", "productid=936245&username=" + siteConfig.smsusername + "&password=" + 541263);
                 string[] strArr = result.Split(new string[] { "||" }, StringSplitOptions.None);
-                code = strArr[0];
-                if (code == "100")
+                var count = Utils.StrToInt(strArr[0], 0);
+                if (count < 0)
                 {
-                    return Utils.StrToInt(strArr[1], 0);
+                    code = count.ToString();
+                    return 0;
                 }
-                else
-                    code = "115";
-                return 0;
+                code = "100";
+                return count;
             }
             catch
             {
@@ -227,135 +244,5 @@ namespace Agp2p.Core
                 return 0;
             }
         }
-
-        private static string GetMoMingErrorType(string result)
-        {
-            string errorType = string.Empty;
-            switch (result)
-            {
-                case "101":
-                    errorType = "验证失败";
-                    break;
-                case "102":
-                    errorType = "短信不足";
-                    break;
-                case "103":
-                    errorType = "操作失败";
-                    break;
-                case "104":
-                    errorType = "非法字符";
-                    break;
-                case "105":
-                    errorType = "内容过多";
-                    break;
-                case "106":
-                    errorType = "号码过多";
-                    break;
-                case "107":
-                    errorType = "频率过快";
-                    break;
-                case "108":
-                    errorType = "号码内容空";
-                    break;
-                case "109":
-                    errorType = "账号冻结";
-                    break;
-                case "111":
-                    errorType = "禁止频繁单条发送";
-                    break;
-                case "112":
-                    errorType = "系统暂停发送";
-                    break;
-                case "113":
-                    errorType = "号码错误";
-                    break;
-                case "114":
-                    errorType = "定时时间格式不对";
-                    break;
-                case "115":
-                    errorType = "连接失败";
-                    break;
-                case "116":
-                    errorType = "禁止接口发送";
-                    break;
-                case "117":
-                    errorType = "绑定IP不正确";
-                    break;
-                case "120":
-                    errorType = "系统升级";
-                    break;
-            }
-            return errorType;
-        }
-        #endregion
-
-        #region 莫名系统提示短信
-        /// <summary>
-        /// 发送模板短信（充值、提现、收益）
-        /// </summary>
-        /// <param name="mobile"></param>
-        /// <param name="content"></param>
-        /// <param name="msg"></param>
-        /// <returns></returns>
-        public static bool SendTemplateSms(string mobile, string content, out string msg)
-        {
-            //检测号码，忽略不合格的
-            Regex r = new Regex(@"^1\d{10}$", RegexOptions.IgnoreCase);
-            if (r.Match(mobile) != null)
-            {
-                //发送短信
-                try
-                {
-                    string result = Utils.HttpPost("http://api.duanxin.cm/",
-                        "action=send&username=70203373&password=e76975f27fe945a4200bbd8bc8033a2c&phone=" + mobile + "&content=" + HttpUtility.UrlEncode(content) + "&encode=utf8");
-
-                    if (result != "100")
-                    {
-                        msg = "发送短信失败，" + GetMoMingErrorType(result);
-                        return false;
-                    }
-                }
-                catch(Exception e)
-                {
-                    msg = "发送短信失败：" + e.Message;
-                    return false;
-                }
-            }
-
-            msg = "发送短信成功！";
-            return true;
-        } 
-        #endregion
-
-        /// <summary>
-        /// 查询已发送数量 2015/3/26 暂无此接口
-        /// </summary>
-        //public int GetSendQuantity(out string code)
-        //{
-        //    //检查是否设置好短信账号
-        //    if (!Exists())
-        //    {
-        //        code = "115";
-        //        return 0;
-        //    }
-        //    try
-        //    {
-        //        string result = Utils.HttpPost(siteConfig.smsapiurl, "cmd=se&uid=" + siteConfig.smsusername + "&pwd=" + siteConfig.smspassword);
-        //        string[] strArr = result.Split(new string[] { "||" }, StringSplitOptions.None);
-        //        if (strArr[0] != "100")
-        //        {
-        //            code = strArr[0];
-        //            return 0;
-        //        }
-        //        code = strArr[0];
-        //        return Utils.StrToInt(strArr[1], 0);
-        //    }
-        //    catch
-        //    {
-        //        code = "115";
-        //        return 0;
-        //    }
-        //}
-
     }
 }

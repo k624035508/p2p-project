@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Agp2p.API.Payment.Ecpss;
+using Agp2p.Core;
 
 namespace Agp2p.Web.api.payment.ecpss
 {
@@ -29,7 +30,7 @@ namespace Agp2p.Web.api.payment.ecpss
                         //如果异步通知没收到，则在返回页面处理订单
                         if (order != null && order.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
-                            RechargeComplete.DoRecharge(context, order);
+                            context.ConfirmBankTransaction(order.id, null);
                             new BLL.manager_log().Add(1, "admin", "ReCharge", "支付成功（" + billNo + "）！来自同步通知。");
                         }                        
                     }

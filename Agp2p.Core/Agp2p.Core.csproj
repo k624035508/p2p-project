@@ -61,15 +61,18 @@
     <Compile Include="DbExtensions.cs" />
     <Compile Include="InitLogic\UserLogin.cs" />
     <Compile Include="InitLogic\NewUserInit.cs" />
+    <Compile Include="Message\BankTransactionCreatedMsg.cs" />
     <Compile Include="Message\MessageBus.cs" />
     <Compile Include="Message\NewUserCreatedMsg.cs" />
     <Compile Include="Message\ProjectInvestCompletedMsg.cs" />
     <Compile Include="Message\ProjectRepaidMsg.cs" />
     <Compile Include="Message\ProjectRepayCompletedMsg.cs" />
     <Compile Include="Message\ProjectSchedulePublishMsg.cs" />
+    <Compile Include="Message\BankTransactionFinishedMsg.cs" />
     <Compile Include="Message\TimerMsg.cs" />
     <Compile Include="Message\UserInvestedMsg.cs" />
     <Compile Include="Message\UserLoginMsg.cs" />
+    <Compile Include="NotifyLogic\BankTransactionNotify.cs" />
     <Compile Include="NotifyLogic\InvestAnnounce.cs" />
     <Compile Include="NotifyLogic\RepayAnnounce.cs" />
     <Compile Include="AutoLogic\ScheduleAnnounce.cs" />
@@ -88,7 +91,7 @@
       <Name>Agp2p.Linq2SQL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Model\Agp2p.Model.csproj">
-      <Project>{59E451EA-4E7A-408A-9F5C-36F2AC8D90AD}</Project>
+      <Project>{59e451ea-4e7a-408a-9f5c-36f2ac8d90ad}</Project>
       <Name>Agp2p.Model</Name>
     </ProjectReference>
   </ItemGroup>

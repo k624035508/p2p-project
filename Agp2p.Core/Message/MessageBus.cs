@@ -25,6 +25,7 @@ namespace Agp2p.Core.Message
             // Notify
             InvestAnnounce.DoSubscribe();
             RepayAnnounce.DoSubscribe();
+            BankTransactionNotify.DoSubscribe();
         }
     }
 }
