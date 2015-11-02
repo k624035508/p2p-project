@@ -66,7 +66,8 @@ namespace Agp2p.Core.NotifyLogic
                             content = string.Format("您的投标“{0}”已还款，共{1}元，详情请到“我的投资”中查询，欢迎续投！",
                                 t.li_projects.title,
                                 (t.principal + t.interest).ToString()),
-                            post_time = t.create_time
+                            post_time = t.create_time,
+                            receiver = t.investor
                         };
                         context.dt_user_message.InsertOnSubmit(userMsg);
                         context.SubmitChanges();

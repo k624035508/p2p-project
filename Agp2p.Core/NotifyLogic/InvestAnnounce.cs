@@ -26,23 +26,52 @@ namespace Agp2p.Core.NotifyLogic
         private static void HandleProjectInvestMsg(int projectTransactionId, DateTime investTime)
         {
             var context = new Agp2pDataContext();
+
             //找出项目投资信息
             var investment = context.li_project_transactions.Single(p => p.id == projectTransactionId);
-            //发送投资站内信息
-            var userMsg = new dt_user_message
+
+            // 检测用户是否接收投资成功的通知
+            var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == investment.investor)
+                .Select(n => n.type).Cast<Agp2pEnums.NotificationTypeEnum>();
+
+            var dtSmsTemplate = context.dt_sms_template.FirstOrDefault(t => t.call_index == "invest_success");
+            if (dtSmsTemplate == null) return;
+
+            var content = dtSmsTemplate.content.Replace("{date}", investment.create_time.ToString("yyyy年MM月dd日HH时mm分"))
+                .Replace("{projectName}", investment.li_projects.title)
+                .Replace("{amount}", investment.principal.ToString("N"));
+
+            if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForUserMsg))
             {
-                type = 1,
-                post_user_name = "",
-                accept_user_name = investment.dt_users.user_name,
-                title = "投标成功",
-                content = string.Format("您于{0}投资了“{1}”，投资金额为{2}元。详情请到“投资列表”中查询。",
-                    DateTime.Now.ToString("yyyy年MM月dd日HH时mm分"),
-                    investment.li_projects.title,
-                    investment.principal.ToString("N")),
-                post_time = investTime,
-            };
-            context.dt_user_message.InsertOnSubmit(userMsg);
-            context.SubmitChanges();
+                //发送投资站内信息
+                var userMsg = new dt_user_message
+                {
+                    type = 1,
+                    post_user_name = "",
+                    accept_user_name = investment.dt_users.user_name,
+                    title = dtSmsTemplate.title,
+                    content = content,
+                    post_time = investTime,
+                    receiver = investment.investor
+                };
+                context.dt_user_message.InsertOnSubmit(userMsg);
+                context.SubmitChanges();
+            }
+            if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForSms))
+            {
+                try
+                {
+                    string errorMsg;
+                    if (!SMSHelper.SendTemplateSms(investment.dt_users.mobile, content, out errorMsg))
+                    {
+                        context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + errorMsg + "（客户ID：" + investment.dt_users.user_name + "，投资协议：" + investment.agree_no + "）");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + ex.Message + "（客户ID：" + investment.dt_users.user_name + "，投资协议：" + investment.agree_no + "）");
+                }
+            }
         }
 
         /// <summary>
