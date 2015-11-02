@@ -177,7 +177,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var queryable = context.dt_user_message.Where(m => m.accept_user_name == userInfo.user_name && m.type == type);
+            var queryable = context.dt_user_message.Where(m => m.receiver == userInfo.id && m.type == type);
             var totalCount = queryable.Count();
             var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
                 .Select(m => new
