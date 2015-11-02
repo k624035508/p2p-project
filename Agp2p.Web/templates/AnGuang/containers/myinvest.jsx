@@ -32,11 +32,11 @@ let option = {
         {
             name:'投资',
             type:'bar',
+            barWidth: 30,
             data:[500, 1000, 5000, 3000, 8500, 6000, 10000, 5000, 7000, 5500, 4000, 2000]
         }
     ]
 };
-
 
 export default class MyInvest extends React.Component {
     constructor(props) {
@@ -51,6 +51,9 @@ export default class MyInvest extends React.Component {
     renderChart() {
         let myChart = echarts.init(this.refs.chartBox);
         myChart.setOption(option);
+
+        let myChart2 = echarts.init(this.refs.chartBox2);
+        myChart2.setOption(option);
     }
 
     render(){
@@ -93,6 +96,7 @@ export default class MyInvest extends React.Component {
                             <p>￥0.00</p>
                         </li>
                     </ul>
+                    <div id="profit-bar" ref="chartBox2"></div>
                 </div>
             </div>
         );
