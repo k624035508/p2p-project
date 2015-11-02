@@ -4,6 +4,7 @@ import DropdownPicker from "../components/dropdown-picker.jsx"
 import Pagination from "../components/pagination.jsx"
 import findIndex from "lodash/array/findIndex"
 import all from "lodash/collection/all"
+import "../less/mynews.less"
 
 class MyNews extends React.Component {
 	constructor(props) {

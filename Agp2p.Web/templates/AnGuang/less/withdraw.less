@@ -1,0 +1,98 @@
+//我要提现内容
+@import "common-style";
+@withdraw: "../imgs/usercenter/withdraw-icons";
+
+.withdraw {
+	height: 513px;
+	& > div {
+		margin-bottom: 30px;
+		& > * { display: inline-block; }
+		& > span:first-child {
+			width: 122px;
+			font-size: @font15;
+			color: @dark-grey;
+			text-align: right;
+			margin-right: 10px;
+			i {
+				display: inline-block;
+				vertical-align: top;
+				font-size: @font18;
+				font-weight: bolder;
+				color: @red;
+				margin-right: 8px;
+			}
+		}
+		input {
+			width: 200px;
+			height: 40px;
+			line-height: 40px;
+			padding-left: 10px;
+			margin-right: 15px;
+			border: @border;
+			border-radius: 5px;
+		}
+	}
+	.balance-withdraw, .recorded-date {
+		span { color: @red;}
+		& span:first-child { color: @dark-grey; }
+	}
+	.withdrawBtn {
+		margin-left: 132px;
+		margin-bottom: 0;
+		a {
+			display: inline-block;
+			width: 150px;
+			height: 45px;
+			line-height: 45px;
+			text-decoration: none;
+			text-align: center;
+			font-size: @font20;
+			color: @white;
+			background: @red;
+			border-radius: 5px;
+		}
+	}
+	.bank-select-withdraw {
+		margin-bottom: 5px !important;
+		& > span {
+			position: relative;
+			top: 15px;
+		}
+		& > div {
+			width: 670px;
+			vertical-align: top;
+		}
+		.ul-withdraw {
+			margin-left: 0;
+			& > li {
+				.bank-icon-container;
+				margin: 0 20px 25px 0;
+				img {
+					position: relative;
+					margin-top: -68px;
+					margin-left: -5px;
+				}
+			}
+			.add-card {
+				text-align: center;
+				line-height: 50px;
+				color: @red;
+				background: url("@{withdraw}/add.png");
+			}
+		}
+		#addCards {
+			top: 100px;
+			.modal-content {
+				width: 600px;
+				padding: 0 25px;
+				left: 50%;
+				margin-left: -305px;
+				.modal-header {
+					h4 { font-weight: bold; }
+				}
+				.modal-body { .add-cards-form; }
+			}
+		}
+	}
+}
+.bank-chose-tips { .th-grey-style; }

@@ -68,7 +68,7 @@ class UserCenterPage extends React.Component {
 			            </li>
 			            <li><a className="investing">投资管理</a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><a href="#">我的投资</a></li>
+			                    <li><Link to="/myinvest" activeClassName="active-link">我的投资</Link></li>
 			                    <li><Link to="/invest-record" activeClassName="active-link">投资记录</Link></li>
 			                    <li><Link to="/myrepayments" activeClassName="active-link">回款计划</Link></li>
 			                </ul>

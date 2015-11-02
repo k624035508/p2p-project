@@ -1,0 +1,68 @@
+//资金明细内容
+@import "common-style";
+@usercenter: "../imgs/usercenter";
+
+.controls {
+	font-size: @font13;
+	color: @dark-grey;
+	#typeSel {
+		width: 70px;
+		height: 35px;
+		letter-spacing: 3px;
+		padding-left: 12px;
+		border: @border;
+		outline: none;
+	}
+	.dateSel {
+		& > * {
+			.inline-block;
+			margin: 0 8px;
+			height: 35px;
+			line-height: 35px;
+		}
+		input {
+			width: 140px;
+			padding-left: 10px;
+			border: @border;
+			cursor: pointer;
+			background: url("@{usercenter}/date.png") 95% center no-repeat;
+		}
+		a {
+			width: 70px;
+			color: @dark-grey;
+			text-align: center;
+			text-decoration: none;
+			border: @border;
+			cursor: pointer;
+			background: #f1f5ff;
+		}
+	}
+}
+.tb-wrap {
+	height: 500px;
+	.trade-tb {
+		margin-top: 30px;
+		th, td { text-align: center; }
+		th {
+			color: @darker-grey;
+			border-bottom: 2px solid @blue;
+		}
+		td {
+			height: 39px;
+			color: @dark-grey;
+			border-bottom: 1px solid @blue;
+		}
+		tbody tr {
+			cursor: pointer;
+			&:hover { background: #f1f5ff; }
+		}
+		.detailMark{
+			display: none;
+			td {
+				text-align: left;
+				background: #f9f9f9;
+				cursor: default;
+			}
+		}
+	}
+}

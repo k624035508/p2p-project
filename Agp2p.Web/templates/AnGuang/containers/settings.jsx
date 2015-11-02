@@ -1,6 +1,7 @@
 import React from "react";
 import keys from "lodash/object/keys"
 import values from "lodash/object/values"
+import "../less/settings.less"
 
 export default  class Settings extends React.Component {
 	constructor(props) {

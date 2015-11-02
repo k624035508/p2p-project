@@ -3,7 +3,9 @@ import CityPicker from "../components/city-picker.jsx"
 import DatePicker from "../components/date-picker.jsx"
 import ImageVerifyCode from "../components/img-verify-code.jsx"
 import { updateWalletInfo, updateUserInfo, updateUserInfoByName, fetchWalletAndUserInfo } from "../actions/usercenter.js"
-import { post, getJSON } from "jquery";
+import { post, getJSON } from "jquery"
+import "../less/safe.less"
+
 
 class UserInfoEditor extends React.Component {
 	constructor(props) {

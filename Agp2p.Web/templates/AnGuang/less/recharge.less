@@ -1,0 +1,81 @@
+//我要充值内容
+@import "common-style";
+@recharge: "../imgs/usercenter/recharge-icons";
+
+.bank-chose-th, .warm-tips { .th-grey-style; }
+.bank-select {
+	padding: 35px 15px 5px 135px;
+	li {
+		vertical-align: top;
+		width: 135px;
+		height: 35px;
+		padding: 0;
+		margin-right: 21px;
+		margin-bottom: 20px;
+		border-radius: 5px;
+		background-repeat: no-repeat;
+		cursor: pointer;
+	}
+	#zhonghang { background: url("@{recharge}/zhonghang.png"); }
+	#gonghang { background: url("@{recharge}/gonghang.png"); }
+	#jianhang { background: url("@{recharge}/jianhang.png"); }
+	#nonghang { background: url("@{recharge}/nonghang.png"); }
+	#zhaohang { background: url("@{recharge}/zhaohang.png"); }
+	#youzheng { background: url("@{recharge}/youzheng.png"); }
+	#guangda { background: url("@{recharge}/guangda.png"); }
+	#zhongxin { background: url("@{recharge}/zhongxin.png"); }
+	#pufa { background: url("@{recharge}/pufa.png"); }
+	#minsheng { background: url("@{recharge}/minsheng.png"); }
+	#guangfa { background: url("@{recharge}/guangfa.png"); }
+	#xingye { background: url("@{recharge}/xingye.png"); }
+	#pingan { background: url("@{recharge}/pingan.png"); }
+	#jiaohang { background: url("@{recharge}/jiaohang.png"); }
+	#huaxia { background: url("@{recharge}/huaxia.png"); }
+}
+.balance-recharge span:first-child, .amount-recharge span:first-child {
+	display: inline-block;
+	width: 118px;
+	margin-right: 10px;
+	color: @dark-grey;
+	text-align: right;
+}
+.balance-recharge {
+	font-size: @font15;
+	color: @red;
+	margin-bottom: 30px;
+}
+.amount-recharge {
+	font-size: @font15;
+	i {
+		display: inline-block;
+		vertical-align: top;
+		color: @red;
+		font-size: @font18;
+		font-weight: bolder;
+		margin-right: 8px;
+	}
+	input {
+		width: 200px;
+		height: 40px;
+		line-height: 40px;
+		padding-left: 10px;
+		border: @border;
+		border-radius: 5px;
+	}
+}
+.rechargeBtn {
+	margin: 35px 0 30px 132px;
+	a {
+		display: inline-block;
+		width: 150px;
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
+		text-decoration: none;
+		color: @white;
+		font-size: @font20;
+		background: @red;
+		border-radius: 5px;
+	}
+}
+.rechargeTips { .warm-tips-style; }

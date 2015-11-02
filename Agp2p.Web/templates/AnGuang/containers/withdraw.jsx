@@ -4,6 +4,7 @@ import bank from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards } from "../actions/bankcard.js"
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import "../less/withdraw.less"
 
 class AppendingCardDialog extends React.Component {
 	constructor(props) {
