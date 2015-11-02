@@ -61,6 +61,7 @@
     <Compile Include="DbExtensions.cs" />
     <Compile Include="InitLogic\UserLogin.cs" />
     <Compile Include="InitLogic\NewUserInit.cs" />
+    <Compile Include="Message\BankTransactionCreatedMsg.cs" />
     <Compile Include="Message\MessageBus.cs" />
     <Compile Include="Message\NewUserCreatedMsg.cs" />
     <Compile Include="Message\ProjectInvestCompletedMsg.cs" />

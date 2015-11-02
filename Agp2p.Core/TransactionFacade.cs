@@ -62,6 +62,8 @@ namespace Agp2p.Core
             context.li_wallet_histories.InsertOnSubmit(his);
 
             context.SubmitChanges();
+
+            MessageBus.Main.Publish(new BankTransactionCreatedMsg(tr));
             return tr;
         }
 
@@ -125,6 +127,8 @@ namespace Agp2p.Core
             context.li_wallet_histories.InsertOnSubmit(his);
 
             context.SubmitChanges();
+
+            MessageBus.Main.Publish(new BankTransactionCreatedMsg(tr));
             return tr;
         }
 
@@ -199,7 +203,7 @@ namespace Agp2p.Core
             if (saveChange) // 注意：外部保存话需要自己发送通知
             {
                 context.SubmitChanges();
-                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr.id));
+                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr));
             }
             return tr;
         }
@@ -254,7 +258,7 @@ namespace Agp2p.Core
             if (saveChange) // 注意：外部保存话需要自己发送通知
             {
                 context.SubmitChanges();
-                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr.id));
+                MessageBus.Main.Publish(new BankTransactionFinishedMsg(tr));
             }
             return tr;
         }

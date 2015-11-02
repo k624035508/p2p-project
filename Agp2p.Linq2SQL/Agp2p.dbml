@@ -195,19 +195,6 @@
       <Association Name="dt_users_li_wallets" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.dt_user_message" Member="dt_user_message">
-    <Type Name="dt_user_message">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="post_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="accept_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="is_read" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="post_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="read_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.dt_mail_template" Member="dt_mail_template">
     <Type Name="dt_mail_template">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -534,6 +521,7 @@
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
       <Association Name="dt_users_li_notification_settings" Member="li_notification_settings" ThisKey="id" OtherKey="user_id" Type="li_notification_settings" />
+      <Association Name="dt_users_dt_user_message" Member="dt_user_message" ThisKey="id" OtherKey="receiver" Type="dt_user_message" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -631,6 +619,21 @@
       <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="dt_users_li_notification_settings" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_message" Member="dt_user_message">
+    <Type Name="dt_user_message">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="post_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="accept_user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="is_read" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="post_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="read_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="receiver" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_users_dt_user_message" Member="dt_users" ThisKey="receiver" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
 </Database>

@@ -213,7 +213,7 @@ namespace Agp2p.Web.admin.audit
                     }
                 }
                 context.SubmitChanges();
-                preSaveTransaction.ForEach(t => MessageBus.Main.Publish(new BankTransactionFinishedMsg(t.id)));
+                preSaveTransaction.ForEach(t => MessageBus.Main.Publish(new BankTransactionFinishedMsg(t)));
 
                 AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "审批成功 " + preSaveTransaction.Count + " 条，失败 0 条"); //记录日志
                 JscriptMsg("审批成功" + preSaveTransaction.Count + "条，失败 0 条！",

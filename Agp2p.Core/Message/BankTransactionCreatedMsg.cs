@@ -4,11 +4,11 @@ using TinyMessenger;
 
 namespace Agp2p.Core.Message
 {
-    public class BankTransactionFinishedMsg : ITinyMessage
+    public class BankTransactionCreatedMsg : ITinyMessage
     {
         public li_bank_transactions Transaction { get; protected set; }
 
-        public BankTransactionFinishedMsg(li_bank_transactions bankTransaction)
+        public BankTransactionCreatedMsg(li_bank_transactions bankTransaction)
         {
             Transaction = bankTransaction;
         }
