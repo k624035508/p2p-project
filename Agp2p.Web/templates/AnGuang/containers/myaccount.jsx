@@ -98,7 +98,7 @@ class MyAccount extends React.Component {
 			<div className="overview-wrap">
 				<div id="data-pie" ref="chartBox"></div>
 				<div className="total-amount">
-					<p>{totalMoneySplitted[0]}{"." + (totalMoneySplitted[1] || "00") + "元"}</p>
+					<p>{totalMoneySplitted[0]} {"." + (totalMoneySplitted[1] || "00") + "元"}</p>
 					<p>总资产</p>
 				</div>
 				<div className="recommend-project"><span>推荐项目</span></div>
