@@ -619,7 +619,7 @@ namespace Agp2p.Core
                 {
                     throw new Exception("银票宝的期数只能是按日算");
                 }
-                return (decimal)proj.profit_rate_year / 360 * proj.repayment_term_span_count;
+                return (decimal)proj.profit_rate_year / 100 / 360 * proj.repayment_term_span_count;
             }
             return
                 CalcFinalProfitRate(
