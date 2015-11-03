@@ -9,8 +9,8 @@ import "../less/footerSmall.less";
 import "../less/invest_list.less";
 import "../less/invest-cell.less";
 
-import { setHeaderHighlight } from "./header.js"
+import header from "./header.js"
 
 $(function(){
-    setHeaderHighlight(1);
+    header.setHeaderHighlight(1);
 });

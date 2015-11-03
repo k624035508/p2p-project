@@ -32,7 +32,7 @@ import SettingsPage from "../containers/settings.jsx"
 import MyLotteryPage from "../containers/mylottery.jsx"
 import MyInvestPage from "../containers/myinvest.jsx"
 
-import { setHeaderHighlight } from "./header.js"
+import header from "./header.js"
 
 
 $(function(){
@@ -64,5 +64,5 @@ $(function(){
 		</Provider>
 	), document.getElementById("app"));
 	
-	setHeaderHighlight(2);
+	header.setHeaderHighlight(2);
 });

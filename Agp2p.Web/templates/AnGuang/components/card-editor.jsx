@@ -1,7 +1,7 @@
 import React from "react";
 import $ from "jquery";
 import CityPicker from "../components/city-picker.jsx"
-import bank from "../js/bank-list.jsx"
+import { bankList } from "../js/bank-list.jsx"
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js"
 
 class CardEditor extends React.Component {
@@ -67,7 +67,7 @@ class CardEditor extends React.Component {
 					<li><span>选择银行：</span><select className="bankSelect" value={this.state.bank}
 						onChange={ev => this.setState({bank: ev.target.value})} disabled={!this.props.realName}>
 						<option value="">请选择银行</option>
-						{bank.bankList.map(b => <option value={b} key={b}>{b}</option>)}
+						{bankList.map(b => <option value={b} key={b}>{b}</option>)}
 						</select></li>
 					<li><span>开户行所在地：</span>
 						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})}

@@ -110,9 +110,9 @@ class MyAccount extends React.Component {
 					<div className="invest-title-wrap">
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
 						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
-						{(pro.tag & ProjectTagEnum.Recommend) != 0 && <span className="invest-list-icon jian-icon"></span>}
-						{(pro.tag & ProjectTagEnum.Ordered != 0) && <span className="invest-list-icon yue-icon"></span>}
-						{(pro.tag & ProjectTagEnum.CreditGuarantee) != 0 && <span className="invest-list-icon xin-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Recommend) == 0 ? null : <span className="invest-list-icon jian-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Ordered) == 0 ? null : <span className="invest-list-icon yue-icon"></span>}
+						{(pro.tag & ProjectTagEnum.CreditGuarantee) == 0 ? null : <span className="invest-list-icon xin-icon"></span>}
 					</div>
 					<div className="invest-content">
 						<div className="apr">

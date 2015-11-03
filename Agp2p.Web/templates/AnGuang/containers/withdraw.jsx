@@ -1,6 +1,6 @@
 import React from "react";
 import $ from "jquery";
-import bank from "../js/bank-list.jsx"
+import { classMapping } from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards } from "../actions/bankcard.js"
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
@@ -94,7 +94,7 @@ class WithdrawPage extends React.Component {
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
 				        <ul className="list-unstyled list-inline ul-withdraw">
 				        {this.props.cards.map((c, index) =>
-				            <li className={"card " + bank.classMapping[c.bankName]} key={c.cardId}
+				            <li className={"card " + classMapping[c.bankName]} key={c.cardId}
 					            onClick={ev => this.setState({selectedCardIndex: index})}>
 				                <p className="bank-name">{c.bankName}</p>
 				                <p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
