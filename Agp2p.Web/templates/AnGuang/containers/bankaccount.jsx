@@ -1,5 +1,5 @@
 import React from "react";
-import bank from "../js/bank-list.jsx"
+import { classMapping } from "../js/bank-list.jsx"
 import CityPicker from "../components/city-picker.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards, deleteBankCard } from "../actions/bankcard.js"
@@ -31,7 +31,7 @@ class BankAccount extends React.Component {
                 <div className="cards-list-wrap">
                 <ul className="list-unstyled list-inline">
                 {this.props.cards.map((c, index) => 
-                	<li className={"card " + bank.classMapping[c.bankName]} key={c.cardId}
+                	<li className={"card " + classMapping[c.bankName]} key={c.cardId}
                 		onClick={ev => this.onCardClicked(index)}
                 		style={index == this.state.selectedCardIndex ? {"backgroundColor": "#f2f2f2"} : null} >
 	                	<i className="glyphicon glyphicon-minus-sign pull-right" onClick={ev => this.deleteCard(c)}></i>

@@ -196,7 +196,12 @@ namespace Agp2p.Common
             /// 等额本息
             /// </summary>
             [Description("等额本息")]
-            DengEr = 20
+            DengEr = 20,
+            /// <summary>
+            /// 到期还本付息 
+            /// </summary>
+            [Description("到期还本付息")]
+            DaoQi = 30
         }
 
         /// <summary>

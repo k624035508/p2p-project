@@ -109,7 +109,7 @@ class WithdrawPage extends React.Component {
 						<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
 							onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
 				    </div></div>
-				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.props.idleMoney}</div>
+				    <div className="balance-withdraw"><span>可用余额：</span>￥{this.props.idleMoney.toString()}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
 				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>

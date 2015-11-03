@@ -407,13 +407,14 @@ namespace Agp2p.Core
             
             // 修改项目状态为满标/截标
             project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
-            project.make_loan_time = DateTime.Now;
+            project.make_loan_time = DateTime.Now; // 放款时间
 
             var termSpan = (Agp2pEnums.ProjectRepaymentTermSpanEnum) project.repayment_term_span; // 期的跨度（年月日）
             var termSpanCount = project.repayment_term_span_count; // 跨度数
             var repaymentType = (Agp2pEnums.ProjectRepaymentTypeEnum) project.repayment_type; // 还款类型
 
-            project.profit_rate = CalcFinalProfitRate(project.make_loan_time.Value, project.profit_rate_year, termSpan, termSpanCount); // 满标时计算真实总利率
+            // 满标时计算真实总利率
+            project.profit_rate = project.GetFinalProfitRate();
             var termCount = CalcRealTermCount(termSpan, termSpanCount); // 实际期数
 
             var repayPrincipal = project.investment_amount; // 本金投资总额
@@ -449,6 +450,20 @@ namespace Agp2p.Core
                     should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
                 }).ToList();
                 repaymentTasks.Last().repay_principal = repayPrincipal; // 最后额外添加一期返还全部本金
+            }
+            else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.DaoQi) // 到期还款付息
+            {
+                if (termCount != 1)
+                    throw new Exception("到期还款付息 只能有一期");
+                repaymentTasks = Enumerable.Repeat(new li_repayment_tasks
+                {
+                    project = projectId,
+                    repay_interest = interestAmount,
+                    repay_principal = repayPrincipal,
+                    status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
+                    term = 1,
+                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, 1, project.repayment_term_span_count)
+                }, 1).ToList();
             }
             else throw new InvalidEnumArgumentException("项目的还款类型值异常");
             context.li_repayment_tasks.InsertAllOnSubmit(repaymentTasks);
@@ -611,6 +626,24 @@ namespace Agp2p.Core
             }
         }
 
+        public static decimal GetFinalProfitRate(this li_projects proj, DateTime? baseTime = null)
+        {
+            if (proj.dt_article_category.call_index == "ypb")
+            {
+                var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span;
+                if (projectRepaymentTermSpanEnum != Agp2pEnums.ProjectRepaymentTermSpanEnum.Day)
+                {
+                    throw new Exception("银票宝的期数只能是按日算");
+                }
+                return (decimal)proj.profit_rate_year / 100 / 360 * proj.repayment_term_span_count;
+            }
+            return
+                CalcFinalProfitRate(
+                    proj.make_loan_time == null ? baseTime.GetValueOrDefault(DateTime.Now) : proj.make_loan_time.Value,
+                    proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span,
+                    proj.repayment_term_span_count);
+        }
+
         /// <summary>
         /// 计算最终的项目利润率（始终按天数算最终利润率）
         /// </summary>
@@ -619,7 +652,7 @@ namespace Agp2p.Core
         /// <param name="termSpanEnum"></param>
         /// <param name="termSpanCount"></param>
         /// <returns></returns>
-        public static decimal CalcFinalProfitRate(DateTime baseTime, decimal profitRateYear, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpanEnum, int termSpanCount)
+        private static decimal CalcFinalProfitRate(DateTime baseTime, decimal profitRateYear, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpanEnum, int termSpanCount)
         {
             profitRateYear /= 100; // 年化利率未除以 100
             switch (termSpanEnum) // 公式：年利率 * 总天数 / 365

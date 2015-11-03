@@ -185,6 +185,7 @@
                             RepeatLayout="Flow">
                             <asp:ListItem Value="10" Selected="True">先息后本</asp:ListItem>
                             <asp:ListItem Value="20">等额本息</asp:ListItem>
+                            <asp:ListItem Value="30">到期还本付息</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
                     <asp:Label ID="div_project_repayment_type_tip" runat="server" CssClass="Validform_checktip" />
