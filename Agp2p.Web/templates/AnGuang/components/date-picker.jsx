@@ -6,7 +6,7 @@ import "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js"
 import "bootstrap-datetime-picker/js/locales/bootstrap-datetimepicker.zh-CN.js"
 
 
-export default class DatePicker extends React.Component {
+class DatePicker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -30,3 +30,4 @@ export default class DatePicker extends React.Component {
 		return <input type="text" ref="picker" {...this.props} />;
 	}
 }
+export default DatePicker;

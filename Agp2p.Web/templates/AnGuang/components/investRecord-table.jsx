@@ -2,7 +2,7 @@ import React from "react";
 import $ from "jquery";
 import isEqual from "lodash/lang/isEqual"
 
-export default class InvestRecordTable extends React.Component {
+class InvestRecordTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: []};
@@ -68,3 +68,4 @@ export default class InvestRecordTable extends React.Component {
         );
     }
 };
+export default InvestRecordTable;

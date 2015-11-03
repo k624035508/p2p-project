@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import $ from "jquery";
 
-export default class HorizontalPicker extends React.Component {
+class HorizontalPicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {options: [], type: -1};
@@ -38,3 +38,4 @@ export default class HorizontalPicker extends React.Component {
         );
     }
 }
+export default HorizontalPicker;

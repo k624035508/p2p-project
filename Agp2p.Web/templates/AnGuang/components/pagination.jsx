@@ -2,7 +2,7 @@ import React from "react";
 import range from "lodash/utility/range"
 
 
-export default class Pagination extends React.Component {
+class Pagination extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {};
@@ -36,3 +36,5 @@ export default class Pagination extends React.Component {
     }
 }
 Pagination.defaultProps = { pageRange: 5 }
+
+export default Pagination;

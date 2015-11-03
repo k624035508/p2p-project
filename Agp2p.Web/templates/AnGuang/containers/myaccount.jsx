@@ -149,12 +149,14 @@ class MyAccount extends React.Component {
 	}
 }
 
+import assign from "lodash/object/assign"
+
 function mapStateToProps(state) {
-	var walletInfo = state.walletInfo;
-	return {
-		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney + walletInfo.lotteriesValue,
-		...walletInfo
-	};
+	let walletInfo = state.walletInfo;
+	let totalMoney = walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney +
+		walletInfo.profitingMoney + walletInfo.lotteriesValue;
+
+	return assign({totalMoney}, walletInfo);
 }
 
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import $ from "jquery";
 
-export default class DropdownPicker extends React.Component {
+class DropdownPicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {options: []};
@@ -32,3 +32,4 @@ export default class DropdownPicker extends React.Component {
         );
     }
 }
+export default DropdownPicker;

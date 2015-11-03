@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import DatePicker from "./date-picker.jsx"
 
-export default class DateSpanPicker extends React.Component {
+class DateSpanPicker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -17,3 +17,4 @@ export default class DateSpanPicker extends React.Component {
 		);
 	}
 }
+export default DateSpanPicker;

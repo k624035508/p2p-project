@@ -6,7 +6,7 @@ import DateSpanPicker from "../components/date-span-picker.jsx"
 import Table from "../components/investRecord-table.jsx"
 import Pagination from "../components/pagination.jsx"
 
-export default class MyTransaction extends React.Component {
+class MyTransaction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {type: 0, startTime: "", endTime: "", pageIndex: 0, onPageLoaded: pageCount => this.setState({pageCount: pageCount})};
@@ -30,3 +30,5 @@ export default class MyTransaction extends React.Component {
             </div>);
     }
 }
+
+export default MyTransaction;
