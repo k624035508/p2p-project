@@ -1,0 +1,27 @@
+// 银行账户内容样式
+@import "common-style";
+
+.bank-account-wrap {
+	.cards-list-th, .add-cards-th { .th-grey-style; }
+	.cards-list-wrap {
+		padding: 25px 35px 15px 35px;
+		ul > li {
+			.bank-icon-container;
+			margin: 0 22px 25px 22px;
+			i {
+				position: relative;
+				display: none;
+				margin-top: -10px;
+				margin-right: -15px;
+				font-size: @font20;
+				color: @red;
+				cursor: pointer;
+			}
+			&:hover { i { display: block; } }
+		}
+	}
+	.add-cards-wrap {
+		.add-cards-form;
+		padding: 10px 0 0 55px;
+	}
+}

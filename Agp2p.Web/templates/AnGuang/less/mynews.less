@@ -1,0 +1,86 @@
+// 我的消息内容样式
+@import "common-style";
+@usercenter: "../imgs/usercenter";
+
+.news-wrap {
+	.controls-custom {
+		& > div { .inline-block; }
+		.controls-list {
+			& > span {
+				.inline-block;
+				height: 35px;
+				line-height: 34px;
+				padding: 0 10px;
+				margin-left: 12px;
+				border: @border;
+				cursor: pointer;
+			}
+		}
+	}
+	.news-list {
+		height: 500px;
+		.news-tb {
+			border: @border;
+			margin-top: 25px;
+			* {
+				color: @dark-grey;
+				font-size: @font15;
+			}
+			.row-spans {
+				& > span {
+					.inline-block;
+					padding-right: 3%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				.checkbox {
+					width: 7%;
+					margin-left: 3%;
+					input {
+						position: relative;
+						margin: 0;
+					}
+				}
+				.state { width: 10%; }
+				.th { width: 20%; }
+				.content { width: 32%; }
+				.time { width: 20%; }
+				.detail { width: 8%; }
+			}
+			.news-th {
+				height: 35px;
+				background: @body-color;
+				.row-spans;
+			}
+			.news-body {
+				border-top: @border;
+				.overview {
+					line-height: 40px;
+					.row-spans;
+					.state { height: 27px; }
+					.read-icon { background: url("@{usercenter}/read.png") no-repeat; }
+					.unread-icon { background: url("@{usercenter}/unread.png") no-repeat; }
+					.detail {
+						height: 13px;
+						cursor: pointer;
+					}
+					.close-icon {
+						background: url("@{usercenter}/close.png") no-repeat;
+						background-position: 22% 50%;
+					}
+					.open-icon {
+						background: url("@{usercenter}/open.png") no-repeat;
+						background-position: 22% 50%;
+					}
+				}
+				.news-detail {
+					padding: 3px 3%;
+					p { margin: 10px 0; }
+					.txt { text-indent: 30px; }
+					.sender { text-align: right; }
+				}
+			}
+		}
+	}
+}

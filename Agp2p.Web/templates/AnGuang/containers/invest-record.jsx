@@ -1,4 +1,5 @@
-﻿import React from "react";
+﻿import React from "react"
+import "../less/invest-record.less"
 
 import HorizontalPicker from "../components/horizontal-picker.jsx"
 import DateSpanPicker from "../components/date-span-picker.jsx"

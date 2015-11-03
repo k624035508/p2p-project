@@ -1,6 +1,7 @@
-﻿import React from "react";
+﻿import React from "react"
 import { classMapping } from "../js/bank-list.jsx"
 import keys from "lodash/object/keys"
+import "../less/recharge.less"
 
 export default class RechargePage extends React.Component {
 	constructor(props) {

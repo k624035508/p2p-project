@@ -1,7 +1,8 @@
-import React from "react";
-import echarts from 'echarts/src/echarts';
-import 'echarts/src/chart/pie';
+import React from "react"
+import echarts from 'echarts/src/echarts'
+import 'echarts/src/chart/pie'
 import isEqual from "lodash/lang/isEqual"
+import "../less/myaccount.less"
 
 const ProjectTagEnum = {
 	Ordered : 1,

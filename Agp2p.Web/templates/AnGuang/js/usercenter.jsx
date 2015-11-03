@@ -30,6 +30,7 @@ import InvitationPage from "../containers/invitation.jsx"
 import MyNewsPage from "../containers/mynews.jsx"
 import SettingsPage from "../containers/settings.jsx"
 import MyLotteryPage from "../containers/mylottery.jsx"
+import MyInvestPage from "../containers/myinvest.jsx"
 
 import { setHeaderHighlight } from "./header.js"
 
@@ -55,6 +56,7 @@ $(function(){
 						<Route path="/mynews" component={MyNewsPage}/>
 						<Route path="/settings" component={SettingsPage}/>
 						<Route path="/mylottery" component={MyLotteryPage}/>
+						<Route path="/myinvest" component={MyInvestPage}/>
 					</Route>
 					<Route path="/safe" component={SafeCenterPage}/>
 				</Route>

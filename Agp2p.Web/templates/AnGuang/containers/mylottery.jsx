@@ -1,6 +1,7 @@
 import React from "react"
 import { ajax } from "jquery"
 import Pagination from "../components/pagination.jsx"
+import "../less/mylottery.less"
 
 const LotteryStatusEnum = {
 	Acting: 1,
