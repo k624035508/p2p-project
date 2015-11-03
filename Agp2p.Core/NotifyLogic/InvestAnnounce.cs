@@ -30,6 +30,13 @@ namespace Agp2p.Core.NotifyLogic
             //找出项目投资信息
             var investment = context.li_project_transactions.Single(p => p.id == projectTransactionId);
 
+            // 检测用户是否接收放款的通知
+            var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == investment.investor)
+                .Select(n => n.type).Cast<Agp2pEnums.NotificationTypeEnum>();
+
+            if (!sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.InvestSuccessForUserMsg))
+                return;
+
             var dtSmsTemplate = context.dt_sms_template.FirstOrDefault(t => t.call_index == "invest_success");
             if (dtSmsTemplate == null) return;
 
