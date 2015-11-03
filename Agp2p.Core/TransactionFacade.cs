@@ -456,17 +456,33 @@ namespace Agp2p.Core
             // 计算每个投资人的待收益金额，因为不一定是投资当日满标，所以不能投资时就知道收益（不同时间满标/截标会对导致不同的回款时间间隔，从而导致利率不同）
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
             // 计算借款管理费
-            context.li_project_transactions.InsertOnSubmit(new li_project_transactions
+            if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
             {
-                investor = project.li_risks.li_loaners.dt_users.id,
-                principal = project.financing_amount * (project.loan_fee_rate / 100) ?? 0,
-                project = projectId,
-                type = (int)Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfLoanning,
-                status = (int)Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                create_time = DateTime.Now,
-                remark = $"借款项目'{project.title}'收取借款管理费"
-            });
-            //TODO 计算风险保证金
+                context.li_project_transactions.InsertOnSubmit(new li_project_transactions
+                {
+                    investor = project.li_risks.li_loaners.dt_users.id,
+                    principal = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
+                    project = projectId,
+                    type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfLoanning,
+                    status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    create_time = DateTime.Now,
+                    remark = $"借款项目'{project.title}'收取借款管理费"
+                });
+            }
+            //计算风险保证金
+            if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
+            {
+                context.li_project_transactions.InsertOnSubmit(new li_project_transactions
+                {
+                    investor = project.li_risks.li_loaners.dt_users.id,
+                    principal = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
+                    project = projectId,
+                    type = (int) Agp2pEnums.ProjectTransactionTypeEnum.BondFee,
+                    status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    create_time = DateTime.Now,
+                    remark = $"借款项目'{project.title}'收取风险保证金"
+                });
+            }
             context.SubmitChanges();
 
             MessageBus.Main.PublishAsync(new ProjectInvestCompletedMsg(projectId)); // 广播项目投资完成的消息

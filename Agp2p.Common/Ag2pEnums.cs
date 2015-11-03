@@ -291,6 +291,8 @@ namespace Agp2p.Common
             ManagementFeeOfLoanning = 10,
             [Description("逾期管理费")]
             ManagementFeeOfOverTime = 11,
+            [Description("风险保证金")]
+            BondFee = 12,
         }
 
         /// <summary>

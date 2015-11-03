@@ -185,6 +185,7 @@
     <Content Include="admin\skin\default\valid_icons.png" />
     <Content Include="admin\skin\layout.css" />
     <Content Include="admin\statistic\investor_invest_detail.aspx" />
+    <Content Include="admin\statistic\bond_transact_timeline.aspx" />
     <Content Include="admin\statistic\project_repay_detail.aspx" />
     <Content Include="admin\statistic\pay_summary.aspx" />
     <Content Include="admin\statistic\bad_debt_summary.aspx" />
@@ -1301,6 +1302,12 @@
     </Compile>
     <Compile Include="admin\statistic\investor_invest_detail.aspx.designer.cs">
       <DependentUpon>investor_invest_detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\bond_transact_timeline.aspx.cs">
+      <DependentUpon>bond_transact_timeline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\statistic\bond_transact_timeline.aspx.designer.cs">
+      <DependentUpon>bond_transact_timeline.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
