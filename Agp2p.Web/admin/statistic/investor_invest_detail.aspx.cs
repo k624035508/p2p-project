@@ -117,7 +117,7 @@ namespace Agp2p.Web.admin.statistic
                     var proj = tr.li_projects;
                     var profitRate = proj.invest_complete_time == null
                         ? proj.profit_rate = // cache in project rate for 小计
-                            TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span, proj.repayment_term_span_count)
+                            proj.GetFinalProfitRate(now)
                         : proj.profit_rate;
                     var repayTotal = Math.Round(tr.principal*profitRate, 2);
                     return new InvestorInvestDetail
@@ -162,7 +162,7 @@ namespace Agp2p.Web.admin.statistic
                     {
                         var proj = tr.li_projects;
                         var profitRate = proj.invest_complete_time == null
-                            ? TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span, proj.repayment_term_span_count)
+                            ? proj.GetFinalProfitRate(now)
                             : proj.profit_rate;
                         return Math.Round(tr.principal*profitRate, 2);
                     });

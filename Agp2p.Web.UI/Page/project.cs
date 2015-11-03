@@ -209,11 +209,6 @@ namespace Agp2p.Web.UI.Page
             return project_transactions;
         }
 
-        protected decimal get_calc_final_profit_rate()
-        {
-            return TransactionFacade.CalcFinalProfitRate(DateTime.Now, projectModel.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span, projectModel.repayment_term_span_count);
-        }
-
         protected bool has_pay_password()
         {
             var user = GetUserInfoByLinq();
