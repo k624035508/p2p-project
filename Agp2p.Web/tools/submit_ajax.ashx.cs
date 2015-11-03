@@ -2335,7 +2335,7 @@ namespace Agp2p.Web.tools
                         //var siteConfig = new BLL.siteconfig().loadConfig();
                         var msgContent = smsModel.content;
                         msgContent = msgContent.Replace("{user_name}", user.user_name);
-                        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM/dd HH:mm:ss"));
+                        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
                         msgContent = msgContent.Replace("{amount}", howmany.ToString());
 
                         string errorMsg = string.Empty;

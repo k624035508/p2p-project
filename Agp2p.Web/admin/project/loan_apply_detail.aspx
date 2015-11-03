@@ -153,7 +153,7 @@
                 <dt>
                     <asp:Label ID="div_project_profit_rate_title" runat="server" Text="年化利率" /></dt>
                 <dd>
-                    <asp:TextBox ID="txt_project_profit_rate" runat="server" CssClass="input small" datatype="*"
+                    <asp:TextBox ID="txt_project_profit_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
                     %
                 <asp:Label ID="div_project_profit_rate_tip" runat="server" CssClass="Validform_checktip" />
@@ -188,6 +188,26 @@
                         </asp:RadioButtonList>
                     </div>
                     <asp:Label ID="div_project_repayment_type_tip" runat="server" CssClass="Validform_checktip" />
+                </dd>
+            </dl>
+            <dl id="div_loan_fee_rate">
+                <dt>
+                    <asp:Label ID="Label1" runat="server" Text="借款管理费率" /></dt>
+                <dd>
+                    <asp:TextBox ID="txt_loan_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                        sucmsg=" "></asp:TextBox>
+                    %
+                <asp:Label ID="Label2" runat="server" CssClass="Validform_checktip" />
+                </dd>
+            </dl>
+            <dl id="div_bond_fee_rate">
+                <dt>
+                    <asp:Label ID="Label3" runat="server" Text="风险保证金费率" /></dt>
+                <dd>
+                    <asp:TextBox ID="txt_bond_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                        sucmsg=" "></asp:TextBox>
+                    %
+                <asp:Label ID="Label4" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
             <dl>

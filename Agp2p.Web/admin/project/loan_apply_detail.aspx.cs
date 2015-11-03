@@ -160,6 +160,8 @@ namespace Agp2p.Web.admin.project
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
             txt_project_profit_rate.Text = _project.profit_rate_year.ToString();//年化利率
             txtAddTime.Text = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
+            txt_bond_fee_rate.Text = _project.bond_fee_rate.ToString();
+            txt_loan_fee_rate.Text = _project.loan_fee_rate.ToString();
 
             ShowRiskInfo(_project);
         }
@@ -253,6 +255,9 @@ namespace Agp2p.Web.admin.project
             project.repayment_term_span = Utils.StrToInt(txt_project_repayment_term.SelectedValue, 20);
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
             project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
+            project.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0);
+            project.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0);
+
             //提交操作则状态为待初审            
             project.status = save_only ? (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted : (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
         }
