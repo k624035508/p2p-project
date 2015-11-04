@@ -1,5 +1,4 @@
 import React from "react";
-import $ from "jquery";
 import CityPicker from "../components/city-picker.jsx"
 import { bankList } from "../js/bank-list.jsx"
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js"

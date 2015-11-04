@@ -1,5 +1,4 @@
 ﻿import React from "react";
-import $ from "jquery";
 import isEqual from "lodash/lang/isEqual"
 
 class TransactionTable extends React.Component {

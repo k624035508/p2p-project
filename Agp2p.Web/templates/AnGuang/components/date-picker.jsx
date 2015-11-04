@@ -1,5 +1,4 @@
 ﻿import React from "react";
-import $ from "jquery";
 
 import "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css"
 import "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js"

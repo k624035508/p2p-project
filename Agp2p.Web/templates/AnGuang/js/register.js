@@ -6,8 +6,6 @@ import "../less/head.less";
 import "../less/register.less";
 import "../less/footerSmall.less";
 
-import $ from "jquery";
-
 $(function(){
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);

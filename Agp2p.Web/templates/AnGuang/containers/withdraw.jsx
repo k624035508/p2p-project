@@ -1,5 +1,4 @@
 import React from "react";
-import $ from "jquery";
 import { classMapping } from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards } from "../actions/bankcard.js"

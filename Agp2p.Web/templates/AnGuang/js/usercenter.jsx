@@ -8,7 +8,7 @@ import "../less/invest-cell.less";
 import "../less/footerSmall.less";
 
 import React from "react"
-import { render } from "react-dom"
+import ReactDom from "react-dom"
 import { Router, Route } from 'react-router'
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
@@ -40,7 +40,7 @@ $(function(){
 	const store = createStoreWithMiddleware(userCenter);
 	
 	//点击导航加载相应内容
-	render((
+	ReactDom.render((
 		<Provider store={store}>
 			<Router>
 				<Route path="/" component={UserCenterPage}>

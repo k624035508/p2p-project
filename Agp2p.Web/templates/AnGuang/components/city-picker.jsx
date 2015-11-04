@@ -1,5 +1,4 @@
 import React from "react";
-import $ from "jquery";
 import { citylist } from "../js/city.min.js";
 import indexOf  from "lodash/array/indexOf"
 

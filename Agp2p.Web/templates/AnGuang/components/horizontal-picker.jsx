@@ -1,5 +1,4 @@
 ﻿import React from "react";
-import $ from "jquery";
 
 class HorizontalPicker extends React.Component {
     constructor(props) {

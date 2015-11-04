@@ -1,5 +1,4 @@
 import React from "react"
-import $ from "jquery";
 import Pagination from "../components/pagination.jsx"
 import "../less/invitation.less"
 
