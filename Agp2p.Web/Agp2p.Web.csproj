@@ -814,8 +814,6 @@
     <Content Include="templates\AnGuang\less\safe.less" />
     <Content Include="templates\AnGuang\less\settings.less" />
     <Content Include="templates\AnGuang\less\withdraw.less" />
-    <Content Include="templates\AnGuang\install.bat" />
-    <Content Include="templates\AnGuang\install.sh" />
     <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />

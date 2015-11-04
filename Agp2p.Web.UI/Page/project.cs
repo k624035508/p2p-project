@@ -138,7 +138,8 @@ namespace Agp2p.Web.UI.Page
                 //}
                 //投资人数
                 int count = 0;
-                invsetorCount = query_projecttransactions(projectModel, out count).GroupBy(pt => pt.user_id).Count();
+                invsetorCount = projectModel.GetInvestedUserCount();
+
 
                 //还款计划
                 repayment_tasks = context.li_repayment_tasks
@@ -153,26 +154,14 @@ namespace Agp2p.Web.UI.Page
             //客户余额
             if (IsUserLogin())
             {
-                var user = GetUserInfo();
+                var user = GetUserInfoByLinq();
                 has_email = !string.IsNullOrEmpty(user.email);
-
-                // 普通项目
-                var wallet = context.li_wallets.FirstOrDefault(w => w.user_id == user.id);
-                if (wallet != null)
-                {
-                    idle_money = wallet.idle_money;
-                }
+                idle_money = user.li_wallets.idle_money;
             }
         }
 
-        // 标书的投标记录
-        protected List<ProjectTransactions> query_investment( li_projects projectModel, int pageIndex, short pageSize, out int count)
-        {
-            return query_projecttransactions(projectModel, out count).Skip(pageSize * pageIndex).Take(pageSize).ToList(); 
-        }
-
         //投标记录
-        protected List<ProjectTransactions> query_projecttransactions(li_projects projectModel, out int count)
+        protected List<ProjectTransactions> QueryProjectTransactions()
         {
             //投标记录
             if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial)
@@ -205,14 +194,13 @@ namespace Agp2p.Web.UI.Page
                         value = pt.principal.ToString("c")
                     }).ToList();
             }
-            count = project_transactions.Count;
             return project_transactions;
         }
 
         protected bool has_pay_password()
         {
             var user = GetUserInfoByLinq();
-            return user != null && !string.IsNullOrEmpty(user.pay_password);
+            return user != null && !string.IsNullOrWhiteSpace(user.pay_password);
         }
 
         protected class ProjectTransactions
