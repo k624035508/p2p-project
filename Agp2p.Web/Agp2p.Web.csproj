@@ -658,13 +658,17 @@
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
+    <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
+    <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />
     <Content Include="templates\AnGuang\imgs\register\piccodeTest.png" />
     <Content Include="templates\AnGuang\imgs\register\psw.png" />
     <Content Include="templates\AnGuang\imgs\register\recommended.png" />
     <Content Include="templates\AnGuang\imgs\register\red-bag-login.png" />
     <Content Include="templates\AnGuang\imgs\register\red-bag.png" />
+    <Content Include="templates\AnGuang\imgs\register\red-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
+    <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
@@ -740,12 +744,14 @@
     <Content Include="templates\AnGuang\js\invest_list.js" />
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
+    <Content Include="templates\AnGuang\js\repassword.js" />
     <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\login.html" />
     <Content Include="templates\AnGuang\reducers\usercenter.js" />
     <Content Include="templates\AnGuang\register.html" />
+    <Content Include="templates\AnGuang\repassword.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\AnGuang\_footer.html" />
@@ -818,6 +824,7 @@
     <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />
+    <Content Include="templates\AnGuang\less\repassword.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
