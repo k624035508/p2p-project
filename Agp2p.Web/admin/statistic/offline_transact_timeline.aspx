@@ -127,25 +127,25 @@ thead * {
 <table id="wallet" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
    <thead>
       <tr>
-        <th align="center" width="4%" style="padding-left: 1em;">序号</th>
-        <th align="left" width="10%">时间</th>
-        <th align="center" width="8%">收入</th>
-        <th align="center" width="8%">支出</th>
-        <th align="left" width="8%">操作类型</th>
-        <th align="left" width="8%">关联人员</th>
-        <th align="left">备注</th>
+        <th align="center" width="5%" style="padding-left: 1em;">序号</th>
+        <th align="center" width="12%">时间</th>
+        <th align="right" width="8%">收入</th>
+        <th align="right" width="8%">支出</th>
+        <th align="center" width="10%">操作类型</th>
+        <th align="center" width="12%">关联人员</th>
+        <th align="center" width="18%">备注</th>
      </tr>
    </thead> 
 </HeaderTemplate>
 <ItemTemplate>
   <tr <%# ((OfflineTransaction)Container.DataItem).index == 0 ? "class='sum'" : ""%>>
-    <td style="padding-left: 1em;"><%# Eval("index") %></td>
+    <td style="text-align:center;"><%# Eval("index") %></td>
     <td style="text-align:center"><%# string.Format("{0:yyyy-MM-dd HH:mm}", Eval("occurTime"))%></td>    
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
-    <td style="text-align:right"><%# Eval("type")%></td>
-    <td style="text-align:right"><%# Eval("user")%></td>
-    <td style="text-align:right"><%# Eval("remark")%></td>
+    <td style="text-align:center"><%# Eval("type")%></td>
+    <td style="text-align:center"><%# Eval("user")%></td>
+    <td style="text-align:center"><%# Eval("remark")%></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
