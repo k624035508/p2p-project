@@ -38,7 +38,7 @@ let option = {
     ]
 };
 
-export default class MyInvest extends React.Component {
+export default class MyInvestPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};

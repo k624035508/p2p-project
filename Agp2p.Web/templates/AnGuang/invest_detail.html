@@ -1,5 +1,6 @@
 ﻿<%namespace "Newtonsoft.Json.Linq"%>
 <%namespace "Newtonsoft.Json"%>
+<%namespace "Agp2p.Core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +110,7 @@
                 <div><span>账户余额 {idle_money} 元</span><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a></div>
                 <input type="text" placeholder="请输入投资金额" id="investAmount-input"/>
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{has_pay_password()}"
-                        data-idle-money="{idle_money}" data-profit-rate="{get_calc_final_profit_rate()}" data-project-id="{projectModel.id}">投 资</button>
+                        data-idle-money="{idle_money}" data-profit-rate='<%=projectModel.GetFinalProfitRate()%>' data-project-id="{projectModel.id}">投 资</button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">

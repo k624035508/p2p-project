@@ -1,9 +1,9 @@
 ﻿import React from "react"
-import { classMapping } from "../js/bank-list.jsx"
+import { classMapping } from "../js/bank-list.jsx";
 import keys from "lodash/object/keys"
 import "../less/recharge.less"
 
-export default class RechargePage extends React.Component {
+class RechargePage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { selectedBankId: "" };
@@ -36,3 +36,4 @@ export default class RechargePage extends React.Component {
 		);
 	}
 }
+export default RechargePage;

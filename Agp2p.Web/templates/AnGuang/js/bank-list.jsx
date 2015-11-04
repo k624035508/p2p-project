@@ -1,4 +1,6 @@
-let classMapping = {
+import keys from "lodash/object/keys"
+
+export const classMapping = {
 	"中国银行" : "zhonghang",
 	"中国工商银行" : "gonghang",
 	"中国建设银行" : "jianhang",
@@ -13,9 +15,7 @@ let classMapping = {
 	"兴业银行" : "xingye",
 	"平安银行" : "pingan",
 	"交通银行" : "jiaohang",
-	"华夏银行" : "huaxia",
+	"华夏银行" : "huaxia"
 };
-export default {
-	classMapping: classMapping,
-	bankList: Object.keys(classMapping)
-};
+
+export const bankList = keys(classMapping);

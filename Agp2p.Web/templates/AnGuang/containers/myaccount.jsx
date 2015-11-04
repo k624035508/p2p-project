@@ -99,7 +99,7 @@ class MyAccount extends React.Component {
 			<div className="overview-wrap">
 				<div id="data-pie" ref="chartBox"></div>
 				<div className="total-amount">
-					<p>{totalMoneySplitted[0]}{"." + (totalMoneySplitted[1] || "00") + "元"}</p>
+					<p>{totalMoneySplitted[0]} {"." + (totalMoneySplitted[1] || "00") + "元"}</p>
 					<p>总资产</p>
 				</div>
 				<div className="recommend-project"><span>推荐项目</span></div>
@@ -110,9 +110,9 @@ class MyAccount extends React.Component {
 					<div className="invest-title-wrap">
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
 						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
-						{(pro.tag & ProjectTagEnum.Recommend) != 0 && <span className="invest-list-icon jian-icon"></span>}
-						{(pro.tag & ProjectTagEnum.Ordered != 0) && <span className="invest-list-icon yue-icon"></span>}
-						{(pro.tag & ProjectTagEnum.CreditGuarantee) != 0 && <span className="invest-list-icon xin-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Recommend) == 0 ? null : <span className="invest-list-icon jian-icon"></span>}
+						{(pro.tag & ProjectTagEnum.Ordered) == 0 ? null : <span className="invest-list-icon yue-icon"></span>}
+						{(pro.tag & ProjectTagEnum.CreditGuarantee) == 0 ? null : <span className="invest-list-icon xin-icon"></span>}
 					</div>
 					<div className="invest-content">
 						<div className="apr">
@@ -149,12 +149,14 @@ class MyAccount extends React.Component {
 	}
 }
 
+import assign from "lodash/object/assign"
+
 function mapStateToProps(state) {
-	var walletInfo = state.walletInfo;
-	return {
-		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney + walletInfo.lotteriesValue,
-		...walletInfo
-	};
+	let walletInfo = state.walletInfo;
+	let totalMoney = walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney +
+		walletInfo.profitingMoney + walletInfo.lotteriesValue;
+
+	return assign({totalMoney}, walletInfo);
 }
 
 import { connect } from 'react-redux';

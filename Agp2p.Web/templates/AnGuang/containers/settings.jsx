@@ -2,8 +2,9 @@ import React from "react";
 import keys from "lodash/object/keys"
 import values from "lodash/object/values"
 import "../less/settings.less"
+import "babel-polyfill"
 
-export default  class Settings extends React.Component {
+class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { valueTable: {}, enabledNotificationTypes: new Set([]), column: []};
@@ -87,3 +88,4 @@ export default  class Settings extends React.Component {
         );
     }
 }
+export default Settings;

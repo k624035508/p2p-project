@@ -196,7 +196,12 @@ namespace Agp2p.Common
             /// 等额本息
             /// </summary>
             [Description("等额本息")]
-            DengEr = 20
+            DengEr = 20,
+            /// <summary>
+            /// 到期还本付息 
+            /// </summary>
+            [Description("到期还本付息")]
+            DaoQi = 30
         }
 
         /// <summary>
@@ -291,6 +296,8 @@ namespace Agp2p.Common
             ManagementFeeOfLoanning = 10,
             [Description("逾期管理费")]
             ManagementFeeOfOverTime = 11,
+            [Description("风险保证金")]
+            BondFee = 12,
         }
 
         /// <summary>
@@ -571,8 +578,10 @@ namespace Agp2p.Common
             WithdrawApplyForUserMsg = 10,
             [Description("项目还款-站内消息")]
             ProjectRepaidForUserMsg = 20,
+            [Description("投资成功-站内消息")]
+            InvestSuccessForUserMsg = 30,
             [Description("奖券过期提醒-站内消息")]
-            LotteryWillExpireForUserMsg = 30,
+            LotteryWillExpireForUserMsg = 40,
 
             [Description("充值成功-短信")]
             ChargeSuccessForSms = 1001,

@@ -9,7 +9,7 @@ const LotteryStatusEnum = {
 	Cancel: 3,
 };
 
-export default class MyLottery extends React.Component {
+class MyLottery extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -98,3 +98,4 @@ export default class MyLottery extends React.Component {
         );
     }
 }
+export default MyLottery;

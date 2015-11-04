@@ -1,8 +1,7 @@
 ﻿import React from "react";
-import $ from "jquery";
 import isEqual from "lodash/lang/isEqual"
 
-export default class TransactionTable extends React.Component {
+class TransactionTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: []};
@@ -66,3 +65,4 @@ export default class TransactionTable extends React.Component {
         );
     }
 };
+export default TransactionTable;

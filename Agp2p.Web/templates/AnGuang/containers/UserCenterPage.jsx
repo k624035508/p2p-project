@@ -1,6 +1,5 @@
 ﻿import React from "react";
 import { Link } from 'react-router'
-import $ from "jquery";
 import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js"
 
 import StatusContainer from "../containers/user-status.jsx"

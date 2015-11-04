@@ -1,12 +1,11 @@
 import React from "react";
-import $ from "jquery";
 import { citylist } from "../js/city.min.js";
 import indexOf  from "lodash/array/indexOf"
 
-export default class CityPicker extends React.Component {
+class CityPicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = this.genStateByValue(this.props.defaultValue);
+        this.state = this.genStateByValue(props.defaultValue);
     }
     genStateByValue(val) {
         var state = {
@@ -118,3 +117,4 @@ export default class CityPicker extends React.Component {
         );
     }
 }
+export default CityPicker;

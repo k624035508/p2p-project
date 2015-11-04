@@ -46,7 +46,7 @@
   </div>
 </div>
 
-<div class="tab-content">
+<div class="tab-content" style="height: 80vh">
   <dl>
     <dt>项目</dt>
       <dd><asp:Literal ID="lblProject" runat="server"/></dd>

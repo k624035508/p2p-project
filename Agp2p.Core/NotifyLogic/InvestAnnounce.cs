@@ -30,9 +30,12 @@ namespace Agp2p.Core.NotifyLogic
             //找出项目投资信息
             var investment = context.li_project_transactions.Single(p => p.id == projectTransactionId);
 
-            // 检测用户是否接收投资成功的通知
+            // 检测用户是否接收放款的通知
             var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == investment.investor)
                 .Select(n => n.type).Cast<Agp2pEnums.NotificationTypeEnum>();
+
+            if (!sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.InvestSuccessForUserMsg))
+                return;
 
             var dtSmsTemplate = context.dt_sms_template.FirstOrDefault(t => t.call_index == "invest_success");
             if (dtSmsTemplate == null) return;
@@ -41,37 +44,19 @@ namespace Agp2p.Core.NotifyLogic
                 .Replace("{projectName}", investment.li_projects.title)
                 .Replace("{amount}", investment.principal.ToString("N"));
 
-            if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForUserMsg))
+            //发送投资站内信息
+            var userMsg = new dt_user_message
             {
-                //发送投资站内信息
-                var userMsg = new dt_user_message
-                {
-                    type = 1,
-                    post_user_name = "",
-                    accept_user_name = investment.dt_users.user_name,
-                    title = dtSmsTemplate.title,
-                    content = content,
-                    post_time = investTime,
-                    receiver = investment.investor
-                };
-                context.dt_user_message.InsertOnSubmit(userMsg);
-                context.SubmitChanges();
-            }
-            if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForSms))
-            {
-                try
-                {
-                    string errorMsg;
-                    if (!SMSHelper.SendTemplateSms(investment.dt_users.mobile, content, out errorMsg))
-                    {
-                        context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + errorMsg + "（客户ID：" + investment.dt_users.user_name + "，投资协议：" + investment.agree_no + "）");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + ex.Message + "（客户ID：" + investment.dt_users.user_name + "，投资协议：" + investment.agree_no + "）");
-                }
-            }
+                type = 1,
+                post_user_name = "",
+                accept_user_name = investment.dt_users.user_name,
+                title = dtSmsTemplate.title,
+                content = content,
+                post_time = investTime,
+                receiver = investment.investor
+            };
+            context.dt_user_message.InsertOnSubmit(userMsg);
+            context.SubmitChanges();
         }
 
         /// <summary>

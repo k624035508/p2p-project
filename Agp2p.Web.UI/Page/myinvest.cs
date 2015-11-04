@@ -94,14 +94,14 @@ namespace Agp2p.Web.UI.Page
             {
                 var proj = ptr.li_projects;
                 var profit = proj.profit_rate == 0
-                    ? Math.Round(ptr.principal * TransactionFacade.CalcFinalProfitRate(now, proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span, proj.repayment_term_span_count), 2)
+                    ? Math.Round(ptr.principal * proj.GetFinalProfitRate(now), 2)
                     : Math.Round(proj.profit_rate * ptr.principal, 2);
                 return new
                 {
                     ptrId = ptr.id,
                     projectName = proj.title,
                     projectProfitRateYearly = proj.profit_rate_year,
-                    term = proj.repayment_term_span + proj.GetProjectTermSpanEnumDesc(),
+                    term = proj.repayment_term_span_count + proj.GetProjectTermSpanEnumDesc(),
                     investTime = ptr.create_time.ToString("yyyy-MM-dd HH:mm"),
                     investValue = ptr.principal,
                     profit,

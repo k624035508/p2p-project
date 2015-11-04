@@ -1,11 +1,14 @@
-﻿import "bootstrap-webpack";
+﻿import "es5-shim/es5-shim"
+import "es5-shim/es5-sham"
+
+import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/usercenter.less";
 import "../less/invest-cell.less";
 import "../less/footerSmall.less";
 
 import React from "react"
-import { render } from "react-dom"
+import ReactDom from "react-dom"
 import { Router, Route } from 'react-router'
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
@@ -29,7 +32,7 @@ import SettingsPage from "../containers/settings.jsx"
 import MyLotteryPage from "../containers/mylottery.jsx"
 import MyInvestPage from "../containers/myinvest.jsx"
 
-import { setHeaderHighlight } from "./header.js"
+import header from "./header.js"
 
 
 $(function(){
@@ -37,7 +40,7 @@ $(function(){
 	const store = createStoreWithMiddleware(userCenter);
 	
 	//点击导航加载相应内容
-	render((
+	ReactDom.render((
 		<Provider store={store}>
 			<Router>
 				<Route path="/" component={UserCenterPage}>
@@ -61,5 +64,5 @@ $(function(){
 		</Provider>
 	), document.getElementById("app"));
 	
-	setHeaderHighlight(2);
+	header.setHeaderHighlight(2);
 });

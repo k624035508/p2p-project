@@ -1,11 +1,13 @@
-import $ from "jquery";
+import "es5-shim/es5-shim"
+import "es5-shim/es5-sham"
+
 import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/invest_detail.less";
 import "../less/footerSmall.less";
 import "visualnav";
 
-import header from "./header.js";
+import header from "./header.js"
 
 $(function () {
     $(window).scroll(function () {

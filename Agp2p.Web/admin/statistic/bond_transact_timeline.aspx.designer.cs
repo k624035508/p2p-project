@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Agp2p.Web.admin.transact {
+namespace Agp2p.Web.admin.statistic {
     
     
-    public partial class project_investment_edit {
+    public partial class bond_transact_timeline {
         
         /// <summary>
         /// form1 控件。
@@ -22,57 +22,75 @@ namespace Agp2p.Web.admin.transact {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// lblProject 控件。
+        /// btnExportExcel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lblProject;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportExcel;
         
         /// <summary>
-        /// lblRemainCredits 控件。
+        /// txtStartTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lblRemainCredits;
+        protected global::System.Web.UI.WebControls.TextBox txtStartTime;
         
         /// <summary>
-        /// ddlInvestor 控件。
+        /// txtEndTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlInvestor;
+        protected global::System.Web.UI.WebControls.TextBox txtEndTime;
         
         /// <summary>
-        /// lblUserIdleMoney 控件。
+        /// txtKeywords 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lblUserIdleMoney;
+        protected global::System.Web.UI.WebControls.TextBox txtKeywords;
         
         /// <summary>
-        /// txtValue 控件。
+        /// lbtnSearch 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtValue;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnSearch;
         
         /// <summary>
-        /// btnSubmit 控件。
+        /// rptList 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.Repeater rptList;
+        
+        /// <summary>
+        /// txtPageNum 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPageNum;
+        
+        /// <summary>
+        /// PageContent 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PageContent;
     }
 }

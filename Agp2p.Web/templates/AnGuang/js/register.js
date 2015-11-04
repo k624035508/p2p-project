@@ -1,9 +1,10 @@
-﻿import "bootstrap-webpack";
+﻿import "es5-shim/es5-shim"
+import "es5-shim/es5-sham"
+
+import "bootstrap-webpack";
 import "../less/head.less";
 import "../less/register.less";
 import "../less/footerSmall.less";
-
-import $ from "jquery";
 
 $(function(){
     // 检测邀请码
