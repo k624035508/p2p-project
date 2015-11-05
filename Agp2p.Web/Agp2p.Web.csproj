@@ -641,8 +641,17 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\about.xml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
+    <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\company.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\contact.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\partner.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
@@ -736,6 +745,7 @@
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\invest_list.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
+    <Content Include="templates\AnGuang\js\aboutus.js" />
     <Content Include="templates\AnGuang\js\city.min.js" />
     <Content Include="templates\AnGuang\js\es5-sham.min.js" />
     <Content Include="templates\AnGuang\js\es5-shim.min.js" />
@@ -820,12 +830,13 @@
     <Content Include="templates\AnGuang\less\safe.less" />
     <Content Include="templates\AnGuang\less\settings.less" />
     <Content Include="templates\AnGuang\less\withdraw.less" />
-    <Content Include="templates\AnGuang\install.bat" />
-    <Content Include="templates\AnGuang\install.sh" />
     <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />
     <Content Include="templates\AnGuang\less\repassword.less" />
+    <Content Include="templates\AnGuang\.babelrc" />
+    <Content Include="templates\AnGuang\less\usercenter-common-style.less" />
+    <Content Include="templates\AnGuang\less\aboutus.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
