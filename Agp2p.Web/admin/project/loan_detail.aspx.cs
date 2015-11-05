@@ -113,6 +113,8 @@ namespace Agp2p.Web.admin.project
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
             spa_make_loan_time.InnerText = _project.make_loan_time?.ToString("yyyy-MM-dd HH:mm:ss");//放款时间
+            spa_bond_fee.InnerText = _project.bond_fee_rate.ToString();
+            spa_loan_fee.InnerText = _project.loan_fee_rate.ToString();
 
             ShowRiskInfo(_project);
         }

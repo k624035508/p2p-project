@@ -97,6 +97,20 @@
                                 <span id="spa_repayment_type" runat="server"></span>
                             </td>
                         </tr>
+                        <tr>
+                            <th>借款管理费率(%)
+                            </th>
+                            <td>
+                                <span id="spa_loan_fee" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>风险保证金费率(%)
+                            </th>
+                            <td>
+                                <span id="spa_bond_fee" runat="server"></span>
+                            </td>
+                        </tr>
                         <% if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
                            { %>
                         <tr>

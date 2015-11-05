@@ -71,7 +71,7 @@ namespace Agp2p.Web.admin.statistic
         #region 数据绑定=================================
         private void RptBind()
         {
-            var wallets = QueryProjectTransactions(out totalCount);
+            var wallets = QueryProjectTransactions();
             rptList.DataSource = wallets.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
@@ -88,11 +88,13 @@ namespace Agp2p.Web.admin.statistic
             (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfOverTime,
         };
 
-        private IEnumerable<OfflineTransaction> QueryProjectTransactions(out int count)
+        private IEnumerable<OfflineTransaction> QueryProjectTransactions()
         {
             var context = new Agp2pDataContext();
 
-            IQueryable<li_project_transactions> query = context.li_project_transactions;
+            IQueryable<li_project_transactions> query = context.li_project_transactions.Where(ptr =>
+                string.IsNullOrWhiteSpace(transactType) || transactType == "所有操作类型" ||
+                ((Agp2pEnums.ProjectTransactionTypeEnum) ptr.type).ToString() == transactType);
             
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
             { 
@@ -103,22 +105,19 @@ namespace Agp2p.Web.admin.statistic
                 query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
                 query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
-
             query = query.Where(ptr => OfflineProjectTransactionType.Contains(ptr.type));
 
-            count = query.Count();
+            totalCount = query.Count();
 
             return query.OrderByDescending(ptr => ptr.id).AsEnumerable()
-                .Where(ptr =>
-                        string.IsNullOrWhiteSpace(transactType) || transactType == "所有操作类型" ||
-                        ((Agp2pEnums.ProjectTransactionTypeEnum) ptr.type).ToString() == transactType)
-                .Select(ptr => new OfflineTransaction
+                .Zip(Utils.Infinite(1), (prt, no) => new { prt, no }).Select(pptr => new OfflineTransaction
                 {
-                    income = ptr.principal,
-                    occurTime = ptr.create_time,
-                    type = ((Agp2pEnums.ProjectTransactionTypeEnum) ptr.type).ToString(),
-                    remark = ptr.remark,
-                    user = ptr.dt_users.user_name
+                    index = pptr.no,
+                    income = pptr.prt.principal,
+                    occurTime = pptr.prt.create_time,
+                    type = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum)pptr.prt.type),
+                    remark = pptr.prt.remark,
+                    user = pptr.prt.dt_users.user_name
                 });
         }
 
@@ -163,7 +162,7 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            var data = QueryProjectTransactions(out totalCount);
+            var data = QueryProjectTransactions();
             var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
 
             var titles = new[] { "序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};

@@ -53,7 +53,7 @@ namespace Agp2p.Web.admin.statistic
         #region 数据绑定=================================
         private void RptBind()
         {
-            var wallets = QueryProjectTransactions(out totalCount);
+            var wallets = QueryProjectTransactions();
             rptList.DataSource = wallets.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
@@ -64,11 +64,13 @@ namespace Agp2p.Web.admin.statistic
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
-        private IEnumerable<BondTransaction> QueryProjectTransactions(out int count)
+        private IEnumerable<BondTransaction> QueryProjectTransactions()
         {
             var context = new Agp2pDataContext();
 
-            IQueryable<li_project_transactions> query = context.li_project_transactions;
+            IQueryable<li_project_transactions> query =
+                context.li_project_transactions.Where(
+                    ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.BondFee);
             
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
             { 
@@ -80,18 +82,19 @@ namespace Agp2p.Web.admin.statistic
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
                 query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
 
-            count = query.Count();
+            totalCount = query.Count();
 
-            return query.OrderByDescending(ptr => ptr.id).AsEnumerable()
-                .Where(ptr => ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.BondFee)
-                .Select(ptr => new BondTransaction
+            return query.OrderByDescending(ptr => ptr.create_time)
+                .AsEnumerable()
+                .Zip(Utils.Infinite(1), (prt, no) => new {prt, no}).Select(pprt => new BondTransaction
                 {
-                    income = ptr.principal,
-                    occurTime = ptr.create_time,
-                    remark = ptr.remark,
-                    user = ptr.dt_users.user_name,
-                    project = ptr.li_projects.title
-                });
+                    index = pprt.no,
+                    income = pprt.prt.principal,
+                    occurTime = pprt.prt.create_time,
+                    remark = pprt.prt.remark,
+                    user = pprt.prt.dt_users.user_name,
+                    project = pprt.prt.li_projects.title
+                }).AsQueryable();
         }
 
         #endregion
@@ -135,7 +138,7 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            var data = QueryProjectTransactions(out totalCount);
+            var data = QueryProjectTransactions();
             var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
 
             var titles = new[] { "序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
