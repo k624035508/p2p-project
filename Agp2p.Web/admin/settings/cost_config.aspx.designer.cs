@@ -40,6 +40,24 @@ namespace Agp2p.Web.admin.settings {
         protected global::System.Web.UI.WebControls.TextBox txt_overtime_pay;
         
         /// <summary>
+        /// txt_overtime_cost 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_overtime_cost;
+        
+        /// <summary>
+        /// txt_overtime_cost2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_overtime_cost2;
+        
+        /// <summary>
         /// txt_withdraw 控件。
         /// </summary>
         /// <remarks>

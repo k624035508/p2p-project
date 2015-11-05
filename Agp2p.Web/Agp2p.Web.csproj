@@ -826,6 +826,7 @@
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />
     <Content Include="templates\AnGuang\less\repassword.less" />
+    <Content Include="xmlconfig\cost.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

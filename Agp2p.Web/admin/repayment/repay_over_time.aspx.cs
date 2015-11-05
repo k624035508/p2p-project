@@ -123,7 +123,7 @@ namespace Agp2p.Web.admin.repayment
                         repay.ProjectStatus = r.li_projects.status;
                         repay.RepayStatus = r.status;
                         repay.RepayId = r.id;
-                        repay.OverDayCount = r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days;
+                        repay.OverDayCount = r.repay_at?.Subtract(r.should_repay_time).Days ?? (DateTime.Now.Subtract(r.should_repay_time)).Days;
                         //TODO 逾期罚金计算
                         repay.Forfeit = 0;
 
@@ -210,15 +210,14 @@ namespace Agp2p.Web.admin.repayment
             {
                 ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.Add.ToString());
                 int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
-                //TODO 扣除借款人托管账户钱 计算罚款
-                context.ExecuteRepaymentTask(repayId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
+                context.OverTimeRepay(repayId, Costconfig.overtime_pay, Costconfig.overtime_cost, Costconfig.overtime_cost2);
                 JscriptMsg("还款成功！",
-                    Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}",
+                    Utils.CombUrlTxt("repay_over_time.aspx", "channel_id={0}&category_id={1}&status={2}",
                         this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                JscriptMsg("还款失败！", "back", "Error");
+                JscriptMsg("还款失败：" + ex.Message, "back", "Error");
             }
         }
     }
