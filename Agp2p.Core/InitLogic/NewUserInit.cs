@@ -5,6 +5,7 @@ using System.Text;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
+using Agp2p.Model;
 
 namespace Agp2p.Core.InitLogic
 {
@@ -54,12 +55,13 @@ namespace Agp2p.Core.InitLogic
             context.dt_user_point_log.InsertOnSubmit(dtUserPointLog);
 
             // 发站内信
+            var userConfig = ConfigLoader.loadUserConfig();
             var dtUserMessage = new dt_user_message
             {
                 type = 1,
                 accept_user_name = newUser.user_name,
                 title = "欢迎您成为本站会员",
-                content = ConfigLoader.loadUserConfig().regmsgtxt,
+                content = userConfig == null ? "恭喜您注册成功，马上充值投资，赚的飞起来！" : userConfig.regmsgtxt,
                 post_user_name = "",
                 post_time = newUser.reg_time.Value,
                 receiver = newUser.id
