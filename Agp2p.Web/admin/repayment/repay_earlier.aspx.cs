@@ -104,11 +104,21 @@ namespace Agp2p.Web.admin.repayment
                 //计算原来的还款计划应还总额
                 var repayOld =
                     r.li_projects.li_repayment_tasks.Where(t => t.project == r.project && t.status != (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid).OrderBy(t => t.should_repay_time);//旧计划
-                repay.Amount = repayOld.Sum(t => t.repay_interest + t.repay_principal);//应还款
-                repay.FactAmount = (r.repay_interest + r.repay_principal) +
-                                   (repayOld.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
-                                       .Sum(t => t.repay_interest + t.repay_principal));//实还款
-                repay.Cost = r.repay_interest;
+                //只有一期
+                if (!repayOld.Any())
+                {
+                    repay.Amount = r.repay_interest + r.repay_principal;
+                    repay.FactAmount = repay.Amount;
+                }
+                else
+                {
+                    repay.Amount = repayOld.Sum(t => t.repay_interest + t.repay_principal); //应还款
+                    repay.FactAmount = (r.repay_interest + r.repay_principal) +
+                                       (repayOld.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
+                                           .Sum(t => t.repay_interest + t.repay_principal)); //实还款
+                }
+
+                repay.Cost = r.cost??0;
                 repay.DayCount = (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days;//提前天数
                 repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");//应还时间
                 repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";//实还时间
@@ -120,7 +130,10 @@ namespace Agp2p.Web.admin.repayment
                 repay.ProjectTitle = r.li_projects.title;
                 repay.ProjectStatus = r.li_projects.status;
                 repay.RepayStatus = r.status;
-                repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
+
+                repay.TimeTerm = r.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                    ? "1/1"
+                    : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
 
                 return repay;
             }).AsQueryable();

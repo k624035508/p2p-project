@@ -107,7 +107,9 @@ namespace Agp2p.Web.admin.repayment
                         repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
                         repay.Principal = r.repay_principal;
                         repay.Interest = r.repay_interest;
-                        repay.TimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
+                        repay.TimeTerm = r.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                            ? "1/1"
+                            : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
                         repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");
                         repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";
                         repay.Category = r.li_projects.category_id;
