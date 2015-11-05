@@ -547,6 +547,26 @@ namespace Agp2p.Common
         }
 
         /// <summary>
+        /// 我的投资 图表查询类型
+        /// </summary>
+        public enum ChartQueryEnum
+        {
+            [Description("累计投资")]
+            TotalInvestment = 0,
+            [Description("在投本金")]
+            InvestingMoney = 1,
+            [Description("已收本金")]
+            RepaidInvestment = 2,
+            [Description("累计收益")]
+            AccumulativeProfit = 3,
+            [Description("待收益")]
+            ProfitingMoney = 4,
+            [Description("已收益")]
+            TotalProfit = 5,
+            
+        }
+
+        /// <summary>
         /// 回款计划查询状态枚举
         /// </summary>
         public enum MyRepaymentQueryTypeEnum

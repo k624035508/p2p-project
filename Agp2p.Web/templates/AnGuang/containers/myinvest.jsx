@@ -1,14 +1,20 @@
-import React from "react"
-import echarts from 'echarts/src/echarts'
-import 'echarts/src/chart/bar'
 import "../less/myinvest.less"
 
-let option = {
+import React from "react"
+import { ajax } from "jquery"
+import keys from "lodash/object/keys"
+import values from "lodash/object/values"
+import echarts from 'echarts/src/echarts'
+import 'echarts/src/chart/bar'
+
+const Tab0 = ["累计投资", "在投本金", "已收本金"];
+const Tab1 = ["累计收益", "待收益", "已收益"];
+
+let genOption = (chartName, barData) => ({
     color: ["#37aaf0"],
     tooltip : {
         trigger: 'axis'
     },
-    calculable : true,
     grid: {
         y: 10,
         y2: 30,
@@ -17,63 +23,87 @@ let option = {
     xAxis : [
         {
             type : 'category',
-            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-            splitLine: { show: false }
+            data : barData.map(b => keys(b)[0]),
+            splitLine: { show: false },
+            axisLabel: { interval: 0 }
         }
     ],
     yAxis : [
         {
             type : 'value',
-            min: 0,
-            max: 10000,
         }
     ],
     series : [
         {
-            name:'投资',
+            name: chartName,
             type:'bar',
             barWidth: 30,
-            data:[500, 1000, 5000, 3000, 8500, 6000, 10000, 5000, 7000, 5500, 4000, 2000]
+            data: barData.map(b => values(b)[0])
         }
     ]
-};
+});
 
-export default class MyInvestPage extends React.Component {
+class MyInvestPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {tabIndex0: -1, tabIndex1: -1 };
     }
-
     componentDidMount() {
-        this.renderChart();
+    	this.loadChart0(0);
+    	this.loadChart1(0);
     }
-
-    renderChart() {
-        let myChart = echarts.init(this.refs.chartBox);
-        myChart.setOption(option);
-
-        let myChart2 = echarts.init(this.refs.chartBox2);
-        myChart2.setOption(option);
+    loadChart0(type) {
+    	if (this.state.tabIndex0 == type) return;
+    	this.fetchChartData(type).done(result => {
+        	let chartData = JSON.parse(result.d), chart = echarts.init(this.refs.chartBox);
+            chart.setOption(genOption(Tab0[type], chartData));
+            this.setState({tabIndex0: type});
+        });
     }
-
+    loadChart1(type) {
+    	if (this.state.tabIndex1 == type) return;
+    	this.fetchChartData(3 + type).done(result => {
+        	let chartData = JSON.parse(result.d), chart = echarts.init(this.refs.chartBox2);
+            chart.setOption(genOption(Tab1[type], chartData));
+            this.setState({tabIndex1: type});
+        });
+    }
+    fetchChartData(type) {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryMouthlyHistory";
+        return ajax({
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({type: type}),
+            success: function(result) {
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+    }
     render(){
         return(
             <div className="myinvest-wrap">
                 <div className="total-invest">
                     <ul className="list-unstyled list-inline">
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex0 == 0 ? "active" : "")}
+	                        onClick={ev => this.loadChart0(0)}>
                             <p>累计投资</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.totalInvestment}</p>
                         </li>
                         <li className="operator">=</li>
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex0 == 1 ? "active" : "")}
+                        	onClick={ev => this.loadChart0(1)}>
                             <p>在投本金</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.investingMoney}</p>
                         </li>
                         <li className="operator">+</li>
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex0 == 2 ? "active" : "")}
+                        	onClick={ev => this.loadChart0(2)}>
                             <p>已收本金</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.totalInvestment - this.props.investingMoney}</p>
                         </li>
                     </ul>
                     <div id="invest-bar" ref="chartBox"></div>
@@ -81,19 +111,22 @@ export default class MyInvestPage extends React.Component {
                 <div className="divider"></div>
                 <div className="total-profit">
                     <ul className="list-unstyled list-inline">
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex1 == 0 ? "active" : "")}
+                        	onClick={ev => this.loadChart1(0)}>
                             <p>累计收益</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.totalProfit + this.props.profitingMoney}</p>
                         </li>
                         <li className="operator">=</li>
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex1 == 1 ? "active" : "")}
+                        	onClick={ev => this.loadChart1(1)}>
                             <p>待收益</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.profitingMoney}</p>
                         </li>
                         <li className="operator">+</li>
-                        <li>
+                        <li className={"myinvest-tab " + (this.state.tabIndex1 == 2 ? "active" : "")}
+                        	onClick={ev => this.loadChart1(2)}>
                             <p>已收益</p>
-                            <p>￥0.00</p>
+                            <p>￥{this.props.totalProfit}</p>
                         </li>
                     </ul>
                     <div id="profit-bar" ref="chartBox2"></div>
@@ -102,3 +135,10 @@ export default class MyInvestPage extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return state.walletInfo;
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(MyInvestPage);

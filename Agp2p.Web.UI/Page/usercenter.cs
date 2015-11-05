@@ -92,7 +92,11 @@ namespace Agp2p.Web.UI.Page
                     lockedMoney = wallet.locked_money,
                     investingMoney = wallet.investing_money,
                     profitingMoney = wallet.profiting_money,
-                    lotteriesValue
+                    lotteriesValue,
+                    totalCharge = wallet.total_charge,
+                    totalInvestment = wallet.total_investment,
+                    totalProfit = wallet.total_profit,
+                    totalWithdraw = wallet.total_withdraw,
                 },
                 userInfo = new
                 {
@@ -365,5 +369,76 @@ namespace Agp2p.Web.UI.Page
 
             return "保存成功";
         }
+
+        private static IEnumerable<Tuple<string,DateTime,DateTime>> GenMountlyTimeSpan(DateTime startTime, DateTime endTime)
+        {
+            for (var i = startTime; i <= endTime; i = i.AddMonths(1))
+            {
+                var name = i.Month == 1 ? i.ToString("yyyy/M") : i.ToString("M月");
+                var startSpan = new DateTime(i.Year, i.Month, 1);
+                yield return
+                    new Tuple<string, DateTime, DateTime>(name, startSpan, startSpan.AddMonths(1));
+            }
+        }
+
+        [WebMethod]
+        public static string AjaxQueryMouthlyHistory(short type)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var histories = userInfo.li_wallet_histories.ToList();
+            if (!histories.Any()) return "[]";
+
+            Func<li_wallet_histories, decimal> selector;
+            switch ((Agp2pEnums.ChartQueryEnum)type)
+            {
+                case Agp2pEnums.ChartQueryEnum.TotalInvestment:
+                    selector = h => h.total_investment;
+                    break;
+                case Agp2pEnums.ChartQueryEnum.InvestingMoney:
+                    selector = h => h.investing_money;
+                    break;
+                case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
+                    selector = h => h.total_investment - h.investing_money;
+                    break;
+                case Agp2pEnums.ChartQueryEnum.AccumulativeProfit:
+                    selector = h => h.total_profit + h.profiting_money;
+                    break;
+                case Agp2pEnums.ChartQueryEnum.ProfitingMoney:
+                    selector = h => h.profiting_money;
+                    break;
+                case Agp2pEnums.ChartQueryEnum.TotalProfit:
+                    selector = h => h.total_profit;
+                    break;
+                default:
+                    throw new Exception("不支持的类型");
+            }
+
+            var oldest = histories.First();
+            var newest = histories.Last();
+
+            // 生成时间间隔
+            var timeSpan = GenMountlyTimeSpan(new [] {oldest.create_time, newest.create_time.AddYears(-1)}.Min(), newest.create_time).ToList();
+
+            // 查询数据
+            var totalInvestments = timeSpan.Select(s =>
+            {
+                return
+                    histories.Where(h => s.Item2 <= h.create_time && h.create_time < s.Item3)
+                        .Select(selector)
+                        .LastOrDefault();
+            });
+
+            // [{'2015年1月':0},{'2月':100}]
+            return
+                JsonConvert.SerializeObject(timeSpan.Zip(totalInvestments, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
+        }
+
     }
 }

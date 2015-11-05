@@ -145,5 +145,23 @@ namespace Agp2p.Test
             //context.SubmitChanges();
         }
 
+        private static IEnumerable<Tuple<string, DateTime, DateTime>> GenMountlyTimeSpan(DateTime startTime, DateTime endTime)
+        {
+            for (var i = startTime; i <= endTime; i = i.AddMonths(1))
+            {
+                var name = i.Month == 1 ? i.ToString("yyyy年MM月") : i.ToString("MM月");
+                var startSpan = new DateTime(i.Year, i.Month, 1);
+                yield return
+                    new Tuple<string, DateTime, DateTime>(name, startSpan, startSpan.AddMonths(1));
+            }
+        }
+
+        [TestMethod]
+        public void TestEval()
+        {
+            var HelloWorld = EvalProvider.CreateEvalMethod<int, string>(@"return ""Hello world "" + arg;");
+
+            Console.WriteLine(HelloWorld(42));
+        }
     }
 }
