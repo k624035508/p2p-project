@@ -39,7 +39,7 @@ namespace Agp2p.Core
             }
         }
 
-        public static userconfig loadUserConfig(bool loadOutsideProject = true)
+        public static userconfig loadUserConfig(bool loadOutsideProject = false)
         {
             try
             {
