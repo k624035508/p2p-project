@@ -13,12 +13,14 @@ namespace Agp2p.Model
     {
         public costconfig()
         { }
-        private float _earlier_pay = 0;
-        private float _overtime_pay = 0;
-        private float _withdraw = 0;
-        private float _recharge_lowest = 0;
+        private decimal _earlier_pay = 0;
+        private decimal _overtime_pay = 0;
+        private decimal _overtime_cost = 0;
+        private decimal _overtime_cost2 = 0;
+        private decimal _withdraw = 0;
+        private decimal _recharge_lowest = 0;
 
-        public float earlier_pay
+        public decimal earlier_pay
         {
             get
             {
@@ -31,7 +33,7 @@ namespace Agp2p.Model
             }
         }
 
-        public float overtime_pay
+        public decimal overtime_pay
         {
             get
             {
@@ -44,7 +46,33 @@ namespace Agp2p.Model
             }
         }
 
-        public float withdraw
+        public decimal overtime_cost
+        {
+            get
+            {
+                return _overtime_cost;
+            }
+
+            set
+            {
+                _overtime_cost = value;
+            }
+        }
+
+        public decimal overtime_cost2
+        {
+            get
+            {
+                return _overtime_cost2;
+            }
+
+            set
+            {
+                _overtime_cost2 = value;
+            }
+        }
+
+        public decimal withdraw
         {
             get
             {
@@ -57,7 +85,7 @@ namespace Agp2p.Model
             }
         }
 
-        public float recharge_lowest
+        public decimal recharge_lowest
         {
             get
             {

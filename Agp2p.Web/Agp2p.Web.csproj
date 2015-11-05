@@ -837,6 +837,7 @@
     <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\less\usercenter-common-style.less" />
     <Content Include="templates\AnGuang\less\aboutus.less" />
+    <Content Include="xmlconfig\cost.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

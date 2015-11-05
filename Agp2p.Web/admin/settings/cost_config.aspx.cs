@@ -22,8 +22,10 @@ namespace Agp2p.Web.admin.settings
 
         private void ShowInfo()
         {
-            txt_earlier_pay.Text = Costconfig.earlier_pay.ToString("N1");
-            txt_overtime_pay.Text = Costconfig.overtime_pay.ToString("N1");
+            txt_earlier_pay.Text = (Costconfig.earlier_pay*100).ToString("N1");
+            txt_overtime_pay.Text = (Costconfig.overtime_pay*100).ToString("N1");
+            txt_overtime_cost.Text = (Costconfig.overtime_cost*1000).ToString("N1");
+            txt_overtime_cost2.Text = (Costconfig.overtime_cost2*1000).ToString("N1");
             txt_recharge_lowest.Text = Costconfig.recharge_lowest.ToString("N0");
             txt_withdraw.Text = Costconfig.withdraw.ToString("N1");
         }
@@ -33,10 +35,12 @@ namespace Agp2p.Web.admin.settings
             try
             {
                 Model.costconfig model = new Model.costconfig();
-                model.earlier_pay = Utils.StrToFloat(txt_earlier_pay.Text.Trim(), 0);
-                model.overtime_pay = Utils.StrToFloat(txt_overtime_pay.Text.Trim(), 0);
-                model.recharge_lowest = Utils.StrToFloat(txt_recharge_lowest.Text.Trim(), 0);
-                model.withdraw = Utils.StrToFloat(txt_withdraw.Text.Trim(), 0);
+                model.earlier_pay = Utils.StrToDecimal(txt_earlier_pay.Text.Trim(), 0)/100;
+                model.overtime_pay = Utils.StrToDecimal(txt_overtime_pay.Text.Trim(), 0)/100;
+                model.overtime_cost = Utils.StrToDecimal(txt_overtime_cost.Text.Trim(), 0)/1000;
+                model.overtime_cost2 = Utils.StrToDecimal(txt_overtime_cost2.Text.Trim(), 0)/1000;
+                model.recharge_lowest = Utils.StrToDecimal(txt_recharge_lowest.Text.Trim(), 0);
+                model.withdraw = Utils.StrToDecimal(txt_withdraw.Text.Trim(), 0);
 
                 new BLL.cost_config().saveConifg(model);
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改费用配置信息"); //记录日志

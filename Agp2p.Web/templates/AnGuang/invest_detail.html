@@ -75,7 +75,11 @@
                 <table>
                     <tbody>
                         <tr><td>计息方式</td><td>满标当天，立即计息</td></tr>
-                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                        <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+                        <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                        <%else%>
+                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
+                        <%/if%>
                     </tbody>
                 </table>
             </div>
@@ -147,46 +151,40 @@
 <!--标书样式 end-->
 
 <!--项目内容-->
+<%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
         <div id="project-summary">
-            <span class="title-mark">1.项目简介</span>
+            <span class="title-mark">{hIndex++}.项目简介</span>
             <ul class="list-unstyled">
-                <li><span>项目描述</span><span class="span-sec">借款企业主营业务为矿产品、煤炭等产品的销售，借款用于采购铝矾土，销售给与其合作关系稳定的下游客户，采购的货物由监管公司进行监管，借款企业分批回款分批出货。该项目的风控要点在于对供应链的控制。</span></li>
-                <li><span>借款用途</span><span class="span-sec">补充流动资金。</span></li>
-                <li><span>还款来源</span><span class="span-sec">工资收入。</span></li>
-                <li><span>借款期限</span><span class="span-sec">借款1个月，期限较短。</span></li>
+                <li><span>项目描述</span><span class="span-sec">{risk.loaner_content}</span></li>
+                <li><span>借款用途</span><span class="span-sec">{risk.loan_usage}</span></li>
+                <li><span>还款来源</span><span class="span-sec">{risk.source_of_repayment}</span></li>
             </ul>
         </div>
         
         <div id="borrower-info">
-            <span class="title-mark">2.借款人信息</span>
+            <span class="title-mark">{hIndex++}.借款人信息</span>
             <div class="personal-info clearfix">
                 <ul class="list-unstyled">
-                    <li><span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>
-                    <li><span>出生年月</span><span>暂无数据</span></li>
+                    <li><span>姓　　名</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>
+                    <li><span>婚姻状况</span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
                     <li><span>月 收 入</span><span>{loaner.income}</span></li>
+                </ul>
+                <ul class="list-unstyled">
+                    <li><span>性　　别</span><span><%=loaner.dt_users.sex%></span></li>
                     <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
                 </ul>
                 <ul class="list-unstyled">
-                    <li><span>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</span><span>{loaner.dt_users.area}</span></li>
-                    <li><span>婚姻状况</span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
-                    <li><span>房产数量</span><span>暂无数据</span></li>
-                    <li><span>是否购车</span><span>暂无数据</span></li>
-                </ul>
-                <ul class="list-unstyled">
-                    <li><span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span><span><%=loaner.dt_users.sex%></span></li>
-                    <li><span>逾期次数</span><span>暂无数据</span></li>
-                    <li><span>借款次数</span><span>暂无数据</span></li>
+                    <li><span>籍　　贯</span><span>{loaner.native_place}</span></li>
+                    <li><span>年　　龄</span><span><%=loaner.age%></span></li>
                 </ul>
             </div>
         </div>
         
+        <%if(loaner_company!=null)%>
         <div id="corporate-info">
-            <span class="title-mark">3.企业信息</span>
-            <%if(loaner_company==null)%>
-            <div class="content-null">暂无数据</div>
-            <%else%>
+            <span class="title-mark">{hIndex++}.企业信息</span>
             <ul class="list-unstyled">
                 <li><span><span class="specific-location">企业名称</span></span><span class="span-sec">{loaner_company.name}</span></li>
                 <li><span><span class="specific-location">成立时间</span></span><span class="span-sec">{loaner_company.setup_time}</span></li>
@@ -198,13 +196,15 @@
                 <li><span><span class="specific-location">年收入</span></span><span class="span-sec">{loaner_company.income_yearly}</span></li>
                 <li><span><span class="specific-location">备注</span></span><span class="span-sec">{loaner_company.remark}</span></li>
             </ul>
-            <%/if%>
         </div>
+        <%/if%>
         
         <div id="risk-control">
-            <span class="title-mark">4.风控措施</span>
+            <span class="title-mark">{hIndex++}.风控措施</span>
+            <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
+            <div>{risk.risk_content}</div>
+            <%/if%>
             <ul class="list-unstyled risk-control-content">
-                <li><span><span class="specific-location">风控描述</span></span><span class="span-sec">{risk.risk_content}</span></li>
                 <%foreach(var mortgage in mortgages)%>
                 <%csharp%>
                 var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
@@ -219,10 +219,16 @@
             <%csharp%> } <%/csharp%>
             <%/foreach%>
             </ul>
+            <%if(string.IsNullOrWhiteSpace(risk.risk_content)&&mortgages.Count==0)%>
+                <div class="content-null">暂无数据</div>
+            <%/if%>
         </div>
         
         <div id="relevant-info">
-            <span class="title-mark">5.相关资料</span>
+            <span class="title-mark">{hIndex++}.相关资料</span>
+            <%if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
+                <div class="content-null">暂无数据</div>
+            <%else%>
             <div class="row photo-cell">
                 <%foreach(var picture in albums_pictures)%>
                 <div class="col-md-3 col-xs-3">
@@ -264,39 +270,80 @@
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
             </div>
+            <%/if%>
         </div>
-        
+
+        <%if(projectModel.status>=(int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
+        <div id="repayment-task">
+            <span class="title-mark">{hIndex++}.还款计划</span>
+            <div class="repayment-task">
+                <table class="table table-hover">
+                    <thead>
+                    <tr><th>期次</th>
+                        <th>还款日</th>
+                        <th>应还本息（元）</th>
+                        <th>应还本金（元）</th>
+                        <th>应还利息（元）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <%foreach(var task in repayment_tasks)%>
+                        <tr>
+                            <td>{task.term}</td>
+                            <td><%=task.should_repay_time.ToString("yyyy-MM-dd")%></td>
+                            <td><%=string.Format("{0:c}", task.repay_interest+task.repay_principal)%></td>
+                            <td><%=string.Format("{0:c}", task.repay_principal)%></td>
+                            <td><%=string.Format("{0:c}", task.repay_interest)%></td>
+                        </tr>
+                        <%/foreach%>
+                        <%if(repayment_tasks.Count==0)%>
+                            <tr><td align="center" colspan="5">暂无记录</td></tr>
+                        <%/if%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <%/if%>
+
         <div id="invest-record">
-            <span class="title-mark">6.投标记录</span>
+            <span class="title-mark">{hIndex++}.投标记录</span>
             <div class="invest-record">
                 <table class="table table-hover">
                     <thead>
                         <tr><th>序号</th><th>用户名</th><th>投标金额</th><th>投标时间</th></tr>
                     </thead>
                     <tbody>
-                        <%set int totalCount=0%>
-                        <%set var investments=query_investment(projectModel,page-1,PageSize,out totalCount)%>
-                        <%for(int i=0;i <investments.Count;i++)%>
-                            <tr><td>{i+1}</td><td class="account-style"><%=investments[i].user_name%></td><td><%=investments[i].value%></td><td><%=investments[i].create_time%></td></tr>
+                        <%set var investments=QueryProjectTransactions()%>
+                        <%for(int i=0;i<investments.Count;i++)%>
+                        <tr><td>{i+1}</td>
+                            <td class="account-style"><%=investments[i].user_name%></td>
+                            <td><%=investments[i].value%></td>
+                            <td><%=investments[i].create_time%></td>
+                        </tr>
                         <%/for%>
-                        <%if(totalCount<1)%>
+                        <%if(investments.Count==0)%>
                             <tr><td align="center" colspan="4">暂无记录</td></tr>
                         <%/if%>
                     </tbody>
                 </table>
-                <div class="flickr" style="text-align: center;"><%= get_page_link(PageSize,page,totalCount,linkurl("invest_detail",project_id,"__id__"))%></div> <!--放置页码列表-->
             </div>
         </div>
     </div>
 
+    <%set hIndex=1%>
     <div id="sidemenu" class="project-content-right">
         <ul class="list-unstyled notScroll">
-            <li><a href="#project-summary"><span></span>1.项目简介</a></li>
-            <li><a href="#borrower-info"><span></span>2.借款人信息</a></li>
-            <li><a href="#corporate-info"><span></span>3.企业信息</a></li>
-            <li><a href="#risk-control"><span></span>4.风控措施</a></li>
-            <li><a href="#relevant-info"><span></span>5.相关资料</a></li>
-            <li><a href="#invest-record"><span></span>6.投资记录</a></li>
+            <li><a href="#project-summary"><span></span>{hIndex++}.项目简介</a></li>
+            <li><a href="#borrower-info"><span></span>{hIndex++}.借款人信息</a></li>
+            <%if(loaner_company!=null)%>
+            <li><a href="#corporate-info"><span></span>{hIndex++}.企业信息</a></li>
+            <%/if%>
+            <li><a href="#risk-control"><span></span>{hIndex++}.风控措施</a></li>
+            <li><a href="#relevant-info"><span></span>{hIndex++}.相关资料</a></li>
+            <%if(projectModel.status>=(int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
+            <li><a href="#repayment-task"><span></span>{hIndex++}.还款计划</a></li>
+            <%/if%>
+            <li><a href="#invest-record"><span></span>{hIndex++}.投资记录</a></li>
         </ul>
     </div>
 </div>

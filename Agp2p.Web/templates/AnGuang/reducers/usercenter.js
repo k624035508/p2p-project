@@ -3,7 +3,17 @@ import { UPDATE_BANK_CARDS } from "../actions/bankcard.js"
 import Immutable from "immutable"
 
 const initialState = {
-	walletInfo: { idleMoney: 0, lockedMoney: 0, investingMoney: 0, profitingMoney: 0, lotteriesValue: 0},
+	walletInfo: {
+		idleMoney: 0,
+		lockedMoney: 0,
+		investingMoney: 0,
+		profitingMoney: 0,
+		lotteriesValue: 0,
+		totalCharge: 0,
+		totalInvestment: 0,
+		totalProfit: 0,
+		totalWithdraw: 0
+	},
 	userInfo: {
 		userName: "",
 		prevLoginTime: "",
