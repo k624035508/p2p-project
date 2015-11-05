@@ -1,5 +1,6 @@
 import React from "react"
 import Pagination from "../components/pagination.jsx"
+
 import "../less/invitation.less"
 
 class InvitationPage extends React.Component {

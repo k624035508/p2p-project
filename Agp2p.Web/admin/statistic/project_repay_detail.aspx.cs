@@ -169,9 +169,7 @@ namespace Agp2p.Web.admin.statistic
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
                             Term = r.term + "/" + pro.repayment_term_span_count,
-                            RepayAt = r.repay_at != null ? ((DateTime)r.repay_at).ToString("yyyy-MM-dd") : "",
-                            //OverTimeDay = r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time 
-                            //    ? r.repay_at == null ? (r.should_repay_time.Subtract(DateTime.Now)).Days.ToString() : (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days.ToString() : "0",
+                            RepayAt = r.repay_at?.ToString("yyyy-MM-dd") ?? "",
 
                             InvestCompleteTime = pro.invest_complete_time.ToString(),
                             RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),

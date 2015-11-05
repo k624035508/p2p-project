@@ -1,0 +1,90 @@
+@import "common-style";
+@images: "../imgs/aboutus";
+
+body { background: @body-color; }
+
+.aboutPage {
+	& > div {
+		display: inline-block;
+		vertical-align: top;
+		background: @white;
+		border: @border;
+	}
+	.left-nav {
+		width: 230px;
+		height: 441px;
+		margin-right: 10px;
+		.nav-list {
+			text-align: center;
+			li {
+				line-height: 52px;
+				border-top: @border;
+				&:hover, &.clicked {
+					background: @body-color;
+					border-left: 3px solid @red;
+				}
+				a {
+					display: inline-block;
+					width: 150px;
+					height: 100%;
+					color: @dark-grey;
+					font-size: @font18;
+					text-decoration: none;
+					padding-left: 25px;
+				}
+				.company { background: url("@{images}/company.png") no-repeat 0 50%; }
+				.product { background: url("@{images}/product.png") no-repeat 0 50%; }
+				.announcement { background: url("@{images}/announcement.png") no-repeat 0 50%; }
+				.dynamic { background: url("@{images}/dynamic.png") no-repeat 0 50%; }
+				.reports { background: url("@{images}/reports.png") no-repeat 0 50%; }
+				.join-us { background: url("@{images}/joinus.png") no-repeat 0 50%; }
+				.partner { background: url("@{images}/partner.png") no-repeat 0 50%; }
+				.contact { background: url("@{images}/contact.png") no-repeat 0 50%; }
+			}
+			li:first-child { border-top: none; }
+		}
+	}
+	.right-content {
+		width: 855px;
+		min-height: 441px;
+		//网站公告、公司动态、媒体报道
+		.announcement-wrap, .dynamic-wrap,  .reports-wrap {
+			.topic-th {
+				padding: 0 25px;
+				color: @darker-grey;
+				font-size: @font22;
+				font-weight: bold;
+				line-height: 54px;
+				border-bottom: @border;
+			}
+			.content-list {
+				li {
+					padding: 0 10px;
+					margin: 0 15px;
+					line-height: 50px;
+					border-bottom: @border-dashed;
+					i {
+						.inline-block;
+						width: 5px;
+						height: 5px;
+						background: @red;
+						margin-right: 15px;
+					}
+					a {
+						color: @dark-grey;
+						font-size: @font15;
+						text-decoration: none;
+					}
+					span {
+						color: @grey;
+						font-size: @font13;
+					}
+				}
+			}
+			.pages {
+				text-align: center;
+				line-height: 75px;
+			}
+		}
+	}
+}

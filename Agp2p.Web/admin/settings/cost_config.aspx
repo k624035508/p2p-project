@@ -37,10 +37,22 @@
                     <span class="Validform_checktip">% * 本金</span></dd>
             </dl>
             <dl>
-                <dt>逾期还款罚款</dt>
+                <dt>逾期还款罚息</dt>
                 <dd>
                     <asp:TextBox ID="txt_overtime_pay" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
-                    <span class="Validform_checktip">% * 逾期天数</span></dd>
+                    <span class="Validform_checktip">% * 利息</span></dd>
+            </dl>
+            <dl>
+                <dt>逾期管理费</dt>
+                <dd>
+                    <asp:TextBox ID="txt_overtime_cost" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">‰ * 本金 * 逾期天数(30天以下)</span></dd>
+            </dl>
+            <dl>
+                <dt>逾期管理费</dt>
+                <dd>
+                    <asp:TextBox ID="txt_overtime_cost2" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">‰ * 本金 * 逾期天数(30天以上)</span></dd>
             </dl>
             <dl>
                 <dt>提现费</dt>

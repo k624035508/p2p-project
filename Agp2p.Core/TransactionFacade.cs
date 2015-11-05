@@ -699,7 +699,7 @@ namespace Agp2p.Core
             Agp2pEnums.RepaymentStatusEnum statusAfterPay = Agp2pEnums.RepaymentStatusEnum.AutoPaid)
         {
             var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repaymentId);
-            if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)
+            if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && repaymentTask.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("这个还款计划已经执行过了");
 
             // 执行还款
@@ -778,6 +778,12 @@ namespace Agp2p.Core
                         Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
                         realityInterest);
                 }
+                else if (repaymentTask.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
+                {
+                    remark = string.Format("逾期还款：本期原来的待收益 {0:f2}，实际收益 {1:f2}",
+                        Math.Round(r.Value * (repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
+                        realityInterest);
+                }
 
                 return new li_project_transactions
                 {
@@ -805,7 +811,7 @@ namespace Agp2p.Core
             var unpaidTasks = project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!unpaidTasks.Any()) throw new Exception("全部还款计划均已执行，不能进行提前还款");
             if (remainTermPrincipalRatePercent < 0 || 100 < remainTermPrincipalRatePercent) throw new Exception("剩余利息百分比率不正常");
-            var remainTermPrincipalRate = remainTermPrincipalRatePercent/100;
+            var remainTermPrincipalRate = remainTermPrincipalRatePercent;
 
             var currentTask = unpaidTasks.First();
 
@@ -846,6 +852,43 @@ namespace Agp2p.Core
             context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 
             return project;
+        }
+
+        /// <summary>
+        /// 逾期还款
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="repayTaskId"></param>
+        /// <param name="overTimePayRate"></param>
+        public static void OverTimeRepay(this Agp2pDataContext context, int repayTaskId, decimal overTimePayRate, decimal overTimeCostRate, decimal overTimeCost2Rate)
+        {
+            var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repayTaskId);
+            if (repaymentTask.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTime)
+                throw new InvalidOperationException("当前还款不是逾期还款！");
+
+            //逾期罚息
+            var overTimePayInterest = repaymentTask.repay_interest*overTimePayRate;
+            repaymentTask.cost = repaymentTask.repay_interest - overTimePayInterest;
+            repaymentTask.repay_interest = overTimePayInterest;
+            //计算逾期管理费
+            var projectTransaction = new li_project_transactions
+            {
+                investor = (int) repaymentTask.li_projects.li_risks.li_loaners.user_id,
+                project = repaymentTask.project,
+                type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfOverTime,
+                status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                create_time = DateTime.Now,
+                remark = $"借款项目'{repaymentTask.li_projects.title}'收取逾期管理费"
+            };
+            var overDays = DateTime.Now.Subtract(repaymentTask.should_repay_time).Days;
+            if (overDays <= 30)
+                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*overTimeCostRate;
+            else
+                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*overTimeCost2Rate;
+            context.li_project_transactions.InsertOnSubmit(projectTransaction);
+
+            context.SubmitChanges();
+            context.ExecuteRepaymentTask(repayTaskId, Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
         }
 
         /// <summary>

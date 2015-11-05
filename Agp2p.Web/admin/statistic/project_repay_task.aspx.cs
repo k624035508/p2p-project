@@ -175,9 +175,7 @@ namespace Agp2p.Web.admin.statistic
                     RepayInterest = rg.repay_interest,
                     RepayTotal = (rg.repay_interest + rg.repay_principal),
                     RepayTerm = rg.term + "/" + rg.li_projects.repayment_term_span_count,
-                    RepayAt = rg.repay_at != null ? ((DateTime)rg.repay_at).ToString("yyyy-MM-dd") : "",
-                    //OverTimeDay = rg.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > rg.should_repay_time 
-                    //    ? rg.repay_at == null ? (rg.should_repay_time.Subtract(DateTime.Now)).Days : (rg.should_repay_time.Subtract((DateTime)rg.repay_at)).Days : 0
+                    RepayAt = rg.repay_at?.ToString("yyyy-MM-dd") ?? "",
 
                 });
             });

@@ -22,7 +22,7 @@ namespace Agp2p.Web.UI
             //累计注册
             int userCount = context.dt_users.Count();
             //运营天数
-            int totalDays = DateTime.Now.Subtract(DateTime.Parse("2014-12-21")).Days;
+            int totalDays = DateTime.Now.Subtract(DateTime.Parse("2015-11-1")).Days;
             //累计赚取
             decimal totalProfit = context.QueryTotalProfit();
             //累计投资
