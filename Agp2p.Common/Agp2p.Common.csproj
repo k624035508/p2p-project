@@ -68,6 +68,7 @@
     <Compile Include="DTKeys.cs" />
     <Compile Include="DTMail.cs" />
     <Compile Include="DTRequest.cs" />
+    <Compile Include="EvalProvider.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="LazyList.cs" />
     <Compile Include="Linq2DataTableHandler.cs" />
