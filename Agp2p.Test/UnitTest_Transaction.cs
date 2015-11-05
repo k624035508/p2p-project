@@ -145,5 +145,25 @@ namespace Agp2p.Test
             //context.SubmitChanges();
         }
 
+        private static IEnumerable<Tuple<string, DateTime, DateTime>> GenMountlyTimeSpan(DateTime startTime, DateTime endTime)
+        {
+            for (var i = startTime; i <= endTime; i = i.AddMonths(1))
+            {
+                var name = i.Month == 1 ? i.ToString("yyyy年MM月") : i.ToString("MM月");
+                yield return
+                    new Tuple<string, DateTime, DateTime>(name, new DateTime(i.Year, i.Month, 1),
+                        new DateTime(i.Year, i.Month, DateTime.DaysInMonth(i.Year, i.Month)));
+            }
+        }
+
+        [TestMethod]
+        public void TestGenMountlyTimeSpan()
+        {
+            GenMountlyTimeSpan(new DateTime(2015, 1, 1), DateTime.Today).ForEach(t =>
+            {
+                Debug.WriteLine(t);
+            });
+
+        }
     }
 }

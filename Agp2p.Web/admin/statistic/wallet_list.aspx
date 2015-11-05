@@ -132,11 +132,13 @@ thead * {
         <th align="right" width="8%">可用余额</th>
         <th align="right" width="8%">冻结金额</th>
         <th align="right" width="8%">在投金额</th>
+
         <th align="right" width="8%">已还本金</th>
         <th align="right" width="9%">累计投资</th>
         <th align="right" width="5%">待收益</th>
         <th align="right" width="5%">已收益</th>    
         <th align="right" width="7%">累计收益</th>
+
         <th align="right" width="7%">累计充值</th>
         <th align="right" width="7%">累计提现</th>
         <th align="center" width="7%">更新时间</th>
@@ -151,11 +153,13 @@ thead * {
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("idle_money")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("locked_money")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("investing_money")).ToString("c")%></td>
+
     <td style="text-align:right"><%# (Convert.ToDecimal(Eval("total_investment")) - Convert.ToDecimal(Eval("investing_money"))).ToString("c")%></td>    
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("total_investment")).ToString("c")%></td>   
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("profiting_money")).ToString("c")%></td> 
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("total_profit")).ToString("c")%></td>
     <td style="text-align:right"><%# (Convert.ToDecimal(Eval("profiting_money")) + Convert.ToDecimal(Eval("total_profit"))).ToString("c")%></td>
+
     <td style="text-align:right"><%# Convert.ToInt32(Eval("total_charge")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToInt32(Eval("total_withdraw")).ToString("c")%></td>
     <td style="text-align:center"><%# string.Format("{0:yy-MM-dd HH:mm}", Eval("last_update_time"))%></td>    
