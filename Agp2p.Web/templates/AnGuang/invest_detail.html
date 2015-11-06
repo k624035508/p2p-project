@@ -341,7 +341,7 @@
         <ul class="list-unstyled notScroll">
             <li><a href="#project-summary"><span></span>{hIndex++}.项目简介</a></li>
             <li><a href="#borrower-info"><span></span>{hIndex++}.借款人信息</a></li>
-            <%if(loaner_company!=null)%>
+            <%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
             <li><a href="#corporate-info"><span></span>{hIndex++}.企业信息</a></li>
             <%/if%>
             <li><a href="#risk-control"><span></span>{hIndex++}.风控措施</a></li>
