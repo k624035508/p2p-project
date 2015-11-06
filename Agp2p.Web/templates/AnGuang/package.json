@@ -13,13 +13,16 @@
   "license": "ISC",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
-    "babel-core": "^6.0.20",
+    "babel-core": "^6.1.2",
     "babel-loader": "^6.0.1",
     "webpack": "^1.12.2"
   },
   "dependencies": {
+    "babel-plugin-transform-es3-member-expression-literals": "^6.0.14",
+    "babel-plugin-transform-es3-property-literals": "^6.0.14",
     "babel-polyfill": "^6.0.16",
-    "babel-preset-metalab": "^0.1.1",
+    "babel-preset-es2015": "^6.1.2",
+    "babel-preset-react": "^6.1.2",
     "bootstrap": "^3.3.5",
     "bootstrap-datetime-picker": "git+https://github.com/smalot/bootstrap-datetimepicker.git",
     "bootstrap-webpack": "0.0.5",
