@@ -5,16 +5,17 @@ var webpack = require("webpack");
 module.exports = {
     cache: true,
     entry: {
+        // including bootstrap
         index: "./js/index.js",
         login: "./js/login.js",
-        invest_detail: "./js/invest_detail.js",
         register: "./js/register.js",
-        login: "./js/login.js",
-        usercenter: "./js/usercenter.jsx",
+        invest_detail: "./js/invest_detail.js",
         invest_list: "./js/invest_list.js",
-        repassword: "./js/repassword.js",
         aboutus: "./js/aboutus.js",
-        article_show: "./js/article_show.js"
+        article_show: "./js/article_show.js",
+        // including bootstrap, react
+        usercenter: "./js/usercenter.jsx",
+        repassword: "./js/repassword.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -22,7 +23,10 @@ module.exports = {
         publicPath: "/templates/AnGuang/build/"
     },
     plugins: [
-        new CommonsChunkPlugin("commons.bundle.js"),
+        // CommonsChunkPlugin 能将公共的模块抽出到单独的 js，再由页面单独引用。参考 https://webpack.github.io/docs/optimization.html
+        new CommonsChunkPlugin("react.bundle.js", ["usercenter", "repassword"]),
+        new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", "login",
+            "register", "invest_detail", "invest_list", "aboutus", "article_show"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
