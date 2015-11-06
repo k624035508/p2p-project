@@ -88,13 +88,13 @@
         <div class="invest-title-wrap">
             <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
             <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
-            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)!=0)%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
             <span class="invest-list-icon yue-icon"></span>
             <%/if%>
-            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Recommend)!=0)%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
             <span class="invest-list-icon jian-icon"></span>
             <%/if%>
-            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)!=0)%>
+            <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
             <span class="invest-list-icon xin-icon"></span>
             <%/if%>
         </div>

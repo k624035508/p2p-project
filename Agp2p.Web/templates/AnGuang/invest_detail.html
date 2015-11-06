@@ -36,13 +36,13 @@
             <span class="invest-style-tab">房贷宝</span>
             <span>{projectModel.title}</span>
             
-            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)!=0)%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
             <span class="invest-list-icon yue-icon"></span>
             <%/if%>
-            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)!=0)%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
             <span class="invest-list-icon jian-icon"></span>
             <%/if%>
-            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)!=0)%>
+            <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
             <span class="invest-list-icon xin-icon"></span>
             <%/if%>
         </div>
