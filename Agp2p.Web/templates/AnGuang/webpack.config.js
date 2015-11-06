@@ -13,7 +13,8 @@ module.exports = {
         usercenter: "./js/usercenter.jsx",
         invest_list: "./js/invest_list.js",
         repassword: "./js/repassword.js",
-        aboutus: "./js/aboutus.js"
+        aboutus: "./js/aboutus.js",
+        article_show: "./js/article_show.js"
     },
     output: {
         path: path.join(__dirname, './build'),
