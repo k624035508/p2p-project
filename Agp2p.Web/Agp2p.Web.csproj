@@ -645,6 +645,7 @@
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\company.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\contact.png" />
@@ -725,6 +726,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\test_01.jpg" />
     <Content Include="templates\AnGuang\imgs\usercenter\unread.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\gonghang.png" />
@@ -747,6 +749,7 @@
     <Content Include="templates\AnGuang\invest_list.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
+    <Content Include="templates\AnGuang\js\article_show.js" />
     <Content Include="templates\AnGuang\js\city.min.js" />
     <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\index.js" />
@@ -835,6 +838,7 @@
     <Content Include="templates\AnGuang\less\usercenter-common-style.less" />
     <Content Include="templates\AnGuang\less\aboutus.less" />
     <Content Include="xmlconfig\cost.config" />
+    <Content Include="templates\AnGuang\less\article_show.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
