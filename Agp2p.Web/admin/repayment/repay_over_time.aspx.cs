@@ -111,7 +111,9 @@ namespace Agp2p.Web.admin.repayment
                         var loaner = r.li_projects.li_risks.li_loaners.dt_users;
                         repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
                         repay.Amount = r.repay_interest + r.repay_principal;//应还金额
-                        repay.OverTimeTerm = $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";//逾期期数
+                        repay.OverTimeTerm = r.li_projects.repayment_term_span ==(int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                            ? "1/1"
+                            : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
                         repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");//应还时间
                         repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";//实还时间
                         repay.Category = r.li_projects.category_id;

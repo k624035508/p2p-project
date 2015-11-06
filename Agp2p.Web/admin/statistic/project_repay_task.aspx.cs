@@ -174,7 +174,9 @@ namespace Agp2p.Web.admin.statistic
                     RepayPrincipal = rg.repay_principal,
                     RepayInterest = rg.repay_interest,
                     RepayTotal = (rg.repay_interest + rg.repay_principal),
-                    RepayTerm = rg.term + "/" + rg.li_projects.repayment_term_span_count,
+                    RepayTerm = rg.li_projects.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                                ? "1/1"
+                                : $"{rg.term.ToString()}/{rg.li_projects.repayment_term_span_count}",
                     RepayAt = rg.repay_at?.ToString("yyyy-MM-dd") ?? "",
 
                 });

@@ -639,6 +639,7 @@
     <Content Include="scripts\underscore-min.js" />
     <Content Include="scripts\webuploader\uploader.swf" />
     <Content Include="scripts\webuploader\webuploader.min.js" />
+    <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\about.xml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
@@ -750,8 +751,6 @@
     <Content Include="templates\AnGuang\js\aboutus.js" />
     <Content Include="templates\AnGuang\js\article_show.js" />
     <Content Include="templates\AnGuang\js\city.min.js" />
-    <Content Include="templates\AnGuang\js\es5-sham.min.js" />
-    <Content Include="templates\AnGuang\js\es5-shim.min.js" />
     <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\index.js" />
     <Content Include="templates\AnGuang\js\invest_detail.js" />
@@ -759,14 +758,15 @@
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\repassword.js" />
-    <Content Include="templates\AnGuang\js\respond.min.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\invest_detail.less" />
     <Content Include="templates\AnGuang\login.html" />
+    <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\reducers\usercenter.js" />
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\repassword.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
+    <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
@@ -833,11 +833,8 @@
     <Content Include="templates\AnGuang\less\safe.less" />
     <Content Include="templates\AnGuang\less\settings.less" />
     <Content Include="templates\AnGuang\less\withdraw.less" />
-    <Content Include="templates\AnGuang\pwatch.bat" />
-    <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />
     <Content Include="templates\AnGuang\less\repassword.less" />
-    <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\less\usercenter-common-style.less" />
     <Content Include="templates\AnGuang\less\aboutus.less" />
     <Content Include="xmlconfig\cost.config" />

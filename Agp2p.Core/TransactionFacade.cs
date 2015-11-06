@@ -418,7 +418,7 @@ namespace Agp2p.Core
             var termCount = CalcRealTermCount(termSpan, termSpanCount); // 实际期数
 
             var repayPrincipal = project.investment_amount; // 本金投资总额
-            var interestAmount = project.profit_rate * repayPrincipal; // 利息总额
+            var interestAmount = Math.Round(project.profit_rate * repayPrincipal, 2); // 利息总额
 
             List<li_repayment_tasks> repaymentTasks;
             if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.DengEr) // 等额本息
@@ -470,6 +470,7 @@ namespace Agp2p.Core
 
             // 计算每个投资人的待收益金额，因为不一定是投资当日满标，所以不能投资时就知道收益（不同时间满标/截标会对导致不同的回款时间间隔，从而导致利率不同）
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
+
             // 计算借款管理费
             if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
             {
@@ -484,6 +485,7 @@ namespace Agp2p.Core
                     remark = $"借款项目'{project.title}'收取借款管理费"
                 });
             }
+
             //计算风险保证金
             if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
             {
@@ -518,7 +520,7 @@ namespace Agp2p.Core
                 throw new Exception("无法分割为 0 份");
             }
             var part = Math.Round(amount/splitCount, toFixed);
-            var finalPart = amount - part * (splitCount - 1);
+            var finalPart = Math.Round(amount - part * (splitCount - 1), toFixed);
             return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
         }
 
@@ -536,19 +538,26 @@ namespace Agp2p.Core
                     tr =>
                         tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .ToLookup(tr => tr.investor);
+                    .ToLookup(tr => tr.dt_users);
             // 计算出每个用户的投资占比
             var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key, records => records.Sum(tr => tr.principal) / project.investment_amount); // 公式：用户投资总额 / 项目投资总额
 
-            var wallets = context.li_wallets.Where(w => moneyRepayRatio.Keys.Contains(w.user_id)).ToList();
+            var wallets = investRecord.Select(ir => ir.Key.li_wallets).ToList();
+
+            // 重新计算代收本金前，先减去原来的投资金额
+            investRecord.ForEach(ir =>
+            {
+                ir.Key.li_wallets.investing_money -= ir.Sum(tr => tr.principal);
+            });
 
             // 修改钱包的值（待收益金额和时间）
-            foreach (var task in tasks.Where(t => 0 != t.repay_interest))
+            foreach (var task in tasks)
             {
                 foreach (var wallet in wallets)
                 {
-                    var ratio = moneyRepayRatio[wallet.user_id]; // 该用户的投资占比
+                    var ratio = moneyRepayRatio[wallet.dt_users]; // 该用户的投资占比
                     wallet.profiting_money += Math.Round(ratio*task.repay_interest, 2); // 累加利润：避免直接计算总利润（利率 * 总投资额），这样可以避免精度问题
+                    wallet.investing_money += Math.Round(ratio*task.repay_principal, 2); // 同理，重新计算代收本金
                 }
             }
             var projectInvestCompleteTime = project.make_loan_time.Value;
@@ -558,7 +567,7 @@ namespace Agp2p.Core
             var histories = wallets.Select(w =>
             {
                 var his = CloneFromWallet(w, Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess);
-                his.li_project_transactions = investRecord[w.user_id].Last();
+                his.li_project_transactions = investRecord[w.dt_users].Last();
                 return his;
             });
             context.li_wallet_histories.InsertAllOnSubmit(histories);

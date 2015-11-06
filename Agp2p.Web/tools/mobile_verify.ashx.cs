@@ -37,16 +37,8 @@ namespace Agp2p.Web.tools
                         return;
                     }
                     var mobile = nvc["mobile"];
-                    // 验证图形验证码
                     var picCode = nvc["picCode"];
-                    if (string.IsNullOrWhiteSpace(picCode) || !string.Equals((string)httpContext.Session[DTKeys.SESSION_CODE], picCode, StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        defCallback((int) HttpStatusCode.BadRequest, "图形验证码不正确");
-                        return;
-                    }
-                    httpContext.Session[DTKeys.SESSION_CODE] = null;
-
-                    sendMobileVerifyCode(mobile, 60, true, defCallback);
+                    sendMobileVerifyCode(picCode, mobile, 60, true, defCallback);
                     break;
                 case "verifyForBindMobile":
                     var verifyCode = nvc["verifyCode"];
@@ -54,14 +46,6 @@ namespace Agp2p.Web.tools
                     break;
                 case "sendCodeForResetPwd":
                     mobile = nvc["mobile"];
-                    // 验证图形验证码
-                    picCode = nvc["picCode"];
-                    if (string.IsNullOrWhiteSpace(picCode) || !string.Equals((string)httpContext.Session[DTKeys.SESSION_CODE], picCode, StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        defCallback((int) HttpStatusCode.BadRequest, "图形验证码不正确");
-                        return;
-                    }
-                    httpContext.Session[DTKeys.SESSION_CODE] = null;
 
                     var context = new Agp2pDataContext();
                     if (!context.dt_users.Any(u => u.mobile == mobile))
@@ -69,7 +53,7 @@ namespace Agp2p.Web.tools
                         defCallback((int) HttpStatusCode.NotFound, "不存在设有该电话号码的用户");
                         return;
                     }
-                    sendMobileVerifyCode(mobile, 60 * 2, false, defCallback);
+                    sendMobileVerifyCode(nvc["picCode"], mobile, 60 * 2, false, defCallback);
                     break;
                 case "verifyForResetPwd":
                     verifyCode = nvc["verifyCode"];
@@ -146,7 +130,7 @@ namespace Agp2p.Web.tools
             }
         }
 
-        private void sendMobileVerifyCode(string mobile, int sendSecondsSpan, bool checkConflict, Action<int, string> callback)
+        private void sendMobileVerifyCode(string picCode, string mobile, int sendSecondsSpan, bool checkConflict, Action<int, string> callback)
         {
             if (string.IsNullOrWhiteSpace(mobile))
             {
@@ -154,6 +138,7 @@ namespace Agp2p.Web.tools
                 return;
             }
             // verifying_mobile : string | last_send_verifying_sms_at : DateTime? | mobile_verify_code : string
+
             // 限制发送时间间隔
             var lastSendVerifyingSMSAt = (DateTime?)SessionHelper.Get("last_send_verifying_sms_at");
             if (lastSendVerifyingSMSAt != null && DateTime.Now.Subtract(lastSendVerifyingSMSAt.Value).TotalSeconds < sendSecondsSpan)
@@ -161,6 +146,15 @@ namespace Agp2p.Web.tools
                 callback(429, "发送短信的间隔为 " + sendSecondsSpan + " 秒，您刚才已经发送过啦，休息一下再来吧！");
                 return;
             }
+
+            // 验证图形验证码
+            if (string.IsNullOrWhiteSpace(picCode) || !string.Equals((string)HttpContext.Current.Session[DTKeys.SESSION_CODE], picCode, StringComparison.CurrentCultureIgnoreCase))
+            {
+                callback((int)HttpStatusCode.BadRequest, "图形验证码不正确");
+                return;
+            }
+            HttpContext.Current.Session[DTKeys.SESSION_CODE] = null;
+
             // 判断电话是否已经被验证过了
             var context = new Agp2pDataContext();
             if (checkConflict && context.dt_users.Count(u => u.mobile == mobile) != 0)
