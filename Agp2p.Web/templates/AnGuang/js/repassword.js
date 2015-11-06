@@ -81,8 +81,8 @@ class ResetPasswordPage extends React.Component {
 			        <ul className="list-unstyled reset-step1">
 			            <li><span>手机号</span><input type="text" className="phone-input" value={this.state.tel}
 			            	onChange={ev => this.setState({tel: ev.target.value})}/></li>
-			            <li><span>图形验证码</span><input type="text" className="sms-code-input" value={this.state.picCode}
-			            	onChange={ev => this.setState({picCode: ev.target.value})}/><ImageVerifyCode /></li>
+			            <li><span>图形验证码</span><input type="text" className="pic-code-input" value={this.state.picCode}
+			            	onChange={ev => this.setState({picCode: ev.target.value})}/><a href="javascript:"><ImageVerifyCode /></a></li>
 			            <li><span>短信验证码</span><input type="text" className="sms-code-input" value={this.state.smsCode}
 			            	onChange={ev => this.setState({smsCode: ev.target.value})}/><a href="javascript:"
 			            		onClick={ev => this.getSMSVerifyCode()}>获取验证码</a></li>
