@@ -1,5 +1,5 @@
 import React from "react";
-import { citylist } from "../js/city.min.js";
+import citylist from "../js/city.min.js";
 import indexOf  from "lodash/array/indexOf"
 
 class CityPicker extends React.Component {
