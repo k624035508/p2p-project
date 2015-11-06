@@ -136,7 +136,7 @@ class MyNews extends React.Component {
 						<div className="news-th">
                         <span className="checkbox"><input type="checkbox"
 														  checked={this.state.msgs.length == 0 ? false : all(this.state.msgs, m => m.checked)}
-														  onChange={ev => this.setAllMsgChecked(ev.target.value)}/></span>
+														  onChange={ev => this.setAllMsgChecked(ev.target.checked)}/></span>
 							<span className="state">状态</span>
 							<span className="th">标题</span>
 							<span className="content">内容</span>
