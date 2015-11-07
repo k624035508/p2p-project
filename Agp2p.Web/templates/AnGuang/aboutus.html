@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@
     <!--[if lt IE 9]>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
-    <script src="<%templateskin%>/js/respond.min.js"></script>
+    <script src="<%templateskin%>/node_modules/respond.js/dest/respond.min.js"></script>
     <![endif]-->
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/aboutus.bundle.js"></script>
@@ -18,7 +18,7 @@
 
 <!--面包屑导航-->
 <div class="breadcrumbs">
-    <a href="index.html">首页</a>
+    <a href="/">首页</a>
     <span> > </span>
     <span>关于我们</span>
 </div>
@@ -39,10 +39,10 @@
     </div>
     <div class="right-content">
         <!--网站公告内容-->
-        <div class="announcement-wrap hidden">
+        <div class="announcement-wrap">
             <div class="topic-th">网站公告</div>
             <ul class="list-unstyled content-list">
-                <li><i></i><a href="javascript:">安广融合：2015，奔跑吧！</a><span class="pull-right">2015-11-05 15:19</span></li>
+                <li><i></i><a href='<%=linkurl("article_show",8)%>'>asdf</a><span class="pull-right">2015-11-05 15:19</span></li>
                 <li><i></i><a href="javascript:">安广融合：2015，奔跑吧！</a><span class="pull-right">2015-11-05 15:19</span></li>
                 <li><i></i><a href="javascript:">安广融合：2015，奔跑吧！</a><span class="pull-right">2015-11-05 15:19</span></li>
                 <li><i></i><a href="javascript:">安广融合：2015，奔跑吧！</a><span class="pull-right">2015-11-05 15:19</span></li>
@@ -92,7 +92,7 @@
             <div class="pages">页码</div>
         </div>
 
-        
+
     </div>
 </div>
 
