@@ -36,7 +36,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxDeleteMessages(string messageIds)
+        public static new string AjaxDeleteMessages(string messageIds)
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
