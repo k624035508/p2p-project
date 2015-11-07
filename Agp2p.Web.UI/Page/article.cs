@@ -11,7 +11,6 @@ namespace Agp2p.Web.UI.Page
         /// </summary>
         protected override void ShowPage()
         {
-
         }
     }
 }
