@@ -16,7 +16,7 @@ namespace Agp2p.Web.UI.Page
     /// <summary>
     /// 项目列表继承类
     /// </summary>
-    public partial class project_list : Web.UI.BasePage
+    public partial class projects : Web.UI.BasePage
     {
         protected const int PAGE_SIZE = 6;         //当前页码
         protected int page;         //当前页码

@@ -747,7 +747,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
-    <Content Include="templates\AnGuang\invest_list.html" />
+    <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\invest_detail.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
     <Content Include="templates\AnGuang\js\article_show.js" />
@@ -755,7 +755,7 @@
     <Content Include="templates\AnGuang\js\header.js" />
     <Content Include="templates\AnGuang\js\index.js" />
     <Content Include="templates\AnGuang\js\invest_detail.js" />
-    <Content Include="templates\AnGuang\js\invest_list.js" />
+    <Content Include="templates\AnGuang\js\projects.js" />
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
     <Content Include="templates\AnGuang\js\repassword.js" />
@@ -811,7 +811,7 @@
     <Content Include="templates\AnGuang\containers\myaccount.jsx" />
     <Content Include="templates\AnGuang\containers\safe.jsx" />
     <Content Include="templates\AnGuang\less\invest-cell.less" />
-    <Content Include="templates\AnGuang\less\invest_list.less" />
+    <Content Include="templates\AnGuang\less\projects.less" />
     <Content Include="templates\AnGuang\components\date-picker.jsx" />
     <Content Include="templates\AnGuang\containers\bankaccount.jsx" />
     <Content Include="templates\AnGuang\components\card-editor.jsx" />

@@ -171,7 +171,7 @@
     <Compile Include="Page\userpoint.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\project_list.cs">
+    <Compile Include="Page\projects.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Page\project.cs">
