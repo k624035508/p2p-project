@@ -20,6 +20,7 @@ namespace Agp2p.Web.admin.statistic
         public string type { get; set; }
         public string user { get; set; }
         public string remark { get; set; }
+        public string project { get; set; }
     }
 
     public partial class offline_transact_timeline : UI.ManagePage
@@ -117,7 +118,8 @@ namespace Agp2p.Web.admin.statistic
                     occurTime = pptr.prt.create_time,
                     type = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum)pptr.prt.type),
                     remark = pptr.prt.remark,
-                    user = pptr.prt.dt_users.user_name
+                    user = pptr.prt.dt_users.user_name,
+                    project = pptr.prt.li_projects.title
                 });
         }
 

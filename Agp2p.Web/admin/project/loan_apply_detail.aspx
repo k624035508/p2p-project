@@ -104,7 +104,7 @@
                 <dt>借款类别</dt>
                 <dd>
                     <div class="rule-single-select">
-                        <asp:DropDownList ID="ddlCategoryId" runat="server" datatype="*" sucmsg=" ">
+                        <asp:DropDownList ID="ddlCategoryId" runat="server" datatype="*" sucmsg=" " OnSelectedIndexChanged="ddlCategoryId_OnSelectedIndexChanged" AutoPostBack="True">
                         </asp:DropDownList>
                     </div>
                 </dd>
@@ -164,8 +164,7 @@
                     <asp:Label ID="div_project_repayment_number_title" runat="server" Text="还款期限" /></dt>
                 <dd>
                     <asp:TextBox ID="txt_project_repayment_number" runat="server" CssClass="input small"
-                        datatype="n" sucmsg=" ">3</asp:TextBox>
-                    <asp:Label ID="div_project_repayment_number_tip" runat="server" CssClass="Validform_checktip" />
+                        datatype="n" sucmsg=" "></asp:TextBox>
                     <div class="rule-multi-radio">
                         <asp:RadioButtonList ID="txt_project_repayment_term" runat="server" RepeatDirection="Horizontal"
                             RepeatLayout="Flow">
@@ -174,6 +173,7 @@
                             <asp:ListItem Value="30">日</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
+                    <asp:Label ID="div_project_repayment_number_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
             <dl id="div_project_repayment_type">

@@ -887,7 +887,7 @@ namespace Agp2p.Core
                 type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfOverTime,
                 status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                 create_time = DateTime.Now,
-                remark = $"借款项目第{repaymentTask.term}期'{repaymentTask.li_projects.title}'收取逾期管理费"
+                remark = $"收取'{repaymentTask.li_projects.title}'第{repaymentTask.term}期的逾期管理费"
             };
             var overDays = DateTime.Now.Subtract(repaymentTask.should_repay_time).Days;
             if (overDays <= 30)
