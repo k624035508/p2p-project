@@ -652,6 +652,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\contact.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\paperwork.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\partner.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />

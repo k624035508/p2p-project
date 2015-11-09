@@ -14,4 +14,10 @@ $(function(){
         $parentLi.removeClass("clicked");
         $(this).parent().addClass("clicked");
     });
+
+    var $office = $(".join-us-wrap .content-body .office ul li");
+    $office.click(function(){
+        $(this).find("i").toggleClass("glyphicon-menu-up");
+        $(this).children(".office-detail").toggle();
+    });
 });
