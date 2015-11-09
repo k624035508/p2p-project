@@ -141,9 +141,6 @@
     <Compile Include="Page\register.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\repassword.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Page\search.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
