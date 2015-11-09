@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
@@ -143,13 +144,6 @@ namespace Agp2p.Test
 
             context.dt_manager_log.DeleteAllOnSubmit(context.dt_manager_log);
             //context.SubmitChanges();
-        }
-
-        [TestMethod]
-        public void TestEval()
-        {
-            var helloWorld = EvalProvider.CreateEvalMethod<int, string>(@"return ""Hello world "" + arg;");
-            Console.WriteLine(helloWorld(42));
         }
 
         [TestMethod]

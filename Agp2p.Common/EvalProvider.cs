@@ -9,7 +9,7 @@ namespace Agp2p.Common
 {
     public static class EvalProvider
     {
-        // TODO 看一下系统有没有回收临时生成的命名空间
+        // 临时生成的命名空间不会回收，请缓存它们
         public static Func<T, TResult> CreateEvalMethod<T, TResult>(string code, IEnumerable<string> usingStatements = null, IEnumerable<string> assemblies = null)
         {
             var returnType = typeof(TResult);
