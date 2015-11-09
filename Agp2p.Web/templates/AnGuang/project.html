@@ -232,7 +232,9 @@
         
         <div id="relevant-info">
             <span class="title-mark">{hIndex++}.相关资料</span>
-            <%if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
+            <%if(_userModel==null)%>
+            <div class="content-null">照片内容需 <a href='<%linkurl("login")%>'>登录</a> 后才能查看</div>
+            <%else if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
                 <div class="content-null">暂无数据</div>
             <%else%>
             <div class="row photo-cell">
