@@ -48,16 +48,120 @@ body { background: @body-color; }
 	.right-content {
 		width: 855px;
 		min-height: 441px;
-		//��վ���桢��˾��̬��ý�屨��
-		.announcement-wrap, .dynamic-wrap,  .reports-wrap {
-			.topic-th {
-				padding: 0 25px;
-				color: @darker-grey;
-				font-size: @font22;
-				font-weight: bold;
-				line-height: 54px;
-				border-bottom: @border;
+		.topic-th {
+			padding: 0 25px;
+			color: @darker-grey;
+			font-size: @font22;
+			font-weight: bold;
+			line-height: 54px;
+			border-bottom: @border;
+		}
+		.topic-content {
+			padding: 35px 30px;
+			color: @dark-grey;
+			font-size: @font15;
+			p {
+				text-indent: 30px;
+				margin: 0 0 30px;
+				line-height: 28px;
 			}
+			h4 { color: @blue; }
+		}
+		//公司简介
+		.company-wrap {
+			.content-body {
+				.topic-content;
+				h4 { margin-top: 40px; }
+				.pic-wrap {
+					& > div {
+						display: inline-block;
+						height: 315px;
+						margin: 0 20px;
+						cursor: pointer;
+						img { height: 100%; }
+					}
+				}
+			}
+		}
+		//产品介绍
+		.product-wrap {
+			.content-body {
+				padding: 0 20px 35px 20px;
+				& > div {
+					padding: 25px 0 8px 0;
+					border-bottom:@border-dashed;
+					h4 {
+						color: @blue;
+						margin-bottom: 15px;
+					}
+					ul {
+						color: @red;
+						list-style-type: square;
+						li { margin-bottom: 15px; }
+						span {
+							color: @dark-grey;
+							font-size: @font15;
+							line-height: 28px;
+						}
+					}
+				}
+			}
+		}
+		//加入我们
+		.join-us-wrap {
+			.content-body {
+				.topic-content;
+				p span { color: @blue; }
+				.office {
+					margin-top: 50px;
+					.th {
+						border-bottom: @border;
+						padding-bottom: 10px;
+					}
+					ul {
+						color: @red;
+						list-style-type: square;
+						margin-top: 10px;
+						li {
+							border-bottom: @border-dashed;
+							line-height: 55px;
+							cursor: pointer;
+							& span:first-child { color: @dark-grey; }
+							 .time {
+								color: @grey;
+								font-size: @font13;
+								 i {
+									 color: @dark-grey;
+									 margin-left: 10px;
+								 }
+							}
+							.office-detail {
+								display: none;
+								padding: 10px;
+								margin-bottom: 20px;
+								background: @body-color;
+								* { color: @dark-grey; }
+								h5 {
+									font-size: @font15;
+									font-weight: bold;
+								}
+								ul {
+									list-style-type: decimal;
+									color: @dark-grey;
+									margin-left: -15px;
+									li {
+										border: none;
+										line-height: 30px;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		//网站公告、公司动态、媒体报道
+		.announcement-wrap, .dynamic-wrap,  .reports-wrap {
 			.content-list {
 				li {
 					padding: 0 10px;
