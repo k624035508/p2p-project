@@ -15,11 +15,11 @@ namespace Agp2p.Core.NotifyLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMessage()); // 还款前 3 日发送还款提醒给借款人
+            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMessage(m.OnTime)); // 还款前 3 日发送还款提醒给借款人
             MessageBus.Main.Subscribe<ProjectRepaidMsg>(m => HandleProjectRepaidMsg(m.RepaymentTaskId)); // 放款计划执行后发送还款提醒
         }
 
-        private static void HandleTimerMessage()
+        private static void HandleTimerMessage(bool onTime)
         {
             // 安广融合借款人还款提现：你 3 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。
             var context = new Agp2pDataContext();
@@ -34,12 +34,19 @@ namespace Agp2p.Core.NotifyLogic
 
             if (smsTemplate == null)
             {
-                context.AppendAdminLogAndSave("LoanerHint", "找不到还款提现模板: loaner_repay_hint");
+                context.AppendAdminLogAndSave("LoanerRepayHint", "找不到还款提现模板: loaner_repay_hint");
                 return;
             }
 
             willRepayTasks.ForEach(task =>
             {
+                var loaner = task.li_projects.li_risks.li_loaners.dt_users;
+                var logTag = string.Format("LoanerRepayHint_{0}_{1}", loaner.id, task.id);
+
+                // 判断有没有发送过短信
+                var alreadySend = context.dt_manager_log.Any(log => log.action_type == logTag);
+                if (alreadySend) return;
+
                 var smsContent = smsTemplate.content
                     .Replace("{project}", task.li_projects.title)
                     .Replace("{termNumber}", task.term.ToString())
@@ -47,20 +54,19 @@ namespace Agp2p.Core.NotifyLogic
                     .Replace("{interest}", task.repay_interest.ToString("c"))
                     .Replace("{total}", (task.repay_principal + task.repay_interest).ToString("c"));
 
-                var loaner = task.li_projects.li_risks.li_loaners.dt_users;
                 try
                 {
                     var errorMsg = string.Empty;
                     if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
                     {
-                        context.AppendAdminLogAndSave("LoanerHint",
+                        context.AppendAdminLogAndSave(logTag,
                             string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", errorMsg, loaner.user_name, task.li_projects.title));
                     }
-                    context.AppendAdminLogAndSave("LoanerHint", string.Format("发送还款提醒成功：{0}", smsContent));
+                    context.AppendAdminLogAndSave(logTag, string.Format("发送还款提醒成功：{0}", smsContent));
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("LoanerHint",
+                    context.AppendAdminLogAndSave(logTag,
                         string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", ex.Message, loaner.user_name, task.li_projects.title));
                 }
             });

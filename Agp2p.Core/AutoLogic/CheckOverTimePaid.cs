@@ -22,6 +22,7 @@ namespace Agp2p.Core.AutoLogic
                 db.li_repayment_tasks.Where(
                     r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && DateTime.Now > r.should_repay_time)
                     .ToList();
+            if (!overTime.Any()) return;
 
             overTime.ForEach(o => o.status = (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
             db.SubmitChanges();
