@@ -9,7 +9,7 @@ using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
 {
-    class AutoRepay
+    public class AutoRepay
     {
         internal static void DoSubscribe()
         {
@@ -38,15 +38,15 @@ namespace Agp2p.Core.AutoLogic
         /// </summary>
         /// <param name="task"></param>
         /// <param name="context"></param>
-        private static void SendRepayNotice(List<li_repayment_tasks> task, Agp2pDataContext context)
+        public static void SendRepayNotice(List<li_repayment_tasks> task, Agp2pDataContext context)
         {
             //找到兑付公告模板
             var temp = context.dt_mail_template.SingleOrDefault(te => te.call_index == "project_repay");
             if (temp != null)
             {
                 //构造兑付项目表格
-                string table = "<table class='table table-bordered repayment-tb' style=\"color:#000000;font-family:'Microsoft YaHei', 'Heiti SC', simhei, 'Lucida Sans Unicode', 'Myriad Pro', 'Hiragino Sans GB', Verdana;font-size:13px;background-color:#FFFFFF;\"><tbody><tr><th><p style=\"text-indent:2em;\">序号</p></th><th><p style=\"text-indent:2em;\">项目名称</p></th><th><p style=\"text-align:left;text-indent:2em;\">返回金额</p></th><th><p style=\"text-indent:2em;\">返回本金</p></th><th><p style=\"text-indent:2em;\">返回收益</p></th></tr></tbody><tbody>{tr}</tbody></table>";
-                string tr = "<tr><td><p style=\"text-indent:2em;\">{no}</p></td><td><p style=\"text-indent:2em;\">{project_name}</p></td><td><p style=\"text-indent:2em;\">{amount}</p></td><td><p style=\"text-indent:2em;\">{principal}</p></td><td><p style=\"text-indent:2em;\">{interest}</p></td></tr>";
+                string table = "<table class='table table-bordered repayment-tb'><tbody><tr><th>序号</th><th>项目名称</th><th>返回金额</th><th>返回本金</th><th>返回收益</th></tr></tbody><tbody>{tr}</tbody></table>";
+                string tr = "<tr><td>{no}</td><td>{project_name}</td><td>{amount}</td><td>{principal}</td><td>{interest}</td></tr>";
 
                 int no = 0;
                 string tr_all = string.Empty;

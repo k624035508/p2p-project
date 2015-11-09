@@ -152,5 +152,12 @@ namespace Agp2p.Test
             Console.WriteLine(helloWorld(42));
         }
 
+        [TestMethod]
+        public void TestRepayNotice()
+        {
+            var context = new Agp2pDataContext(str);
+            var rt =  context.li_repayment_tasks.Where(t => t.repay_at.Value.Date == DateTime.Today.AddDays(-1)).ToList();
+            Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
+        }
     }
 }
