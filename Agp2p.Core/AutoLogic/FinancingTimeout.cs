@@ -22,6 +22,8 @@ namespace Agp2p.Core.AutoLogic
                 p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing && p.publish_time != null)
                 .AsEnumerable()
                 .Where(p => p.publish_time.Value.AddDays(p.financing_day) <= DateTime.Today).ToList();
+            if (!timeoutProjects.Any()) return;
+
             timeoutProjects.ForEach(p =>
             {
                 p.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingTimeout;

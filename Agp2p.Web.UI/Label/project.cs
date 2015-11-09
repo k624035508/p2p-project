@@ -149,8 +149,7 @@ namespace Agp2p.Web.UI
                 return category_id == 33 ? "/templates/Agp2p/images/img_noting_house.png" :
                     "/templates/Agp2p/images/img_noting_car.png";
             }
-            else
-                return url;
+            return url;
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>网站公告</title>
+    <title>{category.title}</title>
     <!--[if lt IE 9]>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
@@ -20,7 +20,7 @@
 <div class="breadcrumbs">
     <a href="/">首页</a>
     <span> > </span>
-    <span>关于我们</span>
+    <span>{category.title}</span>
 </div>
 <!--面包屑导航 end-->
 
@@ -29,9 +29,9 @@
         <ul class="list-unstyled nav-list">
             <li><a href='<%=linkurl("about")%>' class="company">公司简介</a></li>
             <li><a href='<%=linkurl("about")%>?tab=1' class="product">产品介绍</a></li>
-            <li><a href='<%=linkurl("article_list",43)%>' class="announcement">网站公告</a></li>
-            <li><a href='<%=linkurl("article_list",42)%>' class="dynamic">公司动态</a></li>
-            <li><a href='<%=linkurl("article_list",44)%>' class="reports">媒体报道</a></li>
+            <li class='<%=category.id==43?"clicked":""%>'><a href='<%=linkurl("article_list",43)%>' class='announcement'>网站公告</a></li>
+            <li class='<%=category.id==42?"clicked":""%>'><a href='<%=linkurl("article_list",42)%>' class='dynamic'>最新动态</a></li>
+            <li class='<%=category.id==44?"clicked":""%>'><a href='<%=linkurl("article_list",44)%>' class='reports'>媒体报道</a></li>
             <li><a href='<%=linkurl("about")%>?tab=5' class="join-us">加入我们</a></li>
             <li><a href='<%=linkurl("about")%>?tab=6' class="partner">合作伙伴</a></li>
             <li><a href='<%=linkurl("about")%>?tab=7' class="contact">联系我们</a></li>

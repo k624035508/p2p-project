@@ -23,7 +23,7 @@ namespace Agp2p.Web.UI
         /// <param name="context"></param>
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += new EventHandler(ReUrl_BeginRequest);
+            context.BeginRequest += ReUrl_BeginRequest;
         }
 
         /// <summary>

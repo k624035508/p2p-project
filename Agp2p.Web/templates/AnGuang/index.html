@@ -54,29 +54,29 @@
 <div class="container-fluid announcement-wrap">
     <div class="announcement">
         <span class="announce-board-icon announce-icon"></span>
-        <%set var announce_repay=get_article_list("content", 43, 1, "").Rows.Cast<DataRow>().FirstOrDefault()%>
-        <span class="return-announce">还款公告：
-            <%if(announce_repay!=null)%>
-            <a href='<%linkurl("article_content_show",{announce_repay[id]},{announce_repay[category_id]})%>'>
-            <%=announce_repay["title"].ToString().Length>25?announce_repay["title"].ToString().Substring(0, 25)+"...":announce_repay["title"].ToString()%>
+        <%set var projectAnnounce=get_article_list("content", 54, 1, "").Rows.Cast<DataRow>().FirstOrDefault()%>
+        <span class="return-announce">发标公告：
+            <%if(projectAnnounce!=null)%>
+            <a href='<%linkurl("article_show",{projectAnnounce[id]})%>'>
+            <%=projectAnnounce["title"].ToString().Length>25?projectAnnounce["title"].ToString().Substring(0, 25)+"...":projectAnnounce["title"].ToString()%>
             </a>
             <%else%>
             <span>暂无内容</span>
             <%/if%>
         </span>
         <span class="announce-board-icon news-icon"></span>
-        <%set var announce54=get_article_list("content_project", 54, 1, "").Rows.Cast<DataRow>().FirstOrDefault()%>
-        <span class="web-announce">网站公告：
-            <%if(announce54!=null)%>
-            <a href='<%linkurl("article_invest_show",{announce54[id]},{announce54[category_id]})%>'>
-            <%=announce54["title"].ToString().Length>30?announce54["title"].ToString().Substring(0, 30)+"...":announce54["title"].ToString()%>
+        <%set var newestAnnounce=get_article_list("content", 42, 1, "").Rows.Cast<DataRow>().FirstOrDefault()%>
+        <span class="web-announce">最新动态：
+            <%if(newestAnnounce!=null)%>
+            <a href='<%linkurl("article_show",{newestAnnounce[id]})%>'>
+            <%=newestAnnounce["title"].ToString().Length>30?newestAnnounce["title"].ToString().Substring(0, 30)+"...":newestAnnounce["title"].ToString()%>
             </a>
             <%else%>
             <span>暂无内容</span>
             <%/if%>
         </span>
         <span class="announce-board-icon news-icon"></span>
-        <span class="pull-right"><a href="#">更多></a></span>
+        <span class="pull-right"><a href='<%=linkurl("article_list",43)%>'>更多></a></span>
     </div>
 </div>
 <!--announcement end-->
@@ -87,7 +87,7 @@
     <div class="invest-cell">
         <div class="invest-title-wrap">
             <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
-            <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
+            <span class="invest-title"><a href='<%linkurl("project",{dr[id]})%>'>{dr[title]}</a></span>
             <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
             <span class="invest-list-icon yue-icon"></span>
             <%/if%>
@@ -124,21 +124,21 @@
             </div>
             <div class="invest-btn pull-right">
                 <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">待发标</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
+                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">立即投资</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">募集结束</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">还款中</button>
                 <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">已完成</button>
                 <%/if%>
             </div>
         </div>
     </div>
     <%/foreach%>
-    <div class="more-projects"><a href='<%linkurl("invest_list")%>'>查看更多投资理财项目</a></div>
+    <div class="more-projects"><a href='<%linkurl("projects")%>'>查看更多投资理财项目</a></div>
 </div>
 <!--invest list end-->
 
@@ -148,7 +148,7 @@
         <!--公司动态-->
         <div class="company-news">
             <div class="dynamic-title-wrap">
-                <a href="#">
+                <a href='<%=linkurl("article_list",42)%>'>
                     <span class="dynamic-title">公司动态</span>
                     <span class="link-mark pull-right"></span>
                 </a>
@@ -157,7 +157,7 @@
                 <%set var inc_news_ls=get_article_list("content", 42, 4, "").Rows.Cast<DataRow>();%>
                 <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
                 <%if(inc_news_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_content_show",{inc_news_first[id]},{inc_news_first[category_id]})%>'>
+                <a class="img-wrap" href='<%linkurl("article_show",{inc_news_first[id]})%>'>
                     <img src="{inc_news_first[img_url]}" alt=""/>
                 </a>
                 <div class="img-title">{inc_news_first[title]}</div>
@@ -168,7 +168,7 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in inc_news_ls.Skip(1))%>
                         <li>
-                            <span class="list-title-wrap"><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                            <span class="list-title-wrap"><a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
                                 <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></span>
                         </li>
                         <%/foreach%>
@@ -180,7 +180,7 @@
         <!--媒体报道-->
         <div class="media-report">
             <div class="dynamic-title-wrap">
-                <a href="#">
+                <a href='<%=linkurl("article_list",44)%>'>
                     <span class="dynamic-title">媒体报道</span>
                     <span class="link-mark pull-right"></span>
                 </a>
@@ -189,7 +189,7 @@
                 <%set var media_dt_ls=get_article_list("content", 44, 4, "").Rows.Cast<DataRow>();%>
                 <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
                 <%if(media_dt_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_content_show",{media_dt_first[id]},{media_dt_first[category_id]})%>'>
+                <a class="img-wrap" href='<%linkurl("article_show",{media_dt_first[id]})%>'>
                     <img src="{media_dt_first[img_url]}" alt=""/>
                 </a>
                 <div class="img-title">{media_dt_first[title]}</div>
@@ -200,7 +200,7 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in media_dt_ls.Skip(1))%>
                         <li><span class="list-title-wrap">
-                            <a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                            <a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
                                 <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a>
                             </span>
                         </li>
@@ -213,7 +213,7 @@
         <!--网站公告-->
         <div class="company-placard">
             <div class="dynamic-title-wrap">
-                <a href="#">
+                <a href='<%=linkurl("article_list",43)%>'>
                     <span class="dynamic-title">公司公告</span>
                     <span class="link-mark pull-right"></span>
                 </a>
@@ -221,7 +221,7 @@
             <ul class="list-unstyled">
                 <%set var announces_ls=get_article_list("content", 43, 10, "").Rows.Cast<DataRow>();%>
                 <%foreach(DataRow dr in announces_ls)%>
-                <li><span class="list-title-wrap"><a href='<%linkurl("article_content_show",{dr[id]},{dr[category_id]})%>' class="dark-grey14px"><span class="list-mark"></span>
+                <li><span class="list-title-wrap"><a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
                                                         <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
                                                         </a></span>
                 </li>

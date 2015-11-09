@@ -9,7 +9,7 @@
     <script src="<%templateskin%>/node_modules/respond.js/dest/respond.min.js"></script>
     <![endif]-->
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
-    <script src="<%templateskin%>/build/invest_list.bundle.js"></script>
+    <script src="<%templateskin%>/build/projects.bundle.js"></script>
 </head>
 <body>
 <!--head-->
@@ -31,17 +31,17 @@
             <ul class="list-unstyled list-inline">
                 <%set var projectStatusEnums=Utils.GetEnumValues<Agp2pEnums.ProjectStatusQueryTypeEnum>()%>
                 <%foreach(var en in projectStatusEnums)%>
-                <li><a href='<%linkurl("invest_list",category_id,project_profit_rate_index,project_repayment_index,(int)en,page)%>'
+                <li><a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,(int)en,page)%>'
                        class='<%=project_status_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a></li>
                 <%/foreach%>
             </ul>
         </div>
         <div class="project-types"><span>项目类型</span>
             <ul class="list-unstyled list-inline">
-                <li><a href='<%linkurl("invest_list",0,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
+                <li><a href='<%linkurl("projects",0,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
                        class='<%=0==category_id?"selected":""%>'>全部</a></li>
                 <%foreach(var kvp in CategoryIdTitleMap)%>
-                <li><a href='<%linkurl("invest_list",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
+                <li><a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,page)%>'
                        class='<%=kvp.Key==category_id?"selected":""%>'><%=kvp.Value%></a></li>
                 <%/foreach%>
             </ul>
@@ -50,7 +50,7 @@
             <ul class="list-unstyled list-inline">
                 <%set var interestRateTypeEnums=Utils.GetEnumValues<Agp2pEnums.InterestRateTypeEnum>()%>
                 <%foreach(var en in interestRateTypeEnums)%>
-                <li><a href='<%linkurl("invest_list",category_id,(int)en,project_repayment_index,project_status_index,page)%>'
+                <li><a href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,page)%>'
                        class='<%=project_profit_rate_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a></li>
                 <%/foreach%>
             </ul>
@@ -59,7 +59,7 @@
             <ul class="list-unstyled list-inline">
                 <%set var repaymentTermEnums=Utils.GetEnumValues<Agp2pEnums.RepaymentTermEnum>()%>
                 <%foreach(var en in repaymentTermEnums)%>
-                <li><a href='<%linkurl("invest_list",category_id,project_profit_rate_index,(int)en,project_status_index,page)%>'
+                <li><a href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,page)%>'
                        class='<%=project_repayment_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a></li>
                 <%/foreach%>
             </ul>
@@ -71,7 +71,7 @@
 <div class="invest-cell">
     <div class="invest-title-wrap">
         <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
-        <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
+        <span class="invest-title"><a href='<%linkurl("project",{dr[id]})%>'>{dr[title]}</a></span>
         <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
         <span class="invest-list-icon yue-icon"></span>
         <%/if%>
@@ -112,15 +112,15 @@
         </div>
         <div class="invest-btn pull-right">
             <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">待发标</button>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-            <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
+            <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">立即投资</button>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">募集结束</button>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">还款中</button>
             <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">已完成</button>
             <%/if%>
         </div>
     </div>
@@ -128,7 +128,7 @@
 <%/foreach%>
 
 <!--取得分页页码列表-->
-<div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("invest_list",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%></div>
+<div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("projects",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%></div>
 
 <!--footer-->
 <%template src="_footerSmall.html"%>
