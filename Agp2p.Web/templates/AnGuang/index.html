@@ -87,7 +87,7 @@
     <div class="invest-cell">
         <div class="invest-title-wrap">
             <span class="invest-style-tab"><%=CategoryIdTitleMap[(int)dr["category_id"]]%></span>
-            <span class="invest-title"><a href='<%linkurl("invest_detail",{dr[id]})%>'>{dr[title]}</a></span>
+            <span class="invest-title"><a href='<%linkurl("project",{dr[id]})%>'>{dr[title]}</a></span>
             <%if(((int)dr["tag"]&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
             <span class="invest-list-icon yue-icon"></span>
             <%/if%>
@@ -124,15 +124,15 @@
             </div>
             <div class="invest-btn pull-right">
                 <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">待发标</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">待发标</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">立即投资</button>
+                <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">立即投资</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">募集结束</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">募集结束</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">还款中</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">还款中</button>
                 <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("invest_detail",{dr[id]})%>'">已完成</button>
+                <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">已完成</button>
                 <%/if%>
             </div>
         </div>

@@ -58,7 +58,7 @@ namespace Agp2p.Web.UI.Page
 
         protected void link_project_detail(string projectId)
         {
-            HttpContext.Current.Response.Redirect(linkurl("invest_detail", projectId));
+            HttpContext.Current.Response.Redirect(linkurl("project", projectId));
         }
     }
 }

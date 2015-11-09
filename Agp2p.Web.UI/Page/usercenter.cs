@@ -292,7 +292,7 @@ namespace Agp2p.Web.UI.Page
             var config = new BLL.siteconfig().loadConfig();
             var data = QueryProjects(pageSize, pageIndex, out totalCount).Select(p =>
             {
-                p.linkurl = linkurl(config, "invest_detail", p.id);
+                p.linkurl = linkurl(config, "project", p.id);
                 return p;
             });
             return JsonConvert.SerializeObject(new {totalCount, data});

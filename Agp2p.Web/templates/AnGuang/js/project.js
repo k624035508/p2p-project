@@ -1,6 +1,6 @@
 import "bootstrap-webpack";
 import "../less/head.less";
-import "../less/invest_detail.less";
+import "../less/project.less";
 import "../less/footerSmall.less";
 import "visualnav";
 
