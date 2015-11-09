@@ -5,10 +5,11 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using System.Web.UI.WebControls;
+using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
 {
-    class AutoRepay
+    public class AutoRepay
     {
         internal static void DoSubscribe()
         {
@@ -37,15 +38,15 @@ namespace Agp2p.Core.AutoLogic
         /// </summary>
         /// <param name="task"></param>
         /// <param name="context"></param>
-        private static void SendRepayNotice(List<li_repayment_tasks> task, Agp2pDataContext context)
+        public static void SendRepayNotice(List<li_repayment_tasks> task, Agp2pDataContext context)
         {
             //找到兑付公告模板
             var temp = context.dt_mail_template.SingleOrDefault(te => te.call_index == "project_repay");
             if (temp != null)
             {
                 //构造兑付项目表格
-                string table = "<table style=\"color:#000000;font-family:'Microsoft YaHei', 'Heiti SC', simhei, 'Lucida Sans Unicode', 'Myriad Pro', 'Hiragino Sans GB', Verdana;font-size:13px;background-color:#FFFFFF;\"><tbody><tr><th><p style=\"text-indent:2em;\">序号</p></th><th><p style=\"text-indent:2em;\">项目名称</p></th><th><p style=\"text-align:left;text-indent:2em;\">返回金额</p></th><th><p style=\"text-indent:2em;\">返回本金</p></th><th><p style=\"text-indent:2em;\">返回收益</p></th></tr></tbody><tbody>{tr}</tbody></table>";
-                string tr = "<tr><td><p style=\"text-indent:2em;\">{no}</p></td><td><p style=\"text-indent:2em;\">{project_name}</p></td><td><p style=\"text-indent:2em;\">{amount}</p></td><td><p style=\"text-indent:2em;\">{principal}</p></td><td><p style=\"text-indent:2em;\">{interest}</p></td></tr>";
+                string table = "<table class='table table-bordered repayment-tb'><tbody><tr><th>序号</th><th>项目名称</th><th>返回金额</th><th>返回本金</th><th>返回收益</th></tr></tbody><tbody>{tr}</tbody></table>";
+                string tr = "<tr><td>{no}</td><td>{project_name}</td><td>{amount}</td><td>{principal}</td><td>{interest}</td></tr>";
 
                 int no = 0;
                 string tr_all = string.Empty;
@@ -60,30 +61,37 @@ namespace Agp2p.Core.AutoLogic
                 });
                 table = table.Replace("{tr}", tr_all);
 
-                var add_time = DateTime.Now;
-                var content = temp.content.Replace("{today}", add_time.ToString("yyyy-MM-dd"))
+                var siteConfig = ConfigLoader.loadSiteConfig();
+                var addTime = DateTime.Now;
+                var content = temp.content.Replace("{today}", addTime.ToString("yyyy-MM-dd"))
                     .Replace("{count}", no.ToString())
-                    .Replace("{table}", table);
+                    .Replace("{table}", table)
+                    .Replace("{webtel}", siteConfig == null ? "" : siteConfig.webtel);
 
                 //创建公告
                 try
                 {
-                    var notice = new dt_article();
-                    notice.add_time = add_time;
-                    notice.category_id = 43;
-                    notice.channel_id = 5;
-                    notice.title = add_time.ToString("yyyy年M月d日") + "项目兑付公告";
-                    notice.seo_title = notice.title;
-                    notice.seo_keywords = "安广融合p2p,项目兑付公告";
-                    notice.content = content;
-                    
-                    var notice_attr = new dt_article_attribute_value();
-                    notice_attr.dt_article = notice;
-                    notice_attr.author = "安广融合";
-                    notice_attr.source = "安广融合理财平台";
+                    var title = addTime.ToString("yyyy年M月d日") + "项目兑付公告";
+                    var notice = new dt_article
+                    {
+                        add_time = addTime,
+                        category_id = 43,
+                        channel_id = 5,
+                        title = title,
+                        seo_title = title,
+                        seo_keywords = "安广融合p2p,项目兑付公告",
+                        content = content
+                    };
+
+                    var noticeAttr = new dt_article_attribute_value
+                    {
+                        dt_article = notice,
+                        author = "安广融合",
+                        source = "安广融合理财平台"
+                    };
 
                     context.dt_article.InsertOnSubmit(notice);
-                    context.dt_article_attribute_value.InsertOnSubmit(notice_attr);
+                    context.dt_article_attribute_value.InsertOnSubmit(noticeAttr);
                     context.SubmitChanges();
                 }
                 catch (Exception ex)

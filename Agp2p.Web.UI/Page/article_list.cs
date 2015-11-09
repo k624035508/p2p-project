@@ -12,7 +12,7 @@ namespace Agp2p.Web.UI.Page
         protected int totalcount;   //OUT数据总数
         protected string pagelist;  //分页页码
 
-        protected Model.article_category model = new Model.article_category();
+        protected Model.article_category category = new Model.article_category { title = "所有信息" };
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
         /// </summary>
@@ -20,12 +20,11 @@ namespace Agp2p.Web.UI.Page
         {
             page = DTRequest.GetQueryInt("page", 1);
             category_id = DTRequest.GetQueryInt("category_id");
-            BLL.article_category bll = new BLL.article_category();
-            model.title = "所有信息";
             if (category_id > 0) //如果ID获取到，将使用ID
             {
+                var bll = new BLL.article_category();
                 if (bll.Exists(category_id))
-                    model = bll.GetModel(category_id);
+                    category = bll.GetModel(category_id);
             }
           
         }

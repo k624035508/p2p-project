@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Linq;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.UI
 {
@@ -203,6 +205,17 @@ namespace Agp2p.Web.UI
             return string.Empty;
         }
         #endregion
+
+        protected IEnumerable<dt_article> GetArticles(int categoryId, int pageSize, int pageIndex, out int totalCount)
+        {
+            var context = new Agp2pDataContext();
+            var queryable = context.dt_article.Where(a => a.category_id == categoryId);
+            totalCount = queryable.Count();
+            return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time)
+                .Skip(pageSize*pageIndex)
+                .Take(pageSize)
+                .AsEnumerable();
+        }
 
         #region 购物标签======================================
         /// <summary>

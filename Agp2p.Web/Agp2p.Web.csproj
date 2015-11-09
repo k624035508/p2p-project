@@ -643,6 +643,7 @@
     <Content Include="templates\AnGuang\about.xml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
+    <Content Include="templates\AnGuang\article_list.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\article_show.html" />

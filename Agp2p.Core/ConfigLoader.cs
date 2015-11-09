@@ -33,7 +33,7 @@ namespace Agp2p.Core
                 MemoryCache.Default.Set("site_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
                 return configCache;
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -50,7 +50,7 @@ namespace Agp2p.Core
                 MemoryCache.Default.Set("user_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
                 return configCache;
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }
