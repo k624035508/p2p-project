@@ -758,14 +758,14 @@
     <Content Include="templates\AnGuang\js\projects.js" />
     <Content Include="templates\AnGuang\js\login.js" />
     <Content Include="templates\AnGuang\js\register.js" />
-    <Content Include="templates\AnGuang\js\repassword.js" />
+    <Content Include="templates\AnGuang\js\forgot_password.js" />
     <Content Include="templates\AnGuang\less\common-style.less" />
     <Content Include="templates\AnGuang\less\project.less" />
     <Content Include="templates\AnGuang\login.html" />
     <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\reducers\usercenter.js" />
     <Content Include="templates\AnGuang\register.html" />
-    <Content Include="templates\AnGuang\repassword.html" />
+    <Content Include="templates\AnGuang\forgot_password.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
@@ -835,7 +835,7 @@
     <Content Include="templates\AnGuang\less\settings.less" />
     <Content Include="templates\AnGuang\less\withdraw.less" />
     <Content Include="templates\AnGuang\containers\myinvest.jsx" />
-    <Content Include="templates\AnGuang\less\repassword.less" />
+    <Content Include="templates\AnGuang\less\forgot_password.less" />
     <Content Include="templates\AnGuang\less\usercenter-common-style.less" />
     <Content Include="templates\AnGuang\less\aboutus.less" />
     <Content Include="xmlconfig\cost.config" />
