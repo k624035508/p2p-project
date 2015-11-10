@@ -22,6 +22,42 @@ namespace Agp2p.Web.admin.settings {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// txt_loan_fee_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_loan_fee_rate;
+        
+        /// <summary>
+        /// txt_loan_fee_rate_bank 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_loan_fee_rate_bank;
+        
+        /// <summary>
+        /// txt_bond_fee_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_bond_fee_rate;
+        
+        /// <summary>
+        /// txt_bond_fee_rate_bank 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_bond_fee_rate_bank;
+        
+        /// <summary>
         /// txt_earlier_pay 控件。
         /// </summary>
         /// <remarks>
@@ -56,6 +92,15 @@ namespace Agp2p.Web.admin.settings {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txt_overtime_cost2;
+        
+        /// <summary>
+        /// txt_overtime_cost_bank 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_overtime_cost_bank;
         
         /// <summary>
         /// txt_withdraw 控件。

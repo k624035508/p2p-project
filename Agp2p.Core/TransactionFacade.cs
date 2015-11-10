@@ -471,7 +471,7 @@ namespace Agp2p.Core
             // 计算每个投资人的待收益金额，因为不一定是投资当日满标，所以不能投资时就知道收益（不同时间满标/截标会对导致不同的回款时间间隔，从而导致利率不同）
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
 
-            // 计算借款管理费
+            // 计算平台服务费
             if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
             {
                 context.li_project_transactions.InsertOnSubmit(new li_project_transactions
@@ -482,7 +482,7 @@ namespace Agp2p.Core
                     type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfLoanning,
                     status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     create_time = DateTime.Now,
-                    remark = $"借款项目'{project.title}'收取借款管理费"
+                    remark = $"借款项目'{project.title}'收取平台服务费"
                 });
             }
 
@@ -869,14 +869,14 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="repayTaskId"></param>
         /// <param name="overTimePayRate"></param>
-        public static void OverTimeRepay(this Agp2pDataContext context, int repayTaskId, decimal overTimePayRate, decimal overTimeCostRate, decimal overTimeCost2Rate)
+        public static void OverTimeRepay(this Agp2pDataContext context, int repayTaskId, Model.costconfig costconfig) 
         {
             var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repayTaskId);
             if (repaymentTask.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("当前还款不是逾期还款！");
 
             //逾期罚息
-            var overTimePayInterest = repaymentTask.repay_interest*overTimePayRate;
+            var overTimePayInterest = repaymentTask.repay_interest* costconfig.overtime_pay;
             repaymentTask.cost = repaymentTask.repay_interest - overTimePayInterest;
             repaymentTask.repay_interest = overTimePayInterest;
             //计算逾期管理费
@@ -889,15 +889,27 @@ namespace Agp2p.Core
                 create_time = DateTime.Now,
                 remark = $"收取'{repaymentTask.li_projects.title}'第{repaymentTask.term}期的逾期管理费"
             };
+
             var overDays = DateTime.Now.Subtract(repaymentTask.should_repay_time).Days;
-            if (overDays <= 30)
-                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*overTimeCostRate;
+            
+            if (repaymentTask.li_projects.dt_article_category.call_index.ToUpper().Contains("YPB"))
+            {
+                //票据业务
+                projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost_bank;
+            }
             else
-                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*overTimeCost2Rate;
+            {
+                //非票据业务
+                if (overDays <= 30)
+                    projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost;
+                else
+                    projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost2;
+            }
             context.li_project_transactions.InsertOnSubmit(projectTransaction);
 
             context.SubmitChanges();
             context.ExecuteRepaymentTask(repayTaskId, Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
+
         }
 
         /// <summary>

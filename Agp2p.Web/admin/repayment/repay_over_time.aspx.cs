@@ -38,7 +38,7 @@ namespace Agp2p.Web.admin.repayment
                 return;
             }
             this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); //取得频道名称
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -212,7 +212,7 @@ namespace Agp2p.Web.admin.repayment
             {
                 ChkAdminLevel("repay_over_time", DTEnums.ActionEnum.Add.ToString());
                 int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
-                context.OverTimeRepay(repayId, Costconfig.overtime_pay, Costconfig.overtime_cost, Costconfig.overtime_cost2);
+                context.OverTimeRepay(repayId, Costconfig);
                 JscriptMsg("还款成功！",
                     Utils.CombUrlTxt("repay_over_time.aspx", "channel_id={0}&category_id={1}&status={2}",
                         this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString()));

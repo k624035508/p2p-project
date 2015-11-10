@@ -70,6 +70,13 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>借款合同编号
+                            </th>
+                            <td>
+                                <span id="spa_contact_no" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>借款金额(元)
                             </th>
                             <td>
@@ -98,7 +105,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>借款管理费率(%)
+                            <th>平台服务费率(%)
                             </th>
                             <td>
                                 <span id="spa_loan_fee" runat="server"></span>
