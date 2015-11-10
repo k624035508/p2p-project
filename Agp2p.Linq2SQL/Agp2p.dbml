@@ -634,6 +634,7 @@
       <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="loan_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
       <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
       <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
       <Association Name="dt_article_category_li_projects" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />

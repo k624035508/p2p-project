@@ -22,10 +22,15 @@ namespace Agp2p.Web.admin.settings
 
         private void ShowInfo()
         {
+            txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N1");
+            txt_loan_fee_rate_bank.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
+            txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
+            txt_bond_fee_rate_bank.Text = (Costconfig.bond_fee_rate_bank * 100).ToString("N1");
             txt_earlier_pay.Text = (Costconfig.earlier_pay*100).ToString("N1");
             txt_overtime_pay.Text = (Costconfig.overtime_pay*100).ToString("N1");
             txt_overtime_cost.Text = (Costconfig.overtime_cost*1000).ToString("N1");
             txt_overtime_cost2.Text = (Costconfig.overtime_cost2*1000).ToString("N1");
+            txt_overtime_cost_bank.Text = (Costconfig.overtime_cost_bank * 1000).ToString("N1");
             txt_recharge_lowest.Text = Costconfig.recharge_lowest.ToString("N0");
             txt_withdraw.Text = Costconfig.withdraw.ToString("N1");
         }
@@ -35,10 +40,15 @@ namespace Agp2p.Web.admin.settings
             try
             {
                 Model.costconfig model = new Model.costconfig();
+                model.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0) / 100;
+                model.loan_fee_rate_bank = Utils.StrToDecimal(txt_loan_fee_rate_bank.Text.Trim(), 0) / 100;
+                model.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0) / 100;
+                model.bond_fee_rate_bank = Utils.StrToDecimal(txt_bond_fee_rate_bank.Text.Trim(), 0) / 100;
                 model.earlier_pay = Utils.StrToDecimal(txt_earlier_pay.Text.Trim(), 0)/100;
                 model.overtime_pay = Utils.StrToDecimal(txt_overtime_pay.Text.Trim(), 0)/100;
                 model.overtime_cost = Utils.StrToDecimal(txt_overtime_cost.Text.Trim(), 0)/1000;
                 model.overtime_cost2 = Utils.StrToDecimal(txt_overtime_cost2.Text.Trim(), 0)/1000;
+                model.overtime_cost_bank = Utils.StrToDecimal(txt_overtime_cost_bank.Text.Trim(), 0) / 1000;
                 model.recharge_lowest = Utils.StrToDecimal(txt_recharge_lowest.Text.Trim(), 0);
                 model.withdraw = Utils.StrToDecimal(txt_withdraw.Text.Trim(), 0);
 

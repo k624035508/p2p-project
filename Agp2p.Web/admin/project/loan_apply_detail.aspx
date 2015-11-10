@@ -104,7 +104,7 @@
                 <dt>借款类别</dt>
                 <dd>
                     <div class="rule-single-select">
-                        <asp:DropDownList ID="ddlCategoryId" runat="server" datatype="*" sucmsg=" ">
+                        <asp:DropDownList ID="ddlCategoryId" runat="server" datatype="*" sucmsg=" " OnSelectedIndexChanged="ddlCategoryId_OnSelectedIndexChanged" AutoPostBack="True">
                         </asp:DropDownList>
                     </div>
                 </dd>
@@ -123,7 +123,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt>项目标题</dt>
+                <dt>借款标题</dt>
                 <dd>
                     <asp:TextBox ID="txtTitle" runat="server" CssClass="input normal" datatype="*2-100"
                         sucmsg=" " onBlur="changeProjectNo(this.value, txt_project_no)" />
@@ -132,16 +132,25 @@
             </dl>
             <dl id="div_project_no">
                 <dt>
-                    <asp:Label ID="div_project_no_title" runat="server" Text="项目编号" /></dt>
+                    <asp:Label ID="div_project_no_title" runat="server" Text="借款编号" /></dt>
                 <dd>
                     <asp:TextBox ID="txt_project_no" runat="server" CssClass="input normal" datatype="*0-100"
                         sucmsg=" " />
-                    <span class="Validform_checktip">不填则自动生成</span>
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl id="div_contact_no">
+                <dt>
+                    <asp:Label ID="Label5" runat="server" Text="借款合同编号" /></dt>
+                <dd>
+                    <asp:TextBox ID="txt_contact_no" runat="server" CssClass="input normal" datatype="*0-100"
+                        sucmsg=" " />
+                    <span class="Validform_checktip">*</span>
                 </dd>
             </dl>
             <dl id="div_project_amount">
                 <dt>
-                    <asp:Label ID="div_project_amount_title" runat="server" Text="项目金额" /></dt>
+                    <asp:Label ID="div_project_amount_title" runat="server" Text="借款金额" /></dt>
                 <dd>
                     <asp:TextBox ID="txt_project_amount" runat="server" CssClass="input txt" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
@@ -164,8 +173,7 @@
                     <asp:Label ID="div_project_repayment_number_title" runat="server" Text="还款期限" /></dt>
                 <dd>
                     <asp:TextBox ID="txt_project_repayment_number" runat="server" CssClass="input small"
-                        datatype="n" sucmsg=" ">3</asp:TextBox>
-                    <asp:Label ID="div_project_repayment_number_tip" runat="server" CssClass="Validform_checktip" />
+                        datatype="n" sucmsg=" "></asp:TextBox>
                     <div class="rule-multi-radio">
                         <asp:RadioButtonList ID="txt_project_repayment_term" runat="server" RepeatDirection="Horizontal"
                             RepeatLayout="Flow">
@@ -174,6 +182,7 @@
                             <asp:ListItem Value="30">日</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
+                    <asp:Label ID="div_project_repayment_number_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
             <dl id="div_project_repayment_type">
@@ -193,7 +202,7 @@
             </dl>
             <dl id="div_loan_fee_rate">
                 <dt>
-                    <asp:Label ID="Label1" runat="server" Text="借款管理费率" /></dt>
+                    <asp:Label ID="Label1" runat="server" Text="平台服务费率" /></dt>
                 <dd>
                     <asp:TextBox ID="txt_loan_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>

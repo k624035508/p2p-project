@@ -13,12 +13,70 @@ namespace Agp2p.Model
     {
         public costconfig()
         { }
+
+        private decimal _loan_fee_rate = 0;
+        private decimal _loan_fee_rate_bank = 0;
+        private decimal _bond_fee_rate = 0;
+        private decimal _bond_fee_rate_bank = 0;
         private decimal _earlier_pay = 0;
         private decimal _overtime_pay = 0;
         private decimal _overtime_cost = 0;
         private decimal _overtime_cost2 = 0;
+        private decimal _overtime_cost_bank = 0;
         private decimal _withdraw = 0;
         private decimal _recharge_lowest = 0;
+
+        public decimal loan_fee_rate
+        {
+            get
+            {
+                return _loan_fee_rate;
+            }
+
+            set
+            {
+                _loan_fee_rate = value;
+            }
+        }
+
+        public decimal loan_fee_rate_bank
+        {
+            get
+            {
+                return _loan_fee_rate_bank;
+            }
+
+            set
+            {
+                _loan_fee_rate_bank = value;
+            }
+        }
+
+        public decimal bond_fee_rate
+        {
+            get
+            {
+                return _bond_fee_rate;
+            }
+
+            set
+            {
+                _bond_fee_rate = value;
+            }
+        }
+
+        public decimal bond_fee_rate_bank
+        {
+            get
+            {
+                return _bond_fee_rate_bank;
+            }
+
+            set
+            {
+                _bond_fee_rate_bank = value;
+            }
+        }
 
         public decimal earlier_pay
         {
@@ -69,6 +127,19 @@ namespace Agp2p.Model
             set
             {
                 _overtime_cost2 = value;
+            }
+        }
+
+        public decimal overtime_cost_bank
+        {
+            get
+            {
+                return _overtime_cost_bank;
+            }
+
+            set
+            {
+                _overtime_cost_bank = value;
             }
         }
 

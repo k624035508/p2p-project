@@ -22,7 +22,8 @@ class DatePicker extends React.Component {
 			forceParse: 0,
 			showMeridian: 1,
 			autoclose: 1,
-			minView: 2
+			minView: 2,
+			bootcssVer: 3
 		}).on("changeDate", this.props.onBlur);
 	}
 	render() {

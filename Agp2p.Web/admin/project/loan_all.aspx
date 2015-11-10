@@ -52,6 +52,7 @@
                         <th align="left" width="15%">标题</th>
                         <th align="left" width="5%">状态</th>    
                         <th align="left" width="10%">借款人</th>
+                        <th align="left" width="12%">借款编号</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="5%">标识</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
@@ -68,6 +69,7 @@
                     <td><a href="loan_detail.aspx?channel_id=<%=this.ChannelId %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>             
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
+                    <td><%#Eval("contract_no")%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
                     <td><%#GetTagString(Eval("tag"))%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    

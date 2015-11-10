@@ -138,7 +138,7 @@
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1 %></td>
       <% if (string.IsNullOrWhiteSpace(user_id)) { %>
       <td>
-          <a href="../users/user_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("dt_users.id")%>">
+          <a href="wallet_history_list.aspx?user_id=<%#Eval("user_id")%>">
               <%#Eval("dt_users.real_name") != null && Eval("dt_users.real_name") != "" ? Eval("dt_users.real_name"): Eval("dt_users.user_name")%>
           </a>
       </td>

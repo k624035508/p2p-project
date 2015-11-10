@@ -48,20 +48,24 @@ class TransactionTable extends React.Component {
                     </thead>
                     <tbody>
                     {this.state.data.length != 0 ? null : <tr><td colSpan="6">暂无数据</td></tr>}
-                    { this.state.data.map((tr, index) =>
-                        [<tr className="detailRow" onClick={ev => this.setState({currentShowRemarkIndex: this.state.currentShowRemarkIndex == index ? -1 : index})}
-                            key={"a" + tr.id}>
-                            <td>{tr.type}</td>
-                            <td>{tr.income}</td>
-                            <td>{tr.outcome}</td>
-                            <td>{tr.idleMoney}</td>
-                            <td>{tr.createTime}</td>
-                            <td>详情 <span className={"glyphicon glyphicon-triangle-bottom " + (this.state.currentShowRemarkIndex == index ? "glyphicon-triangle-top" : "") }
-                                data-toggle="glyphicon-triangle-top"></span></td>
-                        </tr>,
-                        <tr className="detailMark" key={"b" + tr.id} style={ this.state.currentShowRemarkIndex == index ? {display: "table-row"} : {display: "none"} }
-                            ><td colSpan="6">备注：{tr.remark}</td></tr>]
-                    ) }
+                    { this.state.data.map((tr, index) => {
+                        const tr0 = (
+                            <tr className="detailRow"
+                                onClick={ev => this.setState({currentShowRemarkIndex: this.state.currentShowRemarkIndex == index ? -1 : index})}
+                                key={"a" + tr.id}>
+                                <td>{tr.type}</td>
+                                <td>{tr.income}</td>
+                                <td>{tr.outcome}</td>
+                                <td>{tr.idleMoney}</td>
+                                <td>{tr.createTime}</td>
+                                <td>详情 <span
+                                    className={"glyphicon glyphicon-triangle-bottom " + (this.state.currentShowRemarkIndex == index ? "glyphicon-triangle-top" : "") }
+                                    data-toggle="glyphicon-triangle-top"></span></td>
+                            </tr>);
+                        return this.state.currentShowRemarkIndex == index
+                            ? [tr0, <tr className="detailMark" key={"b" + tr.id}><td colSpan="6">备注：{tr.remark}</td></tr>]
+                            : tr0;
+                    }) }
                     </tbody>
                 </table>
             </div>

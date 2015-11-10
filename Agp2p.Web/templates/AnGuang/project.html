@@ -82,6 +82,9 @@
                         <%else%>
                         <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
                         <%/if%>
+                        <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                        <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
+                        <%/if%>
                     </tbody>
                 </table>
             </div>

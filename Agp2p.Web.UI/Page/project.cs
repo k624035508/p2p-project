@@ -4,6 +4,7 @@ using System.Text;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Agp2p.BLL;
 using System.Web;
 using Agp2p.Core;
@@ -56,6 +57,10 @@ namespace Agp2p.Web.UI.Page
             }
             else
             {
+                // 浏览次数 + 1
+                projectModel.click += 1;
+                context.SubmitChanges();
+
                 var pr = GetProjectInvestmentProgress(projectModel);
                 //投资进度
                 investmentProgress = pr.GetInvestmentProgress();
@@ -237,6 +242,28 @@ namespace Agp2p.Web.UI.Page
                             }).ToList();
             }
             return Enumerable.Empty<Dictionary<string, string>>().ToList();
+        }
+
+        protected static string GetRemainTime(li_projects proj)
+        {
+            var deadlineDay = proj.publish_time.Value.AddDays(proj.financing_day);
+
+            var match = new Regex(@"^(\d{1,2}):(\d{2}):(\d{2})$").Match(ConfigLoader.loadSiteConfig().systemTimerTriggerTime);
+            TimeSpan remainTimeSpan;
+            if (!match.Success)
+            {
+                remainTimeSpan = deadlineDay.Subtract(DateTime.Now);
+            }
+            else
+            {
+                remainTimeSpan =
+                    deadlineDay.Date.AddHours(Convert.ToInt32(match.Groups[1].Value))
+                        .AddMinutes(Convert.ToInt32(match.Groups[2].Value))
+                        .AddSeconds(Convert.ToInt32(match.Groups[3].Value))
+                        .Subtract(DateTime.Now);
+            }
+            var timeSpanNotNeg = new[] {remainTimeSpan, TimeSpan.Zero}.Max();
+            return $"{timeSpanNotNeg.Days}天{timeSpanNotNeg.Hours}时{timeSpanNotNeg.Minutes}分";
         }
     }
 }

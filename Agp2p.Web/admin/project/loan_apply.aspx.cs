@@ -38,7 +38,7 @@ namespace Agp2p.Web.admin.project
                 return;
             }
             this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId);
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).ToDictionary(c => c.id, c => c.title);
+            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.View.ToString());
