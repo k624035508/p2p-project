@@ -56,6 +56,10 @@ namespace Agp2p.Web.UI.Page
             }
             else
             {
+                // 浏览次数 + 1
+                projectModel.click += 1;
+                context.SubmitChanges();
+
                 var pr = GetProjectInvestmentProgress(projectModel);
                 //投资进度
                 investmentProgress = pr.GetInvestmentProgress();
