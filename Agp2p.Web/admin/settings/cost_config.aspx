@@ -31,28 +31,58 @@
         </div>
         <div class="tab-content">
             <dl>
+                <dt>平台服务费</dt>
+                <dd>
+                    <asp:TextBox ID="txt_loan_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">% * 借款本金</span></dd>
+            </dl>
+            <dl>
+                <dt>平台服务费(票据)</dt>
+                <dd>
+                    <asp:TextBox ID="txt_loan_fee_rate_bank" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">% * 借款本金</span></dd>
+            </dl>
+            <dl>
+                <dt>风险保证金</dt>
+                <dd>
+                    <asp:TextBox ID="txt_bond_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">% * 借款本金</span></dd>
+            </dl>
+            <dl>
+                <dt>风险保证金(票据)</dt>
+                <dd>
+                    <asp:TextBox ID="txt_bond_fee_rate_bank" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">% * 借款本金</span></dd>
+            </dl>
+            <dl>
                 <dt>提前还款罚息</dt>
                 <dd>
                     <asp:TextBox ID="txt_earlier_pay" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
-                    <span class="Validform_checktip">% * 本金</span></dd>
+                    <span class="Validform_checktip">% * 借款本金</span></dd>
             </dl>
             <dl>
                 <dt>逾期还款罚息</dt>
                 <dd>
                     <asp:TextBox ID="txt_overtime_pay" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
-                    <span class="Validform_checktip">% * 利息</span></dd>
+                    <span class="Validform_checktip">% * 借款利息</span></dd>
             </dl>
             <dl>
-                <dt>逾期管理费</dt>
+                <dt>逾期管理费(30天以下)</dt>
                 <dd>
                     <asp:TextBox ID="txt_overtime_cost" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
-                    <span class="Validform_checktip">‰ * 本金 * 逾期天数(30天以下)</span></dd>
+                    <span class="Validform_checktip">‰ * 借款本金 * 逾期天数</span></dd>
             </dl>
             <dl>
-                <dt>逾期管理费</dt>
+                <dt>逾期管理费(30天以上)</dt>
                 <dd>
                     <asp:TextBox ID="txt_overtime_cost2" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
-                    <span class="Validform_checktip">‰ * 本金 * 逾期天数(30天以上)</span></dd>
+                    <span class="Validform_checktip">‰ * 借款本金 * 逾期天数</span></dd>
+            </dl>
+            <dl>
+                <dt>逾期管理费(票据)</dt>
+                <dd>
+                    <asp:TextBox ID="txt_overtime_cost_bank" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">‰ * 借款本金 * 逾期天数</span></dd>
             </dl>
             <dl>
                 <dt>提现费</dt>

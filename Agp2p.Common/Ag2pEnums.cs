@@ -292,7 +292,7 @@ namespace Agp2p.Common
             RepayOverdueFine = 3,
 
             // 线下（关联借款人）
-            [Description("借款管理费")]
+            [Description("平台服务费")]
             ManagementFeeOfLoanning = 10,
             [Description("逾期管理费")]
             ManagementFeeOfOverTime = 11,
@@ -385,7 +385,7 @@ namespace Agp2p.Common
         public enum OfflineTransactionTypeEnum
         {
             // 收入
-            [Description("借款管理费")]
+            [Description("平台服务费")]
             ManagementFeeOfLoanning = 1,
             [Description("逾期管理费")]
             ManagementFeeOfOverTime = 2,

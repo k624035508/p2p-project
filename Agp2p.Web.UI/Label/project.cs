@@ -103,7 +103,7 @@ namespace Agp2p.Web.UI
             }
             total = query.Count();
 
-            Dictionary<int, string> CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
+            Dictionary<int, string> CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             //将对象列表转换成DataTable
             var queryToNewObj = query.OrderBy(q => q.status)

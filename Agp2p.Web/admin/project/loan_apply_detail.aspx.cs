@@ -146,6 +146,7 @@ namespace Agp2p.Web.admin.project
             txtAddTime.Text = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             txt_bond_fee_rate.Text = _project.bond_fee_rate.ToString();
             txt_loan_fee_rate.Text = _project.loan_fee_rate.ToString();
+            txt_contact_no.Text = _project.contract_no;
 
             ShowRiskInfo(_project);
         }
@@ -241,6 +242,7 @@ namespace Agp2p.Web.admin.project
             project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
             project.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0);
             project.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0);
+            project.contract_no = txt_contact_no.Text.Trim();
 
             //提交操作则状态为待初审            
             project.status = save_only ? (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted : (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking;
@@ -281,7 +283,7 @@ namespace Agp2p.Web.admin.project
             SetProjectModel(project);            
             BindMortgages(risk);
             //项目编号
-            project.no = new BLL.article_category().GetModel(project.category_id).call_index + (LqContext.li_projects.Count(p => p.category_id == project.category_id) + 1).ToString("0000");
+            project.title += new BLL.article_category().GetModel(project.category_id).call_index.ToUpper() + (LqContext.li_projects.Count(p => p.category_id == project.category_id) + 1).ToString("00000");
 
             LqContext.li_risks.InsertOnSubmit(risk);
             LqContext.li_projects.InsertOnSubmit(project);           
@@ -462,8 +464,26 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.Items.Clear();
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
                 txt_project_repayment_type.SelectedIndex = 0;
+
+                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank*100).ToString("N1");
+                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
             }
-            
+            else
+            {
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("年", "10"));
+                txt_project_repayment_term.Items.Add(new ListItem("月", "20"));
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 1;
+
+                txt_project_repayment_type.Items.Clear();
+                txt_project_repayment_type.Items.Add(new ListItem("先息后本", "10"));
+                txt_project_repayment_type.Items.Add(new ListItem("等额本息", "20"));
+                txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+                txt_project_repayment_type.SelectedIndex = 0;
+                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
+                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N2");
+            }
         }
     }
 

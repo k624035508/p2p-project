@@ -13760,6 +13760,8 @@ namespace Agp2p.Linq2SQL
 		
 		private System.Nullable<decimal> _bond_fee_rate;
 		
+		private string _contract_no;
+		
 		private EntitySet<li_repayment_tasks> _li_repayment_tasks;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
@@ -13834,6 +13836,8 @@ namespace Agp2p.Linq2SQL
     partial void Onloan_fee_rateChanged();
     partial void Onbond_fee_rateChanging(System.Nullable<decimal> value);
     partial void Onbond_fee_rateChanged();
+    partial void Oncontract_noChanging(string value);
+    partial void Oncontract_noChanged();
     #endregion
 		
 		public li_projects()
@@ -14469,6 +14473,26 @@ namespace Agp2p.Linq2SQL
 					this._bond_fee_rate = value;
 					this.SendPropertyChanged("bond_fee_rate");
 					this.Onbond_fee_rateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_contract_no", DbType="NVarChar(50)")]
+		public string contract_no
+		{
+			get
+			{
+				return this._contract_no;
+			}
+			set
+			{
+				if ((this._contract_no != value))
+				{
+					this.Oncontract_noChanging(value);
+					this.SendPropertyChanging();
+					this._contract_no = value;
+					this.SendPropertyChanged("contract_no");
+					this.Oncontract_noChanged();
 				}
 			}
 		}
