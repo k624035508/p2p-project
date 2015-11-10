@@ -86,22 +86,37 @@ body { background: @body-color; }
 		//产品介绍
 		.product-wrap {
 			.content-body {
-				padding: 0 20px 35px 20px;
+				padding: 0 30px 35px 30px;
 				& > div {
-					padding: 25px 0 8px 0;
+					padding: 30px 0;
 					border-bottom:@border-dashed;
-					h4 {
-						color: @blue;
-						margin-bottom: 15px;
+					& > div { .inline-block; }
+					.product-icon {
+						width: 200px;
+						height: 190px;
 					}
-					ul {
-						color: @red;
-						list-style-type: square;
-						li { margin-bottom: 15px; }
-						span {
-							color: @dark-grey;
-							font-size: @font15;
-							line-height: 28px;
+					.bills-icon { background: url("@{images}/bills-icon.png") no-repeat; }
+					.micro-finance-icon { background: url("@{images}/micro-finance-icon.png") no-repeat; }
+					.mortgage-icon { background: url("@{images}/mortgage-icon.png") no-repeat; }
+					.supply-chain-icon { background: url("@{images}/supply-chain-icon.png") no-repeat; }
+
+					.product-text {
+						width: 65%;
+						margin-left: 73px;
+						h4 {
+							color: @blue;
+							margin-bottom: 15px;
+						}
+						ul {
+							color: @red;
+							list-style-type: square;
+							margin-left: -20px;
+							li { margin-bottom: 15px; }
+							span {
+								color: @dark-grey;
+								font-size: @font15;
+								line-height: 28px;
+							}
 						}
 					}
 				}
@@ -140,6 +155,7 @@ body { background: @body-color; }
 								padding: 10px;
 								margin-bottom: 20px;
 								background: @body-color;
+								cursor: default;
 								* { color: @dark-grey; }
 								h5 {
 									font-size: @font15;
@@ -152,11 +168,62 @@ body { background: @body-color; }
 									li {
 										border: none;
 										line-height: 30px;
+										cursor: default;
 									}
 								}
 							}
 						}
 					}
+				}
+			}
+		}
+		//合作伙伴
+		.partner-wrap {
+			.content-body {
+				.topic-content;
+				.partner-per {
+					border-bottom: @border-dashed;
+					.name {
+						span {
+							display: inline-block;
+							vertical-align: bottom;
+							width: 105px;
+							height: 50px;
+							margin-right: 50px;
+							background: url("@{images}/legalize.jpg") no-repeat;
+						}
+						color: @darker-grey;
+						font-size: @font18;
+					}
+					.description { margin-top: 30px; }
+				}
+			}
+		}
+		//联系我们
+		.contact-wrap {
+			.content-body {
+				padding: 0 30px;
+				h4 {
+					color: @blue;
+					margin: 50px 0 18px 0;
+				}
+				& h4:first-child { margin-top: 35px; }
+				p {
+					color: @dark-grey;
+					font-size: @font15;
+					text-indent: 0;
+					margin: 0 0 12px;
+					span { color: @blue; }
+				}
+				.wechat-code {
+					position: relative;
+					top: -100px;
+					left: 50%;
+					margin-left: 20px;
+					display: block;
+					width: 130px;
+					height: 130px;
+					background: url("@{images}/wechat.jpg") no-repeat;
 				}
 			}
 		}
