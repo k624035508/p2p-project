@@ -132,8 +132,9 @@ thead * {
         <th align="right" width="8%">收入</th>
         <th align="right" width="8%">支出</th>
         <th align="center" width="10%">操作类型</th>
-        <th align="center" width="12%">关联人员</th>
-        <th align="center" width="18%">备注</th>
+        <th align="center" width="14%">关联项目</th>
+        <th align="center" width="10%">关联人员</th>
+        <th align="center" width="16%">备注</th>
      </tr>
    </thead> 
 </HeaderTemplate>
@@ -144,6 +145,7 @@ thead * {
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
     <td style="text-align:center"><%# Eval("type")%></td>
+    <td style="text-align:center"><%# Eval("project")%></td>
     <td style="text-align:center"><%# Eval("user")%></td>
     <td style="text-align:center"><%# Eval("remark")%></td>
   </tr>

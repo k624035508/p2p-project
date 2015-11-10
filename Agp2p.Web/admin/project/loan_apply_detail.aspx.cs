@@ -16,6 +16,7 @@ namespace Agp2p.Web.admin.project
         protected int risk_id = 0;
         protected int select_tab_index = 0; //刷新前选择的tab
         protected bool save_only = false;
+
         protected BLL.loan Loan;
 
         protected Agp2pDataContext LqContext = new Agp2pDataContext();
@@ -42,9 +43,7 @@ namespace Agp2p.Web.admin.project
             if (!Page.IsPostBack)
             {
                 CategoryDDLBind(this.channel_id);
-                CreditorDDLBind();
-                LoanerDDLBind();
-                GuarantorDDLBind();
+                BindControls();
 
                 if (!string.IsNullOrEmpty(action) && action == DTEnums.ActionEnum.Edit.ToString())
                 {                    
@@ -98,43 +97,28 @@ namespace Agp2p.Web.admin.project
             }
         }
 
-        /// <summary>
-        /// 初始化借款人
-        /// </summary>
-        protected void LoanerDDLBind()
+        protected void BindControls()
         {
+            //初始化借款人
             ddlLoaner.Items.Clear();
             ddlLoaner.Items.Add(new ListItem("请选择借款人...", ""));
-            var models =
-                LqContext.li_loaners.OrderByDescending(l => l.last_update_time)
-                    .Select(l => new ListItem(l.dt_users.real_name, l.id.ToString())).ToArray();
-            ddlLoaner.Items.AddRange(models);
-        }
+            ddlLoaner.Items.AddRange(LqContext.li_loaners.OrderByDescending(l => l.last_update_time)
+                    .Select(l => new ListItem(l.dt_users.real_name, l.id.ToString())).ToArray());
 
-        /// <summary>
-        /// 初始化债权人
-        /// </summary>
-        protected void CreditorDDLBind()
-        {
+            //初始化债权人
             ddlCreditor.Items.Clear();
             ddlCreditor.Items.Add(new ListItem("请选择债权人...", ""));
-            var dtCreditor = LqContext.li_creditors.OrderByDescending(q => q.last_update_time)
-                .Select(c => new ListItem(c.dt_users.real_name, c.user_id.ToString())).ToArray();
-            ddlCreditor.Items.AddRange(dtCreditor);
-        }
+            ddlCreditor.Items.AddRange(LqContext.li_creditors.OrderByDescending(q => q.last_update_time)
+                .Select(c => new ListItem(c.dt_users.real_name, c.user_id.ToString())).ToArray());
 
-        /// <summary>
-        /// 初始化借款人
-        /// </summary>
-        protected void GuarantorDDLBind()
-        {
+            //初始化借款人
             ddl_guarantor.Items.Clear();
             ddl_guarantor.Items.Add(new ListItem("请选择担保机构...", ""));
-            var models =
-                LqContext.li_guarantors.OrderBy(l => l.id)
-                    .Select(l => new ListItem(l.name, l.id.ToString())).ToArray();
-            ddl_guarantor.Items.AddRange(models);
+            ddl_guarantor.Items.AddRange(LqContext.li_guarantors.OrderBy(l => l.id)
+                    .Select(l => new ListItem(l.name, l.id.ToString())).ToArray());
+
         }
+
         #endregion
 
         /// <summary>
@@ -465,6 +449,21 @@ namespace Agp2p.Web.admin.project
                 dl_creditor.Visible = true;
                 dl_creditor_dic.Visible = true;
             }
+        }
+
+        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlCategoryId.SelectedItem.Text.Contains("银票"))
+            {
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 0;
+
+                txt_project_repayment_type.Items.Clear();
+                txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+                txt_project_repayment_type.SelectedIndex = 0;
+            }
+            
         }
     }
 
