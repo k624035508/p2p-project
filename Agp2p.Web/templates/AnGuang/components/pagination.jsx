@@ -7,6 +7,11 @@ class Pagination extends React.Component {
         super(props);
         this.state = {};
     }
+    componentWillReceiveProps (nextProps) {
+    	if (nextProps.pageCount != this.props.pageCount) {
+    		this.props.onPageSelected(0);
+    	}
+    }
     genPaginationItem(index) {
     	if (this.props.pageIndex == index) {
     		return <li className="active" key={index}><a href="javascript:;">{index+1}<span className="sr-only">(current)</span></a></li>
