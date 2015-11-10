@@ -59,14 +59,14 @@ namespace Agp2p.Core.NotifyLogic
                     var errorMsg = string.Empty;
                     if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
                     {
-                        context.AppendAdminLogAndSave(logTag,
+                        context.AppendAdminLogAndSave("LoanerRepayHint",
                             string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", errorMsg, loaner.user_name, task.li_projects.title));
                     }
                     context.AppendAdminLogAndSave(logTag, string.Format("发送还款提醒成功：{0}", smsContent));
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave(logTag,
+                    context.AppendAdminLogAndSave("LoanerRepayHint",
                         string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", ex.Message, loaner.user_name, task.li_projects.title));
                 }
             });
