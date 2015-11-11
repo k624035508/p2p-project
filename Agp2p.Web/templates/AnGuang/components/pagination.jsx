@@ -13,21 +13,60 @@ class Pagination extends React.Component {
     	}
     }
     genPaginationItem(index) {
-    	if (this.props.pageIndex == index) {
+    	if (index === "omit-left" || index === "omit-right") {
+    		return <li key={index}><a>…</a></li>
+    	} else if (this.props.pageIndex == index) {
     		return <li className="active" key={index}><a href="javascript:;">{index+1}<span className="sr-only">(current)</span></a></li>
     	} else {
     		return <li key={index}><a href="javascript:;" onClick={() => this.props.onPageSelected(index)}>{index+1}</a></li>
     	}
     }
-    genOmitPaginationItem(key) {
-    	return <li key={key}><a>…</a></li>
-    }
     render() {
-    	let {pageIndex, pageCount, pageRange} = this.props;
-    	let isFirstPage = pageIndex == 0, isLastPage = pageCount == 0 || pageIndex == pageCount - 1;
-    	if (pageCount == 0) {
+    	let {pageIndex, pageCount, keepShow} = this.props;
+    	if (!pageCount) {
     		return <nav />;
     	}
+
+    	let init = range(pageCount).map(i => ({index: i, omit: true}));
+
+    	// display page item by "keepShow"
+    	let maxKeepShow = Math.min(keepShow, pageCount),
+	    	oneSideKeepShow = Math.floor((maxKeepShow - 1) / 2),
+	    	keepShowStartPoint = pageIndex - oneSideKeepShow;
+	    
+    	if (keepShowStartPoint < 0) {
+    		keepShowStartPoint = 0;
+    	} else if (pageCount < keepShowStartPoint + maxKeepShow) {
+    		keepShowStartPoint = pageCount - maxKeepShow;
+    	}
+    	range(keepShowStartPoint, keepShowStartPoint + maxKeepShow).map(i => init[i].omit = false);
+
+    	// display head and tail
+    	init[0].omit = init[init.length - 1].omit = false;
+
+    	let omitLeft = init.filter(item => item.omit && item.index < pageIndex);
+    	let omitRight = init.filter(item => item.omit && pageIndex < item.index);
+
+    	// display omited if only omit one item
+    	if (omitLeft.length == 1) {
+    		omitLeft[0].omit = false;
+    	}
+    	if (omitRight.length == 1) {
+    		omitRight[0].omit = false;
+    	}
+
+    	// remove useless omit item
+    	if (1 < omitLeft.length) {
+    		omitLeft[0].index = "omit-left";
+    		omitLeft[0].omit = false;
+    	}
+    	if (1 < omitRight.length) {
+    		omitRight[0].index = "omit-right";
+    		omitRight[0].omit = false;
+    	}
+    	let result = init.filter(item => !item.omit).map(item => item.index);
+
+    	let isFirstPage = pageIndex == 0, isLastPage = pageCount == 0 || pageIndex == pageCount - 1;
     	return (
     		<nav>
 	    		<ul className="pagination">
@@ -36,19 +75,7 @@ class Pagination extends React.Component {
 			    			<span aria-hidden="true">&laquo;</span>
 		    			</a>
 	    			</li>
-	    			{this.genPaginationItem(0)}
-	    			{ 2 < pageIndex - pageRange
-	    				? this.genOmitPaginationItem("omit-left")
-	    				: (pageIndex - pageRange == 2)
-	    					? this.genPaginationItem(1)
-	    					: null }
-		    		{ range(Math.max(1, pageIndex - pageRange), Math.min(pageCount - 2, pageIndex + pageRange) + 1).map(i => this.genPaginationItem(i)) }
-	    			{ pageIndex + pageRange < pageCount - 3
-	    				? this.genOmitPaginationItem("omit-right")
-	    				: (pageIndex + pageRange == pageCount - 3)
-	    					? this.genPaginationItem(pageCount - 2)
-	    					: null }
-	    			{ pageCount == 1 ? null : this.genPaginationItem(pageCount - 1)}
+	    			{result.map(i => this.genPaginationItem(i))}
 		    		<li className={isLastPage ? "disabled" : ""} key="next">
 		    			<a href="javascript:;" aria-label="Next" onClick={isLastPage ? null : () => this.props.onPageSelected(pageIndex+1)}>
 		    				<span aria-hidden="true">&raquo;</span>
@@ -59,6 +86,6 @@ class Pagination extends React.Component {
 		);
     }
 }
-Pagination.defaultProps = { pageRange: 2 }
+Pagination.defaultProps = { keepShow: 5 } // should be odd number
 
 export default Pagination;

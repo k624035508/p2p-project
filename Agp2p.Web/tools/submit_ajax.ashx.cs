@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.IO;
 using System.Web;
 using System.Web.SessionState;
 using Agp2p.Web.UI;
@@ -157,8 +158,8 @@ namespace Agp2p.Web.tools
                 case "update_bank_card":   //新增银行卡
                     update_bank_card(context);
                     break;
-                case "user_agree_contract_show": //显示用户协议合同信息
-                    user_agree_contract_show(context);
+                case "generate_user_invest_contract": //显示用户协议合同信息
+                    GenerateUserInvestContract(context);
                     break;
             }
         }
@@ -2434,62 +2435,69 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
-        /// TODO 展示用户协议合同信息
+        /// 生成用户投资协议
         /// </summary>
-        /// <param name="context"></param>
-        private void user_agree_contract_show(HttpContext context)
+        /// <param name="httpContext"></param>
+        private void GenerateUserInvestContract(HttpContext httpContext)
         {
+            httpContext.Response.ContentType = "text/html; charset=utf-8";
+            httpContext.Response.TrySkipIisCustomErrors = true;
             try
             {
-                int id = DTRequest.GetFormInt("id", 0);
-                int projectId = DTRequest.GetFormInt("projectId", 0);
-                var linqContext = new Agp2pDataContext();
-                var project = linqContext.li_projects.Single(p => p.id == projectId);
-                if (project == null)
+                int id = DTRequest.GetQueryInt("id", 0);
+                var dbContext = new Agp2pDataContext();
+                //检查用户是否登录
+                var user = BasePage.GetUserInfoByLinq(dbContext);
+                if (user == null)
                 {
-                    context.Response.Write("{\"status\":0, \"msg\":\"查询协议合同信息失败！\"}");
+                    httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    httpContext.Response.Write("你尚未登录");
                     return;
                 }
 
+                var investment = dbContext.li_project_transactions.SingleOrDefault(t => t.id == id && t.investor == user.id);
+                if (investment == null)
+                {
+                    httpContext.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    httpContext.Response.Write("没找到投资协议");
+                    return;
+                }
+                var project = investment.li_projects;
+
                 //获得投资协议邮件内容
-                var mailModel = linqContext.dt_mail_template.SingleOrDefault(te => te.call_index == "user_invest_agree");
-                if (mailModel == null) throw new InvalidOperationException("发送投资协议时没有找到电子邮件模版：user_invest_agree");
-                var userInvest = linqContext.li_project_transactions.Single(t => t.id == id && t.project == projectId);
+                var mailModel = dbContext.dt_mail_template.SingleOrDefault(te => te.call_index == "user_invest_agree");
+                if (mailModel == null) throw new Exception("发送投资协议时没有找到电子邮件模版：user_invest_agree");
+
+                var a4Template = File.ReadAllText(httpContext.Request.MapPath("./a4-template.htm"));
 
                 //替换模板内容
-                string titletxt = mailModel.maill_title;
-                string bodytxt = mailModel.content;
-                //甲方信息
-                bodytxt = bodytxt.Replace("{jiafang_name}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.real_name : "");
-                bodytxt = bodytxt.Replace("{jiafang_id_card}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.id_card_number : "");
-                //项目信息
-                bodytxt = bodytxt.Replace("{project_name}", project.title);
-                bodytxt = bodytxt.Replace("{project_rate}", project.profit_rate_year.ToString());
-                bodytxt = bodytxt.Replace("{project_date_manbiao}", project.invest_complete_time != null ? string.Format("{0:yyyy年MM月dd日}", project.invest_complete_time) : "");
-                bodytxt = bodytxt.Replace("{project_date_wancheng}", string.Format("{0:yyyy年MM月dd日}", project.li_repayment_tasks.Max(t => t.should_repay_time)));
-                //乙方信息
-                bodytxt = bodytxt.Replace("{yifang_name}", userInvest.dt_users.real_name);
-                bodytxt = bodytxt.Replace("{yifang_user_name}", userInvest.dt_users.user_name);
-                bodytxt = bodytxt.Replace("{yifang_id_card}", userInvest.dt_users.id_card_number);
-                bodytxt = bodytxt.Replace("{yifang_email}", userInvest.dt_users.email);
-                //投资信息
-                if (string.IsNullOrEmpty(userInvest.agree_no))
-                    userInvest.agree_no = userInvest.create_time.ToString("yyMMddhhmmssss");
-                bodytxt = bodytxt.Replace("{agree_no}", userInvest.agree_no);
-                bodytxt = bodytxt.Replace("{project_amount}", userInvest.principal.ToString("N"));
+                var projectCompleteTime = project.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid).Max(t => t.should_repay_time);
 
-                context.Response.ContentType = "application/json";
-                var json = JsonConvert.SerializeObject(
-                    new
-                    {
-                        status = 1,
-                        body = bodytxt
-                    });
-                context.Response.Write(json);
+                string bodytxt = mailModel.content
+                //甲方信息
+                .Replace("{jiafang_name}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.real_name : "")
+                .Replace("{jiafang_id_card}", project.li_risks != null && project.li_risks.li_creditors != null ? project.li_risks.li_creditors.dt_users.id_card_number : "")
+                //项目信息
+                .Replace("{project_name}", project.title)
+                .Replace("{project_rate}", project.profit_rate_year.ToString())
+                .Replace("{project_date_manbiao}", project.invest_complete_time != null ? string.Format("{0:yyyy年MM月dd日}", project.invest_complete_time) : "")
+                .Replace("{project_date_wancheng}", string.Format("{0:yyyy年MM月dd日}", projectCompleteTime))
+                //乙方信息
+                .Replace("{yifang_name}", investment.dt_users.real_name)
+                .Replace("{yifang_user_name}", investment.dt_users.user_name)
+                .Replace("{yifang_id_card}", investment.dt_users.id_card_number)
+                .Replace("{yifang_email}", investment.dt_users.email)
+                //投资信息
+                .Replace("{agree_no}", investment.agree_no)
+                .Replace("{project_amount}", investment.principal.ToString("N"));
+
+                httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+                httpContext.Response.Write(a4Template.Replace("{title}", mailModel.maill_title).Replace("{body}", bodytxt));
             }
             catch (Exception ex)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"查询协议合同信息失败！\"}");
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                httpContext.Response.Write("内部错误：生成投资协议失败，请联系客服");
             }
         }
 

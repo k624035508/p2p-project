@@ -783,6 +783,7 @@
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
     <Content Include="tools\download.ashx" />
+    <Content Include="tools\a4-template.htm" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

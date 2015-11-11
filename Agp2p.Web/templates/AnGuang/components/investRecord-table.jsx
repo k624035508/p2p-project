@@ -1,5 +1,5 @@
 import React from "react";
-import $ from "jquery";
+import { ajax } from "jquery";
 import isEqual from "lodash/lang/isEqual"
 
 class InvestRecordTable extends React.Component {
@@ -12,9 +12,12 @@ class InvestRecordTable extends React.Component {
             this.fetch(nextProps.type, nextProps.pageIndex, nextProps.startTime, nextProps.endTime);
         }
     }
+    componentDidMount() {
+        this.fetch(this.props.type, this.props.pageIndex);
+    }
     fetch(type, pageIndex, startTime = "", endTime = "") {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryInvestment", pageSize = 10;
-        $.ajax({
+        ajax({
             type: "post",
             dataType: "json",
             contentType: "application/json",
@@ -29,9 +32,6 @@ class InvestRecordTable extends React.Component {
                 console.error(url, status, err.toString());
             }.bind(this)
         });
-    }
-    componentDidMount() {
-        this.fetch(this.props.type, this.props.pageIndex);
     }
     render() {
         return (
@@ -59,7 +59,7 @@ class InvestRecordTable extends React.Component {
                             <td>{tr.profit}</td>
                             <td>{tr.status}</td>
                             <td>{tr.investTime}</td>
-                            <td><a href="javascript:;">查看</a></td>
+                            <td><a href={`/tools/submit_ajax.ashx?action=generate_user_invest_contract&id=${tr.ptrId}`} target="_blank">查看</a></td>
                         </tr>
                     )}
                     </tbody>
