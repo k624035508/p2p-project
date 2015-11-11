@@ -50,14 +50,18 @@ class CardEditor extends React.Component {
 				return;
 			}
 			var promise = this.props.dispatch(appendBankCard(this.state.cardNumber, this.state.bank, this.state.selectedLocation, this.state.openingBank));
-			promise.done(this.props.onOperationSuccess);
+			promise.done(() => {
+				this.setState(this.genStateByValue());
+				this.props.onOperationSuccess();
+			});
 		} else {
 			var promise = this.props.dispatch(modifyBankCard(
-				this.props.value.cardId, this.state.bank, this.state.selectedLocation, this.state.openingBank, this.state.cardNumber));
+				this.props.value.cardId, this.state.bank, this.state.selectedLocation, this.state.openingBank));
 			promise.done(this.props.onOperationSuccess);
 		}
 	}
 	render() {
+		let creatingCard = !this.props.value, editingCard = !creatingCard;
 		return (
 			<div className={this.props.rootClass}>
 				<ul className="list-unstyled">
@@ -74,13 +78,18 @@ class CardEditor extends React.Component {
 					</li>
 					<li><span>开户行名称：</span><input type="text" value={this.state.openingBank}
 						onChange={ev => this.setState({openingBank: ev.target.value})} disabled={!this.props.realName} /></li>
-					<li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
-						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>
-					{this.props.value ? null :
+					{editingCard
+						? <li><span>银行卡号：</span>{this.state.cardNumber}</li>
+						: <li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>}
+					{editingCard ? null :
 					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
 						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /></li>}
 				</ul>
-				<button type="button" onClick={this.doSaveCard.bind(this)} disabled={!this.props.realName}>提 交</button>
+				<button type="button" onClick={ev => this.doSaveCard()}
+					disabled={!this.props.realName}>{creatingCard ? "提 交" : "保 存"}</button>
+				{creatingCard ? null :
+				<button type="button" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
 			</div>
 		);
 	}

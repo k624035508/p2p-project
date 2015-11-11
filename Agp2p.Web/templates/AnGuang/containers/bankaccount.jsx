@@ -43,7 +43,9 @@ class BankAccount extends React.Component {
                 </ul>
                 </div>
                 <div className="add-cards-th"><span>{this.state.selectedCardIndex == -1 ? "新增银行卡" : "修改银行卡"}</span></div>
-                <CardEditor rootClass="add-cards-wrap" value={this.state.selectedCardIndex == -1 ? null : this.props.cards[this.state.selectedCardIndex]}/>
+                <CardEditor rootClass="add-cards-wrap"
+                    onOperationSuccess={() => this.setState({selectedCardIndex: -1})}
+                    value={this.state.selectedCardIndex == -1 ? null : this.props.cards[this.state.selectedCardIndex]}/>
             </div>
         );
     }

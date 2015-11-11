@@ -26,39 +26,42 @@ namespace Agp2p.Web.UI.Page
         public new static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
         {
             var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
             // 检查用户的输入
             if (!new Regex(@"^\d{16,}$").IsMatch(cardNumber))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行卡号格式不正确";
             }
             if (!new Regex(@"^[\u4e00-\u9fa5]+$").IsMatch(bankName))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行名称格式不正确";
             }
             if (!new Regex(@"^[\u4e00-\u9fa5;]+$").IsMatch(bankLocation))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行所在地格式不正确";
             }
             if (!new Regex(@"^[^<>]*$").IsMatch(openingBank))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "开户行名称格式不正确";
             }
             
             var context = new Agp2pDataContext();
+            var alreadyHave = context.li_bank_accounts.Any(c => c.owner == userInfo.id && c.account == cardNumber);
+            if (alreadyHave)
+            {
+                HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Conflict;
+                return "你已经添加了卡号为 " + cardNumber + " 的卡，不能重复添加";
+            }
+
             var user = context.dt_users.Single(u => u.id == userInfo.id);
             var card = new li_bank_accounts
             {
@@ -74,13 +77,21 @@ namespace Agp2p.Web.UI.Page
             return "保存银行卡信息成功";
         }
 
+        /// <summary>
+        /// 有过提现记录的卡不能修改卡号，简单起见直接不能修改卡号
+        /// </summary>
+        /// <param name="cardId"></param>
+        /// <param name="bankName"></param>
+        /// <param name="bankLocation"></param>
+        /// <param name="openingBank"></param>
+        /// <returns></returns>
         [WebMethod]
-        public new static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank, string cardNumber)
+        public new static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank)
         {
             var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
@@ -88,40 +99,29 @@ namespace Agp2p.Web.UI.Page
             var card = context.li_bank_accounts.SingleOrDefault(c => c.owner == userInfo.id && c.id == cardId);
             if (card == null)
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return "找不到卡的信息";
             }
             // 检查用户的输入
             if (!new Regex(@"^[\u4e00-\u9fa5]+$").IsMatch(bankName))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行名称格式不正确";
             }
             if (!new Regex(@"^[\u4e00-\u9fa5;]+$").IsMatch(bankLocation))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行所在地格式不正确";
             }
             if (!new Regex(@"^[^<>]*$").IsMatch(openingBank))
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "开户行名称格式不正确";
-            }
-            if (!new Regex(@"^\d{16,}$").IsMatch(cardNumber))
-            {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return "银行卡号格式不正确";
             }
 
             card.bank = bankName;
             card.location = bankLocation;
             card.opening_bank = openingBank;
-            card.account = cardNumber;
 
             context.SubmitChanges();
             return "修改成功";
@@ -131,9 +131,9 @@ namespace Agp2p.Web.UI.Page
         public new static string AjaxDeleteCard(int cardId)
         {
             var userInfo = GetUserInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
@@ -141,7 +141,6 @@ namespace Agp2p.Web.UI.Page
             var card = context.li_bank_accounts.SingleOrDefault(c => c.owner == userInfo.id && c.id == cardId);
             if (card == null)
             {
-                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return "该卡已被删除";
             }

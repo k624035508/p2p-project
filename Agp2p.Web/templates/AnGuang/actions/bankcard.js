@@ -76,13 +76,13 @@ export function deleteBankCard(cardId) {
 	};
 }
 
-export function modifyBankCard(cardId, bankName, bankLocation, openingBank, cardNumber) {
+export function modifyBankCard(cardId, bankName, bankLocation, openingBank) {
 	return function (dispatch) {
 		let url = USER_CENTER_ASPX_PATH + "/AjaxModifyCard";
 		return ajax({
 			type: "POST",
 			url: url,
-			data: JSON.stringify({ cardId, bankName, bankLocation: bankLocation.join(";"), openingBank, cardNumber }),
+			data: JSON.stringify({ cardId, bankName, bankLocation: bankLocation.join(";"), openingBank }),
 			contentType: "application/json",
 			dataType: "json",
 			success: function (data) {
