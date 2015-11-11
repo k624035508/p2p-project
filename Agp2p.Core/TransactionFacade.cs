@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
@@ -20,7 +21,8 @@ namespace Agp2p.Core
 
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserInvestedMsg>(m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成还款计划
+            MessageBus.Main.Subscribe<UserInvestedMsg>(
+                m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成还款计划
         }
 
         /// <summary>
@@ -32,22 +34,23 @@ namespace Agp2p.Core
         /// <param name="payApi"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        public static li_bank_transactions Charge(this Agp2pDataContext context, int userId, decimal money, Agp2pEnums.PayApiTypeEnum payApi, string remark = null)
+        public static li_bank_transactions Charge(this Agp2pDataContext context, int userId, decimal money,
+            Agp2pEnums.PayApiTypeEnum payApi, string remark = null)
         {
             // 创建交易记录（充值进行中）
             var tr = new li_bank_transactions
             {
                 charger = userId,
                 transact_time = null,
-                type = (int)Agp2pEnums.BankTransactionTypeEnum.Charge,
-                status = (int)Agp2pEnums.BankTransactionStatusEnum.Acting,
+                type = (int) Agp2pEnums.BankTransactionTypeEnum.Charge,
+                status = (int) Agp2pEnums.BankTransactionStatusEnum.Acting,
                 value = money,
                 handling_fee = 0,
                 handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
                 no_order = Utils.GetOrderNumberLonger(),
                 create_time = DateTime.Now,
                 remarks = remark,
-                pay_api = (byte)payApi
+                pay_api = (byte) payApi
             };
             context.li_bank_transactions.InsertOnSubmit(tr);
 
@@ -75,7 +78,8 @@ namespace Agp2p.Core
         /// <param name="withdrawMoney"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId, decimal withdrawMoney, string remark = null)
+        public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId,
+            decimal withdrawMoney, string remark = null)
         {
             // 提现 100 起步，5w 封顶
             if (withdrawMoney < 100)
@@ -109,7 +113,7 @@ namespace Agp2p.Core
                 status = (int) Agp2pEnums.BankTransactionStatusEnum.Acting,
                 value = withdrawMoney,
                 // 防套现手续费公式：未投资金额 * 0.6%；有防提现手续费时不能在数据库里面直接设置默认的手续费(1元)，因为提现取消的时候需要靠这个数来恢复未投资金额
-                handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney * StandGuardFeeRate,
+                handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
                 handling_fee_type =
                     (byte)
                         (unusedMoney == 0
@@ -161,12 +165,15 @@ namespace Agp2p.Core
         /// <param name="approver"></param>
         /// <param name="saveChange"></param>
         /// <returns></returns>
-        public static li_bank_transactions ConfirmBankTransaction(this Agp2pDataContext context, int bankTransactionId, int? approver, bool saveChange = true)
+        public static li_bank_transactions ConfirmBankTransaction(this Agp2pDataContext context, int bankTransactionId,
+            int? approver, bool saveChange = true)
         {
             // 更新原事务（完成事务）
             var tr = context.li_bank_transactions.Single(t => t.id == bankTransactionId);
             if (tr.status != (int) Agp2pEnums.BankTransactionStatusEnum.Acting)
-                throw new InvalidOperationException("该银行卡" + Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionTypeEnum) tr.type) + "事务已经被确认或取消了");
+                throw new InvalidOperationException("该银行卡" +
+                                                    Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionTypeEnum) tr.type) +
+                                                    "事务已经被确认或取消了");
             tr.status = (byte) Agp2pEnums.BankTransactionStatusEnum.Confirm;
             tr.transact_time = DateTime.Now;
             tr.approver = approver;
@@ -177,7 +184,8 @@ namespace Agp2p.Core
                 // 修改钱包金额
                 //wallet.locked_money -= tr.value;
                 wallet.idle_money += tr.value;
-                wallet.unused_money += (tr.pay_api == (byte)Agp2pEnums.PayApiTypeEnum.ManualAppend ? 0 : tr.value); // 手工充值 可能为活动返利，不计手续费
+                wallet.unused_money += (tr.pay_api == (byte) Agp2pEnums.PayApiTypeEnum.ManualAppend ? 0 : tr.value);
+                    // 手工充值 可能为活动返利，不计手续费
                 wallet.total_charge += tr.value;
                 wallet.last_update_time = tr.transact_time.Value; // 时间应该一致
 
@@ -186,7 +194,7 @@ namespace Agp2p.Core
                 his.li_bank_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
-            else if (tr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw) // 提款确认
+            else if (tr.type == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw) // 提款确认
             {
                 var wallet = tr.li_bank_accounts.dt_users.li_wallets;
                 // 修改钱包金额
@@ -216,12 +224,15 @@ namespace Agp2p.Core
         /// <param name="approver"></param>
         /// <param name="saveChange"></param>
         /// <returns></returns>
-        public static li_bank_transactions CancelBankTransaction(this Agp2pDataContext context, int bankTransactionId, int approver, bool saveChange = true)
+        public static li_bank_transactions CancelBankTransaction(this Agp2pDataContext context, int bankTransactionId,
+            int approver, bool saveChange = true)
         {
             // 更新原事务（完成事务）
             var tr = context.li_bank_transactions.Single(t => t.id == bankTransactionId);
             if (tr.status != (int) Agp2pEnums.BankTransactionStatusEnum.Acting)
-                throw new InvalidOperationException("该银行卡" + Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionTypeEnum) tr.type) + "事务已经被确认或取消了");
+                throw new InvalidOperationException("该银行卡" +
+                                                    Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionTypeEnum) tr.type) +
+                                                    "事务已经被确认或取消了");
             tr.status = (byte) Agp2pEnums.BankTransactionStatusEnum.Cancel;
             tr.transact_time = DateTime.Now;
             tr.approver = approver;
@@ -244,7 +255,8 @@ namespace Agp2p.Core
                 // 修改钱包金额
                 wallet.locked_money -= tr.value;
                 wallet.idle_money += tr.value;
-                if (tr.handling_fee_type == (int) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee)
+                if (tr.handling_fee_type ==
+                    (int) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee)
                 {
                     wallet.unused_money += tr.handling_fee/StandGuardFeeRate; // 恢复防套现手续费的部分
                 }
@@ -274,7 +286,7 @@ namespace Agp2p.Core
             return new li_wallet_histories
             {
                 user_id = wallet.user_id,
-                action_type = (byte)actionType,
+                action_type = (byte) actionType,
                 idle_money = wallet.idle_money,
                 locked_money = wallet.locked_money,
                 investing_money = wallet.investing_money,
@@ -296,7 +308,7 @@ namespace Agp2p.Core
         {
             var pr = context.li_projects.Single(p => p.id == projectId);
 
-            if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status)
+            if ((int) Agp2pEnums.ProjectStatusEnum.Financing != pr.status)
                 throw new InvalidOperationException("项目不是发标状态，不能投资");
             // 判断投资金额的数额是否合理
             var canBeInvest = pr.financing_amount - pr.investment_amount;
@@ -368,7 +380,7 @@ namespace Agp2p.Core
         public static li_projects FinishInvestment(this Agp2pDataContext context, int projectId)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
-            if (project.status != (int)Agp2pEnums.ProjectStatusEnum.Financing)
+            if (project.status != (int) Agp2pEnums.ProjectStatusEnum.Financing)
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
@@ -404,9 +416,9 @@ namespace Agp2p.Core
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
                 throw new InvalidOperationException("项目不是满标状态，不能设置为正在还款状态");
-            
+
             // 修改项目状态为满标/截标
-            project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
+            project.status = (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
             project.make_loan_time = DateTime.Now; // 放款时间
 
             var termSpan = (Agp2pEnums.ProjectRepaymentTermSpanEnum) project.repayment_term_span; // 期的跨度（年月日）
@@ -418,37 +430,43 @@ namespace Agp2p.Core
             var termCount = CalcRealTermCount(termSpan, termSpanCount); // 实际期数
 
             var repayPrincipal = project.investment_amount; // 本金投资总额
-            var interestAmount = Math.Round(project.profit_rate * repayPrincipal, 2); // 利息总额
+            var interestAmount = Math.Round(project.profit_rate*repayPrincipal, 2); // 利息总额
 
             List<li_repayment_tasks> repaymentTasks;
             if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.DengEr) // 等额本息
             {
                 repaymentTasks = Enumerable.Range(1, termCount)
-                    .Zip(interestAmount.GetPerfectSplitStream(termCount), (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
-                    .Zip(repayPrincipal.GetPerfectSplitStream(termCount), (a, repayPrincipalEachTerm) => new { a.termNumber, a.repayInterestEachTerm, repayPrincipalEachTerm})
+                    .Zip(interestAmount.GetPerfectSplitStream(termCount),
+                        (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
+                    .Zip(repayPrincipal.GetPerfectSplitStream(termCount),
+                        (a, repayPrincipalEachTerm) =>
+                            new {a.termNumber, a.repayInterestEachTerm, repayPrincipalEachTerm})
                     .Select(term => new li_repayment_tasks
-                {
-                    project = projectId,
-                    repay_interest = term.repayInterestEachTerm,
-                    repay_principal = term.repayPrincipalEachTerm,
-                    status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                    term = (short) term.termNumber,
-                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
-                }).ToList();
+                    {
+                        project = projectId,
+                        repay_interest = term.repayInterestEachTerm,
+                        repay_principal = term.repayPrincipalEachTerm,
+                        status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
+                        term = (short) term.termNumber,
+                        should_repay_time =
+                            CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
+                    }).ToList();
             }
             else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.XianXi) // 先息后本
             {
                 repaymentTasks = Enumerable.Range(1, termCount)
-                    .Zip(interestAmount.GetPerfectSplitStream(termCount), (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
+                    .Zip(interestAmount.GetPerfectSplitStream(termCount),
+                        (termNumber, repayInterestEachTerm) => new {termNumber, repayInterestEachTerm})
                     .Select(term => new li_repayment_tasks
-                {
-                    project = projectId,
-                    repay_interest = term.repayInterestEachTerm, // 只付利息
-                    repay_principal = 0,
-                    status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                    term = (short) term.termNumber,
-                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
-                }).ToList();
+                    {
+                        project = projectId,
+                        repay_interest = term.repayInterestEachTerm, // 只付利息
+                        repay_principal = 0,
+                        status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
+                        term = (short) term.termNumber,
+                        should_repay_time =
+                            CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
+                    }).ToList();
                 repaymentTasks.Last().repay_principal = repayPrincipal; // 最后额外添加一期返还全部本金
             }
             else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.DaoQi) // 到期还款付息
@@ -462,7 +480,8 @@ namespace Agp2p.Core
                     repay_principal = repayPrincipal,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                     term = 1,
-                    should_repay_time = CalcRepayTime(project.make_loan_time.Value, termSpan, 1, project.repayment_term_span_count)
+                    should_repay_time =
+                        CalcRepayTime(project.make_loan_time.Value, termSpan, 1, project.repayment_term_span_count)
                 }, 1).ToList();
             }
             else throw new InvalidEnumArgumentException("项目的还款类型值异常");
@@ -520,7 +539,7 @@ namespace Agp2p.Core
                 throw new Exception("无法分割为 0 份");
             }
             var part = Math.Round(amount/splitCount, toFixed);
-            var finalPart = Math.Round(amount - part * (splitCount - 1), toFixed);
+            var finalPart = Math.Round(amount - part*(splitCount - 1), toFixed);
             return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
         }
 
@@ -530,7 +549,8 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="project"></param>
         /// <param name="tasks"></param>
-        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context, li_projects project, List<li_repayment_tasks> tasks)
+        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context,
+            li_projects project, List<li_repayment_tasks> tasks)
         {
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord =
@@ -540,7 +560,8 @@ namespace Agp2p.Core
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                     .ToLookup(tr => tr.dt_users);
             // 计算出每个用户的投资占比
-            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key, records => records.Sum(tr => tr.principal) / project.investment_amount); // 公式：用户投资总额 / 项目投资总额
+            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
+                records => records.Sum(tr => tr.principal)/project.investment_amount); // 公式：用户投资总额 / 项目投资总额
 
             var wallets = investRecord.Select(ir => ir.Key.li_wallets).ToList();
 
@@ -556,7 +577,8 @@ namespace Agp2p.Core
                 foreach (var wallet in wallets)
                 {
                     var ratio = moneyRepayRatio[wallet.dt_users]; // 该用户的投资占比
-                    wallet.profiting_money += Math.Round(ratio*task.repay_interest, 2); // 累加利润：避免直接计算总利润（利率 * 总投资额），这样可以避免精度问题
+                    wallet.profiting_money += Math.Round(ratio*task.repay_interest, 2);
+                        // 累加利润：避免直接计算总利润（利率 * 总投资额），这样可以避免精度问题
                     wallet.investing_money += Math.Round(ratio*task.repay_principal, 2); // 同理，重新计算代收本金
                 }
             }
@@ -581,7 +603,8 @@ namespace Agp2p.Core
         /// <param name="termNumber">第几期</param>
         /// <param name="termUnitCount"></param>
         /// <returns></returns>
-        public static DateTime CalcRepayTime(DateTime baseTime, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpan, int termNumber, int termUnitCount)
+        public static DateTime CalcRepayTime(DateTime baseTime, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpan,
+            int termNumber, int termUnitCount)
         {
             switch (termSpan)
             {
@@ -639,12 +662,12 @@ namespace Agp2p.Core
         {
             if (proj.dt_article_category.call_index == "ypb")
             {
-                var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span;
+                var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span;
                 if (projectRepaymentTermSpanEnum != Agp2pEnums.ProjectRepaymentTermSpanEnum.Day)
                 {
                     throw new Exception("银票宝的期数只能是按日算");
                 }
-                return (decimal)proj.profit_rate_year / 100 / 360 * proj.repayment_term_span_count;
+                return (decimal) proj.profit_rate_year/100/360*proj.repayment_term_span_count;
             }
             return
                 CalcFinalProfitRate(
@@ -661,26 +684,28 @@ namespace Agp2p.Core
         /// <param name="termSpanEnum"></param>
         /// <param name="termSpanCount"></param>
         /// <returns></returns>
-        private static decimal CalcFinalProfitRate(DateTime baseTime, decimal profitRateYear, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpanEnum, int termSpanCount)
+        private static decimal CalcFinalProfitRate(DateTime baseTime, decimal profitRateYear,
+            Agp2pEnums.ProjectRepaymentTermSpanEnum termSpanEnum, int termSpanCount)
         {
             profitRateYear /= 100; // 年化利率未除以 100
             switch (termSpanEnum) // 公式：年利率 * 总天数 / 365
             {
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Year:
-                    return profitRateYear * termSpanCount;
+                    return profitRateYear*termSpanCount;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Month:
                     // 最后那期还款的日期 - 满标的日期 = 总天数
                     var lastRepayDate = CalcRepayTime(baseTime, termSpanEnum, termSpanCount, termSpanCount).Date;
                     var days = lastRepayDate.Subtract(baseTime.Date).Days;
-                    return profitRateYear * days / 365;
+                    return profitRateYear*days/365;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
-                    return profitRateYear * termSpanCount / 365;
+                    return profitRateYear*termSpanCount/365;
                 default:
                     throw new InvalidEnumArgumentException("异常的项目还款跨度值");
             }
         }
 
-        public static Agp2pEnums.WalletHistoryTypeEnum GetWalletHistoryTypeByProjectTransaction(li_project_transactions ptr)
+        public static Agp2pEnums.WalletHistoryTypeEnum GetWalletHistoryTypeByProjectTransaction(
+            li_project_transactions ptr)
         {
             if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor)
             {
@@ -691,7 +716,7 @@ namespace Agp2p.Core
                 else if (ptr.interest == 0)
                     return Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal;
             }
-            else if (ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.RepayOverdueFine)
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayOverdueFine)
             {
                 return Agp2pEnums.WalletHistoryTypeEnum.RepaidOverdueFine;
             }
@@ -708,7 +733,8 @@ namespace Agp2p.Core
             Agp2pEnums.RepaymentStatusEnum statusAfterPay = Agp2pEnums.RepaymentStatusEnum.AutoPaid)
         {
             var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repaymentId);
-            if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && repaymentTask.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTime)
+            if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("这个还款计划已经执行过了");
 
             // 执行还款
@@ -727,7 +753,7 @@ namespace Agp2p.Core
                 var wallet = ptr.dt_users.li_wallets;
                 wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
                 wallet.investing_money -= ptr.principal;
-                wallet.profiting_money -= Math.Round(originalRepayInterest * moneyRepayRatio[ptr.dt_users], 2);
+                wallet.profiting_money -= Math.Round(originalRepayInterest*moneyRepayRatio[ptr.dt_users], 2);
                 wallet.total_profit += ptr.interest.GetValueOrDefault(0);
                 wallet.last_update_time = ptr.create_time;
 
@@ -748,7 +774,8 @@ namespace Agp2p.Core
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
-                MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value)); // 广播项目完成的消息
+                MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
+                    // 广播项目完成的消息
             }
             return repaymentTask;
         }
@@ -757,13 +784,13 @@ namespace Agp2p.Core
         {
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord = proj.li_project_transactions.Where(
-                    tr =>
-                        tr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .ToLookup(tr => tr.dt_users);
+                tr =>
+                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .ToLookup(tr => tr.dt_users);
             // 计算出每个用户的投资占比
             var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
-                records => records.Sum(tr => tr.principal) / proj.investment_amount); // 公式：用户投资总额 / 项目投资总额
+                records => records.Sum(tr => tr.principal)/proj.investment_amount); // 公式：用户投资总额 / 项目投资总额
             return moneyRepayRatio;
         }
 
@@ -773,7 +800,8 @@ namespace Agp2p.Core
         /// <param name="repaymentTask"></param>
         /// <param name="transactTime"></param>
         /// <returns></returns>
-        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime)
+        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask,
+            DateTime transactTime)
         {
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
@@ -787,10 +815,10 @@ namespace Agp2p.Core
                         Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
                         realityInterest);
                 }
-                else if (repaymentTask.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
+                else if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
                 {
                     remark = string.Format("逾期还款：本期原来的待收益 {0:f2}，实际收益 {1:f2}",
-                        Math.Round(r.Value * (repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
+                        Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
                         realityInterest);
                 }
 
@@ -814,12 +842,15 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="projectId"></param>
         /// <param name="remainTermPrincipalRatePercent">剩余期数的本息百分比率（不包括当前这期）</param>
-        public static li_projects EarlierRepayAll(this Agp2pDataContext context, int projectId, decimal remainTermPrincipalRatePercent)
+        public static li_projects EarlierRepayAll(this Agp2pDataContext context, int projectId,
+            decimal remainTermPrincipalRatePercent)
         {
             var project = context.li_projects.Single(p => p.id == projectId);
-            var unpaidTasks = project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
+            var unpaidTasks =
+                project.li_repayment_tasks.Where(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!unpaidTasks.Any()) throw new Exception("全部还款计划均已执行，不能进行提前还款");
-            if (remainTermPrincipalRatePercent < 0 || 100 < remainTermPrincipalRatePercent) throw new Exception("剩余利息百分比率不正常");
+            if (remainTermPrincipalRatePercent < 0 || 100 < remainTermPrincipalRatePercent)
+                throw new Exception("剩余利息百分比率不正常");
             var remainTermPrincipalRate = remainTermPrincipalRatePercent;
 
             var currentTask = unpaidTasks.First();
@@ -836,7 +867,7 @@ namespace Agp2p.Core
             var remainPrincipal = willInvalidTasks.Sum(t => t.repay_principal);
             var remainInterest = willInvalidTasks.Sum(t => t.repay_interest);
 
-            var willPayInterest = Math.Round(remainPrincipal * remainTermPrincipalRate, 2); // 未还本金 * 比率
+            var willPayInterest = Math.Round(remainPrincipal*remainTermPrincipalRate, 2); // 未还本金 * 比率
 
             // 生成新的计划
             var earlierRepayTask = new li_repayment_tasks
@@ -869,14 +900,14 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="repayTaskId"></param>
         /// <param name="overTimePayRate"></param>
-        public static void OverTimeRepay(this Agp2pDataContext context, int repayTaskId, Model.costconfig costconfig) 
+        public static void OverTimeRepay(this Agp2pDataContext context, int repayTaskId, Model.costconfig costconfig)
         {
             var repaymentTask = context.li_repayment_tasks.Single(r => r.id == repayTaskId);
-            if (repaymentTask.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTime)
+            if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("当前还款不是逾期还款！");
 
             //逾期罚息
-            var overTimePayInterest = repaymentTask.repay_interest* costconfig.overtime_pay;
+            var overTimePayInterest = repaymentTask.repay_interest*costconfig.overtime_pay;
             repaymentTask.cost = repaymentTask.repay_interest - overTimePayInterest;
             repaymentTask.repay_interest = overTimePayInterest;
             //计算逾期管理费
@@ -891,19 +922,22 @@ namespace Agp2p.Core
             };
 
             var overDays = DateTime.Now.Subtract(repaymentTask.should_repay_time).Days;
-            
+
             if (repaymentTask.li_projects.dt_article_category.call_index.ToUpper().Contains("YPB"))
             {
                 //票据业务
-                projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost_bank;
+                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                                               costconfig.overtime_cost_bank;
             }
             else
             {
                 //非票据业务
                 if (overDays <= 30)
-                    projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost;
+                    projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                                                   costconfig.overtime_cost;
                 else
-                    projectTransaction.principal = repaymentTask.li_projects.financing_amount * overDays * costconfig.overtime_cost2;
+                    projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                                                   costconfig.overtime_cost2;
             }
             context.li_project_transactions.InsertOnSubmit(projectTransaction);
 
@@ -918,7 +952,8 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="projectTransactionId"></param>
         /// <returns></returns>
-        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, bool save = true)
+        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId,
+            bool save = true)
         {
             // 判断项目状态
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
@@ -926,7 +961,7 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("项目所在的状态不能退款");
 
             // 更改交易状态
-            tr.status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
+            tr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
 
             // 修改项目已投资金额
             tr.li_projects.investment_amount -= tr.principal;
@@ -963,7 +998,7 @@ namespace Agp2p.Core
         {
             // 判断项目状态
             var proj = context.li_projects.Single(t => t.id == projectId);
-            if ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= proj.status)
+            if ((int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= proj.status)
                 throw new InvalidOperationException("项目所在的状态不能退款");
 
             proj.li_project_transactions.Where(
@@ -998,10 +1033,11 @@ namespace Agp2p.Core
         /// <returns></returns>
         public static int GetInvestedUserCount(this li_projects pro)
         {
-            return pro.li_project_transactions.Where(t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                                                          t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                                                          .GroupBy(t => t.investor)
-                                                          .Count();
+            return
+                pro.li_project_transactions.Where(t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                                                       t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    .GroupBy(t => t.investor)
+                    .Count();
         }
 
         /// <summary>
@@ -1045,7 +1081,8 @@ namespace Agp2p.Core
             var now = DateTime.Now;
             return context.li_project_transactions.Where(
                 r =>
-                    r.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success && r.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    r.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                    r.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     now.AddDays(-inDaysEarlier).Date <= r.create_time.Date && now.Date > r.create_time.Date)
                 .Select(r => r.principal).AsEnumerable().DefaultIfEmpty(0).Sum();
         }
@@ -1069,7 +1106,7 @@ namespace Agp2p.Core
                 decimal? receivedPrincipal, profited;
                 switch (his.li_project_transactions.type)
                 {
-                    case (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest:
+                    case (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest:
                         receivedPrincipal = profited = null;
                         break;
                     default:
@@ -1079,7 +1116,8 @@ namespace Agp2p.Core
                 }
                 return callback(receivedPrincipal, profited);
             }
-            if (his.li_activity_transactions != null && his.li_activity_transactions.type == (int) Agp2pEnums.ActivityTransactionTypeEnum.Lost)
+            if (his.li_activity_transactions != null &&
+                his.li_activity_transactions.type == (int) Agp2pEnums.ActivityTransactionTypeEnum.Lost)
             {
                 return callback(null, null);
             }
@@ -1089,7 +1127,7 @@ namespace Agp2p.Core
 
         public static string QueryTransactionIncome<T>(li_wallet_histories his)
         {
-            if (typeof(T) == typeof(string)) // 返回羊角符号
+            if (typeof (T) == typeof (string)) // 返回羊角符号
             {
                 return QueryTransactionIncome(his, (principal, profit) =>
                 {
@@ -1103,7 +1141,7 @@ namespace Agp2p.Core
                         return principal.Value.ToString("c");
                 });
             }
-            else if (typeof(T) == typeof(decimal?)) // 没有羊角符号
+            else if (typeof (T) == typeof (decimal?)) // 没有羊角符号
             {
                 return QueryTransactionIncome(his, (principal, profit) =>
                 {
@@ -1132,26 +1170,27 @@ namespace Agp2p.Core
         {
             if (his.li_bank_transactions != null)
             {
-                return his.li_bank_transactions.type == (int)Agp2pEnums.BankTransactionTypeEnum.Charge
-                    ? (decimal?)null
+                return his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.Charge
+                    ? (decimal?) null
                     : his.li_bank_transactions.value; // 提现
             }
             if (his.li_project_transactions != null)
             {
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess) // 项目满标不显示支出
                     return null;
-                return his.li_project_transactions.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
+                return his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest
                     ? his.li_project_transactions.principal // 投资
-                    : (decimal?)null;
+                    : (decimal?) null;
             }
             // 活动扣除
-            if (his.li_activity_transactions != null && his.li_activity_transactions.type == (int)Agp2pEnums.ActivityTransactionTypeEnum.Gain) return null;
-            return his.li_activity_transactions != null ? his.li_activity_transactions.value : (decimal?)null;
+            if (his.li_activity_transactions != null &&
+                his.li_activity_transactions.type == (int) Agp2pEnums.ActivityTransactionTypeEnum.Gain) return null;
+            return his.li_activity_transactions != null ? his.li_activity_transactions.value : (decimal?) null;
         }
 
         public static string GetProjectTermSpanEnumDesc(this li_projects proj)
         {
-            var desc = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span);
+            var desc = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span);
             /*if ((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span == Agp2pEnums.ProjectRepaymentTermSpanEnum.Month)
                 return "个" + desc;*/
             return desc;
@@ -1159,7 +1198,42 @@ namespace Agp2p.Core
 
         public static string GetProjectStatusDesc(this li_projects proj)
         {
-            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)proj.status);
+            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) proj.status);
+        }
+
+        public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment,
+            string templateUrl)
+        {
+            var project = investment.li_projects;
+            //获得投资协议模板（暂时为票据，TODO 其他产品的投资协议）
+            var a4Template = File.ReadAllText(templateUrl);
+            //替换模板内容
+            return a4Template.Replace("{title}", project.title + " 票据质押借款协议")
+                .Replace("{contract_no}", investment.agree_no)
+                //甲方(借款人)信息
+                .Replace("{company_name}",
+                    project.li_risks.li_loaners.li_loaner_companies != null
+                        ? project.li_risks.li_loaners.li_loaner_companies.name
+                        : "")
+                .Replace("{user_name_loaner}", project.li_risks.li_loaners.dt_users.real_name)
+                //乙方(投资人)信息
+                .Replace("{user_real_name_invester}", investment.dt_users.real_name)
+                .Replace("{user_name_invester}", investment.dt_users.user_name)
+                .Replace("{id_card_invester}", investment.dt_users.id_card_number)
+                //借款明细
+                .Replace("{loan_amount}", project.financing_amount.ToString("N0"))
+                .Replace("{loan_amount_upper}", "")
+                .Replace("{invest_amount}", investment.principal.ToString("N0"))
+                .Replace("{invest_amount_upper}", "")
+                .Replace("{profit_rate_year}", project.profit_rate_year.ToString())
+                .Replace("{repayment_term_span}", project.repayment_term_span_count + "天")
+                .Replace("{make_loan_date}", project.make_loan_time?.ToString("yyyy年MM月dd天"))
+                .Replace("{complete_date}", project.complete_time?.ToString("yyyy年MM月dd天"))
+                //质押汇票明细
+                .Replace("{bill_no}", "")
+                .Replace("{bill_amount}", "")
+                .Replace("{bill_end_date}", "")
+                .Replace("{bill_bank}", "");
         }
     }
 }

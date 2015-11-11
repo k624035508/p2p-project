@@ -13,6 +13,7 @@ module.exports = {
         projects: "./js/projects.js",
         aboutus: "./js/aboutus.js",
         article_show: "./js/article_show.js",
+        article_list: "./js/article_list.js",
         // including bootstrap, react
         usercenter: "./js/usercenter.jsx",
         forgot_password: "./js/forgot_password.js",

@@ -27,14 +27,14 @@
 <div class="content-wrap aboutPage">
     <div class="left-nav">
         <ul class="list-unstyled nav-list">
-            <li><a href='<%=linkurl("about")%>' class="company">公司简介</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=1' class="product">产品介绍</a></li>
+            <li data-binding="company-wrap"><a href='<%=linkurl("about")%>#tab=0' class="company">公司简介</a></li>
+            <li data-binding="product-wrap"><a href='<%=linkurl("about")%>#tab=1' class="product">产品介绍</a></li>
             <li><a href='<%=linkurl("article_list",43)%>' class="announcement">网站公告</a></li>
             <li><a href='<%=linkurl("article_list",42)%>' class="dynamic">最新动态</a></li>
             <li><a href='<%=linkurl("article_list",44)%>' class="reports">媒体报道</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=5' class="join-us">加入我们</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=6' class="partner">合作伙伴</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=7' class="contact">联系我们</a></li>
+            <li data-binding="join-us-wrap"><a href='<%=linkurl("about")%>#tab=5' class="join-us">加入我们</a></li>
+            <li data-binding="partner-wrap"><a href='<%=linkurl("about")%>#tab=6' class="partner">合作伙伴</a></li>
+            <li data-binding="contact-wrap"><a href='<%=linkurl("about")%>#tab=7' class="contact">联系我们</a></li>
         </ul>
     </div>
     <div class="right-content">
@@ -55,9 +55,21 @@
                 <p>安广融合团队是一群拥有金融专业精神和互联网极客精神的实力源。团队管理成员来自各大银行及业内知名机构，风控高管在信贷、供应链金融领域有多年实操经验，还有众多金融资本领导的顶级专家顾问参与，致力将安广融合打造成全国最具价值的互联网金融服务平台。</p>
                 <h4>公司资质</h4>
                 <div class="pic-wrap">
-                    <div><img src="<%templateskin%>/imgs/aboutus/license.jpg" alt="营业执照"/></div>
-                    <div><img src="<%templateskin%>/imgs/aboutus/paperwork.jpg" alt="组织机构代码证"/></div>
+                    <div class="license" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/license.jpg"></div>
+                    <div class="paperwork" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/paperwork.jpg"></div>
                 </div>
+                <div class="modal fade" id="picModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src=""/>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </div>
         </div>
         <!--产品介绍-->

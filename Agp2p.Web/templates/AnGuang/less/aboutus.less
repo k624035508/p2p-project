@@ -67,6 +67,7 @@ body { background: @body-color; }
 			}
 			h4 { color: @blue; }
 		}
+		.content-body { min-height: 441px; }
 		//公司简介
 		.company-wrap {
 			.content-body {
@@ -78,13 +79,41 @@ body { background: @body-color; }
 						height: 315px;
 						margin: 0 20px;
 						cursor: pointer;
-						img { height: 100%; }
 					}
+					.license {
+						width: 239px;
+						background: url("@{images}/license-bg.jpg") no-repeat;
+					}
+					.paperwork {
+						width: 392px;
+						background: url("@{images}/paperwork-bg.jpg") no-repeat;
+					}
+				}
+				#picModal {
+					.modal-content {
+						width: 600px;
+						left: 50%;
+						margin-left: -300px;
+						.modal-header {
+							height: 40px;
+							padding: 5px 10px;
+							border-bottom: 0;
+							button span { font-size: @font30; }
+						}
+						.modal-body {
+							padding: 0 20px 20px 20px;
+							img {
+								max-width: 100%;
+							}
+						}
+					}
+
 				}
 			}
 		}
 		//产品介绍
 		.product-wrap {
+			display: none;
 			.content-body {
 				padding: 0 30px 35px 30px;
 				& > div {
@@ -124,6 +153,7 @@ body { background: @body-color; }
 		}
 		//加入我们
 		.join-us-wrap {
+			display: none;
 			.content-body {
 				.topic-content;
 				p span { color: @blue; }
@@ -179,6 +209,7 @@ body { background: @body-color; }
 		}
 		//合作伙伴
 		.partner-wrap {
+			display: none;
 			.content-body {
 				.topic-content;
 				.partner-per {
@@ -201,6 +232,7 @@ body { background: @body-color; }
 		}
 		//联系我们
 		.contact-wrap {
+			display: none;
 			.content-body {
 				padding: 0 30px;
 				h4 {
