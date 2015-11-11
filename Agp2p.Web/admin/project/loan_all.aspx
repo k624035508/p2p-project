@@ -55,6 +55,7 @@
                         <th align="left" width="12%">借款编号</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="5%">标识</th>
+                        <th align="left" width="5%">浏览次数</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
@@ -72,6 +73,7 @@
                     <td><%#Eval("contract_no")%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
                     <td><%#GetTagString(Eval("tag"))%></td>
+                    <td><%#Eval("click")%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#Eval("profit_rate_year")%></td>
