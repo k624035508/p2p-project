@@ -29,9 +29,17 @@ class Pagination extends React.Component {
 
     	let init = range(pageCount).map(i => ({index: i, omit: true}));
 
-    	// display page item by range
-    	let oneSideKeepShow = Math.floor((keepShow - 1) / 2);
-    	init.filter(item => Math.abs(item.index - pageIndex) <= oneSideKeepShow).forEach(item => item.omit = false);
+    	// display page item by "keepShow"
+    	let maxKeepShow = Math.min(keepShow, pageCount),
+	    	oneSideKeepShow = Math.floor((maxKeepShow - 1) / 2),
+	    	keepShowStartPoint = pageIndex - oneSideKeepShow;
+	    
+    	if (keepShowStartPoint < 0) {
+    		keepShowStartPoint = 0;
+    	} else if (pageCount < keepShowStartPoint + maxKeepShow) {
+    		keepShowStartPoint = pageCount - maxKeepShow;
+    	}
+    	range(keepShowStartPoint, keepShowStartPoint + maxKeepShow).map(i => init[i].omit = false);
 
     	// display head and tail
     	init[0].omit = init[init.length - 1].omit = false;
