@@ -2496,7 +2496,7 @@ namespace Agp2p.Web.tools
             }
             catch (Exception ex)
             {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 httpContext.Response.Write("内部错误：生成投资协议失败，请联系客服");
             }
         }
