@@ -654,9 +654,11 @@
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\legalize.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\paperwork-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\paperwork.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\partner.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
