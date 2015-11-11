@@ -27,14 +27,14 @@
 <div class="content-wrap aboutPage">
     <div class="left-nav">
         <ul class="list-unstyled nav-list">
-            <li><a href='<%=linkurl("about")%>' class="company">公司简介</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=1' class="product">产品介绍</a></li>
+            <li data-binding="company-wrap"><a href='<%=linkurl("about")%>#tab=0' class="company">公司简介</a></li>
+            <li data-binding="product-wrap"><a href='<%=linkurl("about")%>#tab=1' class="product">产品介绍</a></li>
             <li><a href='<%=linkurl("article_list",43)%>' class="announcement">网站公告</a></li>
             <li><a href='<%=linkurl("article_list",42)%>' class="dynamic">最新动态</a></li>
             <li><a href='<%=linkurl("article_list",44)%>' class="reports">媒体报道</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=5' class="join-us">加入我们</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=6' class="partner">合作伙伴</a></li>
-            <li><a href='<%=linkurl("about")%>?tab=7' class="contact">联系我们</a></li>
+            <li data-binding="join-us-wrap"><a href='<%=linkurl("about")%>#tab=5' class="join-us">加入我们</a></li>
+            <li data-binding="partner-wrap"><a href='<%=linkurl("about")%>#tab=6' class="partner">合作伙伴</a></li>
+            <li data-binding="contact-wrap"><a href='<%=linkurl("about")%>#tab=7' class="contact">联系我们</a></li>
         </ul>
     </div>
     <div class="right-content">

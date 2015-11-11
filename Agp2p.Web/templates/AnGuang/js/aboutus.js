@@ -5,15 +5,29 @@ import "../less/footerSmall.less"
 
 import header from "./header.js"
 
+function render() {
+    var hash = location.hash || "#tab=0";
+    var match = hash.match(/#tab=(\d+)/);
+    var tabIndex = parseInt(match ? match[1] : "0");
+
+    var $navArray = $(".left-nav .nav-list li");
+    $navArray.removeClass("clicked");
+    $navArray.eq(tabIndex).addClass("clicked");
+
+    var $contents = $(".right-content > div");
+    $contents.hide();
+
+    var contentClass = $navArray.eq(tabIndex).data("binding");
+    $("." + contentClass).show();
+}
+
 $(function(){
     header.setHeaderHighlight(4);
 
-    var $nav = $(".aboutPage .left-nav .nav-list li a");
-    var $parentLi = $(".aboutPage .left-nav .nav-list li");
-    $nav.click(function(){
-        $parentLi.removeClass("clicked");
-        $(this).parent().addClass("clicked");
-    });
+    render();
+    window.onhashchange = function () {
+        render();
+    };
 
     //加入我们 招聘列表开关样式
     var $office = $(".join-us-wrap .content-body .office ul li");

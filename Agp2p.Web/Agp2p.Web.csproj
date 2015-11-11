@@ -757,6 +757,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
+    <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
