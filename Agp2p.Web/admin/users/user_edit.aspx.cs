@@ -42,6 +42,7 @@ namespace Agp2p.Web.admin.users
                     JscriptMsg("信息不存在或已被删除！", "back", "Error");
                     return;
                 }
+                ClientScript.RegisterClientScriptBlock(Page.GetType(), "SwitchTab", "$(function (){ $('.content-tab-ul-wrap a:nth(1)').click();});", true);
             }
             if (!Page.IsPostBack)
             {
