@@ -15,7 +15,7 @@ namespace Agp2p.Web.admin.users
         Agp2pDataContext context = new Agp2pDataContext();
         string defaultpassword = "0|0|0|0"; //默认显示密码
         protected string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
-        protected string pagein = string.Empty; 
+        protected string pagein = string.Empty;
         private int id = 0;
         protected int totalCount;
         protected int page;
@@ -42,11 +42,12 @@ namespace Agp2p.Web.admin.users
                     JscriptMsg("信息不存在或已被删除！", "back", "Error");
                     return;
                 }
+                ClientScript.RegisterClientScriptBlock(Page.GetType(), "SwitchTab", "$(function (){ $('.content-tab-ul-wrap a:nth(1)').click();});", true);
             }
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("user_list", DTEnums.ActionEnum.View.ToString()); //检查权限
-                TreeBind(ddlGroupId,id); //绑定类别
+                TreeBind(ddlGroupId, id); //绑定类别
                 TreeBind1(ddlServingGroup);
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
                 {
@@ -176,6 +177,8 @@ namespace Agp2p.Web.admin.users
                 txtEducationalBackground.Text = loanerInfo.educational_background;
                 rblMaritalStatus.SelectedValue = loanerInfo.marital_status.ToString();
                 txtIncome.Text = loanerInfo.income;
+                txtCencus.Text = loanerInfo.native_place;
+                txtWorkingUnit.Text = loanerInfo.working_company;
 
                 var loanerCompany = loanerInfo.li_loaner_companies;
                 chkBindCompany.Checked = loanerCompany != null;
@@ -190,6 +193,10 @@ namespace Agp2p.Web.admin.users
                     txtIncomeYearly.Text = loanerCompany.income_yearly;
                     txtNetAssets.Text = loanerCompany.net_assets;
                     txtCompanyRemark.Text = loanerCompany.remark;
+                    txtManager.Text = loanerCompany.manager;
+                    txtBusinessBelong.Text = loanerCompany.business_belong;
+                    txtCaddress.Text = loanerCompany.address;
+                    txtNetProfit.Text = loanerCompany.net_profit_yearly;
                 }
             }
 
@@ -396,6 +403,8 @@ namespace Agp2p.Web.admin.users
                         last_update_time = lastUpdateTime,
                         working_at = txtWorkingAt.Text,
                         marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue),
+                        native_place = txtCencus.Text,
+                        working_company = txtWorkingUnit.Text
                     };
                     context.li_loaners.InsertOnSubmit(loanerInfo);
 
@@ -412,6 +421,10 @@ namespace Agp2p.Web.admin.users
                             registered_capital = txtRegisteredCapital.Text,
                             setup_time = Convert.ToDateTime(txtSetupTime.Text),
                             remark = txtCompanyRemark.Text,
+                            manager = txtManager.Text,
+                            business_belong = txtBusinessBelong.Text,
+                            address = txtCaddress.Text,
+                            net_profit_yearly = txtNetProfit.Text
                         };
                         loanerInfo.li_loaner_companies = loanerCompany;
                         context.li_loaner_companies.InsertOnSubmit(loanerCompany);
@@ -427,6 +440,8 @@ namespace Agp2p.Web.admin.users
                     loanerInfo.last_update_time = lastUpdateTime;
                     loanerInfo.working_at = txtWorkingAt.Text;
                     loanerInfo.marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue);
+                    loanerInfo.native_place = txtCencus.Text;
+                    loanerInfo.working_company = txtWorkingUnit.Text;
 
                     UpdateLoanerCompanyInfo(loanerInfo);
                 }
@@ -460,6 +475,10 @@ namespace Agp2p.Web.admin.users
                         registered_capital = txtRegisteredCapital.Text,
                         setup_time = Convert.ToDateTime(txtSetupTime.Text),
                         remark = txtCompanyRemark.Text,
+                        manager = txtManager.Text,
+                        business_belong = txtBusinessBelong.Text,
+                        address = txtCaddress.Text,
+                        net_profit_yearly = txtNetProfit.Text
                     };
                     loaner.li_loaner_companies = company;
                     context.li_loaner_companies.InsertOnSubmit(company);
@@ -475,6 +494,10 @@ namespace Agp2p.Web.admin.users
                     company.registered_capital = txtRegisteredCapital.Text;
                     company.setup_time = Convert.ToDateTime(txtSetupTime.Text);
                     company.remark = txtCompanyRemark.Text;
+                    company.manager = txtManager.Text;
+                    company.business_belong = txtBusinessBelong.Text;
+                    company.address = txtCaddress.Text;
+                    company.net_profit_yearly = txtNetProfit.Text;
                 }
             }
             else if (company != null)
