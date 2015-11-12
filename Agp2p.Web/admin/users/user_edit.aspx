@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-content" >
+        <div class="tab-content">
             <dl>
                 <dt>是否借款人</dt>
                 <dd>
@@ -85,6 +85,11 @@
                     <asp:TextBox ID="txtAge" runat="server" CssClass="input normal" datatype="/^\d+$/" /><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
+                <dt>籍贯</dt>
+                <dd>
+                    <asp:TextBox ID="txtCencus" runat="server" CssClass="input normal" datatype="/^\S+$/" /><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
                 <dt>工作</dt>
                 <dd>
                     <asp:TextBox ID="txtJob" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
@@ -93,6 +98,11 @@
                 <dt>工作地点</dt>
                 <dd>
                     <asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
+                <dt>工作单位</dt>
+                <dd>
+                    <asp:TextBox ID="txtWorkingUnit" runat="server" CssClass="input normal" datatype="/^.+$/" /><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>学历</dt>
@@ -118,20 +128,25 @@
                     <asp:TextBox ID="txtIncome" runat="server" CssClass="input normal" datatype="/^.+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
-                <dt>是否添加公司信息</dt>
+                <dt>是否添加企业信息</dt>
                 <dd>
                     <div class="rule-single-checkbox">
                         <asp:CheckBox ID="chkBindCompany" runat="server" AutoPostBack="True" OnCheckedChanged="chkBindCompany_OnCheckedChanged" />
                     </div>
-                    <span class="Validform_checktip">*是否添加公司信息</span>
+                    <span class="Validform_checktip">*是否添加企业信息</span>
                 </dd>
             </dl>
             <% if (chkBindCompany.Checked)
                 { %>
             <dl>
-                <dt>公司名称</dt>
+                <dt>企业名称</dt>
                 <dd>
                     <asp:TextBox ID="txtCompanyName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>企业负责人</dt>
+                <dd>
+                    <asp:TextBox ID="txtManager" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>成立时间</dt>
@@ -154,6 +169,11 @@
                     <asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
+                <dt>所属行业</dt>
+                <dd>
+                    <asp:TextBox ID="txtBusinessBelong" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
                 <dt>经营状态</dt>
                 <dd>
                     <asp:TextBox ID="txtBusinessStatus" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
@@ -169,9 +189,19 @@
                     <asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
             </dl>
             <dl>
+                <dt>年净利润</dt>
+                <dd>
+                    <asp:TextBox ID="txtNetProfit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
                 <dt>净资产</dt>
                 <dd>
                     <asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
+            </dl>
+            <dl>
+                <dt>地址</dt>
+                <dd>
+                    <asp:TextBox ID="txtCaddress" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
             </dl>
             <dl>
                 <dt>备注</dt>
@@ -459,7 +489,7 @@
             </div>
             <!--/内容底部-->
         </div>
-        
+
         <!--/内容-->
         <!--工具栏-->
         <div class="page-footer">

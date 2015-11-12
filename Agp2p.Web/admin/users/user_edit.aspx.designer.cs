@@ -40,6 +40,15 @@ namespace Agp2p.Web.admin.users {
         protected global::System.Web.UI.WebControls.TextBox txtAge;
         
         /// <summary>
+        /// txtCencus 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCencus;
+        
+        /// <summary>
         /// txtJob 控件。
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace Agp2p.Web.admin.users {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWorkingAt;
+        
+        /// <summary>
+        /// txtWorkingUnit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWorkingUnit;
         
         /// <summary>
         /// txtEducationalBackground 控件。
@@ -103,6 +121,15 @@ namespace Agp2p.Web.admin.users {
         protected global::System.Web.UI.WebControls.TextBox txtCompanyName;
         
         /// <summary>
+        /// txtManager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtManager;
+        
+        /// <summary>
         /// txtSetupTime 控件。
         /// </summary>
         /// <remarks>
@@ -128,6 +155,15 @@ namespace Agp2p.Web.admin.users {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBusinessScope;
+        
+        /// <summary>
+        /// txtBusinessBelong 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessBelong;
         
         /// <summary>
         /// txtBusinessStatus 控件。
@@ -157,6 +193,15 @@ namespace Agp2p.Web.admin.users {
         protected global::System.Web.UI.WebControls.TextBox txtIncomeYearly;
         
         /// <summary>
+        /// txtNetProfit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNetProfit;
+        
+        /// <summary>
         /// txtNetAssets 控件。
         /// </summary>
         /// <remarks>
@@ -164,6 +209,15 @@ namespace Agp2p.Web.admin.users {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetAssets;
+        
+        /// <summary>
+        /// txtCaddress 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCaddress;
         
         /// <summary>
         /// txtCompanyRemark 控件。
