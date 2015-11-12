@@ -1,21 +1,22 @@
-import React from "react"
-import Pagination from "../components/pagination.jsx"
+import "../less/invitation.less";
 
-import "../less/invitation.less"
+import React from "react";
+import Pagination from "../components/pagination.jsx";
+import qr from "qr-image";
+import base64 from "../js/base64.js"
+
+function nodeList2Array(nl){
+	var arr = [];
+	for (var i = 0, ref = arr.length = nl.length; i < ref; i++) {
+		arr[i] = nl[i];
+	}
+	return arr;
+}
 
 class InvitationPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {clipboard: null, data: [], pageIndex: 0, pageCount: 0};
-	}
-	getLocationOrigin() {
-		if (!window.location.origin) {
-			return window.location.protocol + "//" 
-			+ window.location.hostname 
-			+ (window.location.port ? ':' + window.location.port: '');
-		} else {
-			return location.origin;
-		}
 	}
 	componentWillUnmount() {
 		if (this.state.clipboard) {
@@ -43,8 +44,29 @@ class InvitationPage extends React.Component {
 			this.setState({clipboard: clipboard});
 		}
 
-		this.fetchInvitationData()
-	}
+		this.fetchInvitationData();
+    }
+    getLocationOrigin() {
+        if (!window.location.origin) {
+            return window.location.protocol + "//"
+            + window.location.hostname
+            + (window.location.port ? ':' + window.location.port: '');
+        } else {
+            return location.origin;
+        }
+    }
+    genEncodedTitle() {
+        return encodeURI("安广融合注册链接分享：");
+    }
+    genEncodedDescription() {
+        return encodeURI("邀请人：" + this.props.inviter);
+    }
+    genSharingLink() {
+        return `${this.getLocationOrigin()}/register.html?inviteCode=${this.props.invitationCode}`;
+    }
+    genPicUrl() {
+        return "/templates/AnGuang/imgs/index/logo.png";
+    }
 	fetchInvitationData(pageIndex = 0) {
 		this.setState({pageIndex});
 
@@ -64,23 +86,47 @@ class InvitationPage extends React.Component {
             }.bind(this)
         });
 	}
+    genQrCodeBase64(str) {
+        let res = qr.imageSync(str, {size: 3, margin: 0});
+        if (!document.addEventListener) { // ie8
+        	let resArr = nodeList2Array(res);
+        	return base64.encode(String.fromCharCode.apply(null, resArr));
+        } else if (!window.btoa) { // ie9
+        	return base64.encode(String.fromCharCode.apply(null, res));
+        }
+        return btoa(String.fromCharCode.apply(null, res));
+    }
     render(){
         return(
             <div className="recommend-wrap">
                 <div className="recommend-link">
                     <span>我的邀请链接：</span>
-                    <span className="site-link">{`${this.getLocationOrigin()}/register.html?inviteCode=${this.props.invitationCode}`}</span>
+                    <span className="site-link">{this.genSharingLink()}</span>
                     <a id="btn-copy" href="javascript:" data-clipboard-target=".site-link">复 制</a>
                 </div>
                 <div className="shareTo">
                     <span>或分享到：</span>
-                    <i className="weChat"></i>
-                    <i className="sinaWeibo"></i>
-                    <i className="qq"></i>
-                    <i className="qqZone"></i>
-                    <i className="tencentWeibo"></i>
-                    <i className="more"></i>
+                    <a className="weChat" href="javascript:">
+                        <div className="qr-wrapper">
+                            <img src={`data:image/png;base64,${this.genQrCodeBase64(this.genSharingLink())}`} />
+                            <p>微信扫一扫：分享</p>
+                        </div>
+                    </a>
+                    <a className="sinaWeibo"
+                        target="_blank"
+                        href={`http://service.weibo.com/share/share.php?url=${this.genSharingLink()}&title=${this.genEncodedTitle() + this.genEncodedDescription()}&pic=${this.getLocationOrigin() + this.genPicUrl()}`}/>
+                    <a className="qq"
+                        target="_blank"
+                        href={`http://connect.qq.com/widget/shareqq/index.html?url=${this.genSharingLink()}&title=${this.genEncodedTitle()}&source=${this.getLocationOrigin()}&desc=${this.genEncodedDescription()}`}/>
+                    <a className="qqZone"
+                        target="_blank"
+                        href={`http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${this.genSharingLink()}&title=${this.genEncodedTitle()}&desc=${this.genEncodedDescription()}&summary=${this.genEncodedDescription()}&site=${this.getLocationOrigin() + this.genPicUrl()}`}/>
+                    <a className="tencentWeibo"
+                        target="_blank"
+                        href={`http://share.v.t.qq.com/index.php?c=share&a=index&title=${this.genEncodedTitle() + this.genEncodedDescription()}&url=${this.genSharingLink()}&pic=${this.getLocationOrigin() + this.genPicUrl()}`} />
+                    <a className="more" />
                 </div>
+                <div id="sharejs"></div>
                 <div className="invited-th"><span>已邀请的好友</span></div>
                 <div className="table-wrap">
                     <table className="table">
@@ -119,6 +165,7 @@ class InvitationPage extends React.Component {
 function mapStateToProps(state) {
     return {
         invitationCode: state.userInfo.invitationCode,
+        inviter: state.userInfo.userName
     };
 }
 
