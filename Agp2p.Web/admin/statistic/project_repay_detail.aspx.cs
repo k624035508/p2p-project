@@ -66,7 +66,8 @@ namespace Agp2p.Web.admin.statistic
             public string InvestorUserName { get; set; }
             public decimal? InvestValue { get; set; }
             public string InvestTime { get; set; }
-            
+            public string AgreeNo { get; set; }
+
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
             public decimal RepayTotal { get; set; }
@@ -157,6 +158,10 @@ namespace Agp2p.Web.admin.statistic
                             RepayPrincipal = tr.principal,
                             RepayInterest = tr.interest.GetValueOrDefault(0),
                             RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0)),
+                            //投资协议
+                            AgreeNo = $"<a onclick='ShowAgreeContract({tr.id},{tr.project}); ' href='javascript:;'>{tr.agree_no}</a>"
+                            
+
                         }).ToList();
 
                         repaymentDetails.First().RepaymentTask = new RepaymentTaskDetail
