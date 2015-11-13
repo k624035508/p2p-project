@@ -223,7 +223,7 @@ namespace Agp2p.Web.admin.statistic
         {
             var project = pth.li_project_transactions.li_projects;
             return
-                string.Format(project.invest_complete_time.HasValue ? ProjectRepayDetailHref : ProjectInvestDetailHref,
+                string.Format(project.invest_complete_time != null ? ProjectRepayDetailHref : ProjectInvestDetailHref,
                     project.title, project.title.Replace("+", "%2b"));
         };
 
