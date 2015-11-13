@@ -129,10 +129,9 @@ namespace Agp2p.Web.admin.statistic
                         InvestValue = tr.principal,
                         ProfitRateYear = proj.profit_rate_year.ToString(),
                         ProjectCompleteTime =
-                            proj.invest_complete_time == null
-                                ? "(未满标)"
-                                : TransactionFacade.CalcRepayTime(proj.invest_complete_time.Value, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span,
-                                    proj.repayment_term_span_count, proj.repayment_term_span_count).ToString(),
+                            proj.make_loan_time == null
+                                ? "(未放款)"
+                                : proj.CalcRepayTimeByTerm(proj.CalcRealTermCount()).ToString(),
                         ProjectName = proj.title,
                         Term = proj.repayment_term_span_count + Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span),
                         RepayTotal = repayTotal,

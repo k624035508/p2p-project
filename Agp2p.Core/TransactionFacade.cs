@@ -421,13 +421,11 @@ namespace Agp2p.Core
             project.status = (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
             project.make_loan_time = DateTime.Now; // 放款时间
 
-            var termSpan = (Agp2pEnums.ProjectRepaymentTermSpanEnum) project.repayment_term_span; // 期的跨度（年月日）
-            var termSpanCount = project.repayment_term_span_count; // 跨度数
             var repaymentType = (Agp2pEnums.ProjectRepaymentTypeEnum) project.repayment_type; // 还款类型
 
             // 满标时计算真实总利率
             project.profit_rate = project.GetFinalProfitRate();
-            var termCount = CalcRealTermCount(termSpan, termSpanCount); // 实际期数
+            var termCount = project.CalcRealTermCount(); // 实际期数
 
             var repayPrincipal = project.investment_amount; // 本金投资总额
             var interestAmount = Math.Round(project.profit_rate*repayPrincipal, 2); // 利息总额
@@ -448,8 +446,7 @@ namespace Agp2p.Core
                         repay_principal = term.repayPrincipalEachTerm,
                         status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                         term = (short) term.termNumber,
-                        should_repay_time =
-                            CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
+                        should_repay_time = project.CalcRepayTimeByTerm(term.termNumber)
                     }).ToList();
             }
             else if (repaymentType == Agp2pEnums.ProjectRepaymentTypeEnum.XianXi) // 先息后本
@@ -464,8 +461,7 @@ namespace Agp2p.Core
                         repay_principal = 0,
                         status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                         term = (short) term.termNumber,
-                        should_repay_time =
-                            CalcRepayTime(project.make_loan_time.Value, termSpan, term.termNumber, termCount)
+                        should_repay_time = project.CalcRepayTimeByTerm(term.termNumber)
                     }).ToList();
                 repaymentTasks.Last().repay_principal = repayPrincipal; // 最后额外添加一期返还全部本金
             }
@@ -480,8 +476,7 @@ namespace Agp2p.Core
                     repay_principal = repayPrincipal,
                     status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                     term = 1,
-                    should_repay_time =
-                        CalcRepayTime(project.make_loan_time.Value, termSpan, 1, project.repayment_term_span_count)
+                    should_repay_time = project.CalcRepayTimeByTerm(1)
                 }, 1).ToList();
             }
             else throw new InvalidEnumArgumentException("项目的还款类型值异常");
@@ -603,10 +598,10 @@ namespace Agp2p.Core
         /// <param name="termNumber">第几期</param>
         /// <param name="termUnitCount"></param>
         /// <returns></returns>
-        public static DateTime CalcRepayTime(DateTime baseTime, Agp2pEnums.ProjectRepaymentTermSpanEnum termSpan,
-            int termNumber, int termUnitCount)
+        public static DateTime CalcRepayTimeByTerm(this li_projects proj, int termNumber, DateTime? makeLoanTime = null)
         {
-            switch (termSpan)
+            var baseTime = proj.make_loan_time ?? makeLoanTime.Value;
+            switch ((Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span)
             {
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Year:
                     return baseTime.AddYears(termNumber);
@@ -614,7 +609,7 @@ namespace Agp2p.Core
                     return baseTime.AddMonthsPreferLastDay(termNumber); // 月尾满标的话总是在月尾付息
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
                     Debug.Assert(termNumber == 1, "日标只还一期");
-                    return baseTime.AddDays(termUnitCount);
+                    return baseTime.AddDays(proj.repayment_term_span_count);
                 default:
                     throw new InvalidEnumArgumentException("异常的项目还款跨度值");
             }
@@ -643,14 +638,14 @@ namespace Agp2p.Core
         /// <param name="termSpan"></param>
         /// <param name="termSpanCount"></param>
         /// <returns></returns>
-        private static int CalcRealTermCount(Agp2pEnums.ProjectRepaymentTermSpanEnum termSpan, int termSpanCount)
+        public static int CalcRealTermCount(this li_projects proj)
         {
-            switch (termSpan)
+            switch ((Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span)
             {
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Year:
-                    return termSpanCount;
+                    return proj.repayment_term_span_count;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Month:
-                    return termSpanCount;
+                    return proj.repayment_term_span_count;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day: // 日的话只在最后一日还
                     return 1;
                 default:
@@ -658,7 +653,7 @@ namespace Agp2p.Core
             }
         }
 
-        public static decimal GetFinalProfitRate(this li_projects proj, DateTime? baseTime = null)
+        public static decimal GetFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
             if (proj.profit_rate != 0)
                 return proj.profit_rate;
@@ -672,11 +667,7 @@ namespace Agp2p.Core
                 }
                 return (decimal) proj.profit_rate_year/100/360*proj.repayment_term_span_count;
             }
-            return
-                CalcFinalProfitRate(
-                    proj.make_loan_time == null ? baseTime.GetValueOrDefault(DateTime.Now) : proj.make_loan_time.Value,
-                    proj.profit_rate_year, (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span,
-                    proj.repayment_term_span_count);
+            return proj.CalcFinalProfitRate(makeLoanTime);
         }
 
         /// <summary>
@@ -687,17 +678,19 @@ namespace Agp2p.Core
         /// <param name="termSpanEnum"></param>
         /// <param name="termSpanCount"></param>
         /// <returns></returns>
-        private static decimal CalcFinalProfitRate(DateTime baseTime, decimal profitRateYear,
-            Agp2pEnums.ProjectRepaymentTermSpanEnum termSpanEnum, int termSpanCount)
+        private static decimal CalcFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
-            profitRateYear /= 100; // 年化利率未除以 100
-            switch (termSpanEnum) // 公式：年利率 * 总天数 / 365
+            var baseTime = proj.make_loan_time ?? makeLoanTime.Value;
+            var profitRateYear = (decimal) proj.profit_rate_year / 100; // 年化利率未除以 100
+            var termSpanCount = proj.repayment_term_span_count;
+
+            switch ((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span) // 公式：年利率 * 总天数 / 365
             {
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Year:
                     return profitRateYear*termSpanCount;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Month:
                     // 最后那期还款的日期 - 满标的日期 = 总天数
-                    var lastRepayDate = CalcRepayTime(baseTime, termSpanEnum, termSpanCount, termSpanCount).Date;
+                    var lastRepayDate = proj.CalcRepayTimeByTerm(termSpanCount).Date;
                     var days = lastRepayDate.Subtract(baseTime.Date).Days;
                     return profitRateYear*days/365;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
