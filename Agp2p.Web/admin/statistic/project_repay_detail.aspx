@@ -30,38 +30,6 @@
             padding-right: 0.5em;
         }
     </style>
-    <script type="text/javascript">
-        function ShowAgreeContract(id, projectId) {
-            $.ajax({
-                type: "post",
-                url: "/tools/submit_ajax.ashx?action=user_agree_contract_show",
-                data: {
-                    "id": id, "projectId": projectId
-                },
-                dataType: "json",
-                beforeSend: function (XMLHttpRequest) {
-                    //发送前动作
-                },
-                success: function (data, textStatus) {
-                    if (data.status == 1) {
-                        $.dialog({
-                            title: "投资协议",
-                            content: data.body,
-                            padding: 20,
-                            width: 800,
-                            height: 600,
-                        });
-                    } else {
-                        alert(data.msg);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("状态：" + textStatus + "；出错提示：" + errorThrown);
-                },
-                timeout: 20000
-            });
-        }
-    </script>
 </head>
 
 <body class="mainbody">
@@ -129,7 +97,6 @@
                         <th align="left">应付日期</th>
                         <th align="left">实付日期</th>
                         <th align="left">收款人</th>
-                        <th align="left">投资协议</th>
                         <%--<th align="right">投资金额</th>
     <th align="center">投资时间</th>--%>
                         <th align="right">兑付本金</th>
@@ -151,7 +118,6 @@
                     <td><%# Eval("RepaymentTask.ShouldRepayAt")%></td>
                     <td><%# Eval("RepaymentTask.RepayAt")%></td>
                     <td><%# Eval("InvestorRealName") != null && Eval("InvestorRealName") != "" ? Eval("InvestorRealName") : Eval("InvestorUserName")%></td>
-                    <td><%# Eval("AgreeNo")%></td>
                     <%--<td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
     <td class="center"><%# Eval("InvestTime")%></td>--%>
                     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>

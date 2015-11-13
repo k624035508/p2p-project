@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Agp2p.Common;
@@ -15,7 +16,7 @@ namespace Agp2p.Core.NotifyLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<ProjectInvestCompletedMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 发送电子合同
+            MessageBus.Main.Subscribe<ProjectInvestCompletedMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 计算每个投资者账单收益
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleProjectInvestMsg(m.ProjectTransactionId, m.InvestTime)); // 发送投资成功消息
         }
 
@@ -34,7 +35,7 @@ namespace Agp2p.Core.NotifyLogic
                 //发送电子合同
                 siteconfig siteConfig = ConfigLoader.loadSiteConfig();
                 //增加协议号到投资记录中
-                investment.agree_no = Utils.GetOrderNumber();
+                investment.agree_no = investment.li_projects.dt_article_category.call_index.ToUpper() + Utils.GetOrderNumber();
                 //获得投资协议邮件内容
                 var bodytxt = context.GetInvestContractContext(investment, AppDomain.CurrentDomain.BaseDirectory + "\\tools\\a4-template.htm");
                 //发送投资协议邮件
@@ -92,7 +93,17 @@ namespace Agp2p.Core.NotifyLogic
         /// <param name="projectId"></param>
         private static void HandleProjectInvestCompletedMsg(int projectId)
         {
+            //找出所有投资记录，计算收益（收益以还款记录为准，投资记录收益作为账单参考）
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
+            Debug.Assert(project != null, "project != null");
+            project.li_project_transactions.ForEach(pt =>
+            {
+                pt.interest = pt.principal*project.GetFinalProfitRate(DateTime.Now);
+            });
+            context.SubmitChanges();
 
+            //TODO 是否发送放款通知
         }
     }
 }

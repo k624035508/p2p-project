@@ -148,6 +148,7 @@
     <Content Include="admin\project\loan_all.aspx" />
     <Content Include="admin\project\loan_detail.aspx" />
     <Content Include="admin\repayment\repay_earlier.aspx" />
+    <Content Include="admin\repayment\pay_manage.aspx" />
     <Content Include="admin\repayment\repay_over_time.aspx" />
     <Content Include="admin\project\loan_financing_success.aspx" />
     <Content Include="admin\project\loan_financing.aspx" />
@@ -1202,6 +1203,13 @@
     </Compile>
     <Compile Include="admin\repayment\repay_earlier.aspx.designer.cs">
       <DependentUpon>repay_earlier.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\repayment\pay_manage.aspx.cs">
+      <DependentUpon>pay_manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\repayment\pay_manage.aspx.designer.cs">
+      <DependentUpon>pay_manage.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\repayment\repay_over_time.aspx.cs">
       <DependentUpon>repay_over_time.aspx</DependentUpon>
