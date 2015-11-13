@@ -6,8 +6,8 @@ import "../less/footerSmall.less"
 import header from "./header.js"
 
 function render() {
-    var hash = location.hash || "#tab=0";
-    var match = hash.match(/#tab=(\d+)/);
+    var search = location.search || "?tab=0";
+    var match = search.match(/\?tab=(\d+)/);
     var tabIndex = parseInt(match ? match[1] : "0");
 
     var $navArray = $(".left-nav .nav-list li");
@@ -25,9 +25,6 @@ $(function(){
     header.setHeaderHighlight(4);
 
     render();
-    window.onhashchange = function () {
-        render();
-    };
 
     //加入我们 招聘列表开关样式
     var $office = $(".join-us-wrap .content-body .office ul li");

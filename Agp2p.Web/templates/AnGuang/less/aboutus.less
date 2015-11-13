@@ -7,12 +7,14 @@ body { background: @body-color; }
 	& > div {
 		display: inline-block;
 		vertical-align: top;
+		.ie7-inline-block;
 		background: @white;
 		border: @border;
 	}
 	.left-nav {
 		width: 230px;
 		height: 441px;
+		*height: auto;
 		margin-right: 10px;
 		.nav-list {
 			text-align: center;
@@ -25,6 +27,7 @@ body { background: @body-color; }
 				}
 				a {
 					display: inline-block;
+					.ie7-inline-block;
 					width: 150px;
 					height: 100%;
 					color: @dark-grey;
@@ -76,6 +79,7 @@ body { background: @body-color; }
 				.pic-wrap {
 					& > div {
 						display: inline-block;
+						.ie7-inline-block;
 						height: 315px;
 						margin: 0 20px;
 						cursor: pointer;
@@ -92,6 +96,7 @@ body { background: @body-color; }
 				#picModal {
 					.modal-content {
 						width: 600px;
+						*top: 60px;
 						left: 50%;
 						margin-left: -300px;
 						.modal-header {
@@ -218,6 +223,7 @@ body { background: @body-color; }
 						span {
 							display: inline-block;
 							vertical-align: bottom;
+							.ie7-inline-block;
 							width: 105px;
 							height: 50px;
 							margin-right: 50px;
