@@ -693,6 +693,16 @@
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
+    <Content Include="templates\AnGuang\imgs\safe\check-icon.png" />
+    <Content Include="templates\AnGuang\imgs\safe\data-01.png" />
+    <Content Include="templates\AnGuang\imgs\safe\data-02.png" />
+    <Content Include="templates\AnGuang\imgs\safe\data-icon.png" />
+    <Content Include="templates\AnGuang\imgs\safe\funds-01.png" />
+    <Content Include="templates\AnGuang\imgs\safe\funds-02.png" />
+    <Content Include="templates\AnGuang\imgs\safe\funds-03.png" />
+    <Content Include="templates\AnGuang\imgs\safe\funds-04.png" />
+    <Content Include="templates\AnGuang\imgs\safe\funds-icon.png" />
+    <Content Include="templates\AnGuang\imgs\safe\law-icon.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
@@ -758,6 +768,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\article_list.js" />
+    <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -777,6 +788,7 @@
     <Content Include="templates\AnGuang\reducers\usercenter.js" />
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
+    <Content Include="templates\AnGuang\safe_defence.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
@@ -852,6 +864,7 @@
     <Content Include="templates\AnGuang\less\aboutus.less" />
     <Content Include="xmlconfig\cost.config" />
     <Content Include="templates\AnGuang\less\article_show.less" />
+    <Content Include="templates\AnGuang\less\safe_defence.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

@@ -1,0 +1,114 @@
+@import "common-style";
+@images: "../imgs/safe";
+body { background: @body-color; }
+
+.safePage {
+	& > div {
+		display: inline-block;
+		vertical-align: top;
+		background: @white;
+		border: @border;
+	}
+	.left-nav {
+		width: 230px;
+		height: 221px;
+		margin-right: 10px;
+		.nav-list {
+			text-align: center;
+			li {
+				line-height: 52px;
+				border-top: @border;
+				&:hover, &.clicked {
+					background: @body-color;
+					border-left: 3px solid @red;
+				}
+				a {
+					display: inline-block;
+					width: 165px;
+					height: 100%;
+					color: @dark-grey;
+					font-size: @font18;
+					text-decoration: none;
+					padding-left: 40px;
+					outline: none;
+				}
+				.funds { background: url("@{images}/funds-icon.png") no-repeat 0 50%; }
+				.data { background: url("@{images}/data-icon.png") no-repeat 0 50%; }
+				.check { background: url("@{images}/check-icon.png") no-repeat 0 50%; }
+				.law { background: url("@{images}/law-icon.png") no-repeat 0 50%; }
+			}
+			li:first-child { border-top: none; }
+		}
+	}
+	.right-content {
+		width: 855px;
+		min-height: 221px;
+		.topic-th {
+			padding: 0 25px;
+			color: @darker-grey;
+			font-size: @font22;
+			font-weight: bold;
+			line-height: 54px;
+			border-bottom: @border;
+		}
+		.content-body {
+			padding: 0 22px 30px 22px;
+			.content-cell {
+				border-bottom: @border-dashed;
+				& > * { .inline-block; }
+				i {
+					width: 260px;
+					height: 250px;
+					margin-right: 19px;
+				}
+				.third-part { background: url("@{images}/funds-01.png") no-repeat center; }
+				.backup { background: url("@{images}/funds-02.png") no-repeat center; }
+				.authentication { background: url("@{images}/funds-03.png") no-repeat center; }
+				.query { background: url("@{images}/funds-04.png") no-repeat center; }
+				.technology { background: url("@{images}/data-01.png") no-repeat center; }
+				.privacy { background: url("@{images}/data-02.png") no-repeat center; }
+				.charge { background: url("@{images}/law-01.png") no-repeat center; }
+				.debit-credit { background: url("@{images}/law-02.png") no-repeat center; }
+				.transfer { background: url("@{images}/law-03.png") no-repeat center; }
+				.contract { background: url("@{images}/law-04.png") no-repeat center; }
+
+				.description {
+					width: 65%;
+					h4 {
+						color: @darker-grey;
+						margin: 20px 0;
+					}
+					p {
+						color: @dark-grey;
+						font-size: @font15;
+						line-height: 30px;
+						margin: 0;
+					}
+					span {
+						color: @blue;
+						font-size: @font15;
+						line-height: 30px;
+					}
+					ul {
+						color: @red;
+						list-style-type: square;
+						margin-left: -20px;
+						li {
+							margin-bottom: 15px;
+							span {
+								color: @dark-grey;
+								font-size: @font15;
+								line-height: 28px;
+							}
+						}
+					}
+				}
+			}
+			.even-cell i { margin: 0 0 0 19px !important; }
+		}
+		.data-wrap, .law-wrap {
+			display: none;
+			.content-body .content-cell { padding: 20px 0; }
+		}
+	}
+}
