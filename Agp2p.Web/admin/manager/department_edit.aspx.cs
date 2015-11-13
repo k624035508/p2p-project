@@ -21,7 +21,7 @@ namespace Agp2p.Web.admin.manager
         {
             string _action = DTRequest.GetQueryString("action");
             this.id = DTRequest.GetQueryInt("id");
-            this.pageSize = GetPageSize(10); //每页数量
+            this.pageSize = GetPageSize(GetType().Name + "_page_size"); //每页数量
             page = DTRequest.GetQueryInt("page", 1);
             if (!string.IsNullOrEmpty(_action) && _action == DTEnums.ActionEnum.Edit.ToString())
             {
@@ -197,32 +197,10 @@ namespace Agp2p.Web.admin.manager
         }
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie("department_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("department_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("department_edit.aspx", "action={0}&id={1}", "pagedepartment", id.ToString()));
         }
 

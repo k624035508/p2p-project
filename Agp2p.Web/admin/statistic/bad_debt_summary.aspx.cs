@@ -16,7 +16,7 @@ namespace Agp2p.Web.admin.statistic
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            pageSize = GetPageSize(10); //每页数量
+            pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
 
             if (!Page.IsPostBack)
@@ -92,21 +92,6 @@ namespace Agp2p.Web.admin.statistic
         }
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie(GetType().Name + "_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -116,14 +101,7 @@ namespace Agp2p.Web.admin.statistic
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("repay_summary.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}", txtKeywords.Text));
         }
         
