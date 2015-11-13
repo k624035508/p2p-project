@@ -3,15 +3,7 @@ import "../less/invitation.less";
 import React from "react";
 import Pagination from "../components/pagination.jsx";
 import qr from "qr-image";
-import base64 from "../js/base64.js"
 
-function nodeList2Array(nl){
-	var arr = [];
-	for (var i = 0, ref = arr.length = nl.length; i < ref; i++) {
-		arr[i] = nl[i];
-	}
-	return arr;
-}
 
 class InvitationPage extends React.Component {
 	constructor(props) {
@@ -88,13 +80,7 @@ class InvitationPage extends React.Component {
 	}
     genQrCodeBase64(str) {
         let res = qr.imageSync(str, {size: 3, margin: 0});
-        if (!document.addEventListener) { // ie8
-        	let resArr = nodeList2Array(res);
-        	return base64.encode(String.fromCharCode.apply(null, resArr));
-        } else if (!window.btoa) { // ie9
-        	return base64.encode(String.fromCharCode.apply(null, res));
-        }
-        return btoa(String.fromCharCode.apply(null, res));
+        return res.toString('base64');
     }
     render(){
         return(

@@ -133,7 +133,7 @@ namespace Agp2p.Web.UI
                         tag = p.tag.GetValueOrDefault(),
                         //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
                         //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
-                        project_amount_str = string.Format("{0:0.0}", p.financing_amount / 10000),//项目金额字符
+                        project_amount_str = p.financing_amount.ToString("n0"),//项目金额字符
                         project_investment_progress = pr.GetInvestmentProgress(),//项目进度
                         project_investment_balance = pr.GetInvestmentBalance(),//项目投资剩余金额
                         project_investment_count = p.GetInvestedUserCount()//项目投资人数

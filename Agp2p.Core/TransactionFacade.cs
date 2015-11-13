@@ -660,6 +660,9 @@ namespace Agp2p.Core
 
         public static decimal GetFinalProfitRate(this li_projects proj, DateTime? baseTime = null)
         {
+            if (proj.profit_rate != 0)
+                return proj.profit_rate;
+
             if (proj.dt_article_category.call_index == "ypb")
             {
                 var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span;
