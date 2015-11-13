@@ -50,10 +50,7 @@ class CardEditor extends React.Component {
 				return;
 			}
 			var promise = this.props.dispatch(appendBankCard(this.state.cardNumber, this.state.bank, this.state.selectedLocation, this.state.openingBank));
-			promise.done(() => {
-				this.setState(this.genStateByValue());
-				this.props.onOperationSuccess();
-			});
+			promise.done(this.props.onOperationSuccess);
 		} else {
 			var promise = this.props.dispatch(modifyBankCard(
 				this.props.value.cardId, this.state.bank, this.state.selectedLocation, this.state.openingBank));

@@ -145,9 +145,9 @@ thead * {
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
     <td style="text-align:center"><%# Eval("type")%></td>
-    <td style="text-align:center"><%# Eval("project")%></td>
+    <td style="text-align:left"><%# Eval("project")%></td>
     <td style="text-align:center"><%# Eval("user")%></td>
-    <td style="text-align:center"><%# Eval("remark")%></td>
+    <td style="text-align:left"><%# Eval("remark")%></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>

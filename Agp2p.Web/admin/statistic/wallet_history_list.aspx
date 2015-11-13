@@ -16,38 +16,6 @@
 
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript">
-        function ShowAgreeContract(id, projectId) {
-            $.ajax({
-                type: "post",
-                url: "/tools/submit_ajax.ashx?action=user_agree_contract_show",
-                data: {
-                    "id": id, "projectId": projectId
-                },
-                dataType: "json",
-                beforeSend: function (XMLHttpRequest) {
-                    //发送前动作
-                },
-                success: function (data, textStatus) {
-                    if (data.status == 1) {
-                        $.dialog({
-                            title: "投资协议",
-                            content: data.body,
-                            padding: 20,
-                            width: 800,
-                            height: 600,
-                        });
-                    } else {
-                        alert(data.msg);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("状态：" + textStatus + "；出错提示：" + errorThrown);
-                },
-                timeout: 20000
-            });
-        }
-    </script>
 </head>
 
 <body class="mainbody">

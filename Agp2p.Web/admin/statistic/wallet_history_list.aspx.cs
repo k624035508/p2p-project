@@ -217,13 +217,13 @@ namespace Agp2p.Web.admin.statistic
 
         private const string ProjectInvestDetailHref = "<a target='_blank' href='project_investor_detail.aspx?keywords={1}&year=-&month=-&status=0'>{0}</a>";
         private const string ProjectRepayDetailHref = "<a target='_blank' href='project_repay_detail.aspx?keywords={1}&year=-&month=-&status=0'>{0}</a>";
-        private const string ProjectAgreeHref = "<a onclick='ShowAgreeContract({0},{1}); ' href='javascript:;'>《投资协议》</a>";
+        //private const string ProjectAgreeHref = "<a onclick='ShowAgreeContract({0},{1}); ' href='javascript:;'>《投资协议》</a>";
 
         protected readonly Func<li_wallet_histories, string> GetHrefByProjectStatus = pth =>
         {
             var project = pth.li_project_transactions.li_projects;
             return
-                string.Format(project.invest_complete_time.HasValue ? ProjectRepayDetailHref : ProjectInvestDetailHref,
+                string.Format(project.invest_complete_time != null ? ProjectRepayDetailHref : ProjectInvestDetailHref,
                     project.title, project.title.Replace("+", "%2b"));
         };
 
@@ -231,7 +231,7 @@ namespace Agp2p.Web.admin.statistic
         {
             {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund, "投资撤回 {0}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0} {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 还款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 还款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 还款 {1}"}
@@ -253,10 +253,8 @@ namespace Agp2p.Web.admin.statistic
                     var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid));
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
                 }
-                return his.li_project_transactions.li_projects.invest_complete_time.HasValue
-                    ? string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his),
-                        string.Format(ProjectAgreeHref, his.li_project_transactions.id, his.li_project_transactions.project))
-                    : string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his));
+                return 
+                    string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his));
             }
             if (his.li_bank_transactions != null)
             {

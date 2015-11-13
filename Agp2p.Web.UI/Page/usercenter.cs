@@ -107,7 +107,7 @@ namespace Agp2p.Web.UI.Page
                     userInfo.email,
                     userInfo.qq,
                     userInfo.sex,
-                    birthday = userInfo.birthday.HasValue ? userInfo.birthday.Value.ToString("yyyy-MM-dd") : "",
+                    birthday = userInfo.birthday != null ? userInfo.birthday.Value.ToString("yyyy-MM-dd") : "",
                     userInfo.area,
                     userInfo.address,
                     invitationCode = userCode == null ? myreward.GetInviteCode(context) : userCode.str_code,
