@@ -3,11 +3,6 @@
 <![endif]-->
 <div class="container-fluid top-bar-wrap">
     <div class="top-bar">
-        <span class="top-bar-icon head-hot-line-icon"></span>
-        <span class="head-hot-line-num">客服热线：400-8989-089</span>
-        <span class="top-bar-icon weibo-icon"></span>
-        <span class="top-bar-icon wechat-icon"></span>
-
         <div class="pull-right">
             <ul class="list-inline">
                 <%set var _userModel=GetUserInfo()%>
@@ -24,11 +19,15 @@
                 <li><a id="help" href="#">帮助</a></li>
             </ul>
         </div>
+
+        <span class="top-bar-icon head-hot-line-icon"></span>
+        <span class="head-hot-line-num">客服热线：400-8989-089</span>
+        <span class="top-bar-icon weibo-icon"></span>
+        <span class="top-bar-icon wechat-icon"></span>
     </div>
 </div>
 <div class="container-fluid nav-bar-wrap">
     <div class="nav-bar">
-        <a href='<%linkurl("index")%>'><img src="<%templateskin%>/imgs/index/logo.png" /></a>
         <nav class="pull-right">
             <ul class="list-inline in-header">
                 <li><a href="/">首页</a></li>
@@ -48,5 +47,6 @@
                 <li><a href='<%linkurl("about")%>'>关于我们</a></li>
             </ul>
         </nav>
+        <a href='<%linkurl("index")%>'><img src="<%templateskin%>/imgs/index/logo.png" /></a>
     </div>
 </div>

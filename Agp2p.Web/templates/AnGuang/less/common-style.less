@@ -22,9 +22,16 @@
 @border-dashed: 1px dashed @light-grey;
 @min-width: 1100px;
 
+
 .inline-block {
-  display: inline-block;
-  vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/* ie7 inline-block hack */
+.list-inline > li, .glyphicon, .inline-block {
+	*display: inline;
+	*zoom:1;
 }
 
 .invest-style-tab {

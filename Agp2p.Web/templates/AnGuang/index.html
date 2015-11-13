@@ -54,6 +54,7 @@
 <!--announcement-->
 <div class="container-fluid announcement-wrap">
     <div class="announcement">
+        <span class="pull-right"><a href='<%=linkurl("article_list",43)%>'>更多></a></span>
         <span class="announce-board-icon announce-icon"></span>
         <%set var projectAnnounce=get_article_list("content", 54, 1, "").Rows.Cast<DataRow>().FirstOrDefault()%>
         <span class="return-announce">发标公告：
@@ -77,7 +78,6 @@
             <%/if%>
         </span>
         <span class="announce-board-icon news-icon"></span>
-        <span class="pull-right"><a href='<%=linkurl("article_list",43)%>'>更多></a></span>
     </div>
 </div>
 <!--announcement end-->
@@ -150,8 +150,8 @@
         <div class="company-news">
             <div class="dynamic-title-wrap">
                 <a href='<%=linkurl("article_list",42)%>'>
-                    <span class="dynamic-title">公司动态</span>
                     <span class="link-mark pull-right"></span>
+                    <span class="dynamic-title">公司动态</span>
                 </a>
             </div>
             <div class="news-wrap">
@@ -169,8 +169,13 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in inc_news_ls.Skip(1))%>
                         <li>
-                            <span class="list-title-wrap"><a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
-                                <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a></span>
+                            <span class="list-title-wrap">
+                                <a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px">
+                                    <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
+                                    <span class="list-mark"></span>
+                                    <span class="list-title"><%=dr["title"]%></span>
+                                </a>
+                            </span>
                         </li>
                         <%/foreach%>
                     </ul>
@@ -182,8 +187,8 @@
         <div class="media-report">
             <div class="dynamic-title-wrap">
                 <a href='<%=linkurl("article_list",44)%>'>
-                    <span class="dynamic-title">媒体报道</span>
                     <span class="link-mark pull-right"></span>
+                    <span class="dynamic-title">媒体报道</span>
                 </a>
             </div>
             <div class="report-wrap">
@@ -201,8 +206,11 @@
                     <ul class="list-unstyled">
                         <%foreach(DataRow dr in media_dt_ls.Skip(1))%>
                         <li><span class="list-title-wrap">
-                            <a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
-                                <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span></a>
+                            <a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px">
+                                <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
+                                <span class="list-mark"></span>
+                                <span class="list-title"><%=dr["title"]%></span>
+                            </a>
                             </span>
                         </li>
                         <%/foreach%>
@@ -215,16 +223,20 @@
         <div class="company-placard">
             <div class="dynamic-title-wrap">
                 <a href='<%=linkurl("article_list",43)%>'>
-                    <span class="dynamic-title">公司公告</span>
                     <span class="link-mark pull-right"></span>
+                    <span class="dynamic-title">公司公告</span>
                 </a>
             </div>
             <ul class="list-unstyled">
                 <%set var announces_ls=get_article_list("content", 43, 10, "").Rows.Cast<DataRow>();%>
                 <%foreach(DataRow dr in announces_ls)%>
-                <li><span class="list-title-wrap"><a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px"><span class="list-mark"></span>
-                                                        <span class="list-title"><%=dr["title"]%></span><span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
-                                                        </a></span>
+                <li><span class="list-title-wrap">
+                        <a href='<%linkurl("article_show",{dr[id]})%>' class="dark-grey14px">
+                            <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", dr["add_time"])%></span>
+                            <span class="list-mark"></span>
+                            <span class="list-title"><%=dr["title"]%></span>
+                        </a>
+                    </span>
                 </li>
                 <%/foreach%>
             </ul>
