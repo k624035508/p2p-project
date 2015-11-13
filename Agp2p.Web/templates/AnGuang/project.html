@@ -181,12 +181,10 @@
                 <ul class="list-unstyled">
                     <li><span>性　　别</span><span><%=loaner.dt_users.sex%></span></li>
                     <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
-                    <li></li>
                 </ul>
                 <ul class="list-unstyled">
                     <li><span>籍　　贯</span><span>{loaner.native_place}</span></li>
                     <li><span>年　　龄</span><span><%=loaner.age%></span></li>
-                    <li></li>
                 </ul>
             </div>
         </div>
@@ -277,9 +275,9 @@
                                 <h4></h4>
                             </div>
                             <div class="modal-body modal-body-custom">
-                                <span class="glyphicon glyphicon-chevron-left control-prev"></span>
+                                <span class="glyphicon glyphicon-chevron-left control-prev"><!--[if lt IE 8]>《<![endif]--></span>
                                 <img id="modalPic" src="" alt=""/>
-                                <span class="glyphicon glyphicon-chevron-right control-next"></span>
+                                <span class="glyphicon glyphicon-chevron-right control-next"><!--[if lt IE 8]>》<![endif]--></span>
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
