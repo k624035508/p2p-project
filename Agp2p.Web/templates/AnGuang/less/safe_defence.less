@@ -5,6 +5,7 @@ body { background: @body-color; }
 .safePage {
 	& > div {
 		display: inline-block;
+		.ie7-inline-block;
 		vertical-align: top;
 		background: @white;
 		border: @border;
@@ -12,6 +13,7 @@ body { background: @body-color; }
 	.left-nav {
 		width: 230px;
 		height: 221px;
+		*height: auto;
 		margin-right: 10px;
 		.nav-list {
 			text-align: center;
@@ -24,6 +26,7 @@ body { background: @body-color; }
 				}
 				a {
 					display: inline-block;
+					.ie7-inline-block;
 					width: 165px;
 					height: 100%;
 					color: @dark-grey;

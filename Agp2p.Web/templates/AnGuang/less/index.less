@@ -72,12 +72,14 @@ div.dynamic-wrap {
         float: left;
         display: inline-block;
         width: 33.333%;
+        *width: 33%;
         height: 100%;
         border-right: @border;
     }
     .company-placard {border-right: none;}
     .dynamic-title-wrap {
         height: 55px;
+        *height: auto;
         padding: 12.5px 20px;
         border-bottom: @border;
         & a > span { .inline-block; }
@@ -123,6 +125,9 @@ div.dynamic-wrap {
     }
     .news-wrap, .report-wrap {
         padding: 25px 20px;
+        ul {
+            *margin-left: 0px;
+        }
         ul li { margin-bottom: 10px; }
         .img-wrap {
             width: 100%;
@@ -148,6 +153,7 @@ div.dynamic-wrap {
     .company-placard ul {
         height: 360px;
         padding: 15px 20px;
+        *margin-left: 0px;
         li {
             height: 10%;
             line-height: 30px;
