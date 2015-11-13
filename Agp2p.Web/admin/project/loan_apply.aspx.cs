@@ -87,7 +87,7 @@ namespace Agp2p.Web.admin.project
         /// <returns></returns>
         private List<li_projects> GetList()
         {
-            PageSize = new BLL.channel().GetPageSize(ChannelName);
+            PageSize = GetPageSize(GetType().Name + "_page_size");
             var query = context.li_projects.Where(p => (p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted || p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail) 
             && (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
             if (CategoryId > 0)
@@ -109,14 +109,7 @@ namespace Agp2p.Web.admin.project
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("loan_apply.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }

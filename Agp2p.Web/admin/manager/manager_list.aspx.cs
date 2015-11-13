@@ -27,7 +27,7 @@ namespace Agp2p.Web.admin.manager
         {
             //this.keywords = DTRequest.GetQueryString("keywords");
 
-            this.pageSize = GetPageSize(10); //每页数量
+            this.pageSize = GetPageSize(GetType().Name + "_page_size"); //每页数量
             this.page = DTRequest.GetQueryInt("page", 1);
             department_id = DTRequest.GetQueryString("department_id");
             if (!Page.IsPostBack)
@@ -183,21 +183,6 @@ namespace Agp2p.Web.admin.manager
         }
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie("manager_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -207,14 +192,7 @@ namespace Agp2p.Web.admin.manager
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("manager_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("manager_list.aspx", "keywords={0}&department_id={1}", txtKeywords.Text, ddlDepartments.SelectedValue));
         }
 

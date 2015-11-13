@@ -36,7 +36,7 @@ namespace Agp2p.Web.admin.statistic
         {
             //keywords = DTRequest.GetQueryString("keywords");
 
-            pageSize = GetPageSize(10); //每页数量
+            pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
             transactType = DTRequest.GetQueryString("transactType");
             if (!Page.IsPostBack)
@@ -125,21 +125,6 @@ namespace Agp2p.Web.admin.statistic
 
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie(GetType().Name + "_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -150,14 +135,7 @@ namespace Agp2p.Web.admin.statistic
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}",
                 txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, transactType));
         }

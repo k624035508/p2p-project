@@ -53,7 +53,7 @@ namespace Agp2p.Web.admin.statistic
             action_type = DTRequest.GetQueryInt("action_type");
             userGroup = DTRequest.GetQueryInt("userGroup");
 
-            pageSize = GetPageSize(10); //每页数量
+            pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
             if (!Page.IsPostBack)
             {
@@ -176,32 +176,10 @@ namespace Agp2p.Web.admin.statistic
 
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie(GetType().Name + "_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
                 "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}", user_id, action_type.ToString(),
                 txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString()));

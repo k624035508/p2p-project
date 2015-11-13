@@ -116,6 +116,29 @@ namespace Agp2p.Web.UI
             return false;
         }
 
+        private const int DefaultPageSize = 50;
+        protected int GetPageSize(string pageName)
+        {
+            int pagesize;
+            if (int.TryParse(Utils.GetCookie(pageName), out pagesize))
+            {
+                if (pagesize > 0)
+                {
+                    return pagesize;
+                }
+            }
+            return DefaultPageSize;
+        }
+
+        protected void SetPageSize(string pageName, string pageSizeStr)
+        {
+            int pagesize;
+            if (int.TryParse(pageSizeStr, out pagesize) && pagesize != DefaultPageSize)
+            {
+                Utils.WriteCookie(GetType().Name + "_page_size", pageSizeStr, 14400);
+            }
+        }
+
         #endregion
 
         #region JS提示============================================

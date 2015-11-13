@@ -22,7 +22,7 @@ namespace Agp2p.Web.admin.transact
         {
             //keywords = DTRequest.GetQueryString("keywords");
 
-            pageSize = GetPageSize(10); //每页数量
+            pageSize = GetPageSize(GetType().Name + "_page_size");
             if (!Page.IsPostBack)
             {
                 var showType = DTRequest.GetQueryString("showType");
@@ -77,21 +77,6 @@ namespace Agp2p.Web.admin.transact
         }
         #endregion
 
-        #region 返回每页数量=============================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie(GetType().Name + "_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -101,14 +86,7 @@ namespace Agp2p.Web.admin.transact
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie(GetType().Name + "_page_size", _pagesize.ToString(), 14400);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("project_recently_repay_list.aspx", "keywords={0}&showType={1}&startTime={2}&endTime={3}", txtKeywords.Text, rblProjectShowType.SelectedValue, txtStartTime.Text, txtEndTime.Text));
         }
 

@@ -86,7 +86,7 @@ namespace Agp2p.Web.admin.repayment
         /// <returns></returns>
         private List<RepayOverTime> GetList()
         {
-            PageSize = new BLL.channel().GetPageSize(ChannelName);
+            PageSize = GetPageSize(GetType().Name + "_page_size");
             var query =
                 context.li_repayment_tasks.Where(
                     r => r.li_projects.title.Contains(Keywords) || r.li_projects.no.Contains(Keywords))
@@ -154,14 +154,7 @@ namespace Agp2p.Web.admin.repayment
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("repay_over_time.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
                 this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
         }

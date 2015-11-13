@@ -93,7 +93,7 @@ namespace Agp2p.Web.admin.project
         /// <returns></returns>
         private List<li_projects> GetList()
         {
-            PageSize = 10;
+            PageSize = GetPageSize(GetType().Name + "_page_size");
             var query = context.li_projects.Where(p => p.status == ProjectStatus && (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
             if (CategoryId > 0)
                 query = query.Where(q => q.category_id == CategoryId);
@@ -121,14 +121,7 @@ namespace Agp2p.Web.admin.project
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("make_loan_audit.aspx", "category_id={0}&keywords={1}",
                 this.CategoryId.ToString(), txtKeywords.Text));
         }

@@ -37,7 +37,7 @@ namespace Agp2p.Web.admin.popularize
                 return;
             }
             this.channel_name = new BLL.channel().GetChannelName(this.channel_id); //取得频道名称
-            this.pageSize = GetPageSize(10); //每页数量
+            this.pageSize = GetPageSize(GetType().Name + "_page_size"); //每页数量
             this.prolistview = Utils.GetCookie("article_list_view"); //显示方式
             if (!Page.IsPostBack)
             {
@@ -142,21 +142,6 @@ namespace Agp2p.Web.admin.popularize
         }
         #endregion
 
-        #region 返回图文每页数量=========================
-        private int GetPageSize(int _default_size)
-        {
-            int _pagesize;
-            if (int.TryParse(Utils.GetCookie("article_page_size"), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    return _pagesize;
-                }
-            }
-            return _default_size;
-        }
-        #endregion
-
         //设置操作
         protected void rptList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -233,14 +218,7 @@ namespace Agp2p.Web.admin.popularize
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
-            int _pagesize;
-            if (int.TryParse(txtPageNum.Text.Trim(), out _pagesize))
-            {
-                if (_pagesize > 0)
-                {
-                    Utils.WriteCookie("article_page_size", _pagesize.ToString(), 43200);
-                }
-            }
+            SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("projectContent_list.aspx", "channel_id={0}&category_id={1}&keywords={2}&property={3}",
                 this.channel_id.ToString(), this.category_id.ToString(), txtKeywords.Text, this.property));
         }
