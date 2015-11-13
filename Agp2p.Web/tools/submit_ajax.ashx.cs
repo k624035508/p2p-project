@@ -2445,9 +2445,10 @@ namespace Agp2p.Web.tools
             try
             {
                 int id = DTRequest.GetQueryInt("id", 0);
+                int userId = DTRequest.GetQueryInt("user_id", 0);
                 var dbContext = new Agp2pDataContext();
                 //检查用户是否登录
-                var user = BasePage.GetUserInfoByLinq(dbContext);
+                var user = userId > 0 ? dbContext.dt_users.SingleOrDefault(u => u.id == userId) : BasePage.GetUserInfoByLinq(dbContext);
                 if (user == null)
                 {
                     httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
