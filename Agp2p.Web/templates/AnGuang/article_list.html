@@ -45,7 +45,7 @@
             <ul class="list-unstyled content-list">
                 <%set var articles = GetArticles(category_id,10,page-1,out totalcount)%>
                 <%foreach(var a in articles)%>
-                <li><i></i><a href='<%=linkurl("article_show",a.id)%>'>{a.title}</a><span class="pull-right">{a.add_time}</span></li>
+                <li><span class="pull-right">{a.add_time}</span><i></i><a href='<%=linkurl("article_show",a.id)%>'>{a.title}</a></li>
                 <%/foreach%>
             </ul>
             <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("article_list",category_id,"__id__"),8)%></div>

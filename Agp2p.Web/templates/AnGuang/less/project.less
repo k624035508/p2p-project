@@ -63,8 +63,9 @@ div.tender-content {
 				.inline-block;
 				float: left;
 				width: 33.333%;
+				*width: 33%;
 				height: 100%;
-				padding: 5px;
+				padding: 5px 0;
 				text-align: center;
 			}
 			.sum, .deadline {
@@ -89,7 +90,6 @@ div.tender-content {
 				.inline-block;
 				float: left;
 				width: 50%;
-				height: 100%;
 			}
 			.repayment-way {
 				table tbody > tr {
@@ -108,6 +108,7 @@ div.tender-content {
 			.interest-way {
 				.repayment-way;
 				padding-left: 105px;
+				*padding-left: 45px;
 			}
 		}
 	}
@@ -372,6 +373,7 @@ div.project-content-wrap {
 				.inline-block;
 				float: left;
 				width: 33.33%;
+				*width: 30%;
 				margin-bottom: 0;
 				font-size: @font15;
 				& > li {

@@ -32,6 +32,68 @@
 
 <!--标书样式-->
 <div class="tender-content">
+    <div class="invest-control pull-right">
+        <div><span class="title-mark">可投金额</span></div>
+        <div class="investable-amount-wrap">
+            <div class="investable-amount">{investmentBalance}</div>
+            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <!--满标-->
+            <div class="account-balance-empty">
+                <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
+                <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
+            </div>
+            <%else if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingFail)%>
+            <!--流标-->
+            <div class="account-balance-empty">
+                <div class="tips">项目已流标，已投资款项已退回</div>
+                <button type="button" class="btn-common empty-btn" disabled>已 流 标</button>
+            </div>
+            <%else if(!IsUserLogin())%>
+            <!--未满标 未登录-->
+            <div class="account-balance-unlogin">
+                <div>起投金额100元</div>
+                <button type="button" class="btn-common register-btn" onclick="location.href='register.html'">30秒快速注册</button>
+                <span>已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></span>
+            </div>
+            <%else%>
+            <!--未满标 登录后-->
+            <div class="account-balance">
+                <div><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
+                <input type="text" placeholder="请输入投资金额" id="investAmount-input"/>
+                <button type="button" class="btn-common investing-btn" data-has-pay-password="{has_pay_password()}"
+                        data-idle-money="{idle_money}" data-profit-rate='<%=projectModel.GetFinalProfitRate(DateTime.Now)%>' data-project-id="{projectModel.id}">投 资</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
+                <div class="modal-dialog investConfirm-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">确认投资</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-unstyled">
+                                <li><span>项目标题：</span><span>{projectModel.title}</span></li>
+                                <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", projectModel.profit_rate_year)%></span></li>
+                                <li><span>还款期限：</span><span>{projectModel.repayment_term_span_count}<%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></li>
+                                <li><span>还款方式：</span><span><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></span></li>
+                                <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
+                                <li><span>保障方式：</span><span>本金 + 利息</span></li>
+                            </ul>
+                        </div>
+                        <div class="profit-wrap"><span>预期收益：</span><span class="profit">320.00</span></div>
+                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password"/></div>
+                        <div class="agreement"><input type="checkbox"/><span>我已经阅读并同意<a href="javascript:;">《投资协议》</a></span></div>
+                        <div class="modal-footer">
+                            <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>
+                            <button type="button" class="confirm-btn">确 认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%/if%>
+        </div>
+    </div>
     <div class="tender-face">
         <div class="invest-title">
             <span class="invest-style-tab">房贷宝</span>
@@ -91,68 +153,7 @@
             </div>
         </div>
     </div>
-    <div class="invest-control pull-right">
-        <div><span class="title-mark">可投金额</span></div>
-        <div class="investable-amount-wrap">
-            <div class="investable-amount">{investmentBalance}</div>
-            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
-            <!--满标-->
-            <div class="account-balance-empty">
-                <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
-                <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
-            </div>
-            <%else if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingFail)%>
-            <!--流标-->
-            <div class="account-balance-empty">
-                <div class="tips">项目已流标，已投资款项已退回</div>
-                <button type="button" class="btn-common empty-btn" disabled>已 流 标</button>
-            </div>
-            <%else if(!IsUserLogin())%>
-            <!--未满标 未登录-->
-            <div class="account-balance-unlogin">
-                <div>起投金额100元</div>
-                <button type="button" class="btn-common register-btn" onclick="location.href='register.html'">30秒快速注册</button>
-                <span>已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></span>
-            </div>
-            <%else%>
-            <!--未满标 登录后-->
-            <div class="account-balance">
-                <div><span>账户余额 {idle_money} 元</span><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a></div>
-                <input type="text" placeholder="请输入投资金额" id="investAmount-input"/>
-                <button type="button" class="btn-common investing-btn" data-has-pay-password="{has_pay_password()}"
-                        data-idle-money="{idle_money}" data-profit-rate='<%=projectModel.GetFinalProfitRate(DateTime.Now)%>' data-project-id="{projectModel.id}">投 资</button>
-            </div>
-            <!-- Modal -->
-            <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
-                <div class="modal-dialog investConfirm-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">确认投资</h4>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="list-unstyled">
-                                <li><span>项目标题：</span><span>{projectModel.title}</span></li>
-                                <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", projectModel.profit_rate_year)%></span></li>
-                                <li><span>还款期限：</span><span>{projectModel.repayment_term_span_count}<%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></li>
-                                <li><span>还款方式：</span><span><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></span></li>
-                                <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
-                                <li><span>保障方式：</span><span>本金 + 利息</span></li>
-                            </ul>
-                        </div>
-                        <div class="profit-wrap"><span>预期收益：</span><span class="profit">320.00</span></div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password"/></div>
-                        <div class="agreement"><input type="checkbox"/><span>我已经阅读并同意<a href="javascript:;">《投资协议》</a></span></div>
-                        <div class="modal-footer">
-                            <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>
-                            <button type="button" class="confirm-btn">确 认</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <%/if%>
-        </div>
-    </div>
+    
 </div>
 <!--标书样式 end-->
 
@@ -180,10 +181,12 @@
                 <ul class="list-unstyled">
                     <li><span>性　　别</span><span><%=loaner.dt_users.sex%></span></li>
                     <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
+                    <li></li>
                 </ul>
                 <ul class="list-unstyled">
                     <li><span>籍　　贯</span><span>{loaner.native_place}</span></li>
                     <li><span>年　　龄</span><span><%=loaner.age%></span></li>
+                    <li></li>
                 </ul>
             </div>
         </div>
