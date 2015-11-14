@@ -669,8 +669,7 @@
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\bank-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
-    <Content Include="templates\AnGuang\imgs\index\bannerTest-02.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\bannerTest.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\funds-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\funds.png" />
@@ -681,6 +680,7 @@
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
+    <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
