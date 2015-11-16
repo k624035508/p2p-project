@@ -119,9 +119,6 @@ class MyNews extends React.Component {
         return(
             <div className="news-wrap">
                 <div className="controls controls-custom">
-                    <DropdownPicker
-                        onTypeChange={newType => this.fetchMessages(newType, this.state.pageIndex) }
-                        enumFullName="Agp2p.Common.Agp2pEnums+UserMessageTypeEnum" />
                     <div className="controls-list pull-right">
                         <span onClick={ev => this.setAllCheckedAlreadyRead()}>标为已读</span>
                         <span onClick={ev => {
@@ -130,6 +127,9 @@ class MyNews extends React.Component {
                         }}>全部标为已读</span>
                         <span onClick={ev => this.deleteSelectedMessages()}>删除</span>
                     </div>
+                    <DropdownPicker
+                        onTypeChange={newType => this.fetchMessages(newType, this.state.pageIndex) }
+                        enumFullName="Agp2p.Common.Agp2pEnums+UserMessageTypeEnum" />
                 </div>
 				<div className="news-list">
 					<div className="news-tb">
