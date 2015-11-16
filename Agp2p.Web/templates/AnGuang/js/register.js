@@ -95,23 +95,40 @@ $(function(){
     });
 
     // 获取短信验证码
-    $("#get-sms-btn").click(function(){
+    var timerId = 0, countDown = 0;
+    var $sendSmsCodeBtn = $("#get-sms-btn");
+    var intervalControlLogic = () => {
+        var originalText = $sendSmsCodeBtn.text();
+        countDown = 120;
+        timerId = setInterval(() => {
+            $sendSmsCodeBtn.text(`${countDown--}秒后再试`);
+            if (countDown == 0) {
+                clearInterval(timerId);
+                timerId = 0;
+                $sendSmsCodeBtn.text(originalText);
+            }
+        }, 1000);
+    };
+    $sendSmsCodeBtn.click(function(){
         //判断图文验证码是否为空
-        var picCode = $("#pic-code").val().length;
-        if (picCode == 0) {
+        var picCode = $("#pic-code").val();
+        if (picCode.length == 0) {
             alert("请输入验证码！");
-        }else {
-            var phone = $("#account").val();
-            var picCode = $("#pic-code").val();
+        } else if (0 < countDown) {
+            alert(`请等待 ${countDown} 秒后再试`);
+        } else {
             $.ajax({
                 url: "/tools/submit_ajax.ashx?action=user_register_smscode",
                 type: "post",
                 dataType: "json",
                 data: {
-                    mobile: phone,
+                    mobile: $("#account").val(),
                     txtPicCode: picCode
                 },
                 success: function (data) {
+                    if (data.status == 1) {
+                        intervalControlLogic();
+                    }
                     alert(data.msg);
                 },
                 error: function (data) {
