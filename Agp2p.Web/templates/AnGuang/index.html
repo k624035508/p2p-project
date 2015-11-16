@@ -136,14 +136,21 @@
                 <div class="grey13px">借款金额</div>
             </div>
             <div class="repayment">
+                <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                 <div class="progress progress-custom">
                     <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{dr[project_investment_progress]}"
                          aria-valuemin="0" aria-valuemax="100" style="width: {dr[project_investment_progress]}%">
-                        <span class="sr-only">20% Complete</span>
+                        <span class="sr-only">{dr[project_investment_progress]}% Complete</span>
                     </div>
                 </div>
                 <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{dr[project_investment_balance]}</span></div>
-                <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>   <!--满标人数显示-->
+                <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                <div class="grey13px margin-bottom10px">已满标，审核中</div>
+                <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>
+                <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                <div class="grey13px margin-bottom10px">已满标，还款中</div>
+                <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>
+                <%/if%>
                 <div class="grey13px">到期还本付息</div>
             </div>
             <div class="invest-btn">
