@@ -268,6 +268,7 @@ body { background: @body-color; }
 		//网站公告、公司动态、媒体报道
 		.announcement-wrap, .dynamic-wrap,  .reports-wrap {
 			.content-list {
+				height: 520px;
 				li {
 					padding: 0 10px;
 					margin: 0 15px;
@@ -293,7 +294,26 @@ body { background: @body-color; }
 			}
 			.pages {
 				text-align: center;
-				line-height: 75px;
+				height: 75px;
+				padding: 24px 0;
+				* {
+					display: inline-block;
+					margin: 0 5px;
+					padding: 2px 8px;
+					color: @dark-grey;
+					font-size: @font13;
+					border: @border;
+				}
+				a {
+					text-decoration: none;
+					&:hover { background: @light-grey; }
+				}
+				span {  }
+				span:first-child { border: none; }
+				.current {
+					color: @white;
+					background: @red;
+				}
 			}
 		}
 	}

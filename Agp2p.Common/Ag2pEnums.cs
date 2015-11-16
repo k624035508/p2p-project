@@ -178,7 +178,7 @@ namespace Agp2p.Common
             /// <summary>
             /// 日
             /// </summary>
-            [Description("日")]
+            [Description("天")]
             Day = 30
         }
 
