@@ -1,0 +1,16 @@
+﻿<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="yplc")%>
+    <div id="risk-control">
+        <span class="title-mark">{hIndex++}.保障措施</span>
+        <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
+        <div>{risk.risk_content}</div>
+        <%/if%>
+        <ul class="list-unstyled risk-control-content">
+        <%foreach(var p in GetAllMortgagesInfo())%>
+        <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
+        <%/foreach%>
+        </ul>
+        <%if(string.IsNullOrWhiteSpace(risk.risk_content)&&mortgages.Count==0)%>
+            <div class="content-null">暂无数据</div>
+        <%/if%>
+    </div>
+<%/if%>

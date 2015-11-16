@@ -130,7 +130,8 @@
                         <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
                         <tr><td>投标人数</td><td colspan="2">{invsetorCount}人</td></tr>
                         <tr><td>投标进度</td><td><div class="progress progress-custom">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{investmentProgress}" aria-valuemin="0" aria-valuemax="100" style="width: {investmentProgress}%">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{investmentProgress}"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: {investmentProgress}%">
                             </div>
                         </div></td><td>{investmentProgress}%</td></tr>
                     </tbody>
@@ -161,202 +162,20 @@
 <%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
-        <div id="project-summary">
-            <span class="title-mark">{hIndex++}.项目简介</span>
-            <ul class="list-unstyled">
-                <li><span>项目描述</span><span class="span-sec">{risk.loaner_content}</span></li>
-                <li><span>借款用途</span><span class="span-sec">{risk.loan_usage}</span></li>
-                <li><span>还款来源</span><span class="span-sec">{risk.source_of_repayment}</span></li>
-            </ul>
-        </div>
-        
-        <div id="borrower-info">
-            <span class="title-mark">{hIndex++}.借款人信息</span>
-            <div class="personal-info clearfix">
-                <ul class="list-unstyled">
-                    <li><span>姓　　名</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>
-                    <li><span>婚姻状况</span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
-                    <li><span>月 收 入</span><span>{loaner.income}</span></li>
-                </ul>
-                <ul class="list-unstyled">
-                    <li><span>性　　别</span><span><%=loaner.dt_users.sex%></span></li>
-                    <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
-                </ul>
-                <ul class="list-unstyled">
-                    <li><span>籍　　贯</span><span>{loaner.native_place}</span></li>
-                    <li><span>年　　龄</span><span><%=loaner.age%></span></li>
-                </ul>
-            </div>
-        </div>
-        
-        <%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
-        <div id="corporate-info">
-            <span class="title-mark">{hIndex++}.企业信息</span>
-            <%if(loaner_company!=null)%>
-            <ul class="list-unstyled">
-                <li><span><span class="specific-location">企业名称</span></span><span class="span-sec">{loaner_company.name}</span></li>
-                <li><span><span class="specific-location">成立时间</span></span><span class="span-sec">{loaner_company.setup_time}</span></li>
-                <li><span><span class="specific-location">注册资本</span></span><span class="span-sec">{loaner_company.registered_capital}</span></li>
-                <li><span><span class="specific-location">净 资 产</span></span><span class="span-sec">{loaner_company.net_assets}</span></li>
-                <li><span><span class="specific-location">经营范围</span></span><span class="span-sec">{loaner_company.business_scope}</span></li>
-                <li><span><span class="specific-location">经营状况</span></span><span class="span-sec">{loaner_company.business_status}</span></li>
-                <li><span><span class="specific-location">涉诉情况</span></span><span class="span-sec">{loaner_company.business_lawsuit}</span></li>
-                <li><span><span class="specific-location">年收入</span></span><span class="span-sec">{loaner_company.income_yearly}</span></li>
-                <li><span><span class="specific-location">备注</span></span><span class="span-sec">{loaner_company.remark}</span></li>
-            </ul>
-            <%else%>
-            <div class="content-null">暂无数据</div>
-            <%/if%>
-        </div>
-        <%/if%>
-        
-        <div id="risk-control">
-            <span class="title-mark">{hIndex++}.风控措施</span>
-            <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
-            <div>{risk.risk_content}</div>
-            <%/if%>
-            <ul class="list-unstyled risk-control-content">
-                <%foreach(var mortgage in mortgages)%>
-                <%csharp%>
-                var schemeObj = (JObject) JsonConvert.DeserializeObject(mortgage.li_mortgage_types.scheme);
-                var kv = (JObject)JsonConvert.DeserializeObject(mortgage.properties);
-
-                var properties = schemeObj.Cast
-                <KeyValuePair<string, JToken>>().Select(p => new Tuple<string,string>(p.Value.ToString(), kv[p.Key].ToString()))
-                .Concat(new [] {new Tuple<string,string>("市场价值",mortgage.valuation.ToString("c")) }).ToList();
-            foreach (var p in properties) {
-            <%/csharp%>
-            <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
-            <%csharp%> } <%/csharp%>
-            <%/foreach%>
-            </ul>
-            <%if(string.IsNullOrWhiteSpace(risk.risk_content)&&mortgages.Count==0)%>
-                <div class="content-null">暂无数据</div>
-            <%/if%>
-        </div>
-        
-        <div id="relevant-info">
-            <span class="title-mark">{hIndex++}.相关资料</span>
-            <%if(_userModel==null)%>
-            <div class="content-null">照片内容需 <a href='<%linkurl("login")%>'>登录</a> 后才能查看</div>
-            <%else if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
-                <div class="content-null">暂无数据</div>
-            <%else%>
-            <div class="row photo-cell">
-                <%foreach(var picture in albums_pictures)%>
-                <div class="col-md-3 col-xs-3">
-                    <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
-                    </a>
-                    <div class="photo-title">{picture.remark}</div>
-                </div>
-                <%/foreach%>
-                <%foreach(var picture in albums_credit)%>
-                <div class="col-md-3 col-xs-3">
-                    <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
-                    </a>
-                    <div class="photo-title">{picture.remark}</div>
-                </div>
-                <%/foreach%>
-                <%foreach(var picture in albums_mortgage)%>
-                <div class="col-md-3 col-xs-3">
-                    <a href="javascript:;" class="thumbnail thumbnail-custom">
-                        <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}" data-toggle="modal" data-target="#photoModal" />
-                    </a>
-                    <div class="photo-title">{picture.remark}</div>
-                </div>
-                <%/foreach%>
-                <div class="modal fade modal-custom" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header modal-header-custom">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4></h4>
-                            </div>
-                            <div class="modal-body modal-body-custom">
-                                <span class="glyphicon glyphicon-chevron-left control-prev"><!--[if lt IE 8]>《<![endif]--></span>
-                                <img id="modalPic" src="" alt=""/>
-                                <span class="glyphicon glyphicon-chevron-right control-next"><!--[if lt IE 8]>》<![endif]--></span>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-            </div>
-            <%/if%>
-        </div>
-
-        <%if(projectModel.status>=(int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
-        <div id="repayment-task">
-            <span class="title-mark">{hIndex++}.还款计划</span>
-            <div class="repayment-task">
-                <table class="table table-hover">
-                    <thead>
-                    <tr><th>期次</th>
-                        <th>还款日</th>
-                        <th>应还本息（元）</th>
-                        <th>应还本金（元）</th>
-                        <th>应还利息（元）</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <%foreach(var task in repayment_tasks)%>
-                        <tr>
-                            <td>{task.term}</td>
-                            <td><%=task.should_repay_time.ToString("yyyy-MM-dd")%></td>
-                            <td><%=string.Format("{0:c}", task.repay_interest+task.repay_principal)%></td>
-                            <td><%=string.Format("{0:c}", task.repay_principal)%></td>
-                            <td><%=string.Format("{0:c}", task.repay_interest)%></td>
-                        </tr>
-                        <%/foreach%>
-                        <%if(repayment_tasks.Count==0)%>
-                            <tr><td align="center" colspan="5">暂无记录</td></tr>
-                        <%/if%>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <%/if%>
-
-        <div id="invest-record">
-            <span class="title-mark">{hIndex++}.投标记录</span>
-            <div class="invest-record">
-                <table class="table table-hover">
-                    <thead>
-                        <tr><th>序号</th><th>用户名</th><th>投标金额</th><th>投标时间</th></tr>
-                    </thead>
-                    <tbody>
-                        <%set var investments=QueryProjectTransactions()%>
-                        <%for(int i=0;i<investments.Count;i++)%>
-                        <tr><td>{i+1}</td>
-                            <td class="account-style"><%=investments[i].user_name%></td>
-                            <td><%=investments[i].value%></td>
-                            <td><%=investments[i].create_time%></td>
-                        </tr>
-                        <%/for%>
-                        <%if(investments.Count==0)%>
-                            <tr><td align="center" colspan="4">暂无记录</td></tr>
-                        <%/if%>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <%template src="_project_intro.html"%>
+        <%template src="_loaner_info.html"%>
+        <%template src="_ticket_info.html"%>
+        <%template src="_ticket_intro.html"%>
+        <%template src="_company_info.html"%>
+        <%template src="_risk_control.html"%>
+        <%template src="_imgs_info.html"%>
+        <%template src="_repayment_task.html"%>
+        <%template src="_invest_record.html"%>
     </div>
 
     <%set hIndex=1%>
     <div id="sidemenu" class="project-content-right">
         <ul class="list-unstyled notScroll">
-            <li><a href="#project-summary"><span></span>{hIndex++}.项目简介</a></li>
-            <li><a href="#borrower-info"><span></span>{hIndex++}.借款人信息</a></li>
-            <%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
-            <li><a href="#corporate-info"><span></span>{hIndex++}.企业信息</a></li>
-            <%/if%>
-            <li><a href="#risk-control"><span></span>{hIndex++}.风控措施</a></li>
-            <li><a href="#relevant-info"><span></span>{hIndex++}.相关资料</a></li>
-            <%if(projectModel.status>=(int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
-            <li><a href="#repayment-task"><span></span>{hIndex++}.还款计划</a></li>
-            <%/if%>
-            <li><a href="#invest-record"><span></span>{hIndex++}.投资记录</a></li>
         </ul>
     </div>
 </div>

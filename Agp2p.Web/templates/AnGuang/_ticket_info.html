@@ -1,0 +1,10 @@
+﻿<%if(projectModel.dt_article_category.call_index=="ypb")%>
+<div id="ticker-info">
+    <span class="title-mark">{hIndex++}.票据信息</span>
+    <ul class="list-unstyled">
+        <%foreach(var p in GetAllMortgagesInfo(false))%>
+        <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
+        <%/foreach%>
+    </ul>
+</div>
+<%/if%>

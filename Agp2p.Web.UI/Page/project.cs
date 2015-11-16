@@ -265,5 +265,20 @@ namespace Agp2p.Web.UI.Page
             var timeSpanNotNeg = new[] {remainTimeSpan, TimeSpan.Zero}.Max();
             return $"{timeSpanNotNeg.Days}天{timeSpanNotNeg.Hours}时{timeSpanNotNeg.Minutes}分";
         }
+
+        protected IEnumerable<Tuple<string, string>> GetAllMortgagesInfo(bool showValue = true)
+        {
+            return mortgages.SelectMany(m =>
+            {
+                var schemeObj = (JObject) JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
+                var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
+
+                var properties = schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Select(p => new Tuple<string, string>(p.Value.ToString(), kv[p.Key].ToString()));
+                return showValue
+                    ? properties.Concat(new[] {new Tuple<string, string>("市场价值", m.valuation.ToString("c"))}).ToList()
+                    : properties;
+            });
+        } 
     }
 }
