@@ -12,7 +12,6 @@ class DateSpanPicker extends React.Component {
 				<DatePicker onBlur={ev => this.props.onStartTimeChange(ev.target.value)} />
 		        到
 				<DatePicker onBlur={ev => this.props.onEndTimeChange(ev.target.value)} />
-		        <a href="javascript:;">搜 索</a>
 		    </div>
 		);
 	}
