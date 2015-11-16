@@ -4,6 +4,7 @@ import HorizontalPicker from "../components/horizontal-picker.jsx"
 import DateSpanPicker from "../components/date-span-picker.jsx"
 import Table from "../components/repayments-table.jsx"
 import Pagination from "../components/pagination.jsx"
+import "../less/myrepayments.less"
 
 class MyTransaction extends React.Component {
     constructor(props) {
