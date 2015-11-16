@@ -1223,8 +1223,8 @@ namespace Agp2p.Core
                 .Replace("{invest_amount_upper}", "")
                 .Replace("{profit_rate_year}", project.profit_rate_year.ToString())
                 .Replace("{repayment_term_span}", project.repayment_term_span_count + "天")
-                .Replace("{make_loan_date}", project.make_loan_time?.ToString("yyyy年MM月dd天"))
-                .Replace("{complete_date}", project.complete_time?.ToString("yyyy年MM月dd天"))
+                .Replace("{make_loan_date}", project.make_loan_time?.ToString("yyyy年MM月dd日"))
+                .Replace("{complete_date}", project.complete_time?.ToString("yyyy年MM月dd日"))
                 //质押汇票明细
                 .Replace("{bill_no}", "")
                 .Replace("{bill_amount}", "")

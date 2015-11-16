@@ -116,7 +116,6 @@ namespace Agp2p.Web.UI
             return false;
         }
 
-        private const int DefaultPageSize = 50;
         protected int GetPageSize(string pageName)
         {
             int pagesize;
@@ -127,13 +126,13 @@ namespace Agp2p.Web.UI
                     return pagesize;
                 }
             }
-            return DefaultPageSize;
+            return 50;
         }
 
         protected void SetPageSize(string pageName, string pageSizeStr)
         {
             int pagesize;
-            if (int.TryParse(pageSizeStr, out pagesize) && pagesize != DefaultPageSize)
+            if (int.TryParse(pageSizeStr, out pagesize))
             {
                 Utils.WriteCookie(GetType().Name + "_page_size", pageSizeStr, 14400);
             }
