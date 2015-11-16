@@ -146,7 +146,7 @@
                 <div class="grey13px margin-bottom10px hidden">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>   <!--满标人数显示-->
                 <div class="grey13px">到期还本付息</div>
             </div>
-            <div class="invest-btn pull-right">
+            <div class="invest-btn">
                 <%if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                 <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">待发标</button>
                 <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
