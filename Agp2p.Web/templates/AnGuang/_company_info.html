@@ -1,0 +1,22 @@
+﻿<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="yplc")%>
+    <%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
+    <div id="corporate-info">
+        <span class="title-mark">{hIndex++}.企业信息</span>
+        <%if(loaner_company!=null)%>
+        <ul class="list-unstyled">
+            <li><span><span class="specific-location">企业名称</span></span><span class="span-sec">{loaner_company.name}</span></li>
+            <li><span><span class="specific-location">成立时间</span></span><span class="span-sec">{loaner_company.setup_time}</span></li>
+            <li><span><span class="specific-location">注册资本</span></span><span class="span-sec">{loaner_company.registered_capital}</span></li>
+            <li><span><span class="specific-location">净 资 产</span></span><span class="span-sec">{loaner_company.net_assets}</span></li>
+            <li><span><span class="specific-location">经营范围</span></span><span class="span-sec">{loaner_company.business_scope}</span></li>
+            <li><span><span class="specific-location">经营状况</span></span><span class="span-sec">{loaner_company.business_status}</span></li>
+            <li><span><span class="specific-location">涉诉情况</span></span><span class="span-sec">{loaner_company.business_lawsuit}</span></li>
+            <li><span><span class="specific-location">年收入</span></span><span class="span-sec">{loaner_company.income_yearly}</span></li>
+            <li><span><span class="specific-location">备注</span></span><span class="span-sec">{loaner_company.remark}</span></li>
+        </ul>
+        <%else%>
+        <div class="content-null">暂无数据</div>
+        <%/if%>
+    </div>
+    <%/if%>
+<%/if%>

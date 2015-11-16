@@ -6,6 +6,20 @@ import "visualnav";
 
 import header from "./header.js"
 
+let initRightSideNav = () => {
+    let $navContainer = $("#sidemenu > ul");
+    $("div.project-content-left > div").each((index, dom) => {
+        let name = $(dom).find("span.title-mark").text();
+        let $createdDom = $(`<li><a href='#${dom.id}'><span></span>${name}</a></li>`);
+        $navContainer.append($createdDom);
+    });
+    $("#sidemenu").visualNav({
+        selectedClass : "active",
+        selectedAppliedTo : 'a',
+        animationTime     : 600,
+    });
+};
+
 $(function () {
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
@@ -21,11 +35,7 @@ $(function () {
 
     header.setHeaderHighlight(1);
 
-    $("#sidemenu").visualNav({
-        selectedClass : "active",
-        selectedAppliedTo : 'a',
-        animationTime     : 600,
-    });
+    initRightSideNav();
 
     var $displayField = $("#investAmount");
     if ($displayField.length != 0) {

@@ -1,0 +1,31 @@
+﻿<%if(projectModel.status>=(int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
+<div id="repayment-task">
+    <span class="title-mark">{hIndex++}.还款计划</span>
+    <div class="repayment-task">
+        <table class="table table-hover">
+            <thead>
+            <tr><th>期次</th>
+                <th>还款日</th>
+                <th>应还本息（元）</th>
+                <th>应还本金（元）</th>
+                <th>应还利息（元）</th>
+            </tr>
+            </thead>
+            <tbody>
+                <%foreach(var task in repayment_tasks)%>
+                <tr>
+                    <td>{task.term}</td>
+                    <td><%=task.should_repay_time.ToString("yyyy-MM-dd")%></td>
+                    <td><%=string.Format("{0:c}", task.repay_interest+task.repay_principal)%></td>
+                    <td><%=string.Format("{0:c}", task.repay_principal)%></td>
+                    <td><%=string.Format("{0:c}", task.repay_interest)%></td>
+                </tr>
+                <%/foreach%>
+                <%if(repayment_tasks.Count==0)%>
+                    <tr><td align="center" colspan="5">暂无记录</td></tr>
+                <%/if%>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%/if%>

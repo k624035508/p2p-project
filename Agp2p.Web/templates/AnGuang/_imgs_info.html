@@ -1,0 +1,50 @@
+﻿<div id="relevant-info">
+    <span class="title-mark">{hIndex++}.相关资料</span>
+    <%if(_userModel==null)%>
+    <div class="content-null">照片内容需 <a href='<%linkurl("login")%>'>登录</a> 后才能查看</div>
+    <%else if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
+        <div class="content-null">暂无数据</div>
+    <%else%>
+    <div class="row photo-cell">
+        <%foreach(var picture in albums_pictures)%>
+        <div class="col-md-3 col-xs-3">
+            <a href="javascript:;" class="thumbnail thumbnail-custom">
+                <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
+            </a>
+            <div class="photo-title">{picture.remark}</div>
+        </div>
+        <%/foreach%>
+        <%foreach(var picture in albums_credit)%>
+        <div class="col-md-3 col-xs-3">
+            <a href="javascript:;" class="thumbnail thumbnail-custom">
+                <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
+            </a>
+            <div class="photo-title">{picture.remark}</div>
+        </div>
+        <%/foreach%>
+        <%foreach(var picture in albums_mortgage)%>
+        <div class="col-md-3 col-xs-3">
+            <a href="javascript:;" class="thumbnail thumbnail-custom">
+                <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}" data-toggle="modal" data-target="#photoModal" />
+            </a>
+            <div class="photo-title">{picture.remark}</div>
+        </div>
+        <%/foreach%>
+        <div class="modal fade modal-custom" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-custom">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4></h4>
+                    </div>
+                    <div class="modal-body modal-body-custom">
+                        <span class="glyphicon glyphicon-chevron-left control-prev"><!--[if lt IE 8]>《<![endif]--></span>
+                        <img id="modalPic" src="" alt=""/>
+                        <span class="glyphicon glyphicon-chevron-right control-next"><!--[if lt IE 8]>》<![endif]--></span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+    <%/if%>
+</div>
