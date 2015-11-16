@@ -28,7 +28,7 @@
     "bootstrap-webpack": "0.0.5",
     "clipboard": "^1.5.3",
     "css-loader": "^0.22.0",
-    "echarts": "^2.2.7-webpack-2",
+    "echarts": "^2.2.8",
     "es5-shim": "^4.2.0",
     "exports-loader": "^0.6.2",
     "extract-text-webpack-plugin": "^0.9.1",

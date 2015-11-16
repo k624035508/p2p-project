@@ -1,6 +1,6 @@
 import React from "react"
-import echarts from 'echarts/src/echarts'
-import 'echarts/src/chart/pie'
+import echarts from 'echarts'
+import 'echarts/chart/pie'
 import isEqual from "lodash/lang/isEqual"
 
 import "../less/myaccount.less"
