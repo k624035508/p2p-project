@@ -17,6 +17,10 @@ class UserStatus extends React.Component {
 		return (
 			<div className="content-right">
 		        <div className="overview-head">
+		            <div className="head-right pull-right">
+		            	<Link to="/recharge" className="recharge">充 值</Link>
+		            	<Link to="/withdraw" className="withdraw">提 现</Link>
+		            </div>
 		            <div className="head-left">
 		                <p className="username">您好！ {this.props.userName}</p>
 		                <p className="save-level">安全级别 <Link className={"level-icon " + this.props.safeLevel}
@@ -26,10 +30,6 @@ class UserStatus extends React.Component {
 		            <div className="head-center">
 		                <p className="balance">账户余额：<span>{this.props.idleMoney.format(2)}</span></p>
 		                <p className="balance-frozen">冻结金额： <span>{this.props.lockedMoney.format(2)}</span></p>
-		            </div>
-		            <div className="head-right pull-right">
-		            	<Link to="/recharge" className="recharge">充 值</Link>
-		            	<Link to="/withdraw" className="withdraw">提 现</Link>
 		            </div>
 		        </div>
 

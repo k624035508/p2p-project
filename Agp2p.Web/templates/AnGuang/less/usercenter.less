@@ -5,6 +5,7 @@ body { background: @body-color; }
 div.usercenter {
 	& > div {
 		display: inline-block;
+		.ie7-inline-block;
 		vertical-align: top;
 		min-height: 877px;
 	}
@@ -13,6 +14,7 @@ div.usercenter {
 		border: 1px solid @red;
 		width: 230px;
 		margin-right: 15px;
+		*margin-right: 10px;
 		.total-account {
 			height: 180px;
 			background: @red;
@@ -29,6 +31,7 @@ div.usercenter {
 		.outside-ul {
 			a {
 				display: inline-block;
+				.ie7-inline-block;
 				width: 160px;
 				height: 25px;
 				line-height: 25px;
@@ -90,6 +93,7 @@ div.usercenter {
 					color: @dark-grey;
 					.level-icon {
 						display: inline-block;
+						.ie7-inline-block;
 						vertical-align: top;
 						width: 38px;
 						height: 23px;
