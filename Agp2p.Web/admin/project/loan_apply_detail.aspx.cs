@@ -465,7 +465,7 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
                 txt_project_repayment_type.SelectedIndex = 0;
 
-                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank*100).ToString("N1");
+                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank*100).ToString("N2");
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
             }
             else
@@ -482,7 +482,7 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
                 txt_project_repayment_type.SelectedIndex = 0;
                 txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
-                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N2");
+                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N0");
             }
         }
     }

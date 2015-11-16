@@ -25,7 +25,7 @@ namespace Agp2p.Web.admin.settings
             txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N1");
             txt_loan_fee_rate_bank.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
             txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
-            txt_bond_fee_rate_bank.Text = (Costconfig.bond_fee_rate_bank * 100).ToString("N1");
+            txt_bond_fee_rate_bank.Text = (Costconfig.bond_fee_rate_bank * 100).ToString("N2");
             txt_earlier_pay.Text = (Costconfig.earlier_pay*100).ToString("N1");
             txt_overtime_pay.Text = (Costconfig.overtime_pay*100).ToString("N1");
             txt_overtime_cost.Text = (Costconfig.overtime_cost*1000).ToString("N1");
