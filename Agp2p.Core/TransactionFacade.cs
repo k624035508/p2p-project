@@ -655,10 +655,10 @@ namespace Agp2p.Core
 
         public static decimal GetFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
-            if (proj.profit_rate != 0)
+            if (0 < proj.profit_rate)
                 return proj.profit_rate;
 
-            if (proj.dt_article_category.call_index == "ypb")
+            if (proj.dt_article_category.call_index == "ypb" || proj.dt_article_category.call_index == "yplc")
             {
                 var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span;
                 if (projectRepaymentTermSpanEnum != Agp2pEnums.ProjectRepaymentTermSpanEnum.Day)
@@ -667,7 +667,7 @@ namespace Agp2p.Core
                 }
                 return (decimal) proj.profit_rate_year/100/360*proj.repayment_term_span_count;
             }
-            return proj.CalcFinalProfitRate(makeLoanTime);
+            return CalcFinalProfitRate(proj, makeLoanTime);
         }
 
         /// <summary>
@@ -678,7 +678,7 @@ namespace Agp2p.Core
         /// <param name="termSpanEnum"></param>
         /// <param name="termSpanCount"></param>
         /// <returns></returns>
-        private static decimal CalcFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
+        private static decimal CalcFinalProfitRate(li_projects proj, DateTime? makeLoanTime = null)
         {
             var baseTime = proj.make_loan_time ?? makeLoanTime.Value;
             var profitRateYear = (decimal) proj.profit_rate_year / 100; // 年化利率未除以 100

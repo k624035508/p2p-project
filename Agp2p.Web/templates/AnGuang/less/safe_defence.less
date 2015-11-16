@@ -37,7 +37,7 @@ body { background: @body-color; }
 				}
 				.funds { background: url("@{images}/funds-icon.png") no-repeat 0 50%; }
 				.data { background: url("@{images}/data-icon.png") no-repeat 0 50%; }
-				.check { background: url("@{images}/check-icon.png") no-repeat 0 50%; }
+				.project { background: url("@{images}/project-icon.png") no-repeat 0 50%; }
 				.law { background: url("@{images}/law-icon.png") no-repeat 0 50%; }
 			}
 			li:first-child { border-top: none; }
@@ -55,7 +55,7 @@ body { background: @body-color; }
 			border-bottom: @border;
 		}
 		.content-body {
-			padding: 0 22px 30px 22px;
+			padding: 0 25px 30px 25px;
 			.content-cell {
 				border-bottom: @border-dashed;
 				& > * { .inline-block; }
@@ -74,9 +74,13 @@ body { background: @body-color; }
 				.debit-credit { background: url("@{images}/law-02.png") no-repeat center; }
 				.transfer { background: url("@{images}/law-03.png") no-repeat center; }
 				.contract { background: url("@{images}/law-04.png") no-repeat center; }
+				.check { background: url("@{images}/project-01.png") no-repeat center; }
+				.final-check { background: url("@{images}/project-02.png") no-repeat center; }
+				.manage { background: url("@{images}/project-03.png") no-repeat center; }
+				.cooperating-agency { background: url("@{images}/project-04.png") no-repeat center; }
 
 				.description {
-					width: 65%;
+					width: 64%;
 					h4 {
 						color: @darker-grey;
 						margin: 20px 0;
@@ -109,7 +113,7 @@ body { background: @body-color; }
 			}
 			.even-cell i { margin: 0 0 0 19px !important; }
 		}
-		.data-wrap, .law-wrap {
+		.data-wrap, .law-wrap, .project-wrap {
 			display: none;
 			.content-body .content-cell { padding: 20px 0; }
 		}

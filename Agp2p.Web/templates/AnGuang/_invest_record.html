@@ -1,0 +1,23 @@
+﻿<div id="invest-record">
+    <span class="title-mark">{hIndex++}.投标记录</span>
+    <div class="invest-record">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>序号</th><th>用户名</th><th>投标金额</th><th>投标时间</th></tr>
+            </thead>
+            <tbody>
+                <%set var investments=QueryProjectTransactions()%>
+                <%for(int i=0;i<investments.Count;i++)%>
+                <tr><td>{i+1}</td>
+                    <td class="account-style"><%=investments[i].user_name%></td>
+                    <td><%=investments[i].value%></td>
+                    <td><%=investments[i].create_time%></td>
+                </tr>
+                <%/for%>
+                <%if(investments.Count==0)%>
+                    <tr><td align="center" colspan="4">暂无记录</td></tr>
+                <%/if%>
+            </tbody>
+        </table>
+    </div>
+</div>

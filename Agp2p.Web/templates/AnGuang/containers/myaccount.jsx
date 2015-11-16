@@ -125,7 +125,7 @@ class MyAccount extends React.Component {
 							<div className="grey13px">期限</div>
 						</div>
 						<div className="sum">
-							<div className="grey25px margin-bottom10px">{pro.project_amount_str}<span className="grey15px">万</span></div>
+							<div className="grey25px margin-bottom10px">{pro.project_amount_str}<span className="grey15px">元</span></div>
 							<div className="grey13px">借款金额</div>
 						</div>
 						<div className="repayment">

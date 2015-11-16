@@ -15,3 +15,4 @@ packages/
 *applicationhost.config
 node_modules/
 build/
+npm-debug.log

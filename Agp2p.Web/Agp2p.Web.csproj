@@ -699,7 +699,6 @@
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
-    <Content Include="templates\AnGuang\imgs\safe\check-icon.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-01.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-02.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-icon.png" />
@@ -713,6 +712,11 @@
     <Content Include="templates\AnGuang\imgs\safe\law-03.png" />
     <Content Include="templates\AnGuang\imgs\safe\law-04.png" />
     <Content Include="templates\AnGuang\imgs\safe\law-icon.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-01.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-02.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-03.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-04.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-icon.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
@@ -802,9 +806,18 @@
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
+    <Content Include="templates\AnGuang\_invest_record.html" />
+    <Content Include="templates\AnGuang\_repayment_task.html" />
+    <Content Include="templates\AnGuang\_imgs_info.html" />
+    <Content Include="templates\AnGuang\_risk_control.html" />
     <Content Include="templates\AnGuang\_footer.html" />
     <Content Include="templates\AnGuang\_footerSmall.html" />
     <Content Include="templates\AnGuang\_header.html" />
+    <Content Include="templates\AnGuang\_loaner_info.html" />
+    <Content Include="templates\AnGuang\_project_intro.html" />
+    <Content Include="templates\AnGuang\_ticket_info.html" />
+    <Content Include="templates\AnGuang\_company_info.html" />
+    <Content Include="templates\AnGuang\_ticket_intro.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\a4-template.htm" />
     <Content Include="tools\submit_ajax.ashx" />
@@ -875,6 +888,7 @@
     <Content Include="xmlconfig\cost.config" />
     <Content Include="templates\AnGuang\less\article_show.less" />
     <Content Include="templates\AnGuang\less\safe_defence.less" />
+    <Content Include="templates\AnGuang\less\myrepayments.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
