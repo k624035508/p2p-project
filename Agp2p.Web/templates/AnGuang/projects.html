@@ -107,10 +107,10 @@
             </div>
             <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{dr[project_investment_balance]}</span></div>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-            <div class="grey13px margin-bottom10px">已满标，审核中</div>
+            <div class="grey13px margin-bottom10px">已投满，审核中</div>
             <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-            <div class="grey13px margin-bottom10px">已满标，还款中</div>
+            <div class="grey13px margin-bottom10px">已投满，还款中</div>
             <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{dr[project_investment_count]}人</span></div>
             <%/if%>
             <div class="grey13px">到期还本付息</div>
@@ -121,7 +121,7 @@
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
             <button type="button" class="invest-now-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">立即投资</button>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||(int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">募集结束</button>
+            <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">审核中</button>
             <%else if((int)dr["status"]==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
             <button type="button" class="invest-full-btn" onclick="location.href='<%linkurl("project",{dr[id]})%>'">还款中</button>
             <%else if((int)dr["status"]>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>

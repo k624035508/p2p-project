@@ -50,7 +50,7 @@ const ProjectStatusEnum = {
 const ProjectStatusEnumDesc = {
 	10: "待发标",
 	11: "立即投资",
-	21: "募集结束",
+	21: "审核中",
 	30: "还款中",
 	40: "已完成"
 };
