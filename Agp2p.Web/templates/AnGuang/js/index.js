@@ -7,6 +7,8 @@ import "../less/footer.less";
 import header from "./header.js"
 
 $(function () {
+    header.setHeaderHighlight(0);
+
     // 返回顶部浮窗隐藏与出现
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
@@ -17,5 +19,15 @@ $(function () {
         }
     });
 
-    header.setHeaderHighlight(0);
+    //计算器初始化
+    $('[data-toggle="popover"]').popover();
+
+    window.calculate = function () {
+        var money = $("#money").val();
+        var rate = $("#rate").val();
+        var time = $("#time").val();
+        var profit = money * rate / 100 / 12 * time;
+        $("#profit").html(profit);
+    }
+
 });
