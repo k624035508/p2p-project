@@ -26,6 +26,14 @@ $(function(){
         $(".data-wrap").show();
     });
 
+    $(".project").click(function(){
+        $nav.removeClass("clicked");
+        $(this).parent().addClass("clicked");
+
+        $rightContent.hide();
+        $(".project-wrap").show();
+    });
+
     $(".law").click(function(){
         $nav.removeClass("clicked");
         $(this).parent().addClass("clicked");

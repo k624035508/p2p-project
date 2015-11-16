@@ -110,7 +110,6 @@ class InvitationPage extends React.Component {
                     <a className="tencentWeibo"
                         target="_blank"
                         href={`http://share.v.t.qq.com/index.php?c=share&a=index&title=${this.genEncodedTitle() + this.genEncodedDescription()}&url=${this.genSharingLink()}&pic=${this.getLocationOrigin() + this.genPicUrl()}`} />
-                    <a className="more" />
                 </div>
                 <div id="sharejs"></div>
                 <div className="invited-th"><span>已邀请的好友</span></div>
