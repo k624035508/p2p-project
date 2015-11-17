@@ -7,6 +7,8 @@ using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Core
 {
@@ -1022,6 +1024,16 @@ namespace Agp2p.Core
             return callback(pro.investment_amount, pro.financing_amount);
         }
 
+        public static string GetInvestmentProgressPercent(this li_projects pro)
+        {
+            return pro.GetInvestmentProgress((a, b) => (a/b).ToString("p1"));
+        }
+
+        public static string GetInvestmentBalance(this li_projects pro)
+        {
+            return pro.GetInvestmentProgress((a, b) => (b - a).ToString("n0")) + "元";
+        }
+
         /// <summary>
         /// 获取投资人数
         /// </summary>
@@ -1230,6 +1242,22 @@ namespace Agp2p.Core
                 .Replace("{bill_amount}", "")
                 .Replace("{bill_end_date}", "")
                 .Replace("{bill_bank}", "");
+        }
+
+        public static string GetTicketConversionBank(this li_projects proj)
+        {
+            if (proj.dt_article_category.call_index == "ypb")
+            {
+                return proj.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).Select(m =>
+                {
+                    var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
+                    var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
+                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑行")
+                        .Select(p => kv[p.Key].ToString()).Single();
+                    return bankName;
+                }).FirstOrDefault() ?? "";
+            }
+            return "";
         }
     }
 }

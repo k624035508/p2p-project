@@ -71,7 +71,7 @@
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum)Utils.StrToInt(Eval("status").ToString(), 0))%></td>             
                     <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
                     <td><%#Eval("contract_no")%></td>
-                    <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
+                    <td><%#Eval("dt_article_category.title")%></td>
                     <td><%#GetTagString(Eval("tag"))%></td>
                     <td><%#Eval("click")%></td>
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
