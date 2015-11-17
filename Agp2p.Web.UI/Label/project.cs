@@ -16,7 +16,7 @@ namespace Agp2p.Web.UI
         public int id { get; set; }
         public string img_url { get; set; }
         public string no { get; set; }
-        public int profit_rate_year { get; set; }
+        public decimal profit_rate_year { get; set; }
         public string project_amount_str { get; set; }
         public string project_investment_balance { get; set; }
         public int project_investment_count { get; set; }

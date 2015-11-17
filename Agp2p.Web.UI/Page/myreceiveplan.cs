@@ -30,7 +30,7 @@ namespace Agp2p.Web.UI.Page
         public class MyInvestProject
         {
             public string Name { get; set; }
-            public int ProfitRateYear { get; set; }
+            public decimal ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
         }
 

@@ -81,7 +81,7 @@
                     <td><%#Eval("RepayTime")%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) Convert.ToInt16(Eval("RepayStatus")))%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("Category"))]%></td>
-                    <td><%#Eval("ProfitRate")%></td>
+                    <td><%#string.Format("{0:0.0}", Eval("ProfitRate"))%></td>
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
                         <% if (rblStatus.SelectedValue == "0")

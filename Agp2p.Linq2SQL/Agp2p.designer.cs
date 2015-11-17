@@ -13726,7 +13726,7 @@ namespace Agp2p.Linq2SQL
 		
 		private System.Nullable<int> _tag;
 		
-		private int _profit_rate_year;
+		private decimal _profit_rate_year;
 		
 		private decimal _profit_rate;
 		
@@ -13802,7 +13802,7 @@ namespace Agp2p.Linq2SQL
     partial void OnstatusChanged();
     partial void OntagChanging(System.Nullable<int> value);
     partial void OntagChanged();
-    partial void Onprofit_rate_yearChanging(int value);
+    partial void Onprofit_rate_yearChanging(decimal value);
     partial void Onprofit_rate_yearChanged();
     partial void Onprofit_rateChanging(decimal value);
     partial void Onprofit_rateChanged();
@@ -14133,8 +14133,8 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_profit_rate_year", DbType="Int NOT NULL")]
-		public int profit_rate_year
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_profit_rate_year", DbType="Decimal(5,3) NOT NULL")]
+		public decimal profit_rate_year
 		{
 			get
 			{

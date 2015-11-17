@@ -617,7 +617,7 @@
       <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="tag" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="profit_rate_year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="profit_rate_year" Type="System.Decimal" DbType="Decimal(5,3) NOT NULL" CanBeNull="false" />
       <Column Name="profit_rate" Type="System.Decimal" DbType="Decimal(9,9) NOT NULL" CanBeNull="false" />
       <Column Name="repayment_term_span" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="repayment_term_span_count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

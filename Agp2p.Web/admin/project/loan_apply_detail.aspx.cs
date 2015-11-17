@@ -142,7 +142,7 @@ namespace Agp2p.Web.admin.project
             txt_project_repayment_number.Text = _project.repayment_term_span_count.ToString();//借款期限
             txt_project_repayment_term.SelectedValue = _project.repayment_term_span.ToString();//借款期限单位
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
-            txt_project_profit_rate.Text = _project.profit_rate_year.ToString();//年化利率
+            txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N1");//年化利率
             txtAddTime.Text = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             txt_bond_fee_rate.Text = _project.bond_fee_rate.ToString();
             txt_loan_fee_rate.Text = _project.loan_fee_rate.ToString();
@@ -239,7 +239,7 @@ namespace Agp2p.Web.admin.project
             project.repayment_term_span_count = Utils.StrToInt(txt_project_repayment_number.Text.Trim(), 0);
             project.repayment_term_span = Utils.StrToInt(txt_project_repayment_term.SelectedValue, 20);
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
-            project.profit_rate_year = Utils.StrToInt(txt_project_profit_rate.Text.Trim(), 0);
+            project.profit_rate_year = Utils.StrToDecimal(txt_project_profit_rate.Text.Trim(), 0);
             project.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0);
             project.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0);
             project.contract_no = txt_contact_no.Text.Trim();

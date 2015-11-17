@@ -71,7 +71,7 @@
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("Category"))]%></td>
-                    <td><%#Eval("ProfitRate")%></td>
+                    <td><%#string.Format("{0:0.0}", Eval("ProfitRate"))%></td>
                     <td><%#Eval("RepaymentType")%></td>
                 </tr>
             </ItemTemplate>

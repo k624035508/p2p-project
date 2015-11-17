@@ -172,7 +172,7 @@ namespace Agp2p.Web.admin.repayment
             public string ShouldPayTime { get; set; }//应兑付时间
             public string PayTime { get; set; }//实兑付时间
             public int Category { get; set; }//产品
-            public int ProfitRate { get; set; }//年化利率
+            public decimal ProfitRate { get; set; }//年化利率
             public string RepaymentType { get; set; }//年化利率
             public int ProjectStatus { get; set; }//项目状态
             public int RepayStatus { get; set; }//还款状态

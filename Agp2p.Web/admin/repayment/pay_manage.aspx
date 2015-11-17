@@ -82,7 +82,7 @@
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) Convert.ToInt16(Eval("RepayStatus")))%></td>
                     <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("Category"))]%></td>
-                    <td><%#Eval("ProfitRate")%></td>
+                    <td><%#string.Format("{0:0.0}", Eval("ProfitRate"))%></td>
                     <td><%#Eval("RepaymentType")%></td>
                 </tr>
             </ItemTemplate>
