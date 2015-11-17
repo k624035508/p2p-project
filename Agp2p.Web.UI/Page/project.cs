@@ -279,6 +279,6 @@ namespace Agp2p.Web.UI.Page
                     ? properties.Concat(new[] {new Tuple<string, string>("市场价值", m.valuation.ToString("c"))}).ToList()
                     : properties;
             });
-        } 
+        }
     }
 }
