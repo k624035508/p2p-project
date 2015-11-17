@@ -102,19 +102,19 @@ namespace Agp2p.Web.admin.project
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
-            spa_amount.InnerText = _project.financing_amount.ToString();//借款金额            
+            spa_amount.InnerText = _project.financing_amount.ToString("C");//借款金额            
             spa_repayment.InnerText = _project.repayment_term_span_count +
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
-            spa_profit_rate.InnerText = _project.profit_rate_year.ToString();//年化利率
+            spa_profit_rate.InnerText = _project.profit_rate_year.ToString("N1");//年化利率
             if (_project.tag != null)
                 spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum)_project.tag);
             spa_financing_day.InnerText = _project.financing_day.ToString();
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
             spa_make_loan_time.InnerText = _project.make_loan_time?.ToString("yyyy-MM-dd HH:mm:ss");//放款时间
-            spa_bond_fee.InnerText = _project.bond_fee_rate.ToString();
-            spa_loan_fee.InnerText = _project.loan_fee_rate.ToString();
+            spa_bond_fee.InnerText = _project.bond_fee_rate?.ToString("N2");
+            spa_loan_fee.InnerText = _project.loan_fee_rate?.ToString("N2");
             spa_contact_no.InnerText = _project.contract_no;
 
             ShowRiskInfo(_project);
