@@ -812,6 +812,7 @@
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
     <Content Include="templates\AnGuang\safe_defence.html" />
+    <Content Include="templates\AnGuang\404.html" />
     <Content Include="templates\AnGuang\sitemap.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
