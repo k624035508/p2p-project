@@ -206,13 +206,14 @@ namespace Agp2p.Web.UI
         }
         #endregion
 
-        protected IEnumerable<dt_article> GetArticles(int categoryId, int pageSize, int pageIndex, out int totalCount)
+        protected IEnumerable<dt_article> GetArticles(string categoryIds, int pageSize, int pageIndex, out int totalCount)
         {
             var context = new Agp2pDataContext();
-            var queryable = context.dt_article.Where(a => a.category_id == categoryId);
+            var categoryIdArr = categoryIds.Split(',').Select(str => Convert.ToInt32(str)).ToArray();
+            var queryable = context.dt_article.Where(a => categoryIdArr.Contains(a.category_id));
             totalCount = queryable.Count();
             return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time)
-                .Skip(pageSize*pageIndex)
+                .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .AsEnumerable();
         }
