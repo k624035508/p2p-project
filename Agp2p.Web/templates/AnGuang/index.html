@@ -91,7 +91,7 @@
                 <p>坚持中介本质</p>
             </div>
         </li>
-        <li><a href='<%linkurl("safe_defence")%>' class="bank-icon"></a>
+        <li><a href='<%linkurl("safe_defence")%>' class="acceptance-icon"></a>
             <div>
                 <p>银行承兑</p>
                 <p>低风险、短期高收益</p>
@@ -116,7 +116,7 @@
             <span class="invest-style-tab"><%=p.dt_article_category.title%></span>
             <%if(p.dt_article_category.call_index=="ypb")%>
             <span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>
-            <span class="pull-right">承兑行：<%=p.GetTicketConversionBank()%></span>
+            <span class="pull-right acceptance-bank"><i></i>承兑行：<%=p.GetTicketConversionBank()%></span>
             <%else%>
             <span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>
             <%/if%>
