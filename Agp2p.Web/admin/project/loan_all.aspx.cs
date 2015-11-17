@@ -23,7 +23,6 @@ namespace Agp2p.Web.admin.project
         protected string Keywords = string.Empty;
 
         private Agp2pDataContext context = new Agp2pDataContext();
-        protected Dictionary<int, string> CategoryIdTitleMap;
             
 
         protected void Page_Load(object sender, EventArgs e)
@@ -39,7 +38,6 @@ namespace Agp2p.Web.admin.project
                 return;
             }
             this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); //取得频道名称
-            CategoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -56,7 +54,8 @@ namespace Agp2p.Web.admin.project
             //产品
             this.ddlCategoryId.Items.Clear();
             this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
-            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
+            var categoryIdTitleMap = context.dt_article_category.Where(c => c.channel_id == this.ChannelId).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
+            this.ddlCategoryId.Items.AddRange(categoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
 
             //状态
             this.ddlStatus.Items.Clear();

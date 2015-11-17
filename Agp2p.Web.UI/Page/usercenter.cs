@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Script.Services;
 using System.Web.Services;
+using Agp2p.Core;
 using Newtonsoft.Json;
 
 namespace Agp2p.Web.UI.Page
@@ -292,10 +293,40 @@ namespace Agp2p.Web.UI.Page
             var config = new BLL.siteconfig().loadConfig();
             var data = QueryProjects(pageSize, pageIndex, out totalCount).Select(p =>
             {
+                var pr = GetProjectInvestmentProgress(p);
+                return new ProjectDetail
+                {
+                    id = p.id,
+                    img_url = GetProjectImageUrl(p.img_url, p.category_id),
+                    no = p.no,
+                    title = p.title,
+                    status = p.status,
+                    sort_id = p.sort_id,
+                    repayment_type = p.repayment_type,
+                    repayment_term = p.GetProjectTermSpanEnumDesc(),
+                    repayment_number = p.repayment_term_span_count,
+                    profit_rate_year = p.profit_rate_year,
+                    category_id = p.category_id,
+                    categoryTitle = p.dt_article_category.title,
+                    categoryCallIndex = p.dt_article_category.call_index,
+                    amount = p.financing_amount,
+                    add_time = p.publish_time ?? p.add_time,
+                    publish_time = p.publish_time,
+                    tag = p.tag.GetValueOrDefault(),
+                    //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
+                    //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
+                    project_amount_str = p.financing_amount.ToString("n0"), //项目金额字符
+                    project_investment_progress = pr.GetInvestmentProgress(), //项目进度
+                    project_investment_balance = pr.GetInvestmentBalance(), //项目投资剩余金额
+                    project_investment_count = p.GetInvestedUserCount(), //项目投资人数
+                    conversionBank = p.GetTicketConversionBank() // 承兑行
+                };
+            }).Select(p =>
+            {
                 p.linkurl = linkurl(config, "project", p.id);
                 return p;
             });
-            return JsonConvert.SerializeObject(new {totalCount, data});
+            return JsonConvert.SerializeObject(new { totalCount, data });
         }
 
         [WebMethod(CacheDuration = 600)]
