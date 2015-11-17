@@ -666,8 +666,9 @@
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
-    <Content Include="templates\AnGuang\imgs\index\bank-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
     <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
@@ -688,15 +689,15 @@
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
+    <Content Include="templates\AnGuang\imgs\register\login-bg.png" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />
     <Content Include="templates\AnGuang\imgs\register\piccodeTest.png" />
     <Content Include="templates\AnGuang\imgs\register\psw.png" />
     <Content Include="templates\AnGuang\imgs\register\recommended.png" />
-    <Content Include="templates\AnGuang\imgs\register\red-bag-login.png" />
-    <Content Include="templates\AnGuang\imgs\register\red-bag.png" />
     <Content Include="templates\AnGuang\imgs\register\red-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
+    <Content Include="templates\AnGuang\imgs\register\register-bg.png" />
     <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-01.png" />
@@ -717,6 +718,12 @@
     <Content Include="templates\AnGuang\imgs\safe\project-03.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-04.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-icon.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\aboutus.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\help.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\index.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\invest.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\others.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\safe.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
@@ -782,7 +789,9 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\article_list.js" />
+    <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
+    <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -803,6 +812,7 @@
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
     <Content Include="templates\AnGuang\safe_defence.html" />
+    <Content Include="templates\AnGuang\sitemap.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
@@ -889,6 +899,7 @@
     <Content Include="templates\AnGuang\less\article_show.less" />
     <Content Include="templates\AnGuang\less\safe_defence.less" />
     <Content Include="templates\AnGuang\less\myrepayments.less" />
+    <Content Include="templates\AnGuang\less\sitemap.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
