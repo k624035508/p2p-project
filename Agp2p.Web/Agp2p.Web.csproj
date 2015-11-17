@@ -717,6 +717,12 @@
     <Content Include="templates\AnGuang\imgs\safe\project-03.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-04.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-icon.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\aboutus.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\help.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\index.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\invest.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\others.png" />
+    <Content Include="templates\AnGuang\imgs\sitemap\safe.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
@@ -782,7 +788,9 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\article_list.js" />
+    <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
+    <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -803,6 +811,7 @@
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
     <Content Include="templates\AnGuang\safe_defence.html" />
+    <Content Include="templates\AnGuang\sitemap.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
@@ -889,6 +898,7 @@
     <Content Include="templates\AnGuang\less\article_show.less" />
     <Content Include="templates\AnGuang\less\safe_defence.less" />
     <Content Include="templates\AnGuang\less\myrepayments.less" />
+    <Content Include="templates\AnGuang\less\sitemap.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
