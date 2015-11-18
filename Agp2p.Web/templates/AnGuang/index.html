@@ -145,19 +145,15 @@
                 <div class="grey13px">借款金额</div>
             </div>
             <div class="repayment">
-                <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                 <div class="progress progress-custom">
                     <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{p.GetInvestmentProgressPercent()}"
                          aria-valuemin="0" aria-valuemax="100" style="width: {p.GetInvestmentProgressPercent()}%">
                         <span class="sr-only">{p.GetInvestmentProgressPercent()}% Complete</span>
                     </div>
                 </div>
+                <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                 <div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{p.GetInvestmentBalance()}</span></div>
-                <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                <div class="grey13px margin-bottom10px">已投满，审核中</div>
-                <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{p.GetInvestedUserCount()}人</span></div>
-                <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                <div class="grey13px margin-bottom10px">已投满，还款中</div>
+                <%else %>
                 <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{p.GetInvestedUserCount()}人</span></div>
                 <%/if%>
                 <div class="grey13px">到期还本付息</div>
