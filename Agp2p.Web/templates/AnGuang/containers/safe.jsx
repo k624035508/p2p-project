@@ -8,6 +8,8 @@ import { post, getJSON } from "jquery"
 import "../less/safe.less"
 
 
+let emptyIfNull = str => str == null ? "" : str;
+
 class UserInfoEditor extends React.Component {
 	constructor(props) {
 		super(props);
@@ -65,7 +67,7 @@ class UserInfoEditor extends React.Component {
 						<li><span>所在城市：</span>{ this.state.editing
 							? <CityPicker defaultValue={this.props.area.split(",")}
 								onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
-							: this.props.area.replace(/,/g, "")}</li>
+							: emptyIfNull(this.props.area).replace(/,/g, "")}</li>
 					</ul>
 				</div>
 				{ this.state.modified ? <div className="btn-wrap"><a href="javascript:;" onClick={ev => this.saveUserInfo()}
