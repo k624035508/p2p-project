@@ -149,19 +149,22 @@ $(function(){
             alert("两次输入的密码不一致");
             return;
         }
+        var verifyCode = $(".register-box").data("needSmsVerify") ? $("#sms-code").val() : $("#pic-code").val();
         $.ajax({
             url: "/tools/submit_ajax.ashx?action=user_register",
             type: "post",
             dataType: "json",
             data: {
-                txtSMSCode: $("#sms-code").val(),
+                txtVerifyCode: verifyCode,
                 txtMobile: $("#account").val(),
                 txtPassword: txtPw1,
                 txtInviteCode: $("#recommended").val()
             },
             success: function(data){
                 alert(data.msg);
-                location.href="/";
+                if (data.status == 1) {
+                    location.href="/";
+                }
             },
             error: function(data){
                 alert("操作超时，请重试");

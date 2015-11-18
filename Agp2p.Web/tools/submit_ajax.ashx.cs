@@ -319,11 +319,11 @@ namespace Agp2p.Web.tools
         #region 用户注册OK=====================================
         private void user_register(HttpContext context)
         {
-            string code = DTRequest.GetFormString("txtSMSCode").Trim();
+            string code = DTRequest.GetFormString("txtVerifyCode").Trim();
             string invitecode = DTRequest.GetFormString("txtInviteCode").Trim();
             string inviteNo = DTRequest.GetFormString("txtInviteNo").Trim();
-            string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : 
-                Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
+            //string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
+            string username = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string password = DTRequest.GetFormString("txtPassword").Trim();
             //string password1 = DTRequest.GetFormString("txtPassword1").Trim();
             string email = Utils.ToHtml(DTRequest.GetFormString("txtEmail").Trim());
