@@ -1,6 +1,7 @@
 import React from "react";
 import citylist from "../js/city.min.js";
-import indexOf  from "lodash/array/indexOf"
+import indexOf  from "lodash/array/indexOf";
+import isEqual  from "lodash/lang/isEqual";
 
 class CityPicker extends React.Component {
     constructor(props) {
@@ -36,7 +37,9 @@ class CityPicker extends React.Component {
         return state;
     }
     componentWillReceiveProps(nextProps) {
-        this.setState(this.genStateByValue(nextProps.value));
+        if (!isEqual(this.props.value, nextProps.value)) {
+            this.setState(this.genStateByValue(nextProps.value));
+        }
     }
     onProvinceSelected(selectedIndex) {
         var newState = {
