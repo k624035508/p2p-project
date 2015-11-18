@@ -29,7 +29,7 @@ namespace Agp2p.Web.UI.Page
         protected int project_status_index; // 项目状态
 
         protected Dictionary<int, string> CategoryIdTitleMap =
-            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
+            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id)
                 .ToDictionary(c => c.id, c => c.title);
 
         /// <summary>

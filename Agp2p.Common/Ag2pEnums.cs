@@ -451,14 +451,12 @@ namespace Agp2p.Common
         {
             [Description("全部")]
             All = 0,
-            [Description("13%")]
-            ProfitRate_13 = 13,
-            [Description("14%")]
-            ProfitRate_14 = 14,
-            [Description("15%")]
-            ProfitRate_15 = 15,
-            [Description("16%")]
-            ProfitRate_16 = 16
+            [Description("6%以下")]
+            LessThanSix = 1,
+            [Description("6-10%")]
+            SixToTen = 2,
+            [Description("10-15%")]
+            TenToFifteen = 3,
         }
 
         /// <summary>
@@ -468,14 +466,12 @@ namespace Agp2p.Common
         {
             [Description("全部")]
             All = 0,
-            [Description("1个月")]
-            OneMonth = 1,
-            [Description("2个月")]
-            TwoMonth = 2,
-            [Description("3个月")]
-            ThreeMonth = 3,
-            [Description("其他")]
-            Others = 4
+            [Description("1个月以下")]
+            LessThanOneMonth = 1,
+            [Description("1-3个月")]
+            OneToThreeMonth = 2,
+            [Description("3-6个月")]
+            ThreeToSixMonth = 3,
         }
 
         /// <summary>
