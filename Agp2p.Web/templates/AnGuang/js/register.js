@@ -3,22 +3,24 @@ import "../less/head.less";
 import "../less/register.less";
 import "../less/footerSmall.less";
 
-$(function(){
+
+$(function() {
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);
     if (matchInvitationUrl) {
         $("#recommended").val(matchInvitationUrl[1]).attr("disabled", "disabled");
     }
+
     // 手机号码格式判断
-    $("#account").blur(function(){
+    $("#account").blur(function() {
         var regex = /\d{11}/;
         var phone = $("#account").val();
         var $status = $("#account").next();
-        if(regex.test(phone)){
+        if (regex.test(phone)) {
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
             $status.text("");
-        } else{
+        } else {
             $status.removeClass("right-tips");
             $status.addClass("error-tips");
             $status.text("请输入正确的手机号码");
@@ -30,7 +32,7 @@ $(function(){
         var num = $("#psw").val().length;
         var $status = $("#psw").next();
         $status.removeClass("psw-tips");
-        if(5 < num && num < 17){
+        if(5 < num && num < 17) {
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
             $status.text("");
@@ -42,19 +44,19 @@ $(function(){
     });
 
     //确认密码格式判断
-    $("#psw2").blur(function(){
+    $("#psw2").blur(function() {
         var psw = $("#psw").val();
         var psw2 = $("#psw2").val();
         var $status = $("#psw2").next();
-        if (psw2 == ""){
+        if (psw2 == "") {
             $status.removeClass("right-tips");
             $status.addClass("error-tips");
             $status.text("请输入6~16位密码");
-        } else if(psw2 == psw){
+        } else if (psw2 == psw) {
             $status.removeClass("error-tips");
             $status.addClass("right-tips");
             $status.text("");
-        }else {
+        } else {
             $status.removeClass("right-tips");
             $status.addClass("error-tips");
             $status.text("两次输入的密码不一致");
@@ -64,15 +66,18 @@ $(function(){
     // 刷新图文验证码
     var $picCode = $(".pic-code-wrap img");
     var originSrc = $picCode[0].getAttribute("src");
-    $picCode.click(function(){
-        this.setAttribute("src", originSrc + "?r=" + Math.random());
-    });
+    let refreshPicVerifyCode = () => {
+        $picCode[0].setAttribute("src", originSrc + "?r=" + Math.random());
+        $("#pic-code").val("");
+        $("#sms-code").val("");
+    }
+    $picCode.click(refreshPicVerifyCode);
 
     //图文验证码格式判断
-    $("#pic-code").blur(function(){
+    $("#pic-code").blur(function() {
         var picCode = $("#pic-code").val().length;
         var $status = $("#pic-code").siblings(".status");
-        if(picCode == 0) {
+        if (picCode == 0) {
             $status.addClass("error-tips");
             $status.text("请输入图片上的验证码");
         } else {
@@ -82,13 +87,13 @@ $(function(){
     });
 
     //短信验证码格式判断
-    $("#sms-code").blur(function(){
+    $("#sms-code").blur(function() {
         var smsCode = $("#sms-code").val().length;
         var $status = $("#sms-code").siblings(".status");
-        if(smsCode == 0){
+        if (smsCode == 0) {
             $status.addClass("error-tips");
             $status.text("请输入短信验证码");
-        }else {
+        } else {
             $status.removeClass("error-tips");
             $status.text("");
         }
@@ -109,7 +114,7 @@ $(function(){
             }
         }, 1000);
     };
-    $sendSmsCodeBtn.click(function(){
+    $sendSmsCodeBtn.click(function() {
         //判断图文验证码是否为空
         var picCode = $("#pic-code").val();
         if (picCode.length == 0) {
@@ -126,10 +131,12 @@ $(function(){
                     txtPicCode: picCode
                 },
                 success: function (data) {
+                    alert(data.msg);
                     if (data.status == 1) {
                         intervalControlLogic();
+                    } else {
+                    	refreshPicVerifyCode();
                     }
-                    alert(data.msg);
                 },
                 error: function (data) {
                     alert("操作超时，请重试");
@@ -139,7 +146,7 @@ $(function(){
     });
 
     // 注册
-    $("#registerBtn").click(function(){
+    $("#registerBtn").click(function() {
         if (!$("input[type=checkbox]")[0].checked) {
             alert("请先同意注册协议");
             return;
@@ -160,13 +167,15 @@ $(function(){
                 txtPassword: txtPw1,
                 txtInviteCode: $("#recommended").val()
             },
-            success: function(data){
+            success: function(data) {
                 alert(data.msg);
                 if (data.status == 1) {
                     location.href="/";
+                } else {
+                	refreshPicVerifyCode();
                 }
             },
-            error: function(data){
+            error: function(data) {
                 alert("操作超时，请重试");
             }
         });
