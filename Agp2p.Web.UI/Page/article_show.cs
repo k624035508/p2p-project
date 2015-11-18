@@ -13,6 +13,7 @@ namespace Agp2p.Web.UI.Page
     {
         protected int id;
         protected int category_id;
+        protected string categoryTitle;
         protected string page = string.Empty;
         protected Model.article model = new Model.article();
         protected dt_article_attribute_value article_attr = new dt_article_attribute_value();
@@ -22,12 +23,13 @@ namespace Agp2p.Web.UI.Page
         /// </summary>
         protected override void ShowPage()
         {
+            var dbContext = new Agp2pDataContext();
             id = DTRequest.GetQueryInt("id");
             category_id = DTRequest.GetQueryInt("category_id");
             page = DTRequest.GetQueryString("page");
             BLL.article bll = new BLL.article();
 
-            if (id > 0) //如果ID获取到，将使用ID
+            if (0 < id) //如果ID获取到，将使用ID
             {
                 if (!bll.Exists(id))
                 {
@@ -49,8 +51,9 @@ namespace Agp2p.Web.UI.Page
             {
                 return;
             }
+            categoryTitle = dbContext.dt_article_category.Single(c => c.id == model.category_id).title;
 
-            article_attr = new Agp2pDataContext().dt_article_attribute_value.FirstOrDefault(u => u.article_id == model.id);
+            article_attr = dbContext.dt_article_attribute_value.FirstOrDefault(u => u.article_id == model.id);
             if (article_attr == null)
             {
                 HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
