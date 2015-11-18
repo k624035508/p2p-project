@@ -669,8 +669,10 @@
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
     <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\funds-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\funds.png" />
@@ -788,6 +790,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
+    <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
@@ -901,6 +904,7 @@
     <Content Include="templates\AnGuang\less\safe_defence.less" />
     <Content Include="templates\AnGuang\less\myrepayments.less" />
     <Content Include="templates\AnGuang\less\sitemap.less" />
+    <Content Include="templates\AnGuang\less\404.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
