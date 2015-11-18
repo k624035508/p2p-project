@@ -65,7 +65,7 @@ class UserInfoEditor extends React.Component {
 							: this.props.birthday }</li>
 						<li><span>QQ 号码：</span>{ this.genInputBox("qq") }</li>
 						<li><span>所在城市：</span>{ this.state.editing
-							? <CityPicker defaultValue={emptyIfNull(this.props.area).split(",")}
+							? <CityPicker value={emptyIfNull(this.props.area).split(",")}
 								onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
 							: emptyIfNull(this.props.area).replace(/,/g, "")}</li>
 					</ul>

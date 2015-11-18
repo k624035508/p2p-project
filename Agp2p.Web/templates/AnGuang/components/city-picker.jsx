@@ -5,7 +5,7 @@ import indexOf  from "lodash/array/indexOf"
 class CityPicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = this.genStateByValue(props.defaultValue);
+        this.state = this.genStateByValue(props.defaultValue || props.value);
     }
     genStateByValue(val) {
         var state = {
