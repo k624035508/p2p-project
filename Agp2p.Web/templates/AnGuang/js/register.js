@@ -13,7 +13,7 @@ $(function() {
 
     // 手机号码格式判断
     $("#account").blur(function() {
-        var regex = /\d{11}/;
+        var regex = /^\d{11}$/;
         var phone = $("#account").val();
         var $status = $("#account").next();
         if (regex.test(phone)) {
@@ -155,6 +155,9 @@ $(function() {
         if (txtPw1 != txtPw2) {
             alert("两次输入的密码不一致");
             return;
+        } else if ($(".error-tips").length != 0) {
+        	alert("请先填写好表单");
+        	return;
         }
         var verifyCode = $(".register-box").data("needSmsVerify") ? $("#sms-code").val() : $("#pic-code").val();
         $.ajax({
