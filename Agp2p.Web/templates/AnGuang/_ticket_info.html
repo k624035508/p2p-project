@@ -4,7 +4,7 @@
     <ul class="list-unstyled">
         <%foreach(var p in GetAllMortgagesInfo(false))%>
         <%if(p.Item1!="票据号码")%>
-        <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
+        <li><span><%=p.Item1%></span><span class="span-sec"><%=p.Item2%></span></li>
         <%/if%>
         <%/foreach%>
     </ul>

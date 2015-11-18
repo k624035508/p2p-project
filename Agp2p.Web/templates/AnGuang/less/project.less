@@ -349,13 +349,13 @@ div.project-content-wrap {
 		& > div > ul {
 			margin: @content-margin;
 			li {
-				margin: 15px 0;
+				margin: 20px 0;
 				span {
 					display: inline-block;
 					vertical-align: top;
 				}
 				& > span:first-child {
-					width: 65px;
+					width: 75px;
 					color: @grey;
 					text-align: right;
 					margin-right: 40px;
@@ -366,14 +366,8 @@ div.project-content-wrap {
 				}
 			}
 		}
-        .specific-location {
-            display: inline-block;
-            width: 75px;
-            text-align: right;
-        }
-
-		.personal-info {
-			margin: @content-margin;
+		#borrower-info .personal-info {
+			margin: 35px 53px;
 			& > ul {
 				.inline-block;
 				float: left;
@@ -396,6 +390,14 @@ div.project-content-wrap {
 					margin-top: 0;
 				}
 			}
+		}
+		#risk-control {
+			.content-th {
+				margin-top: 35px;
+				padding-left: 40px;
+				font-weight: bold;
+			}
+			.risk-control-content { margin: 0 38px 35px 38px; }
 		}
         .risk-control-content .span-sec *{ color: @darker-grey; }
 		#relevant-info .content-null {
