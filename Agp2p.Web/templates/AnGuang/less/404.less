@@ -1,0 +1,36 @@
+@import "common-style";
+
+body { background: @body-color; }
+
+.page404 {
+	height: 675px;
+	margin-top: 25px !important;
+	border: @border;
+	background: @white;
+	.page-bg {
+		height: 460px;
+		background: url("../imgs/index/bg404.png") no-repeat center;
+	}
+	p { text-align: center; }
+	.tips {
+		color: #0a508d;
+		font-size: @font30;
+		font-weight: bold;
+	}
+	.control-btn {
+		margin-top: 25px;
+		a {
+			color: @blue;
+			font-size: @font13;
+			text-decoration: none;
+			margin: 0 10px;
+			i {
+				display: inline-block;
+				width: 10px;
+				height: 11px;
+				margin-right: 5px;
+				background: url("../imgs/index/back.png");
+			}
+		}
+	}
+}

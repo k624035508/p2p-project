@@ -10,13 +10,19 @@
     <script src="<%templateskin%>/node_modules/respond.js/dest/respond.min.js"></script>
     <![endif]-->
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/404.bundle.js"></script>
 </head>
 <body>
 <!--head-->
 <%template src="_header.html"%>
 <!--head end-->
 
-404
+<div class="content-wrap page404">
+    <div class="page-bg"></div>
+    <p class="tips">非常抱歉，你访问的页面回火星了......</p>
+    <p class="tips">我们正在努力找回</p>
+    <p class="control-btn"><a href="/"><i></i>返回首页</a><a href="#"><i></i>返回上一页</a></p>
+</div>
 
 <!--footer-->
 <%template src="_footerSmall.html"%>
