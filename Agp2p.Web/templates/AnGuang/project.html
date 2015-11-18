@@ -60,7 +60,7 @@
             <div class="account-balance">
                 <div><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
                 <input type="text" placeholder="请输入投资金额" id="investAmount-input"/>
-                <button type="button" class="btn-common investing-btn" data-has-pay-password="{has_pay_password()}"
+                <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}"
                         data-idle-money="{idle_money}" data-profit-rate='<%=projectModel.GetFinalProfitRate(DateTime.Now)%>' data-project-id="{projectModel.id}">投 资</button>
             </div>
             <!-- Modal -->
@@ -88,6 +88,12 @@
                             <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>
                             <button type="button" class="confirm-btn">确 认</button>
                         </div>
+                        <%if(!HasBindedEmail())%>
+                        <p>为了您能正常收到投资协议，请到 <a href='<%=linkurl("usercenter","index")%>#safe' target="_blank">个人中心</a> 绑定邮箱</p>
+                        <%/if%>
+                        <%if(!HasBindedIdCard())%>
+                        <p>为了您的合法利益，请到 <a href='<%=linkurl("usercenter","index")%>#safe' target="_blank">个人中心</a> 进行实名认证</p>
+                        <%/if%>
                     </div>
                 </div>
             </div>
