@@ -26,8 +26,9 @@ $(function () {
         var money = $("#money").val();
         var rate = $("#rate").val();
         var time = $("#time").val();
-        var profit = money * rate / 100 / 12 * time;
-        $("#profit").html(profit);
+        var profit = money * rate / 100 / 365 * time;
+        var forProfit = profit.toFixed(2);
+        $("#profit").html(forProfit);
     }
 
 });
