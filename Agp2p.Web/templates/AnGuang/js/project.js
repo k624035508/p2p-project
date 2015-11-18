@@ -49,7 +49,10 @@ $(function () {
         $investBtn.click(function () {
             var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
             if (!hasPayPassword) {
-                alert("请到安全中心设置交易密码");
+                if (confirm("您需要先设置交易密码，是否现在转到‘安全中心’？")) {
+                    var link = $("ul.dropdown-menu-custom a").last().attr("href");
+                    location.href = link;
+                }
                 return;
             }
             var investAmount = parseFloat($investAmountInput.val());
