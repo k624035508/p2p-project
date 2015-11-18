@@ -81,11 +81,11 @@ namespace Agp2p.Web.admin.loaner
                 CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
                 if (cb.Checked)
                 {
-                    var preDel = context.li_creditors.FirstOrDefault(q => q.user_id == id);
+                    var preDel = context.li_loaner_companies.FirstOrDefault(q => q.id == id);
                     if (preDel != null)
                     {
                         sucCount += 1;
-                        context.li_creditors.DeleteOnSubmit(preDel);
+                        context.li_loaner_companies.DeleteOnSubmit(preDel);
                     }
                     else errorCount += 1;
                 }

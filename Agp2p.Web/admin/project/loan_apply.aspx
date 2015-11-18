@@ -64,6 +64,7 @@
                         <th align="left" width="8%">年化利率(%)</th>
                         <th align="left" width="8%">还款方式</th>                        
                         <th align="left" width="10%">申请时间</th>
+                        <th align="left" width="8%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -82,7 +83,7 @@
                     <td><%#string.Format("{0:0.0}", Eval("profit_rate_year"))%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
-                    
+                    <td><a href="../../aspx/main/project.aspx?project_id=<%#Eval("id")%>" target="_blank">预览</a></td>              
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
