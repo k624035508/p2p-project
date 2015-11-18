@@ -90,29 +90,42 @@ namespace Agp2p.Web.UI
                     //.Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
             if (0 < categoryId)
                 query = query.Where(p => p.category_id == categoryId);
+
             //项目筛选暂写死逻辑在此
             if (0 < profitRateIndex)//年化利率条件
             {
-                query = query.Where(p => p.profit_rate_year == profitRateIndex);
+                switch ((Agp2pEnums.InterestRateTypeEnum)profitRateIndex)
+                {
+                    case Agp2pEnums.InterestRateTypeEnum.LessThanSix:
+                        query = query.Where(p => p.profit_rate_year < 6);
+                        break;
+                    case Agp2pEnums.InterestRateTypeEnum.SixToTen:
+                        query = query.Where(p => 6 <= p.profit_rate_year && p.profit_rate_year < 10);
+                        break;
+                    case Agp2pEnums.InterestRateTypeEnum.TenToFifteen:
+                        query = query.Where(p => 10 <= p.profit_rate_year && p.profit_rate_year <= 15);
+                        break;
+                }
             }
+
             if (0 < repaymentIndex)//借款期限条件
             {
                 switch ((Agp2pEnums.RepaymentTermEnum)repaymentIndex)
                 {
-                    case Agp2pEnums.RepaymentTermEnum.OneMonth:
-                        query = query.Where(p => p.repayment_term_span_count == 1 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
+                    case Agp2pEnums.RepaymentTermEnum.LessThanOneMonth:
+                        query = query.Where(p => p.repayment_term_span_count < 30 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
                         break;
-                    case Agp2pEnums.RepaymentTermEnum.TwoMonth:
-                        query = query.Where(p => p.repayment_term_span_count == 2 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
+                    case Agp2pEnums.RepaymentTermEnum.OneToThreeMonth:
+                        query = query.Where(p => p.repayment_term_span_count <= 1 && p.repayment_term_span_count < 3 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month
+                            || 30 <= p.repayment_term_span_count && p.repayment_term_span_count < 30 * 3 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
                         break;
-                    case Agp2pEnums.RepaymentTermEnum.ThreeMonth:
-                        query = query.Where(p => p.repayment_term_span_count == 3 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
-                        break;
-                    case Agp2pEnums.RepaymentTermEnum.Others:
-                        query = query.Where(p => 3 < p.repayment_term_span_count && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month);
+                    case Agp2pEnums.RepaymentTermEnum.ThreeToSixMonth:
+                        query = query.Where(p => p.repayment_term_span_count <= 3 && p.repayment_term_span_count <= 6 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month
+                            || 30 * 3 <= p.repayment_term_span_count && p.repayment_term_span_count <= 30 * 6 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
                         break;
                 }
             }
+
             if (0 < statusIndex)// 状态条件
             {
                 switch ((Agp2pEnums.ProjectStatusQueryTypeEnum) statusIndex)
