@@ -2,7 +2,7 @@
     <div id="risk-control">
         <span class="title-mark">{hIndex++}.保障措施</span>
         <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
-        <div>{risk.risk_content}</div>
+        <div class="content-th">{risk.risk_content}</div>
         <%/if%>
         <ul class="list-unstyled risk-control-content">
         <%foreach(var p in GetAllMortgagesInfo())%>
