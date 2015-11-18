@@ -61,7 +61,9 @@
                 <div><a href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
                 <input type="text" placeholder="请输入投资金额" id="investAmount-input"/>
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}"
-                        data-idle-money="{idle_money}" data-profit-rate='<%=projectModel.GetFinalProfitRate(DateTime.Now)%>' data-project-id="{projectModel.id}">投 资</button>
+                        data-idle-money="{idle_money}"
+                        data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
+                        data-project-id="{projectModel.id}">投 资</button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
