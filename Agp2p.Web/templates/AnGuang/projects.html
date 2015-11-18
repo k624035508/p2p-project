@@ -75,7 +75,7 @@
         <span class="invest-style-tab"><%=p.dt_article_category.title%></span>
         <%if(p.dt_article_category.call_index=="ypb")%>
         <span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>
-        <span class="pull-right">承兑行：<%=p.GetTicketConversionBank()%></span>
+        <span class="pull-right acceptance-bank"><i></i>承兑行：<%=p.GetTicketConversionBank()%></span>
         <%else%>
         <span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>
         <%/if%>
