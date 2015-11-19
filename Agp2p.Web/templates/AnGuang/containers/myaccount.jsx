@@ -110,7 +110,7 @@ class MyAccount extends React.Component {
 				<div className="invest-cell invest-cell-custom" key={pro.id}>
 					<div className="invest-title-wrap">
 						{pro.categoryCallIndex!="ypb" ? null:
-						<span className="pull-right acceptance-bank"><i></i>承兑行：{pro.conversionBank}</span>}
+						<span className="pull-right acceptance-bank"><i></i>承兑银行：{pro.conversionBank}</span>}
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
 						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
 						{(pro.tag & ProjectTagEnum.Recommend) == 0 ? null : <span className="invest-list-icon jian-icon"></span>}

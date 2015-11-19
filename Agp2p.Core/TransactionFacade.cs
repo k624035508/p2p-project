@@ -1251,7 +1251,7 @@ namespace Agp2p.Core
                 {
                     var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
                     var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
-                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑行")
+                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑银行")
                         .Select(p => kv[p.Key].ToString()).SingleOrDefault();
                     return bankName;
                 }).FirstOrDefault() ?? "";
