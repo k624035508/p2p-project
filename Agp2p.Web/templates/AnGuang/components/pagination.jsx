@@ -68,7 +68,7 @@ class Pagination extends React.Component {
 
     	let isFirstPage = pageIndex == 0, isLastPage = pageCount == 0 || pageIndex == pageCount - 1;
     	return (
-    		<nav>
+    		<div className="nav">
 	    		<ul className="pagination">
 		    		<li className={isFirstPage ? "disabled" : ""} key="prev">
 		    			<a href="javascript:;" aria-label="Previous" onClick={isFirstPage ? null : () => this.props.onPageSelected(pageIndex-1)}>
@@ -82,7 +82,7 @@ class Pagination extends React.Component {
 	    				</a>
     				</li>
 	    		</ul>
-			</nav>
+			</div>
 		);
     }
 }
