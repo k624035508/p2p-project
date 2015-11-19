@@ -24,7 +24,7 @@ class Pagination extends React.Component {
     render() {
     	let {pageIndex, pageCount, keepShow} = this.props;
     	if (!pageCount) {
-    		return <nav />;
+    		return null;
     	}
 
     	let init = range(pageCount).map(i => ({index: i, omit: true}));
