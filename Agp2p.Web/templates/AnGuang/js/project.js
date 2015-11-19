@@ -35,8 +35,6 @@ $(function () {
 
     header.setHeaderHighlight(1);
 
-    initRightSideNav();
-
     var $displayField = $("#investAmount");
     if ($displayField.length != 0) {
         var $investAmountInput = $("#investAmount-input");
@@ -154,4 +152,6 @@ $(function () {
             $modalTitle.html(photoTitle);
         }
     });
+
+    initRightSideNav();
 });
