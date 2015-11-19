@@ -33,15 +33,15 @@
                 <i class="index-icon"></i>
                 <div class="index-links">
                     <h3>安广融合</h3>
-                    <p><a href="#">首页</a><a href="#">注册</a><a href="#">登录</a></p>
-                    <p><a href="#">会员中心</a></p>
+                    <p><a href="/" target="_blank">首页</a><a href='<%linkurl("register")%>' target="_blank">注册</a><a href='<%linkurl("login")%>' target="_blank">登录</a></p>
+                    <p><a href='<%linkurl("usercenter","index")%>' target="_blank">会员中心</a></p>
                 </div>
             </div>
             <div class="right-part">
                 <i class="invest-icon"></i>
                 <div class="invest-links">
                     <h3>我要理财</h3>
-                    <p><a href="#">投资项目列表</a></p>
+                    <p><a href='<%linkurl("projects")%>' target="_blank">投资项目列表</a></p>
                 </div>
             </div>
         </div>
@@ -69,16 +69,16 @@
                 <i class="aboutus-icon"></i>
                 <div class="aboutus-links">
                     <h3>关于我们</h3>
-                    <p><a href="#">公司介绍</a><a href="#">产品介绍</a><a href="#">网站公告</a></p>
-                    <p><a href="#">公司动态</a><a href="#">媒体报道</a><a href="#">加入我们</a></p>
-                    <p><a href="#">合作伙伴</a><a href="#">联系我们</a></p>
+                    <p><a href='<%=linkurl("about")%>?tab=0' target="_blank">公司简介</a><a href='<%=linkurl("about")%>?tab=1' target="_blank">产品介绍</a><a href='<%=linkurl("article_list","43,54")%>' target="_blank">网站公告</a></p>
+                    <p><a href='<%=linkurl("article_list",42)%>' target="_blank">公司动态</a><a href='<%=linkurl("article_list",44)%>' target="_blank">媒体报道</a><a href='<%=linkurl("about")%>?tab=5' target="_blank">加入我们</a></p>
+                    <p><a href='<%=linkurl("about")%>?tab=6' target="_blank">合作伙伴</a><a href='<%=linkurl("about")%>?tab=7' target="_blank">联系我们</a></p>
                 </div>
             </div>
             <div class="right-part">
                 <i class="others-icon"></i>
                 <div class="others-links">
                     <h3>其他</h3>
-                    <p><a href="#">在线客服</a><a href="#">收益计算</a></p>
+                    <p><a href="/" target="_blank">在线客服</a><a href="/" target="_blank">收益计算</a></p>
                 </div>
             </div>
         </div>
