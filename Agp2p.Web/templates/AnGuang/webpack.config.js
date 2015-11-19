@@ -17,6 +17,7 @@ module.exports = {
         safe_defence: "./js/safe_defence.js",
         sitemap: "./js/sitemap.js",
         404: "./js/404.js",
+        agreement: "./js/agreement.js",
         // including bootstrap, react
         usercenter: "./js/usercenter.jsx",
         forgot_password: "./js/forgot_password.js",
@@ -30,7 +31,7 @@ module.exports = {
         // CommonsChunkPlugin 能将公共的模块抽出到单独的 js，再由页面单独引用。参考 https://webpack.github.io/docs/optimization.html
         new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password"]),
         new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", "login",
-            "register", "project", "projects", "aboutus", "article_show","article_list","safe_defence","sitemap"]),
+            "register", "project", "projects", "aboutus", "article_show","article_list","safe_defence","sitemap","404"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

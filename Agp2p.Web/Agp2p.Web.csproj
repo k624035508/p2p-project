@@ -791,6 +791,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
+    <Content Include="templates\AnGuang\js\agreement.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
@@ -812,6 +813,7 @@
     <Content Include="templates\AnGuang\login.html" />
     <Content Include="templates\AnGuang\pwatch.bat" />
     <Content Include="templates\AnGuang\reducers\usercenter.js" />
+    <Content Include="templates\AnGuang\register-agreement.html" />
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
     <Content Include="templates\AnGuang\safe_defence.html" />
@@ -905,6 +907,7 @@
     <Content Include="templates\AnGuang\less\myrepayments.less" />
     <Content Include="templates\AnGuang\less\sitemap.less" />
     <Content Include="templates\AnGuang\less\404.less" />
+    <Content Include="templates\AnGuang\less\register-agreement.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
