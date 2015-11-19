@@ -48,6 +48,7 @@ class TransactionTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
+                    {this.state.data.length != 0 ? null : <tr><td colSpan="7">暂无数据</td></tr>}
                     { this.state.data.map(tr => 
                         <tr className="detailRow" key={tr.RepaymentId}>
                             <td>{tr.Project == null ? "" : tr.Project.Name}</td>

@@ -52,7 +52,8 @@ class MyLottery extends React.Component {
                 <div className="lottery-content">
                 	{this.state.selectedTabIndex < 2 &&
                     <div className="lottery-list">
-                    	{this.state.data.map(l => 
+                        {this.state.data.length != 0 ? null : <div>暂无奖券</div>}
+                    	{this.state.data.map(l =>
                         <div className={l.status == LotteryStatusEnum.Acting ? "lottery-usable" : "lottery-fail"}>
                             <div className="lottery-face">
                                 <p className="lottery-value">￥{l.value}</p>
@@ -75,6 +76,7 @@ class MyLottery extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
+                                {this.state.data.length != 0 ? null : <tr><td colSpan="5" style={{textAlign: "center"}}>暂无奖券</td></tr>}
                             	{this.state.data.map(l => 
                                 <tr>
                                     <td>{"￥" + l.value}</td>
