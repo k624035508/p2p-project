@@ -442,7 +442,7 @@ class ResetTransactPassword extends React.Component {
 					<span className="list-th">交易密码</span>
 					<span className="list-tips">从平台账户提现时需要输入的密码。</span>
 					<span className="pull-right"><a href="javascript:" style={this.props.hasTransactPassword ? null : {color: "red"}}
-						onClick={ev => this.setState({settingTransactionPassword: true})}>{this.props.hasTransactPassword ? "设置" : "重新设置"}</a></span>
+						onClick={ev => this.setState({settingTransactionPassword: true})}>{this.props.hasTransactPassword ? "重新设置" : "设置"}</a></span>
 				</div>
 				{!this.state.settingTransactionPassword ? null :
 				<div className="setting-wrap" id="pswTrade-setting">
@@ -452,13 +452,13 @@ class ResetTransactPassword extends React.Component {
 						<span className="glyphicon glyphicon-remove pull-right cancel-btn" onClick={ev => this.setState({settingTransactionPassword: false})}></span>
 					</div>
 					<div className="settings">
+						{!this.props.hasTransactPassword ? null :
 						<div className="form-group old-psw-trade">
 							<label htmlFor="pswTrade">原交易密码：</label>
 							<input type="password" id="pswTrade" onBlur={ev => this.setState({originalTransactPassword: ev.target.value})}
-								disabled={!this.props.hasTransactPassword} placeholder={!this.props.hasTransactPassword ? "（未设置）" : ""} />
-							<a href="javascript:" style={!this.props.hasTransactPassword ? {visibility: "hidden"} : null }
-								onClick={ev => this.forgotTransactPassword()}>忘记密码？</a>
-						</div>
+								disabled={!this.props.hasTransactPassword} />
+							<a href="javascript:" onClick={ev => this.forgotTransactPassword()}>忘记密码？</a>
+						</div>}
 						<div className="form-group">
 							<label htmlFor="pswTrade-new">新交易密码：</label>
 							<input type="password" id="pswTrade-new" onBlur={ev => this.setState({newTransactPassword: ev.target.value})} />

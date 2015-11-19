@@ -31,7 +31,7 @@ class BankAccount extends React.Component {
                 <div className="cards-list-th"><span>银行卡列表</span></div>
                 <div className="cards-list-wrap">
                 <ul className="list-unstyled list-inline">
-                {this.props.cards.length != 0 ? null : <div>暂无银行卡</div>}
+                {this.props.cards.length != 0 ? null : <li>暂无银行卡</li>}
                 {this.props.cards.map((c, index) => 
                 	<li className={"card " + classMapping[c.bankName]} key={c.cardId}
                 		onClick={ev => this.onCardClicked(index)}
