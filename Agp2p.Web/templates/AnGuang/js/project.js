@@ -51,7 +51,7 @@ $(function () {
             var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
             if (!hasPayPassword) {
                 if (confirm("您需要先设置交易密码，是否现在转到‘安全中心’？")) {
-                    var link = $("ul.dropdown-menu-custom a").last().attr("href");
+                    var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 }
                 return;
