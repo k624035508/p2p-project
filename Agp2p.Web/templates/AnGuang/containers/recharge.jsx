@@ -26,7 +26,10 @@ class RechargePage extends React.Component {
 				    <span><i>*</i>充值金额：</span>
 				    <input type="text"/>
 				</div>
-				<div className="rechargeBtn"><a href="javascript:">确认充值</a></div>
+				<div className="rechargeBtn">
+                <input type="hidden" id="user_id" name="user_id" value="{userModel.id}" />
+                <input type="hidden" id="bankcode" name="bankcode" value="ICBC" />
+                <a href="{config.webpath}api/payment/ecpss/index.aspx" target="_blank">确认充值</a></div>
 				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
 				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
