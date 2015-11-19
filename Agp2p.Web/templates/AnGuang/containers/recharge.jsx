@@ -1,13 +1,27 @@
 ﻿import React from "react"
 import { classMapping } from "../js/bank-list.jsx";
 import keys from "lodash/object/keys"
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
 import "../less/recharge.less"
 
 class RechargePage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { selectedBankId: "" };
+		this.state = { selectedBankId: "", chargingAmount: "" };
+	}
+	componentDidMount () {
+		$("#waitforPaymentDialog").on("hide.bs.modal", ev => {
+			this.props.dispatch(fetchWalletAndUserInfo());
+		});
+	}
+	doCharge() {
+		var amount = parseFloat(this.state.chargingAmount || "0");
+		if (amount <= 0) {
+			alert("请输入正确的金额");
+			return;
+		}
+		$("#waitforPaymentDialog").modal('show');
 	}
 	render() { //我要充值 内容
 		return (
@@ -17,27 +31,51 @@ class RechargePage extends React.Component {
 					{keys(classMapping).map(k => {
 						return (
 							<li id={classMapping[k]} key={classMapping[k]} onClick={ev => this.setState({selectedBankId: classMapping[k]})}>
-							{this.state.selectedBankId == classMapping[k] ? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png"} /> : null}
+							{this.state.selectedBankId == classMapping[k]
+								? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png"} />
+								: null}
 							</li>);
 					})}
 				</ul>
-				<div className="balance-recharge"><span>账户余额：</span>￥0.00</div>
+				<div className="balance-recharge"><span>账户余额：</span>￥{this.props.idleMoney}</div>
 				<div className="amount-recharge">
 				    <span><i>*</i>充值金额：</span>
-				    <input type="text"/>
+				    <input type="text" value={this.state.chargingAmount} onChange={ev => this.setState({chargingAmount: ev.target.value})}/>
 				</div>
 				<div className="rechargeBtn">
-                <input type="hidden" id="user_id" name="user_id" value="{userModel.id}" />
-                <input type="hidden" id="bankcode" name="bankcode" value="ICBC" />
-                <a href="{config.webpath}api/payment/ecpss/index.aspx" target="_blank">确认充值</a></div>
+                <a onClick={ev => this.doCharge()}>确认充值</a></div>
 				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
 				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
 				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
 				    <p>3. 如果充值金额没有及时到账，请拨打客服电话：400-8989-089。</p>
 				</div>
+				<div className="modal fade" id="waitforPaymentDialog" tabIndex="-1" role="dialog" aria-labelledby="waitforPaymentDialogLabel">
+				  <div className="modal-dialog" role="document">
+				    <div className="modal-content">
+				      <div className="modal-header">
+				        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 className="modal-title" id="waitforPaymentDialogLabel">请您在新打开的网上银行页面上完成付款</h4>
+				      </div>
+				      <div className="modal-body">
+                            <p>付款完成前请不要关闭此窗口</p>
+                            <p>完成付款后请根据您的情况点击下面的按钮</p>
+				      </div>
+				      <div className="modal-footer">
+				        <button type="button" className="btn btn-default" data-dismiss="modal">付款遇到问题</button>
+				        <button type="button" className="btn btn-primary" data-dismiss="modal">已完成付款</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 			</div>
 		);
 	}
 }
-export default RechargePage;
+
+function mapStateToProps(state) {
+	return {idleMoney: state.walletInfo.idleMoney };
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(RechargePage);
