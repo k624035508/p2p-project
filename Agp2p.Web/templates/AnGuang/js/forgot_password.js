@@ -111,7 +111,7 @@ class ResetPasswordPage extends React.Component {
 			        </div>}
 			    </div>
 			    <div className="help-info">
-			        验证过程如有其他问题，请致电客服：400-8989-089 <span className="service-time">服务时间：工作日 8:30—18:00</span>
+			        验证过程如有其他问题，请致电客服：400-8878-200 <span className="service-time">服务时间：工作日 8:30—18:00</span>
 			    </div>
 			</div>
 		);

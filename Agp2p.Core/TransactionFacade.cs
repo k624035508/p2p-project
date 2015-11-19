@@ -1209,12 +1209,13 @@ namespace Agp2p.Core
             return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) proj.status);
         }
 
-        public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templateUrl)
+        public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templatePath)
         {
             var project = investment.li_projects;
             //获得投资协议模板（暂时为票据，TODO 其他产品的投资协议）
-            var a4Template = File.ReadAllText(templateUrl);
+            var a4Template = File.ReadAllText(templatePath);
             //替换模板内容
+            var lastRepaymentTask = project.li_repayment_tasks.LastOrDefault(t => t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid);
             return a4Template.Replace("{title}", project.title + " 票据质押借款协议")
                 .Replace("{contract_no}", investment.agree_no)
                 //甲方(借款人)信息
@@ -1223,27 +1224,32 @@ namespace Agp2p.Core
                         ? project.li_risks.li_loaners.li_loaner_companies.name
                         : "")
                 .Replace("{user_name_loaner}", project.li_risks.li_loaners.dt_users.real_name)
+                .Replace("{business_license}", "")
+                .Replace("{organization_certificate}", "")
+
                 //乙方(投资人)信息
                 .Replace("{user_real_name_invester}", investment.dt_users.real_name)
                 .Replace("{user_name_invester}", investment.dt_users.user_name)
                 .Replace("{id_card_invester}", investment.dt_users.id_card_number)
+
                 //借款明细
                 .Replace("{loan_amount}", project.financing_amount.ToString("N0"))
-                .Replace("{loan_amount_upper}", "")
+                .Replace("{loan_amount_upper}", project.financing_amount.ToRmbUpper())
                 .Replace("{invest_amount}", investment.principal.ToString("N0"))
-                .Replace("{invest_amount_upper}", "")
-                .Replace("{profit_rate_year}", project.profit_rate_year.ToString())
+                .Replace("{invest_amount_upper}", investment.principal.ToRmbUpper())
+                .Replace("{profit_rate_year}", (project.profit_rate_year/100).ToString("p2"))
                 .Replace("{repayment_term_span}", project.repayment_term_span_count + "天")
                 .Replace("{make_loan_date}", project.make_loan_time?.ToString("yyyy年MM月dd日"))
-                .Replace("{complete_date}", project.complete_time?.ToString("yyyy年MM月dd日"))
+                .Replace("{complete_date}", lastRepaymentTask?.should_repay_time.ToString("yyyy年MM月dd日") ?? "")
+
                 //质押汇票明细
-                .Replace("{bill_no}", "")
-                .Replace("{bill_amount}", "")
-                .Replace("{bill_end_date}", "")
-                .Replace("{bill_bank}", "");
+                .Replace("{bill_no}", project.GetMortgageInfo("no"))
+                .Replace("{bill_amount}", project.GetMortgageInfo("amount"))
+                .Replace("{bill_end_date}", project.GetMortgageInfo("end_time"))
+                .Replace("{bill_bank}", project.GetMortgageInfo("bank"));
         }
 
-        public static string GetTicketConversionBank(this li_projects proj)
+        public static string GetMortgageInfo(this li_projects proj, string propertyKey)
         {
             if (proj.dt_article_category.call_index == "ypb")
             {
@@ -1251,7 +1257,7 @@ namespace Agp2p.Core
                 {
                     var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
                     var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
-                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑银行")
+                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Key.ToString() == propertyKey)
                         .Select(p => kv[p.Key].ToString()).SingleOrDefault();
                     return bankName;
                 }).FirstOrDefault() ?? "";

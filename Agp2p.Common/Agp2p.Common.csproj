@@ -76,6 +76,7 @@
     <Compile Include="PagingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regexlib.cs" />
+    <Compile Include="RmbUpperConverter.cs" />
     <Compile Include="SerializationHelper.cs" />
     <Compile Include="Thumbnail.cs" />
     <Compile Include="TinyMessenger.cs" />
