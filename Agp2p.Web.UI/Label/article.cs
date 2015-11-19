@@ -206,6 +206,18 @@ namespace Agp2p.Web.UI
         }
         #endregion
 
+        protected IEnumerable<dt_article> GetArticles(int categoryId, int pageSize, int pageIndex = 0)
+        {
+            int count;
+            return GetArticles("" + categoryId, pageSize, pageIndex, out count);
+        }
+
+        protected IEnumerable<dt_article> GetArticles(string categoryIds, int pageSize, int pageIndex = 0)
+        {
+            int count;
+            return GetArticles(categoryIds, pageSize, pageIndex, out count);
+        }
+
         protected IEnumerable<dt_article> GetArticles(string categoryIds, int pageSize, int pageIndex, out int totalCount)
         {
             var context = new Agp2pDataContext();
