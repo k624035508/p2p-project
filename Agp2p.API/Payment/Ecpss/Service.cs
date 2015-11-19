@@ -45,7 +45,7 @@ namespace Agp2p.API.Payment.Ecpss
         /// <param name="strMethod">提交方式。两个值可选：post、get</param>
         /// <param name="strButtonValue">确认按钮显示文字</param>
         /// <returns>提交表单HTML文本</returns>
-        public string BuildFormHtml(string _no_order, string _dt_order, string _order_money, string _pay_id)
+        public string BuildFormHtml(string _no_order, string _dt_order, string _order_money, string _bank_code)
         {
             StringBuilder sbHtml = new StringBuilder();
 
@@ -56,7 +56,7 @@ namespace Agp2p.API.Payment.Ecpss
             sParaTemp.Add("ReturnURL", _return_url);//支付结果主动通知地址
             sParaTemp.Add("AdviceURL", _notify_url);//支付结果异步通知回调地址
             sParaTemp.Add("orderTime", _dt_order);//订单日期
-            sParaTemp.Add("defaultBankNumber", _pay_id);//银行代码
+            sParaTemp.Add("defaultBankNumber", _bank_code);//银行代码
             sParaTemp.Add("products", "在线充值");//产品名称         
             sParaTemp.Add("Remark", "");//备注
             //交易签名

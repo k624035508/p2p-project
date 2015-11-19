@@ -2456,7 +2456,31 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                var investment = dbContext.li_project_transactions.SingleOrDefault(t => t.id == id && t.investor == user.id);
+                li_project_transactions investment;
+                if (id == 0)
+                {
+                    int projectId = DTRequest.GetQueryInt("projectId", 0);
+                    decimal investAmount = DTRequest.GetQueryDecimal("investAmount", 0);
+                    var proj = dbContext.li_projects.Single(p => p.id == projectId);
+
+                    // 生成一个临时的交易记录来显示投资协议
+                    investment = new li_project_transactions
+                    {
+                        create_time = DateTime.Now,
+                        agree_no = "（投资后生成）",
+                        li_projects = proj,
+                        dt_users = user,
+                        principal = investAmount,
+                        interest = Math.Round(proj.GetFinalProfitRate(DateTime.Now)*investAmount, 2),
+                        status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Pending,
+                        type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
+                    };
+                }
+                else
+                {
+                    investment = dbContext.li_project_transactions.SingleOrDefault(t => t.id == id && t.investor == user.id);
+                }
+
                 if (investment == null)
                 {
                     httpContext.Response.StatusCode = (int) HttpStatusCode.NotFound;

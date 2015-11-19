@@ -4,10 +4,10 @@ namespace Agp2p.API.Payment.Ecpss
 {
     public class Config
     {
-        //网银在线商户编号
-        public static string partner = "24419";
-        //网银在线MD5校验码
-        public static string key = "!i^GySRo";
+        //汇潮商户编号
+        public static string partner = "29013";
+        //汇潮MD5校验码
+        public static string key = "^HFL[g)k";
         //显示支付通知页面
         public static string return_url = "https://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/ecpss/return_url.aspx";
 

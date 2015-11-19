@@ -49,19 +49,18 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
                         <th width="4%">序号</th>
-                        <th align="left" width="15%">标题</th>
+                        <th align="left" width="13%">标题</th>
                         <th align="left" width="5%">状态</th>    
                         <th align="left" width="10%">借款人</th>
-                        <th align="left" width="12%">借款编号</th>
+                        <th align="left" width="10%">借款编号</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="5%">标识</th>
                         <th align="left" width="5%">浏览次数</th>
                         <th align="left" width="10%">借款金额(元)</th>                        
                         <th align="left" width="8%">借款期限</th>
                         <th align="left" width="8%">年化利率(%)</th>
-                        <th align="left" width="8%">还款方式</th>      
+                        <th align="left" width="8%">还款方式</th>     
                         <th align="left" width="10%">申请时间</th>
-
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -77,8 +76,8 @@
                     <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
                     <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
                     <td><%#string.Format("{0:0.0}", Eval("profit_rate_year"))%></td>
-                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                           
-                    <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>           
+                    <td><%#string.Format("{0:g}",Eval("add_time"))%></td>                    
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

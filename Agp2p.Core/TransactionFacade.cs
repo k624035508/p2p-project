@@ -1209,8 +1209,7 @@ namespace Agp2p.Core
             return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) proj.status);
         }
 
-        public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment,
-            string templateUrl)
+        public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templateUrl)
         {
             var project = investment.li_projects;
             //获得投资协议模板（暂时为票据，TODO 其他产品的投资协议）
@@ -1252,7 +1251,7 @@ namespace Agp2p.Core
                 {
                     var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
                     var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
-                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑行")
+                    var bankName = schemeObj.Cast<KeyValuePair<string, JToken>>().Where(p => p.Value.ToString() == "承兑银行")
                         .Select(p => kv[p.Key].ToString()).SingleOrDefault();
                     return bankName;
                 }).FirstOrDefault() ?? "";

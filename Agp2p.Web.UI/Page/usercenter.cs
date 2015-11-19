@@ -319,7 +319,7 @@ namespace Agp2p.Web.UI.Page
                     project_investment_progress = pr.GetInvestmentProgress(), //项目进度
                     project_investment_balance = pr.GetInvestmentBalance(), //项目投资剩余金额
                     project_investment_count = p.GetInvestedUserCount(), //项目投资人数
-                    conversionBank = p.GetTicketConversionBank() // 承兑行
+                    conversionBank = p.GetTicketConversionBank() // 承兑银行
                 };
             }).Select(p =>
             {
@@ -424,7 +424,6 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             var histories = userInfo.li_wallet_histories.ToList();
-            if (!histories.Any()) return "[]";
 
             Func<li_wallet_histories, decimal> selector;
             switch ((Agp2pEnums.ChartQueryEnum)type)
@@ -451,14 +450,13 @@ namespace Agp2p.Web.UI.Page
                     throw new Exception("不支持的类型");
             }
 
-            var oldest = histories.First();
-            var newest = histories.Last();
+            var newestHistoryCreateTime = histories.Any() ? histories.Last().create_time : DateTime.Now;
 
             // 生成时间间隔
-            var timeSpan = GenMountlyTimeSpan(new [] {oldest.create_time, newest.create_time.AddYears(-1)}.Min(), newest.create_time).ToList();
+            var timeSpans = GenMountlyTimeSpan(newestHistoryCreateTime.AddYears(-1), newestHistoryCreateTime).ToList();
 
             // 查询数据
-            var totalInvestments = timeSpan.Select(s =>
+            var totalInvestments = timeSpans.Select(s =>
             {
                 return
                     histories.Where(h => s.Item2 <= h.create_time && h.create_time < s.Item3)
@@ -468,7 +466,7 @@ namespace Agp2p.Web.UI.Page
 
             // [{'2015年1月':0},{'2月':100}]
             return
-                JsonConvert.SerializeObject(timeSpan.Zip(totalInvestments, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
+                JsonConvert.SerializeObject(timeSpans.Zip(totalInvestments, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
         }
 
     }

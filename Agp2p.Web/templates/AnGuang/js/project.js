@@ -46,11 +46,12 @@ $(function () {
 
         // 打开投资对话框
         var $investBtn = $("button.investing-btn");
+        var projectId = $investBtn.data()["projectId"];
         $investBtn.click(function () {
             var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
             if (!hasPayPassword) {
                 if (confirm("您需要先设置交易密码，是否现在转到‘安全中心’？")) {
-                    var link = $("ul.dropdown-menu-custom a").last().attr("href");
+                    var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 }
                 return;
@@ -73,6 +74,10 @@ $(function () {
             var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
             $("span.profit").text(profit.toFixed(2) + " 元");
             $("#investConfirm").modal();
+
+            // 设置投资协议的链接
+            $("#show-invest-contract").attr("href",
+                `/tools/submit_ajax.ashx?action=generate_user_invest_contract&projectId=${projectId}&investAmount=${investAmount}`);
         });
 
         // 进行投资操作
@@ -91,7 +96,7 @@ $(function () {
         		type: "post",
         		dataType: "json",
         		url: "/tools/submit_ajax.ashx?action=invest_project",
-        		data: {investingAmount: investAmount, projectId: $investBtn.data()["projectId"], transactPassword: transactPassword},
+        		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
         		timeout: 10000,
         		success: function(result) {
         			alert(result.msg);

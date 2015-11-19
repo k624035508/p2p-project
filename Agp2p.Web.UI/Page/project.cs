@@ -196,16 +196,28 @@ namespace Agp2p.Web.UI.Page
                         user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
                         user_id = pt.dt_users.id,
                         create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                        value = pt.principal.ToString("c")
+                        value = pt.principal.ToString("c0")
                     }).ToList();
             }
             return project_transactions;
         }
 
-        protected bool has_pay_password()
+        protected bool HasPayPassword()
         {
             var user = GetUserInfoByLinq();
             return user != null && !string.IsNullOrWhiteSpace(user.pay_password);
+        }
+
+        protected bool HasBindedEmail()
+        {
+            var user = GetUserInfoByLinq();
+            return user != null && !string.IsNullOrWhiteSpace(user.email);
+        }
+
+        protected bool HasBindedIdCard()
+        {
+            var user = GetUserInfoByLinq();
+            return user != null && !string.IsNullOrWhiteSpace(user.id_card_number);
         }
 
         protected class ProjectTransactions

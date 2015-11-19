@@ -41,6 +41,7 @@ class UserInfoEditor extends React.Component {
 		}.bind(this), "json");
 	}
 	render() {
+		let area = emptyIfNull(this.props.area);
 		return (
 			<div className="personal-info">
 				<div className="personal-info-th">
@@ -65,9 +66,9 @@ class UserInfoEditor extends React.Component {
 							: this.props.birthday }</li>
 						<li><span>QQ 号码：</span>{ this.genInputBox("qq") }</li>
 						<li><span>所在城市：</span>{ this.state.editing
-							? <CityPicker value={emptyIfNull(this.props.area).split(",")}
+							? <CityPicker defaultValue={area.split(",")}
 								onLocationChanged={(...args) => this.onUserInfoModify("area", [...args].join(","))} />
-							: emptyIfNull(this.props.area).replace(/,/g, "")}</li>
+							: area.replace(/,/g, "")}</li>
 					</ul>
 				</div>
 				{ this.state.modified ? <div className="btn-wrap"><a href="javascript:;" onClick={ev => this.saveUserInfo()}
