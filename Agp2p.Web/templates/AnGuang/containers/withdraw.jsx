@@ -3,6 +3,7 @@ import { classMapping } from "../js/bank-list.jsx"
 import CardEditor from "../components/card-editor.jsx"
 import { fetchBankCards } from "../actions/bankcard.js"
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import { ajax } from "jquery"
 
 import "../less/withdraw.less"
 
@@ -43,8 +44,8 @@ class WithdrawPage extends React.Component {
 		var toWithdraw = parseFloat(this.state.toWithdraw) || 0;
 
 		var url = "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw;
-        $.ajax({
-            type: "get",
+        ajax({
+            type: "GET",
             url: url,
             dataType: "json",
             timeout: 10000,
@@ -67,19 +68,25 @@ class WithdrawPage extends React.Component {
 			alert("请填写正确的提现金额");
 			return;
 		}
-		$.post("/tools/submit_ajax.ashx?action=withdraw", {
-			cardId: this.props.cards[this.state.selectedCardIndex].cardId,
-			howmany: this.state.toWithdraw,
-			transactPassword: this.state.transactPassword
-		}, function(data) {
-			alert(data.msg);
-			if (data.status == 1) {
-				this.setState({toWithdraw: "", transactPassword: ""})
-				this.props.dispatch(fetchWalletAndUserInfo());
+		ajax({
+			type: "POST",
+			url: "/tools/submit_ajax.ashx?action=withdraw",
+			data: {
+				cardId: this.props.cards[this.state.selectedCardIndex].cardId,
+				howmany: this.state.toWithdraw,
+				transactPassword: this.state.transactPassword
+			},
+			dataType: "json",
+			success: data => {
+				alert(data.msg);
+				if (data.status == 1) {
+					this.setState({toWithdraw: "", transactPassword: ""})
+					this.props.dispatch(fetchWalletAndUserInfo());
+				}
+			},
+			error: jqXHR => {
+				alert("提交失败，请重试");
 			}
-		}.bind(this), "json")
-		.fail(function() {
-			alert("提交失败，请重试");
 		});
 	}
 	componentDidMount() {
