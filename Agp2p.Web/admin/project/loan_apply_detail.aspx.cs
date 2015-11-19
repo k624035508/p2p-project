@@ -455,7 +455,7 @@ namespace Agp2p.Web.admin.project
 
         protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlCategoryId.SelectedItem.Text.Contains("银票"))
+            if (ddlCategoryId.SelectedItem.Text.Contains("票"))
             {
                 txt_project_repayment_term.Items.Clear();
                 txt_project_repayment_term.Items.Add(new ListItem("日", "30"));

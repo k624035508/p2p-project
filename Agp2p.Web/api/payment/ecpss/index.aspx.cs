@@ -19,7 +19,7 @@ namespace Agp2p.Web.api.payment.ecpss
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string strPayID = DTRequest.GetFormString("bankcode");
+            string bankCode = DTRequest.GetFormString("bankcode");
             int user_id = Utils.StrToInt(DTRequest.GetFormString("user_id"), 0);
             string amount = DTRequest.GetFormString("amount");
 
@@ -28,7 +28,7 @@ namespace Agp2p.Web.api.payment.ecpss
             var charge_order = context.Charge(user_id, decimal.Parse(amount), Agp2pEnums.PayApiTypeEnum.Ecpss);
 
             Service server = new Service();
-            string sHtmlText = server.BuildFormHtml(charge_order.no_order, charge_order.create_time.ToString("yyyyMMddHHmmss"), amount, strPayID);
+            string sHtmlText = server.BuildFormHtml(charge_order.no_order, charge_order.create_time.ToString("yyyyMMddHHmmss"), amount, bankCode);
             Response.Write(sHtmlText);
         }
     }
