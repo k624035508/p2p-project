@@ -319,7 +319,7 @@ namespace Agp2p.Web.UI.Page
                     project_investment_progress = pr.GetInvestmentProgress(), //项目进度
                     project_investment_balance = pr.GetInvestmentBalance(), //项目投资剩余金额
                     project_investment_count = p.GetInvestedUserCount(), //项目投资人数
-                    conversionBank = p.GetTicketConversionBank() // 承兑银行
+                    conversionBank = p.GetMortgageInfo("bank") // 承兑银行
                 };
             }).Select(p =>
             {
