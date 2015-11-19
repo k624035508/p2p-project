@@ -193,7 +193,7 @@
                 <%set var inc_news_ls=GetArticles(42, 4)%>
                 <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
                 <%if(inc_news_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>'>
+                <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>' target="_blank">
                     <img src="{inc_news_first.img_url}" alt=""/>
                 </a>
                 <div class="img-title">{inc_news_first.title}</div>
@@ -205,7 +205,7 @@
                         <%foreach(var a in inc_news_ls.Skip(1))%>
                         <li>
                             <span class="list-title-wrap">
-                                <a href='<%linkurl("article_show",a.id)%>' class="dark-grey14px">
+                                <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                     <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                     <span class="list-mark"></span>
                                     <span class="list-title"><%=a.title%></span>
@@ -230,7 +230,7 @@
                 <%set var media_dt_ls=GetArticles(44, 4)%>
                 <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
                 <%if(media_dt_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>'>
+                <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>' target="_blank">
                     <img src="{media_dt_first.img_url}" alt=""/>
                 </a>
                 <div class="img-title">{media_dt_first.title}</div>
@@ -241,7 +241,7 @@
                     <ul class="list-unstyled">
                         <%foreach(var a in media_dt_ls.Skip(1))%>
                         <li><span class="list-title-wrap">
-                            <a href='<%linkurl("article_show",a.id)%>' class="dark-grey14px">
+                            <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                 <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                 <span class="list-mark"></span>
                                 <span class="list-title"><%=a.title%></span>
@@ -266,7 +266,7 @@
                 <%set var announces_ls=GetArticles("43,54", 10, 0)%>
                 <%foreach(var a in announces_ls)%>
                 <li><span class="list-title-wrap">
-                        <a href='<%linkurl("article_show",a.id)%>' class="dark-grey14px">
+                        <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                             <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                             <span class="list-mark"></span>
                             <span class="list-title"><%=a.title%></span>
