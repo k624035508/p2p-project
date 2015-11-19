@@ -55,7 +55,7 @@
 <!--announcement-->
 <div class="container-fluid announcement-wrap">
     <div class="announcement">
-        <span class="pull-right"><a href='<%=linkurl("article_list",43)%>'>更多></a></span>
+        <span class="pull-right"><a href='<%=linkurl("article_list","43,54")%>'>更多></a></span>
         <span class="announce-board-icon announce-icon"></span>
         <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
         <span class="return-announce">发标公告：
@@ -257,7 +257,7 @@
         <!--网站公告-->
         <div class="company-placard">
             <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("article_list",43)%>'>
+                <a href='<%=linkurl("article_list","43,54")%>'>
                     <span class="link-mark pull-right"></span>
                     <span class="dynamic-title">公司公告</span>
                 </a>
