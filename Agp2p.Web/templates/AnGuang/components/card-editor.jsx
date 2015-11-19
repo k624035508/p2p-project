@@ -86,7 +86,7 @@ class CardEditor extends React.Component {
 				<button type="button" onClick={ev => this.doSaveCard()}
 					disabled={!this.props.realName}>{creatingCard ? "提 交" : "保 存"}</button>
 				{creatingCard ? null :
-				<button type="button" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
+				<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
 			</div>
 		);
 	}
