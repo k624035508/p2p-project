@@ -172,7 +172,7 @@ div.tender-content {
 			//投资确认弹窗样式
 			.investConfirm-dialog {
 				left: 50%;
-				margin: 192px 0 0 -370px;
+				margin: 50px 0 0 -370px;
 				.titleSpan {
 					display: inline-block;
 					width: 75px;
@@ -182,7 +182,7 @@ div.tender-content {
 				}
 				.modal-content {
 					width: 600px;
-					padding: 0 15px;
+					padding: 0 15px 10px 15px;
 					.modal-header {
 						h4 { font-weight: bold; }
 					}
@@ -212,8 +212,9 @@ div.tender-content {
 						i {
 							.inline-block;
 							margin-right: 8px;
-							font-size: @font18;
-							font-weight: bolder;
+							font-size: @font15;
+							font-weight: bold;
+							font-style: normal;
 							color: @red;
 						}
 						span { .titleSpan; }
@@ -268,6 +269,18 @@ div.tender-content {
 						.cancel-btn {
 							color: @dark-grey;
 							background: #e6e6e6;
+						}
+					}
+					p {
+						color: @dark-grey;
+						font-size: @font13;
+						a, i { color: @red; }
+						i {
+							margin-right: 8px;
+							font-size: @font13;
+							font-weight: bold;
+							font-style: normal;
+							vertical-align: middle;
 						}
 					}
 				}
