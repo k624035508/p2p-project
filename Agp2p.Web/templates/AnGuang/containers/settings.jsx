@@ -53,7 +53,7 @@ class Settings extends React.Component {
     	let state = this.state;
         return(
             <div className="settings-wrap">
-                <p>为了您的资金安全，建议您不要取消重要的消息项。如有问题，请联系客服：400-8989-089</p>
+                <p>为了您的资金安全，建议您不要取消重要的消息项。如有问题，请联系客服：400-8878-200</p>
                 <div className="news-tb">
                     <table className="table table-bordered">
                         <thead>
