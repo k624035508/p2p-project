@@ -143,6 +143,7 @@ class MyNews extends React.Component {
 							<span className="time">时间</span>
 							<span className="detail">详细</span>
 						</div>
+                        {this.state.msgs.length != 0 ? null : <div style={{textAlign: 'center', padding: '1em'}}>暂无消息</div>}
 						{this.state.msgs.map((m, index) =>
 							<div className="news-body" key={m.id}>
 								<div className="overview" style={index == this.state.readingMsgIndex ? {backgroundColor: "#f7f7f7"} : null}>

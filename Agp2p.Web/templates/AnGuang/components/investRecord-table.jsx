@@ -50,6 +50,7 @@ class InvestRecordTable extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
+                    {this.state.data.length != 0 ? null : <tr><td colSpan="8">暂无数据</td></tr>}
                     { this.state.data.map(tr =>
                         <tr className="detailRow" key={tr.ptrId}>
                             <td>{tr.projectName}</td>

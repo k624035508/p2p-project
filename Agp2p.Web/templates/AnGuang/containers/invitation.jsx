@@ -124,6 +124,7 @@ class InvitationPage extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
+                            {this.state.data.length != 0 ? null : <tr><td colSpan="4">暂无数据</td></tr>}
                         	{this.state.data.map((inv, index) => 
                             <tr key={inv.inviteeId}>
                                 <td>{index + 1}</td>

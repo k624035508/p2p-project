@@ -31,13 +31,14 @@ class BankAccount extends React.Component {
                 <div className="cards-list-th"><span>银行卡列表</span></div>
                 <div className="cards-list-wrap">
                 <ul className="list-unstyled list-inline">
+                {this.props.cards.length != 0 ? null : <div>暂无银行卡</div>}
                 {this.props.cards.map((c, index) => 
                 	<li className={"card " + classMapping[c.bankName]} key={c.cardId}
                 		onClick={ev => this.onCardClicked(index)}
                 		style={index == this.state.selectedCardIndex ? {"backgroundColor": "#f2f2f2"} : null} >
 	                	<i className="glyphicon glyphicon-minus-sign pull-right" onClick={ev => this.deleteCard(c)}></i>
 	                	<p className="bank-name">{c.bankName}</p>
-	                	<p className="card-num">尾号 {c.last4Char} 储蓄卡</p>
+	                	<p className="card-num">尾号 {c.last4Char} 银行卡</p>
                 	</li>
             	)}
                 </ul>
