@@ -3,7 +3,7 @@ import CityPicker from "../components/city-picker.jsx"
 import DatePicker from "../components/date-picker.jsx"
 import ImageVerifyCode from "../components/img-verify-code.jsx"
 import { updateWalletInfo, updateUserInfo, updateUserInfoByName, fetchWalletAndUserInfo } from "../actions/usercenter.js"
-import { post, getJSON } from "jquery"
+import { ajax } from "jquery"
 
 import "../less/safe.less"
 
@@ -28,17 +28,26 @@ class UserInfoEditor extends React.Component {
 	}
 	saveUserInfo() {
 		this.setState({saving: true});
-		post('/tools/submit_ajax.ashx?action=user_edit', {
-			nickName: this.props.nickName,
-			sex: this.props.sex,
-			birthday: this.props.birthday,
-			area: this.props.area,
-			qq: this.props.qq,
-			address: this.props.address
-		}, function(data) {
-			alert(data.msg);
-			this.setState({saving: false, modified: false, editing: false});
-		}.bind(this), "json");
+		ajax({
+			type: "POST",
+			url: '/tools/submit_ajax.ashx?action=user_edit',
+			data: {
+				nickName: this.props.nickName,
+				sex: this.props.sex,
+				birthday: this.props.birthday,
+				area: this.props.area,
+				qq: this.props.qq,
+				address: this.props.address
+			},
+			dataType: "json",
+			success: data => {
+				alert(data.msg);
+				this.setState({saving: false, modified: false, editing: false});
+			},
+			error: () => {
+
+			}
+		});
 	}
 	render() {
 		let area = emptyIfNull(this.props.area);
@@ -93,22 +102,30 @@ class EmailBinding extends React.Component {
 	}
 	bindingEmail() {
 		this.setState({bindingEmailPending: true});
-		getJSON('/tools/email_verify.ashx?action=sendVerifyEmail&email=' + this.state.newEmail, function(data) {
-			alert(data.msg);
-			this.setState({bindingEmailPending: false});
-		}.bind(this))
-		.fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.msg);
-			this.setState({bindingEmailPending: false});
+		ajax({
+			dataType: "json",
+			url: '/tools/email_verify.ashx?action=sendVerifyEmail&email=' + this.state.newEmail,
+			success: data => {
+				alert(data.msg);
+				this.setState({bindingEmailPending: false});
+			},
+			error: jqXHR => {
+				alert(jqXHR.responseJSON.msg);
+				this.setState({bindingEmailPending: false});
+			}
 		});
 	}
 	bindEmail(hash) {
-		getJSON('/tools/email_verify.ashx?' + hash, function(data) {
-			alert(data.msg);
-			this.props.dispatch(fetchWalletAndUserInfo());
-		}.bind(this))
-		.fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.msg);
+		ajax({
+			dataType: "json",
+			url: '/tools/email_verify.ashx?' + hash,
+			success: data => {
+				alert(data.msg);
+				this.props.dispatch(fetchWalletAndUserInfo());
+			},
+			error: jqXHR => {
+				alert(jqXHR.responseJSON.msg);
+			}
 		});
 	}
 	render() {
@@ -151,21 +168,31 @@ class MobileBinding extends React.Component {
 		};
 	}
 	getSMSVerifyCode() {
-		getJSON('/tools/mobile_verify.ashx?act=sendCodeForBindMobile&mobile=' + this.state.newMobile + '&picCode=' + this.state.imgCode, function (data) {
-            alert(data.msg);
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.msg);
-        });
+		ajax({
+			dataType: "json",
+			url: `/tools/mobile_verify.ashx?act=sendCodeForBindMobile&mobile=${this.state.newMobile}&picCode=${this.state.imgCode}`,
+			success: data => {
+				alert(data.msg);
+			},
+			error: jqXHR => {
+				alert(jqXHR.responseJSON.msg);
+			}
+		});
 	}
 	bindMobile() {
-		getJSON('/tools/mobile_verify.ashx?act=verifyForBindMobile&verifyCode=' + this.state.smsCode, function (data) {
-            alert(data.msg);
-			this.props.dispatch(fetchWalletAndUserInfo());
-			this.setState({newMobile: "", imgCode: "", smsCode: "", bindingMobile: false});
-			this.setState({bindingMobile: true}); // 清空输入框
-        }.bind(this)).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.msg);
-        });
+		ajax({
+			dataType: "json",
+			url: '/tools/mobile_verify.ashx?act=verifyForBindMobile&verifyCode=' + this.state.smsCode,
+			success: data => {
+	            alert(data.msg);
+				this.props.dispatch(fetchWalletAndUserInfo());
+				this.setState({newMobile: "", imgCode: "", smsCode: "", bindingMobile: false});
+				this.setState({bindingMobile: true}); // 清空输入框
+			},
+			error: jqXHR => {
+				alert(jqXHR.responseJSON.msg);
+			}
+		});
 	}
 	render() {
 		return (
@@ -223,15 +250,21 @@ class IdentityBinding extends React.Component {
 	}
 	bindIdentity() {
 		if (confirm("身份资料填写后则不能再修改，是否确认？")) {
-			post('/tools/submit_ajax.ashx?action=bind_idcard', {
-				trueName: this.state.trueName,
-				idCardNumber: this.state.idCardNumber,
-			}, function (data) {
-				alert(data.msg);
-				this.props.dispatch(fetchWalletAndUserInfo());
-			}.bind(this), "json")
-			.fail(function (jqXHR) {
-				alert(jqXHR.responseJSON.msg);
+			ajax({
+				type: "POST",
+				url: '/tools/submit_ajax.ashx?action=bind_idcard',
+				data: {
+					trueName: this.state.trueName,
+					idCardNumber: this.state.idCardNumber,
+				},
+				dataType: "json",
+				success: data => {
+					alert(data.msg);
+					this.props.dispatch(fetchWalletAndUserInfo());
+				},
+				error: jqXHR => {
+					alert(jqXHR.responseJSON.msg);
+				}
 			});
 		}
 	}
@@ -290,18 +323,24 @@ class ResetLoginPassword extends React.Component {
 			alert("登录密码太短，请设置至少 6 位密码");
 			return;
 		}
-		post('/tools/submit_ajax.ashx?action=user_password_edit', {
-			txtOldPassword: this.state.originalPassword,
-			txtPassword: this.state.newPassword
-		}, function (data) {
-			alert(data.msg);
-			if (data.status == 1) {
-				this.setState({resetingLoginPassword: false});
-				this.setState({resetingLoginPassword: true}); // 清空输入框
+		ajax({
+			type: "POST",
+			url: '/tools/submit_ajax.ashx?action=user_password_edit',
+			data: {
+				txtOldPassword: this.state.originalPassword,
+				txtPassword: this.state.newPassword
+			},
+			dataType: "json",
+			success: data => {
+				alert(data.msg);
+				if (data.status == 1) {
+					this.setState({resetingLoginPassword: false});
+					this.setState({resetingLoginPassword: true}); // 清空输入框
+				}
+			},
+			error: jqXHR => {
+				alert("操作失败，请重试");
 			}
-		}.bind(this), "json")
-		.fail(function (jqXHR) {
-			alert("操作失败，请重试");
 		});
 	}
 	render() {
@@ -359,26 +398,39 @@ class ResetTransactPassword extends React.Component {
 			alert("交易密码太短，请设置至少 6 位密码");
 			return;
 		}
-		post('/tools/trade_pwd.ashx', {
-			action: "modify",
-			originalTransactPassword: this.state.originalTransactPassword,
-			newTransactPassword: this.state.newTransactPassword
-		}, function (data) {
-			alert(data.msg);
-			this.props.dispatch(fetchWalletAndUserInfo());
-			this.setState({settingTransactionPassword: false});
-			this.setState({settingTransactionPassword: true}); // 清空输入框
-		}.bind(this), "json")
-		.fail(function (jqXHR) {
-			alert(jqXHR.responseJSON.msg);
+		ajax({
+			type: "POST",
+			url: '/tools/trade_pwd.ashx',
+			data: {
+				action: "modify",
+				originalTransactPassword: this.state.originalTransactPassword,
+				newTransactPassword: this.state.newTransactPassword
+			},
+			dataType: "json",
+			success: data => {
+				alert(data.msg);
+				this.props.dispatch(fetchWalletAndUserInfo());
+				this.setState({settingTransactionPassword: false});
+				this.setState({settingTransactionPassword: true}); // 清空输入框
+			},
+			error: jqXHR => {
+				alert(jqXHR.responseJSON.msg);
+			}
 		});
 	}
 	forgotTransactPassword() {
 		if (confirm("是否确认重置交易密码？")) {
-			post('/tools/trade_pwd.ashx', { action: "reset" }, function (data) {
-				alert(data.msg);
-			}, "json").fail(function (jqXHR) {
-				alert(jqXHR.responseJSON.msg);
+			ajax({
+				type: "POST",
+				url: '/tools/trade_pwd.ashx',
+				data: { action: "reset" },
+				dataType: "json",
+				success: data => {
+					alert(data.msg);
+				},
+				error: jqXHR => {
+					alert(jqXHR.responseJSON.msg);
+				}
 			});
 		}
 	}
