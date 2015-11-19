@@ -147,6 +147,15 @@ namespace Agp2p.Test
         }
 
         [TestMethod]
+        public void RemoveTransactPassword()
+        {
+            var context = new Agp2pDataContext(str);
+            var dtUsers = context.dt_users.Single(u => u.user_name == "13535656867");
+            dtUsers.pay_password = null;
+            context.SubmitChanges();
+        }
+
+        [TestMethod]
         public void TestRepayNotice()
         {
             var context = new Agp2pDataContext(str);
