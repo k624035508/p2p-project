@@ -660,7 +660,7 @@ namespace Agp2p.Core
             if (0 < proj.profit_rate)
                 return proj.profit_rate;
 
-            if (proj.dt_article_category.call_index == "ypb" || proj.dt_article_category.call_index == "yplc")
+            if (proj.dt_article_category.call_index == "ypb" || proj.dt_article_category.call_index == "ypl")
             {
                 var projectRepaymentTermSpanEnum = (Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span;
                 if (projectRepaymentTermSpanEnum != Agp2pEnums.ProjectRepaymentTermSpanEnum.Day)
