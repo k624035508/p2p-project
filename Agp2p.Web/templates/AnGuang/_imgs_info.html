@@ -1,31 +1,16 @@
 ﻿<div id="relevant-info">
     <span class="title-mark">{hIndex++}.相关资料</span>
+    <%set var pics = QueryAlbums().ToList()%>
     <%if(_userModel==null)%>
     <div class="content-null">照片内容需 <a href='<%linkurl("login")%>'>登录</a> 后才能查看</div>
-    <%else if(albums_pictures.Count+albums_credit.Count+albums_mortgage.Count==0)%>
+    <%else if(!pics.Any())%>
         <div class="content-null">暂无数据</div>
     <%else%>
     <div class="row photo-cell">
-        <%foreach(var picture in albums_pictures)%>
+        <%foreach(var picture in pics)%>
         <div class="col-md-3 col-xs-3">
             <a href="javascript:;" class="thumbnail thumbnail-custom">
                 <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
-            </a>
-            <div class="photo-title">{picture.remark}</div>
-        </div>
-        <%/foreach%>
-        <%foreach(var picture in albums_credit)%>
-        <div class="col-md-3 col-xs-3">
-            <a href="javascript:;" class="thumbnail thumbnail-custom">
-                <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}"  data-toggle="modal" data-target="#photoModal" />
-            </a>
-            <div class="photo-title">{picture.remark}</div>
-        </div>
-        <%/foreach%>
-        <%foreach(var picture in albums_mortgage)%>
-        <div class="col-md-3 col-xs-3">
-            <a href="javascript:;" class="thumbnail thumbnail-custom">
-                <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-title="{picture.remark}" data-toggle="modal" data-target="#photoModal" />
             </a>
             <div class="photo-title">{picture.remark}</div>
         </div>

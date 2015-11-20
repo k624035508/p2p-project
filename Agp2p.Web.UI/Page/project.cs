@@ -30,9 +30,6 @@ namespace Agp2p.Web.UI.Page
         protected List<li_mortgages> mortgages = new List<li_mortgages>();//抵押物
         protected List<ProjectTransactions> project_transactions = new List<ProjectTransactions>();//投标记录
         protected List<li_repayment_tasks> repayment_tasks = new List<li_repayment_tasks>();//还款计划
-        protected List<li_albums> albums_pictures = new List<li_albums>();//现场图片
-        protected List<li_albums> albums_credit = new List<li_albums>();//债权信息图片
-        protected List<li_albums> albums_mortgage = new List<li_albums>();//抵押图片
         protected decimal idle_money = 0;//客户可用余额
         protected bool has_email = false;
 
@@ -54,115 +51,77 @@ namespace Agp2p.Web.UI.Page
             if (projectModel == null)
             {
                 HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                return;
             }
-            else
-            {
-                // 浏览次数 + 1
-                projectModel.click += 1;
-                context.SubmitChanges();
+            // 浏览次数 + 1
+            projectModel.click += 1;
+            context.SubmitChanges();
 
-                var pr = GetProjectInvestmentProgress(projectModel);
-                //投资进度
-                investmentProgress = pr.GetInvestmentProgress();
-                //剩余金额
-                investmentBalance = pr.GetInvestmentBalance();
-                //风控信息
-                risk = projectModel.li_risks;
-                //借款人
-                loaner = risk.li_loaners;
-                //借款人企业
-                loaner_company = risk.li_loaners.li_loaner_companies;
-                //抵押物
-                mortgages = (from rm in risk.li_risk_mortgage
-                    from m in context.li_mortgages
-                    where rm.risk == risk.id && rm.mortgage == m.id
-                    select m).ToList();
+            var pr = GetProjectInvestmentProgress(projectModel);
+            //投资进度
+            investmentProgress = pr.GetInvestmentProgress();
+            //剩余金额
+            investmentBalance = pr.GetInvestmentBalance();
+            //风控信息
+            risk = projectModel.li_risks;
+            //借款人
+            loaner = risk.li_loaners;
+            //借款人企业
+            loaner_company = risk.li_loaners.li_loaner_companies;
+            //抵押物
+            mortgages = projectModel.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).ToList();
 
-                //现场图片
-                mortgages.ForEach(
-                    m =>
-                    {
-                        albums_pictures.AddRange(
-                            m.li_albums.Where(
-                                a => a.mortgage == m.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.Pictures));
-                    });
-                //债权图片
-                mortgages.ForEach(
-                    m =>
-                    {
-                        albums_credit.AddRange(
-                            m.li_albums.Where(
-                                a => a.mortgage == m.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.PropertyCertificate));
-                    });
-                albums_credit.AddRange(
-                    loaner.li_albums.Where(a => a.loaner == loaner.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard));
-                if (risk.li_creditors != null && risk.li_creditors.dt_users != null)
-                {
-                    albums_credit.AddRange(
-                        risk.li_creditors.dt_users.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard));
-                }
-                albums_credit.AddRange(
-                    risk.li_albums.Where(
-                        a => a.risk == risk.id && a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate));
-                //抵押图片
-                albums_mortgage.AddRange(
-                    risk.li_albums.Where(
-                        a => a.risk == risk.id && (a.type == (int) Agp2pEnums.AlbumTypeEnum.LoanAgreement
-                                                   || a.type == (int) Agp2pEnums.AlbumTypeEnum.MortgageContract)));
+            invsetorCount = projectModel.GetInvestedUserCount();
 
-                //投标记录
-                //if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial || projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.DailyProject)
-                //{
-                //    project_transactions =
-                //        context.li_activity_transactions.Where(atr => atr.details.Contains("\"ProjectId\":" + projectModel.id + ",")) // 防止跨项目查询(ProjectId 不能是最后一个属性)
-                //            .OrderByDescending(atr => atr.create_time)
-                //            .AsEnumerable()
-                //            .Select(atr => new ProjectTransactions
-                //            {
-                //                id = atr.id,
-                //                user_name = Utils.GetUserNameHidden(atr.dt_users.user_name),
-                //                user_id = atr.dt_users.id,
-                //                create_time = atr.li_wallet_histories.First().create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                //                value = ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("c")
-                //            }).ToList();
-                //}
-                //else
-                //{
-                //    project_transactions = projectModel.li_project_transactions
-                //        .Where(pt => pt.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest && pt.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                //        .OrderByDescending(pt => pt.create_time)
-                //        .AsEnumerable()
-                //        .Select(pt => new ProjectTransactions
-                //        {
-                //            id = pt.id,
-                //            user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
-                //            user_id = pt.dt_users.id,
-                //            create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                //            value = pt.value.ToString("c")
-                //        }).ToList();
-                //}
-                //投资人数
-                int count = 0;
-                invsetorCount = projectModel.GetInvestedUserCount();
-
-
-                //还款计划
-                repayment_tasks = context.li_repayment_tasks
-                    .OrderBy(rt => rt.should_repay_time)
-                    .Where(rt => rt.project == project_id)
-                    .ToList();
-            }
+            //还款计划
+            repayment_tasks = context.li_repayment_tasks
+                .OrderBy(rt => rt.should_repay_time)
+                .Where(rt => rt.project == project_id)
+                .ToList();
         }
+
+        protected IEnumerable<li_albums> QueryAlbums()
+        {
+            //现场图片
+            var pictures = mortgages.SelectMany(m => m.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.Pictures));
+
+            //债权图片
+            var certificates = mortgages.SelectMany(m =>
+                m.li_albums.Where(a =>
+                    a.type == (int) Agp2pEnums.AlbumTypeEnum.PropertyCertificate ||
+                    a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate));
+
+            var loanerIdCard = loaner.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard);
+
+            var creditorIdCard = Enumerable.Empty<li_albums>();
+            if (risk.li_creditors?.dt_users != null)
+            {
+                creditorIdCard = risk.li_creditors.dt_users.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard);
+            }
+
+            var companyPics = Enumerable.Empty<li_albums>();
+            if (risk.li_loaners.li_loaner_companies != null)
+            {
+                companyPics = risk.li_loaners.li_loaner_companies.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.Pictures);
+            }
+
+            //抵押图片
+            var mortgagePics = risk.li_albums.Where(a =>
+                a.type == (int)Agp2pEnums.AlbumTypeEnum.LoanAgreement ||
+                a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract);
+
+            return
+                new[] { companyPics, pictures, certificates, loanerIdCard, creditorIdCard, mortgagePics}.SelectMany(s => s);
+        } 
 
         void Project_Init(object sender, EventArgs e)
         {
             //客户余额
-            if (IsUserLogin())
-            {
-                var user = GetUserInfoByLinq();
-                has_email = !string.IsNullOrEmpty(user.email);
-                idle_money = user.li_wallets.idle_money;
-            }
+            if (!IsUserLogin()) return;
+
+            var user = GetUserInfoByLinq();
+            has_email = !string.IsNullOrEmpty(user.email);
+            idle_money = user.li_wallets.idle_money;
         }
 
         //投标记录
