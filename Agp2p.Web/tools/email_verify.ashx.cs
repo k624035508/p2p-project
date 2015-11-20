@@ -54,7 +54,7 @@ namespace Agp2p.Web.tools
                     SessionHelper.Remove("last_send_verifying_mail_at");
                     SessionHelper.Remove("verifying_email_code");
                     httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "邮箱设置成功" }));
+                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "邮箱绑定成功" }));
                 }
                 else
                 {
