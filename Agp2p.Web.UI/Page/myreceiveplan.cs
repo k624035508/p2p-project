@@ -67,7 +67,7 @@ namespace Agp2p.Web.UI.Page
             return investedProjectValueMap.SelectMany(p =>
             {
                 var ratio1 = investedProjectValueMap[p.Key]/p.Key.investment_amount;
-                IEnumerable<li_repayment_tasks> query1 = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid);
+                var query1 = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
@@ -89,8 +89,8 @@ namespace Agp2p.Web.UI.Page
                             {
                                 RepaymentId = task.id,
                                 Project = null,
-                                RepayInterest = task.repay_interest*ratio1,
-                                RepayPrincipal = task.repay_principal*ratio1,
+                                RepayInterest = Math.Round(task.repay_interest*ratio1, 2),
+                                RepayPrincipal = Math.Round(task.repay_principal*ratio1, 2),
                                 ShouldRepayDay = task.should_repay_time.ToString(),
                                 Term = task.term.ToString() + "/" + validRepaymentTaskCount
                             }).ToList();
