@@ -683,7 +683,7 @@ namespace Agp2p.Core
         private static decimal CalcFinalProfitRate(li_projects proj, DateTime? makeLoanTime = null)
         {
             var baseTime = proj.make_loan_time ?? makeLoanTime.Value;
-            var profitRateYear = (decimal) proj.profit_rate_year / 100; // 年化利率未除以 100
+            var profitRateYear = proj.profit_rate_year / 100; // 年化利率未除以 100
             var termSpanCount = proj.repayment_term_span_count;
 
             switch ((Agp2pEnums.ProjectRepaymentTermSpanEnum) proj.repayment_term_span) // 公式：年利率 * 总天数 / 365
@@ -692,7 +692,7 @@ namespace Agp2p.Core
                     return profitRateYear*termSpanCount;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Month:
                     // 最后那期还款的日期 - 满标的日期 = 总天数
-                    var lastRepayDate = proj.CalcRepayTimeByTerm(termSpanCount).Date;
+                    var lastRepayDate = proj.CalcRepayTimeByTerm(termSpanCount, makeLoanTime).Date;
                     var days = lastRepayDate.Subtract(baseTime.Date).Days;
                     return profitRateYear*days/365;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
