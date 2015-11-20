@@ -17,7 +17,11 @@ $(function(){
 			},
 			success: function(data){
 				if(data.status == 1){
-					location.href ="user/center/index.html";
+					if (document.referrer !== "" && document.referrer.indexOf("login") == -1) {
+						location.href = document.referrer;
+					} else {
+						location.href = $("div.nav-bar li#myAccount > a").attr("href");
+					}
 				} else {
 					alert(data.msg);
 				}
