@@ -40,6 +40,7 @@ class WithdrawPage extends React.Component {
 			transactPassword: "",
 			passwordNotReady: true, // 为了避免自动完成
 		};
+		this.timerId = -1;
 	}
 	onWithdrawAmountSetted(ev) {
 		var toWithdraw = parseFloat(this.state.toWithdraw) || 0;
@@ -94,9 +95,16 @@ class WithdrawPage extends React.Component {
 		if (this.props.cards.length == 0) {
 			this.props.dispatch(fetchBankCards());
 		}
-		setTimeout(() => {
+		this.timerId = setTimeout(() => {
+			this.timerId = -1;
 			this.setState({passwordNotReady: false});
 		}, 1000);
+    }
+    componentWillUnmount() {
+    	if (this.timerId != -1) {
+    		clearTimeout(this.timerId);
+			this.timerId = -1;
+    	}
     }
 	render() {
 		return (
