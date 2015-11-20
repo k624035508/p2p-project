@@ -99,7 +99,7 @@ namespace Agp2p.Web.UI.Page
                 creditorIdCard = risk.li_creditors.dt_users.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard);
             }
 
-            //票理财项目不显示企业图片资料\
+            //票理财项目不显示企业图片资料
             var companyPics = Enumerable.Empty<li_albums>();
             if (projectModel.dt_article_category.call_index != "ypl")
             {
