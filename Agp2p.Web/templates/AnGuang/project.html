@@ -84,7 +84,7 @@
                             </ul>
                         </div>
                         <div class="profit-wrap"><span>预期收益：</span><span class="profit">0.00</span></div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password"/></div>
+                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" readonly onfocus="this.removeAttribute('readonly');"/></div><!-- 为了避免自动完成 -->
                         <div class="agreement"><input type="checkbox"/><span>我已经阅读并同意<a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a></span></div>
                         <div class="modal-footer">
                             <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>

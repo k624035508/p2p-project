@@ -37,7 +37,8 @@ class WithdrawPage extends React.Component {
 			toWithdraw: "",
 			realityWithdraw: 0,
 			moneyReceivingDay: new Date(new Date().getTime() + 1000*60*60*24*2).toJSON().slice(0,10),
-			transactPassword: ""
+			transactPassword: "",
+			passwordReadonly: true, // 为了避免自动完成
 		};
 	}
 	onWithdrawAmountSetted(ev) {
@@ -121,9 +122,13 @@ class WithdrawPage extends React.Component {
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
 				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span>实际到账：{this.state.realityWithdraw} 元</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay} （1-2个工作日内到账，双休日和法定节假日除外）</div>
-				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span><input type="password" value={this.state.transactPassword}
+				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span>
+				    	<input type="password" readOnly={this.state.passwordReadonly}
+				    	onFocus={ev => this.setState({passwordReadonly: false})}
+				    	value={this.state.transactPassword}
 				    	onChange={ev => this.setState({transactPassword: ev.target.value})} disabled={!this.props.hasTransactPassword}
-				    	placeholder={this.props.hasTransactPassword ? null : "（请先设置交易密码）"} /></div>
+				    	placeholder={this.props.hasTransactPassword ? "" : "（请先设置交易密码）"} />
+			    	</div>
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
 				</div>
 				<div className="bank-chose-tips"><span>温馨提示</span></div>
