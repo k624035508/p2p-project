@@ -1,4 +1,4 @@
-﻿import "bootstrap-webpack";
+﻿import "bootstrap-webpack!./bootstrap.config.js";
 import "../less/head.less";
 import "../less/index.less";
 import "../less/invest-cell.less";

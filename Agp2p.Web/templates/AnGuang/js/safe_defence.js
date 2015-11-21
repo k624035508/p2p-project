@@ -1,4 +1,4 @@
-import "bootstrap-webpack"
+import "bootstrap-webpack!./bootstrap.config.js"
 import "../less/head.less"
 import "../less/safe_defence.less"
 import "../less/footerSmall.less"
