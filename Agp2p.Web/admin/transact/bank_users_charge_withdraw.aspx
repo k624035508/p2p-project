@@ -63,7 +63,7 @@
 <ItemTemplate>
   <tr>
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
-    <td><%# Eval("user_name")%></td>
+    <td><%# Eval("real_name") != null && Eval("real_name") != "" ? Eval("real_name") : Eval("user_name")%></td>
     <td><%# QueryChargingMoney((dt_users) Container.DataItem).ToString("c") %></td>
     <td><%# QueryWithdrawingMoney((dt_users) Container.DataItem).ToString("c") %></td>
     <td><a href="bank_transaction_charge.aspx?user_id=<%#Eval("id")%>">手工充值</a></td>
