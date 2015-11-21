@@ -106,10 +106,11 @@ $(function () {
         		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
         		timeout: 10000,
         		success: function(result) {
-        			window.alert(result.msg);
-        			if (result.status == 1) {
-        				location.reload();
-        			}
+        			window.alert(result.msg, () => {
+                        if (result.status == 1) {
+                            location.reload();
+                        }
+                    });
         		}.bind(this),
         		error: function(xhr, status, err) {
         			window.alert("操作失败，请重试");
@@ -138,7 +139,7 @@ $(function () {
 
     $prev.click(function(){
         if(clickedPicIndex <= 0){
-            window.alert("已经是第一张！");
+            alert("已经是第一张！");
         }else {
             clickedPicIndex = clickedPicIndex - 1;
             var prevSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");
@@ -151,7 +152,7 @@ $(function () {
 
     $next.click(function(){
         if(clickedPicIndex >= $thumbnail.length-1){
-            window.alert("已经是最后一张！");
+            alert("已经是最后一张！");
         }else {
             clickedPicIndex = clickedPicIndex + 1;
             var nextSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");

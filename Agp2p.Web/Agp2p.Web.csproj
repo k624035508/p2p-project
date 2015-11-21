@@ -909,6 +909,7 @@
     <Content Include="templates\AnGuang\less\sitemap.less" />
     <Content Include="templates\AnGuang\less\404.less" />
     <Content Include="templates\AnGuang\less\register-agreement.less" />
+    <Content Include="templates\AnGuang\less\tips-alert.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
