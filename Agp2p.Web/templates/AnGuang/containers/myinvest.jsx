@@ -114,7 +114,7 @@ class MyInvestPage extends React.Component {
                         <li className={"myinvest-tab " + (this.state.tabIndex1 == 0 ? "active" : "")}
                         	onClick={ev => this.loadChart1(0)}>
                             <p>累计收益</p>
-                            <p>￥{this.props.totalProfit + this.props.profitingMoney}</p>
+                            <p>￥{(this.props.totalProfit + this.props.profitingMoney).toFixed(2)}</p>
                         </li>
                         <li className="operator">=</li>
                         <li className={"myinvest-tab " + (this.state.tabIndex1 == 1 ? "active" : "")}

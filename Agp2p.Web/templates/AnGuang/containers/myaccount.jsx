@@ -142,8 +142,8 @@ class MyAccount extends React.Component {
 							<div className="grey13px">到期还本付息</div>
 						</div>
 						<div className="invest-btn">
-							<button type="button" className={pro.status == ProjectStatusEnum.Financing ? "invest-now-btn" : "invest-full-btn"}
-								onClick={ev => location.href = pro.linkurl}>{ProjectStatusEnumDesc[pro.status]}</button>
+							<a className={pro.status == ProjectStatusEnum.Financing ? "invest-now-btn" : "invest-full-btn"}
+							   href={pro.linkurl} >{ProjectStatusEnumDesc[pro.status]}</a>
 						</div>
 					</div>
 				</div>)}

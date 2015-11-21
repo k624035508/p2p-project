@@ -2,7 +2,7 @@
     <div id="risk-control">
         <span class="title-mark">{hIndex++}.保障措施</span>
         <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
-        <div class="content-th">{risk.risk_content}</div>
+        <div class="measure">{risk.risk_content}</div>
         <%/if%>
         <%if(projectModel.dt_article_category.call_index!="fdb")%>
             <ul class="list-unstyled risk-control-content">
