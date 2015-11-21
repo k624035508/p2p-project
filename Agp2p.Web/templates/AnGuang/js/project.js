@@ -5,6 +5,7 @@ import "../less/footerSmall.less";
 import "visualnav";
 
 import header from "./header.js"
+import "./tips_alert.js"
 
 let initRightSideNav = () => {
     let $navContainer = $("#sidemenu > ul");
@@ -55,16 +56,17 @@ $(function () {
                 return;
             }
             var investAmount = parseFloat($investAmountInput.val());
+
             if (investAmount < 100) {
-                alert("对不起，最少100元起投");
+                window.alert("对不起，最少100元起投！");
                 return;
             }
             if (investAmount != ~~investAmount) {
-                alert("对不起，请输入整数金额");
+                window.alert("对不起，请输入整数金额！");
                 return;
             }
             if (parseFloat($(this).data()["idleMoney"]) < investAmount) {
-                alert("余额不足，请先充值");
+                window.alert("余额不足，请先充值！");
                 return;
             }
 
@@ -89,11 +91,11 @@ $(function () {
         $("button.confirm-btn").click(function () {
         	var transactPassword = $("div.pswInput input[type=password]").val();
         	if (transactPassword == "") {
-        		alert("请先填写支付密码");
+        		window.alert("请先填写支付密码");
         		return;
         	}
         	if (!$("div.agreement input[type=checkbox]")[0].checked) {
-        		alert("请先同意投资协议");
+        		window.alert("请先同意投资协议");
         		return;
         	}
             var investAmount = parseFloat($investAmountInput.val());
@@ -104,13 +106,13 @@ $(function () {
         		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
         		timeout: 10000,
         		success: function(result) {
-        			alert(result.msg);
+        			window.alert(result.msg);
         			if (result.status == 1) {
         				location.reload();
         			}
         		}.bind(this),
         		error: function(xhr, status, err) {
-        			alert("操作失败，请重试");
+        			window.alert("操作失败，请重试");
         			console.error(url, status, err.toString());
         		}.bind(this)
         	});
@@ -136,7 +138,7 @@ $(function () {
 
     $prev.click(function(){
         if(clickedPicIndex <= 0){
-            alert("已经是第一张！");
+            window.alert("已经是第一张！");
         }else {
             clickedPicIndex = clickedPicIndex - 1;
             var prevSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");
@@ -149,7 +151,7 @@ $(function () {
 
     $next.click(function(){
         if(clickedPicIndex >= $thumbnail.length-1){
-            alert("已经是最后一张！");
+            window.alert("已经是最后一张！");
         }else {
             clickedPicIndex = clickedPicIndex + 1;
             var nextSrc = $thumbnail.eq(clickedPicIndex).data("originSrc");

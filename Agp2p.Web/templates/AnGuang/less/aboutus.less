@@ -93,11 +93,12 @@ body { background: @body-color; }
 					}
 				}
 				#picModal {
-					.modal-content {
-						width: 600px;
-						*top: 60px;
+					.modal-dialog {
+						width: 800px;
 						left: 50%;
-						margin-left: -300px;
+						margin-left: -400px;
+					}
+					.modal-content {
 						.modal-header {
 							height: 40px;
 							padding: 5px 10px;
@@ -105,10 +106,9 @@ body { background: @body-color; }
 							button span { font-size: @font30; }
 						}
 						.modal-body {
+							text-align: center;
 							padding: 0 20px 20px 20px;
-							img {
-								max-width: 100%;
-							}
+							img { max-width: 100%; }
 						}
 					}
 
