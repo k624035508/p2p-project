@@ -506,3 +506,42 @@ div.project-content-wrap {
 		}
 	}
 }
+
+//温馨提示弹窗
+#tipsAlert {
+	.modal-dialog {
+		width: 360px;
+		.modal-content {
+			.modal-header {
+				padding: 8px 15px;
+				h4 {
+					color: @darker-grey;
+					font-size: @font13;
+					font-weight: bold;
+				}
+			}
+			.modal-body {
+				padding: 30px 15px;
+				font-size: @font15;
+				text-align: center;
+			}
+			.modal-footer {
+				text-align: center;
+				padding: 5px 0;
+				border-top: none;
+				background: @body-color;
+				border-bottom-left-radius: 6px;
+				border-bottom-right-radius: 6px;
+				button {
+					width: 70px;
+					height: 25px;
+					color: @white;
+					border: none;
+					border-radius: 4px;
+					background: @red;
+					padding: 0;
+				}
+			}
+		}
+	}
+}
