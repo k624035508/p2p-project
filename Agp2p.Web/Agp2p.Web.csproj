@@ -793,6 +793,7 @@
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\agreement.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
+    <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
@@ -909,6 +910,7 @@
     <Content Include="templates\AnGuang\less\sitemap.less" />
     <Content Include="templates\AnGuang\less\404.less" />
     <Content Include="templates\AnGuang\less\register-agreement.less" />
+    <Content Include="templates\AnGuang\js\bootstrap.config.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
