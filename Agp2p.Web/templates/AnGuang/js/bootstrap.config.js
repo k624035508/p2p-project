@@ -32,7 +32,7 @@ module.exports = {
     "buttons": true,
 
     "component-animations": true,
-    "glyphicons": true,
+    //"glyphicons": true, ie8 @font-face 会出问题
     "dropdowns": true,
     "button-groups": true,
     "input-groups": true,
