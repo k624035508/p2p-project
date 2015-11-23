@@ -190,13 +190,10 @@ namespace Agp2p.Web.admin.users
                     txtBusinessScope.Text = loanerCompany.business_scope;
                     txtBusinessStatus.Text = loanerCompany.business_status;
                     txtBusinessLawsuit.Text = loanerCompany.business_lawsuit;
-                    txtIncomeYearly.Text = loanerCompany.income_yearly;
-                    txtNetAssets.Text = loanerCompany.net_assets;
                     txtCompanyRemark.Text = loanerCompany.remark;
                     txtManager.Text = loanerCompany.manager;
                     txtBusinessBelong.Text = loanerCompany.business_belong;
                     txtCaddress.Text = loanerCompany.address;
-                    txtNetProfit.Text = loanerCompany.net_profit_yearly;
                 }
             }
 
@@ -416,15 +413,12 @@ namespace Agp2p.Web.admin.users
                             business_lawsuit = txtBusinessLawsuit.Text,
                             business_scope = txtBusinessScope.Text,
                             business_status = txtBusinessStatus.Text,
-                            income_yearly = txtIncomeYearly.Text,
-                            net_assets = txtNetAssets.Text,
                             registered_capital = txtRegisteredCapital.Text,
                             setup_time = Convert.ToDateTime(txtSetupTime.Text),
                             remark = txtCompanyRemark.Text,
                             manager = txtManager.Text,
                             business_belong = txtBusinessBelong.Text,
-                            address = txtCaddress.Text,
-                            net_profit_yearly = txtNetProfit.Text
+                            address = txtCaddress.Text
                         };
                         loanerInfo.li_loaner_companies = loanerCompany;
                         context.li_loaner_companies.InsertOnSubmit(loanerCompany);
@@ -470,15 +464,12 @@ namespace Agp2p.Web.admin.users
                         business_lawsuit = txtBusinessLawsuit.Text,
                         business_scope = txtBusinessScope.Text,
                         business_status = txtBusinessStatus.Text,
-                        income_yearly = txtIncomeYearly.Text,
-                        net_assets = txtNetAssets.Text,
                         registered_capital = txtRegisteredCapital.Text,
                         setup_time = Convert.ToDateTime(txtSetupTime.Text),
                         remark = txtCompanyRemark.Text,
                         manager = txtManager.Text,
                         business_belong = txtBusinessBelong.Text,
-                        address = txtCaddress.Text,
-                        net_profit_yearly = txtNetProfit.Text
+                        address = txtCaddress.Text
                     };
                     loaner.li_loaner_companies = company;
                     context.li_loaner_companies.InsertOnSubmit(company);
@@ -489,15 +480,12 @@ namespace Agp2p.Web.admin.users
                     company.business_lawsuit = txtBusinessLawsuit.Text;
                     company.business_scope = txtBusinessScope.Text;
                     company.business_status = txtBusinessStatus.Text;
-                    company.income_yearly = txtIncomeYearly.Text;
-                    company.net_assets = txtNetAssets.Text;
                     company.registered_capital = txtRegisteredCapital.Text;
                     company.setup_time = Convert.ToDateTime(txtSetupTime.Text);
                     company.remark = txtCompanyRemark.Text;
                     company.manager = txtManager.Text;
                     company.business_belong = txtBusinessBelong.Text;
                     company.address = txtCaddress.Text;
-                    company.net_profit_yearly = txtNetProfit.Text;
                 }
             }
             else if (company != null)

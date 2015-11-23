@@ -205,7 +205,6 @@ namespace Agp2p.Web.admin.project
                 sp_company_name.InnerText = loaner.li_loaner_companies.name;
                 sp_company_business_scope.InnerText = loaner.li_loaner_companies.business_scope;
                 sp_company_business_status.InnerText = loaner.li_loaner_companies.business_status;
-                sp_company_income_yearly.InnerText = loaner.li_loaner_companies.income_yearly;
                 sp_company_registered_capital.InnerText = loaner.li_loaner_companies.registered_capital;
                 sp_company_setup_time.InnerText = loaner.li_loaner_companies.setup_time.ToString("yyyy年MM月dd日");
             }
