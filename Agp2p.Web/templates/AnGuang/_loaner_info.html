@@ -5,11 +5,12 @@
         <ul class="list-unstyled">
             <li><span>姓　　名</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>
             <li><span>婚姻状况</span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
-            <li><span>月 收 入</span><span>{loaner.income}</span></li>
+            <li><span>职   业</span><span>{loaner.job}</span></li>
         </ul>
         <ul class="list-unstyled">
             <li><span>性　　别</span><span><%=loaner.dt_users.sex%></span></li>
             <li><span>文化程度</span><span>{loaner.educational_background}</span></li>
+            <li><span>月 收 入</span><span>{loaner.income}</span></li>
         </ul>
         <ul class="list-unstyled">
             <li><span>籍　　贯</span><span>{loaner.native_place}</span></li>
