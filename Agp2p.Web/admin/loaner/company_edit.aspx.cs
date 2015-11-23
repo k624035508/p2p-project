@@ -63,12 +63,10 @@ namespace Agp2p.Web.admin.loaner
             txtBusinessScope.Text = model.business_scope;
             txtBusinessStatus.Text = model.business_status;
             txtBusinessLawsuit.Text = model.business_lawsuit;
-            txtIncomeYearly.Text = model.income_yearly;
-            txtNetAssets.Text = model.net_assets;
             txtCompanyRemark.Text = model.remark;
             txtAddress.Text = model.address;
             txtBusinessBelong.Text = model.business_belong;
-            txtNetProfit.Text = model.net_profit_yearly;
+
             txtManager.Text = model.manager;
 
             rptPics.DataSource = model.li_albums;
@@ -116,11 +114,8 @@ namespace Agp2p.Web.admin.loaner
                 business_status = txtBusinessStatus.Text,
                 business_lawsuit = txtBusinessLawsuit.Text,
                 registered_capital = txtRegisteredCapital.Text,
-                income_yearly = txtIncomeYearly.Text,
-                net_assets = txtNetAssets.Text,
                 remark = txtCompanyRemark.Text,
                 manager = txtManager.Text,
-                net_profit_yearly = txtNetProfit.Text,
                 address = txtAddress.Text,
                 business_belong = txtBusinessBelong.Text
             };
@@ -199,11 +194,8 @@ namespace Agp2p.Web.admin.loaner
             model.business_scope = txtBusinessScope.Text;
             model.business_status = txtBusinessStatus.Text;
             model.business_lawsuit = txtBusinessLawsuit.Text;
-            model.income_yearly = txtIncomeYearly.Text;
-            model.net_assets = txtNetAssets.Text;
             model.remark = txtCompanyRemark.Text;
             model.manager = txtManager.Text;
-            model.net_profit_yearly = txtNetProfit.Text;
             model.address = txtAddress.Text;
             model.business_belong = txtBusinessBelong.Text;
 

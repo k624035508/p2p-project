@@ -75,6 +75,14 @@
         </dd>
     </dl>
     <dl>
+        <dt>营业执照</dt>
+        <dd><asp:TextBox ID="TextBox1" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+    </dl>
+    <dl>
+        <dt>机构代码</dt>
+        <dd><asp:TextBox ID="TextBox2" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+    </dl>
+    <dl>
         <dt>注册资本</dt>
         <dd><asp:TextBox ID="txtRegisteredCapital" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
     </dl>
@@ -94,7 +102,7 @@
         <dt>涉讼情况</dt>
         <dd><asp:TextBox ID="txtBusinessLawsuit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
     </dl>
-    <dl>
+<%--    <dl>
         <dt>年收入</dt>
         <dd><asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
     </dl>
@@ -105,7 +113,7 @@
     <dl>
         <dt>净资产</dt>
         <dd><asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-    </dl>
+    </dl>--%>
     <dl>
         <dt>地址</dt>
         <dd><asp:TextBox ID="txtAddress" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>

@@ -50,16 +50,6 @@ namespace Agp2p.Web.UI
         /// </summary>
         public string linkurl(string key, params object[] _params)
         {
-            return linkurl(config, key, _params);
-        }
-
-        /// <summary>
-        /// 返回URL重写统一链接地址
-        /// </summary>
-        protected static string linkurl(Model.siteconfig config, string key, params object[] _params)
-        {
-            // TODO 判断 key == "project", 和项目类别是否是银票宝，如果是的话就生成另外的连接
-
             Hashtable ht = new BLL.url_rewrite().GetList(); //获得URL配置列表
             Model.url_rewrite model = ht[key] as Model.url_rewrite; //查找指定的URL配置节点
 

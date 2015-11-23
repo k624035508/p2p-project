@@ -29,6 +29,7 @@ namespace Agp2p.Web.UI.Page
 
         public class MyInvestProject
         {
+            public int Id { get; set; }
             public string Name { get; set; }
             public decimal ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
@@ -101,6 +102,7 @@ namespace Agp2p.Web.UI.Page
                 }
                 reps1.First().Project = new MyInvestProject
                 {
+                    Id = p.Key.id,
                     Name = p.Key.title,
                     InvestValue = investedProjectValueMap[p.Key],
                     ProfitRateYear = p.Key.profit_rate_year
