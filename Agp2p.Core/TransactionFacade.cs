@@ -310,8 +310,8 @@ namespace Agp2p.Core
         {
             var pr = context.li_projects.Single(p => p.id == projectId);
 
-            if ((int) Agp2pEnums.ProjectStatusEnum.Financing != pr.status)
-                throw new InvalidOperationException("项目不是发标状态，不能投资");
+            if ((int) Agp2pEnums.ProjectStatusEnum.Financing != pr.status && (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
+                throw new InvalidOperationException("项目不可投资！");
             // 判断投资金额的数额是否合理
             var canBeInvest = pr.financing_amount - pr.investment_amount;
             if (canBeInvest == 0)
