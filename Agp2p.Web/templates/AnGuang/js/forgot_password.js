@@ -18,8 +18,9 @@ class ResetPasswordPage extends React.Component {
 		this.state = {step: 1, tel: "", picCode: "", smsCode: "", newPwd: "", repeatPwd: ""};
 	}
 	getSMSVerifyCode() {
+		let url = "/tools/mobile_verify.ashx?act=sendCodeForResetPwd&mobile=" + this.state.tel + "&picCode=" + this.state.picCode;
 		ajax({
-			url: "/tools/mobile_verify.ashx?act=sendCodeForResetPwd&mobile=" + this.state.tel + "&picCode=" + this.state.picCode,
+			url: url,
 			type: "get",
             dataType: "json",
             contentType: "application/json",
@@ -42,8 +43,9 @@ class ResetPasswordPage extends React.Component {
 			alert("两次输入的密码不一致");
 			return;
 		}
+		let url = "/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=" + this.state.smsCode;
 		ajax({
-			url: "/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=" + this.state.smsCode,
+			url: url,
 			type: "post",
             dataType: "json",
             data: {newPwd: this.state.newPwd},
