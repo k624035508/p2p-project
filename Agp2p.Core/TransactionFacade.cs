@@ -1224,8 +1224,8 @@ namespace Agp2p.Core
                         ? project.li_risks.li_loaners.li_loaner_companies.name
                         : "")
                 .Replace("{user_name_loaner}", project.li_risks.li_loaners.dt_users.real_name)
-                .Replace("{business_license}", "")
-                .Replace("{organization_certificate}", "")
+                .Replace("{business_license}", project.li_risks.li_loaners.li_loaner_companies?.business_license_no)
+                .Replace("{organization_certificate}", project.li_risks.li_loaners.li_loaner_companies?.organization_no)
 
                 //乙方(投资人)信息
                 .Replace("{user_real_name_invester}", investment.dt_users.real_name)
