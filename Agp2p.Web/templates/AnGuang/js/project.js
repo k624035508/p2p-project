@@ -5,7 +5,7 @@ import "../less/footerSmall.less";
 import "visualnav";
 
 import header from "./header.js"
-import "./tips_alert.js"
+//import "./tips_alert.js"
 
 let initRightSideNav = () => {
     let $navContainer = $("#sidemenu > ul");

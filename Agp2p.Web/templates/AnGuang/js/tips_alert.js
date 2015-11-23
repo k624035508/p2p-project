@@ -12,7 +12,7 @@ class TipsAlert extends React.Component {
 
     render(){
         return(
-            <div className="modal fade" id="tipsAlert" tabindex="-1" role="dialog" aria-labelledby="tipsAlertLabel">
+            <div className="modal fade" id="tipsAlert" tabIndex="-1" role="dialog" aria-labelledby="tipsAlertLabel">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">

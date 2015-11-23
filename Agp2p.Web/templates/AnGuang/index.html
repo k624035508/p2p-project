@@ -55,12 +55,12 @@
 <!--announcement-->
 <div class="container-fluid announcement-wrap">
     <div class="announcement">
-        <span class="pull-right"><a href='<%=linkurl("article_list","43,54")%>'>更多></a></span>
+        <span class="pull-right"><a href='<%=linkurl("article_list","43,54")%>' target="_blank">更多></a></span>
         <span class="announce-board-icon announce-icon"></span>
         <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
         <span class="return-announce">发标公告：
             <%if(projectAnnounce!=null)%>
-            <a href='<%linkurl("article_show",projectAnnounce.id)%>'>
+            <a href='<%linkurl("article_show",projectAnnounce.id)%>' target="_blank">
             <%=projectAnnounce.title.Length>25?projectAnnounce.title.Substring(0, 25)+"...":projectAnnounce.title%>
             </a>
             <%else%>
@@ -71,7 +71,7 @@
         <%set var newestAnnounce=GetArticles(42, 1).FirstOrDefault()%>
         <span class="web-announce">最新动态：
             <%if(newestAnnounce!=null)%>
-            <a href='<%linkurl("article_show",newestAnnounce.id)%>'>
+            <a href='<%linkurl("article_show",newestAnnounce.id)%>' target="_blank">
             <%=newestAnnounce.title.Length>30?newestAnnounce.title.Substring(0, 30)+"...":newestAnnounce.title%>
             </a>
             <%else%>
