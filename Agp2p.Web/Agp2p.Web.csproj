@@ -798,6 +798,8 @@
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
+    <Content Include="templates\AnGuang\js\tips_alert.js" />
+    <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
