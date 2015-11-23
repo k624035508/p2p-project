@@ -5,6 +5,7 @@ import CardEditor from "../components/card-editor.jsx";
 import { fetchBankCards, deleteBankCard } from "../actions/bankcard.js";
 
 import "../less/bankaccount.less";
+import confirm from "../components/tips_confirm.js";
 
 class BankAccount extends React.Component {
     constructor(props) {
@@ -18,9 +19,7 @@ class BankAccount extends React.Component {
     }
     deleteCard(card) {
     	var {cardId, bankName, last4Char} = card;
-    	if (confirm(`是否删除尾号为 ${last4Char} 的 ${bankName} 银行卡？`)) {
-    		this.props.dispatch(deleteBankCard(cardId));
-    	}
+        confirm(`是否删除尾号为 ${last4Char} 的 ${bankName} 银行卡？`, () => this.props.dispatch(deleteBankCard(cardId)));
     }
     onCardClicked(index) {
     	this.setState({selectedCardIndex: this.state.selectedCardIndex == index ? -1 : index});
