@@ -194,6 +194,8 @@ namespace Agp2p.Web.admin.users
                     txtManager.Text = loanerCompany.manager;
                     txtBusinessBelong.Text = loanerCompany.business_belong;
                     txtCaddress.Text = loanerCompany.address;
+                    txtBusinessLicenseNo.Text = loanerCompany.business_license_no;
+                    txtOrganizationNo.Text = loanerCompany.organization_no;
                 }
             }
 
@@ -418,7 +420,9 @@ namespace Agp2p.Web.admin.users
                             remark = txtCompanyRemark.Text,
                             manager = txtManager.Text,
                             business_belong = txtBusinessBelong.Text,
-                            address = txtCaddress.Text
+                            address = txtCaddress.Text,
+                            business_license_no = txtBusinessLicenseNo.Text,
+                            organization_no = txtOrganizationNo.Text
                         };
                         loanerInfo.li_loaner_companies = loanerCompany;
                         context.li_loaner_companies.InsertOnSubmit(loanerCompany);
@@ -469,7 +473,9 @@ namespace Agp2p.Web.admin.users
                         remark = txtCompanyRemark.Text,
                         manager = txtManager.Text,
                         business_belong = txtBusinessBelong.Text,
-                        address = txtCaddress.Text
+                        address = txtCaddress.Text,
+                        business_license_no = txtBusinessLicenseNo.Text,
+                        organization_no = txtOrganizationNo.Text
                     };
                     loaner.li_loaner_companies = company;
                     context.li_loaner_companies.InsertOnSubmit(company);
@@ -486,6 +492,8 @@ namespace Agp2p.Web.admin.users
                     company.manager = txtManager.Text;
                     company.business_belong = txtBusinessBelong.Text;
                     company.address = txtCaddress.Text;
+                    company.business_license_no = txtBusinessLicenseNo.Text;
+                    company.organization_no = txtOrganizationNo.Text;
                 }
             }
             else if (company != null)
