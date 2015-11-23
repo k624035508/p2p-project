@@ -4,11 +4,13 @@ import "../less/head.less";
 import "../less/forgot_password.less";
 import "../less/footerSmall.less";
 
-import React from "react"
-import ReactDom from "react-dom"
-import header from "./header.js"
-import ImageVerifyCode from "../components/img-verify-code.jsx"
-import { ajax } from "jquery"
+import React from "react";
+import ReactDom from "react-dom";
+import header from "./header.js";
+import ImageVerifyCode from "../components/img-verify-code.jsx";
+import { ajax } from "jquery";
+
+import alert from "../components/tips_alert.js";
 
 class ResetPasswordPage extends React.Component {
 	constructor(props) {
