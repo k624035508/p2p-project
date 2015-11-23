@@ -5,6 +5,7 @@ import "../less/footerSmall.less";
 
 import header from "./header.js";
 import alert from "../components/tips_alert.js";
+import confirm from "../components/tips_confirm.js";
 
 let initRightSideNav = () => {
     let $navContainer = $("#sidemenu > ul");
@@ -44,10 +45,10 @@ $(function () {
         $investBtn.click(function () {
             var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
             if (!hasPayPassword) {
-                if (confirm("您需要先设置交易密码，是否现在转到‘安全中心’？")) {
+                confirm("您需要先设置交易密码，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
-                }
+                });
                 return;
             }
             var investAmount = parseFloat($investAmountInput.val());
