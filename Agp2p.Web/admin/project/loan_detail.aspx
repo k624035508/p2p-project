@@ -260,13 +260,6 @@
                                 <span id="sp_company_business_status" runat="server"></span>
                             </td>
                         </tr>
-                        <tr>
-                            <th>年收入
-                            </th>
-                            <td>
-                                <span id="sp_company_income_yearly" runat="server"></span>
-                            </td>
-                        </tr>
                     </table>
                 </dd>
             </dl>

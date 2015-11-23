@@ -34,7 +34,7 @@
 <!--标书样式-->
 <div class="tender-content">
     <div class="invest-control pull-right">
-        <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+        <%if(projectModel.status!=(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
         <div><span class="title-mark">可投金额</span></div>
         <%else%>
         <div><span class="title-mark">剩余金额</span></div>

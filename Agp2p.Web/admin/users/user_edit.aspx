@@ -144,7 +144,7 @@
                     <asp:TextBox ID="txtCompanyName" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
-                <dt>企业负责人</dt>
+                <dt>企业法人</dt>
                 <dd>
                     <asp:TextBox ID="txtManager" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
@@ -164,15 +164,26 @@
                     <asp:TextBox ID="txtRegisteredCapital" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
-                <dt>经营范围</dt>
+                <dt>营业执照</dt>
                 <dd>
-                    <asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+                    <asp:TextBox ID="txtBusinessLicenseNo" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>机构代码</dt>
+                <dd>
+                    <asp:TextBox ID="txtOrganizationNo" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>所属行业</dt>
                 <dd>
                     <asp:TextBox ID="txtBusinessBelong" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
+            <dl>
+                <dt>经营范围</dt>
+                <dd>
+                    <asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+
             <dl>
                 <dt>经营状态</dt>
                 <dd>
@@ -182,21 +193,6 @@
                 <dt>涉讼情况</dt>
                 <dd>
                     <asp:TextBox ID="txtBusinessLawsuit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-            </dl>
-            <dl>
-                <dt>年收入</dt>
-                <dd>
-                    <asp:TextBox ID="txtIncomeYearly" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-            </dl>
-            <dl>
-                <dt>年净利润</dt>
-                <dd>
-                    <asp:TextBox ID="txtNetProfit" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
-            </dl>
-            <dl>
-                <dt>净资产</dt>
-                <dd>
-                    <asp:TextBox ID="txtNetAssets" runat="server" CssClass="input normal" datatype="/^.*$/"></asp:TextBox></dd>
             </dl>
             <dl>
                 <dt>地址</dt>
