@@ -36,7 +36,19 @@
         <div><span class="title-mark">可投金额</span></div>
         <div class="investable-amount-wrap">
             <div class="investable-amount">{investmentBalance}</div>
-            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)%>
+            <!--满标，审核中-->
+            <div class="account-balance-empty">
+                <div class="tips" style="text-align: center">已满标</div>
+                <button type="button" class="btn-common empty-btn" disabled>审 核 中</button>
+            </div>
+            <%else if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <!--到期未满标，审核中-->
+            <div class="account-balance-empty">
+                <div class="tips" style="text-align: center">已过期</div>
+                <button type="button" class="btn-common empty-btn" disabled>审 核 中</button>
+            </div>
+            <%else if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
             <!--满标-->
             <div class="account-balance-empty">
                 <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
@@ -85,7 +97,9 @@
                         </div>
                         <div class="profit-wrap"><span>预期收益：</span><span class="profit">0.00</span></div>
                         <div class="pswInput"><i>*</i><span>支付密码：</span><!--<input type="password" />--></div>
-                        <div class="agreement"><input type="checkbox" id="agreement"/><label for="agreement">我已经阅读并同意</label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a></div>
+                        <div class="agreement"><input type="checkbox" id="agreement"/>
+                            <label for="agreement">我已经阅读并同意</label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="cancel-btn" data-dismiss="modal">取 消</button>
                             <button type="button" class="confirm-btn">确 认</button>
