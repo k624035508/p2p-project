@@ -48,14 +48,14 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="5%">选择</th>
-    <th align="left">企业名称</th>
-    <th align="left" width="10%">成立时间</th>
-    <th align="left" width="10%">注册资本</th>
-    <th align="left" width="10%">经营范围</th>
-    <th align="left" width="10%">经营状态</th>
+    <th align="left" width="12%">企业名称</th>
+    <th align="left" width="8%">成立时间</th>
+    <th align="left" width="8%">注册资本</th>
+    <th align="left" width="10%">营业执照号</th>
+    <th align="left" width="10%">机构代码</th>
+    <th align="left" width="15%">经营范围</th>
+    <th align="left" width="15%">经营状态</th>
     <th align="left" width="10%">涉讼情况</th>
-    <th align="left" width="10%">年收入</th>
-    <th align="left" width="10%">净资产</th>
     <th align="left" width="10%">备注</th>
   </tr>
 </HeaderTemplate>
@@ -66,13 +66,13 @@
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
     <td><a href="company_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
-    <td><%# Eval("setup_time") %></td>
+    <td><%# string.Format("{0:yyyy-MM-dd}", Eval("setup_time"))%></td>
     <td><%# Eval("registered_capital") %></td>
+    <td><%# Eval("business_license_no") %></td>
+    <td><%# Eval("organization_no") %></td>
     <td><%# Eval("business_scope") %></td>
     <td><%# Eval("business_status") %></td>
     <td><%# Eval("business_lawsuit") %></td>
-    <td><%# Eval("income_yearly") %></td>
-    <td><%# Eval("net_assets") %></td>
     <td><%# Eval("remark") %></td>
   </tr>
 </ItemTemplate>

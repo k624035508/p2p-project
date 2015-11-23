@@ -19,7 +19,7 @@ $(function(){
 			},
 			success: function(data){
 				if(data.status == 1){
-					if (document.referrer !== "" && document.referrer.indexOf("login") == -1) {
+					if (document.referrer !== "" && document.referrer.indexOf("/project/") != -1) {
 						location.href = document.referrer;
 					} else {
 						location.href = $("div.nav-bar li#myAccount > a").attr("href");
