@@ -32,7 +32,7 @@ module.exports = {
     "buttons": true,
 
     "component-animations": true,
-    // "glyphicons": true, ie8 @font-face 会出问题，所以字体样式只能放到 <head> 处加载
+    "glyphicons": false, // ie8 @font-face 会出问题，所以字体样式只能放到 <head> 处加载
     "dropdowns": true,
     "button-groups": true,
     "input-groups": true,
