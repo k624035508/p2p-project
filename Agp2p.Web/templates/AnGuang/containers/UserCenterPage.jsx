@@ -1,9 +1,9 @@
 ﻿import React from "react";
-import { Link } from 'react-router'
-import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js"
+import { Link } from 'react-router';
+import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js";
 
-import StatusContainer from "../containers/user-status.jsx"
-import MyAccountPage from "../containers/myaccount.jsx"
+import StatusContainer from "../containers/user-status.jsx";
+import MyAccountPage from "../containers/myaccount.jsx";
 
 /**
  * Number.prototype.format(n, x)

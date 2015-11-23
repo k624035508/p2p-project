@@ -1,7 +1,9 @@
 import React from "react";
-import CityPicker from "../components/city-picker.jsx"
-import { bankList } from "../js/bank-list.jsx"
-import { appendBankCard, modifyBankCard } from "../actions/bankcard.js"
+import CityPicker from "../components/city-picker.jsx";
+import { bankList } from "../js/bank-list.jsx";
+import { appendBankCard, modifyBankCard } from "../actions/bankcard.js";
+
+import alert from "../components/tips_alert.js";
 
 class CardEditor extends React.Component {
 	constructor(props) {
@@ -83,10 +85,10 @@ class CardEditor extends React.Component {
 					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
 						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /></li>}
 				</ul>
+				{creatingCard ? null :
+					<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
 				<button type="button" onClick={ev => this.doSaveCard()}
 					disabled={!this.props.realName}>{creatingCard ? "提 交" : "保 存"}</button>
-				{creatingCard ? null :
-				<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
 			</div>
 		);
 	}

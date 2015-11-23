@@ -1,11 +1,11 @@
-import "../less/myinvest.less"
+import "../less/myinvest.less";
 
-import React from "react"
-import { ajax } from "jquery"
-import keys from "lodash/object/keys"
-import values from "lodash/object/values"
-import echarts from 'echarts'
-import 'echarts/chart/bar'
+import React from "react";
+import { ajax } from "jquery";
+import keys from "lodash/object/keys";
+import values from "lodash/object/values";
+import echarts from 'echarts';
+import 'echarts/chart/bar';
 
 const Tab0 = ["累计投资", "在投本金", "已收本金"];
 const Tab1 = ["累计收益", "待收益", "已收益"];

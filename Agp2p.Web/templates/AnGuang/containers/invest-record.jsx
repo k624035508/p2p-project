@@ -1,10 +1,10 @@
-﻿import React from "react"
-import "../less/invest-record.less"
+﻿import React from "react";
+import "../less/invest-record.less";
 
-import HorizontalPicker from "../components/horizontal-picker.jsx"
-import DateSpanPicker from "../components/date-span-picker.jsx"
-import Table from "../components/investRecord-table.jsx"
-import Pagination from "../components/pagination.jsx"
+import HorizontalPicker from "../components/horizontal-picker.jsx";
+import DateSpanPicker from "../components/date-span-picker.jsx";
+import Table from "../components/investRecord-table.jsx";
+import Pagination from "../components/pagination.jsx";
 
 class MyTransaction extends React.Component {
     constructor(props) {

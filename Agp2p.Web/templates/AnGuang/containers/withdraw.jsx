@@ -1,11 +1,12 @@
 import React from "react";
-import { classMapping } from "../js/bank-list.jsx"
-import CardEditor from "../components/card-editor.jsx"
-import { fetchBankCards } from "../actions/bankcard.js"
-import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
-import { ajax } from "jquery"
+import { classMapping } from "../js/bank-list.jsx";
+import CardEditor from "../components/card-editor.jsx";
+import { fetchBankCards } from "../actions/bankcard.js";
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js";
+import { ajax } from "jquery";
 
-import "../less/withdraw.less"
+import "../less/withdraw.less";
+import alert from "../components/tips_alert.js";
 
 class AppendingCardDialog extends React.Component {
 	constructor(props) {

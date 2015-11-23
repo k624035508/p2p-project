@@ -3,6 +3,7 @@ import "../less/head.less";
 import "../less/register.less";
 import "../less/footerSmall.less";
 
+import alert from "../components/tips_alert.js";
 
 $(function() {
     // 检测邀请码

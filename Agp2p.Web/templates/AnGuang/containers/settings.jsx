@@ -1,8 +1,10 @@
 import React from "react";
-import keys from "lodash/object/keys"
-import values from "lodash/object/values"
-import "../less/settings.less"
-import "babel-polyfill"
+import keys from "lodash/object/keys";
+import values from "lodash/object/values";
+import "../less/settings.less";
+import "babel-polyfill";
+
+import alert from "../components/tips_alert.js";
 
 class Settings extends React.Component {
 	constructor(props) {

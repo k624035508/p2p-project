@@ -1,10 +1,10 @@
 import React from "react";
-import { classMapping } from "../js/bank-list.jsx"
-import CityPicker from "../components/city-picker.jsx"
-import CardEditor from "../components/card-editor.jsx"
-import { fetchBankCards, deleteBankCard } from "../actions/bankcard.js"
+import { classMapping } from "../js/bank-list.jsx";
+import CityPicker from "../components/city-picker.jsx";
+import CardEditor from "../components/card-editor.jsx";
+import { fetchBankCards, deleteBankCard } from "../actions/bankcard.js";
 
-import "../less/bankaccount.less"
+import "../less/bankaccount.less";
 
 class BankAccount extends React.Component {
     constructor(props) {

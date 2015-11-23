@@ -4,6 +4,7 @@ import React from "react";
 import Pagination from "../components/pagination.jsx";
 import qr from "qr-image";
 
+import alert from "../components/tips_alert.js";
 
 class InvitationPage extends React.Component {
 	constructor(props) {

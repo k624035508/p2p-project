@@ -1,10 +1,13 @@
-import React from "react"
-import { ajax } from "jquery"
-import DropdownPicker from "../components/dropdown-picker.jsx"
-import Pagination from "../components/pagination.jsx"
-import findIndex from "lodash/array/findIndex"
-import all from "lodash/collection/all"
-import "../less/mynews.less"
+import React from "react";
+import { ajax } from "jquery";
+import DropdownPicker from "../components/dropdown-picker.jsx";
+import Pagination from "../components/pagination.jsx";
+import findIndex from "lodash/array/findIndex";
+import all from "lodash/collection/all";
+import "../less/mynews.less";
+
+import alert from "../components/tips_alert.js";
+import confirm from "../components/tips_confirm.js";
 
 class MyNews extends React.Component {
 	constructor(props) {
@@ -111,9 +114,7 @@ class MyNews extends React.Component {
 			alert("请先选择消息");
 			return;
 		}
-		if (confirm("确认删除已选中的消息？")) {
-			this.deleteMessages(predelMsgIds);
-		}
+		confirm("确认删除已选中的消息？", () => this.deleteMessages(predelMsgIds));
 	}
     render() {
         return(

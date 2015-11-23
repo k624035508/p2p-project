@@ -1,10 +1,10 @@
 import React from "react";
-import "../less/mytransaction.less"
+import "../less/mytransaction.less";
 
-import DropdownPicker from "../components/dropdown-picker.jsx"
-import DateSpanPicker from "../components/date-span-picker.jsx"
-import TransactionTable from "../components/transactions-table.jsx"
-import Pagination from "../components/pagination.jsx"
+import DropdownPicker from "../components/dropdown-picker.jsx";
+import DateSpanPicker from "../components/date-span-picker.jsx";
+import TransactionTable from "../components/transactions-table.jsx";
+import Pagination from "../components/pagination.jsx";
 
 class MyTransaction extends React.Component {
 	constructor(props) {

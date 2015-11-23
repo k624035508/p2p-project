@@ -1,9 +1,9 @@
-﻿import React from "react"
+﻿import React from "react";
 import { classMapping } from "../js/bank-list.jsx";
-import keys from "lodash/object/keys"
+import keys from "lodash/object/keys";
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
-import "../less/recharge.less"
+import "../less/recharge.less";
 
 class RechargePage extends React.Component {
 	constructor(props) {

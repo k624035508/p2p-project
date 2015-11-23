@@ -1,12 +1,12 @@
 import React from "react";
-import CityPicker from "../components/city-picker.jsx"
-import DatePicker from "../components/date-picker.jsx"
-import ImageVerifyCode from "../components/img-verify-code.jsx"
-import { updateWalletInfo, updateUserInfo, updateUserInfoByName, fetchWalletAndUserInfo } from "../actions/usercenter.js"
-import { ajax } from "jquery"
+import CityPicker from "../components/city-picker.jsx";
+import DatePicker from "../components/date-picker.jsx";
+import ImageVerifyCode from "../components/img-verify-code.jsx";
+import { updateWalletInfo, updateUserInfo, updateUserInfoByName, fetchWalletAndUserInfo } from "../actions/usercenter.js";
+import { ajax } from "jquery";
 
-import "../less/safe.less"
-
+import "../less/safe.less";
+import alert from "../components/tips_alert.js";
 
 let emptyIfNull = str => str == null ? "" : str;
 

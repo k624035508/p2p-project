@@ -1,4 +1,5 @@
 import { ajax } from "jquery";
+import alert from "../components/tips_alert.js";
 
 export const UPDATE_BANK_CARDS = "UPDATE_BANK_CARDS"
 
