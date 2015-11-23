@@ -138,7 +138,7 @@ namespace Agp2p.Web.UI.Page
                 income = QueryTransactionIncome(h),
                 outcome = QueryTransactionOutcome(h),
                 idleMoney = h.idle_money,
-                createTime = h.create_time.ToString("yyyy/MM/dd HH:mm"),
+                createTime = h.create_time.ToString("yy/MM/dd HH:mm"),
                 remark = QueryRemark(h)
             });
             return JsonConvert.SerializeObject(new { totalCount = count, data = os });

@@ -40,10 +40,10 @@ class TransactionTable extends React.Component {
                     <tr>
                         <th>项目名称</th>
                         <th>年利率</th>
-                        <th>投资金额</th>
+                        <th>投资金额（元）</th>
                         <th>回款日期</th>
-                        <th>支付本金</th>
-                        <th>支付利息</th>
+                        <th>支付本金（元）</th>
+                        <th>支付利息（元）</th>
                         <th>期数</th>
                     </tr>
                     </thead>
@@ -51,8 +51,8 @@ class TransactionTable extends React.Component {
                     {this.state.data.length != 0 ? null : <tr><td colSpan="7">暂无数据</td></tr>}
                     { this.state.data.map(tr => 
                         <tr className="detailRow" key={tr.RepaymentId}>
-                            <td>{tr.Project == null ? "" : tr.Project.Name}</td>
-                            <td>{tr.Project == null ? "" : tr.Project.ProfitRateYear}</td>
+                            <td>{tr.Project == null ? "" : <a href={`/project/${tr.Project.Id}.html`} target="_blank">{tr.Project.Name}</a>}</td>
+                            <td>{tr.Project == null ? "" : tr.Project.ProfitRateYear + "%"}</td>
                             <td>{tr.Project == null ? "" : tr.Project.InvestValue}</td>
                             <td>{tr.ShouldRepayDay}</td>
                             <td>{tr.RepayPrincipal}</td>

@@ -113,7 +113,7 @@ class MyAccount extends React.Component {
 						{pro.categoryCallIndex!="ypb" ? null:
 						<span className="pull-right acceptance-bank"><i></i>承兑银行：{pro.conversionBank}</span>}
 						<span className="invest-style-tab">{pro.categoryTitle}</span>
-						<span className="invest-title"><a href={pro.linkurl}>{pro.title}</a></span>
+						<span className="invest-title"><a href={`/project/${pro.id}.html`} target="_blank">{pro.title}</a></span>
 						{(pro.tag & ProjectTagEnum.Recommend) == 0 ? null : <span className="invest-list-icon jian-icon"></span>}
 						{(pro.tag & ProjectTagEnum.Ordered) == 0 ? null : <span className="invest-list-icon yue-icon"></span>}
 						{(pro.tag & ProjectTagEnum.CreditGuarantee) == 0 ? null : <span className="invest-list-icon xin-icon"></span>}
@@ -144,7 +144,7 @@ class MyAccount extends React.Component {
 						</div>
 						<div className="invest-btn">
 							<a className={pro.status == ProjectStatusEnum.Financing ? "invest-now-btn" : "invest-full-btn"}
-							   href={pro.linkurl} >{ProjectStatusEnumDesc[pro.status]}</a>
+							   href={`/project/${pro.id}.html`} target="_blank" >{ProjectStatusEnumDesc[pro.status]}</a>
 						</div>
 					</div>
 				</div>)}

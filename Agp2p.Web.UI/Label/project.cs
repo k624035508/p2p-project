@@ -31,7 +31,6 @@ namespace Agp2p.Web.UI
         public string title { get; set; }
         public string categoryTitle { get; set; }
         public string categoryCallIndex { get; set; }
-        public string linkurl { get; set; }
         public string conversionBank { get; set; }
     }
 
