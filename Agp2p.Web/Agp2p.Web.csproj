@@ -648,6 +648,7 @@
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\article_show.html" />
+    <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\company.png" />

@@ -3,6 +3,8 @@ import "../less/head.less";
 import "../less/login.less";
 import "../less/footerSmall.less";
 
+import alert from "../components/tips_alert.js";
+
 $(function(){
 	$("#account").focus();
 
