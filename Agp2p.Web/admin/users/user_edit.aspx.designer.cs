@@ -148,13 +148,22 @@ namespace Agp2p.Web.admin.users {
         protected global::System.Web.UI.WebControls.TextBox txtRegisteredCapital;
         
         /// <summary>
-        /// txtBusinessScope 控件。
+        /// txtBusinessLicenseNo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBusinessScope;
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessLicenseNo;
+        
+        /// <summary>
+        /// txtOrganizationNo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOrganizationNo;
         
         /// <summary>
         /// txtBusinessBelong 控件。
@@ -164,6 +173,15 @@ namespace Agp2p.Web.admin.users {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBusinessBelong;
+        
+        /// <summary>
+        /// txtBusinessScope 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessScope;
         
         /// <summary>
         /// txtBusinessStatus 控件。
@@ -182,33 +200,6 @@ namespace Agp2p.Web.admin.users {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBusinessLawsuit;
-        
-        /// <summary>
-        /// txtIncomeYearly 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIncomeYearly;
-        
-        /// <summary>
-        /// txtNetProfit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNetProfit;
-        
-        /// <summary>
-        /// txtNetAssets 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNetAssets;
         
         /// <summary>
         /// txtCaddress 控件。
