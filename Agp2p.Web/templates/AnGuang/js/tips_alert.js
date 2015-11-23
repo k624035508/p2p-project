@@ -1,7 +1,5 @@
 import React from "react"
 import ReactDom from "react-dom"
-import $ from "jquery"
-import "bootstrap-webpack";
 import "../less/tips-alert.less"
 
 class TipsAlert extends React.Component {
@@ -12,7 +10,7 @@ class TipsAlert extends React.Component {
 
     render(){
         return(
-            <div className="modal fade" id="tipsAlert" tabIndex="-1" role="dialog" aria-labelledby="tipsAlertLabel">
+            <div className="modal fade" id="tipsAlert" data-backdrop="static" tabIndex="-1" role="dialog" aria-labelledby="tipsAlertLabel">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -30,12 +28,12 @@ class TipsAlert extends React.Component {
     }
 }
 
-$(function(){
-    $(".footer-wrap").prepend("<div id='tipsModal'></div>");
-    ReactDom.render(<TipsAlert />, document.getElementById("tipsModal"));
-});
-
-window.alert = (msg, callback = null) => {
+export default (msg, callback = null) => {
+    let mountPoint = document.getElementById("tipsModal");
+    if (!mountPoint) {
+        $("body").append("<div id='tipsModal'></div>");
+        ReactDom.render(<TipsAlert />, document.getElementById("tipsModal"));
+    }
     $("#tipsAlert .modal-body").text(msg);
     $("#tipsAlert").modal();
     if (callback) {

@@ -4,8 +4,8 @@ import "../less/project.less";
 import "../less/footerSmall.less";
 import "visualnav";
 
-import header from "./header.js"
-//import "./tips_alert.js"
+import header from "./header.js";
+import alert from "./tips_alert.js";
 
 let initRightSideNav = () => {
     let $navContainer = $("#sidemenu > ul");
@@ -58,15 +58,15 @@ $(function () {
             var investAmount = parseFloat($investAmountInput.val());
 
             if (investAmount < 100) {
-                window.alert("对不起，最少100元起投！");
+                alert("对不起，最少100元起投！");
                 return;
             }
             if (investAmount != ~~investAmount) {
-                window.alert("对不起，请输入整数金额！");
+                alert("对不起，请输入整数金额！");
                 return;
             }
             if (parseFloat($(this).data()["idleMoney"]) < investAmount) {
-                window.alert("余额不足，请先充值！");
+                alert("余额不足，请先充值！");
                 return;
             }
 
@@ -91,11 +91,11 @@ $(function () {
         $("button.confirm-btn").click(function () {
         	var transactPassword = $("div.pswInput input[type=password]").val();
         	if (transactPassword == "") {
-        		window.alert("请先填写支付密码");
+        		alert("请先填写支付密码");
         		return;
         	}
         	if (!$("div.agreement input[type=checkbox]")[0].checked) {
-        		window.alert("请先同意投资协议");
+        		alert("请先同意投资协议");
         		return;
         	}
             var investAmount = parseFloat($investAmountInput.val());
@@ -106,14 +106,14 @@ $(function () {
         		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
         		timeout: 10000,
         		success: function(result) {
-        			window.alert(result.msg, () => {
+        			alert(result.msg, () => {
                         if (result.status == 1) {
                             location.reload();
                         }
                     });
         		}.bind(this),
         		error: function(xhr, status, err) {
-        			window.alert("操作失败，请重试");
+        			alert("操作失败，请重试");
         			console.error(url, status, err.toString());
         		}.bind(this)
         	});
