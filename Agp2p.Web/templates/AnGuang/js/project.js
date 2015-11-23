@@ -2,7 +2,6 @@ import "bootstrap-webpack!./bootstrap.config.js";
 import "../less/head.less";
 import "../less/project.less";
 import "../less/footerSmall.less";
-import "visualnav";
 
 import header from "./header.js";
 import alert from "../components/tips_alert.js";
@@ -14,11 +13,7 @@ let initRightSideNav = () => {
         let $createdDom = $(`<li><a href='#${dom.id}'><span></span>${name}</a></li>`);
         $navContainer.append($createdDom);
     });
-    $("#sidemenu").visualNav({
-        selectedClass : "active",
-        selectedAppliedTo : 'a',
-        animationTime     : 600,
-    });
+    $("body").scrollspy({target: "#sidemenu"});
 };
 
 $(function () {

@@ -13,7 +13,7 @@ module.exports = {
     'modal': true,
     'tooltip': true,
     'popover': true,
-    'scrollspy': true,
+    'scrollspy': true, // 标书
     'tab': true,
     'affix': true
   },
@@ -36,8 +36,8 @@ module.exports = {
     "dropdowns": true,
     "button-groups": true,
     "input-groups": true,
-    "navs": true,
-    "navbar": true,
+    "navs": false,
+    "navbar": false,
     "breadcrumbs": true,
     "pagination": true,
     "pager": true,

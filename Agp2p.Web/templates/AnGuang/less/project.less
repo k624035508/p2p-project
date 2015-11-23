@@ -485,6 +485,12 @@ div.project-content-wrap {
 		ul {
 			li{
 				margin-bottom: 20px;
+				&:hover, &.active {
+					a {
+						color: @blue;
+						span {background: @grey;}
+					}
+				}
 				a {
 					font-size: @font15;
 					color: grey;
@@ -496,10 +502,6 @@ div.project-content-wrap {
 						border-radius: 10px;
 						border: 1px solid @grey;
 						margin-right: 5px;
-					}
-					&:hover, &.active {
-						color: @blue;
-						span {background: @grey;}
 					}
 				}
 			}
