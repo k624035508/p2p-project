@@ -71,8 +71,8 @@
                     <tr>
                         <th width="3%">选择</th>
                         <th width="4%">序号</th>
-                        <th align="left" width="16%">标题</th>
-                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="15%">标题</th>
+                        <th align="left" width="13%">借款人</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="10%">借款金额(元)</th>
                         <th align="left" width="8%">借款期限</th>

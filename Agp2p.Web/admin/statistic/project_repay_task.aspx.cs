@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Core;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.statistic
@@ -163,7 +164,7 @@ namespace Agp2p.Web.admin.statistic
                         Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) p.repayment_term_span),
                     InvestCompleteTime = p.invest_complete_time,
                     RepayCompleteTime = p.li_repayment_tasks.Select(r => r.should_repay_time).Last(),
-                    Creditor = p.li_risks.li_creditors == null ? p.li_risks.li_loaners.dt_users.real_name : p.li_risks.li_creditors.dt_users.real_name
+                    Creditor = context.GetLonerName(p.id)
                 };
                 int j = 0;
                 return rgi.rg.Select(rg => new RepaymentTaskAmountDetail

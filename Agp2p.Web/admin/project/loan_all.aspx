@@ -51,7 +51,7 @@
                         <th width="4%">序号</th>
                         <th align="left" width="13%">标题</th>
                         <th align="left" width="5%">状态</th>    
-                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="12%">借款人</th>
                         <th align="left" width="10%">借款编号</th>
                         <th align="left" width="8%">产品</th>
                         <th align="left" width="5%">标识</th>

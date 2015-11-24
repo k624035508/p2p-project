@@ -98,9 +98,7 @@ namespace Agp2p.Web.admin.repayment
 
             var repayList = query.AsEnumerable().Select(r =>
             {
-                var repay = new RepayEarlier();
-                var loaner = r.li_projects.li_risks.li_loaners.dt_users;
-                repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
+                var repay = new RepayEarlier {Loaner = context.GetLonerName(r.project)};
                 //计算原来的还款计划应还总额
                 var repayOld =
                     r.li_projects.li_repayment_tasks.Where(t => t.project == r.project && t.status != (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid).OrderBy(t => t.should_repay_time);//旧计划
