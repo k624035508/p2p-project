@@ -37,7 +37,7 @@ class BankAccount extends React.Component {
                 		style={index == this.state.selectedCardIndex ? {"backgroundColor": "#f2f2f2"} : null} >
 	                	<i className="glyphicon glyphicon-minus-sign pull-right" onClick={ev => this.deleteCard(c)}></i>
 	                	<p className="bank-name">{c.bankName}</p>
-	                	<p className="card-num">尾号 {c.last4Char} 银行卡</p>
+	                	<p className="card-num">{"尾号 " + c.last4Char + " 银行卡"}</p>
                 	</li>
             	)}
                 </ul>

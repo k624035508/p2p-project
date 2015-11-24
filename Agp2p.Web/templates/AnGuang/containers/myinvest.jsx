@@ -46,27 +46,43 @@ let genOption = (chartName, barData) => ({
 class MyInvestPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {tabIndex0: -1, tabIndex1: -1 };
+        this.state = {tabIndex0: -1, tabIndex1: -1};
+        this.pendingPromise0 = null;
+        this.pendingPromise1 = null;
     }
     componentDidMount() {
     	this.loadChart0(0);
     	this.loadChart1(0);
     }
+    componentWillUnmount() {
+        if (this.pendingPromise0 != null) {
+            this.pendingPromise0.abort();
+            this.pendingPromise0 = null;
+        }
+        if (this.pendingPromise1 != null) {
+            this.pendingPromise1.abort();
+            this.pendingPromise1 = null;
+        }
+    }
     loadChart0(type) {
     	if (this.state.tabIndex0 == type) return;
-    	this.fetchChartData(type).done(result => {
+        this.pendingPromise0 = this.fetchChartData(type);
+    	this.pendingPromise0.done(result => {
+            this.pendingPromise0 = null;
         	let chartData = JSON.parse(result.d), chart = echarts.init(this.refs.chartBox);
             chart.setOption(genOption(Tab0[type], chartData));
             this.setState({tabIndex0: type});
-        });
+        }).fail(result => this.pendingPromise0 = null);
     }
     loadChart1(type) {
     	if (this.state.tabIndex1 == type) return;
-    	this.fetchChartData(3 + type).done(result => {
+        this.pendingPromise1 = this.fetchChartData(3 + type);
+        this.pendingPromise1.done(result => {
+            this.pendingPromise1 = null;
         	let chartData = JSON.parse(result.d), chart = echarts.init(this.refs.chartBox2);
             chart.setOption(genOption(Tab1[type], chartData));
             this.setState({tabIndex1: type});
-        });
+        }).fail(result => this.pendingPromise1 = null);
     }
     fetchChartData(type) {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryMouthlyHistory";
@@ -91,19 +107,19 @@ class MyInvestPage extends React.Component {
                         <li className={"myinvest-tab " + (this.state.tabIndex0 == 0 ? "active" : "")}
 	                        onClick={ev => this.loadChart0(0)}>
                             <p>累计投资</p>
-                            <p>￥{this.props.totalInvestment}</p>
+                            <p>{"￥" + this.props.totalInvestment}</p>
                         </li>
                         <li className="operator">=</li>
                         <li className={"myinvest-tab " + (this.state.tabIndex0 == 1 ? "active" : "")}
                         	onClick={ev => this.loadChart0(1)}>
                             <p>在投本金</p>
-                            <p>￥{this.props.investingMoney}</p>
+                            <p>{"￥" + this.props.investingMoney}</p>
                         </li>
                         <li className="operator">+</li>
                         <li className={"myinvest-tab " + (this.state.tabIndex0 == 2 ? "active" : "")}
                         	onClick={ev => this.loadChart0(2)}>
                             <p>已收本金</p>
-                            <p>￥{this.props.totalInvestment - this.props.investingMoney}</p>
+                            <p>{"￥" + (this.props.totalInvestment - this.props.investingMoney)}</p>
                         </li>
                     </ul>
                     <div id="invest-bar" ref="chartBox"></div>
@@ -114,19 +130,19 @@ class MyInvestPage extends React.Component {
                         <li className={"myinvest-tab " + (this.state.tabIndex1 == 0 ? "active" : "")}
                         	onClick={ev => this.loadChart1(0)}>
                             <p>累计收益</p>
-                            <p>￥{(this.props.totalProfit + this.props.profitingMoney).toFixed(2)}</p>
+                            <p>{"￥" + (this.props.totalProfit + this.props.profitingMoney).toFixed(2)}</p>
                         </li>
                         <li className="operator">=</li>
                         <li className={"myinvest-tab " + (this.state.tabIndex1 == 1 ? "active" : "")}
                         	onClick={ev => this.loadChart1(1)}>
                             <p>待收益</p>
-                            <p>￥{this.props.profitingMoney}</p>
+                            <p>{"￥" + this.props.profitingMoney}</p>
                         </li>
                         <li className="operator">+</li>
                         <li className={"myinvest-tab " + (this.state.tabIndex1 == 2 ? "active" : "")}
                         	onClick={ev => this.loadChart1(2)}>
                             <p>已收益</p>
-                            <p>￥{this.props.totalProfit}</p>
+                            <p>{"￥" + this.props.totalProfit}</p>
                         </li>
                     </ul>
                     <div id="profit-bar" ref="chartBox2"></div>

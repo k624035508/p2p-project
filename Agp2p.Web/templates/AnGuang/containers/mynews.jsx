@@ -17,23 +17,40 @@ class MyNews extends React.Component {
 			pageIndex: 0,
 			pageCount: 0,
 			readingMsgIndex: -1,
-			onPageLoaded: pageCount => this.setState({pageCount: pageCount}),
 			msgs: []
 		};
+		this.pendingFetchPromise = null;
+		this.pendingSetReadPromise = null;
+		this.pendingDeletePromise = null;
 	}
 	componentDidMount() {
 		this.fetchMessages(this.state.type, this.state.pageIndex);
 	}
+	componentWillUnmount() {
+		if (this.pendingFetchPromise != null) {
+			this.pendingFetchPromise.abort();
+			this.pendingFetchPromise = null;
+		}
+		if (this.pendingSetReadPromise != null) {
+			this.pendingSetReadPromise.abort();
+			this.pendingSetReadPromise = null;
+		}
+		if (this.pendingDeletePromise != null) {
+			this.pendingDeletePromise.abort();
+			this.pendingDeletePromise = null;
+		}
+	}
 	fetchMessages(type, pageIndex) {
 		this.setState({type, pageIndex});
 		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserMessages", pageSize = 5;
-		ajax({
+		this.pendingFetchPromise = ajax({
 			type: "post",
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
 			data: JSON.stringify({type, pageIndex, pageSize}),
 			success: function(result) {
+				this.pendingFetchPromise = null;
 				let {totalCount, msgs} = JSON.parse(result.d);
 				if (msgs.length == 0 && 0 < pageIndex) { // deleted all messages in final page
 					this.fetchMessages(type, pageIndex - 1);
@@ -42,41 +59,46 @@ class MyNews extends React.Component {
 				}
 			}.bind(this),
 			error: function(xhr, status, err) {
+				this.pendingFetchPromise = null;
 				console.error(url, status, err.toString());
 			}.bind(this)
 		});
 	}
 	setMsgsAlreadyRead(msgIds) {
 		let url = USER_CENTER_ASPX_PATH + "/AjaxSetMessagesRead";
-		ajax({
+		this.pendingSetReadPromise = ajax({
 			type: "post",
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
 			data: JSON.stringify({messageIds: msgIds.join(";")}),
 			success: function(result) {
+				this.pendingSetReadPromise = null;
 				var msgs = this.state.msgs;
 				msgIds.map(id => findIndex(msgs, m => m.id == id))
-				.forEach(index => msgs[index].isRead = true);
+					.forEach(index => msgs[index].isRead = true);
 				this.setState({msgs});
 			}.bind(this),
 			error: function(xhr, status, err) {
+				this.pendingSetReadPromise = null;
 				console.error(url, status, err.toString());
 			}.bind(this)
 		});
 	}
 	deleteMessages(msgIds) {
 		let url = USER_CENTER_ASPX_PATH + "/AjaxDeleteMessages";
-		ajax({
+		this.pendingDeletePromise = ajax({
 			type: "post",
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
 			data: JSON.stringify({messageIds: msgIds.join(";")}),
 			success: function(result) {
+				this.pendingDeletePromise = null;
 				this.fetchMessages(this.state.type, this.state.pageIndex);
 			}.bind(this),
 			error: function(xhr, status, err) {
+				this.pendingDeletePromise = null;
 				console.error(url, status, err.toString());
 			}.bind(this)
 		});
@@ -160,12 +182,13 @@ class MyNews extends React.Component {
 									<span className="time">{m.receiveTime}</span>
 									<span className="detail close-icon"></span>
 								</div>
-								<div className={`news-detail ${this.state.readingMsgIndex == index ? "" : "hidden"}`}>
-									<p className="appellation">亲爱的会员 {this.props.userName}：</p>
+								{this.state.readingMsgIndex != index ? null :
+								<div className="news-detail">
+									<p className="appellation">{"亲爱的会员 " + this.props.userName}：</p>
 									<p className="txt">您好！</p>
 									<p className="txt">{m.content}</p>
 									<p className="sender">安广融合团队</p>
-								</div>
+								</div>}
 							</div>)}
 					</div>
 				</div>
