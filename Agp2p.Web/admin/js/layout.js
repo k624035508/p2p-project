@@ -258,7 +258,8 @@ $.fn.initValidform = function () {
 //智能浮动层函数
 $.fn.smartFloat = function(callbackFloat, callbackRestore) {
 	var position = function(element) {
-		var top = element.position().top;
+	    var matchResult = window.getComputedStyle(element[0]).top.match(/\d+/) || ["0"];
+	    var top = parseInt(matchResult[0]); // element.position().top;
 		var pos = element.css("position");
 		$(window).scroll(function() {
 			var scrolls = $(this).scrollTop();
