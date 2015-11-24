@@ -147,14 +147,18 @@ class MyNews extends React.Component {
                         {this.state.msgs.length != 0 ? null : <div style={{textAlign: 'center', padding: '1em'}}>暂无消息</div>}
 						{this.state.msgs.map((m, index) =>
 							<div className="news-body" key={m.id}>
-								<div className="overview" style={index == this.state.readingMsgIndex ? {backgroundColor: "#f7f7f7"} : null}>
-                            <span className="checkbox"><input type="checkbox" checked={this.state.msgs[index].checked}
-															  onChange={ev => this.toggleMsgChecked(index)}/></span>
+								<div className="overview"
+									style={index == this.state.readingMsgIndex ? {backgroundColor: "#f7f7f7"} : null}
+									onClick={ev => this.toggleReading(index)}>
+		                            <span className="checkbox">
+		                            	<input type="checkbox" checked={this.state.msgs[index].checked}
+															  onChange={ev => this.toggleMsgChecked(index)}/>
+								    </span>
 									<span className={`state ${m.isRead ? "read-icon" : "unread-icon"}`}></span>
 									<span className="th">{m.title}</span>
 									<span className="content">{m.content.length < 20 ? m.content: m.content.substr(0, 20) + "..."}</span>
 									<span className="time">{m.receiveTime}</span>
-									<span className="detail close-icon" onClick={ev => this.toggleReading(index)}></span>
+									<span className="detail close-icon"></span>
 								</div>
 								<div className={`news-detail ${this.state.readingMsgIndex == index ? "" : "hidden"}`}>
 									<p className="appellation">亲爱的会员 {this.props.userName}：</p>
