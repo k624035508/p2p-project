@@ -34,7 +34,7 @@ class TransactionTable extends React.Component {
     }
     render() {
         return (
-            <div className="tb-wrap">
+            <div className="tb-wrap expandable-table">
                 <table className="table trade-tb">
                     <thead>
                     <tr>

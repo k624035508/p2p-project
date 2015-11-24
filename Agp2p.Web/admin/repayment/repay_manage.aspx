@@ -56,7 +56,7 @@
                     <tr>
                         <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
-                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="13%">借款人</th>
                         <th align="left" width="8%">应还本金(元)</th>
                         <th align="left" width="8%">应还利息(元)</th>
                         <th align="left" width="6%">还款期数</th>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Agp2p.Core;
 
 namespace Agp2p.Web.admin.project
 {
@@ -136,13 +137,7 @@ namespace Agp2p.Web.admin.project
 
         protected string QueryLoaner(int projectId)
         {
-            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
-            if (project != null)
-            {
-                var user = project.li_risks.li_loaners.dt_users;
-                return $"{user.real_name}({user.user_name})";
-            }
-            return "";
+            return context.GetLonerName(projectId);
         }
 
         protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)

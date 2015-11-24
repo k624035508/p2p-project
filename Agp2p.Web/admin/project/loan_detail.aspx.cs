@@ -361,7 +361,7 @@ namespace Agp2p.Web.admin.project
                 //TODO 资金打入借款人账户
                 LqContext.StartRepayment(ProjectId);
                 JscriptMsg("放款操作成功！",
-                    Utils.CombUrlTxt("loan_financing_success.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                    Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
                         ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
             }
             catch (Exception ex)

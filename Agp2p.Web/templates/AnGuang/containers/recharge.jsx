@@ -38,7 +38,7 @@ class RechargePage extends React.Component {
 							</li>);
 					})}
 				</ul>
-				<div className="balance-recharge"><span>账户余额：</span>￥{this.props.idleMoney}</div>
+				<div className="balance-recharge"><span>账户余额：</span>{"￥" + this.props.idleMoney}</div>
 				<div className="amount-recharge">
 				    <span><i>*</i>充值金额：</span>
 				    <input type="text" value={this.state.chargingAmount} onChange={ev => this.setState({chargingAmount: ev.target.value})}/>

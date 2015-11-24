@@ -92,7 +92,7 @@ namespace Agp2p.Web.UI.Page
                                 Project = null,
                                 RepayInterest = Math.Round(task.repay_interest*ratio1, 2),
                                 RepayPrincipal = Math.Round(task.repay_principal*ratio1, 2),
-                                ShouldRepayDay = task.should_repay_time.ToString(),
+                                ShouldRepayDay = task.should_repay_time.ToString("yyyy/MM/dd"),
                                 Term = task.term.ToString() + "/" + validRepaymentTaskCount
                             }).ToList();
 

@@ -55,7 +55,7 @@
                     <tr>
                         <th width="3%">序号</th>
                         <th align="left" width="15%">标题</th>
-                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="13%">借款人</th>
                         <% if (ProjectStatus == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
                             { %>
                         <th align="left" width="8%">满标时间</th>

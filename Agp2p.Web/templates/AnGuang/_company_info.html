@@ -7,7 +7,7 @@
             <li><span><span class="specific-location">企业名称</span></span><span class="span-sec">{loaner_company.name}</span></li>
             <li><span><span class="specific-location">企业地址</span></span><span class="span-sec">{loaner_company.address}</span></li>
             <li><span><span class="specific-location">企业法人</span></span><span class="span-sec">{loaner_company.manager}</span></li>
-            <li><span><span class="specific-location">成立时间</span></span><span class="span-sec">{loaner_company.setup_time}</span></li>
+            <li><span><span class="specific-location">成立时间</span></span><span class="span-sec"><%=loaner_company.setup_time.ToString("yyyy/MM/dd")%></span></li>
             <li><span><span class="specific-location">注册资本</span></span><span class="span-sec">{loaner_company.registered_capital}</span></li>
             <li><span><span class="specific-location">经营范围</span></span><span class="span-sec">{loaner_company.business_scope}</span></li>
             <li><span><span class="specific-location">经营状况</span></span><span class="span-sec">{loaner_company.business_status}</span></li>
