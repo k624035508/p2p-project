@@ -45,7 +45,7 @@ class InvestRecordTable extends React.Component {
                         <th>投资金额（元）</th>
                         <th>利息（元）</th>
                         <th>状态</th>
-                        <th>投资日期</th>
+                        <th>投资时间</th>
                         <th>投标协议</th>
                     </tr>
                     </thead>
