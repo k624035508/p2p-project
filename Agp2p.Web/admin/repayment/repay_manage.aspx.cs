@@ -100,30 +100,27 @@ namespace Agp2p.Web.admin.repayment
             else if (rblStatus.SelectedValue == "1")
                 query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid);
 
-            var repayList = query.AsEnumerable().Select(r =>
-                    {
-                        var repay = new RepayOverTime();
-                        var loaner = r.li_projects.li_risks.li_loaners.dt_users;
-                        repay.Loaner = $"{loaner.real_name}({loaner.user_name})";
-                        repay.Principal = r.repay_principal;
-                        repay.Interest = r.repay_interest;
-                        repay.TimeTerm = r.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
-                            ? "1/1"
-                            : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}";
-                        repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");
-                        repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";
-                        repay.Category = r.li_projects.category_id;
-                        repay.ProfitRate = r.li_projects.profit_rate_year;
-                        repay.RepaymentType =
-                            Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)r.li_projects.repayment_type);
-                        repay.ProjectId = r.li_projects.id;
-                        repay.ProjectTitle = r.li_projects.title;
-                        repay.ProjectStatus = r.li_projects.status;
-                        repay.RepayStatus = r.status;
-                        repay.RepayId = r.id;
-
-                        return repay;
-                    }).AsQueryable();
+            var repayList = query.AsEnumerable().Select(r => new RepayOverTime
+            {
+                Loaner = context.GetLonerName(r.project),
+                Principal = r.repay_principal,
+                Interest = r.repay_interest,
+                TimeTerm =
+                    r.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                        ? "1/1"
+                        : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}",
+                ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm"),
+                RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "",
+                Category = r.li_projects.category_id,
+                ProfitRate = r.li_projects.profit_rate_year,
+                RepaymentType =
+                    Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum) r.li_projects.repayment_type),
+                ProjectId = r.li_projects.id,
+                ProjectTitle = r.li_projects.title,
+                ProjectStatus = r.li_projects.status,
+                RepayStatus = r.status,
+                RepayId = r.id
+            }).AsQueryable();
             
             this.TotalCount = repayList.Count();
             return repayList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();

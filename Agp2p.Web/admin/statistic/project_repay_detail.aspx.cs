@@ -165,7 +165,7 @@ namespace Agp2p.Web.admin.statistic
                             ProjectName = pro.title,
                             Category = CategoryIdTitleMap[pro.category_id],
                             ShouldRepayAt = r.should_repay_time.ToString("yyyy-MM-dd"),
-                            CreditorName = pro.li_risks.li_creditors == null ? pro.li_risks.li_loaners.dt_users.real_name : pro.li_risks.li_creditors.dt_users.real_name,
+                            CreditorName = context.GetLonerName(r.project),
                             FinancingAmount = pro.financing_amount,
                             ProfitRateYear = pro.profit_rate_year.ToString(),
                             Term = r.li_projects.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day

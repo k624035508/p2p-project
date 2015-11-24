@@ -45,7 +45,7 @@
                     <tr>
                         <th width="4%">序号</th>
                         <th align="left" width="15%">标题</th>
-                        <th align="left" width="10%">借款人</th>
+                        <th align="left" width="13%">借款人</th>
                         <th align="left" width="8%">应还金额(元)</th>
                         <th align="left" width="8%">实还金额(元)</th>
                         <th align="left" width="8%">罚息(元)</th>
