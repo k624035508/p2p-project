@@ -7,6 +7,7 @@ import { ajax } from "jquery";
 
 import "../less/safe.less";
 import alert from "../components/tips_alert.js";
+import confirm from "../components/tips_confirm.js";
 
 let emptyIfNull = str => str == null ? "" : str;
 
@@ -249,7 +250,7 @@ class IdentityBinding extends React.Component {
 		this.setState({trueName: nextProps.realName, idCardNumber: nextProps.idCardNumber});
 	}
 	bindIdentity() {
-		if (confirm("身份资料填写后则不能再修改，是否确认？")) {
+		confirm("身份资料填写后则不能再修改，是否确认？", () => {
 			ajax({
 				type: "POST",
 				url: '/tools/submit_ajax.ashx?action=bind_idcard',
@@ -266,7 +267,7 @@ class IdentityBinding extends React.Component {
 					alert(jqXHR.responseJSON.msg);
 				}
 			});
-		}
+		});
 	}
 	render() {
 		return (
@@ -419,7 +420,7 @@ class ResetTransactPassword extends React.Component {
 		});
 	}
 	forgotTransactPassword() {
-		if (confirm("是否确认重置交易密码？")) {
+		confirm("是否确认重置交易密码？", () => {
 			ajax({
 				type: "POST",
 				url: '/tools/trade_pwd.ashx',
@@ -432,7 +433,7 @@ class ResetTransactPassword extends React.Component {
 					alert(jqXHR.responseJSON.msg);
 				}
 			});
-		}
+		});
 	}
 	render() {
 		return (
