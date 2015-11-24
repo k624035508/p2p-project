@@ -5,6 +5,13 @@ import "../less/footerSmall.less"
 
 import header from "./header.js"
 
+let selectedTabByHash = () => {
+    var search = location.hash || "#tab0";
+    var match = search.match(/#tab(\d+)/);
+    var tabIndex = parseInt(match ? match[1] : "0");
+    $(".left-nav .nav-list li a").eq(tabIndex).click();
+};
+
 $(function(){
     header.setHeaderHighlight(3);
 
@@ -41,4 +48,6 @@ $(function(){
         $rightContent.hide();
         $(".law-wrap").show();
     });
+
+    selectedTabByHash();
 });
