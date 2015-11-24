@@ -650,6 +650,7 @@
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
+    <Content Include="templates\AnGuang\help.html" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\company.png" />
@@ -668,6 +669,20 @@
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat.jpg" />
+    <Content Include="templates\AnGuang\imgs\help\charge.png" />
+    <Content Include="templates\AnGuang\imgs\help\diagram-01.png" />
+    <Content Include="templates\AnGuang\imgs\help\diagram-02.png" />
+    <Content Include="templates\AnGuang\imgs\help\diagram-03.png" />
+    <Content Include="templates\AnGuang\imgs\help\diagram-04.png" />
+    <Content Include="templates\AnGuang\imgs\help\diagram-05.png" />
+    <Content Include="templates\AnGuang\imgs\help\guide.png" />
+    <Content Include="templates\AnGuang\imgs\help\problems.png" />
+    <Content Include="templates\AnGuang\imgs\help\step-01.png" />
+    <Content Include="templates\AnGuang\imgs\help\step-02.png" />
+    <Content Include="templates\AnGuang\imgs\help\step-03.png" />
+    <Content Include="templates\AnGuang\imgs\help\step-04.png" />
+    <Content Include="templates\AnGuang\imgs\help\step-05.png" />
+    <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
@@ -796,6 +811,7 @@
     <Content Include="templates\AnGuang\js\agreement.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
+    <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
@@ -914,6 +930,7 @@
     <Content Include="templates\AnGuang\less\register-agreement.less" />
     <Content Include="templates\AnGuang\less\tips-alert.less" />
     <Content Include="templates\AnGuang\js\bootstrap.config.less" />
+    <Content Include="templates\AnGuang\less\help.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

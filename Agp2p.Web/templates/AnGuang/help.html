@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>帮助中心</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <script src="<%templateskin%>/node_modules/respond.js/dest/respond.min.js"></script>
+    <![endif]-->
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/help.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<!--面包屑导航-->
+<div class="breadcrumbs">
+    <a href="/">首页</a>
+    <span> > </span>
+    <span>帮助中心</span>
+</div>
+<!--面包屑导航 end-->
+
+<div class="content-wrap helpPage">
+    <div class="left-nav">
+        <ul class="list-unstyled nav-list">
+            <li class="clicked"><a href='javascript:' class="guide">新手指引</a></li>
+            <li class="non-clicked"><a class="problems">常见问题</a>
+                <ul class="list-unstyled inner-ul">
+                    <li><a href="#">注册与登录</a></li>
+                    <li><a href="#">充值与提现</a></li>
+                    <li><a href="#">投资与收益</a></li>
+                </ul>
+            </li>
+            <li><a href='javascript:' class="charge">平台资费</a></li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <!--新手指引-->
+        <div class="guide-wrap">
+            <div class="title">新手指引</div>
+            <div class="step-cell register">
+                <div class="icon-wrap"><span class="step-icon"></span></div>
+                <div class="demo">
+                    <div class="description">
+                        <h5>注册成为安广融合新用户</h5>
+                        <ul>
+                            <li><span>输入手机号码</span></li>
+                            <li><span>设置登录密码，确认密码</span></li>
+                            <li><span>填写正确的验证码</span></li>
+                            <li><span>填写邀请人（选填）</span></li>
+                        </ul>
+                        <a href='<%linkurl("register")%>'>注 册</a>
+                    </div>
+                    <div class="diagram"></div>
+                </div>
+            </div>
+
+            <div class="step-cell verified">
+                <div class="icon-wrap"><span class="step-icon"></span></div>
+                <div class="demo">
+                    <div class="diagram"></div>
+                    <div class="description">
+                        <h5>实名认证</h5>
+                        <div>
+                            <span>邮箱认证</span>
+                            <span>手机认证</span>
+                            <span>实名认证</span>
+                        </div>
+                        <a href='<%linkurl("")%>'>马上去实名认证</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-cell set-psw">
+                <div class="icon-wrap"><span class="step-icon"></span></div>
+                <div class="demo">
+                    <div class="description">
+                        <h5>设置密码</h5>
+                        <ul>
+                            <li><span>账户名为手机号码</span></li>
+                            <li><span>为保护账户安全，建议把支付密码与登录密码设置为不同密码</span></li>
+                            <li><span>投资、提现时使用的是支付密码</span></li>
+                        </ul>
+                        <a href='<%linkurl("")%>'>马上去设置密码</a>
+                    </div>
+                    <div class="diagram"></div>
+                </div>
+            </div>
+
+            <div class="step-cell recharge">
+                <div class="icon-wrap"><span class="step-icon"></span></div>
+                <div class="demo">
+                    <div class="diagram"></div>
+                    <div class="description">
+                        <h5>账户充值</h5>
+                        <div>第三方资金托管，流向清晰</div>
+                        <a href='<%linkurl("")%>'>马上绑定银行卡</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-cell invest">
+                <div class="icon-wrap"><span class="step-icon"></span></div>
+                <div class="demo">
+                    <div class="description">
+                        <h5>我要投资</h5>
+                        <div>100元起投</div>
+                        <a href="/">我要投资</a>
+                    </div>
+                    <div class="diagram"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--常见问题-注册与登录-->
+
+</div>
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>

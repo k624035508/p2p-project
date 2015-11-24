@@ -18,6 +18,7 @@ module.exports = {
         sitemap: "./js/sitemap.js",
         404: "./js/404.js",
         agreement: "./js/agreement.js",
+        help: "./js/help.js",
         // including bootstrap, react
         usercenter: "./js/usercenter.jsx",
         forgot_password: "./js/forgot_password.js",
