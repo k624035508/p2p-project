@@ -17,8 +17,7 @@ module.exports = {
         safe_defence: "./js/safe_defence.js",
         sitemap: "./js/sitemap.js",
         404: "./js/404.js",
-        agreement: "./js/register-agreement.js",
-        risk: "./js/risk-tips.js",
+        registerAgreement: "./js/register-agreement.js",
         help: "./js/help.js",
         // including bootstrap, react
         usercenter: "./js/usercenter.jsx",
