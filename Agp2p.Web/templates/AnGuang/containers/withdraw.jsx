@@ -110,25 +110,30 @@ class WithdrawPage extends React.Component {
 	render() {
 		return (
 			<div>
+				{/* hack auto-complete */}
+				<input type="text" name="foo" className="hidden"/>
+				<input type="password" name="bar" className="hidden"/>
 				<div className="withdraw">
-				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span><div>
-				        <ul className="list-unstyled list-inline ul-withdraw">
-				        {this.props.cards.map((c, index) =>
-				            <li className={"card " + classMapping[c.bankName]} key={c.cardId}
-					            onClick={ev => this.setState({selectedCardIndex: index})}>
-				                <p className="bank-name">{c.bankName}</p>
-				                <p className="card-num">{"尾号 " + c.last4Char + " 储蓄卡"}</p>
-				                {this.state.selectedCardIndex == index
-				                	? <img src={TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png"} />
-				                	: null
-				                }
-				            </li>
-			        	)}
-				            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
-				        </ul>
-						<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
-							onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
-				    </div></div>
+				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span>
+					    <div>
+					        <ul className="list-unstyled list-inline ul-withdraw">
+					        {this.props.cards.map((c, index) =>
+					            <li className={"card " + classMapping[c.bankName]} key={c.cardId}
+						            onClick={ev => this.setState({selectedCardIndex: index})}>
+					                <p className="bank-name">{c.bankName}</p>
+					                <p className="card-num">{"尾号 " + c.last4Char + " 储蓄卡"}</p>
+					                {this.state.selectedCardIndex == index
+					                	? <img src={TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png"} />
+					                	: null
+					                }
+					            </li>
+				        	)}
+					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
+					        </ul>
+							<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
+								onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
+					    </div>
+				    </div>
 				    <div className="balance-withdraw"><span>可用余额：</span>{"￥" + this.props.idleMoney.toString()}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
