@@ -70,11 +70,6 @@ $(function () {
             var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
             $("span.profit").text(profit.toFixed(2) + " 元");
 
-            // 插入输入交易密码 input (避免自动完成)
-            if ($("div.pswInput input").length == 0) {
-                $("div.pswInput").append($('<input type="password" />'));
-            }
-
             // 设置投资协议的链接
             $("#show-invest-contract").attr("href",
                 `/tools/submit_ajax.ashx?action=generate_user_invest_contract&projectId=${projectId}&investAmount=${investAmount}`);

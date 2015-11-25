@@ -139,9 +139,9 @@ thead * {
    </thead> 
 </HeaderTemplate>
 <ItemTemplate>
-  <tr <%# ((OfflineTransaction)Container.DataItem).index == 0 ? "class='sum'" : ""%>>
+  <tr <%# ((OfflineTransaction)Container.DataItem).index == null ? "class='sum'" : ""%>>
     <td style="text-align:center;"><%# Eval("index") %></td>
-    <td style="text-align:center"><%# string.Format("{0:yyyy-MM-dd HH:mm}", Eval("occurTime"))%></td>    
+    <td style="text-align:center"><%# Eval("occurTime")%></td>    
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
     <td style="text-align:right"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
     <td style="text-align:center"><%# Eval("type")%></td>

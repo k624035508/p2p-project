@@ -13,8 +13,8 @@ namespace Agp2p.Web.admin.statistic
 {
     public class BondTransaction
     {
-        public int index { get; set; }
-        public DateTime occurTime { get; set; }
+        public int? index { get; set; }
+        public string occurTime { get; set; }
         public decimal? income { get; set; }
         public decimal? outcome { get; set; }
         public string project { get; set; }
@@ -53,8 +53,15 @@ namespace Agp2p.Web.admin.statistic
         #region 数据绑定=================================
         private void RptBind()
         {
-            var wallets = QueryProjectTransactions();
-            rptList.DataSource = wallets.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            var transactions = QueryProjectTransactions();
+            var pageData = transactions.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
+            {
+                index = null,
+                occurTime = "总计",
+                income = pageData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
+                outcome = pageData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
+            }));
             rptList.DataBind();
 
             //绑定页码
@@ -90,7 +97,7 @@ namespace Agp2p.Web.admin.statistic
                 {
                     index = pprt.no,
                     income = pprt.prt.principal,
-                    occurTime = pprt.prt.create_time,
+                    occurTime = pprt.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
                     remark = pprt.prt.remark,
                     user = pprt.prt.dt_users.user_name,
                     project = pprt.prt.li_projects.title

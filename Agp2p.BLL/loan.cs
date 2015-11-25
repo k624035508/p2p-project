@@ -38,7 +38,7 @@ namespace Agp2p.BLL
             return string.Join(",", projectNames) + (riskCount <= 1 ? "" : " 警告：此抵押物被多个风控信息关联");
         }
 
-        public IQueryable<MortgageItem> LoadMortgageList(int loaner_id, int risk_id)
+        public IQueryable<MortgageItem> LoadMortgageList(int loaner_id, int risk_id, bool can_check=true)
         {
             // status: 抵押物是否被其他风控信息使用, check: 抵押物是否被当前风控信息使用
             // 未关联风控信息的抵押物
@@ -62,11 +62,8 @@ namespace Agp2p.BLL
                  from rm in Context.li_risk_mortgage
                  from r in Context.li_risks
                  where
-                     loaner_id == m.owner && m.id == rm.mortgage && rm.risk == r.id
-                     && r.id == risk_id // 新加的条件，仅显示当前的风控信息相关的绑定，暂时不考虑项目的问题
-                                        /*&& r.li_projects.Any(
-                                            p =>
-                                                p.status != (int) Agp2pEnums.ProjectStatusEnum.WanCheng)*/ // 有项目未完成，其他项目就不可以用此项目正在使用的抵押物
+                     loaner_id == m.owner && m.id == rm.mortgage && rm.risk == r.id  && r.li_projects.Any(
+                                            p => p.status >= (int)Agp2pEnums.ProjectStatusEnum.Financing) // 暂修改为使用过的抵押物都不能再使用
                  select new MortgageItem
                  {
                      id = m.id,
@@ -78,7 +75,10 @@ namespace Agp2p.BLL
                      enable = r.id == risk_id
                  }).GroupBy(m => m.id).ToDictionary(m => m.Key, m => m.First()); // 旧数据中可能会有一个抵押物多次绑定多个未完成的风控信息的情况，这里只取第一个
 
-            return allMortgages.Select(m => mortgageInUse.ContainsKey(m.id) ? mortgageInUse[m.id] : m);
+            return !can_check
+                ? mortgageInUse.Values.Where(m => m.check).AsQueryable()
+                : allMortgages.Select(m => mortgageInUse.ContainsKey(m.id) ? mortgageInUse[m.id] : m);
+
         }
 
         /// <summary>
