@@ -111,13 +111,17 @@ namespace Agp2p.Web.UI.Page
                 }
             }
 
-            //抵押图片
+            // 借款合同图片
             var mortgagePics = risk.li_albums.Where(a =>
                 a.type == (int)Agp2pEnums.AlbumTypeEnum.LoanAgreement ||
-                a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract);
+                a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract ||
+                a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate);
+
+            // 机构
+            var guarantorPics = projectModel.li_risks?.li_guarantors?.li_albums ?? Enumerable.Empty<li_albums>();
 
             return
-                new[] { companyPics, pictures, certificates, loanerIdCard, creditorIdCard, mortgagePics}.SelectMany(s => s);
+                new[] { companyPics, pictures, certificates, loanerIdCard, creditorIdCard, mortgagePics, guarantorPics}.SelectMany(s => s);
         } 
 
         void Project_Init(object sender, EventArgs e)
