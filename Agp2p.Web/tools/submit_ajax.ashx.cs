@@ -2489,7 +2489,7 @@ namespace Agp2p.Web.tools
                 }
 
                 //获取投资协议
-                string bodytxt = dbContext.GetInvestContractContext(investment, httpContext.Request.MapPath("./a4-template.htm"));
+                string bodytxt = dbContext.GetInvestContractContext(investment, httpContext.Request.MapPath("./invest-agreement.html"));
                 httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
                 httpContext.Response.Write(bodytxt);
             }

@@ -807,7 +807,6 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
-    <Content Include="templates\AnGuang\invest-agreement.html" />
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
@@ -857,7 +856,7 @@
     <Content Include="templates\AnGuang\_company_info.html" />
     <Content Include="templates\AnGuang\_ticket_intro.html" />
     <Content Include="tools\download.ashx" />
-    <Content Include="tools\a4-template.htm" />
+    <Content Include="tools\invest-agreement.html" />
     <Content Include="tools\submit_ajax.ashx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
