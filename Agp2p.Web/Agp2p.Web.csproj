@@ -701,7 +701,6 @@
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
-    <Content Include="templates\AnGuang\imgs\index\shilanTest.jpg" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
