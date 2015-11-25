@@ -808,11 +808,12 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
-    <Content Include="templates\AnGuang\js\agreement.js" />
     <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
+    <Content Include="templates\AnGuang\js\register-agreement.js" />
+    <Content Include="templates\AnGuang\js\risk-tips.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
@@ -836,6 +837,7 @@
     <Content Include="templates\AnGuang\register-agreement.html" />
     <Content Include="templates\AnGuang\register.html" />
     <Content Include="templates\AnGuang\forgot_password.html" />
+    <Content Include="templates\AnGuang\risk-tips.html" />
     <Content Include="templates\AnGuang\safe_defence.html" />
     <Content Include="templates\AnGuang\404.html" />
     <Content Include="templates\AnGuang\sitemap.html" />
@@ -931,6 +933,7 @@
     <Content Include="templates\AnGuang\less\tips-alert.less" />
     <Content Include="templates\AnGuang\js\bootstrap.config.less" />
     <Content Include="templates\AnGuang\less\help.less" />
+    <Content Include="templates\AnGuang\less\risk-tips.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
