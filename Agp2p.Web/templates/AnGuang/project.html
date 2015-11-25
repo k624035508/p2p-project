@@ -73,6 +73,9 @@
                 <span>已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></span>
             </div>
             <%else%>
+            <!-- hack 自动完成功能 -->
+            <input type="text" name="foo" class="hidden"/>
+            <input type="password" name="bar" class="hidden"/>
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
@@ -101,7 +104,7 @@
                             </ul>
                         </div>
                         <div class="profit-wrap"><span>预期收益：</span><span class="profit">0.00</span></div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><!--<input type="password" />--></div>
+                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意</label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a> <span>和 <a
                                     href="<%templateskin%>/risk-tips.html" target="_blank">《风险说明书》</a></span>
