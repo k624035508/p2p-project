@@ -210,7 +210,7 @@ namespace Agp2p.Web.admin.project
             }
 
             var allMortgages = Loan.LoadMortgageList(Utils.StrToInt(ddlLoaner.SelectedValue, 0), this.risk_id);
-            rptList.DataSource = allMortgages;
+            rptList.DataSource = allMortgages.ToList().Where(m => m.enable);
             rptList.DataBind();
         }
 
