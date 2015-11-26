@@ -197,6 +197,15 @@ function CheckPostBack(objId, objmsg) {
     __doPostBack(objId, '');
     return false;
 }
+//检查是否有选中再决定回传
+function CheckAndPromptPostBack(objId, objmsg, defVal) {
+    if ($(".checkall input:checked").size() < 1) {
+        $.dialog.alert("对不起，请选中您要操作的记录！");
+        return false;
+    }
+    __doPostBack(objId, prompt(objmsg, defVal));
+    return false;
+}
 //执行回传无复选框确认函数
 function ExeNoCheckPostBack(objId, objmsg) {
    

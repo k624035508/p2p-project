@@ -1,0 +1,111 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="project-publish-announce.aspx.cs" Inherits="Agp2p.Web.admin.popularize.ProjectPublishAnnounce" %>
+
+<%@ Import Namespace="Agp2p.Common" %>
+<%@ Import Namespace="Agp2p.Linq2SQL" %>
+<%@ Import Namespace="Agp2p.Core" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>生成发标公告</title>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+    <script>
+        var promptDefVal = '<%=DateTime.Now.ToString("yyyy年MM月dd号15:00")%>';
+    </script>
+</head>
+<body class="mainbody">
+    <form id="form1" runat="server">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
+            <i class="arrow"></i>
+            <span>生成发标公告</span>
+        </div>
+        <!--/导航栏-->
+        <!--工具栏-->
+        <div class="toolbar-wrap">
+            <div id="floatHead" class="toolbar">
+                <div class="l-list">
+                    <ul class="icon-list">
+                        <li><asp:LinkButton ID="btnGenerate" runat="server" CssClass="add" OnClick="btnGenerate_OnClick"
+                                OnClientClick="return CheckAndPromptPostBack('btnGenerate', '请输入所选项目的发标时间：',promptDefVal);"><i></i><span>生成发标公告</span></asp:LinkButton></li>
+                        <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+                    </ul>
+                </div>
+                <div class="r-list">
+                    <div class="menu-list rl" style="display: inline-block;">
+                        <div class="rule-single-select">
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_OnSelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                    </div>
+                    <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
+                    <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search">查询</asp:LinkButton>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+
+        <asp:Repeater ID="rptList1" runat="server">
+            <HeaderTemplate>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <tr>
+                        <th width="3%">选择</th>
+                        <th width="4%">序号</th>
+                        <th align="left" width="15%">标题</th>
+                        <th align="left" width="4%">状态</th>
+                        <th align="left" width="13%">借款人</th>
+                        <th align="left" width="5%">借款主体</th>
+                        <th align="left" width="5%">产品</th>
+                        <th align="left" width="8%">借款金额(元)</th>                        
+                        <th align="left" width="5%">借款期限</th>
+                        <th align="left" width="5%">年化利率(%)</th>
+                        <th align="left" width="8%">还款方式</th>                        
+                        <th align="left" width="10%">申请时间</th>
+                        <th align="left" width="4%">操作</th>
+                    </tr>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td align="center">
+                        <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" Style="vertical-align: middle;" />
+                        <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
+                    </td>
+                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
+                    <td><a href="../project/loan_detail.aspx?channel_id=<%=projectChannelId %>&action=<%=DTEnums.ActionEnum.Edit%>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
+                    <td><%#((li_projects) Container.DataItem).GetProjectStatusDesc()%></td>
+                    <td><%#QueryLoaner(((li_projects) Container.DataItem).id)%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)Utils.StrToInt(Eval("type").ToString(), 0))%></td>
+                    <td><%#CategoryIdTitleMap[Convert.ToInt32(Eval("category_id"))]%></td>
+                    <td><%#string.Format("{0:c}", Eval("financing_amount"))%></td>                    
+                    <td><%#Eval("repayment_term_span_count")%> <%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)Utils.StrToInt(Eval("repayment_term_span").ToString(), 0))%></td>
+                    <td><%#string.Format("{0:0.0}", Eval("profit_rate_year"))%></td>
+                    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
+                    <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+                    <td><a href="../../aspx/main/project.aspx?project_id=<%#Eval("id")%>" target="_blank">预览</a></td>              
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                <%#rptList1.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"11\">暂无记录</td></tr>" : ""%>
+                </table>
+            </FooterTemplate>
+        </asp:Repeater>
+
+        <!--内容底部-->
+        <div class="line20"></div>
+        <div class="pagelist">
+            <div class="l-btns">
+                <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
+            </div>
+            <div id="PageContent" runat="server" class="default"></div>
+        </div>
+        <!--/内容底部-->
+    </form>
+</body>
+</html>

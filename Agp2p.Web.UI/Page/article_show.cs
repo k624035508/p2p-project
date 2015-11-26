@@ -51,6 +51,9 @@ namespace Agp2p.Web.UI.Page
             {
                 return;
             }
+            model.click += 1;
+            bll.Update(model);
+
             categoryTitle = dbContext.dt_article_category.Single(c => c.id == model.category_id).title;
 
             article_attr = dbContext.dt_article_attribute_value.FirstOrDefault(u => u.article_id == model.id);

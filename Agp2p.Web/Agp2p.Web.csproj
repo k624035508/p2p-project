@@ -143,6 +143,7 @@
     <Content Include="admin\dialog\dialog_accept.aspx" />
     <Content Include="admin\dialog\dialog_express.aspx" />
     <Content Include="admin\dialog\dialog_print.aspx" />
+    <Content Include="admin\popularize\project-publish-announce.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
     <Content Include="admin\project\loan_all.aspx" />
@@ -1246,6 +1247,13 @@
     </Compile>
     <Compile Include="admin\dialog\dialog_print.aspx.designer.cs">
       <DependentUpon>dialog_print.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\popularize\project-publish-announce.aspx.cs">
+      <DependentUpon>project-publish-announce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\popularize\project-publish-announce.aspx.designer.cs">
+      <DependentUpon>project-publish-announce.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\popularize\projectContent_edit.aspx.cs">
       <DependentUpon>projectContent_edit.aspx</DependentUpon>
