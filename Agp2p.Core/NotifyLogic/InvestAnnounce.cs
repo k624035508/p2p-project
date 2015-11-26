@@ -37,7 +37,7 @@ namespace Agp2p.Core.NotifyLogic
                 //增加协议号到投资记录中
                 investment.agree_no = investment.li_projects.dt_article_category.call_index.ToUpper() + Utils.GetOrderNumber();
                 //获得投资协议邮件内容
-                var bodytxt = context.GetInvestContractContext(investment, AppDomain.CurrentDomain.BaseDirectory + "\\tools\\a4-template.htm");
+                var bodytxt = context.GetInvestContractContext(investment, AppDomain.CurrentDomain.BaseDirectory + "\\tools\\invest-agreement.html");
                 //发送投资协议邮件
                 if (!string.IsNullOrWhiteSpace(investment.dt_users.email))
                 {
