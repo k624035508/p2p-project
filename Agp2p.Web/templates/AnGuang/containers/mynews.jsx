@@ -193,7 +193,10 @@ class MyNews extends React.Component {
 					</div>
 				</div>
                 <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
-                    onPageSelected={pageIndex => this.fetchMessages(this.state.type, pageIndex)}/>
+                    onPageSelected={pageIndex => {
+                    	this.fetchMessages(this.state.type, pageIndex);
+                    	this.setState({readingMsgIndex: -1})
+                    }}/>
             </div>
         );
     }
