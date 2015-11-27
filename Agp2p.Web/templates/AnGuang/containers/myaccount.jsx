@@ -140,7 +140,7 @@ class MyAccount extends React.Component {
 							</div>
 							<div className="grey13px margin-bottom10px">可投金额 : <span className="dark-grey13px">{pro.project_investment_balance}</span></div>
 							<div className="grey13px margin-bottom10px hidden">投资人数 : <span className="dark-grey13px">{pro.project_investment_count}人</span></div>
-							<div className="grey13px">到期还本付息</div>
+							<div className="grey13px">{pro.repayment_type}</div>
 						</div>
 						<div className="invest-btn">
 							<a className={pro.status == ProjectStatusEnum.Financing ? "invest-now-btn" : "invest-full-btn"}

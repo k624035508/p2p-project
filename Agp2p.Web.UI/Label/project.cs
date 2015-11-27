@@ -24,7 +24,7 @@ namespace Agp2p.Web.UI
         public DateTime? publish_time { get; set; }
         public int repayment_number { get; set; }
         public string repayment_term { get; set; }
-        public int repayment_type { get; set; }
+        public string repayment_type { get; set; }
         public int? sort_id { get; set; }
         public int status { get; set; }
         public int tag { get; set; }
@@ -55,7 +55,7 @@ namespace Agp2p.Web.UI
                     title = p.title,
                     status = p.status,
                     sort_id = p.sort_id,
-                    repayment_type = p.repayment_type,
+                    repayment_type = p.GetProjectRepaymentTypeDesc(),
                     repayment_term = p.GetProjectTermSpanEnumDesc(),
                     repayment_number = p.repayment_term_span_count,
                     profit_rate_year = p.profit_rate_year,

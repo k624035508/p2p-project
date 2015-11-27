@@ -301,7 +301,7 @@ namespace Agp2p.Web.UI.Page
                     title = p.title,
                     status = p.status,
                     sort_id = p.sort_id,
-                    repayment_type = p.repayment_type,
+                    repayment_type = p.GetProjectRepaymentTypeDesc(),
                     repayment_term = p.GetProjectTermSpanEnumDesc(),
                     repayment_number = p.repayment_term_span_count,
                     profit_rate_year = p.profit_rate_year,
