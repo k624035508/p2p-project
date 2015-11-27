@@ -1112,15 +1112,15 @@ namespace Agp2p.Core
             if (his.li_project_transactions != null)
             {
                 decimal? receivedPrincipal, profited;
-                switch (his.li_project_transactions.type)
+                if (his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest
+                    && his.li_project_transactions.status != (int)Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
                 {
-                    case (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest:
-                        receivedPrincipal = profited = null;
-                        break;
-                    default:
-                        receivedPrincipal = his.li_project_transactions.principal;
-                        profited = his.li_project_transactions.interest;
-                        break;
+                    receivedPrincipal = profited = null;
+                }
+                else
+                {
+                    receivedPrincipal = his.li_project_transactions.principal;
+                    profited = his.li_project_transactions.interest;
                 }
                 return callback(receivedPrincipal, profited);
             }
@@ -1187,13 +1187,14 @@ namespace Agp2p.Core
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess) // 项目满标不显示支出
                     return null;
                 return his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest
+                    && his.li_project_transactions.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback
                     ? his.li_project_transactions.principal // 投资
                     : (decimal?) null;
             }
             // 活动扣除
             if (his.li_activity_transactions != null &&
                 his.li_activity_transactions.type == (int) Agp2pEnums.ActivityTransactionTypeEnum.Gain) return null;
-            return his.li_activity_transactions != null ? his.li_activity_transactions.value : (decimal?) null;
+            return his.li_activity_transactions?.value;
         }
 
         public static string GetProjectTermSpanEnumDesc(this li_projects proj)

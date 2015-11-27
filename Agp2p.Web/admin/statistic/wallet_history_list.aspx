@@ -130,11 +130,7 @@
   <%# 0 < rptList.Items.Count ? "<tr><td></td><td style=\"color: red;\">合计</td><td>&nbsp;</td><td style=\"color: red;text-align:right;\">"
     +TransactionIncome.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
     +TransactionOutcome.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
-    +idle_money.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
-    +investing_money.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
-    +total_investment.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
-    +profiting_money.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
-    +total_profit.ToString("c")+"</td><td colspan=\"2\">&nbsp;</td></tr>" : ""%>
+    +"<td colspan=\"7\">&nbsp;</td></tr>" : ""%>
 <% } %>
 
   <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"12\">暂无记录</td></tr>" : ""%>
