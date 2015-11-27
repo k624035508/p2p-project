@@ -1,0 +1,11 @@
+{
+	"plugins": [
+		"react"
+	],
+	"ecmaFeatures": {
+		"jsx": true
+	},
+	"extends": "airbnb",
+	"rules": {
+	}
+}

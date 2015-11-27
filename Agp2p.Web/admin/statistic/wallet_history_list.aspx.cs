@@ -25,11 +25,6 @@ namespace Agp2p.Web.admin.statistic
         protected int action_type;
         protected string user_id = string.Empty;
 
-        protected decimal idle_money = 0;
-        protected decimal investing_money = 0;
-        protected decimal total_investment = 0;
-        protected decimal profiting_money = 0;
-        protected decimal total_profit = 0;
         protected decimal TransactionIncome = 0;
         protected decimal TransactionOutcome = 0;
 
@@ -306,12 +301,6 @@ namespace Agp2p.Web.admin.statistic
                 decimal Tout = TransactionFacade.QueryTransactionOutcome(wh).GetValueOrDefault(0);
                 TransactionIncome += Tin;
                 TransactionOutcome += Tout;
-
-                idle_money += wh.idle_money;
-                investing_money += wh.investing_money;
-                total_investment += wh.total_investment;
-                profiting_money += wh.profiting_money;
-                total_profit += wh.total_profit;
             }
         }
     }
