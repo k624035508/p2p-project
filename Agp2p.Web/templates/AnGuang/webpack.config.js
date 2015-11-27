@@ -47,8 +47,7 @@ module.exports = {
     module: {
         loaders: [
             { test: /clipboard.*?js$/, loader: 'babel?cacheDirectory' }, // only use by clipboard.js
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
-            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
+            { test: /\.jsx?$/, exclude: /node_modules|build/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
             { test: /\.jpg$/, loader: "file" },
