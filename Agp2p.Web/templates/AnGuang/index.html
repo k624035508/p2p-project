@@ -157,7 +157,7 @@
                 <%else %>
                 <div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{p.GetInvestedUserCount()}人</span></div>
                 <%/if%>
-                <div class="grey13px">到期还本付息</div>
+                <div class="grey13px">{p.GetProjectRepaymentTypeDesc()}</div>
             </div>
             <div class="invest-btn">
                 <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>

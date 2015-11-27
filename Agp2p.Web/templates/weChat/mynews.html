@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的消息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/mynews.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <style>
+        /*加载提示*/
+        .loading-hint {
+            padding-top: 25px;
+            line-height: 1.2em;
+            font-size: 1.2em;
+            text-align: center;
+            color: grey;
+        }
+    </style>
+    <script>
+        /*rem的相对单位定义*/
+        var viewportWidth = $(window).width();
+        var fontSizeUnit = viewportWidth / 20;
+        $("html").css("font-size", fontSizeUnit);
+        
+        function deleteMessage(ids) {
+            $.ajax({
+                type: "POST",
+                url: "{Request.FilePath}" + "/AjaxDeleteMessage",
+                data: JSON.stringify({ messageIds: ids}),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (msg) {
+                    console.log(msg.d);
+                }
+            }).fail(function () {
+                alert("删除失败");
+                location.reload();
+            });
+        }
+        $(function(){
+            var navBtns = $("div.nav-bar a");
+            //$("#receiving").addClass("nav-active nav-border-active");
+            navBtns.click(function(){
+                navBtns.removeClass("nav-active nav-border-active");
+                $(this).addClass("nav-active nav-border-active");
+            });
+
+            $('.type[data-status={message_status}]').addClass('nav-active nav-border-active');
+
+            toggleHintAndBtn();
+        });
+    </script>
+</head>
+<body>
+    <div class="mynews-page">
+        <div class="nav-bar">
+            <a id="receiving" class="type" href="<%linkurl("mynews","mynews",0)%>" data-status="0">全部<span class="float-right hr-style">|</span></a>
+            <a id="investing" class="type" href="<%linkurl("mynews","mynews",2)%>" data-status="2">未读<span class="float-right hr-style">|</span></a>
+            <a id="done" class="type" href="<%linkurl("mynews","mynews",1)%>" data-status="1">已读</a>
+        </div>
+        <%loop dr messageDt%>
+        <div class="notice-cell" data-href='<%linkurl("mynews_show",{message_status},{dr[id]})%>' data-msgId="{dr[id]}">
+            <div class="vertical-align">
+                <div class="select-icon" style="display:none"></div>
+                <div class="news-content">
+                    <div><span class="title-style">{dr[title]}</span><span class="float-right txt-grey"><%=((DateTime)dr["post_time"]).ToString("yyyy-MM-dd")%></span></div>
+                    <span class="txt-grey notice-detail">{dr[content]}</span>
+                </div>
+            </div>
+        </div>
+        <%/loop%>
+        <div id="no-content" class="loading-hint">
+            <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
+            <p style="color:#ccc">您目前没有消息记录</p>
+        </div>
+        <div class="news-manage" style="display: none">管理消息</div>
+        <script>var forceFooterKey = "settings";</script>
+        <%template src="_footer.html"%>
+    </div>
+
+    <script>
+        $("div.notice-cell").click(function() {
+            var check = $(this).find(".select-icon:visible");
+            if (check.length === 0)
+                location.href = this.getAttribute("data-href");
+            else
+                check.toggleClass("blue");
+        });
+        function toggleHintAndBtn() {
+            // hide delete btn if no msgs
+            if ($("div.notice-cell:visible").length === 0) {
+                $(".news-manage").hide();
+                $("#no-content").show();
+            } else {
+                $(".news-manage").show();
+                $("#no-content").hide();
+            }
+        }
+        $("div.news-manage").click(function(){
+            if(this.innerHTML === "管理消息"){
+                // 切换按钮到删除功能
+                $(this).html("删除选定消息");
+                // 选择图标显示后的页面样式
+                $("div.news-content").css("width", "15.6rem");
+                $("span.notice-detail").css("width","100%");
+                $("div.select-icon").css("display","inline-block");
+            } else {
+                var hiddenMsg = $("div.select-icon").filter(function(index, elem){
+                    return $(elem).hasClass("blue");
+                }).parents(".notice-cell").hide();
+                $(this).html("管理消息");
+                $("div.select-icon").css("display","none");
+                $("div.news-content").css("width", "18rem");
+                var preDelIds = [].join.call(hiddenMsg.map(function(index, elem) {
+                    return elem.getAttribute("data-msgId");
+                }), ";");
+                if (preDelIds) {
+                    deleteMessage(preDelIds);
+                }
+                toggleHintAndBtn();
+            }
+        });
+    </script>
+</body>
+</html>

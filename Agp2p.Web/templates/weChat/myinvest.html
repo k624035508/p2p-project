@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的投资</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/myinvest.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/underscore-min.js"></script>
+
+    <style>
+        #loading-hint, .loading-hint {
+            padding-top: 25px;
+            line-height: 1.2em;
+            font-size: 1.2em;
+            text-align: center;
+            color: grey;
+        }
+    </style>
+    <script>
+        /*rem的相对单位定义*/
+        var viewportWidth = $(window).width();
+        var fontSizeUnit = viewportWidth / 20;
+        $("html").css("font-size", fontSizeUnit);
+    </script>
+
+    <script type="text/html" id="investment-record">
+        @{ _.each(items, function(item, key, list){ }@
+        <div class="project-cell flex flex--align-items--center flex--flex-grow-first">
+            <div class="title-box">
+                <p>@{=item.projectName}@</p>
+                <span class="time-style">@{=item.investTime}@</span>
+            </div>
+            <div class="amount-box">
+                <p>投资金额</p>
+                <span>@{=item.investValue}@</span>
+            </div>
+        </div>
+        @{ }); }@
+    </script>
+
+    <script>
+        _.templateSettings = {
+            evaluate: /@\{([\s\S]+?)\}@/g, // 求值 @{ ... }@
+            interpolate: /@\{=([\s\S]+?)\}@/g // 直接输出 @{= ...}@
+        };
+
+        var render = _.template($("#investment-record").html());
+        function loadData(pageIndex, callback) {
+            var pageSize = 15;
+            var status = Number($("a.nav-active").attr("data-project-status"));
+            var loadingHint = $("#loading-hint");
+            var emptyBox = $("div.loading-hint");
+            loadingHint.text("加载中...");
+            loadingHint.show();
+            emptyBox.hide();
+            $.ajax({
+                type: "POST",
+                url: "{Request.FilePath}" + "/AjaxQueryInvestment",
+                data: JSON.stringify({ type: status, pageIndex: pageIndex, pageSize: pageSize }),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(msg) {
+                    var ls = JSON.parse(msg.d);
+                    $("#pending").append(render({ items: ls }));
+                    if (ls.length < pageSize) {
+                        $(".nav-active").attr("data-loadCompleted", "true"); // disable auto load for this page
+                    }
+                    loadingHint.hide();
+                    if (pageIndex === 0 && ls.length === 0) {
+                        emptyBox.show();
+                    } else {
+                        emptyBox.hide();
+                    }
+                    callback(true);
+                }
+            }).fail(function() {
+                loadingHint.text("加载失败");
+                callback(false);
+            });
+        }
+        $(function () {
+            // init
+            var processing = false;
+            var loadedPage = 0;
+            loadData(loadedPage, function(succ) {
+                if (succ) loadedPage += 1;
+            });
+
+            // auto load
+            $(window).scroll(function () {
+                if (processing) return;
+                if ($(".nav-active").attr("data-loadCompleted") === "true") return; // load complete
+
+                if (($(document).height() - $(window).height()) * 0.7 <= $(window).scrollTop()) {
+                    processing = true; //sets a processing AJAX request flag
+
+                    loadData(loadedPage, function (succ) {
+                        if (succ) loadedPage += 1;
+                        processing = false;
+                    });
+                }
+            });
+
+            // changing tab
+            $("div.nav-bar > a").click(function(){
+                var clicked = $(this);
+                if (clicked.hasClass("nav-active")) return;
+                clicked.siblings().removeClass("nav-active nav-border-active");
+                clicked.addClass("nav-active nav-border-active");
+                $("a[data-loadCompleted]").removeAttr("data-loadCompleted");
+
+                $("#pending").html("");
+                loadedPage = 0;
+                loadData(loadedPage, function(succ) {
+                    if (succ) loadedPage += 1;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="myinvest-page">
+    <div class="nav-bar">
+        <a id="receiving" href="javascript:;" data-project-status="2" class="nav-active nav-border-active">回款中<span class="float-right hr-style">|</span></a>
+        <a id="investing" href="javascript:;" data-project-status="1">投标中<span class="float-right hr-style">|</span></a>
+        <a id="done" href="javascript:;" data-project-status="3">已结束</a>
+    </div>
+    <div class="project-list">
+        <div id="pending"></div>
+        <div id="loading-hint"></div>
+        <div class="loading-hint" style="display: none">
+            <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+            <p style="color:#ccc">您目前没有投资记录</p>
+        </div> 
+    </div>
+    <%template src="_footer.html"%>
+</div>
+</body>
+</html>

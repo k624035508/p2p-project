@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cmn-Hans">
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/register.css">
+    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="<%templateskin%>/js/register_validate.js"></script>
+    <script>
+        /*rem的相对单位定义*/
+        var viewportWidth = $(window).width();
+        var fontSizeUnit = viewportWidth * 0.9 / 20;
+        $("html").css("font-size", fontSizeUnit);
+
+        /*切换验证码*/
+        function ToggleCode(obj, codeurl) {
+            $(obj).attr("src", codeurl + "?time=" + Math.random());
+            return false;
+        }
+    </script>
+</head>
+<body>
+<div class="register-page">
+    <form id="regform" data-url="{config.webpath}tools/submit_ajax.ashx?action=user_register" autocomplete="off">
+        <div class="account-wrap">
+            <input type="text" id="account" class="input-l" name="txtMobile" placeholder="请输入手机号码" datatype="m" errormsg="手机号码格式不正确">
+        </div>
+        <div class="psw-wrap">
+            <input type="password" id="psw" class="input-l" name="txtPassword" placeholder="请输入密码" datatype="*" errormsg="请输入6-16位的密码，不能有空格">
+        </div>
+        <div class="psw2-wrap">
+            <input type="password" id="psw2" class="input-l" name="txtPassword1" placeholder="请再次输入密码" recheck="txtPassword" errormsg="两次输入的密码不一致">
+        </div>
+        <div class="pic-code-wrap">
+            <input type="text" id="pic-code" class="input-s" name="txtPicCode" placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
+            <span class="pic-code-span flex flex-center-wrapper">
+                <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
+            </span>
+        </div>
+        <div class="auth-code-wrap">
+            <input type="text" id="auth-code" class="input-s" name="txtCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
+            <button type="button" id="get-auth-code-btn" class="button-s" data-url="/tools/submit_ajax.ashx?action=user_register_smscode">获 取</button>
+        </div>
+        <div class="recommend-one-wrap">
+            <input type="text" id="recommend-one" class="input-l" name="txtInviteNo" placeholder="推荐码/推荐人账号（可不填）">
+        </div>
+        <div class="agreement-wrap">
+            <input type="checkbox" id="agreement" checked>
+            <label for="agreement">同意 《<a href="http://www.baidu.com">注册协议</a>》</label>
+        </div>
+        <div class="register-btn-wrap">
+            <button type="button" id="register-btn" class="button-l">注 册</button>
+        </div>
+    </form>
+    <div class="login-now-wrap">已有账号？ <a href="<%linkurl("login")%>">马上登录</a></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+/*银行卡选择弹窗样式*/
+.modal-content {
+    width: 18rem;
+    height: 14.6rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    overflow: scroll;
+}
+
+.modal-header {
+    text-align: center;
+    padding: 15px 15px 5px 15px;
+}
+
+button.close {float: right;}
+
+.modal-header p {
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    color: grey;
+}
+
+.bank-select-body {padding: 0 8%;}
+
+.bank-select-body > div {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.bank-select-body > div span {padding-left: 0.6rem;}
+
+.bank-select-body > div i,
+.bank-select-body > div span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sprite-dlg {
+    width: 30px;
+    height: 30px;
+    background-image: url("../imgs/banks-icon.png");
+    background-repeat: no-repeat;
+    display: block;
+    background-size: 1500%;
+}
+
+.sprite-gonghang {
+    background-position: 0 0;
+}
+
+.sprite-guangda {
+    background-position: -30px 0;
+}
+
+.sprite-guangfa {
+    background-position: -60px 0;
+}
+
+.sprite-huaxia {
+    background-position: -90px 0;
+}
+
+.sprite-jianhang {
+    background-position: -120px 0;
+}
+
+.sprite-jiaohang {
+    background-position: -150px 0;
+}
+
+.sprite-minsheng {
+    background-position: -180px 0;
+}
+
+.sprite-nonghang {
+    background-position: -210px 0;
+}
+
+.sprite-pingan {
+    background-position: -240px 0;
+}
+
+.sprite-pufa {
+    background-position: -270px 0;
+}
+
+.sprite-xingye {
+    background-position: -300px 0;
+}
+
+.sprite-youzheng {
+    background-position: -330px 0;
+}
+
+.sprite-zhaohang {
+    background-position: -360px 0;
+}
+
+.sprite-zhonghang {
+    background-position: -390px 0;
+}
+
+.sprite-zhongxin {
+    background-position: -420px 0;
+}
+
+/*银行卡选择弹窗样式end*/

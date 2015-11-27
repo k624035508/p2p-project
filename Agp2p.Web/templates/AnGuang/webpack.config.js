@@ -30,9 +30,9 @@ module.exports = {
     },
     plugins: [
         // CommonsChunkPlugin 能将公共的模块抽出到单独的 js，再由页面单独引用。参考 https://webpack.github.io/docs/optimization.html
-        new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password"]),
-        new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", "login",
-            "register", "project", "projects", "aboutus", "article_show","article_list","safe_defence","sitemap","404"]),
+        new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password", "login", "register", "project"]),
+        new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", 
+            "projects", "aboutus", "article_show","article_list","safe_defence","sitemap","404", "help"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -47,8 +47,7 @@ module.exports = {
     module: {
         loaders: [
             { test: /clipboard.*?js$/, loader: 'babel?cacheDirectory' }, // only use by clipboard.js
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
-            { test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?cacheDirectory' },
+            { test: /\.jsx?$/, exclude: /node_modules|build/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
             { test: /\.jpg$/, loader: "file" },
