@@ -31,6 +31,7 @@ namespace Agp2p.Web.admin.repayment
             this.CategoryId = DTRequest.GetQueryInt("category_id");
             this.RePayStatus = DTRequest.GetQueryInt("status");
             this.PageSize = GetPageSize(GetType().Name + "_page_size"); //每页数量
+            this.Keywords = DTRequest.GetQueryString("keywords");
 
             if (ChannelId == 0)
             {
@@ -42,6 +43,15 @@ namespace Agp2p.Web.admin.repayment
 
             if (!Page.IsPostBack)
             {
+                if (!string.IsNullOrEmpty(Keywords))
+                    txtKeywords.Text = Keywords;
+                var startTime = DTRequest.GetQueryString("startTime");
+                if (!string.IsNullOrEmpty(startTime))
+                    txtStartTime.Text = startTime;
+                var endTime = DTRequest.GetQueryString("endTime");
+                if (!string.IsNullOrEmpty(endTime))
+                    txtEndTime.Text = endTime;
+
                 ChkAdminLevel("pay_manage", DTEnums.ActionEnum.View.ToString()); //检查权限
                 TreeBind(); //绑定类别
                 RptBind();
@@ -74,8 +84,8 @@ namespace Agp2p.Web.admin.repayment
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
-                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString(), "__id__");
+            string pageUrl = Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}&startTime={5}&endTime={6}",
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString(), "__id__", txtStartTime.Text, txtEndTime.Text);
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
 
@@ -94,6 +104,11 @@ namespace Agp2p.Web.admin.repayment
             var query = context.li_repayment_tasks.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid && r.li_projects.title.Contains(txtKeywords.Text));
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
+            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
+                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.should_repay_time);
+            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
+                query = query.Where(h => h.should_repay_time <= Convert.ToDateTime(txtEndTime.Text));
+
             query = rblStatus.SelectedValue == "2"
                 ? query.Where(r => (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status)//已还款
                 : query.Where(
@@ -142,23 +157,23 @@ namespace Agp2p.Web.admin.repayment
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&startTime={4}&endTime={5}",
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.RePayStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&startTime={4}&endTime={5}",
+                this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.RePayStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&startTime={4}&endTime={5}",
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.RePayStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
 
         class PayBill

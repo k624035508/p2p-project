@@ -29,17 +29,19 @@ namespace Agp2p.Web.admin.statistic
         protected int page;
         protected int pageSize;
         protected string transactType;
+        protected string today;
 
         protected string keywords = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //keywords = DTRequest.GetQueryString("keywords");
 
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
             transactType = DTRequest.GetQueryString("transactType");
-            if (!Page.IsPostBack)
+            keywords = DTRequest.GetQueryString("keywords");
+            today = DTRequest.GetQueryString("today");
+            if(!IsPostBack)
             {
                 ChkAdminLevel("statistics_offline_transactions", DTEnums.ActionEnum.View.ToString()); //检查权限
                 var startTime = DTRequest.GetQueryString("startTime");
@@ -48,9 +50,11 @@ namespace Agp2p.Web.admin.statistic
                 var endTime = DTRequest.GetQueryString("endTime");
                 if (!string.IsNullOrEmpty(endTime))
                     txtEndTime.Text = endTime;
-                var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
+                if (!string.IsNullOrEmpty(today))
+                    cb_today.Checked = bool.Parse(today);
+
                 TreeBind();
                 RptBind();
             }
@@ -66,6 +70,8 @@ namespace Agp2p.Web.admin.statistic
                 Enum.GetValues(typeof (Agp2pEnums.OfflineTransactionTypeEnum))
                     .Cast<Agp2pEnums.OfflineTransactionTypeEnum>()
                     .Select(e => new ListItem(Utils.GetAgp2pEnumDes(e), "" + ((int) e))).ToArray());
+            if (!string.IsNullOrEmpty(transactType))
+                ddlRecordType.SelectedValue = transactType;
         }
         #endregion
 
@@ -106,13 +112,18 @@ namespace Agp2p.Web.admin.statistic
             
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
             { 
-                query = query.Where(b => b.dt_users.user_name.Contains(txtKeywords.Text) || b.dt_users.real_name.Contains(txtKeywords.Text)); 
+                query = query.Where(b => b.li_projects.user_name.Contains(txtKeywords.Text) || b.dt_users.real_name.Contains(txtKeywords.Text) || b.li_projects.title.Contains(txtKeywords.Text)); 
             }
 
-            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
-            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+            if(cb_today.Checked)
+                query = query.Where(h => h.create_time.Date == DateTime.Now.Date);
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
+                    query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
+                if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
+                    query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+            }
             query = query.Where(ptr => OfflineProjectTransactionType.Contains(ptr.type));
 
             totalCount = query.Count();
@@ -125,7 +136,7 @@ namespace Agp2p.Web.admin.statistic
                     occurTime = pptr.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
                     type = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum)pptr.prt.type),
                     remark = pptr.prt.remark,
-                    user = pptr.prt.dt_users.user_name,
+                    user = pptr.prt.dt_users.real_name??pptr.prt.dt_users.user_name,
                     project = pptr.prt.li_projects.title
                 });
         }
@@ -135,16 +146,16 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}",
-                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, transactType));
+            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}&today={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, transactType, today));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}",
-                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, transactType));
+            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}&today={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, transactType, today));
         }
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
@@ -159,8 +170,14 @@ namespace Agp2p.Web.admin.statistic
         //筛选类别
         protected void ddlRecordType_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}",
-                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlRecordType.SelectedItem.Text));
+            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}&today={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlRecordType.SelectedItem.Value, today));
+        }
+
+        protected void cb_today_OnCheckedChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}&today={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlRecordType.SelectedItem.Value, cb_today.Checked.ToString()));
         }
     }
 }

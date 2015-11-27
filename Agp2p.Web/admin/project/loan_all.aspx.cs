@@ -20,7 +20,6 @@ namespace Agp2p.Web.admin.project
 
         protected int CategoryId;
         protected int ProjectStatus;
-        protected string ChannelName = string.Empty;
         protected string Keywords = string.Empty;
 
         private Agp2pDataContext context = new Agp2pDataContext();
@@ -38,13 +37,18 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("频道参数不正确！", "back", "Error");
                 return;
             }
-            this.ChannelName = new BLL.channel().GetChannelName(this.ChannelId); //取得频道名称
 
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_all", DTEnums.ActionEnum.View.ToString()); //检查权限
                 if (!string.IsNullOrEmpty(Keywords))
                     txtKeywords.Text = Keywords;
+                var startTime = DTRequest.GetQueryString("startTime");
+                if (!string.IsNullOrEmpty(startTime))
+                    txtStartTime.Text = startTime;
+                var endTime = DTRequest.GetQueryString("endTime");
+                if (!string.IsNullOrEmpty(endTime))
+                    txtEndTime.Text = endTime;
                 TreeBind(); //绑定类别
                 RptBind();
             }
@@ -86,8 +90,8 @@ namespace Agp2p.Web.admin.project
             this.rptList1.DataBind();
             //绑定页码
             txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&page={4}",
-                this.ChannelId.ToString(), CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
+            string pageUrl = Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&page={4}&startTime={5}&endTime={6}",
+                this.ChannelId.ToString(), CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), "__id__", txtStartTime.Text, txtEndTime.Text);
             PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
         }
 
@@ -108,6 +112,10 @@ namespace Agp2p.Web.admin.project
                 query = query.Where(q => q.category_id == this.CategoryId);
             if (this.ProjectStatus > 0)
                 query = query.Where(q => q.status == this.ProjectStatus);
+            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
+                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.add_time);
+            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
+                query = query.Where(h => h.add_time <= Convert.ToDateTime(txtEndTime.Text));
 
             this.TotalCount = query.Count();
             return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
@@ -118,16 +126,16 @@ namespace Agp2p.Web.admin.project
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&startTime={4}&endTime={5}",
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}",
-                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("loan_all.aspx", "channel_id={0}&category_id={1}&keywords={2}&project_status={3}}&startTime={4}&endTime={5}",
+                this.ChannelId.ToString(), this.CategoryId.ToString(), txtKeywords.Text, this.ProjectStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
 
         protected string GetTagString(object tag)
@@ -143,15 +151,15 @@ namespace Agp2p.Web.admin.project
         protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("loan_all.aspx",
-                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}", this.ChannelId.ToString(),
-                ddlCategoryId.SelectedValue, txtKeywords.Text, ddlStatus.SelectedValue));
+                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&startTime={4}&endTime={5}", this.ChannelId.ToString(),
+                ddlCategoryId.SelectedValue, txtKeywords.Text, ddlStatus.SelectedValue, txtStartTime.Text, txtEndTime.Text));
         }
 
         protected void ddlStatus_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("loan_all.aspx",
-                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}", this.ChannelId.ToString(),
-                ddlCategoryId.SelectedValue, txtKeywords.Text, ddlStatus.SelectedValue));
+                "channel_id={0}&category_id={1}&keywords={2}&project_status={3}&startTime={4}&endTime={5}", this.ChannelId.ToString(),
+                ddlCategoryId.SelectedValue, txtKeywords.Text, ddlStatus.SelectedValue, txtStartTime.Text, txtEndTime.Text));
         }
     }
 }

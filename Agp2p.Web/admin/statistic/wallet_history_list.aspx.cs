@@ -21,6 +21,7 @@ namespace Agp2p.Web.admin.statistic
         protected int page;
         protected int pageSize;
         protected int userGroup;
+        protected string today;
 
         protected int action_type;
         protected string user_id = string.Empty;
@@ -47,6 +48,7 @@ namespace Agp2p.Web.admin.statistic
             user_id = DTRequest.GetQueryString("user_id");
             action_type = DTRequest.GetQueryInt("action_type");
             userGroup = DTRequest.GetQueryInt("userGroup");
+            today = DTRequest.GetQueryString("today");
 
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
@@ -61,6 +63,9 @@ namespace Agp2p.Web.admin.statistic
                 var keywords = DTRequest.GetQueryString("keywords");
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
+                if (!string.IsNullOrEmpty(today))
+                    cb_today.Checked = bool.Parse(today);
+
                 ChkAdminLevel("statistics_wallets_histories", DTEnums.ActionEnum.View.ToString()); //检查权限
                 TreeBind();
                 RptBind();
@@ -98,8 +103,8 @@ namespace Agp2p.Web.admin.statistic
         protected void ddlUserGroud_SelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
-                "keywords={0}&startTime={1}&endTime={2}&userGroup={3}&action_type={4}", txtKeywords.Text, txtStartTime.Text,
-                txtEndTime.Text, ddlUserGroud.SelectedValue, action_type.ToString()));
+                "keywords={0}&startTime={1}&endTime={2}&userGroup={3}&action_type={4}&today={5}", txtKeywords.Text, txtStartTime.Text,
+                txtEndTime.Text, ddlUserGroud.SelectedValue, action_type.ToString(), today));
         }
         #endregion
 
@@ -120,8 +125,8 @@ namespace Agp2p.Web.admin.statistic
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
             var pageUrl = Utils.CombUrlTxt("wallet_history_list.aspx",
-                "user_id={0}&page={1}&action_type={2}&startTime={3}&endTime={4}&keywords={5}&userGroup={6}", user_id, "__id__",
-                action_type.ToString(), txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString());
+                "user_id={0}&page={1}&action_type={2}&startTime={3}&endTime={4}&keywords={5}&userGroup={6}&today={7}", user_id, "__id__",
+                action_type.ToString(), txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), today);
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -157,10 +162,17 @@ namespace Agp2p.Web.admin.statistic
                 query = query.Where(w => !canAccessGroups.Any() || canAccessGroups.Contains(w.dt_users.group_id));
             }
 
-            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                query = query.Where(h => h.create_time.Date >= Convert.ToDateTime(txtStartTime.Text));
-            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                query = query.Where(h => h.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
+            if (cb_today.Checked)
+            {
+                query = query.Where(h => h.create_time.Date == DateTime.Now.Date);
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
+                    query = query.Where(h => h.create_time.Date >= Convert.ToDateTime(txtStartTime.Text));
+                if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
+                    query = query.Where(h => h.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
+            }
 
             query = query.Where(h =>
                     (h.dt_users.real_name.Contains(txtKeywords.Text) || h.dt_users.user_name.Contains(txtKeywords.Text)) || h.dt_users.mobile.Contains(txtKeywords.Text))
@@ -176,16 +188,16 @@ namespace Agp2p.Web.admin.statistic
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
-                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}", user_id, action_type.ToString(),
-                txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString()));
+                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}&today={6}", user_id, action_type.ToString(),
+                txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), today));
         }
 
         //筛选类别
         protected void ddlWalletHistoryTypeId_SelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
-                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}", user_id,
-                ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString()));
+                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}&today={6}", user_id,
+                ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), today));
         }
 
         private const string ProjectInvestDetailHref = "<a target='_blank' href='project_investor_detail.aspx?keywords={1}&year=-&month=-&status=0'>{0}</a>";
@@ -240,8 +252,8 @@ namespace Agp2p.Web.admin.statistic
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
-                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}", user_id,
-                ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString()));
+                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}&today={6}", user_id,
+                ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), today));
         }
 
         protected string getUserName()
@@ -302,6 +314,13 @@ namespace Agp2p.Web.admin.statistic
                 TransactionIncome += Tin;
                 TransactionOutcome += Tout;
             }
+        }
+
+        protected void cb_today_OnCheckedChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
+                "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}&today={6}", user_id,
+                ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), cb_today.Checked.ToString()));
         }
     }
 }

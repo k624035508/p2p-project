@@ -386,9 +386,9 @@ namespace Agp2p.Common
         {
             // 收入
             [Description("平台服务费")]
-            ManagementFeeOfLoanning = 1,
+            ManagementFeeOfLoanning = 10,
             [Description("逾期管理费")]
-            ManagementFeeOfOverTime = 2,
+            ManagementFeeOfOverTime = 11,
 
             // 支出
         }

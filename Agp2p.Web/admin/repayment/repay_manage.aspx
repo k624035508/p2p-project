@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
@@ -38,13 +39,27 @@
                     </div>
                 </div>
                 <div class="r-list">
+                    <div style="display: inline-block;" class="rl">时间段：</div>
+                    <div class="input-date" style="display: inline-block; float: left;">
+                        <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                            sucmsg=" " Style="font-size: 15px" />
+                        <i></i>
+                    </div>
+                    <span class="rl">到</span>
+                    <div class="input-date" style="display: inline-block; float: left; margin-right: 10px;">
+                        <asp:TextBox ID="txtEndTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                            sucmsg=" " Style="font-size: 15px" />
+                        <i></i>
+                    </div>
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
                             <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
                         </div>
                     </div>
                     <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True" />
-                    <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search">查询</asp:LinkButton>
+                    <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search" OnClick="btnSearch_Click">查询</asp:LinkButton>
                 </div>
             </div>
         </div>
