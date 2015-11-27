@@ -378,8 +378,8 @@
       <Association Name="li_risks_li_albums" Member="li_albums" ThisKey="id" OtherKey="risk" Type="li_albums" />
       <Association Name="li_risks_li_projects" Member="li_projects" ThisKey="id" OtherKey="risk_id" Type="li_projects" />
       <Association Name="li_guarantors_li_risks" Member="li_guarantors" ThisKey="guarantor_id" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
-      <Association Name="li_loaners_li_risks" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
       <Association Name="li_creditors_li_risks" Member="li_creditors" ThisKey="creditor" OtherKey="user_id" Type="li_creditors" IsForeignKey="true" />
+      <Association Name="li_loaners_li_risks" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_albums" Member="li_albums">
@@ -400,8 +400,8 @@
       <Association Name="li_risks_li_albums" Member="li_risks" ThisKey="risk" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="li_guarantors_li_albums" Member="li_guarantors" ThisKey="guarantor" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
       <Association Name="dt_users_li_albums" Member="dt_users" ThisKey="the_user" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" />
-      <Association Name="li_loaners_li_albums" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="li_loaner_companies_li_albums" Member="li_loaner_companies" ThisKey="company" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
+      <Association Name="li_loaners_li_albums" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.li_guarantors" Member="li_guarantors">
@@ -481,33 +481,12 @@
       <Association Name="dt_users_li_wallets" Member="li_wallets" ThisKey="id" OtherKey="user_id" Type="li_wallets" Cardinality="One" />
       <Association Name="dt_users_dt_user_login_log" Member="dt_user_login_log" ThisKey="id" OtherKey="user_id" Type="dt_user_login_log" />
       <Association Name="dt_users_li_albums" Member="li_albums" ThisKey="id" OtherKey="the_user" Type="li_albums" />
-      <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_users_li_creditors" Member="li_creditors" ThisKey="id" OtherKey="user_id" Type="li_creditors" Cardinality="One" />
       <Association Name="dt_users_li_notification_settings" Member="li_notification_settings" ThisKey="id" OtherKey="user_id" Type="li_notification_settings" />
       <Association Name="dt_users_dt_user_message" Member="dt_user_message" ThisKey="id" OtherKey="receiver" Type="dt_user_message" />
+      <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.li_loaners" Member="li_loaners">
-    <Type Name="li_loaners">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="job" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="working_at" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
-      <Column Name="company_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="educational_background" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
-      <Column Name="marital_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="income" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="age" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="native_place" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="working_company" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
-      <Association Name="li_loaners_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="owner" Type="li_mortgages" />
-      <Association Name="li_loaners_li_risks" Member="li_risks" ThisKey="id" OtherKey="loaner" Type="li_risks" />
-      <Association Name="li_loaners_li_albums" Member="li_albums" ThisKey="id" OtherKey="loaner" Type="li_albums" />
-      <Association Name="dt_users_li_loaners" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
-      <Association Name="li_loaner_companies_li_loaners" Member="li_loaner_companies" ThisKey="company_id" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_project_transactions" Member="li_project_transactions">
@@ -651,6 +630,28 @@
       <Column Name="is_group_price" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="page_size" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_loaners" Member="li_loaners">
+    <Type Name="li_loaners">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="job" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="working_at" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="company_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="educational_background" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="marital_status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="income" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="age" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="last_update_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="native_place" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="working_company" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="lawsuit" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Association Name="li_loaners_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="owner" Type="li_mortgages" />
+      <Association Name="li_loaners_li_risks" Member="li_risks" ThisKey="id" OtherKey="loaner" Type="li_risks" />
+      <Association Name="li_loaners_li_albums" Member="li_albums" ThisKey="id" OtherKey="loaner" Type="li_albums" />
+      <Association Name="dt_users_li_loaners" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_loaner_companies_li_loaners" Member="li_loaner_companies" ThisKey="company_id" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

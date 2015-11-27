@@ -66,6 +66,7 @@ namespace Agp2p.Web.admin.loaner
             txtEducationalBackground.Text = model.educational_background;
             rblMaritalStatus.SelectedValue = model.marital_status.ToString();
             txtIncome.Text = model.income;
+            txtLawsuit.Text = model.lawsuit;
 
             rptIdCardPics.DataSource = model.li_albums.Where(a => a.loaner == id && a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard);
             rptIdCardPics.DataBind();
@@ -128,7 +129,8 @@ namespace Agp2p.Web.admin.loaner
                 educational_background = txtEducationalBackground.Text.Trim(),
                 marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue),
                 income = txtIncome.Text.Trim(),
-                last_update_time = DateTime.Now
+                last_update_time = DateTime.Now,
+                lawsuit = txtLawsuit.Text.Trim()
             };
             context.li_loaners.InsertOnSubmit(model);
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.IdCard);
@@ -165,6 +167,7 @@ namespace Agp2p.Web.admin.loaner
             model.marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue);
             model.income = txtIncome.Text.Trim();
             model.last_update_time = DateTime.Now;
+            model.lawsuit = txtLawsuit.Text.Trim();
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.IdCard);
             try
