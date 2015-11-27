@@ -640,4 +640,17 @@
       <Association Name="li_loaner_companies_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="company_id" Type="li_loaners" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_channel" Member="dt_channel">
+    <Type Name="dt_channel">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="is_albums" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_attach" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="is_group_price" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="page_size" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

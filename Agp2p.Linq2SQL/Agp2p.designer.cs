@@ -141,6 +141,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_loaner_companies(li_loaner_companies instance);
     partial void Updateli_loaner_companies(li_loaner_companies instance);
     partial void Deleteli_loaner_companies(li_loaner_companies instance);
+    partial void Insertdt_channel(dt_channel instance);
+    partial void Updatedt_channel(dt_channel instance);
+    partial void Deletedt_channel(dt_channel instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -468,6 +471,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_loaner_companies>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_channel> dt_channel
+		{
+			get
+			{
+				return this.GetTable<dt_channel>();
 			}
 		}
 	}
@@ -14609,6 +14620,260 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_loaner_companies = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_channel")]
+	public partial class dt_channel : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<int> _category_id;
+		
+		private string _name;
+		
+		private string _title;
+		
+		private System.Nullable<byte> _is_albums;
+		
+		private System.Nullable<byte> _is_attach;
+		
+		private System.Nullable<byte> _is_group_price;
+		
+		private System.Nullable<int> _page_size;
+		
+		private System.Nullable<int> _sort_id;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Oncategory_idChanging(System.Nullable<int> value);
+    partial void Oncategory_idChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OntitleChanging(string value);
+    partial void OntitleChanged();
+    partial void Onis_albumsChanging(System.Nullable<byte> value);
+    partial void Onis_albumsChanged();
+    partial void Onis_attachChanging(System.Nullable<byte> value);
+    partial void Onis_attachChanged();
+    partial void Onis_group_priceChanging(System.Nullable<byte> value);
+    partial void Onis_group_priceChanged();
+    partial void Onpage_sizeChanging(System.Nullable<int> value);
+    partial void Onpage_sizeChanged();
+    partial void Onsort_idChanging(System.Nullable<int> value);
+    partial void Onsort_idChanged();
+    #endregion
+		
+		public dt_channel()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_category_id", DbType="Int")]
+		public System.Nullable<int> category_id
+		{
+			get
+			{
+				return this._category_id;
+			}
+			set
+			{
+				if ((this._category_id != value))
+				{
+					this.Oncategory_idChanging(value);
+					this.SendPropertyChanging();
+					this._category_id = value;
+					this.SendPropertyChanged("category_id");
+					this.Oncategory_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(50)")]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="VarChar(100)")]
+		public string title
+		{
+			get
+			{
+				return this._title;
+			}
+			set
+			{
+				if ((this._title != value))
+				{
+					this.OntitleChanging(value);
+					this.SendPropertyChanging();
+					this._title = value;
+					this.SendPropertyChanged("title");
+					this.OntitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_albums", DbType="TinyInt")]
+		public System.Nullable<byte> is_albums
+		{
+			get
+			{
+				return this._is_albums;
+			}
+			set
+			{
+				if ((this._is_albums != value))
+				{
+					this.Onis_albumsChanging(value);
+					this.SendPropertyChanging();
+					this._is_albums = value;
+					this.SendPropertyChanged("is_albums");
+					this.Onis_albumsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_attach", DbType="TinyInt")]
+		public System.Nullable<byte> is_attach
+		{
+			get
+			{
+				return this._is_attach;
+			}
+			set
+			{
+				if ((this._is_attach != value))
+				{
+					this.Onis_attachChanging(value);
+					this.SendPropertyChanging();
+					this._is_attach = value;
+					this.SendPropertyChanged("is_attach");
+					this.Onis_attachChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_group_price", DbType="TinyInt")]
+		public System.Nullable<byte> is_group_price
+		{
+			get
+			{
+				return this._is_group_price;
+			}
+			set
+			{
+				if ((this._is_group_price != value))
+				{
+					this.Onis_group_priceChanging(value);
+					this.SendPropertyChanging();
+					this._is_group_price = value;
+					this.SendPropertyChanged("is_group_price");
+					this.Onis_group_priceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_page_size", DbType="Int")]
+		public System.Nullable<int> page_size
+		{
+			get
+			{
+				return this._page_size;
+			}
+			set
+			{
+				if ((this._page_size != value))
+				{
+					this.Onpage_sizeChanging(value);
+					this.SendPropertyChanging();
+					this._page_size = value;
+					this.SendPropertyChanged("page_size");
+					this.Onpage_sizeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sort_id", DbType="Int")]
+		public System.Nullable<int> sort_id
+		{
+			get
+			{
+				return this._sort_id;
+			}
+			set
+			{
+				if ((this._sort_id != value))
+				{
+					this.Onsort_idChanging(value);
+					this.SendPropertyChanging();
+					this._sort_id = value;
+					this.SendPropertyChanged("sort_id");
+					this.Onsort_idChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

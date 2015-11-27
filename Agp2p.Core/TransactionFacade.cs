@@ -1209,6 +1209,11 @@ namespace Agp2p.Core
             return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectStatusEnum) proj.status);
         }
 
+        public static string GetProjectRepaymentTypeDesc(this li_projects proj)
+        {
+            return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)proj.repayment_type);
+        }
+
         public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templatePath)
         {
             var project = investment.li_projects;
