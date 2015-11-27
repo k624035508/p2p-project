@@ -1,0 +1,112 @@
+body {padding-bottom: 50px;}
+
+div.top-screen {
+    height: 9rem;
+    background-color: #00a5df;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.top-screen .title-style {
+    color: #fff;
+    font-size: 1.15em;
+    line-height: 2rem;
+}
+
+.top-screen div.title-style > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.vertical-align div {
+    text-align: center;
+    margin-top: 1.6rem;
+}
+
+div.top-screen p {
+    margin-top: 0.4rem;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+div.invest-standard {
+    height: 3.8rem;
+    border-bottom: 1px solid #e8e8ea;
+    background-color: #f9f9f9;
+}
+
+div.invest-standard > div {
+    text-align: center;
+}
+
+div.invest-standard div span {
+    color: #9b9c9e;
+}
+
+div.invest-standard > div p {
+    margin: 0;
+    color: #747577;
+    font-size: 1.2em;
+}
+
+i.title-icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.receiveplan-house {
+    background: url("../imgs/receiveplan-house.png") no-repeat;
+    background-size: contain;
+}
+
+.receiveplan-car {
+    background: url("../imgs/receiveplan-car.png") no-repeat;
+    background-size: contain;
+}
+
+div.return-rate {
+    width: 30%;
+    border-right: 1px solid #e8e8ea;
+}
+
+div.periods {
+    width: 30%;
+}
+
+div.invest-amount {
+    width: 40%;
+    border-right: 1px solid #e8e8ea;
+}
+
+div.plan-list {
+    margin: 0 5%;
+    height: 10rem;
+    border-bottom: 1px solid #e8e8ea;
+}
+
+div.plan-list ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+    line-height: 1.6rem;
+}
+
+div.plan-list ul li {
+    color: #9b9c9e;
+}
+
+div.plan-list ul li span {
+    padding-left: 1.6rem;
+    color: #747577;
+    font-size: 1.15em;
+}
+
+div.plan-list ul li:last-child span {
+    color: #f0936a;
+}
+
+div.plan-list p {
+    color: #00a5df;
+    font-size: 1.2em;
+    line-height: 1.6rem;
+}

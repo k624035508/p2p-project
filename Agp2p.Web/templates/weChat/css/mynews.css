@@ -1,0 +1,114 @@
+body {
+    padding-top: 4rem;
+    padding-bottom: 4.4rem;
+    background-color: #f4f4f7;
+}
+
+div.nav-bar {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 99;
+}
+
+div.nav-bar > a {
+    float: left;
+    width: 33.333%;
+    color: #8a8b8d;
+    font-size: 1.2em;
+    text-align: center;
+    line-height: 50px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+div.nav-bar > a:hover,
+div.nav-bar > a:focus,
+div.nav-bar > a:visited {
+    text-decoration: none;
+}
+
+.hr-style {
+    font-size: .5rem;
+    color: #e8e8ea;
+}
+
+.nav-active {
+    color: #3e4346 !important;
+}
+
+.nav-border-active {
+    border-bottom: 2px solid  #007ed3 !important;
+}
+
+.float-right {
+    float: right;
+}
+
+div.notice-cell {
+    width: 100%;
+    height: 4rem;
+    padding: 0 5%;
+    margin-bottom: 1rem;
+    border-top: 1px solid #e8e8ea;
+    border-bottom: 1px solid #e8e8ea;
+    background-color: #fff;
+}
+
+.vertical-align {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+
+.title-style {
+    color: #00a5df;
+    font-size: 1.2em;
+}
+
+.txt-grey {
+    color: #b0b1b2;
+}
+
+.notice-detail {
+    display: block;
+    width: 17rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.news-manage {
+    height: 3rem;
+    line-height: 3rem;
+    color: #00a5df;
+    font-size: 1.3em;
+    text-align: center;
+    border-top: 1px solid #e8e8ea;
+    border-bottom: 1px solid #e8e8ea;
+    background-color: #fff;
+}
+
+div.vertical-align > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.news-content {width: 18rem;}
+
+div.select-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    border: 1px solid #00a5df;
+    margin-right: 0.6rem;
+    cursor: pointer;
+}
+
+div.select-icon.blue {background: #00a5df;}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的消息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
+    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+
+    <style>
+        body {margin:0;}
+        div.news-detail-page {border-bottom: 1px solid #e8e8ea;}
+        div.news-title {
+            width: 100%;
+            height: 3.1em;
+            line-height: 3.1em;
+            color: #00a5df;
+            font-size: 1.3em;
+            text-align: center;
+            border-bottom: 1px solid #e8e8ea;
+        }
+        div.news-content {
+            padding: 1rem;
+            color: #666;
+        }
+        div.news-body {
+            margin: 1rem 0;
+            text-indent: 2em;
+            line-height: 28px;
+        }
+        div.sender {
+            float: right;
+            text-align: center;
+        }
+        div.sender p {margin: 0 0 8px;}
+    </style>
+    <script>
+        /*rem的相对单位定义*/
+        var viewportWidth = $(window).width();
+        var fontSizeUnit = viewportWidth / 20;
+        $("html").css("font-size", fontSizeUnit);
+    </script>
+</head>
+<body>
+<div class="news-detail-page">
+    <div class="news-title">{model.title}</div>
+    <div class="news-content">
+        <div class="user-name">尊敬的会员：</div>
+        <div class="news-body">{model.content}</div>
+        <div class="sender">
+            <p>金汇丰</p>
+            <%if(model.type==2)%>
+            发件人：{model.post_user_name}&nbsp;&nbsp;&nbsp;
+            <%else if(model.type==3)%>
+            收件人：{model.accept_user_name}&nbsp;&nbsp;&nbsp;
+            <%/if%>
+            <span>{model.post_time}</span>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+﻿/*投资列表样式start*/
+div.invest-list > div {
+    padding: 0 5%;
+    margin: .6rem auto;
+    border-top: 1px solid #e8e8ea;
+    border-bottom: 1px solid #e8e8ea;
+    background-color: #fff;
+}
+
+p {margin: 0 0 0;}
+
+.invest-title {
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1.1em;
+    color: #00a5df;
+    border-bottom: 1px solid #e8e8ea;
+}
+
+.title-style {
+    color: #94999f;
+}
+
+.txt-darkgrey-s {
+    color: #3e4346;
+}
+
+.txt-darkgrey-l {
+    color: #3e4346;
+    font-size: 1.25em;
+}
+
+.txt-orange-s {
+    color: #fd6500;
+}
+
+.txt-orange-l {
+    color: #fd6500;
+    font-size: 1.25em;
+}
+
+div.over-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.5rem;
+    -webkit-border-radius: 1.5rem;
+    background-color: #d9d9d9;
+    float: right;
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+    line-height: 3rem;
+}
+
+span.book-icon {
+    font-size: .8em !important;
+    background-color: #fd6500;
+    border-radius: 4px;
+    color: #fff;
+    margin-left: 5px;
+    padding: 0 2px;
+}
+div.invest-content {height:4.67rem;}
+div.invest-content > div {
+    text-align: center;
+}
+
+div.indicatorContainer, div.status-wrap {
+    width: 3rem;
+    height: 3rem;
+}
+
+div.indicatorContainer canvas {
+    width: 3rem !important;
+    height: 3rem !important;
+}
+/*投资列表样式end*/
