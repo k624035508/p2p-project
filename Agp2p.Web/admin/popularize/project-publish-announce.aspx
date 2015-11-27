@@ -16,7 +16,7 @@
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
     <script>
-        var promptDefVal = '<%=DateTime.Now.ToString("yyyy年MM月dd号15:00")%>';
+        var promptDefVal = '<%=DateTime.Now.ToString("yyyy年MM月dd日15:00")%>';
     </script>
 </head>
 <body class="mainbody">
