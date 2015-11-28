@@ -37,6 +37,8 @@ namespace Agp2p.Web.admin
         protected int totalLoginCount;
         //今日注册人数
         protected int totalRegisterCount;
+        //票就标总额
+        protected string totalPjProjectAmount;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -79,7 +81,16 @@ namespace Agp2p.Web.admin
                     //累计提现
                     totalWithDraw = context.li_wallets.Select(w => w.total_withdraw).AsEnumerable().DefaultIfEmpty(0).Sum().ToString("c");
                     //标的总数
-                    projectCount = context.li_projects.Count(p => p.status >= (int)Agp2pEnums.ProjectStatusEnum.Financing); 
+                    projectCount = context.li_projects.Count(p => p.status >= (int)Agp2pEnums.ProjectStatusEnum.Financing);
+                    //票据理财总额（募集中、还款中）
+                    totalPjProjectAmount =
+                        context.li_projects.Where(
+                            p =>
+                                p.category_id == 62 && (p.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying ||
+                                p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing))
+                            .Sum(p => p.financing_amount)
+                            .ToString("c");
+
                     //今日登陆人数
                     BLL.user_login_log bllLog=new user_login_log();
                     totalLoginCount = bllLog.GetList("user_id", "CONVERT(varchar(10),login_time,121)='"+DateTime.Now.ToString("yyyy-MM-dd")+"'").Tables[0].Rows.Count;

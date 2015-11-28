@@ -107,7 +107,7 @@ namespace Agp2p.Web.admin.loaner
                 JscriptMsg("不存在该用户", "", "Error");
                 return false;
             }
-            else if (users.Count() == 2)
+            if (users.Count() > 1)
             {
                 JscriptMsg("此姓名匹配了多个用户，请输入会员账号（手机号）来匹配", "", "Error");
                 return false;
