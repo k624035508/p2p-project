@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -70,11 +70,11 @@
             $.ajax({
                 type: "POST",
                 url: "{Request.FilePath}" + "/AjaxQueryTransactionHistory",
-                data: JSON.stringify({ pageIndex: pageIndex, pageSize: pageSize }),
+                data: JSON.stringify({ pageIndex, pageSize, type: 0, startTime: "", endTime: "" }),
                 contentType: "application/json",
                 dataType: "json",
                 success: function (msg) {
-                    var ls = JSON.parse(msg.d);
+                    var ls = JSON.parse(msg.d).data;
                     $("#pending").append(render({ items: ls }));
                     if (ls.length < pageSize) {
                         $(window).unbind('scroll');

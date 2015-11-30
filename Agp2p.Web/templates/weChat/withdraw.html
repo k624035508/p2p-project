@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
         /*rem的相对单位定义*/
         $("html").css("font-size", $(window).width() / 20);
 
-        var idleMoney = {wallet.idle_money};
+        var idleMoney = {userModel.li_wallets.idle_money};
         $(function() {
             $("div.select-card-wrap").click(function(){
                 $('#bank-select-dialog').modal();
@@ -84,7 +84,7 @@
     <div class="withdrawals-page">
         <form>
             <div class="withdraw-amount-wrap">
-                <input type="text" id="withdrawals" placeholder="账户余额 <%=string.Format("{0:N}",wallet.idle_money)%> 元">
+                <input type="text" id="withdrawals" placeholder="账户余额 <%=string.Format("{0:N}",userModel.li_wallets.idle_money)%> 元">
             </div>
             <div class="select-card-wrap">
                 <input type="text" id="select-card" placeholder="请选择银行卡" readonly="readonly"/>

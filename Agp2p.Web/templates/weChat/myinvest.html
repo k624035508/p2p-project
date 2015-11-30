@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -61,11 +61,11 @@
             $.ajax({
                 type: "POST",
                 url: "{Request.FilePath}" + "/AjaxQueryInvestment",
-                data: JSON.stringify({ type: status, pageIndex: pageIndex, pageSize: pageSize }),
+                data: JSON.stringify({ type: status, pageIndex, pageSize, startTime: "", endTime: "" }),
                 contentType: "application/json",
                 dataType: "json",
                 success: function(msg) {
-                    var ls = JSON.parse(msg.d);
+                    var ls = JSON.parse(msg.d).data;
                     $("#pending").append(render({ items: ls }));
                     if (ls.length < pageSize) {
                         $(".nav-active").attr("data-loadCompleted", "true"); // disable auto load for this page

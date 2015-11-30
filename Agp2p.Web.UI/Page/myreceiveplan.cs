@@ -111,5 +111,126 @@ namespace Agp2p.Web.UI.Page
                 return reps1;
             }).ToList();
         }
+
+        private static decimal QueryInvestAmount(li_projects proj, int userId)
+        {
+            return proj.li_project_transactions.Where(
+                ptr =>
+                    ptr.investor == userId &&
+                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .Sum(ptr => ptr.principal);
+        }
+
+        [WebMethod]
+        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize)
+        {
+            var userInfo = GetUserInfo();
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var context = new Agp2pDataContext();
+
+            // 查出投资过的项目
+            var investedProjects = context.li_project_transactions.Where(ptr =>
+                ptr.investor == userInfo.id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .Where(ptr => projectFinish
+                            ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                            : ptr.li_projects.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+                .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
+
+            var result = investedProjects
+                    .OrderByDescending(p => p.Key)
+                    .Skip(pageSize * pageIndex)
+                    .Take(pageSize)
+                    .Select(p =>
+                    {
+                        decimal investedValue;
+                        int? ticketId = null;
+                        if (investedProjects.ContainsKey(p.Key))
+                        {
+                            investedValue = QueryInvestAmount(investedProjects[p.Key], userInfo.id);
+                        }
+                        else
+                        {
+                            var atr = context.li_wallet_histories.Single(h => h.create_time == p.Key && h.user_id == userInfo.id).li_activity_transactions;
+                            ticketId = atr.id;
+                            investedValue = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value");
+                        }
+                        return new
+                        {
+                            InvestTime = p.Key.ToString("yyyy-MM-dd HH:mm"),
+                            ProjectTitle = p.Value.title,
+                            InvestValue = investedValue.ToString("c"),
+                            ProjectId = p.Value.id,
+                            TicketId = ticketId
+                        };
+                    });
+
+            return JsonConvert.SerializeObject(result);
+        }
+
+        [WebMethod]
+        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId)
+        {
+            var userInfo = GetUserInfo();
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var context = new Agp2pDataContext();
+            if (ticketId == null)
+            {
+                var project = context.li_projects.Single(p => p.id == projectId);
+                var investAmount = QueryInvestAmount(project, userInfo.id);
+                var investRatio = investAmount / project.financing_amount;
+                var result = new
+                {
+                    Title = project.title,
+                    ProfitingAmount = (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
+                        ? project.li_repayment_tasks.Sum(ta => Math.Round(investRatio * ta.repay_principal, 2) + Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
+                        : "(未满标)",
+                    ProfitRateYear = project.profit_rate_year,
+                    InvestedValue = investAmount.ToString("c"),
+                    TermsData = project.li_repayment_tasks.Select(ta => new
+                    {
+                        RepayInterest = Math.Round(investRatio * ta.repay_interest, 2).ToString("c"),
+                        RepayPrincipal = Math.Round(investRatio * ta.repay_principal, 2).ToString("c"),
+                        ShouldRepayTime = ta.should_repay_time.ToString("yyyy-MM-dd"),
+                        RepayTotal = (Math.Round(investRatio * ta.repay_interest, 2) + Math.Round(investRatio * ta.repay_principal, 2)).ToString("c")
+                    })
+                };
+                return JsonConvert.SerializeObject(result);
+            }
+            else
+            {
+                var project = context.li_projects.Single(p => p.id == projectId);
+                var atr = context.li_activity_transactions.Single(tr => tr.id == ticketId);
+                var result = new
+                {
+                    Title = project.title,
+                    ProfitingAmount = atr.value.ToString("c"),
+                    ProfitRateYear = project.profit_rate_year,
+                    InvestedValue = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("c"),
+                    TermsData = new[]
+                    {
+                        new
+                        {
+                            RepayInterest = atr.value.ToString("c"),
+                            RepayPrincipal = 0.ToString("c"),
+                            ShouldRepayTime = ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("RepayTime").ToString("yyyy-MM-dd"),
+                            RepayTotal = atr.value.ToString("c")
+                        }
+                    }
+                };
+                return JsonConvert.SerializeObject(result);
+            }
+        }
     }
 }

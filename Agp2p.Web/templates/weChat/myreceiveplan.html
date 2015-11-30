@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -104,7 +104,7 @@
         var render = _.template($("#repaying-project-fragment").html());
         function loadData(pageIndex, callback) {
             var pageSize = 15;
-            var status = Number($("a.nav-active").attr("data-status"));
+            var projectFinish = $("a.nav-active").data("projectFinish");
             var loadingHint = $(".loading-hint");
             var emptyBox = $("div.empty-box");
             loadingHint.text("加载中...");
@@ -113,7 +113,7 @@
             $.ajax({
                 type: "POST",
                 url: "{Request.FilePath}" + "/AjaxQueryInvestedProject",
-                data: JSON.stringify({ projectStatus: status, pageIndex: pageIndex, pageSize: pageSize }),
+                data: JSON.stringify({ projectFinish, pageIndex, pageSize }),
                 contentType: "application/json",
                 dataType: "json",
                 success: function (msg) {
@@ -246,8 +246,8 @@
     <div class="section">
         <div class="slide">
             <div class="nav-bar">
-                <a id="recieving" href="javascript:;" data-status="80" class="nav-active nav-border-active">回款中<span class="float-right hr-style">|</span></a>
-                <a id="received" href="javascript:;" data-status="90">已回款</a>
+                <a id="recieving" href="javascript:;" data-project-finish="false" class="nav-active nav-border-active">回款中<span class="float-right hr-style">|</span></a>
+                <a id="received" href="javascript:;" data-project-finish="true">已回款</a>
             </div>
             <div class="myinvest-page inner-scrollable">
                 <div class="project-list">
