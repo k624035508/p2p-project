@@ -83,13 +83,15 @@ namespace Agp2p.Web.admin
                     //标的总数
                     projectCount = context.li_projects.Count(p => p.status >= (int)Agp2pEnums.ProjectStatusEnum.Financing);
                     //票据理财总额（募集中、还款中）
-                    totalPjProjectAmount =
-                        context.li_projects.Where(
+                    var pjProjects = context.li_projects.Where(
                             p =>
-                                p.category_id == 62 && (p.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying ||
-                                p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing))
-                            .Sum(p => p.financing_amount)
-                            .ToString("c");
+                                p.category_id == 62 && (p.status == (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying ||
+                                p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing));
+                    totalPjProjectAmount = pjProjects.Any()
+                        ? pjProjects.Sum(p => p.financing_amount)
+                            .ToString("c")
+                        : "0";
+
 
                     //今日登陆人数
                     BLL.user_login_log bllLog=new user_login_log();
