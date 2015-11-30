@@ -1616,55 +1616,35 @@ namespace Agp2p.Common
             return user_name;
         }
 
+        public static void ExportXls(string worksheetName, Action<IXLWorksheet> wsAction, HttpResponse httpResponse)
+        {
+            var workbook = GenXlsForSingleTable(worksheetName, wsAction);
+
+            StreamingFile("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{worksheetName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx", s => workbook.SaveAs(s), httpResponse);
+        }
+
         public static void ExportXls<T>(string worksheetName, IEnumerable<string> titles, IEnumerable<T> xlsData, HttpResponse httpResponse)
         {
-            // doc: http://closedxml.codeplex.com/documentation?referringTitle=Home
-            var workbook = new XLWorkbook();
-            var ws = workbook.Worksheets.Add(worksheetName);
+            ExportXls(worksheetName, ws =>
+            {
+                titles.Zip(Infinite(), (s, i) => new { s, i }).ForEach(t => { ws.Cell(1, t.i + 1).Value = t.s; });
 
-            ws.PageSetup.PageOrientation = XLPageOrientation.Portrait;  //设置纸张纵向
-            ws.PageSetup.FitToPages(1, 1);  //设置一页宽一页高
+                ws.Cell("A2").Value = xlsData.AsEnumerable(); // 这个库规定这里如果是 IQueryable, 必须转成 IEnumerable
+                ws.Columns().AdjustToContents();
+            }, httpResponse);
+        }
 
-            ws.PageSetup.PaperSize = XLPaperSize.A4Paper;  //纸张大小是A4
-            ws.PageSetup.VerticalDpi = 600;    //打印质量
-            ws.PageSetup.HorizontalDpi = 600;  //打印质量
-            //ws.PageSetup.FirstPageNumber =1;  //起始页码
-
-            ws.PageSetup.CenterHorizontally = true;   //居中方式水平
-            ws.PageSetup.CenterVertically = false;    //居中方式垂直
-
-            ws.PageSetup.AlignHFWithMargins= true;   //与页边距对齐
-            ws.PageSetup.ScaleHFWithDocument= true;  //随文档自动缩放
-            // Show gridlines
-            ws.PageSetup.ShowGridlines = false;  //网格线
-
-            // Print in black and white
-            ws.PageSetup.BlackAndWhite = false; //单色打印
-
-            // Print in draft quality
-            ws.PageSetup.DraftQuality = true;  //草稿品质
-
-            // Show row and column headings
-            ws.PageSetup.ShowRowAndColumnHeadings = false;  //行号列标
-            // Set the page print order to over, then down
-            ws.PageSetup.PageOrder = XLPageOrderValues.OverThenDown;  //先行后列
-
-
-            titles.Zip(Infinite(), (s, i) => new {s, i}).ForEach(t => { ws.Cell(1, t.i + 1).Value = t.s; });
-
-            ws.Cell("A2").Value = xlsData.AsEnumerable(); // 这个库规定这里如果是 IQueryable, 必须转成 IEnumerable
-            ws.Columns().AdjustToContents();
-
+        public static void StreamingFile(string mimeType, string fileName, Action<Stream> toWrite, HttpResponse httpResponse)
+        {
             // Prepare the response
             httpResponse.Clear();
-            httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            httpResponse.AddHeader("content-disposition",
-                string.Format("attachment;filename=\"{0}_{1:yyyyMMddHHmmss}.xlsx\"", worksheetName, DateTime.Now));
+            httpResponse.ContentType = mimeType;
+            httpResponse.AddHeader("content-disposition", $"attachment;filename=\"{fileName}\"");
 
             // Flush the workbook to the Response.OutputStream
             using (var memoryStream = new MemoryStream())
             {
-                workbook.SaveAs(memoryStream);
+                toWrite(memoryStream);
                 memoryStream.WriteTo(httpResponse.OutputStream);
                 memoryStream.Close();
             }
@@ -1672,7 +1652,52 @@ namespace Agp2p.Common
             httpResponse.End();
         }
 
+
+        public static XLWorkbook GenXlsForSingleTable(string worksheetName, Action<IXLWorksheet> wsAction)
+        {
+            // doc: http://closedxml.codeplex.com/documentation?referringTitle=Home
+            var workbook = new XLWorkbook();
+            var ws = workbook.Worksheets.Add(worksheetName);
+
+            ws.PageSetup.PageOrientation = XLPageOrientation.Portrait; //设置纸张纵向
+            ws.PageSetup.FitToPages(1, 1); //设置一页宽一页高
+
+            ws.PageSetup.PaperSize = XLPaperSize.A4Paper; //纸张大小是A4
+            ws.PageSetup.VerticalDpi = 600; //打印质量
+            ws.PageSetup.HorizontalDpi = 600; //打印质量
+            //ws.PageSetup.FirstPageNumber =1;  //起始页码
+
+            ws.PageSetup.CenterHorizontally = true; //居中方式水平
+            ws.PageSetup.CenterVertically = false; //居中方式垂直
+
+            ws.PageSetup.AlignHFWithMargins = true; //与页边距对齐
+            ws.PageSetup.ScaleHFWithDocument = true; //随文档自动缩放
+            // Show gridlines
+            ws.PageSetup.ShowGridlines = false; //网格线
+
+            // Print in black and white
+            ws.PageSetup.BlackAndWhite = false; //单色打印
+
+            // Print in draft quality
+            ws.PageSetup.DraftQuality = true; //草稿品质
+
+            // Show row and column headings
+            ws.PageSetup.ShowRowAndColumnHeadings = false; //行号列标
+            // Set the page print order to over, then down
+            ws.PageSetup.PageOrder = XLPageOrderValues.OverThenDown; //先行后列
+
+            wsAction(ws);
+
+            return workbook;
+        }
+
         public static void ForEach<T>(this IEnumerable<T> en, Action<T> act)
+        {
+            foreach (var e in en)
+                act(e);
+        }
+
+        public static void Each<T>(this IEnumerable<T> en, Action<T> act)
         {
             foreach (var e in en)
                 act(e);

@@ -10,6 +10,9 @@ using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using ClosedXML.Excel;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Web.admin.project
 {
@@ -142,11 +145,11 @@ namespace Agp2p.Web.admin.project
                 spa_repaymentSource.InnerText = risk.source_of_repayment;//还款来源
                 spa_txtRiskContent.InnerHtml = risk.risk_content;//风控描述
                 // 加载相册
-                rptMortgageContracts.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract);
+                rptMortgageContracts.DataSource = risk.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.MortgageContract);
                 rptMortgageContracts.DataBind();
-                rptLienCertificates.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Agp2pEnums.AlbumTypeEnum.LienCertificate);
+                rptLienCertificates.DataSource = risk.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.LienCertificate);
                 rptLienCertificates.DataBind();
-                rptLoanAgreement.DataSource = risk.li_albums.Where(a => a.risk == risk.id && a.type == (int)Agp2pEnums.AlbumTypeEnum.LoanAgreement);
+                rptLoanAgreement.DataSource = risk.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.LoanAgreement);
                 rptLoanAgreement.DataBind();
             }
         }
@@ -368,6 +371,234 @@ namespace Agp2p.Web.admin.project
             {
                 JscriptMsg("放款操作失败：" + ex.Message, "back", "Error");
             }
+        }
+
+        protected void btnExport_OnClick(object sender, EventArgs e)
+        {
+            var p = LqContext.li_projects.Single(pr => pr.id == ProjectId);
+
+            var projectInfoField = new[]
+            {
+                "借款类别",
+                "借款主体",
+                "借款标题",
+                "借款编号",
+                "借款合同编号",
+                "借款金额",
+                "年化利率（%）",
+                "还款期限",
+                "还款方式",
+                "平台服务费率（%）",
+                "风险保证金费率（%）"
+            };
+
+            var projectInfoValue = new object[]
+            {
+                p.dt_article_category.title,
+                Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)p.type),
+                p.title,
+                p.no,
+                p.contract_no,
+                p.financing_amount.ToString("c"),
+                p.profit_rate_year.ToString("n1"),
+                p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
+                p.GetProjectRepaymentTypeDesc(),
+                p.loan_fee_rate?.ToString("n2"),
+                p.bond_fee_rate?.ToString("n2")
+            };
+
+            var loanerInfoField = new[]
+            {
+                "姓名",
+                "性别",
+                "电话",
+                "身份证号码",
+                "电子邮件",
+                "年龄",
+                "籍贯",
+                "工作职务",
+                "工作地点",
+                "工作单位",
+                "学历",
+                "婚姻状态",
+                "收入",
+                "涉诉情况"
+            };
+
+            var l = p.li_risks.li_loaners;
+            var loanerInfoValue = new object[]
+            {
+                l.dt_users.real_name,
+                l.dt_users.sex,
+                l.dt_users.mobile,
+                l.dt_users.id_card_number,
+                l.dt_users.email,
+                l.age,
+                l.native_place,
+                l.job,
+                l.working_at,
+                l.working_company,
+                l.educational_background,
+                Utils.GetAgp2pEnumDes((Agp2pEnums.MaritalStatusEnum) l.marital_status),
+                l.income,
+                l.lawsuit,
+            };
+
+            var c = l.li_loaner_companies;
+            IEnumerable<string> companyInfoField = Enumerable.Empty<string>();
+            IEnumerable<object> companyInfoValue = Enumerable.Empty<string>();
+
+            if (c != null)
+            {
+                companyInfoField = new[]
+                {
+                    "企业全称",
+                    "企业法人",
+                    "成立时间",
+                    "注册资本",
+                    "营业执照号",
+                    "机构代码号",
+                    "所属行业",
+                    "经营范围",
+                    "经营状态",
+                    "涉诉情况",
+                    "地址",
+                    "备注",
+                };
+
+                companyInfoValue = new object[]
+                {
+                    c.name,
+                    c.manager,
+                    c.setup_time.ToString("yyyy/MM/dd"),
+                    c.registered_capital,
+                    c.business_license_no,
+                    c.organization_no,
+                    c.business_belong,
+                    c.business_scope,
+                    c.business_status,
+                    c.business_lawsuit,
+                    c.address,
+                    c.remark
+                };
+            }
+            var m = p.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).SingleOrDefault();
+
+            IEnumerable<string> mortgageInfoField = Enumerable.Empty<string>();
+            IEnumerable<object> mortgageInfoValue = Enumerable.Empty<object>();
+            if (m != null)
+            {
+                var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
+                var kv = (JObject)JsonConvert.DeserializeObject(m.properties);
+
+                var properties = schemeObj.Cast<KeyValuePair<string, JToken>>()
+                    .Select(pair => new Tuple<string, string>(pair.Value.ToString(), kv[pair.Key].ToString())).ToList();
+
+                mortgageInfoField = new[]
+                {
+                    "类别",
+                    "抵押物估价",
+                    "备注"
+                }.Concat(properties.Select(pr => pr.Item1));
+
+                mortgageInfoValue = new object[]
+                {
+                    m.li_mortgage_types.name,
+                    m.valuation,
+                    m.remark
+                }.Concat(properties.Select(pr => pr.Item2));
+            }
+
+            var riskInfoField = new[]
+            {
+                "债权人",
+                "债权人描述",
+                "借款描述",
+                "借款用途",
+                "还款来源",
+                "担保机构",
+                "风险描述",
+            };
+
+            var cre = p.li_risks.li_creditors;
+            var riskInfoValue = new[]
+            {
+                cre?.dt_users?.real_name ?? "",
+                "",
+                p.li_risks.loaner_content,
+                p.li_risks.loan_usage,
+                p.li_risks.source_of_repayment,
+                p.li_risks.li_guarantors?.name,
+                Utils.DropHTML(p.li_risks.risk_content),
+            };
+
+            var repaymentPlanField = new[]
+            {
+                "期次",
+                "还款日",
+                "应还本息",
+                "应还本金",
+                "应还利息",
+            };
+
+            var repaymentTasks = p.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid).ToList();
+            var repaymentPlanFieldAll = Enumerable.Repeat(repaymentPlanField, repaymentTasks.Count).SelectMany(s => s);
+            var repaymentPlanValueAll = repaymentTasks.Select(t => new[]
+            {
+                $"{t.term}/{repaymentTasks.Count}",
+                t.should_repay_time.ToString("yyyy/MM/dd"),
+                (t.repay_principal + t.repay_interest).ToString("c"),
+                t.repay_principal.ToString("c"),
+                t.repay_interest.ToString("c"),
+            }).SelectMany(s => s);
+
+            var partTitle = new[] {"项目基本信息", "借款人信息", "借款企业信息", "抵押物信息", "风控信息", "还款计划"};
+            var dataPair = new[]
+            {
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(projectInfoField, projectInfoValue), 
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(loanerInfoField, loanerInfoValue),
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(companyInfoField, companyInfoValue),
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(mortgageInfoField, mortgageInfoValue),
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(riskInfoField, riskInfoValue),
+                new Tuple<IEnumerable<string>, IEnumerable<object>>(repaymentPlanFieldAll, repaymentPlanValueAll),
+            }; 
+
+            var titles = new[] { "序号", "目录", "数据"};
+
+            Utils.ExportXls("项目信息", ws =>
+            {
+                Utils.ForEach(titles.Zip(Utils.Infinite(), (s, i) => new { s, i }), t => { ws.Cell(1, t.i + 1).Value = t.s; });
+
+                int index = 1;
+
+                ws.Column("C").Style.Alignment.WrapText = true;
+                ws.Column("A").Width = 5;
+                ws.Column("B").Width = 25;
+                ws.Column("C").Width = 30;
+
+                Enumerable.Range(0, partTitle.Count())
+                    .Where(i => dataPair[i].Item2.Any())
+                    .Select(i => new { Title = partTitle[i], Zipped = dataPair[i].Item1.Zip(dataPair[i].Item2.Select(v => v?.ToString() ?? ""), (Name, Value) => new {Name, Value}) })
+                    .Each(tri =>
+                    {
+                        var startPoint = ws.LastRowUsed().RowBelow().Cell("A");
+                        startPoint.Value = tri.Title;
+                        startPoint.CellBelow().Value = Utils.Infinite(index).Zip(tri.Zipped, (i, z) => new {index = i, name = z.Name, value = z.Value});
+
+                        ws.Range(startPoint, startPoint.CellRight().CellRight()).Merge().AddToNamed("Titles");
+                        index += tri.Zipped.Count();
+                    });
+
+                var titlesStyle = ws.Workbook.Style;
+                titlesStyle.Font.Bold = true;
+                titlesStyle.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                titlesStyle.Fill.BackgroundColor = XLColor.Cyan;
+                ws.Workbook.NamedRanges.NamedRange("Titles").Ranges.Style = titlesStyle;
+
+                titlesStyle.Fill.BackgroundColor = XLColor.Transparent;
+                ws.Range("A1", "C1").Style = titlesStyle;
+
+            }, Response);
         }
     }
 

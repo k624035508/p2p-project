@@ -484,6 +484,7 @@
                 <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />                
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
                     onclick="location.href='javascript:history.back(-1);'" />
+                <asp:Button runat="server" CssClass="btn" ID="btnExport" OnClick="btnExport_OnClick" Text="导出 Excel"/>
             </div>
             <div class="clear">
             </div>
