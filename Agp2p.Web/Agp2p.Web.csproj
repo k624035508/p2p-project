@@ -671,8 +671,6 @@
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\paperwork-bg.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\paperwork.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\partner.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
