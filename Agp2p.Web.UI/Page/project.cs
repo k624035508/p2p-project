@@ -251,15 +251,20 @@ namespace Agp2p.Web.UI.Page
         {
             return mortgages.SelectMany(m =>
             {
-                var schemeObj = (JObject) JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
-                var kv = (JObject) JsonConvert.DeserializeObject(m.properties);
-
-                var properties = schemeObj.Cast<KeyValuePair<string, JToken>>()
-                    .Select(p => new Tuple<string, string>(p.Value.ToString(), kv[p.Key].ToString()));
+                var properties = GetMortgageProperties(m);
                 return showValue
-                    ? properties.Concat(new[] {new Tuple<string, string>("市场价值", m.valuation.ToString("c"))}).ToList()
+                    ? properties.Concat(new[] { new Tuple<string, string>("市场价值", m.valuation.ToString("c")) }).ToList()
                     : properties;
             });
+        }
+
+        protected static IEnumerable<Tuple<string, string>> GetMortgageProperties(li_mortgages m)
+        {
+            var schemeObj = (JObject)JsonConvert.DeserializeObject(m.li_mortgage_types.scheme);
+            var kv = (JObject)JsonConvert.DeserializeObject(m.properties);
+
+            return schemeObj.Cast<KeyValuePair<string, JToken>>()
+                .Select(p => new Tuple<string, string>(p.Value.ToString(), kv[p.Key].ToString()));
         }
     }
 }

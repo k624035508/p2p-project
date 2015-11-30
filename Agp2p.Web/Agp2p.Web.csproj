@@ -923,8 +923,8 @@
     <Content Include="templates\weChat\imgs\verified-icon.png" />
     <Content Include="templates\weChat\index.html" />
     <Content Include="templates\weChat\invest-success.html" />
-    <Content Include="templates\weChat\invest_detail.html" />
-    <Content Include="templates\weChat\invest_list.html" />
+    <Content Include="templates\weChat\project.html" />
+    <Content Include="templates\weChat\projects.html" />
     <Content Include="templates\weChat\js\bootstrap.min.js" />
     <Content Include="templates\weChat\js\jquery-2.1.4.min.js" />
     <Content Include="templates\weChat\js\jquery.mobile-1.4.5.min.js" />

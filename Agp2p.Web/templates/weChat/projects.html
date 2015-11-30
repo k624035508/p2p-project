@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -31,9 +31,7 @@
 
     <script type="text/html" id="invest-item">
         @{ _.each(items, function(item, key, list){ }@
-        @{var detail_url = '<%linkurl("invest_detail",0)%>';}@
-        @{detail_url = detail_url.substr(0,detail_url.indexOf('-')+1);}@
-        <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='@{=detail_url+item.id}@'">
+        <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='project/@{=item.id}@.html'">
             <div class="invest-project">
                 <p class="invest-title">
                     @{=item.title}@
@@ -55,14 +53,16 @@
                         <div><span class="txt-darkgrey-l">@{=item.profit_rate_year}@</span> %</div>
                     </div>
                     <div class="invest-status flex flex-center-wrapper">
-                        @{ if (item.status==60) { }@
+                        @{ if (item.status==11) { }@
                         <div class="indicatorContainer" data-progress="@{=item.project_investment_progress}@"></div>
-                        @{ }else if (item.status==55) { }@
+                        @{ }else if (item.status==10) { }@
                         <div class="status-wrap"><div class="over-icon">待发标</div></div>
-                        @{ }else if (item.status==80||item.status==70) { }@
+                        @{ }else if (item.status==20||item.status==21) { }@
+                        <div class="status-wrap"><div class="over-icon">审核中</div></div>
+                        @{ }else if (item.status==30) { }@
                         <div class="status-wrap"><div class="over-icon">还款中</div></div>
-                        @{ }else if (item.status==90) { }@
-                        <div class="status-wrap"><div class="over-icon">已结束</div></div>
+                        @{ }else if (item.status==40) { }@
+                        <div class="status-wrap"><div class="over-icon">已完成</div></div>
                         @{ } }@
                     </div>
                 </div>

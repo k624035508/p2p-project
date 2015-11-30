@@ -1,3 +1,4 @@
+﻿<%namespace "Agp2p.Core"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -70,7 +71,7 @@
         var fontSizeUnit = viewportWidth / 20;
         $("html").css("font-size", fontSizeUnit);
 
-        var finalProfitRate = {get_calc_final_profit_rate()};
+        var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
         var idleMoney = {idle_money};
         var investProgress = {investmentProgress};
         var projectId = {projectModel.id};
@@ -110,9 +111,9 @@
             var investActionUrl = "{config.webpath}tools/submit_ajax.ashx?action=invest_project";
             $("#dlgInvestConfirm .btn-primary").click(function() { // 确认投资
                 $.post(investActionUrl, {
-                    investingMoney_submit: $(".invest-action input").val(),
-                    project_id: projectId,
-                    txtPassword: $("#transactPwd").val()
+                    investingAmount: $(".invest-action input").val(),
+                    projectId: projectId,
+                    transactPassword: $("#transactPwd").val()
                 }, function(data) {
                     if (data.status === 0) {
                         $.dialog.alert(data.msg);
@@ -226,11 +227,11 @@
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">借款期限</span>
-                    <p><span class="data-style">{projectModel.repayment_term_span_count}</span> <%=Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></p>
+                    <p><span class="data-style">{projectModel.repayment_term_span_count}</span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <span class="title-style">还款方式</span>
-                    <p><span><%=Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></span></p>
+                    <p><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></p>
                 </span>
             </div>
             
@@ -241,7 +242,7 @@
                     <a href="<%linkurl("recharge")%>" class="charge-link">[充值]</a>
                 </div>
                 <div class="invest-action">
-                    <%if(projectModel.status<=(int)Lip2p.Common.Lip2pEnums.ProjectStatusEnum.FaBiao)%>
+                    <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
                         <input type="text" placeholder="请输入投资金额（大于100）">
                         <button type="button" id="btnInvest">投 资</button>
@@ -267,11 +268,11 @@
                 <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">借款人信息</span></div>
                 <div class="borrower-info">
                     <ul>
-                        <li><span>借款用户： </span><span><%=loaner.name.Substring(0,1)+"**"%></span></li>                        
+                        <li><span>借款用户： </span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>                        
                         <li><span>年龄： </span><span>{loaner.age}</span></li>
-                        <li><span>性别： </span><span><%=Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.PersonSexTypeEnum)loaner.gender)%></span></li>
-                        <li><span>籍贯： </span><span>{loaner.cencus}</span></li>
-                        <li><span>婚姻状况： </span><span><%=Lip2p.Common.Utils.GetLip2pEnumDes((Lip2p.Common.Lip2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
+                        <li><span>性别： </span><span><%=loaner.dt_users.sex%></span></li>
+                        <li><span>籍贯： </span><span>{loaner.native_place}</span></li>
+                        <li><span>婚姻状况： </span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
                         <li><span>每月收入： </span><span>{loaner.income}</span></li>
                         <li><span>担任职业： </span><span>{loaner.job}</span></li>
                         <li><span>工作地点： </span><span>{loaner.working_at}</span></li>
@@ -286,21 +287,11 @@
                 <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">抵押物信息</span></div>
                 <%foreach(var mortgage in mortgages)%>
                 <div class="pawn-info">
-                    <%if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.House || mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Business)%>
                     <ul>
-                        <li><span>房屋地址： </span><span>{mortgage.property_addr}</span></li>
-                        <li><span>房屋面积： </span><span>{mortgage.property_size}</span></li>
-                        <li><span>房屋楼龄： </span><span>{mortgage.property_age}</span></li>
-                        <li><span>市场价值： </span><span><%=string.Format("{0:c}", mortgage.valuation)%></span></li>
-                        <li><span>房屋用途： </span><span>{mortgage.property_uses}</span></li>
+                        <%foreach(var p in GetMortgageProperties(mortgage))%>
+                        <li><span><%=p.Item1%>： </span><span><%=p.Item2%></span></li>
+                        <%/foreach%>
                     </ul>
-                    <%else if(mortgage.type==(int)Lip2pEnums.MortgageTypeEnum.Car)%>
-                    <ul>
-                        <li><span>车品牌： </span><span>{mortgage.car_brand}</span></li>
-                        <li><span>车型号： </span><span>{mortgage.car_model}</span></li>
-                        <li><span>市场价值： </span><span><%=string.Format("{0:c}", mortgage.valuation)%></span></li>
-                    </ul>
-                    <%/if%>
                 </div>
                 <div class="pawn-remark">
                     <p class="remark-style">备注：</p>
@@ -320,15 +311,16 @@
     </div>
     <div class="slide" data-anchor="investments">
         <div class="invest-record-page inner-scrollable">
-            <%for(int i=0;i<project_transactions.Count;i++)%>
+            <%set var investments=QueryProjectTransactions()%>
+            <%for(int i=0;i<investments.Count;i++)%>
             <div class="record-cell flex flex--align-items--center flex--flex-grow-first">
                 <div class="user">
-                    <p><%=project_transactions[i].user_name%></p>
-                    <span><%=project_transactions[i].create_time%></span>
+                    <p><%=investments[i].user_name%></p>
+                    <span><%=investments[i].create_time%></span>
                 </div>
                 <div class="amount">
                     <p>投资金额</p>
-                    <span><%=project_transactions[i].value%></span>
+                    <span><%=investments[i].value%></span>
                 </div>
             </div>
             <%/for%>
@@ -342,17 +334,18 @@
                 <a href="javascript:;" data-display-picType="mortgage">合同与凭证</a>
             </div>
             <div class="photos-box">
-                <%foreach(var picture in albums_pictures)%>
+                <%set var pics = QueryAlbums().ToList()%>
+                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.Pictures))%>
                 <div class="photo-cell" data-picType="live">
                     <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
                 </div>
                 <%/foreach%>
-                <%foreach(var picture in albums_credit)%>
+                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.PropertyCertificate||a.type==(int)Agp2pEnums.AlbumTypeEnum.LienCertificate))%>
                 <div class="photo-cell" data-picType="credit">
                     <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
                 </div>
                 <%/foreach%>
-                <%foreach(var picture in albums_mortgage)%>
+                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.LoanAgreement||a.type==(int)Agp2pEnums.AlbumTypeEnum.MortgageContract||a.type==(int)Agp2pEnums.AlbumTypeEnum.IdCard))%>
                 <div class="photo-cell" data-picType="mortgage">
                     <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
                 </div>

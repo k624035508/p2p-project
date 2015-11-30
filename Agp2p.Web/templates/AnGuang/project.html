@@ -99,7 +99,7 @@
                                 <li><span>项目标题：</span><span>{projectModel.title}</span></li>
                                 <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", projectModel.profit_rate_year)%></span></li>
                                 <li><span>还款期限：</span><span>{projectModel.repayment_term_span_count}<%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></li>
-                                <li><span>还款方式：</span><span><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></span></li>
+                                <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
                                 <li><span>保障方式：</span><span>本金 + 利息</span></li>
                             </ul>
@@ -205,7 +205,6 @@
         <%template src="_invest_record.html"%>
     </div>
 
-    <%set hIndex=1%>
     <div id="sidemenu" class="project-content-right">
         <ul class="nav list-unstyled notScroll">
         </ul>

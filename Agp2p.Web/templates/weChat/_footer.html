@@ -3,7 +3,7 @@
         <a id="a_index" href="<%linkurl("index")%>" class="txt-default"><span id="span_index" class="footer-span icon-index center-block"></span>首页</a>
     </div>
     <div class="">
-        <a id="a_invest" href="<%linkurl("invest_list")%>" class="txt-default"><span id="span_invest" class="footer-span icon-invest center-block"></span>理财</a>
+        <a id="a_invest" href="<%linkurl("projects")%>" class="txt-default"><span id="span_invest" class="footer-span icon-invest center-block"></span>理财</a>
     </div>
     <div class="">
         <a id="a_usercenter" href="<%linkurl("usercenter","index")%>" class="txt-default"><span id="span_usercenter" class="footer-span icon-mine center-block"></span>我</a>
@@ -18,7 +18,7 @@
         if (key.indexOf("user") >= 0) {
             $("#span_usercenter").attr("class", "footer-span-active icon-mine center-block");
             $("#a_usercenter").attr("class", "txt-active");
-        } else if (key.indexOf("invest") >= 0) {
+        } else if (key.indexOf("project") >= 0) {
             $("#span_invest").attr("class", "footer-span-active icon-invest center-block");
             $("#a_invest").attr("class", "txt-active");
         } else if (key.indexOf("setting") >= 0) {
