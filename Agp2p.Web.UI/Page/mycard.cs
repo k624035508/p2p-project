@@ -152,5 +152,34 @@ namespace Agp2p.Web.UI.Page
             context.SubmitChanges();
             return "删除成功";
         }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryCardInfo(int cardId) // 手机用到
+        {
+            var userInfo = GetUserInfo();
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var context = new Agp2pDataContext();
+            var card = context.li_bank_accounts.SingleOrDefault(c => c.owner == userInfo.id && c.id == cardId);
+            if (card == null)
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return "找不到卡的信息";
+            }
+            return JsonConvert.SerializeObject(new
+            {
+                CardNumber = card.account,
+                BankName = card.bank,
+                OpeningBank = card.opening_bank,
+                BankLocation = card.location
+            });
+        }
     }
 }

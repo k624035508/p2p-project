@@ -264,7 +264,7 @@ namespace Agp2p.Web.UI.Page
             var kv = (JObject)JsonConvert.DeserializeObject(m.properties);
 
             return schemeObj.Cast<KeyValuePair<string, JToken>>()
-                .Select(p => new Tuple<string, string>(p.Value.ToString(), kv[p.Key].ToString()));
+                .Select(p => new Tuple<string, string>(p.Value.ToString(), kv[p.Key]?.ToString() ?? ""));
         }
     }
 }

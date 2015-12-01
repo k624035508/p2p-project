@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -100,11 +100,18 @@
 
             var facade;
             // 加载地理数据
-            $.getJSON("/templates/lip2p/js/city.min.js").done(function (data) {
-                facade = createFacade(data.citylist);
-                facade.loadProvinces();
-            }).fail(function (data) {
-                alert("加载地理信息失败，请刷新网页重试");
+            $.ajax({
+                url: "/templates/AnGuang/js/city.min.js",
+                success: function(data) {
+                    var startPoint = data.indexOf("[");
+                    data = JSON.parse(data.substr(startPoint));
+                    facade = createFacade(data);
+                    facade.loadProvinces();
+                },
+                error: function() {
+                    alert("加载地理信息失败，请刷新网页重试");
+                },
+                dataType: "text"
             });
 
             $(".slide").on("click", "div.selection", function () {

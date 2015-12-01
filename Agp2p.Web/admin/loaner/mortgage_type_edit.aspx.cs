@@ -11,6 +11,7 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ClosedXML.Excel;
 
 namespace Agp2p.Web.admin.loaner
 {
@@ -63,9 +64,16 @@ namespace Agp2p.Web.admin.loaner
             var check = context.li_mortgage_types.FirstOrDefault(q => q.name == txtTypeName.Text.Trim()); //检测用户名是否重复
             if (check != null)
             {
-                JscriptMsg("类型名称重复！", "", "Error");
+                JscriptMsg("类型名称不能重复！", "", "Error");
                 return false;
             }
+
+            if ((((JObject) JsonConvert.DeserializeObject(txtScheme.Value)).Cast<KeyValuePair<string, JToken>>().Select(p => p.Value.ToString())).HasDuplicates())
+            {
+                JscriptMsg("抵押物字段名称不能重复！", "", "Error");
+                return false;
+            }
+
             var model = new li_mortgage_types
             {
                 name = txtTypeName.Text.Trim(),
@@ -91,17 +99,25 @@ namespace Agp2p.Web.admin.loaner
         private bool DoEdit(int id)
         {
             var model = context.li_mortgage_types.First(q => q.id == id);
+
+            var newScheme = ((JObject)JsonConvert.DeserializeObject(txtScheme.Value)).Cast<KeyValuePair<string, JToken>>().ToList();
+            if ((newScheme.Select(p => p.Value.ToString())).HasDuplicates())
+            {
+                JscriptMsg("抵押物字段名称不能重复！", "", "Error");
+                return false;
+            }
+
             // 如果修改了某个字段的标识，则更新抵押物字段
             var originalValMapKey = ((JObject) JsonConvert.DeserializeObject(model.scheme)).Cast<KeyValuePair<string, JToken>>()
                     .ToDictionary(p => p.Value, p => p.Key);
 
-            var changedKeys = ((JObject) JsonConvert.DeserializeObject(txtScheme.Value)).Cast<KeyValuePair<string, JToken>>()
+            var changedKeys = newScheme
                 .Where(p => originalValMapKey.ContainsKey(p.Value) && originalValMapKey[p.Value] != p.Key)
                 .Select(p => new {originalKey = originalValMapKey[p.Value], currentKey = p.Key}).ToList();
 
             if (changedKeys.Any())
             {
-                model.li_mortgages.ForEach(m =>
+                model.li_mortgages.Each(m =>
                 {
                     var ps = (JObject) JsonConvert.DeserializeObject(m.properties);
                     changedKeys.ForEach(c =>
