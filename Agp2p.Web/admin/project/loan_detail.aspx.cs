@@ -492,7 +492,7 @@ namespace Agp2p.Web.admin.project
                 var kv = (JObject)JsonConvert.DeserializeObject(m.properties);
 
                 var properties = schemeObj.Cast<KeyValuePair<string, JToken>>()
-                    .Select(pair => new Tuple<string, string>(pair.Value.ToString(), kv[pair.Key].ToString())).ToList();
+                    .Select(pair => new Tuple<string, string>(pair.Value.ToString(), kv[pair.Key]?.ToString() ?? "")).ToList();
 
                 mortgageInfoField = new[]
                 {
