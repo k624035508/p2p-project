@@ -18,7 +18,7 @@ namespace Agp2p.Web.api.payment.ecpss
 
             if (Helper.CheckReturnMD5(billNo, amount, succeed, signMD5info))
             {
-                lbMoney.Text = amount.ToString() + " 元";
+                lbMoney.Text = amount + " 元";
                 lbFlag.Text = Helper.GetResultInfo(succeed) + "-====";
                 lbOrderID.Text = billNo;
                 if (succeed.Equals("88"))
@@ -38,7 +38,7 @@ namespace Agp2p.Web.api.payment.ecpss
                     {
                         throw new InvalidEnumArgumentException("确认充值信息失败（" + billNo + "）：" + ex.Message);
                     }
-                    Response.Redirect(new Web.UI.BasePage().linkurl("mytrade","mytrade"));
+                    Response.Redirect(new Web.UI.BasePage().linkurl("usercenter", "index"));
                 }
                 else
                     new BLL.manager_log().Add(1, "admin", "ReCharge", "支付失败（" + billNo + "）：" + Helper.GetResultInfo(succeed));
