@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -144,7 +144,7 @@
             });
             modifyBtns.find("#delete-btn").click(function () {
                 if (!confirm("确定删除银行卡？")) return;
-                ajaxInvoke("AjaxDeleteCardInfo", {
+                ajaxInvoke("AjaxDeleteCard", {
                     cardId: cardId
                 }, function (succ, result) {
                     if (!succ) alert(result);
