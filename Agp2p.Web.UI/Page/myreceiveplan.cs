@@ -123,7 +123,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize)
+        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize) // 微信端用到
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -175,7 +175,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId)
+        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId) // 微信端用到
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
