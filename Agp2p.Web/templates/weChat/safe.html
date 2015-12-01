@@ -225,9 +225,9 @@
                 <div class="fold" style="display: none">
                     <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
                     <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
+                    <input id="email-verify-code" class="input-s" type="text" placeholder="请输入邮箱验证码">
+                    <button type="button" class="button-s right-small-btn" onclick="bindEmail($('#email-verify-code').val())">验 证</button>
                     <button type="button" class="button-l long-btn" onclick="verify_email(this, $('#email').val())">提 交</button>
-                    <input id="email-verify-code" class="input-l" type="text" placeholder="请输入邮箱验证码">
-                    <button type="button" class="button-l long-btn" onclick="bindEmail($('#email-verify-code').val())">验 证</button>
                 </div>
             </div>
         </div>

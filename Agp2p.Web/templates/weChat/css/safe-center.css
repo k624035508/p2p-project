@@ -86,7 +86,7 @@ input.pwd {
     background-position: 0 -15.25rem;
 }
 
-input#pic-code {
+input#email-verify-code, input#pic-code {
     background-size: 21%;
     background-position: 0 -2.38rem;
 }
