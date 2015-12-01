@@ -41,12 +41,12 @@
             <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
             <span class="pic-code-span flex flex-center-wrapper">
                 <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
-            </span>
+            </span><br/>
         </div>
         <%if(uconfig.regstatus==2)%>
         <div class="auth-code-wrap">
             <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
-            <button type="button" id="get-auth-code-btn" class="button-s">获 取</button>
+            <button type="button" id="get-auth-code-btn" class="button-s">获 取</button><br/>
         </div>
         <%/if%>
         <div class="recommend-one-wrap">
