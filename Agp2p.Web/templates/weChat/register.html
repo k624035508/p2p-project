@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="zh-cmn-Hans">
     <meta charset="UTF-8">
@@ -38,21 +38,23 @@
             <input type="password" id="psw2" class="input-l" name="txtPassword1" placeholder="请再次输入密码" recheck="txtPassword" errormsg="两次输入的密码不一致">
         </div>
         <div class="pic-code-wrap">
-            <input type="text" id="pic-code" class="input-s" name="txtPicCode" placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
+            <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
             <span class="pic-code-span flex flex-center-wrapper">
                 <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
             </span>
         </div>
+        <%if(uconfig.regstatus==2)%>
         <div class="auth-code-wrap">
-            <input type="text" id="auth-code" class="input-s" name="txtCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
+            <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
             <button type="button" id="get-auth-code-btn" class="button-s" data-url="/tools/submit_ajax.ashx?action=user_register_smscode">获 取</button>
         </div>
+        <%/if%>
         <div class="recommend-one-wrap">
-            <input type="text" id="recommend-one" class="input-l" name="txtInviteNo" placeholder="推荐码/推荐人账号（可不填）">
+            <input type="text" id="recommend-one" class="input-l" name="txtInviteCode" placeholder="推荐码/推荐人账号（可不填）">
         </div>
         <div class="agreement-wrap">
             <input type="checkbox" id="agreement" checked>
-            <label for="agreement">同意 《<a href="http://www.baidu.com">注册协议</a>》</label>
+            <label for="agreement">同意 《<a href="<%templateskin%>/../AnGuang/register-agreement.html">注册协议</a>》</label>
         </div>
         <div class="register-btn-wrap">
             <button type="button" id="register-btn" class="button-l">注 册</button>

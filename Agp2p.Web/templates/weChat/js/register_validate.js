@@ -95,6 +95,10 @@ $(function () {
 
     //表单提交前
     function showRequest(formData, jqForm, options) {
+        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2")) {
+            alert("两次输入的密码不一致");
+            return false;
+        }
         btnSubmit.val("正在提交...");
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
