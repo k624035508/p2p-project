@@ -62,8 +62,7 @@ namespace Agp2p.BLL
                  from rm in Context.li_risk_mortgage
                  from r in Context.li_risks
                  where
-                     loaner_id == m.owner && m.id == rm.mortgage && rm.risk == r.id  && r.li_projects.Any(
-                                            p => p.status >= (int)Agp2pEnums.ProjectStatusEnum.Financing) // 暂修改为使用过的抵押物都不能再使用
+                     loaner_id == m.owner && m.id == rm.mortgage && rm.risk == r.id  
                  select new MortgageItem
                  {
                      id = m.id,
