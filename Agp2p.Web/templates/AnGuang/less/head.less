@@ -37,7 +37,7 @@ div.top-bar-wrap {
         .top-bar-icon {
             width: 26px;
             height: 26px;
-            background: url("../imgs/index/head-icon.png") no-repeat;
+            background: url("../imgs/index/head-icon.png");
             display: inline-block;
         }
 
@@ -46,11 +46,17 @@ div.top-bar-wrap {
         .weibo-icon {
             margin-left: 80px;
             background-position: -15px -127px;
+            &:hover {
+                background: url("../imgs/index/weibo-hover.png");
+            }
         }
 
         .wechat-icon {
             margin-left: 25px;
             background-position: -15px -71px;
+            &:hover {
+                background: url("../imgs/index/wechat-hover.png");
+            }
         }
         .head-hot-line-num {
             font-size: @font15;
