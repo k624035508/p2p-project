@@ -10,7 +10,7 @@ $(function () {
         }
         $.ajax({
             type: "POST",
-            url: $("#loginform").attr("data-url"),
+            url: "/tools/submit_ajax.ashx?action=user_login",
             dataType: "json",
             data: {
                 "txtUserName": $("#txtUserName").val(),
@@ -28,7 +28,7 @@ $(function () {
                 if (data.status == 1) {
                     if (typeof(data.url) == "undefined") {
                         location.href = $("#loginform").attr("data-turl");
-                        //location.href = 'index.html'
+                        //location.href = '/'
                     } else {
                         location.href = data.url;
                     }
@@ -42,18 +42,6 @@ $(function () {
                 btnSubmit.attr("disabled", false);
             }
         });
-        // 记住帐号
-        if ($("#chkRemember").is(":checked")) {
-            localStorage.setItem("mobileLogin_UserName", $("#txtUserName").val());
-        } else {
-            localStorage.removeItem("mobileLogin_UserName");
-        }
         return false;
     });
-    var userName = localStorage.getItem("mobileLogin_UserName");
-    if (userName) {
-        setTimeout(function() {
-            $("#txtUserName").val(userName);
-        }, 1000);
-    }
 });

@@ -21,7 +21,7 @@ namespace Agp2p.Web.admin.statistic
 
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("repay_summary", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("repay_bad", DTEnums.ActionEnum.View.ToString()); //检查权限
                 var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
@@ -38,7 +38,7 @@ namespace Agp2p.Web.admin.statistic
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("repay_summary.aspx",
+            string pageUrl = Utils.CombUrlTxt("repay_bad.aspx",
                 "keywords={0}&page={1}", txtKeywords.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
@@ -95,14 +95,14 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("repay_summary.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("repay_bad.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",txtKeywords.Text));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("repay_summary.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}", txtKeywords.Text));
+            Response.Redirect(Utils.CombUrlTxt("repay_bad.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}", txtKeywords.Text));
         }
         
 
