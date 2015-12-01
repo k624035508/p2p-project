@@ -21,12 +21,7 @@ namespace Agp2p.Web.tools
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.TrySkipIisCustomErrors = true;
 
-            if (!BasePage.IsUserLogin())
-            {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
-                return;
-            }
+            BasePage.IsUserLogin(); // 从 cookie 恢复 session
 
             var nvc = Utils.ParceQueryString();
             var action = nvc["act"];
