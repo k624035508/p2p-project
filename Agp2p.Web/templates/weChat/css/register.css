@@ -29,7 +29,7 @@ div.pic-code-wrap input {
     background-size: 19%;
 }
 #get-auth-code-btn,
-div.pic-code-wrap span {
+div.pic-code-wrap .pic-code-span {
     float: right;
 }
 div.pic-code-wrap span img {

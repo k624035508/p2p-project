@@ -1,6 +1,6 @@
 ﻿/*投资列表样式start*/
 div.invest-list > div {
-    padding: 0 5%;
+    padding: 0 3%;
     margin: .6rem auto;
     border-top: 1px solid #e8e8ea;
     border-bottom: 1px solid #e8e8ea;
@@ -19,6 +19,7 @@ p {margin: 0 0 0;}
 
 .title-style {
     color: #94999f;
+    margin-bottom: 0.5rem;
 }
 
 .txt-darkgrey-s {
