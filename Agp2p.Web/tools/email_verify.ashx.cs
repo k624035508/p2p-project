@@ -7,6 +7,7 @@ using System.Web.SessionState;
 using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
+using Agp2p.Web.UI;
 using Newtonsoft.Json;
 
 namespace Agp2p.Web.tools
@@ -18,16 +19,32 @@ namespace Agp2p.Web.tools
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.TrySkipIisCustomErrors = true;
 
+            if (!BasePage.IsUserLogin())
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
+                return;
+            }
+
             Model.users model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as Model.users;
             if (model == null)
             {
                 httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时" }));
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
                 return;
             }
 
             var action = DTRequest.GetQueryString("action");
-            if (action == "sendVerifyEmail")
+            if (action == "sendVerifyEmailViaCode")
+            {
+                var email = DTRequest.GetQueryString("email");
+                SendVerifyEmail(model.id, email, (i, s) =>
+                {
+                    httpContext.Response.StatusCode = i;
+                    httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = s }));
+                }, "emailVerifyByCode");
+            }
+            else if (action == "sendVerifyEmail")
             {
                 var email = DTRequest.GetQueryString("email");
                 SendVerifyEmail(model.id, email, (i, s) =>
@@ -44,7 +61,7 @@ namespace Agp2p.Web.tools
                 var sendVerifyMailAt = (DateTime?)SessionHelper.Get("last_send_verifying_mail_at");
                 if (sendVerifyMailAt != null
                     && DateTime.Now.Subtract(sendVerifyMailAt.Value).TotalMinutes < SessionHelper.GetSessionTimeout()
-                    && !string.IsNullOrWhiteSpace(cachedCode) && codeFromEmail == cachedCode)
+                    && !string.IsNullOrWhiteSpace(cachedCode) && string.Equals(codeFromEmail, cachedCode, StringComparison.CurrentCultureIgnoreCase))
                 {
                     var context = new Agp2pDataContext();
                     var dtUsers = context.dt_users.Single(u => u.id == model.id);
@@ -69,7 +86,7 @@ namespace Agp2p.Web.tools
             }
         }
 
-        private void SendVerifyEmail(int userId, string email, Action<int, string> callback)
+        private void SendVerifyEmail(int userId, string email, Action<int, string> callback, string templateName = "emailverify")
         {
             if (userId <= 0 || string.IsNullOrWhiteSpace(email))
             {
@@ -81,7 +98,7 @@ namespace Agp2p.Web.tools
             var lastSendVerifyingMailAt = (DateTime?)SessionHelper.Get("last_send_verifying_mail_at");
             if (lastSendVerifyingMailAt != null && DateTime.Now.Subtract(lastSendVerifyingMailAt.Value).TotalSeconds < 60)
             {
-                callback(429, "发送邮件间隔为 60 秒，您刚才已经提交过啦，休息一下再来吧！");
+                callback(429, "发送邮件间隔为 60 秒，您刚才已经发送过啦，休息一下再来吧！");
                 return;
             }
             var context = new Agp2pDataContext();
@@ -93,7 +110,7 @@ namespace Agp2p.Web.tools
                 return;
             }
 
-            var strCode = Utils.GetCheckCode(20);
+            var strCode = Utils.GetCheckCode(5);
             SessionHelper.Set("verifying_email", email);
             SessionHelper.Set("last_send_verifying_mail_at", DateTime.Now);
             SessionHelper.Set("verifying_email_code", strCode);
@@ -101,7 +118,7 @@ namespace Agp2p.Web.tools
             var user = context.dt_users.Single(u => u.id == userId);
 
             //获得邮件内容
-            var mailModel = new mail_template().GetModel("emailverify");
+            var mailModel = new mail_template().GetModel(templateName);
             if (mailModel == null)
             {
                 callback((int) HttpStatusCode.Gone, "邮件发送失败，邮件模板内容不存在！");
@@ -119,7 +136,8 @@ namespace Agp2p.Web.tools
                 .Replace("{valid}", SessionHelper.GetSessionTimeout().ToString())
                 .Replace("{linkurl}",
                     "http://" + HttpContext.Current.Request.Url.Authority.ToLower() +
-                    "/user/center/index.html#/safe?action=verifyEmail&code=" + strCode);
+                    "/user/center/index.html#/safe?action=verifyEmail&code=" + strCode)
+                .Replace("{verifyCode}", strCode);
 
             try
             {

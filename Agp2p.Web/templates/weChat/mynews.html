@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -28,7 +28,7 @@
         function deleteMessage(ids) {
             $.ajax({
                 type: "POST",
-                url: "{Request.FilePath}" + "/AjaxDeleteMessage",
+                url: "{Request.FilePath}" + "/AjaxDeleteMessages",
                 data: JSON.stringify({ messageIds: ids}),
                 contentType: "application/json",
                 dataType: "json",

@@ -9,6 +9,7 @@ using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
+using Agp2p.Web.UI;
 using Newtonsoft.Json;
 
 namespace Agp2p.Web.tools
@@ -20,11 +21,18 @@ namespace Agp2p.Web.tools
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.TrySkipIisCustomErrors = true;
 
+            if (!BasePage.IsUserLogin())
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
+                return;
+            }
+
             Model.users model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as Model.users;
             if (model == null)
             {
                 httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时" }));
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
                 return;
             }
 

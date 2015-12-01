@@ -7,6 +7,7 @@ using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Agp2p.Model;
+using Agp2p.Web.UI;
 using Newtonsoft.Json;
 using siteconfig = Agp2p.BLL.siteconfig;
 using sms_template = Agp2p.BLL.sms_template;
@@ -19,6 +20,13 @@ namespace Agp2p.Web.tools
         {
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.TrySkipIisCustomErrors = true;
+
+            if (!BasePage.IsUserLogin())
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
+                return;
+            }
 
             var nvc = Utils.ParceQueryString();
             var action = nvc["act"];
@@ -33,7 +41,7 @@ namespace Agp2p.Web.tools
                     var model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as users;
                     if (model == null)
                     {
-                        defCallback((int)HttpStatusCode.Unauthorized, "登录超时");
+                        defCallback((int)HttpStatusCode.Unauthorized, "登录超时，请重新登陆");
                         return;
                     }
                     var mobile = nvc["mobile"];
@@ -106,7 +114,7 @@ namespace Agp2p.Web.tools
             var model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as users;
             if (model == null)
             {
-                callback((int)HttpStatusCode.Unauthorized, "登录超时");
+                callback((int)HttpStatusCode.Unauthorized, "登录超时，请重新登陆");
                 return;
             }
             if (string.IsNullOrWhiteSpace(verifyCodeFromInput))

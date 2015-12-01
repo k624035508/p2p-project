@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -35,7 +35,7 @@
             var originalText = disabledBtn.text();
             disabledBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
 
-            $.getJSON('/tools/email_verify.ashx?email=' + email, function (data) {
+            $.getJSON('/tools/email_verify.ashx?action=sendVerifyEmailViaCode&email=' + email, function (data) {
                 disabledBtn.removeAttr('disabled').removeAttr('style').text(originalText);
                 alert(data.msg);
             }).fail(function (jqXHR) {
@@ -43,6 +43,19 @@
                 alert(jqXHR.responseJSON.msg);
             });
             return false;
+        }
+        function bindEmail(code) {
+            $.ajax({
+                dataType: "json",
+                url: '/tools/email_verify.ashx?action=verifyEmail&code=' + code,
+                success: function (data) {
+                    alert(data.msg);
+                    location.reload(); // 验证手机成功，刷新页面
+                },
+                error: function (jqXHR) {
+                    alert(jqXHR.responseJSON.msg);
+                }
+            });
         }
         function send_mobile_verify_code(btn, mobile, picCode) {
             var originalMobile = "{userModel.mobile}";
@@ -63,7 +76,7 @@
             var originalText = disabledBtn.text();
             disabledBtn.text("正在发送…").attr('disabled', 'disabled');
 
-            $.getJSON('/tools/mobile_verify.ashx?act=sendCodeForBindMobile&session_id_hash={GetSessionIDHash()}&mobile=' + mobile + '&picCode=' + picCode, function (data) {
+            $.getJSON('/tools/mobile_verify.ashx?act=sendCodeForBindMobile&mobile=' + mobile + '&picCode=' + picCode, function (data) {
                 disabledBtn.removeAttr('disabled').text(originalText);
                 alert(data.msg);
             }).fail(function (jqXHR) {
@@ -82,7 +95,7 @@
             var originalText = disabledBtn.text();
             disabledBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
 
-            $.getJSON('/tools/mobile_verify.ashx?act=verifyForBindMobile&verify_code=' + verifyCode, function (data) {
+            $.getJSON('/tools/mobile_verify.ashx?act=verifyForBindMobile&verifyCode=' + verifyCode, function (data) {
                 disabledBtn.removeAttr('disabled').removeAttr('style').text(originalText);
                 alert(data.msg);
                 location.reload(); // 验证手机成功，刷新页面
@@ -105,9 +118,9 @@
             }
 
             if (confirm("身份资料填写后则不能再修改，是否确认？")) {
-                $.post('/tools/submit_ajax.ashx?action=search_idcard', {
-                    cardno: idCardNumber,
-                    truename: name
+                $.post('/tools/submit_ajax.ashx?action=bind_idcard', {
+                    idCardNumber: idCardNumber,
+                    trueName: name
                 }, function (data) {
                     alert(data.msg);
                     if (data.status === 1)
@@ -151,7 +164,7 @@
             var disabledBtn = $(btn);
             var originalText = disabledBtn.text();
             disabledBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
-            $.post('/tools/trade_pwd.ashx', { action: "set", tradepwdVal: tradepwdVal }, function (data) {
+            $.post('/tools/trade_pwd.ashx', { action: "modify", originalTransactPassword: "", newTransactPassword: tradepwdVal }, function (data) {
                 disabledBtn.removeAttr('disabled').removeAttr('style').text(originalText);
                 alert(data.msg);
                 location.reload(); // 设置交易密码成功，刷新页面
@@ -173,7 +186,7 @@
             var disabledBtn = $(btn);
             var originalText = disabledBtn.text();
             disabledBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
-            $.post('/tools/trade_pwd.ashx', { action: "mod", oldtpwdVal: oldtpwdVal, newtpwdVal: newtpwdVal }, function (data) {
+            $.post('/tools/trade_pwd.ashx', { action: "modify", originalTransactPassword: oldtpwdVal, newTransactPassword: newtpwdVal }, function (data) {
                 alert(data.msg);
                 disabledBtn.removeAttr('disabled').removeAttr('style').text(originalText);
                 location.reload(); // 修改交易密码成功，刷新页面
@@ -213,6 +226,8 @@
                     <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
                     <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
                     <button type="button" class="button-l long-btn" onclick="verify_email(this, $('#email').val())">提 交</button>
+                    <input id="email-verify-code" class="input-l" type="text" placeholder="请输入邮箱验证码">
+                    <button type="button" class="button-l long-btn" onclick="bindEmail($('#email-verify-code').val())">验 证</button>
                 </div>
             </div>
         </div>
