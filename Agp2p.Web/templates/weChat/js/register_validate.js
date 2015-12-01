@@ -55,7 +55,7 @@ $(function () {
         btnSendCode.prop("disabled", true);
         $.ajax({
             type: "POST",
-            url: btnSendCode.attr("data-url"),
+            url: "/tools/submit_ajax.ashx?action=user_register_smscode",
             dataType: "json",
             data: {
                 mobile: inputContent,
@@ -136,7 +136,7 @@ $(function () {
                 beforeSubmit: showRequest,
                 success: showResponse,
                 error: showError,
-                url: $("#regform").attr("data-url"),
+                url: "/tools/submit_ajax.ashx?action=user_register",
                 type: "post",
                 dataType: "json",
                 timeout: 60000

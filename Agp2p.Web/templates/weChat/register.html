@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="register-page">
-    <form id="regform" data-url="{config.webpath}tools/submit_ajax.ashx?action=user_register" autocomplete="off">
+    <form id="regform" autocomplete="off">
         <div class="account-wrap">
             <input type="text" id="account" class="input-l" name="txtMobile" placeholder="请输入手机号码" datatype="m" errormsg="手机号码格式不正确">
         </div>
@@ -46,7 +46,7 @@
         <%if(uconfig.regstatus==2)%>
         <div class="auth-code-wrap">
             <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
-            <button type="button" id="get-auth-code-btn" class="button-s" data-url="/tools/submit_ajax.ashx?action=user_register_smscode">获 取</button>
+            <button type="button" id="get-auth-code-btn" class="button-s">获 取</button>
         </div>
         <%/if%>
         <div class="recommend-one-wrap">
