@@ -150,7 +150,7 @@
                 <div class="progress progress-custom">
                     <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{p.GetInvestmentProgressPercent()}"
                          aria-valuemin="0" aria-valuemax="100" style="width: {p.GetInvestmentProgressPercent()}%">
-                        <span>{p.GetInvestmentProgressPercent()}%</span>
+                        {p.GetInvestmentProgressPercent()}%
                     </div>
                 </div>
                 <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
