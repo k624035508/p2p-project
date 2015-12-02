@@ -15,6 +15,9 @@ let selectedTabByHash = () => {
 $(function(){
     header.setHeaderHighlight(3);
 
+    //弹出窗popover初始化
+    $('[data-toggle="popover"]').popover();
+
     var $nav = $(".left-nav .nav-list li");
     var $rightContent = $(".right-content > div");
     $(".funds").click(function(){

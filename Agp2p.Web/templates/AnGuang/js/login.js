@@ -8,6 +8,9 @@ import alert from "../components/tips_alert.js";
 $(function(){
 	$("#account").focus();
 
+	//弹出窗popover初始化
+	$('[data-toggle="popover"]').popover();
+
 	$("#loginBtn").click(function(){
 		$.ajax({
 			type: "post",

@@ -6,6 +6,9 @@ import "../less/footerSmall.less";
 import alert from "../components/tips_alert.js";
 
 $(function() {
+    //弹出窗popover初始化
+    $('[data-toggle="popover"]').popover();
+
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);
     if (matchInvitationUrl) {
