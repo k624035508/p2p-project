@@ -124,5 +124,9 @@ class ResetPasswordPage extends React.Component {
 
 $(function () {
 	header.setHeaderHighlight(2);
+
+	//弹出窗popover初始化
+	$('[data-toggle="popover"]').popover();
+
 	ReactDom.render(<ResetPasswordPage />, document.getElementById("main"));
 });
