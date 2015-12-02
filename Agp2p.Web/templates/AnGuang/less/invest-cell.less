@@ -56,17 +56,17 @@ div.invest-cell {
         .deadline { width: 20%; }
         .sum { width: 24%; }
         .repayment {
-            div:first-child {
-                color: @dark-grey;
-                font-weight: bold;
-            }
             width: 25%;
             .progress-custom {
                 width: 125px;
                 height: 10px;
                 margin-bottom: 12px;
+                .progress-bar-info {
+                    color: @dark-grey;
+                    line-height: 9px;
+                    background-color: #38aaf0 !important;
+                }
             }
-            .progress-bar-info { background-color: #38aaf0 !important; }
         }
         .invest-btn {
             width: 12%;
