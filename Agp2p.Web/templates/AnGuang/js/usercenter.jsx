@@ -33,6 +33,9 @@ import header from "./header.js"
 
 
 $(function(){
+	//弹出窗popover初始化
+	$('[data-toggle="popover"]').popover();
+
 	const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 	const store = createStoreWithMiddleware(userCenter);
 	
