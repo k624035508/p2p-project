@@ -22,7 +22,7 @@
             $('.indicatorContainer').each(function(index, obj) {
                 $(obj).radialIndicator({
                     radius: 28,
-                    barColor: '#fd6500',
+                    barColor: '#ff414b',
                     barBgColor: '#d9d9d9',
                     barWidth: 2,
                     initValue: $(obj).attr('data-progress'),
@@ -37,7 +37,7 @@
     <div class="index-page">
         <%if(!IsUserLogin())%>
         <div class="reglog-bar flex flex-vertical-align flex--flex-grow-first">
-            <span><img src="<%templateskin%>/imgs/jinhuifeng.png"></span>
+            <span><img src="<%templateskin%>/imgs/agrh.png"></span>
             <a href="<%linkurl("register")%>">快速注册</a>
             <a href="<%linkurl("login")%>">登录</a>
         </div>
@@ -52,12 +52,6 @@
                 <div class="item active">
                     <img src="<%templateskin%>/imgs/banner/banner-1.png">
                 </div>
-                <div class="item">
-                    <img src="#">
-                </div>
-                <div class="item">
-                    <img src="#">
-                </div>
             </div>
         </div>
         <div class="invest-list">
@@ -66,6 +60,7 @@
             <%foreach(var p in projects)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
                 <p class="invest-title">
+                    <span class="project-type">房贷宝</span>
                     {p.title}
                     <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
                     <span class="book-icon">约标</span>
@@ -76,17 +71,17 @@
                     <%/if%>
                 </p>
                 <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
-                    <div class="proj-margin-top">
-                        <div class="title-style">金额</div>
-                        <div><span class="txt-darkgrey-l"><%=p.financing_amount.ToString("n0")%></span> 元</div>
+                    <div class="rate-wrap">
+                        <div class="title-style">年化利率</div>
+                        <div class="txt-red-s"><span class="txt-red-l"><%=p.profit_rate_year.ToString("f1")%></span> %</div>
                     </div>
-                    <div class="proj-margin-top">
+                    <div class="time-wrap">
                         <div class="title-style">期限</div>
                         <div><span class="txt-darkgrey-l">{p.repayment_term_span_count}</span> {p.GetProjectTermSpanEnumDesc()}</div>
                     </div>
-                    <div class="proj-margin-top">
-                        <div class="title-style">年化收益</div>
-                        <div><span class="txt-darkgrey-l"><%=p.profit_rate_year.ToString("f1")%></span> %</div>
+                    <div class="amount-wrap">
+                        <div class="title-style">借款金额</div>
+                        <div><span class="txt-darkgrey-l"><%=p.financing_amount.ToString("n0")%></span> 元</div>
                     </div>
                     <div class="invest-status flex flex-center-wrapper">
                         <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>

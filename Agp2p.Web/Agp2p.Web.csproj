@@ -899,10 +899,9 @@
     <Content Include="templates\weChat\css\withdrawals.css" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_pwd.html" />
+    <Content Include="templates\weChat\imgs\agrh.png" />
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
-    <Content Include="templates\weChat\imgs\banner\banner-2.png" />
-    <Content Include="templates\weChat\imgs\banner\banner-3.png" />
     <Content Include="templates\weChat\imgs\binding-cards-icon.png" />
     <Content Include="templates\weChat\imgs\charge-icon.png" />
     <Content Include="templates\weChat\imgs\contrast.png" />
