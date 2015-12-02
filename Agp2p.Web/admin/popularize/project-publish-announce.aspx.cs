@@ -86,7 +86,7 @@ namespace Agp2p.Web.admin.popularize
             var query =
                 context.li_projects.Where(
                     p =>
-                        p.status <= (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                        p.status < (int) Agp2pEnums.ProjectStatusEnum.Financing &&
                         p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail &&
                         (p.title.Contains(Keywords) || p.no.Contains(Keywords)));
             if (CategoryId > 0)
