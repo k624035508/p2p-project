@@ -92,7 +92,7 @@
                         <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                         <div class="status-wrap"><div class="over-icon">待发标</div></div>
                         <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                        <div class="indicatorContainer" data-progress="{p.GetInvestmentProgressPercent()}"></div>
+                        <div class="indicatorContainer" data-progress="<%=(p.GetInvestmentProgressPercent()*100)%>"></div>
                         <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
                         <div class="status-wrap"><div class="over-icon">审核中</div></div>
                         <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>

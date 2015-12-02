@@ -1024,9 +1024,9 @@ namespace Agp2p.Core
             return callback(pro.investment_amount, pro.financing_amount);
         }
 
-        public static string GetInvestmentProgressPercent(this li_projects pro)
+        public static decimal GetInvestmentProgressPercent(this li_projects pro)
         {
-            return pro.GetInvestmentProgress((a, b) => (a/b).ToString("p1").Replace("%",""));
+            return pro.GetInvestmentProgress((a, b) => (a/b));
         }
 
         public static string GetInvestmentBalance(this li_projects pro)
