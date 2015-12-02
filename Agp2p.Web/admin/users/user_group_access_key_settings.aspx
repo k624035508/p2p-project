@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<div class="tab-content">
+<div class="tab-content" style="height: 600px">
     <dl>
         <dt>部门名称：</dt>
         <dd>
