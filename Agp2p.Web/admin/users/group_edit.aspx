@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div class="tab-content">
+    <div class="tab-content" style="height: 600px">
         <dl>
             <dt>组别名称：</dt>
             <dd>

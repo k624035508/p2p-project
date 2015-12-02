@@ -10,9 +10,9 @@
             <li><span><span class="specific-location"><%=p.Item1%></span></span><span class="span-sec"><%=p.Item2%></span></li>
             <%/foreach%>
             </ul>
-            <%if(string.IsNullOrWhiteSpace(risk.risk_content)&&mortgages.Count==0)%>
-                <div class="content-null">暂无数据</div>
-            <%/if%>
+        <%/if%>
+        <%if(string.IsNullOrWhiteSpace(risk.risk_content)&&(mortgages.Count==0||projectModel.dt_article_category.call_index=="fdb"))%>
+            <div class="content-null">暂无数据</div>
         <%/if%>
     </div>
 <%/if%>

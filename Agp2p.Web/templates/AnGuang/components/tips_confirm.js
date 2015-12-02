@@ -6,4 +6,7 @@ export default (msg, callback = null) => {
     if (callback) {
         $("#tipsConfirm button.confirm-btn").off().on('click', callback);
     }
+
+    var offsetHeight = ($(window).height() - $("#tipsConfirm .modal-content").height()) / 2;
+	$("#tipsConfirm .modal-dialog").css("margin-top", offsetHeight + "px");
 }

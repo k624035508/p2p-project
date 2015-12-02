@@ -51,6 +51,8 @@ namespace Agp2p.Web.admin.manager
             model.real_name = txtRealName.Text.Trim();
             model.telephone = txtTelephone.Text.Trim();
             model.email = txtEmail.Text.Trim();
+            if (model.parent_id != null && (int) model.parent_id == 0)
+                model.parent_id = null;
 
             if (!bll.Update(model))
             {
