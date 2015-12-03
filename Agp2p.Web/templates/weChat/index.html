@@ -5,33 +5,7 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/index.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/invest-list.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
-    <script src="<%templateskin%>/js/radialIndicator.min.js"></script>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-
-        $(function () {
-            $('.indicatorContainer').each(function(index, obj) {
-                $(obj).radialIndicator({
-                    radius: 28,
-                    barColor: '#ff414b',
-                    barBgColor: '#d9d9d9',
-                    barWidth: 2,
-                    initValue: $(obj).attr('data-progress'),
-                    roundCorner: true,
-                    percentage: true
-                });
-            });
-        });
-    </script>
+    <script src="<%templateskin%>/build/index.bundle.js"></script>
 </head>
 <body>
     <div class="index-page">
