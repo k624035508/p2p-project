@@ -419,8 +419,10 @@ namespace Agp2p.Common
             Lianlianpay = 2,
             [Description("宝付")]
             Baofoo = 3,
-            [Description("汇潮支付")]
-            Ecpss = 4
+            [Description("汇潮网银支付")]
+            Ecpss = 4,
+            [Description("汇潮快捷支付")]
+            EcpssQ = 5
         }
 
         /// <summary>

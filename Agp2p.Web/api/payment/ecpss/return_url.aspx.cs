@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Agp2p.API.Payment.Ecpss;
+using Agp2p.Common;
 using Agp2p.Core;
 
 namespace Agp2p.Web.api.payment.ecpss
@@ -16,7 +17,10 @@ namespace Agp2p.Web.api.payment.ecpss
             string result = Request.Params["Result"];//支付结果描述
             string signMD5info = Request.Params["SignMD5info"];//md5签名
 
-            if (Helper.CheckReturnMD5(billNo, amount, succeed, signMD5info))
+            var context = new Agp2p.Linq2SQL.Agp2pDataContext();
+            var bankTran = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
+
+            if (bankTran != null && Helper.CheckReturnMD5(billNo, amount, succeed, signMD5info, bankTran.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ))
             {
                 lbMoney.Text = amount + " 元";
                 lbFlag.Text = Helper.GetResultInfo(succeed) + "-====";
@@ -25,7 +29,6 @@ namespace Agp2p.Web.api.payment.ecpss
                 {
                     try
                     {
-                        var context = new Agp2p.Linq2SQL.Agp2pDataContext();
                         var order = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
                         //如果异步通知没收到，则在返回页面处理订单
                         if (order != null && order.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
