@@ -866,36 +866,6 @@
     <Content Include="templates\weChat\about.xml" />
     <Content Include="templates\weChat\aboutus.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
-    <Content Include="templates\weChat\css\aboutus.css" />
-    <Content Include="templates\weChat\css\binding-cards.css" />
-    <Content Include="templates\weChat\css\bootstrap.min.css" />
-    <Content Include="templates\weChat\css\card-select.css" />
-    <Content Include="templates\weChat\css\cards-list.css" />
-    <Content Include="templates\weChat\css\charge.css" />
-    <Content Include="templates\weChat\css\claims-photos.css" />
-    <Content Include="templates\weChat\css\common.css" />
-    <Content Include="templates\weChat\css\footer.css" />
-    <Content Include="templates\weChat\css\forgot-psw.css" />
-    <Content Include="templates\weChat\css\index.css" />
-    <Content Include="templates\weChat\css\invest-detail.css" />
-    <Content Include="templates\weChat\css\invest-list.css" />
-    <Content Include="templates\weChat\css\invest-success.css" />
-    <Content Include="templates\weChat\css\invest.css" />
-    <Content Include="templates\weChat\css\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\css\login.css" />
-    <Content Include="templates\weChat\css\myaccount.css" />
-    <Content Include="templates\weChat\css\myinvest.css" />
-    <Content Include="templates\weChat\css\mylottery.css" />
-    <Content Include="templates\weChat\css\mynews.css" />
-    <Content Include="templates\weChat\css\project-detail.css" />
-    <Content Include="templates\weChat\css\receive-plan-detail.css" />
-    <Content Include="templates\weChat\css\receive-plan.css" />
-    <Content Include="templates\weChat\css\register.css" />
-    <Content Include="templates\weChat\css\safe-center.css" />
-    <Content Include="templates\weChat\css\set-up.css" />
-    <Content Include="templates\weChat\css\trade-record.css" />
-    <Content Include="templates\weChat\css\verified.css" />
-    <Content Include="templates\weChat\css\withdrawals.css" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_pwd.html" />
     <Content Include="templates\weChat\imgs\agrh.png" />
@@ -929,6 +899,7 @@
     <Content Include="templates\weChat\invest-success.html" />
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\index.js" />
+    <Content Include="templates\weChat\js\projects.js" />
     <Content Include="templates\weChat\less\aboutus.css" />
     <Content Include="templates\weChat\less\binding-cards.css" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
@@ -939,7 +910,6 @@
     <Content Include="templates\weChat\less\forgot-psw.css" />
     <Content Include="templates\weChat\less\invest-detail.css" />
     <Content Include="templates\weChat\less\invest-success.css" />
-    <Content Include="templates\weChat\less\invest.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
     <Content Include="templates\weChat\less\login.css" />
     <Content Include="templates\weChat\less\myaccount.css" />
@@ -1067,6 +1037,7 @@
     <Content Include="templates\weChat\less\index.less" />
     <Content Include="templates\weChat\less\invest-list.less" />
     <Content Include="templates\weChat\package.json" />
+    <Content Include="templates\weChat\less\projects.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
