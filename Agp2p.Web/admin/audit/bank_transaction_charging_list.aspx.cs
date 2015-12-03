@@ -149,7 +149,7 @@ namespace Agp2p.Web.admin.audit
                 var doConfirm = ((LinkButton)sender).ID == "btnConfirm";
                 ChkAdminLevel("manage_bank_transaction_charge", (doConfirm ? DTEnums.ActionEnum.Confirm : DTEnums.ActionEnum.Cancel).ToString());
 
-                var ecpssService = new API.Payment.Ecpss.Service();
+                var ecpssService = new API.Payment.Ecpss.Service(false);
                 var preSaveTransaction = new List<li_bank_transactions>();
 
                 for (int i = 0; i < rptList.Items.Count; i++)

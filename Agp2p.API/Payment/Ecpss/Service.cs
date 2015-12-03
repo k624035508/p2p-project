@@ -1,7 +1,4 @@
-﻿using System.Web;
-using System.Text;
-using System.IO;
-using System.Net;
+﻿using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -29,10 +26,18 @@ namespace Agp2p.API.Payment.Ecpss
         /// <summary>
         /// 构造函数
         /// </summary>
-        public Service()
+        public Service(bool isQuick)
         {
-            _partner = Config.partner.Trim();
-            _key = Config.key.Trim();
+            if (!isQuick)
+            {
+                _partner = Config.partner.Trim();
+                _key = Config.key.Trim();
+            }
+            else
+            {
+                _partner = Config.partner_quick.Trim();
+                _key = Config.key_quick.Trim();
+            }
             _gateway = Config.gateway;
             _return_url = Config.return_url.Trim();
             _notify_url = Config.notify_url.Trim();
