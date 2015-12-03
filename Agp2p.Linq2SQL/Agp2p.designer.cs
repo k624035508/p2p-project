@@ -144,6 +144,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_loaners(li_loaners instance);
     partial void Updateli_loaners(li_loaners instance);
     partial void Deleteli_loaners(li_loaners instance);
+    partial void Insertli_company_inoutcome(li_company_inoutcome instance);
+    partial void Updateli_company_inoutcome(li_company_inoutcome instance);
+    partial void Deleteli_company_inoutcome(li_company_inoutcome instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -479,6 +482,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_loaners>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_company_inoutcome> li_company_inoutcome
+		{
+			get
+			{
+				return this.GetTable<li_company_inoutcome>();
 			}
 		}
 	}
@@ -10189,6 +10200,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_loaners> _li_loaners;
 		
+		private EntitySet<li_company_inoutcome> _li_company_inoutcome;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -10267,6 +10280,7 @@ namespace Agp2p.Linq2SQL
 			this._li_notification_settings = new EntitySet<li_notification_settings>(new Action<li_notification_settings>(this.attach_li_notification_settings), new Action<li_notification_settings>(this.detach_li_notification_settings));
 			this._dt_user_message = new EntitySet<dt_user_message>(new Action<dt_user_message>(this.attach_dt_user_message), new Action<dt_user_message>(this.detach_dt_user_message));
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
+			this._li_company_inoutcome = new EntitySet<li_company_inoutcome>(new Action<li_company_inoutcome>(this.attach_li_company_inoutcome), new Action<li_company_inoutcome>(this.detach_li_company_inoutcome));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -11067,6 +11081,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_company_inoutcome", Storage="_li_company_inoutcome", ThisKey="id", OtherKey="user_id")]
+		public EntitySet<li_company_inoutcome> li_company_inoutcome
+		{
+			get
+			{
+				return this._li_company_inoutcome;
+			}
+			set
+			{
+				this._li_company_inoutcome.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -11260,6 +11287,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_loaners(li_loaners entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_li_company_inoutcome(li_company_inoutcome entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_li_company_inoutcome(li_company_inoutcome entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -12855,6 +12894,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
 		
+		private EntitySet<li_company_inoutcome> _li_company_inoutcome;
+		
 		private EntityRef<dt_article_category> _dt_article_category;
 		
 		private EntityRef<li_risks> _li_risks;
@@ -12933,6 +12974,7 @@ namespace Agp2p.Linq2SQL
 		{
 			this._li_repayment_tasks = new EntitySet<li_repayment_tasks>(new Action<li_repayment_tasks>(this.attach_li_repayment_tasks), new Action<li_repayment_tasks>(this.detach_li_repayment_tasks));
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
+			this._li_company_inoutcome = new EntitySet<li_company_inoutcome>(new Action<li_company_inoutcome>(this.attach_li_company_inoutcome), new Action<li_company_inoutcome>(this.detach_li_company_inoutcome));
 			this._dt_article_category = default(EntityRef<dt_article_category>);
 			this._li_risks = default(EntityRef<li_risks>);
 			OnCreated();
@@ -13612,6 +13654,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_company_inoutcome", Storage="_li_company_inoutcome", ThisKey="id", OtherKey="project_id")]
+		public EntitySet<li_company_inoutcome> li_company_inoutcome
+		{
+			get
+			{
+				return this._li_company_inoutcome;
+			}
+			set
+			{
+				this._li_company_inoutcome.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_category_li_projects", Storage="_dt_article_category", ThisKey="category_id", OtherKey="id", IsForeignKey=true)]
 		public dt_article_category dt_article_category
 		{
@@ -13719,6 +13774,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_project_transactions(li_project_transactions entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_projects = null;
+		}
+		
+		private void attach_li_company_inoutcome(li_company_inoutcome entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_projects = this;
+		}
+		
+		private void detach_li_company_inoutcome(li_company_inoutcome entity)
 		{
 			this.SendPropertyChanging();
 			entity.li_projects = null;
@@ -14898,6 +14965,318 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_loaners = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_company_inoutcome")]
+	public partial class li_company_inoutcome : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<decimal> _income;
+		
+		private System.Nullable<decimal> _outcome;
+		
+		private System.DateTime _create_time;
+		
+		private byte _type;
+		
+		private int _user_id;
+		
+		private System.Nullable<int> _project_id;
+		
+		private string _remark;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+		private EntityRef<li_projects> _li_projects;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnincomeChanging(System.Nullable<decimal> value);
+    partial void OnincomeChanged();
+    partial void OnoutcomeChanging(System.Nullable<decimal> value);
+    partial void OnoutcomeChanged();
+    partial void Oncreate_timeChanging(System.DateTime value);
+    partial void Oncreate_timeChanged();
+    partial void OntypeChanging(byte value);
+    partial void OntypeChanged();
+    partial void Onuser_idChanging(int value);
+    partial void Onuser_idChanged();
+    partial void Onproject_idChanging(System.Nullable<int> value);
+    partial void Onproject_idChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    #endregion
+		
+		public li_company_inoutcome()
+		{
+			this._dt_users = default(EntityRef<dt_users>);
+			this._li_projects = default(EntityRef<li_projects>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_income", DbType="Decimal(9,3)")]
+		public System.Nullable<decimal> income
+		{
+			get
+			{
+				return this._income;
+			}
+			set
+			{
+				if ((this._income != value))
+				{
+					this.OnincomeChanging(value);
+					this.SendPropertyChanging();
+					this._income = value;
+					this.SendPropertyChanged("income");
+					this.OnincomeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_outcome", DbType="Decimal(9,3)")]
+		public System.Nullable<decimal> outcome
+		{
+			get
+			{
+				return this._outcome;
+			}
+			set
+			{
+				if ((this._outcome != value))
+				{
+					this.OnoutcomeChanging(value);
+					this.SendPropertyChanging();
+					this._outcome = value;
+					this.SendPropertyChanged("outcome");
+					this.OnoutcomeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_create_time", DbType="DateTime NOT NULL")]
+		public System.DateTime create_time
+		{
+			get
+			{
+				return this._create_time;
+			}
+			set
+			{
+				if ((this._create_time != value))
+				{
+					this.Oncreate_timeChanging(value);
+					this.SendPropertyChanging();
+					this._create_time = value;
+					this.SendPropertyChanged("create_time");
+					this.Oncreate_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="TinyInt NOT NULL")]
+		public byte type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int NOT NULL")]
+		public int user_id
+		{
+			get
+			{
+				return this._user_id;
+			}
+			set
+			{
+				if ((this._user_id != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onuser_idChanging(value);
+					this.SendPropertyChanging();
+					this._user_id = value;
+					this.SendPropertyChanged("user_id");
+					this.Onuser_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project_id", DbType="Int")]
+		public System.Nullable<int> project_id
+		{
+			get
+			{
+				return this._project_id;
+			}
+			set
+			{
+				if ((this._project_id != value))
+				{
+					if (this._li_projects.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onproject_idChanging(value);
+					this.SendPropertyChanging();
+					this._project_id = value;
+					this.SendPropertyChanged("project_id");
+					this.Onproject_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_company_inoutcome", Storage="_dt_users", ThisKey="user_id", OtherKey="id", IsForeignKey=true)]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.li_company_inoutcome.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.li_company_inoutcome.Add(this);
+						this._user_id = value.id;
+					}
+					else
+					{
+						this._user_id = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_company_inoutcome", Storage="_li_projects", ThisKey="project_id", OtherKey="id", IsForeignKey=true)]
+		public li_projects li_projects
+		{
+			get
+			{
+				return this._li_projects.Entity;
+			}
+			set
+			{
+				li_projects previousValue = this._li_projects.Entity;
+				if (((previousValue != value) 
+							|| (this._li_projects.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_projects.Entity = null;
+						previousValue.li_company_inoutcome.Remove(this);
+					}
+					this._li_projects.Entity = value;
+					if ((value != null))
+					{
+						value.li_company_inoutcome.Add(this);
+						this._project_id = value.id;
+					}
+					else
+					{
+						this._project_id = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("li_projects");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

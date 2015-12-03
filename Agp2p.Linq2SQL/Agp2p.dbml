@@ -486,6 +486,7 @@
       <Association Name="dt_users_li_notification_settings" Member="li_notification_settings" ThisKey="id" OtherKey="user_id" Type="li_notification_settings" />
       <Association Name="dt_users_dt_user_message" Member="dt_user_message" ThisKey="id" OtherKey="receiver" Type="dt_user_message" />
       <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
+      <Association Name="dt_users_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="user_id" Type="li_company_inoutcome" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -596,6 +597,7 @@
       <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
       <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
+      <Association Name="li_projects_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="project_id" Type="li_company_inoutcome" />
       <Association Name="dt_article_category_li_projects" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />
       <Association Name="li_risks_li_projects" Member="li_risks" ThisKey="risk_id" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -652,6 +654,20 @@
       <Association Name="li_loaners_li_albums" Member="li_albums" ThisKey="id" OtherKey="loaner" Type="li_albums" />
       <Association Name="dt_users_li_loaners" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
       <Association Name="li_loaner_companies_li_loaners" Member="li_loaner_companies" ThisKey="company_id" OtherKey="id" Type="li_loaner_companies" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_company_inoutcome" Member="li_company_inoutcome">
+    <Type Name="li_company_inoutcome">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="income" Type="System.Decimal" DbType="Decimal(9,3)" CanBeNull="true" />
+      <Column Name="outcome" Type="System.Decimal" DbType="Decimal(9,3)" CanBeNull="true" />
+      <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="project_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="dt_users_li_company_inoutcome" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_projects_li_company_inoutcome" Member="li_projects" ThisKey="project_id" OtherKey="id" Type="li_projects" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

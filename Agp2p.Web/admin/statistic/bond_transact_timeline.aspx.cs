@@ -75,9 +75,9 @@ namespace Agp2p.Web.admin.statistic
         {
             var context = new Agp2pDataContext();
 
-            IQueryable<li_project_transactions> query =
-                context.li_project_transactions.Where(
-                    ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.BondFee);
+            IQueryable<li_company_inoutcome> query =
+                context.li_company_inoutcome.Where(
+                    ptr => ptr.type == (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee);
             
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
             { 
@@ -96,7 +96,7 @@ namespace Agp2p.Web.admin.statistic
                 .Zip(Utils.Infinite(1), (prt, no) => new {prt, no}).Select(pprt => new BondTransaction
                 {
                     index = pprt.no,
-                    income = pprt.prt.principal,
+                    income = pprt.prt.income,
                     occurTime = pprt.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
                     remark = pprt.prt.remark,
                     user = pprt.prt.dt_users.user_name,
