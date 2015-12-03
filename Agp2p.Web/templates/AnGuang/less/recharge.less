@@ -3,9 +3,25 @@
 @import "../less/usercenter-common-style.less";
 @recharge: "../imgs/usercenter/recharge-icons";
 
-.bank-chose-th, .warm-tips { .th-grey-style; }
+.bank-chose-th {
+	margin-bottom: 30px;
+	padding-bottom: 6px;
+	border-bottom: 2px solid @light-grey;
+	span{
+		margin-right: 20px;
+		a {
+			font-size: @font18;
+			color: @dark-grey;
+			text-decoration: none;
+			padding-bottom: 7px;
+			&.active { border-bottom: 2px solid @red; }
+		}
+	}
+}
+
+.warm-tips { .th-grey-style; }
 .bank-select {
-	padding: 35px 15px 5px 135px;
+	padding: 5px 15px 5px 135px;
 	li {
 		vertical-align: top;
 		width: 135px;

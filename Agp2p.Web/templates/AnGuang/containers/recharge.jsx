@@ -16,6 +16,11 @@ class RechargePage extends React.Component {
 		});
 	}
 	doCharge(ev) {
+		if (this.state.selectedBankId == "") {
+			alert("请先选择银行卡");
+			ev.preventDefault();
+			return;
+		}
 		var amount = parseFloat(this.state.chargingAmount || "0");
 		if (amount <= 0) {
 			alert("请输入正确的金额");
@@ -25,9 +30,16 @@ class RechargePage extends React.Component {
 		$("#waitforPaymentDialog").modal('show');
 	}
 	render() { //我要充值 内容
+		let quickPayment = this.state.selectedBankId == "NOCARD";
 		return (
 			<div>
-				<div className="bank-chose-th"><span>选择银行</span></div>
+				<div className="bank-chose-th">
+					<span><a href="javascript:" onClick={ev => this.setState({selectedBankId: ""})}
+						className={quickPayment?"":"active"}>网银支付</a></span>
+					<span><a href="javascript:" onClick={ev => this.setState({selectedBankId: "NOCARD"})}
+						className={quickPayment?"active":""}>快捷支付</a></span>
+				</div>
+				{quickPayment ? null :
 				<ul className="list-unstyled list-inline bank-select">
 					{keys(classMapping).map(k => {
 						return (
@@ -37,7 +49,7 @@ class RechargePage extends React.Component {
 								: null}
 							</li>);
 					})}
-				</ul>
+				</ul>}
 				<div className="balance-recharge"><span>账户余额：</span>{"￥" + this.props.idleMoney}</div>
 				<div className="amount-recharge">
 				    <span><i>*</i>充值金额：</span>
