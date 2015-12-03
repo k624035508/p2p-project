@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>投资协议</title>
-
     <style>
         body {
             margin: 0;
@@ -66,9 +65,22 @@
             text-align: center;
             margin-top: 20px;
         }
+        button {
+            margin: 5px auto;
+            display: none;
+        }
     </style>
+    <script src="/scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="/scripts/FileSaver.min.js"></script>
+    <script src="/scripts/jquery/jquery.wordexport.js"></script>
+    <script>
+        $(function() {
+            $("button").css("display", "block");
+        });
+    </script>
 </head>
 <body>
+<button onclick="$('.agreementPage').wordExport('投资协议')">导出 Word 文档</button>
 <div class="agreementPage">
     <h2>质押借款协议</h2>
     <p class="number">协议编号：{contract_no}</p>

@@ -531,6 +531,7 @@
     <Content Include="scripts\datepicker\skin\whyGreen\datepicker.css" />
     <Content Include="scripts\datepicker\skin\whyGreen\img.gif" />
     <Content Include="scripts\datepicker\WdatePicker.js" />
+    <Content Include="scripts\FileSaver.min.js" />
     <Content Include="scripts\fullpage\jquery.fullPage.css" />
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
@@ -543,6 +544,7 @@
     <Content Include="scripts\jquery\jquery.lazyload.min.js" />
     <Content Include="scripts\jquery\jquery.nicescroll.js" />
     <Content Include="scripts\jquery\jquery.pagination.js" />
+    <Content Include="scripts\jquery\jquery.wordexport.js" />
     <Content Include="scripts\tablesorter\asc.gif" />
     <Content Include="scripts\tablesorter\bg.gif" />
     <Content Include="scripts\tablesorter\desc.gif" />
