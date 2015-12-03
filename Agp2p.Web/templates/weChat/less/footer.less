@@ -1,63 +1,62 @@
 /*footer样式start*/
+@import "common";
+@footer: "../imgs/footer";
+
 div.footer {
     position: fixed;
     width: 100%;
-    height: 48px;
+    height: 50px;
     bottom: 0;
     left: 0;
-    border-top: 1px solid #b2b2b2;
-    background: #f4f3f8;
-}
+    border-top: @border;
+    background: @white;
 
-div.footer > div {
-    text-align: center;
-}
-
-.footer-span,
-.footer-span-active {
-    width: 25px;
-    height: 25px;
-    display: block;
-}
-.footer-span {
-    background: url("../imgs/footer-icon.png") no-repeat;
-    background-size: 400%;
-}
-
-.footer-span-active {
-    background: url("../imgs/footer-icon-active.png") no-repeat;
-     background-size: 400%;
-}
-
-.icon-index {
-    background-position: 0 0;
-}
-
-.icon-invest {
-    background-position: -25px 0;
-}
-
-.icon-mine {
-    background-position: -50px 0;
-}
-
-.icon-settings {
-    background-position: -75px 0;
-}
-
-a.txt-default:link,
-a.txt-default:hover,
-a.txt-default:focus,
-a.txt-default:visited {
-    color: grey;
-    text-decoration: none;
-}
-
-a.txt-active:link,
-a.txt-active:hover,
-a.txt-active:focus,
-a.txt-active:visited {
-    color: #00a5df;
-    text-decoration: none;
+    & > div {
+        text-align: center;
+        a {
+            color: @grey;
+            font-size: 12px;
+            text-decoration: none;
+            span {
+                display: block;
+                width: 25px;
+                height: 25px;
+                margin-top: .15rem;
+            }
+            #span_index {
+                background: url("@{footer}/index.png");
+                background-size: contain;
+                &.active {
+                    background: url("@{footer}/index-active.png");
+                    background-size: contain;
+                }
+            }
+            #span_invest {
+                background: url("@{footer}/invest.png");
+                background-size: contain;
+                &.active {
+                    background: url("@{footer}/invest-active.png");
+                    background-size: contain;
+                }
+            }
+            #span_usercenter {
+                background: url("@{footer}/usercenter.png");
+                background-size: contain;
+                &.active {
+                    background: url("@{footer}/usercenter-active.png");
+                    background-size: contain;
+                }
+            }
+            #span_setting {
+                background: url("@{footer}/setting.png");
+                background-size: contain;
+                &.active {
+                    background: url("@{footer}/setting-active.png");
+                    background-size: contain;
+                }
+            }
+            &.active { color: @red; }
+        }
+    }
 }
 /*footer样式end*/
