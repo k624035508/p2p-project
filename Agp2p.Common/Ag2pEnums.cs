@@ -290,14 +290,6 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
-
-            // 线下（关联借款人）
-            [Description("平台服务费")]
-            ManagementFeeOfLoanning = 10,
-            [Description("逾期管理费")]
-            ManagementFeeOfOverTime = 11,
-            [Description("风险保证金")]
-            BondFee = 12,
         }
 
         /// <summary>
@@ -389,8 +381,12 @@ namespace Agp2p.Common
             ManagementFeeOfLoanning = 10,
             [Description("逾期管理费")]
             ManagementFeeOfOverTime = 11,
+            [Description("风险保证金")]
+            BondFee = 12,
 
             // 支出
+            [Description("充值手续费")]
+            ReChangeFee = 20
         }
 
         /// <summary>

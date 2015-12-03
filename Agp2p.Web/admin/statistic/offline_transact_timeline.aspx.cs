@@ -70,6 +70,8 @@ namespace Agp2p.Web.admin.statistic
                 Enum.GetValues(typeof (Agp2pEnums.OfflineTransactionTypeEnum))
                     .Cast<Agp2pEnums.OfflineTransactionTypeEnum>()
                     .Select(e => new ListItem(Utils.GetAgp2pEnumDes(e), "" + ((int) e))).ToArray());
+            ddlRecordType.Items.RemoveAt(3);
+
             if (!string.IsNullOrEmpty(transactType))
                 ddlRecordType.SelectedValue = transactType;
         }
@@ -98,46 +100,60 @@ namespace Agp2p.Web.admin.statistic
 
         private static readonly int[] OfflineProjectTransactionType =
         {
-            (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfLoanning,
-            (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfOverTime,
+            (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
+            (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfOverTime,
+            (int) Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
         };
 
         private IEnumerable<OfflineTransaction> QueryProjectTransactions()
         {
             var context = new Agp2pDataContext();
-
-            IQueryable<li_project_transactions> query = context.li_project_transactions.Where(ptr =>
+            //查找管理费、逾期费用、充值手续费
+            IQueryable<li_company_inoutcome> queryTran = context.li_company_inoutcome.Where(ptr =>
                 string.IsNullOrWhiteSpace(transactType) || transactType == "所有操作类型" ||
-                ((Agp2pEnums.ProjectTransactionTypeEnum) ptr.type).ToString() == transactType);
-            
+                ((Agp2pEnums.OfflineTransactionTypeEnum)ptr.type).ToString() == transactType);
+
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
-            { 
-                query = query.Where(b => b.li_projects.user_name.Contains(txtKeywords.Text) || b.dt_users.real_name.Contains(txtKeywords.Text) || b.li_projects.title.Contains(txtKeywords.Text)); 
+            {
+                queryTran =
+                    queryTran.Where(
+                        b =>
+                            b.dt_users.user_name.Contains(txtKeywords.Text) ||
+                            b.dt_users.real_name.Contains(txtKeywords.Text) ||
+                             b.li_projects.title.Contains(txtKeywords.Text));
             }
 
-            if(cb_today.Checked)
-                query = query.Where(h => h.create_time.Date == DateTime.Now.Date);
+            if (cb_today.Checked)
+            {
+                queryTran = queryTran.Where(h => h.create_time.Date == DateTime.Now.Date);
+            }
             else
             {
                 if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                    query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
+                {
+                    queryTran = queryTran.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
+                }
                 if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                    query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+                {
+                    queryTran = queryTran.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+                }
             }
-            query = query.Where(ptr => OfflineProjectTransactionType.Contains(ptr.type));
+            queryTran = queryTran.Where(ptr => (OfflineProjectTransactionType.Contains(ptr.type)));
 
-            totalCount = query.Count();
-
-            return query.OrderByDescending(ptr => ptr.id).AsEnumerable()
-                .Zip(Utils.Infinite(1), (prt, no) => new { prt, no }).Select(pptr => new OfflineTransaction
+            totalCount = queryTran.Count();
+            return queryTran.OrderByDescending(q => q.create_time).AsEnumerable()
+                .Zip(Utils.Infinite(1), (prt, no) => new { prt, no })
+                .Select(pptr => new OfflineTransaction
                 {
                     index = pptr.no,
-                    income = pptr.prt.principal,
+                    income = pptr.prt.income,
+                    outcome = pptr.prt.outcome,
                     occurTime = pptr.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
-                    type = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTransactionTypeEnum)pptr.prt.type),
+                    type = Utils.GetAgp2pEnumDes(
+                        (Agp2pEnums.OfflineTransactionTypeEnum)pptr.prt.type),
                     remark = pptr.prt.remark,
-                    user = pptr.prt.dt_users.real_name??pptr.prt.dt_users.user_name,
-                    project = pptr.prt.li_projects.title
+                    user = pptr.prt.dt_users.real_name ?? pptr.prt.dt_users.user_name,
+                    project = pptr.prt.li_projects == null ? "" : pptr.prt.li_projects.title
                 });
         }
 
