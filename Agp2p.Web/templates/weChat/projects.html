@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <title>理财</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/invest.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/invest-list.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
-    <script src="<%templateskin%>/js/radialIndicator.min.js"></script>
-    <script type="text/javascript" src="{config.webpath}scripts/underscore-min.js"></script>
-
     <style>
         #loading-hint, .loading-hint {
             padding-top: 25px;
@@ -22,35 +13,30 @@
             color: grey;
         }
     </style>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-    </script>
 
     <script type="text/html" id="invest-item">
         @{ _.each(items, function(item, key, list){ }@
         <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='project/@{=item.id}@.html#project'">
             <div class="invest-project">
                 <p class="invest-title">
+                    <span class="project-type">房贷宝</span>
                     @{=item.title}@
                     @{ if (item.tag=="1") { }@
                     <span class="book-icon">约标</span>
                     @{ } }@
                 </p>
                 <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
-                    <div class="proj-margin-top">
-                        <div class="title-style">金额</div>
-                        <div><span class="txt-darkgrey-l">@{=item.project_amount_str}@</span>万元</div>
+                    <div class="rate-wrap">
+                        <div class="title-style">年化利率</div>
+                        <div class="txt-red-s"><span class="txt-red-l">@{=item.profit_rate_year}@</span> %</div>
                     </div>
-                    <div class="proj-margin-top">
+                    <div class="time-wrap">
                         <div class="title-style">期限</div>
-                        <div><span class="txt-darkgrey-l">@{=item.repayment_number}@</span>@{=item.repayment_term}@</div>
+                        <div><span class="txt-darkgrey-l">@{=item.repayment_number}@</span> @{=item.repayment_term}@</div>
                     </div>
-                    <div class="proj-margin-top">
-                        <div class="title-style">年化收益</div>
-                        <div><span class="txt-darkgrey-l">@{=item.profit_rate_year}@</span> %</div>
+                    <div class="amount-wrap">
+                        <div class="title-style">借款金额</div>
+                        <div><span class="txt-darkgrey-l">@{=item.project_amount_str}@</span> 元</div>
                     </div>
                     <div class="invest-status flex flex-center-wrapper">
                         @{ if (item.status==11) { }@
@@ -70,89 +56,10 @@
         </div>
         @{ }); }@
     </script>
-
     <script>
-        _.templateSettings = {
-            evaluate: /@\{([\s\S]+?)\}@/g, // 求值 @{ ... }@
-            interpolate: /@\{=([\s\S]+?)\}@/g // 两边带空格，直接输出 @{= ...}@
-        };
-        var render = _.template($("#invest-item").html());
-        function loadData(pageIndex, callback) {
-            var pageSize = 10;
-            var loadingHint = $("#loading-hint");
-            var emptyBox = $("div.loading-hint");
-            loadingHint.text("加载中...");
-            loadingHint.show();
-            emptyBox.hide();
-            $.ajax({
-                type: "POST",
-                url: "{Request.FilePath}" + "/AjaxQueryProjectList",
-                data: JSON.stringify({ category_id: {category_id}, pageIndex: pageIndex, pageSize: pageSize }),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (msg) {
-                    var ls = JSON.parse(msg.d);
-                    $("#pending").append(render({ items: ls }));
-                    if (ls.length < pageSize) {
-                        $(window).unbind('scroll');
-                    }
-                    loadingHint.hide();
-                    if (pageIndex === 0 && ls.length === 0) {
-                        emptyBox.show();
-                    } else {
-                        emptyBox.hide();
-                    }
-                }
-            }).fail(function() {
-                loadingHint.text("加载失败");
-            }).always(callback);
-        }
-
-        $(function (){
-            var navBtns = $(".invest-nav a");
-            $("#projects").addClass("nav-active nav-border-active");
-            navBtns.click(function(){
-                navBtns.removeClass("nav-active nav-border-active");
-                $(this).addClass("nav-active nav-border-active");
-            });            
-            //首次进入页面加载数据
-            var processing = false;
-            var loadedPage = 1;
-            loadData(loadedPage, function () {
-                loadedPage += 1;
-                //百分比样式
-                $('.indicatorContainer').each(function (index, obj) {
-                    $(obj).radialIndicator({
-                        radius: 28,
-                        barColor: '#fd6500',
-                        barBgColor: '#d9d9d9',
-                        barWidth: 2,
-                        initValue: $(obj).attr('data-progress'),
-                        roundCorner: true,
-                        percentage: true
-                    });
-                });
-                //分类样式选择
-                $(".invest-nav a").removeClass("nav-active nav-border-active");
-                if({category_id}==33) $("#golden-house").attr("class", "nav-active nav-border-active");
-                else if({category_id}==34) $("#cars-invest").attr("class", "nav-active nav-border-active");
-                else $("#projects").attr("class", "nav-active nav-border-active");
-            });
-            //拖动滚动条加载数据
-            $(window).scroll(function() {
-                if (processing) return;
-
-                if (($(document).height() - $(window).height())*0.7 <= $(window).scrollTop()) {
-                    processing = true; //sets a processing AJAX request flag
-
-                    loadData(loadedPage, function() {
-                        loadedPage += 1;
-                        processing = false;
-                    });
-                }
-            });            
-        });
+        var categoryId = {category_id}, aspxPath = '{Request.FilePath}';
     </script>
+    <script src="<%templateskin%>/build/projects.bundle.js"></script>
 </head>
 <body>
     <div class="invest-page">

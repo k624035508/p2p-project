@@ -1,5 +1,6 @@
-﻿body {
-    background-color: #f7f7f8;
+﻿@import "common";
+body {
+    background: @body-color;
     padding-bottom: 55px;
 }
 div.reglog-bar {
@@ -7,11 +8,11 @@ div.reglog-bar {
     padding-left: 5%;
     padding-right: 5%;
     font-size: 1.2em;
-    background-color: #fd6500;
+    background: @blue;
 }
 div.index-page div.reglog-bar span img {width:6.25rem;}
 div.reglog-bar a {
-    color: #fff;
+    color: @white;
     margin-left: 5%;
     text-decoration: none;
 }

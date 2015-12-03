@@ -187,7 +187,7 @@ namespace Agp2p.Core
                 //wallet.locked_money -= tr.value;
                 wallet.idle_money += tr.value;
                 wallet.unused_money += (tr.pay_api == (byte) Agp2pEnums.PayApiTypeEnum.ManualAppend ? 0 : tr.value);
-                    // 手工充值 可能为活动返利，不计手续费
+                // 手工充值 可能为活动返利，不计手续费
                 wallet.total_charge += tr.value;
                 wallet.last_update_time = tr.transact_time.Value; // 时间应该一致
 
@@ -195,6 +195,22 @@ namespace Agp2p.Core
                 var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.ChargeConfirm);
                 his.li_bank_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
+
+                //添加充值手续费
+                //汇潮支付
+                if (tr.pay_api != null )
+                {
+                    var rechangerFee = new li_company_inoutcome()
+                    {
+                        create_time = DateTime.Now,
+                        user_id = (int) tr.charger,
+                        outcome = tr.value*0.0025m,
+                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
+                        remark = "汇潮（网银支付）充值手续费"
+                    };
+                    context.li_company_inoutcome.InsertOnSubmit(rechangerFee);
+                }
+                context.SubmitChanges();
             }
             else if (tr.type == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw) // 提款确认
             {
@@ -490,13 +506,12 @@ namespace Agp2p.Core
             // 计算平台服务费
             if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
             {
-                context.li_project_transactions.InsertOnSubmit(new li_project_transactions
+                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome()
                 {
-                    investor = project.li_risks.li_loaners.dt_users.id,
-                    principal = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
-                    project = projectId,
-                    type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfLoanning,
-                    status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    user_id = project.li_risks.li_loaners.dt_users.id,
+                    income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
+                    project_id = projectId,
+                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
                     create_time = DateTime.Now,
                     remark = $"借款项目'{project.title}'收取平台服务费"
                 });
@@ -505,13 +520,12 @@ namespace Agp2p.Core
             //计算风险保证金
             if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
             {
-                context.li_project_transactions.InsertOnSubmit(new li_project_transactions
+                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                 {
-                    investor = project.li_risks.li_loaners.dt_users.id,
-                    principal = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
-                    project = projectId,
-                    type = (int) Agp2pEnums.ProjectTransactionTypeEnum.BondFee,
-                    status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    user_id = project.li_risks.li_loaners.dt_users.id,
+                    income = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
+                    project_id = projectId,
+                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee,
                     create_time = DateTime.Now,
                     remark = $"借款项目'{project.title}'收取风险保证金"
                 });
@@ -909,12 +923,11 @@ namespace Agp2p.Core
             repaymentTask.cost = repaymentTask.repay_interest - overTimePayInterest;
             repaymentTask.repay_interest = overTimePayInterest;
             //计算逾期管理费
-            var projectTransaction = new li_project_transactions
+            var projectTransaction = new li_company_inoutcome()
             {
-                investor = (int) repaymentTask.li_projects.li_risks.li_loaners.user_id,
-                project = repaymentTask.project,
-                type = (int) Agp2pEnums.ProjectTransactionTypeEnum.ManagementFeeOfOverTime,
-                status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                user_id = (int) repaymentTask.li_projects.li_risks.li_loaners.user_id,
+                project_id = repaymentTask.project,
+                type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfOverTime,
                 create_time = DateTime.Now,
                 remark = $"收取'{repaymentTask.li_projects.title}'第{repaymentTask.term}期的逾期管理费"
             };
@@ -924,20 +937,20 @@ namespace Agp2p.Core
             if (repaymentTask.li_projects.dt_article_category.call_index.ToUpper().Contains("YPB"))
             {
                 //票据业务
-                projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                projectTransaction.income = repaymentTask.li_projects.financing_amount*overDays*
                                                costconfig.overtime_cost_bank;
             }
             else
             {
                 //非票据业务
                 if (overDays <= 30)
-                    projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                    projectTransaction.income = repaymentTask.li_projects.financing_amount*overDays*
                                                    costconfig.overtime_cost;
                 else
-                    projectTransaction.principal = repaymentTask.li_projects.financing_amount*overDays*
+                    projectTransaction.income = repaymentTask.li_projects.financing_amount*overDays*
                                                    costconfig.overtime_cost2;
             }
-            context.li_project_transactions.InsertOnSubmit(projectTransaction);
+            context.li_company_inoutcome.InsertOnSubmit(projectTransaction);
 
             context.SubmitChanges();
             context.ExecuteRepaymentTask(repayTaskId, Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
