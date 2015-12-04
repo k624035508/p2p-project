@@ -7,19 +7,15 @@
     <meta content="{projectModel.seo_description}" name="description" />
     <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? projectModel.title : projectModel.seo_title%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/receive-plan-detail.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/claims-photos.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/project-detail.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/invest-detail.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/invest-success.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
-    <script src="<%templateskin%>/js/bootstrap.min.js"></script>
-    <script src="<%templateskin%>/js/radialIndicator.min.js"></script>
+    <script>
+        var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
+        var idleMoney = {idle_money};
+        var investProgress = {investmentProgress};
+        var projectId = {projectModel.id};
+        var projectName = '{projectModel.title}';
+    </script>
+    <script src="<%templateskin%>/build/project.bundle.js"></script>
     <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
-
     <link type="text/css" rel="stylesheet" href="{config.webpath}scripts/fullpage/jquery.fullPage.css">
     <script type="text/javascript" src="{config.webpath}scripts/fullpage/jquery.fullPage.min.js"></script>
 
@@ -64,155 +60,18 @@
             color: grey;
         }
     </style>
-
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-
-        var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
-        var idleMoney = {idle_money};
-        var investProgress = {investmentProgress};
-        var projectId = {projectModel.id};
-        var projectName = '{projectModel.title}';
-
-        function initPage(){
-            $('.indicatorContainer').radialIndicator({
-                radius: 35,
-                barColor: '#fff',
-                barBgColor: '#7fd2f0',
-                barWidth: 8,
-                initValue: investProgress,
-                roundCorner : true,
-                percentage: true
-            });
-
-            $("#btnInvest").click(function() {
-                // 初始化投资确认对话框
-                var investingValue = Number($(".invest-action input").val());
-                if (0 >= investingValue || investingValue % 1 !== 0) {
-                    $.dialog.tips("请输入正整数");
-                    return;
-                } else if (idleMoney < investingValue) {
-                    $.dialog.tips("您的余额不足 " + investingValue + " 元");
-                    return;
-                }
-                var profit = finalProfitRate * investingValue;
-
-                var dlg = $("#dlgInvestConfirm");
-                dlg.find("#dlgField_InvestAmount").text(investingValue + " 元");
-                dlg.find("#dlgField_ProfitPredict").text(profit.toFixed(2) + " 元");
-                dlg.find("#dlgField_IdleMoney").text(idleMoney + " 元");
-                dlg.find("#dlgField_ProjectName").text(projectName);
-                dlg.modal();
-            });
-
-            var investActionUrl = "{config.webpath}tools/submit_ajax.ashx?action=invest_project";
-            $("#dlgInvestConfirm .btn-primary").click(function() { // 确认投资
-                $.post(investActionUrl, {
-                    investingAmount: $(".invest-action input").val(),
-                    projectId: projectId,
-                    transactPassword: $("#transactPwd").val()
-                }, function(data) {
-                    if (data.status === 0) {
-                        $.dialog.alert(data.msg);
-                    } else if (data.status === 3) {
-                        $.dialog.tips("投资成功！", 2, "32X32/succ.png", function(){
-                            location.reload();
-                        });
-                        //$.dialog.alert(data.msg, function() {
-                        //    location.reload();
-                        //});
-                    } else {
-                        $.dialog.tips(data.msg, 2, "32X32/succ.png", function(){
-                            location.reload();
-                        });
-                    }
-                }, "json").fail(function(resp) {
-                    $.dialog.alert("投资失败，请重试。<br>" + resp.errorMessage);
-                });
-                return false;
-            });
-        };
-        function initFullpage() {
-            $('#fullpage').fullpage({
-                paddingBottom: '50px',
-                anchors:['project'],
-                controlArrows: false,
-                verticalCentered: false,
-                loopHorizontal: false,
-            });
-            $.fn.fullpage.setAllowScrolling(false);
-            if (!location.hash) {
-                if(history.pushState) {
-                    history.pushState(null, null, '#project');
-                } else {
-                    location.href = '#project';
-                }
-            }
-        }
-        function initPics() {
-            var loadingHintForPics = $(".claims-photos .loading-hint");
-            $("div.nav-btns a").click(function () {
-                var clickedTab = $(this);
-                if (clickedTab.hasClass("nav-active")) return;
-                clickedTab.siblings().removeClass("nav-active nav-border-active");
-                clickedTab.addClass("nav-active nav-border-active");
-
-                var displayType = clickedTab.attr("data-display-picType");
-                $(".photo-cell:not([data-picType=" + displayType + "])").hide();
-                var picsShouldShow = $(".photo-cell[data-picType=" + displayType + "]");
-                if (picsShouldShow.length === 0) {
-                    loadingHintForPics.show();
-                } else {
-                    loadingHintForPics.hide();
-                    picsShouldShow.show();
-                }
-            });
-            $("#spot-pics").click();
-
-            //照片大图弹出
-            var zoomingImg = $("#photo-enlarge-dialog img");
-            var dlgZooming = $('#photo-enlarge-dialog');
-            $("div.photo-cell img").click(function() {
-                zoomingImg.attr("src", $(this).attr("data-origin-src"));
-                dlgZooming.modal();
-            });
-        }
-        function fixAndroid2xOverflowCannotScroll($affectedElem) {
-            var ua = navigator.userAgent;
-            if (ua.indexOf("Android") >= 0) {
-                var androidversion = parseFloat(ua.slice(ua.indexOf("Android") + 8));
-                if (androidversion < 3) {
-                    var script = document.createElement('script');
-                    script.src = "<%templateskin%>/js/touchscroll.js";
-                    script.onload = function () {
-                        $affectedElem.each(function(index, elem) {
-                            touchScroll(elem);
-                        });
-                    };
-                    document.head.appendChild(script);
-                }
-            }
-        }
-        $(function() {
-            initPage();
-            initPics();
-            initFullpage();
-            fixAndroid2xOverflowCannotScroll($(".inner-scrollable"));
-        });
-    </script>
 </head>
 <body>
 <div id="fullpage">
 <div class="section">
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
-            <div class="top-screen flex flex--align-items--center flex--column flex--justify-content--space-between">
-                <div class="icon-house" style="line-height: 1.5rem">{projectModel.title}</div>
-                <div class="indicatorContainer flex flex-center-wrapper"></div>
-                <p>还需金额：{investmentBalance}</p>
+            <div class="top-screen">
+                <div class="project-title"><span class="project-type">房贷宝</span><span>{projectModel.title}</span></div>
+                <div class="flex flex--align-items--center flex--column flex--justify-content--space-between">
+                    <div class="indicatorContainer flex flex-center-wrapper"></div>
+                    <p class="amount-left">可投金额{investmentBalance}</p>
+                </div>
             </div>
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
