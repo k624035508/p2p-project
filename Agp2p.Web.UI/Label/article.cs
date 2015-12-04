@@ -230,8 +230,8 @@ namespace Agp2p.Web.UI
             var categoryIdArr = categoryIds.Split(',').Select(str => Convert.ToInt32(str)).ToArray();
             var queryable = context.dt_article.Where(a => categoryIdArr.Contains(a.category_id));
             totalCount = queryable.Count();
-            return queryable.OrderByDescending(a => a.add_time)
-                .Skip(pageSize * pageIndex)
+            return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time)
+                .Skip(pageSize*pageIndex)
                 .Take(pageSize)
                 .AsEnumerable();
         }
