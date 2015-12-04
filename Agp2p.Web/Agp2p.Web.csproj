@@ -889,7 +889,7 @@
     <Content Include="templates\weChat\imgs\headshot.png" />
     <Content Include="templates\weChat\imgs\input-icon\pic-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\pwd.png" />
-    <Content Include="templates\weChat\imgs\input-icon\recommand.png" />
+    <Content Include="templates\weChat\imgs\input-icon\recommend.png" />
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
     <Content Include="templates\weChat\imgs\login-icon.png" />
@@ -907,6 +907,7 @@
     <Content Include="templates\weChat\js\login.js" />
     <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
+    <Content Include="templates\weChat\js\register.js" />
     <Content Include="templates\weChat\less\aboutus.css" />
     <Content Include="templates\weChat\less\binding-cards.css" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
@@ -920,7 +921,6 @@
     <Content Include="templates\weChat\less\mylottery.css" />
     <Content Include="templates\weChat\less\mynews.css" />
     <Content Include="templates\weChat\less\receive-plan.css" />
-    <Content Include="templates\weChat\less\register.css" />
     <Content Include="templates\weChat\less\safe-center.css" />
     <Content Include="templates\weChat\less\set-up.css" />
     <Content Include="templates\weChat\less\trade-record.css" />
@@ -932,7 +932,6 @@
     <Content Include="templates\weChat\js\jquery-2.1.4.min.js" />
     <Content Include="templates\weChat\js\jquery.mobile-1.4.5.min.js" />
     <Content Include="templates\weChat\js\radialIndicator.min.js" />
-    <Content Include="templates\weChat\js\register_validate.js" />
     <Content Include="templates\weChat\js\touchscroll.js" />
     <Content Include="templates\weChat\login.html" />
     <Content Include="templates\weChat\mycard.html" />
@@ -1045,6 +1044,7 @@
     <Content Include="templates\weChat\less\receive-plan-detail.less" />
     <Content Include="templates\weChat\watch.bat" />
     <Content Include="templates\weChat\less\login.less" />
+    <Content Include="templates\weChat\less\register.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

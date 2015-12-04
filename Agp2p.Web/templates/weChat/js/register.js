@@ -1,4 +1,18 @@
-﻿function getUrlParameter(sParam) {
+﻿import "bootstrap-webpack";
+import "../less/register.less";
+
+/*rem的相对单位定义*/
+var viewportWidth = $(window).width();
+var fontSizeUnit = viewportWidth * 0.9 / 20;
+$("html").css("font-size", fontSizeUnit);
+
+/*切换验证码*/
+function ToggleCode(obj, codeurl) {
+    $(obj).attr("src", codeurl + "?time=" + Math.random());
+    return false;
+}
+
+function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) {

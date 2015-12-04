@@ -7,6 +7,7 @@ module.exports = {
         projects: "./js/projects.js",
         project: "./js/project.js",
         login: "./js/login.js",
+        register: "./js/register.js",
     },
     output: {
         path: path.join(__dirname, './build'),

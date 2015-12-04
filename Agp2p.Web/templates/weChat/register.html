@@ -4,26 +4,10 @@
     <meta charset="UTF-8">
     <title>注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/register.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
     <script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
     <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
-    <script type="text/javascript" src="<%templateskin%>/js/register_validate.js"></script>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth * 0.9 / 20;
-        $("html").css("font-size", fontSizeUnit);
-
-        /*切换验证码*/
-        function ToggleCode(obj, codeurl) {
-            $(obj).attr("src", codeurl + "?time=" + Math.random());
-            return false;
-        }
-    </script>
+    <script src="<%templateskin%>/build/register.bundle.js"></script>
 </head>
 <body>
 <div class="register-page">
@@ -39,14 +23,14 @@
         </div>
         <div class="pic-code-wrap">
             <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
-            <span class="pic-code-span flex flex-center-wrapper">
+            <span class="pic-code-span pull-right flex flex-center-wrapper">
                 <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
             </span><br/>
         </div>
         <%if(uconfig.regstatus==2)%>
         <div class="auth-code-wrap">
             <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
-            <button type="button" id="get-auth-code-btn" class="button-s">获 取</button><br/>
+            <button type="button" id="get-auth-code-btn" class="button-s pull-right">获 取</button><br/>
         </div>
         <%/if%>
         <div class="recommend-one-wrap">
