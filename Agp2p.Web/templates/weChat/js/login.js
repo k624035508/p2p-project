@@ -1,4 +1,10 @@
-﻿//====================初始化验证表单====================
+import "bootstrap-webpack";
+import "../less/login.less";
+
+/*rem的相对单位定义*/
+$("html").css("font-size", $(window).width() * 0.9 / 20);
+
+//初始化验证表单
 $(function () {
     //提交表单
     var btnSubmit = $("#btnSubmit");
