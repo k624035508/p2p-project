@@ -19,38 +19,40 @@
             background: url("@{input}/pwd.png") no-repeat 2% center;
             background-size: 8%;
         }
+        .remember-psw-wrap {
+            #chkRemember {
+                width: 16px;
+                height: 16px;
+                margin-top: 1.5px;
+                margin-right: 5px;
+                vertical-align: top;
+                -webkit-appearance: none;
+                border-radius: 0;
+                border: @border;
+                &:checked {
+                    background: url("../imgs/blue-tick.png") no-repeat center;
+                    background-size: contain;
+                }
+            }
+            #psw-label {
+                color: #a9a9a9;
+                font-weight: normal;
+            }
+            a {
+                float: right;
+                color: @blue;
+                text-decoration: none;
+            }
+        }
     }
-}
-#psw-label {
-    color: #a9a9a9;
-    font-weight: normal;
-}
-input#chkRemember {
-    width: 16px;
-    height: 16px;
-    margin-top: 1.5px;
-    margin-right: 5px;
-    vertical-align: top;
-    -webkit-appearance: none;
-    border-radius: 0;
-    border: @border;
-}
-input[type=checkbox]:checked {
-    background: url("../imgs/blue-tick.png") no-repeat center;
-    background-size: contain;
-}
-div.remember-psw-wrap a {
-    float: right;
-    color: @blue;
-    text-decoration: none;
-}
-div.register-now-wrap {
-    width: 20rem;
-    text-align: center;
-    color: #a9a9a9;
-}
-div.register-now-wrap a {
-    padding-left: 8px;
-    color: @blue;
-    text-decoration: none;
+    .register-now-wrap {
+        width: 20rem;
+        text-align: center;
+        color: #a9a9a9;
+        a {
+            padding-left: 8px;
+            color: @blue;
+            text-decoration: none;
+        }
+    }
 }
