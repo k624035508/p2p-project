@@ -874,6 +874,7 @@
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\binding-cards-icon.png" />
+    <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\charge-icon.png" />
     <Content Include="templates\weChat\imgs\contrast.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
@@ -886,9 +887,8 @@
     <Content Include="templates\weChat\imgs\footer\usercenter-active.png" />
     <Content Include="templates\weChat\imgs\footer\usercenter.png" />
     <Content Include="templates\weChat\imgs\headshot.png" />
-    <Content Include="templates\weChat\imgs\icon-tick.png" />
-    <Content Include="templates\weChat\imgs\invest-detail-car.png" />
-    <Content Include="templates\weChat\imgs\invest-detail-house.png" />
+    <Content Include="templates\weChat\imgs\input-icon\pwd.png" />
+    <Content Include="templates\weChat\imgs\input-icon\user.png" />
     <Content Include="templates\weChat\imgs\login-icon.png" />
     <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\myaccount-icon.png" />
@@ -901,6 +901,8 @@
     <Content Include="templates\weChat\invest-success.html" />
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\index.js" />
+    <Content Include="templates\weChat\js\login.js" />
+    <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
     <Content Include="templates\weChat\less\aboutus.css" />
     <Content Include="templates\weChat\less\binding-cards.css" />
@@ -908,18 +910,12 @@
     <Content Include="templates\weChat\less\card-select.css" />
     <Content Include="templates\weChat\less\cards-list.css" />
     <Content Include="templates\weChat\less\charge.css" />
-    <Content Include="templates\weChat\less\claims-photos.css" />
     <Content Include="templates\weChat\less\forgot-psw.css" />
-    <Content Include="templates\weChat\less\invest-detail.css" />
-    <Content Include="templates\weChat\less\invest-success.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\less\login.css" />
     <Content Include="templates\weChat\less\myaccount.css" />
     <Content Include="templates\weChat\less\myinvest.css" />
     <Content Include="templates\weChat\less\mylottery.css" />
     <Content Include="templates\weChat\less\mynews.css" />
-    <Content Include="templates\weChat\less\project-detail.css" />
-    <Content Include="templates\weChat\less\receive-plan-detail.css" />
     <Content Include="templates\weChat\less\receive-plan.css" />
     <Content Include="templates\weChat\less\register.css" />
     <Content Include="templates\weChat\less\safe-center.css" />
@@ -932,7 +928,6 @@
     <Content Include="templates\weChat\js\bootstrap.min.js" />
     <Content Include="templates\weChat\js\jquery-2.1.4.min.js" />
     <Content Include="templates\weChat\js\jquery.mobile-1.4.5.min.js" />
-    <Content Include="templates\weChat\js\login_validate.js" />
     <Content Include="templates\weChat\js\radialIndicator.min.js" />
     <Content Include="templates\weChat\js\register_validate.js" />
     <Content Include="templates\weChat\js\touchscroll.js" />
@@ -1040,6 +1035,13 @@
     <Content Include="templates\weChat\less\invest-list.less" />
     <Content Include="templates\weChat\package.json" />
     <Content Include="templates\weChat\less\projects.less" />
+    <Content Include="templates\weChat\less\claims-photos.less" />
+    <Content Include="templates\weChat\less\invest-success.less" />
+    <Content Include="templates\weChat\less\project-detail.less" />
+    <Content Include="templates\weChat\less\project.less" />
+    <Content Include="templates\weChat\less\receive-plan-detail.less" />
+    <Content Include="templates\weChat\watch.bat" />
+    <Content Include="templates\weChat\less\login.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
