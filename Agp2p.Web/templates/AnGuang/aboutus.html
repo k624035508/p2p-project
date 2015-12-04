@@ -17,61 +17,34 @@
 <%template src="_header.html"%>
 <!--head end-->
 
-<!--面包屑导航-->
-<div class="breadcrumbs">
-    <a href="/">首页</a>
-    <span> > </span>
-    <span>关于我们</span>
+<div class="about-nav-bar">
+    <div class="content-wrap">
+        <ul class="list-unstyled list-inline">
+            <li><a href="javascript:">公司简介</a></li>
+            <li><a href="javascript:">企业文化</a></li>
+            <li><a href="javascript:">大事记</a></li>
+            <li><a href="javascript:">高管团队</a></li>
+            <li><a href="javascript:">合作机构</a></li>
+            <li><a href="javascript:">员工风采</a></li>
+            <li><a href="javascript:">办公环境</a></li>
+            <li><a href="javascript:">公司资质</a></li>
+            <li><a href="javascript:">战略合作</a></li>
+            <li><a href="javascript:">联系方式</a></li>
+            <li><a class="more" href="javascript:">更多</a></li>
+        </ul>
+    </div>
 </div>
-<!--面包屑导航 end-->
 
 <div class="content-wrap aboutPage">
     <div class="left-nav">
         <ul class="list-unstyled nav-list">
-            <li data-binding="company-wrap"><a href='<%=linkurl("about")%>?tab=0' class="company">公司简介</a></li>
             <li data-binding="product-wrap"><a href='<%=linkurl("about")%>?tab=1' class="product">产品介绍</a></li>
             <li><a href='<%=linkurl("article_list","43,54")%>' class="announcement">网站公告</a></li>
             <li><a href='<%=linkurl("article_list",42)%>' class="dynamic">公司动态</a></li>
             <li><a href='<%=linkurl("article_list",44)%>' class="reports">媒体报道</a></li>
-            <li data-binding="join-us-wrap"><a href='<%=linkurl("about")%>?tab=5' class="join-us">加入我们</a></li>
-            <li data-binding="partner-wrap"><a href='<%=linkurl("about")%>?tab=6' class="partner">合作伙伴</a></li>
-            <li data-binding="contact-wrap"><a href='<%=linkurl("about")%>?tab=7' class="contact">联系我们</a></li>
         </ul>
     </div>
     <div class="right-content">
-        <!--公司简介-->
-        <div class="company-wrap">
-            <div class="topic-th">公司简介</div>
-            <div class="content-body">
-                <p>广东安广融合电子商务股份有限公司成立于2015年8月，安广融合注册资金为陆仟捌佰万元，是互联网金融服务平台，在平台设立风险备用金，广东南粤银行作为资金存管机构，对客户资金进行管理和监督，实现客户资金与平台自身资金分账管理，是国内获得备案和测评双重保障的P2P平台之一。</p>
-                <p>安广融合致力于为公众提供一个安全、专业、高收益的金融平台。结合多年的资产管理服务和风险控制经验，利用先进的信息处理技术，不断为平台用户提供更丰富、更便捷的互联网理财产品。</p>
-                <p>未来，安广融合将继续深耕互联网金融领域，致力成为最具价值的互联网供应链金融信息服务平台。</p>
-                <h4>我们的理念</h4>
-                <p>安天下、广聚贤、融诚信、合发展。</p>
-                <h4>我们的愿景</h4>
-                <p>坤厚载物，健行不息。</p>
-                <h4>我们的使命</h4>
-                <p>创诚信金融服务平台，做金融行业先锋。</p>
-                <h4>我们的团队</h4>
-                <p>安广融合团队是一群拥有金融专业精神和互联网极客精神的实力源。团队管理成员来自各大银行及业内知名机构，风控高管在信贷、供应链金融领域有多年实操经验，还有众多金融资本领导的顶级专家顾问参与，致力将安广融合打造成全国最具价值的互联网金融服务平台。</p>
-                <h4>公司资质</h4>
-                <div class="pic-wrap">
-                    <div class="license" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/license.jpg"></div>
-                </div>
-                <div class="modal fade" id="picModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            </div>
-                            <div class="modal-body">
-                                <img src=""/>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-            </div>
-        </div>
         <!--产品介绍-->
         <div class="product-wrap">
             <div class="topic-th">产品介绍</div>
@@ -122,77 +95,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!--加入我们-->
-        <div class="join-us-wrap">
-            <div class="topic-th">加入安广融合</div>
-            <div class="content-body">
-                <p>安广融合视员工为企业的第一财富。我们为员工营造了轻松愉快的工作环境、充足的学习和成长机会，以充分展现员工的才华。作为创业企业，我们愿与员工一起成长，共创互联网金融的美好未来。</p>
-                <p>请将您的简历通过电子邮件投递到 <span>hr@agrh.com</span> ，邮件标题格式： 姓名-应聘职位，谢谢！</p>
-                <div class="office">
-                    <div class="th"><h4>在招聘中的职位</h4></div>
-                    <ul>
-                        <li><span>产品经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
-                        <li><span>营销策划经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
-                        <li><span>产品运营专员</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
-                        <li><span>媒介专员</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
-                        <li><span>公关主管/经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span>
-                            <div class="office-detail">
-                                <h5>岗位职责：</h5>
-                                <ul>
-                                    <li>配合协助公关主管的工作，参与到对公司公关工作的推广策划中；</li>
-                                    <li>落实既定的公关传播策略，参与完成公关项目的运营执行，能够与第三方机构进行有效沟通；</li>
-                                    <li>与某些合作媒体保持日常联络状态，能够独立完成简单稿件提供；</li>
-                                    <li>配合协助公关主管对媒体资源和其他外部关系的拓展、维护与拜访；</li>
-                                    <li>为本部门、其他相关部门提供工作支持，保证内部信息和沟通的畅通，完成公关资料的整理和维护工作；</li>
-                                    <li>积极了解公司品牌特性、定位，能够在工作中提出见解和意见；</li>
-                                    <li>完成部门总监和公关主管安排的其他工作；</li>
-                                </ul>
-                                <h5 style="margin-top: 25px">任职要求：</h5>
-                                <ul>
-                                    <li>新闻传播、市场营销或相关专业本科以上学历；</li>
-                                    <li>一年以上公关传播行业工作经验，有参与品牌公关策划、项目运营和媒体沟通的经验；</li>
-                                    <li>了解品牌公关的基本运作，熟悉公关活动的流程，有参与活动策划和项目运营的经验，有基本的执行能力、基础的写作能力和良好的沟通能力；</li>
-                                    <li>对品牌公关工作有想法，工作态度热情积极，有一定的抗压能力。</li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!--合作伙伴-->
-        <div class="partner-wrap">
-            <div class="topic-th">合作伙伴</div>
-            <div class="content-body">
-                <div class="partner-per">
-                    <div class="name"><span class="partner-icon"></span>中国金融认证中心</div>
-                    <div class="description">
-                        <p>中国金融认证中心（China Financial Certification Authority，简称CFCA）是经中国人民银行和国家信息安全管理机构批准成立的国家级权威安全认证机构，是国家重要的金融信息安全基础设施之一。在《中华人民共和国电子签名法》颁布后，CFCA成为首批获得电子认证服务许可的电子认证服务机构。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--联系我们-->
-        <div class="contact-wrap">
-            <div class="topic-th">联系我们</div>
-            <div class="content-body">
-                <h4>客服电话</h4>
-                <p>如果您在使用安广融合（www.agrhp2p.com）的过程中有任何疑问请您与安广融合客服人员联系。</p>
-                <p>客服电话：400-8878-200。</p>
-                <p>服务时间：8:30-18:00，法定节假日除外。</p>
-                <h4>公司总部</h4>
-                <p>地址：广东省佛山市禅城区季华五路3号10楼</p>
-                <p>邮编：528000</p>
-                <h4>媒体采访</h4>
-                <p>如果有媒体需要采访，请将您的媒体名称、采访提纲、联系方式发至：</p>
-                <p><span>xierongshuai@agrhp2p.com‍</span>，我们会尽快与您联系。</p>
-                <h4>信息同步</h4>
-                <p>如果您还需要了解我们更多信息，请关注我们的新浪微博、微信。</p>
-                <p>微信公众平台：agrh（扫描右侧二维码关注安广融合微信）</p>
-                <p>新浪微博：<a href="http://weibo.com/agrh" target="_blank">@广东安广融合</a></p>
-                <span class="wechat-code"></span>
             </div>
         </div>
     </div>

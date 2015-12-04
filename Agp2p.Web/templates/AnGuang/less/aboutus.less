@@ -3,7 +3,28 @@
 
 body { background: @body-color; }
 
+.about-nav-bar {
+	height: 80px;
+	background: #1478d2;
+	.content-wrap {
+		ul{
+			li {
+				margin-left: 25px;
+				a {
+					color: @white;
+					font-size: @font17;
+					line-height: 80px;
+					text-decoration: none;
+				}
+			}
+			li:first-child { margin-left: 4px; }
+		}
+	}
+}
+
 .aboutPage {
+	display: none;
+	margin-top: 25px !important;
 	& > div {
 		display: inline-block;
 		vertical-align: top;
@@ -13,7 +34,7 @@ body { background: @body-color; }
 	}
 	.left-nav {
 		width: 230px;
-		height: 441px;
+		height: 221px;
 		*height: auto;
 		margin-right: 10px;
 		.nav-list {
