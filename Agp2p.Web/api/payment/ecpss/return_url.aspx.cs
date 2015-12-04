@@ -29,11 +29,10 @@ namespace Agp2p.Web.api.payment.ecpss
                 {
                     try
                     {
-                        var order = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
                         //如果异步通知没收到，则在返回页面处理订单
-                        if (order != null && order.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        if (bankTran.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
-                            context.ConfirmBankTransaction(order.id, null);
+                            context.ConfirmBankTransaction(bankTran.id, null);
                             new BLL.manager_log().Add(1, "admin", "ReCharge", "支付成功（" + billNo + "）！来自同步通知。");
                         }                        
                     }
