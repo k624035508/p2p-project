@@ -899,6 +899,9 @@
     <Content Include="templates\weChat\imgs\receiveplan-house.png" />
     <Content Include="templates\weChat\imgs\safe-center-icon.png" />
     <Content Include="templates\weChat\imgs\set-up-icon.png" />
+    <Content Include="templates\weChat\imgs\usercenter\my-invest.png" />
+    <Content Include="templates\weChat\imgs\usercenter\receive-plan.png" />
+    <Content Include="templates\weChat\imgs\usercenter\trade-record.png" />
     <Content Include="templates\weChat\imgs\verified-icon.png" />
     <Content Include="templates\weChat\index.html" />
     <Content Include="templates\weChat\invest-success.html" />
@@ -908,6 +911,7 @@
     <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
     <Content Include="templates\weChat\js\register.js" />
+    <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\less\aboutus.css" />
     <Content Include="templates\weChat\less\binding-cards.css" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
@@ -916,7 +920,6 @@
     <Content Include="templates\weChat\less\charge.css" />
     <Content Include="templates\weChat\less\forgot-psw.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\less\myaccount.css" />
     <Content Include="templates\weChat\less\myinvest.css" />
     <Content Include="templates\weChat\less\mylottery.css" />
     <Content Include="templates\weChat\less\mynews.css" />
@@ -1045,6 +1048,7 @@
     <Content Include="templates\weChat\watch.bat" />
     <Content Include="templates\weChat\less\login.less" />
     <Content Include="templates\weChat\less\register.less" />
+    <Content Include="templates\weChat\less\usercenter.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

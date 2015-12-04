@@ -1,0 +1,94 @@
+/*usercenter.less*/
+@import "common";
+@usercenter: "../imgs/usercenter";
+
+body { background-color: @body-color; }
+
+.usercenter-page {
+    .account-amount {
+        width: 100%;
+        height: 6.8rem;
+        background: @blue;
+        text-align: center;
+        color: @white;
+    }
+    .amount-detail {
+        & > div {
+            float: left;
+            width: 50%;
+            height: 3rem;
+            background: #00a5df;
+            text-align: center;
+            color: @white;
+        }
+        & > div:first-child { border-right: 1px solid @blue; }
+    }
+    .operate-btns {
+        width: 100%;
+        height: 3rem;
+        background: @white;
+        border-bottom: @border;
+        & > div {
+            float: left;
+            width: 50%;
+            text-align: center;
+            a {
+                color: #00aeef;
+                font-size: 1.3em;
+                line-height: 3rem;
+                text-decoration: none;
+            }
+        }
+    }
+    .invest-amount-detail {
+        & > div > div {
+            float: left;
+            width: 50%;
+            height: 4rem;
+            text-align: center;
+        }
+        .first-row {
+            & > div { border-bottom: @border; }
+            .txt-red {
+                color: @red;
+                font-size: 1.35em;
+            }
+            .txt-grey { color: grey; }
+        }
+    }
+    .invest-record {
+        padding: 0 2%;
+        background: @white;
+        border-top: @border;
+        border-bottom: @border;
+        & > div {
+            width: 100%;
+            height: 3.2rem;
+            padding: 0 5%;
+        }
+        & > div:first-child, & > div:nth-child(2) { border-bottom: @border; }
+        .span-style {
+            font-size: 1.3em;
+            padding-left: 1rem;
+        }
+        span.glyphicon {
+            color: #ccc;
+        }
+        i {
+            width: 1.7rem;
+            height: 1.7rem;
+        }
+        .trade-record-icon {
+            background: url("@{usercenter}/trade-record.png");
+            background-size: contain;
+        }
+        .my-invest-icon {
+            background: url("@{usercenter}/my-invest.png");
+            background-size: contain;
+        }
+        .receive-plan-icon {
+            background: url("@{usercenter}/receive-plan.png");
+            background-size: contain;
+        }
+    }
+}
