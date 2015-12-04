@@ -4,6 +4,7 @@ using Agp2p.Linq2SQL;
 using Agp2p.BLL;
 using System.Linq;
 using System.ComponentModel;
+using Agp2p.Common;
 using Agp2p.Core;
 
 namespace Agp2p.Web.api.payment.ecpss
@@ -18,7 +19,9 @@ namespace Agp2p.Web.api.payment.ecpss
             string result = Request.Params["Result"];//支付结果描述
             string signMD5info = Request.Params["SignMD5info"];//md5签名
 
-            if (Helper.CheckReturnMD5(billNo, amount, succeed, signMD5info))
+            var context = new Agp2p.Linq2SQL.Agp2pDataContext();
+            var bankTran = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
+            if (bankTran != null && Helper.CheckReturnMD5(billNo, amount, succeed, signMD5info, bankTran.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ))
             {
                 //md5校验成功，输出OK
                 Response.Write("ok");
@@ -27,11 +30,9 @@ namespace Agp2p.Web.api.payment.ecpss
                     //开始下面的操作，处理订单
                     try
                     {
-                        var context = new Agp2p.Linq2SQL.Agp2pDataContext();
-                        var order = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
-                        if (order != null && order.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        if (bankTran.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
-                            context.ConfirmBankTransaction(order.id, null);
+                            context.ConfirmBankTransaction(bankTran.id, null);
                             new BLL.manager_log().Add(1, "admin", "ReCharge", "支付成功（" + billNo + "）！来自异步通知。");
                         }
                     }

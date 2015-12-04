@@ -25,9 +25,10 @@ namespace Agp2p.API.Payment.Ecpss
             return Byte2String.ToUpper();
         }
 
-        public static bool CheckReturnMD5(string billNo, string amount, string status, string returnMD5)
+        public static bool CheckReturnMD5(string billNo, string amount, string status, string returnMD5, bool isQuick)
         {
-            return Md5Encrypt(billNo + "&" + amount + "&" + status + "&" + Config.key).Equals(returnMD5);
+            var key = isQuick ? Config.key_quick : Config.key;
+            return Md5Encrypt(billNo + "&" + amount + "&" + status + "&" + key).Equals(returnMD5);
         }
 
         public static string GetResultInfo(string resultCode)

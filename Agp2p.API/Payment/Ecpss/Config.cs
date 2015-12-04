@@ -17,5 +17,10 @@ namespace Agp2p.API.Payment.Ecpss
         public static string gateway = "https://pay.ecpss.com/sslpayment";
         //查询订单接口地址
         public static string queryUrl = "https://merchant.ecpss.com/merchantBatchQueryAPI";
+
+        //汇潮商户编号(快捷)
+        public static string partner_quick = "29217";
+        //汇潮MD5校验码(快捷)
+        public static string key_quick = "cXLfLBgs";
     }
 }

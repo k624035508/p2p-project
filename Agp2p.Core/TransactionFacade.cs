@@ -198,15 +198,15 @@ namespace Agp2p.Core
 
                 //添加充值手续费
                 //汇潮支付
-                if (tr.pay_api != null )
+                if (tr.pay_api != null && (tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ || tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.Ecpss))
                 {
                     var rechangerFee = new li_company_inoutcome()
                     {
                         create_time = DateTime.Now,
                         user_id = (int) tr.charger,
-                        outcome = tr.value*0.0025m,
+                        outcome = tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ ? tr.value*0.005m : tr.value * 0.0025m,
                         type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
-                        remark = "汇潮（网银支付）充值手续费"
+                        remark = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum)tr.pay_api) + "充值手续费"
                     };
                     context.li_company_inoutcome.InsertOnSubmit(rechangerFee);
                 }

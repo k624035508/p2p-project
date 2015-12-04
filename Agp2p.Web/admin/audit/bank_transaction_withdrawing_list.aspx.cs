@@ -119,27 +119,8 @@ namespace Agp2p.Web.admin.audit
                 query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time.Date);
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
                 query = query.Where(h => h.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
-
-            //if (!Utils.IsDebugging())
-            //{
-            //    if (Convert.ToInt32(rblBankTransactionStatus.SelectedValue) == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
-            //    {
-            //        query = query.Where(q => (q.create_time >= DateTime.Parse("2015-7-6")));
-            //        query = query.Where(b => b.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting);
-            //    }
-            //    else if (Convert.ToInt32(rblBankTransactionStatus.SelectedValue) == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm)
-            //    {
-            //        query = query.Where(q => (q.create_time < DateTime.Parse("2015-7-6")));
-            //        query = query.Where(b => b.status != (int)Agp2pEnums.BankTransactionStatusEnum.Cancel);
-            //    }
-            //    else
-            //        query = query.Where(b => b.status == (int)Agp2pEnums.BankTransactionStatusEnum.Cancel);
-            //}
-            //else
-            //{
-                if (rblBankTransactionStatus.SelectedValue != "0")
-                    query = query.Where(b => b.status == Convert.ToInt32(rblBankTransactionStatus.SelectedValue));
-            //}
+            if (rblBankTransactionStatus.SelectedValue != "0")
+                query = query.Where(b => b.status == Convert.ToInt32(rblBankTransactionStatus.SelectedValue));
 
             if (!ChkAdminLevelReturn("manage_bank_transaction_withdraw", DTEnums.ActionEnum.BigOrderAudit.ToString()))
                 query = query.Where(b => b.value <= 5000); // 没有大额审批权限，只能看到 5000 以下的提现
