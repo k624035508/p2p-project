@@ -186,5 +186,39 @@ body { background: @body-color; }
 				.description { width: 293px !important; }
 			}
 		}
+		.guide-article-list {
+			// 拷贝 aboutus.less 那里的
+			.content-list {
+				height: 520px;
+				li {
+					padding: 0 10px;
+					margin: 0 15px;
+					line-height: 50px;
+					border-bottom: @border-dashed;
+					i {
+						.inline-block;
+						width: 5px;
+						height: 5px;
+						background: @red;
+						margin-right: 15px;
+					}
+					a {
+						color: @dark-grey;
+						font-size: @font15;
+						text-decoration: none;
+					}
+					span {
+						color: @grey;
+						font-size: @font13;
+					}
+				}
+			}
+		}
+		.guide-article {
+			padding: 30px 25px;
+			p {
+				font-size: 12pt;
+			}
+		}
 	}
 }
