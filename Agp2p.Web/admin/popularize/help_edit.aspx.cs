@@ -59,6 +59,7 @@ namespace Agp2p.Web.admin.popularize
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.View.ToString()); //检查权限
+                TreeBind(channel_id);
                 ShowSysField(this.channel_id); //显示相应的默认控件
                 GroupBind(""); //绑定用户组
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
@@ -69,6 +70,32 @@ namespace Agp2p.Web.admin.popularize
                 {
                     JscriptMsg("类别参数不正确！", "back", "Error");
                     return;
+                }
+            }
+        }
+
+        private void TreeBind(int _channel_id)
+        {
+            BLL.article_category bll = new BLL.article_category();
+            DataTable dt = bll.GetList(0, _channel_id);
+
+            this.ddlParentId.Items.Clear();
+            this.ddlParentId.Items.Add(new ListItem("无父级分类", "0"));
+            foreach (DataRow dr in dt.Rows)
+            {
+                string Id = dr["id"].ToString();
+                int ClassLayer = int.Parse(dr["class_layer"].ToString());
+                string Title = dr["title"].ToString().Trim();
+
+                if (ClassLayer == 1)
+                {
+                    this.ddlParentId.Items.Add(new ListItem(Title, Id));
+                }
+                else
+                {
+                    Title = "├ " + Title;
+                    Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
+                    this.ddlParentId.Items.Add(new ListItem(Title, Id));
                 }
             }
         }
@@ -370,6 +397,7 @@ namespace Agp2p.Web.admin.popularize
             {
                 cblItem.Items[4].Selected = true;
             }
+            ddlParentId.SelectedValue = model.category_id.ToString();
             //扩展字段赋值
             List<Model.article_attribute_field> ls1 = new BLL.article_attribute_field().GetModelList(this.channel_id, "");
             foreach (Model.article_attribute_field modelt1 in ls1)
@@ -662,6 +690,7 @@ namespace Agp2p.Web.admin.popularize
             {
                 model.is_slide = 1;
             }
+            model.category_id = Utils.StrToInt(ddlParentId.SelectedValue, 0);
             model.is_sys = 1; //管理员发布
             model.user_name = "admin"; //获得当前登录用户名
             model.add_time = Utils.StrToDateTime(txtAddTime.Text.Trim());
@@ -773,6 +802,7 @@ namespace Agp2p.Web.admin.popularize
             {
                 model.content = txtContent.Value;
             }
+            model.category_id = Utils.StrToInt(ddlParentId.SelectedValue, 0);
             model.sort_id = Utils.StrToInt(txtSortId.Text.Trim(), 99);
             model.click = int.Parse(txtClick.Text.Trim());
             model.status = Utils.StrToInt(rblStatus.SelectedValue, 0);
