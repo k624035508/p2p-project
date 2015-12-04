@@ -887,7 +887,6 @@
     <Content Include="templates\weChat\imgs\footer\usercenter-active.png" />
     <Content Include="templates\weChat\imgs\footer\usercenter.png" />
     <Content Include="templates\weChat\imgs\headshot.png" />
-    <Content Include="templates\weChat\imgs\icon-tick.png" />
     <Content Include="templates\weChat\imgs\input-icon\pic-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\pwd.png" />
     <Content Include="templates\weChat\imgs\input-icon\recommand.png" />
