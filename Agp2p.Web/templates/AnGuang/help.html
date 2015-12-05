@@ -15,11 +15,28 @@
 <%template src="_header.html"%>
 <!--head end-->
 
+<%set var articleId = DTRequest.GetQueryInt("articleId")%>
+
 <!--面包屑导航-->
 <div class="breadcrumbs">
     <a href="/">首页</a>
+    <%if(category_id==0)%>
     <span> > </span>
     <span>帮助中心</span>
+    <%else if(category_id!=0&&articleId==0)%>
+    <span> > </span>
+    <span><a href='<%=linkurl("help")%>'>帮助中心</a></span>
+    <span> > </span>
+    <span><%=category.title%></span>
+    <%else if(articleId!=0)%>
+    <%set var article = GetArticle(articleId)%>
+    <span> > </span>
+    <span><a href='<%=linkurl("help")%>'>帮助中心</a></span>
+    <span> > </span>
+    <span><a href='<%=linkurl("help",category_id)%>'><%=category.title%></a></span>
+    <span> > </span>
+    <span><%=article.title%></span>
+    <%/if%>
 </div>
 <!--面包屑导航 end-->
 
@@ -38,8 +55,6 @@
         </ul>
     </div>
     <div class="right-content">
-        <%set var articleId = DTRequest.GetQueryInt("articleId")%>
-
         <!--新手指引-->
         <%if(category_id==0)%>
         <div class="guide-wrap">
