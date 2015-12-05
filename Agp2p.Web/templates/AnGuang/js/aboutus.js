@@ -25,7 +25,8 @@ $(function(){
     header.setHeaderHighlight(4);
 
     $(".about-nav-bar .content-wrap .more").focus(function(){
-        $(".morePage").css("display", "block");
+        $(".aboutPage").hide();
+        $(".morePage").show();
     });
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
