@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require("webpack");
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
     entry: {
@@ -37,6 +38,8 @@ module.exports = {
         ]
     },
     plugins: [
+        new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project",
+            "projects", "usercenter"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
