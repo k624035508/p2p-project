@@ -136,7 +136,8 @@
         <!--文章-->
         <div class="guide-article">
             <%set var article = GetArticle(articleId)%>
-            <%=article.content%>
+            <div class="title"><%=article.title%></div>
+            <div class="article-content-wrapper"><%=article.content%></div>
         </div>
         <%/if%>
 </div>
