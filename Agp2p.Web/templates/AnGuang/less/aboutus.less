@@ -42,7 +42,7 @@ body { background: @body-color; }
 					color: @darker-grey;
 					font-size: @font15;
 					text-indent: 2em;
-					line-height: 26px;
+					line-height: 28px;
 				}
 			}
 		}
@@ -74,7 +74,75 @@ body { background: @body-color; }
 	/*大事记*/
 	.events {
 		height: 400px;
+		padding-top: 40px;
 		background: url("@{images}/events-bg.png") no-repeat center;
+		.title {
+			height: 110px;
+			background: url("@{images}/events-title.png") no-repeat center;
+		}
+		.description {
+			height: 110px;
+			margin-top: 80px;
+			background: url("@{images}/events.png") no-repeat center;
+		}
+	}
+	/*高管团队*/
+	.manager {
+		height: 740px;
+		padding-top: 40px;
+		background: #1478d2;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/manager-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 60px;
+				padding: 0 5%;
+				& > * {
+					display: inline-block;
+					float: left;
+				}
+				& > span {
+					width: 1px;
+					height: 450px;
+					margin-top: 40px;
+					background: #6cb9fd;
+				}
+				& > div {
+					display: inline-block;
+					width: 33%;
+					padding: 0 50px;
+					.personal-info {
+						color: @white;
+						line-height: 26px;
+						.name, .position { text-align: center; }
+						.name {
+							font-size: @font25;
+							margin: 25px 0;
+						}
+						.position { font-size: @font20; }
+						.introduce {
+							font-size: @font15;
+							text-indent: 2em;
+						}
+					}
+					.chenmaoqiang {
+						height: 150px;
+						background: url("@{images}/chenmaoqiang.png") no-repeat center;
+					}
+					.xuanjinghui {
+						height: 150px;
+						background: url("@{images}/xuanjinghui.png") no-repeat center;
+					}
+					.someone {
+						height: 150px;
+						background: url("@{images}/someone.png") no-repeat center;
+					}
+				}
+				& > div:first-child { border-left: none; }
+			}
+		}
 	}
 }
 
