@@ -23,10 +23,58 @@ body { background: @body-color; }
 }
 
 .aboutPage {
+	/*公司简介*/
 	.company {
 		height: 515px;
 		padding: 40px 0 60px 0;
 		background: @white;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/company-title.png") no-repeat center;
+			}
+			.content-body {
+				height: 250px;
+				margin-top: 55px;
+				background: url("@{images}/agrh-bg.png") no-repeat left center;
+				.description {
+					width: 645px;
+					color: @darker-grey;
+					font-size: @font15;
+					text-indent: 2em;
+					line-height: 26px;
+				}
+			}
+		}
+	}
+	/*企业文化*/
+	.culture {
+		height: 450px;
+		padding-top: 40px;
+		background: url("@{images}/culture-bg.png");
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/culture-title.png") no-repeat center;
+			}
+			.content-body {
+				height: 210px;
+				margin-top: 30px;
+				padding-top: 35px;
+				background: url("@{images}/culture-icon.png") no-repeat right center;
+				.description {
+					width: 380px;
+					color: @darker-grey;
+					font-size: @font15;
+					line-height: 40px;
+				}
+			}
+		}
+	}
+	/*大事记*/
+	.events {
+		height: 400px;
+		background: url("@{images}/events-bg.png") no-repeat center;
 	}
 }
 
@@ -65,14 +113,10 @@ body { background: @body-color; }
 					padding-left: 25px;
 					outline: none;
 				}
-				.company { background: url("@{images}/company.png") no-repeat 0 50%; }
 				.product { background: url("@{images}/product.png") no-repeat 0 50%; }
 				.announcement { background: url("@{images}/announcement.png") no-repeat 0 50%; }
 				.dynamic { background: url("@{images}/dynamic.png") no-repeat 0 50%; }
 				.reports { background: url("@{images}/reports.png") no-repeat 0 50%; }
-				.join-us { background: url("@{images}/joinus.png") no-repeat 0 50%; }
-				.partner { background: url("@{images}/partner.png") no-repeat 0 50%; }
-				.contact { background: url("@{images}/contact.png") no-repeat 0 50%; }
 			}
 			li:first-child { border-top: none; }
 		}
@@ -99,47 +143,6 @@ body { background: @body-color; }
 			h4 { color: @blue; }
 		}
 		.content-body { min-height: 583px; }
-		//公司简介
-		.company-wrap {
-			.content-body {
-				.topic-content;
-				h4 { margin-top: 40px; }
-				.pic-wrap {
-					& > div {
-						display: inline-block;
-						.ie7-inline-block;
-						height: 315px;
-						margin: 0 20px;
-						cursor: pointer;
-					}
-					.license {
-						width: 239px;
-						background: url("@{images}/license-bg.jpg") no-repeat;
-					}
-				}
-				#picModal {
-					.modal-dialog {
-						width: 800px;
-						left: 50%;
-						margin-left: -400px;
-					}
-					.modal-content {
-						.modal-header {
-							height: 40px;
-							padding: 5px 10px;
-							border-bottom: 0;
-							button span { font-size: @font30; }
-						}
-						.modal-body {
-							text-align: center;
-							padding: 0 20px 20px 20px;
-							img { max-width: 100%; }
-						}
-					}
-
-				}
-			}
-		}
 		//产品介绍
 		.product-wrap {
 			display: none;
@@ -177,115 +180,6 @@ body { background: @body-color; }
 							}
 						}
 					}
-				}
-			}
-		}
-		//加入我们
-		.join-us-wrap {
-			display: none;
-			.content-body {
-				.topic-content;
-				p span { color: @blue; }
-				.office {
-					margin-top: 50px;
-					.th {
-						border-bottom: @border;
-						padding-bottom: 10px;
-					}
-					ul {
-						color: @red;
-						list-style-type: square;
-						margin-top: 10px;
-						li {
-							border-bottom: @border-dashed;
-							line-height: 55px;
-							cursor: pointer;
-							& span:first-child { color: @dark-grey; }
-							 .time {
-								color: @grey;
-								font-size: @font13;
-								 i {
-									 color: @dark-grey;
-									 margin-left: 10px;
-								 }
-							}
-							.office-detail {
-								display: none;
-								padding: 10px;
-								margin-bottom: 20px;
-								background: @body-color;
-								cursor: default;
-								* { color: @dark-grey; }
-								h5 {
-									font-size: @font15;
-									font-weight: bold;
-								}
-								ul {
-									list-style-type: decimal;
-									color: @dark-grey;
-									margin-left: -15px;
-									li {
-										border: none;
-										line-height: 30px;
-										cursor: default;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		//合作伙伴
-		.partner-wrap {
-			display: none;
-			.content-body {
-				.topic-content;
-				.partner-per {
-					border-bottom: @border-dashed;
-					.name {
-						span {
-							display: inline-block;
-							vertical-align: bottom;
-							.ie7-inline-block;
-							width: 105px;
-							height: 50px;
-							margin-right: 50px;
-							background: url("@{images}/legalize.jpg") no-repeat;
-						}
-						color: @darker-grey;
-						font-size: @font18;
-					}
-					.description { margin-top: 30px; }
-				}
-			}
-		}
-		//联系我们
-		.contact-wrap {
-			display: none;
-			.content-body {
-				padding: 0 30px;
-				h4 {
-					color: @blue;
-					margin: 50px 0 18px 0;
-				}
-				& h4:first-child { margin-top: 35px; }
-				p {
-					color: @dark-grey;
-					font-size: @font15;
-					text-indent: 0;
-					margin: 0 0 12px;
-					span, a { color: @blue; }
-				}
-				.wechat-code {
-					position: relative;
-					top: -102px;
-					left: 50%;
-					margin-left: 35px;
-					display: block;
-					width: 130px;
-					height: 130px;
-					background: url("@{images}/wechat.jpg") no-repeat;
 				}
 			}
 		}

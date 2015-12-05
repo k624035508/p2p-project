@@ -655,25 +655,26 @@
     <Content Include="templates\AnGuang\about.xml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
-    <Content Include="templates\AnGuang\article_list.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
     <Content Include="templates\AnGuang\help.html" />
+    <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\company.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\contact.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\company-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\culture-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\culture-icon.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\legalize.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\partner.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
@@ -818,7 +819,6 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhongxin.png" />
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
-    <Content Include="templates\AnGuang\js\article_list.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
@@ -1049,6 +1049,7 @@
     <Content Include="templates\weChat\less\login.less" />
     <Content Include="templates\weChat\less\register.less" />
     <Content Include="templates\weChat\less\usercenter.less" />
+    <Content Include="templates\AnGuang\.eslintrc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
