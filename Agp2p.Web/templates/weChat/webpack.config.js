@@ -10,6 +10,7 @@ module.exports = {
         login: "./js/login.js",
         register: "./js/register.js",
         usercenter: "./js/usercenter.js",
+        recharge: "./js/recharge.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -39,7 +40,7 @@ module.exports = {
     },
     plugins: [
         new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project",
-            "projects", "usercenter"]),
+            "projects", "usercenter", "recharge"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

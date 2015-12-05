@@ -910,6 +910,7 @@
     <Content Include="templates\weChat\js\login.js" />
     <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
+    <Content Include="templates\weChat\js\recharge.js" />
     <Content Include="templates\weChat\js\register.js" />
     <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\less\aboutus.css" />
