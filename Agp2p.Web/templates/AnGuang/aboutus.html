@@ -116,9 +116,9 @@
                 <%/foreach%>
             </ul>
             <%if(category_id!=0)%>
-            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("article_list",category_id,"__id__"),8)%></div>
+            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about",category_id,"__id__"),8)%></div>
             <%else%>
-            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("article_list",category_ids,"__id__"),8)%></div>
+            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about",category_ids,"__id__"),8)%></div>
             <%/if%>
         </div>
         <%/if%>
