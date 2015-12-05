@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require("webpack");
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
     entry: {
@@ -9,6 +10,7 @@ module.exports = {
         login: "./js/login.js",
         register: "./js/register.js",
         usercenter: "./js/usercenter.js",
+        recharge: "./js/recharge.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -37,6 +39,8 @@ module.exports = {
         ]
     },
     plugins: [
+        new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project",
+            "projects", "usercenter", "recharge"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

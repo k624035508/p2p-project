@@ -8,6 +8,11 @@
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
     <![endif]-->
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <%set var articleId = DTRequest.GetQueryInt("articleId")%>
+    <script>
+        var categoryId = {category.id};
+        var articleId = {articleId};
+    </script>
     <script src="<%templateskin%>/build/help.bundle.js"></script>
 </head>
 <body>
@@ -15,7 +20,6 @@
 <%template src="_header.html"%>
 <!--head end-->
 
-<%set var articleId = DTRequest.GetQueryInt("articleId")%>
 
 <!--面包屑导航-->
 <div class="breadcrumbs">
@@ -43,20 +47,20 @@
 <div class="content-wrap helpPage">
     <div class="left-nav">
         <ul class="list-unstyled nav-list">
-            <li class="clicked"><a href='<%=linkurl("help")%>' class="guide">新手指引</a></li>
+            <li><a href='<%=linkurl("help")%>' class="guide">新手指引</a></li>
             <li class="non-clicked"><a class="problems">常见问题</a>
                 <ul class="list-unstyled inner-ul">
-                    <li><a href='<%=linkurl("help",63)%>'>注册与登录</a></li>
-                    <li><a href='<%=linkurl("help",64)%>'>充值与提现</a></li>
-                    <li><a href='<%=linkurl("help",65)%>'>投资与收益</a></li>
+                    <li class='<%=category.id==63?"clicked":""%>'><a href='<%=linkurl("help",63)%>'>注册与登录</a></li>
+                    <li class='<%=category.id==64?"clicked":""%>'><a href='<%=linkurl("help",64)%>'>充值与提现</a></li>
+                    <li class='<%=category.id==65?"clicked":""%>'><a href='<%=linkurl("help",65)%>'>投资与收益</a></li>
                 </ul>
             </li>
-            <li><a href='<%=linkurl("help")%>' class="charge">平台资费</a></li>
+            <li><a href='<%=linkurl("help")%>?tab=2' class="charge">平台资费</a></li>
         </ul>
     </div>
     <div class="right-content">
         <!--新手指引-->
-        <%if(category_id==0)%>
+        <%if(category.id==0)%>
         <div class="guide-wrap">
             <div class="title">新手指引</div>
             <div class="step-cell register">
@@ -132,7 +136,10 @@
                 </div>
             </div>
         </div>
-        <%else if(category_id!=0&&articleId==0)%>
+        <div class="charge-wrap">
+            <div class="title">平台资费</div>
+        </div>
+        <%else if(category.id!=0&&articleId==0)%>
         <!--列表-->
         <div class="guide-article-list">
             <%set var articles = GetArticles("" + category_id,10,page-1,out totalcount)%>
