@@ -213,6 +213,29 @@ body { background: @body-color; }
 					}
 				}
 			}
+			.pages {
+				text-align: center;
+				height: 75px;
+				padding: 24px 0;
+				* {
+					display: inline-block;
+					margin: 0 5px;
+					padding: 2px 8px;
+					color: @dark-grey;
+					font-size: @font13;
+					border: @border;
+				}
+				a {
+					text-decoration: none;
+					&:hover { background: @light-grey; }
+				}
+				span {  }
+				span:first-child { border: none; }
+				.current {
+					color: @white;
+					background: @red;
+				}
+			}
 		}
 		.guide-article {
 			.article-content-wrapper {
