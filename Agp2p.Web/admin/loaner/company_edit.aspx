@@ -103,11 +103,15 @@
                 <dd>
                     <asp:TextBox ID="txtBusinessScope" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
-
             <dl>
                 <dt>经营状态</dt>
                 <dd>
                     <asp:TextBox ID="txtBusinessStatus" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>股东信息</dt>
+                <dd>
+                    <asp:TextBox ID="txtShareholder" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>涉讼情况</dt>

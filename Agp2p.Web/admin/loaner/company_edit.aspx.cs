@@ -69,6 +69,7 @@ namespace Agp2p.Web.admin.loaner
             txtBusinessLicenseNo.Text = model.business_license_no;
             txtOrganizationNo.Text = model.organization_no;
             txtManager.Text = model.manager;
+            txtShareholder.Text = model.shareholder;
 
             rptPics.DataSource = model.li_albums;
             rptPics.DataBind();
@@ -120,7 +121,8 @@ namespace Agp2p.Web.admin.loaner
                 address = txtAddress.Text,
                 business_belong = txtBusinessBelong.Text,
                 business_license_no = txtBusinessLicenseNo.Text,
-                organization_no = txtOrganizationNo.Text
+                organization_no = txtOrganizationNo.Text,
+                shareholder = txtShareholder.Text
             };
             context.li_loaner_companies.InsertOnSubmit(model);
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
@@ -203,7 +205,7 @@ namespace Agp2p.Web.admin.loaner
             model.business_belong = txtBusinessBelong.Text;
             model.business_license_no = txtBusinessLicenseNo.Text;
             model.organization_no = txtOrganizationNo.Text;
-            
+            model.shareholder = txtShareholder.Text;
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.Pictures);
 
