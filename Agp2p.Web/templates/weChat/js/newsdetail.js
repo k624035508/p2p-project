@@ -1,4 +1,5 @@
-﻿import "../less/footer.less"
+﻿import "bootstrap-webpack";
+import "../less/footer.less"
 
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
