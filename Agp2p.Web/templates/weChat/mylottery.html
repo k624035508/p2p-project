@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <title>我的奖券</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/mylottery.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script>
+        var lotteryStatus = {lottery_status};
+    </script>
+    <script src="<%templateskin%>/build/mylottery.bundle.js"></script>
     <style>
         /*加载提示*/
         .loading-hint {
@@ -20,23 +20,6 @@
             color: grey;
         }
     </style>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-
-        $(function () {
-            var navBtns = $("div.nav-bar a");
-            //$("#receiving").addClass("nav-active nav-border-active");
-            navBtns.click(function () {
-                navBtns.removeClass("nav-active nav-border-active");
-                $(this).addClass("nav-active nav-border-active");
-            });
-
-            $($('.type')[{lottery_status}-1]).addClass('nav-active nav-border-active');
-        });
-    </script>
 </head>
 <body>
     <div class="mylottery-page">
