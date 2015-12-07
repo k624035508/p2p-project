@@ -1,7 +1,6 @@
 ﻿import "bootstrap-webpack";
 import "../less/safe-center.css";
 import "../less/footer.less";
-import "../less/footer.less";
 
 /*rem的相对单位定义*/
 $("html").css("font-size", $(window).width() * 0.9 / 20);
