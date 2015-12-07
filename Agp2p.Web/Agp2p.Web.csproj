@@ -931,9 +931,11 @@
     <Content Include="templates\weChat\imgs\verified-icon.png" />
     <Content Include="templates\weChat\index.html" />
     <Content Include="templates\weChat\invest-success.html" />
+    <Content Include="templates\weChat\js\aboutus.js" />
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\index.js" />
     <Content Include="templates\weChat\js\login.js" />
+    <Content Include="templates\weChat\js\mycard.js" />
     <Content Include="templates\weChat\js\myinvest.js" />
     <Content Include="templates\weChat\js\mylottery.js" />
     <Content Include="templates\weChat\js\mynews.js" />
