@@ -82,23 +82,6 @@ div.amount-box span {
     color: #ff8d4e;
 }
 
-.sprite {
-    width: 2.6666rem;
-    height: 2.6666rem;
-    background-image: url("../imgs/myinvest-icon.png");
-    background-repeat: no-repeat;
-    display: block;
-    background-size: 200%;
-}
-
-.sprite-car {
-    background-position: 0 0;
-}
-
-.sprite-house {
-    background-position: -2.6666rem 0;
-}
-
 .time-style {
     color: #c2c2c2;
 }

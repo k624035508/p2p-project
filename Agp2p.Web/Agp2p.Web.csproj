@@ -914,6 +914,7 @@
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\index.js" />
     <Content Include="templates\weChat\js\login.js" />
+    <Content Include="templates\weChat\js\myinvest.js" />
     <Content Include="templates\weChat\js\mytrade.js" />
     <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
