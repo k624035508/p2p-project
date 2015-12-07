@@ -33,13 +33,6 @@ $(function(){
 
     render();
 
-    //加入我们 招聘列表开关样式
-    var $office = $(".join-us-wrap .content-body .office ul li");
-    $office.click(function(){
-        $(this).find("i").toggleClass("glyphicon-menu-up");
-        $(this).children(".office-detail").toggle();
-    });
-
     //公司简介图片放大浏览
     var $smallPic = $(".company-wrap .content-body .pic-wrap div");
     var $bigPic = $("#picModal .modal-dialog .modal-content .modal-body img");

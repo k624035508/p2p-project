@@ -23,6 +23,23 @@ body { background: @body-color; }
 }
 
 .aboutPage {
+	.picWall-style {
+		li {
+			padding: 0;
+			a, a span {
+				display: inline-block;
+				width: 207px;
+				height: 181px;
+			}
+			.mask {
+				background: grey;
+				opacity: .6;
+			}
+			a:hover {
+				.mask { background: none; }
+			}
+		}
+	}
 	/*公司简介*/
 	.company {
 		height: 515px;
@@ -153,6 +170,86 @@ body { background: @body-color; }
 			.title {
 				height: 110px;
 				background: url("@{images}/agency-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 45px;
+				& > div {
+					display: inline-block;
+					float: left;
+					width: 50%;
+					.bank-nanyue {
+						height: 175px;
+						margin-bottom: 25px;
+						background: url("@{images}/bank-nanyue.png") no-repeat center;
+					}
+					.somebody {
+						height: 175px;
+						margin-bottom: 25px;
+						background: url("@{images}/some-agency.png") no-repeat center;
+					}
+					.name {
+						text-align: center;
+						.name-style {
+							color: @dark-grey;
+							font-size: @font25;
+						}
+					}
+				}
+
+			}
+		}
+	}
+	/*员工风采*/
+	.staff {
+		height: 625px;
+		padding-top: 40px;
+		background: @white;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/staff-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 50px;
+				text-align: center;
+				.picWall-style;
+				.staff1 { background: url("@{images}/staff-01.png"); }
+				.staff2 { background: url("@{images}/staff-02.png"); }
+				.staff3 { background: url("@{images}/staff-03.png"); }
+				.staff4 { background: url("@{images}/staff-04.png"); }
+				.staff5 { background: url("@{images}/staff-05.png"); }
+				.staff6 { background: url("@{images}/staff-06.png"); }
+				.staff7 { background: url("@{images}/staff-07.png"); }
+				.staff8 { background: url("@{images}/staff-08.png"); }
+				.staff9 { background: url("@{images}/staff-09.png"); }
+				.staff10 { background: url("@{images}/staff-10.png"); }
+			}
+		}
+	}
+	/*办公环境*/
+	.office {
+		height: 625px;
+		padding-top: 40px;
+		background: #1478d2;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/office-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 50px;
+				text-align: center;
+				.picWall-style;
+				.staff1 { background: url("@{images}/staff-01.png"); }
+				.staff2 { background: url("@{images}/staff-02.png"); }
+				.staff3 { background: url("@{images}/staff-03.png"); }
+				.staff4 { background: url("@{images}/staff-04.png"); }
+				.staff5 { background: url("@{images}/staff-05.png"); }
+				.staff6 { background: url("@{images}/staff-06.png"); }
+				.staff7 { background: url("@{images}/staff-07.png"); }
+				.staff8 { background: url("@{images}/staff-08.png"); }
+				.staff9 { background: url("@{images}/staff-09.png"); }
+				.staff10 { background: url("@{images}/staff-10.png"); }
 			}
 		}
 	}
