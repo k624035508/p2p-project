@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>关于我们</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/about_more.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<div class="content-wrap morePage">
+    <div class="left-nav">
+        <ul class="list-unstyled nav-list">
+            <li class='<%=category.id==0&&category_id==0?"clicked":""%>'><a href='<%=linkurl("about_more")%>' class="product">产品介绍</a></li>
+            <li class='<%=category.id==43||category.id==54?"clicked":""%>'><a href='<%=linkurl("about_more","43,54")%>' class="announcement">网站公告</a></li>
+            <li class='<%=category.id==42?"clicked":""%>'><a href='<%=linkurl("about_more",42)%>' class="dynamic">公司动态</a></li>
+            <li class='<%=category.id==44?"clicked":""%>'><a href='<%=linkurl("about_more",44)%>' class="reports">媒体报道</a></li>
+            <li class='<%=category.id==0&&category_id==-1?"clicked":""%>'><a href='<%=linkurl("about_more",-1)%>' class="join-us">加入我们</a></li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <%if(category.id==0&&category_id==0)%>
+        <!--产品介绍-->
+        <div class="product-wrap">
+            <div class="topic-th">产品介绍</div>
+            <div class="content-body">
+                <div class="bills-group">
+                    <div class="product-icon bills-icon"></div>
+                    <div class="product-text bills">
+                        <h4>票据业务</h4>
+                        <ul>
+                            <li><span>兑付安全：在票据理财模式中，所有的票据资产都是银行承兑汇票，法律规定，票据到期后，银行无条件承兑票据金额（见票即付）；</span></li>
+                            <li><span>托管安全：平台上所涉及的票据都保管在该银行；</span></li>
+                            <li><span>票据安全：投资的票据真伪经过多重审核，通过平台专业运营成员以及合作银行两道关口把守，并经过机器、人工、人民银行大额支付系统、合作银行复验四道工序，层层把关，全面保障票据资产的真伪、灭失风险。</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="micro-finance-group">
+                    <div class="product-icon micro-finance-icon"></div>
+                    <div class="product-text micro-finance">
+                        <h4>小贷公司业务</h4>
+                        <ul>
+                            <li><span>甄选优质机构：小额贷款公司提供全额本息保障、严格小额贷款公司准入标准、合作总额控制；</span></li>
+                            <li><span>选取优质项目：由小额贷款公司提供贷前审查、贷款担保以及贷后管理；</span></li>
+                            <li><span>二次审核：我司风控团队根据自身的风控标准对借款人进行二次审核。</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mortgage-group">
+                    <div class="product-icon mortgage-icon"></div>
+                    <div class="product-text mortgage">
+                        <h4>房产抵押业务</h4>
+                        <ul>
+                            <li><span>优质房产抵押借款：项目期限为1-6个月、权威机构进行专业评估、严格办理房产抵押手续；</span></li>
+                            <li><span>评估贷款项目：线下风控团队严格把关贷前调查，贷后管理。</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="supply-chain-group">
+                    <div class="product-icon supply-chain-icon"></div>
+                    <div class="product-text supply-chain">
+                        <h4>供应链业务</h4>
+                        <ul>
+                            <li><span>寻找AAA项目来源：选择行业知名企业/上市公司/大型核心企业上下游融资；</span></li>
+                            <li><span>确保第一还款来源：线下风控团队严格把关贷前调查，贷后管理；</span></li>
+                            <li><span>确保第二还款来源：公司直属控制货权、确保存货足值、回购商可靠。</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%else if(category.id==0&&category_id==-1)%>
+        <!--加入我们-->
+        <div class="join-us-wrap">
+            <div class="topic-th">加入安广融合</div>
+            <div class="content-body">
+                <p>安广融合视员工为企业的第一财富。我们为员工营造了轻松愉快的工作环境、充足的学习和成长机会，以充分展现员工的才华。作为创业企业，我们愿与员工一起成长，共创互联网金融的美好未来。</p>
+                <p>请将您的简历通过电子邮件投递到 <span>hr@agrh.com</span> ，邮件标题格式： 姓名-应聘职位，谢谢！</p>
+                <div class="office">
+                    <div class="th"><h4>在招聘中的职位</h4></div>
+                    <ul>
+                        <li><span>产品经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
+                        <li><span>营销策划经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
+                        <li><span>产品运营专员</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
+                        <li><span>媒介专员</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span></li>
+                        <li><span>公关主管/经理</span><span class="time pull-right">2015-11-19 16:49 <i class="glyphicon glyphicon-menu-down"></i></span>
+                            <div class="office-detail">
+                                <h5>岗位职责：</h5>
+                                <ul>
+                                    <li>配合协助公关主管的工作，参与到对公司公关工作的推广策划中；</li>
+                                    <li>落实既定的公关传播策略，参与完成公关项目的运营执行，能够与第三方机构进行有效沟通；</li>
+                                    <li>与某些合作媒体保持日常联络状态，能够独立完成简单稿件提供；</li>
+                                    <li>配合协助公关主管对媒体资源和其他外部关系的拓展、维护与拜访；</li>
+                                    <li>为本部门、其他相关部门提供工作支持，保证内部信息和沟通的畅通，完成公关资料的整理和维护工作；</li>
+                                    <li>积极了解公司品牌特性、定位，能够在工作中提出见解和意见；</li>
+                                    <li>完成部门总监和公关主管安排的其他工作；</li>
+                               </ul>
+                                <h5 style="margin-top: 25px">任职要求：</h5>
+                                <ul>
+                                    <li>新闻传播、市场营销或相关专业本科以上学历；</li>
+                                    <li>一年以上公关传播行业工作经验，有参与品牌公关策划、项目运营和媒体沟通的经验；</li>
+                                    <li>了解品牌公关的基本运作，熟悉公关活动的流程，有参与活动策划和项目运营的经验，有基本的执行能力、基础的写作能力和良好的沟通能力；</li>
+                                    <li>对品牌公关工作有想法，工作态度热情积极，有一定的抗压能力。</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <%else%>
+        <!--列表-->
+        <div class="announcement-wrap">
+            <div class="topic-th">{category.title}</div>
+            <ul class="list-unstyled content-list">
+                <%set var queryKey = category_id==0?category_ids:"" + category_id%>
+                <%set var articles = GetArticles(queryKey,10,page-1,out totalcount)%>
+                <%foreach(var a in articles)%>
+                <li><span class="pull-right">{a.add_time}</span><i></i><a href='<%=linkurl("article_show",a.id)%>'>{a.title}</a></li>
+                <%/foreach%>
+            </ul>
+            <%if(category_id!=0)%>
+            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about_more",category_id,"__id__"),8)%></div>
+            <%else%>
+            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about_more",category_ids,"__id__"),8)%></div>
+            <%/if%>
+        </div>
+        <%/if%>
+    </div>
+</div>
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>

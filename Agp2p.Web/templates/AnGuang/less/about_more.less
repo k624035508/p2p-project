@@ -1,0 +1,217 @@
+/*about-more.less*/
+@import "common-style";
+@images: "../imgs/aboutus";
+
+body { background: @body-color; }
+.morePage {
+	margin-top: 25px !important;
+	& > div {
+		display: inline-block;
+		vertical-align: top;
+		.ie7-inline-block;
+		background: @white;
+		border: @border;
+	}
+	.left-nav {
+		width: 230px;
+		height: 276px;
+		*height: auto;
+		margin-right: 10px;
+		.nav-list {
+			text-align: center;
+			li {
+				line-height: 52px;
+				border-top: @border;
+				&:hover, &.clicked {
+					background: @body-color;
+					border-left: 3px solid @red;
+				}
+				a {
+					display: inline-block;
+					.ie7-inline-block;
+					width: 150px;
+					height: 100%;
+					color: @dark-grey;
+					font-size: @font18;
+					text-decoration: none;
+					padding-left: 25px;
+					outline: none;
+				}
+				.product { background: url("@{images}/product.png") no-repeat 0 50%; }
+				.announcement { background: url("@{images}/announcement.png") no-repeat 0 50%; }
+				.dynamic { background: url("@{images}/dynamic.png") no-repeat 0 50%; }
+				.reports { background: url("@{images}/reports.png") no-repeat 0 50%; }
+				.join-us { background: url("@{images}/joinus.png") no-repeat 0 50%; }
+			}
+			li:first-child { border-top: none; }
+		}
+	}
+	.right-content {
+		width: 855px;
+		.topic-th {
+			padding: 0 25px;
+			color: @darker-grey;
+			font-size: @font22;
+			font-weight: bold;
+			line-height: 54px;
+			border-bottom: @border;
+		}
+		.topic-content {
+			padding: 35px 30px;
+			color: @dark-grey;
+			font-size: @font15;
+			p {
+				text-indent: 30px;
+				margin: 0 0 30px;
+				line-height: 28px;
+			}
+			h4 { color: @blue; }
+		}
+		.content-body { min-height: 583px; }
+		//产品介绍
+		.product-wrap {
+			.content-body {
+				padding: 0 30px 35px 30px;
+				& > div {
+					padding: 30px 0;
+					border-bottom:@border-dashed;
+					& > div { .inline-block; }
+					.product-icon {
+						width: 200px;
+						height: 190px;
+					}
+					.bills-icon { background: url("@{images}/bills-icon.png") no-repeat; }
+					.micro-finance-icon { background: url("@{images}/micro-finance-icon.png") no-repeat; }
+					.mortgage-icon { background: url("@{images}/mortgage-icon.png") no-repeat; }
+					.supply-chain-icon { background: url("@{images}/supply-chain-icon.png") no-repeat; }
+
+					.product-text {
+						width: 65%;
+						margin-left: 73px;
+						h4 {
+							color: @blue;
+							margin-bottom: 15px;
+						}
+						ul {
+							color: @red;
+							list-style-type: square;
+							margin-left: -20px;
+							li { margin-bottom: 15px; }
+							span {
+								color: @dark-grey;
+								font-size: @font15;
+								line-height: 28px;
+							}
+						}
+					}
+				}
+			}
+		}
+		//加入我们
+		.join-us-wrap {
+			.content-body {
+				.topic-content;
+				p span { color: @blue; }
+				.office {
+					margin-top: 50px;
+					.th {
+						border-bottom: @border;
+						padding-bottom: 10px;
+					}
+					ul {
+						color: @red;
+						list-style-type: square;
+						margin-top: 10px;
+						li {
+							border-bottom: @border-dashed;
+							line-height: 55px;
+							cursor: pointer;
+							& span:first-child { color: @dark-grey; }
+							 .time {
+								color: @grey;
+								font-size: @font13;
+								 i {
+									 color: @dark-grey;
+									 margin-left: 10px;
+								 }
+							}
+							.office-detail {
+								display: none;
+								padding: 10px;
+								margin-bottom: 20px;
+								background: @body-color;
+								cursor: default;
+								* { color: @dark-grey; }
+								h5 {
+									font-size: @font15;
+									font-weight: bold;
+								}
+								ul {
+									list-style-type: decimal;
+									color: @dark-grey;
+									margin-left: -15px;
+									li {
+										border: none;
+										line-height: 30px;
+										cursor: default;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		//网站公告、公司动态、媒体报道
+		.announcement-wrap, .dynamic-wrap,  .reports-wrap {
+			.content-list {
+				height: 520px;
+				li {
+					padding: 0 10px;
+					margin: 0 15px;
+					line-height: 50px;
+					border-bottom: @border-dashed;
+					i {
+						.inline-block;
+						width: 5px;
+						height: 5px;
+						background: @red;
+						margin-right: 15px;
+					}
+					a {
+						color: @dark-grey;
+						font-size: @font15;
+						text-decoration: none;
+					}
+					span {
+						color: @grey;
+						font-size: @font13;
+					}
+				}
+			}
+			.pages {
+				text-align: center;
+				height: 75px;
+				padding: 24px 0;
+				* {
+					display: inline-block;
+					margin: 0 5px;
+					padding: 2px 8px;
+					color: @dark-grey;
+					font-size: @font13;
+					border: @border;
+				}
+				a {
+					text-decoration: none;
+					&:hover { background: @light-grey; }
+				}
+				span {  }
+				span:first-child { border: none; }
+				.current {
+					color: @white;
+					background: @red;
+				}
+			}
+		}
+	}
+}

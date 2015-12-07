@@ -12,6 +12,7 @@ module.exports = {
         project: "./js/project.js",
         projects: "./js/projects.js",
         aboutus: "./js/aboutus.js",
+        about_more: "./js/about_more.js",
         article_show: "./js/article_show.js",
         safe_defence: "./js/safe_defence.js",
         sitemap: "./js/sitemap.js",

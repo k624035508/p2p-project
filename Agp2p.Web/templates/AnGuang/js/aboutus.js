@@ -1,37 +1,15 @@
-import "bootstrap-webpack!./bootstrap.config.js"
-import "../less/head.less"
-import "../less/aboutus.less"
-import "../less/footerSmall.less"
+import "bootstrap-webpack!./bootstrap.config.js";
+import "../less/head.less";
+import "../less/aboutus.less";
+import "../less/footerSmall.less";
 
-import header from "./header.js"
-
-function render() {
-    var search = location.search || "?tab=0";
-    var match = search.match(/\?tab=(\d+)/);
-    var tabIndex = parseInt(match ? match[1] : "0");
-
-    var $navArray = $(".left-nav .nav-list li");
-    $navArray.removeClass("clicked");
-    $navArray.eq(tabIndex).addClass("clicked");
-
-    var $contents = $(".right-content > div");
-    $contents.hide();
-
-    var contentClass = $navArray.eq(tabIndex).data("binding");
-    $("." + contentClass).show();
-}
+import header from "./header.js";
 
 $(function(){
     header.setHeaderHighlight(4);
 
-    $(".about-nav-bar .content-wrap .more").focus(function(){
-        $(".aboutPage").hide();
-        $(".morePage").show();
-    });
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
-
-    render();
 
     //公司简介图片放大浏览
     var $smallPic = $(".company-wrap .content-body .pic-wrap div");
