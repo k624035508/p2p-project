@@ -14,6 +14,7 @@ module.exports = {
         withdraw: "./js/withdraw.js",
         mytrade: "./js/mytrade.js",
         myinvest: "./js/myinvest.js",
+        myreceiveplan: "./js/myreceiveplan.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -43,7 +44,7 @@ module.exports = {
     },
     plugins: [
         new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project",
-            "projects", "usercenter", "recharge", "withdraw", "mytrade", "myinvest"]),
+            "projects", "usercenter", "recharge", "withdraw", "mytrade", "myinvest", "myreceiveplan"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
