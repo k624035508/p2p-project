@@ -667,7 +667,9 @@
     <Content Include="templates\AnGuang\imgs\aboutus\bank-nanyue.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\chenmaoqiang.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\codeCard-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\company-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\contact-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
@@ -676,13 +678,14 @@
     <Content Include="templates\AnGuang\imgs\aboutus\events-hr.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\office-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\qualification-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\some-agency.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\someone.png" />
@@ -697,6 +700,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\staff-09.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\staff-10.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\strategy.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />

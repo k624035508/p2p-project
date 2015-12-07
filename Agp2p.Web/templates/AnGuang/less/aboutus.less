@@ -213,16 +213,19 @@ body { background: @body-color; }
 				margin-top: 50px;
 				text-align: center;
 				.picWall-style;
-				.staff1 { background: url("@{images}/staff-01.png"); }
-				.staff2 { background: url("@{images}/staff-02.png"); }
-				.staff3 { background: url("@{images}/staff-03.png"); }
-				.staff4 { background: url("@{images}/staff-04.png"); }
-				.staff5 { background: url("@{images}/staff-05.png"); }
-				.staff6 { background: url("@{images}/staff-06.png"); }
-				.staff7 { background: url("@{images}/staff-07.png"); }
-				.staff8 { background: url("@{images}/staff-08.png"); }
-				.staff9 { background: url("@{images}/staff-09.png"); }
-				.staff10 { background: url("@{images}/staff-10.png"); }
+				.picWall {
+					margin-left: 0%;
+					.staff1 { background: url("@{images}/staff-01.png"); }
+					.staff2 { background: url("@{images}/staff-02.png"); }
+					.staff3 { background: url("@{images}/staff-03.png"); }
+					.staff4 { background: url("@{images}/staff-04.png"); }
+					.staff5 { background: url("@{images}/staff-05.png"); }
+					.staff6 { background: url("@{images}/staff-06.png"); }
+					.staff7 { background: url("@{images}/staff-07.png"); }
+					.staff8 { background: url("@{images}/staff-08.png"); }
+					.staff9 { background: url("@{images}/staff-09.png"); }
+					.staff10 { background: url("@{images}/staff-10.png"); }
+				}
 			}
 		}
 	}
@@ -239,17 +242,128 @@ body { background: @body-color; }
 			.description {
 				margin-top: 50px;
 				text-align: center;
-				.picWall-style;
-				.staff1 { background: url("@{images}/staff-01.png"); }
-				.staff2 { background: url("@{images}/staff-02.png"); }
-				.staff3 { background: url("@{images}/staff-03.png"); }
-				.staff4 { background: url("@{images}/staff-04.png"); }
-				.staff5 { background: url("@{images}/staff-05.png"); }
-				.staff6 { background: url("@{images}/staff-06.png"); }
-				.staff7 { background: url("@{images}/staff-07.png"); }
-				.staff8 { background: url("@{images}/staff-08.png"); }
-				.staff9 { background: url("@{images}/staff-09.png"); }
-				.staff10 { background: url("@{images}/staff-10.png"); }
+				.background {
+					width: 1060px;
+					height: 367px;
+					background: @white;
+					.picWall-style;
+					.picWall {
+						margin-left: 0%;
+						.staff1 { background: url("@{images}/staff-01.png"); }
+						.staff2 { background: url("@{images}/staff-02.png"); }
+						.staff3 { background: url("@{images}/staff-03.png"); }
+						.staff4 { background: url("@{images}/staff-04.png"); }
+						.staff5 { background: url("@{images}/staff-05.png"); }
+						.staff6 { background: url("@{images}/staff-06.png"); }
+						.staff7 { background: url("@{images}/staff-07.png"); }
+						.staff8 { background: url("@{images}/staff-08.png"); }
+						.staff9 { background: url("@{images}/staff-09.png"); }
+						.staff10 { background: url("@{images}/staff-10.png"); }
+					}
+				}
+			}
+		}
+	}
+	/*公司资质*/
+	.qualification {
+		height: 610px;
+		padding-top: 40px;
+		background: url("@{images}/culture-bg.png");
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/qualification-title.png") no-repeat center;
+			}
+			.description {
+				text-align: center;
+				margin-top: 50px;
+				 & > div {
+					 display: inline-block;
+					 height: 350px;
+					 cursor: pointer;
+				 }
+				.business-license {
+					width: 248px;
+					margin-right: 80px;
+					background: url("@{images}/license-bg.png") no-repeat;
+				}
+				.code-card {
+					width: 438px;
+					background: url("@{images}/codeCard-bg.png") no-repeat;
+				}
+			}
+		}
+	}
+	/*战略合作*/
+	.strategy {
+		height: 370px;
+		padding-top: 40px;
+		background: @white;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/strategy-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 50px;
+				.strategy-content {
+					height: 110px;
+					background: url("@{images}/strategy.png") no-repeat center;
+				}
+			}
+		}
+	}
+	/*联系方式*/
+	.contact {
+		height: 540px;
+		padding-top: 40px;
+		background: #1478d2;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/contact-title.png") no-repeat center;
+			}
+			.description {
+				margin-top: 80px;
+				& > div {
+					display: inline-block;
+					vertical-align: top;
+					width: 45%;
+					float: left;
+				}
+				.add-wrap {
+					margin-right: 110px;
+					address {
+						color: @white;
+						font-size: @font20;
+						line-height: 45px;
+						strong {
+							display: inline-block;
+							width: 80px;
+							text-align: right;
+						}
+					}
+				}
+				.qrCode {
+					color: @white;
+					line-height: 45px;
+					p { font-size: @font20; }
+					& > div {
+						display: inline-block;
+						vertical-align: bottom;
+						float: left;
+						width: 130px;
+						text-align: center;
+						p { font-size: @font18; }
+						span {
+							display: block;
+							height: 130px;
+						}
+						.wechat-code { background: url("@{images}/wechat.jpg") no-repeat center ; }
+						.subscription-code { background: url("@{images}/wechat.jpg") no-repeat center ; }
+					}
+					.wechat { margin-right: 120px; }
+				}
 			}
 		}
 	}
