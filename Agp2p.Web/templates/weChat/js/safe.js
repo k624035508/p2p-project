@@ -201,4 +201,56 @@ $(function(){
             return current[0] !== elem;
         }).hide();
     });
+
+    // 绑定邮箱
+    $("#btnVerifyEmail").click(ev => {
+        verify_email(ev.target, $('#email').val());
+    });
+    $("#btnBindEmail").click(ev => {
+        bindEmail($('#email-verify-code').val());
+    });
+
+    // 绑定手机
+    $("#btnVerifyMobile").click(ev => {
+        send_mobile_verify_code(ev.target, $('input#phone').val(), $('input#pic-code').val());
+    });
+    $("#btnBindMobile").click(ev => {
+        set_mobile(ev.target, $('input#sms-code').val());
+    });
+    $("#imgVerifyCode").click(ev => {
+        ToggleCode(ev.target, '/tools/verify_code.ashx');
+    });
+
+    // 实名认证
+    $("#btnBindIdCard").click(ev => {
+        checkIdentifyAndSubmit($('.user-approve input#name').val(), $('.user-approve input#ID').val());
+    });
+    var trueName = $('.user-approve input#name');
+    if (trueName.val() !== "") {
+        // lock identity modify
+        trueName[0].readOnly = true;
+        $('.user-approve input#ID')[0].readOnly = true;
+        $('.user-approve button.long-btn').css('background-color', '#ccc').attr('onclick', 'alert("认证信息已锁定")');
+    }
+
+    // 登录密码
+    $("#btnModifyPassword").click(ev => {
+        modifyPassword(ev.target, $('.login-pwd input#oldPwd').val(), $('.login-pwd input#newPwd').val(), $('.login-pwd input#newPwd2').val());
+    });
+    
+    // 交易密码用到
+    $("#btnForgotPassword").click(ev => {
+        forgotTradePassword();
+    });
+    if (!haveTradePwd) {
+        $(".trade-pwd input#oldTradePwd").hide();
+        $(".trade-pwd .forgot-pwd").hide();
+    }
+    $(".trade-pwd .long-btn").click(function () {
+        if (!haveTradePwd) {
+            setTradePwd(this, $("#newTradePwd").val(), $("#newTradePwd2").val());
+        } else {
+            modTradePwd(this, $("#oldTradePwd").val(), $("#newTradePwd").val(), $("#newTradePwd2").val());
+        }
+    });
 });

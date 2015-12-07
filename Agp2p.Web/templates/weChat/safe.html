@@ -8,6 +8,7 @@
     <script>
         var originalEmail = "{userModel.email}";
         var originalMobile = "{userModel.mobile}";
+        var haveTradePwd = <%=string.IsNullOrWhiteSpace(userModel.pay_password)?"false":"true"%>;
     </script>
     <script src="<%templateskin%>/build/safe.bundle.js"></script>
 
@@ -23,8 +24,8 @@
                     <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
                     <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
                     <input id="email-verify-code" class="input-s" type="text" placeholder="请输入邮箱验证码">
-                    <button type="button" class="button-s right-small-btn" onclick="bindEmail($('#email-verify-code').val())">验 证</button>
-                    <button type="button" class="button-l long-btn" onclick="verify_email(this, $('#email').val())">提 交</button>
+                    <button type="button" class="button-s right-small-btn" id="btnVerifyEmail">验 证</button>
+                    <button type="button" class="button-l long-btn" id="btnBindEmail">提 交</button>
                 </div>
             </div>
         </div>
@@ -38,11 +39,11 @@
                     <input id="phone" class="input-l" type="text" placeholder="请输入新的手机号码">
                     <input id="pic-code" class="input-s" type="text" placeholder="请输入图形验证码"/>
                     <span class="pic-code-span pic-code-box flex flex-center-wrapper">
-                        <img style="cursor:pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');"/>
+                        <img style="cursor:pointer" src="/tools/verify_code.ashx" id="imgVerifyCode"/>
                     </span>
                     <input id="sms-code" class="input-s" type="text" placeholder="请输入短信验证码">
-                    <button type="button" class="button-s right-small-btn" onclick="send_mobile_verify_code(this, $('input#phone').val(), $('input#pic-code').val())">获 取</button>
-                    <button type="button" class="button-l long-btn" onclick="set_mobile(this, $('input#sms-code').val())">提 交</button>
+                    <button type="button" class="button-s right-small-btn" id="btnVerifyMobile">获 取</button>
+                    <button type="button" class="button-l long-btn" id="btnBindMobile">提 交</button>
                 </div>
             </div>
         </div>
@@ -56,17 +57,8 @@
                     <input id="ID" class="input-l" type="text" placeholder="请输入您的身份证号码" value="{userModel.id_card_number}">
                     <div class="tips"><span style="color: red">*</span>&nbsp;实名认证是您平台账户操作的重要凭证，若因盗用他人信息注册认证导致您的账户资金无法提现，平台除锁定该账户外，必要时将依法提交至执法部门处理！
                     </div>
-                    <button type="button" class="button-l long-btn" onclick="checkIdentifyAndSubmit($('.user-approve input#name').val(), $('.user-approve input#ID').val())">提 交</button>
+                    <button type="button" class="button-l long-btn" id="btnBindIdCard">提 交</button>
                 </div>
-                <script>
-                    var trueName = $('.user-approve input#name');
-                    if (trueName.val() !== "") {
-                        // lock identity modify
-                        trueName[0].readOnly = true;
-                        $('.user-approve input#ID')[0].readOnly = true;
-                        $('.user-approve button.long-btn').css('background-color', '#ccc').attr('onclick', 'alert("认证信息已锁定")');
-                    }
-                </script>
             </div>
         </div>
 
@@ -79,7 +71,7 @@
                     <input id="newPwd" class="input-l pwd" type="password" placeholder="请输入您的新密码">
                     <input id="newPwd2" class="input-l pwd" type="password" placeholder="请再次输入您的新密码">
                     <div class="tips"><span style="color: red">*</span>为了您的账户安全，请定期更改登录密码，并确保登录密码设置与交易密码不同。</div>
-                    <button type="button" class="button-l long-btn" onclick="modifyPassword(this, $('.login-pwd input#oldPwd').val(), $('.login-pwd input#newPwd').val(), $('.login-pwd input#newPwd2').val())">提 交</button>
+                    <button type="button" class="button-l long-btn" id="btnModifyPassword">提 交</button>
                 </div>
             </div>
         </div>
@@ -92,23 +84,9 @@
                     <input id="oldTradePwd" class="input-l pwd" type="password" placeholder="请输入您的原交易密码">
                     <input id="newTradePwd" class="input-l pwd" type="password" placeholder="请输入您新的交易密码">
                     <input id="newTradePwd2" class="input-l pwd" type="password" placeholder="请再次输入您新的交易密码">
-                    <a class="forgot-pwd" href="javascript:;" onclick="forgotTradePassword()">忘记密码?</a>
+                    <a class="forgot-pwd" href="javascript:;" id="btnForgotPassword">忘记密码?</a>
                     <button type="button" class="button-l long-btn">提 交</button>
                 </div>
-                <script>
-                    var haveTradePwd = <%= string.IsNullOrWhiteSpace(userModel.pay_password) ? "false" : "true"%>;
-                    if (!haveTradePwd) {
-                        $(".trade-pwd input#oldTradePwd").hide();
-                        $(".trade-pwd .forgot-pwd").hide();
-                    }
-                    $(".trade-pwd .long-btn").click(function () {
-                        if (!haveTradePwd) {
-                            setTradePwd(this, $("#newTradePwd").val(), $("#newTradePwd2").val());
-                        } else {
-                            modTradePwd(this, $("#oldTradePwd").val(), $("#newTradePwd").val(), $("#newTradePwd2").val());
-                        }
-                    });
-                </script>
             </div>
         </div>
     </div>
