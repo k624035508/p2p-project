@@ -17,6 +17,7 @@ module.exports = {
         myreceiveplan: "./js/myreceiveplan.js",
         settings: "./js/settings.js",
         mynews: "./js/mynews.js",
+        newsdetail: "./js/newsdetail.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -46,7 +47,7 @@ module.exports = {
     },
     plugins: [
         new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project",
-            "projects", "usercenter", "recharge", "withdraw", "mytrade", "myinvest", "myreceiveplan", "settings", "mynews"]),
+            "projects", "usercenter", "recharge", "withdraw", "mytrade", "myinvest", "myreceiveplan", "settings", "mynews", "newsdetail"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
