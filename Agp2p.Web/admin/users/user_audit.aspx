@@ -52,7 +52,6 @@
     <th align="left" colspan="2">用户名</th>
     <th align="left" width="12%">会员组</th>
     <th align="left" width="12%">邮箱</th>
-    <th width="8%">余额</th>
     <th width="8%">积分</th>
     <th width="8%">状态</th>
   </tr>
@@ -81,7 +80,6 @@
     </td>
     <td><%#new Agp2p.BLL.user_groups().GetTitle(Convert.ToInt32(Eval("group_id")))%></td>
     <td><%#Eval("email")%></td>
-    <td align="center"><%#Eval("amount")%></td>
     <td align="center"><%#Eval("point")%></td>
     <td align="center"><%#GetUserStatus(Convert.ToInt32(Eval("status")))%></td>
   </tr>
