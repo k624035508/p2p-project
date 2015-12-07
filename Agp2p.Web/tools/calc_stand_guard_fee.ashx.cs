@@ -24,6 +24,8 @@ namespace Agp2p.Web.tools
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.TrySkipIisCustomErrors = true;
 
+            BasePage.IsUserLogin(); // 从 cookie 恢复 session
+
             CalcStandGuardFee((statusCode, handlingFee, msg) =>
             {
                 httpContext.Response.StatusCode = statusCode;
@@ -33,7 +35,15 @@ namespace Agp2p.Web.tools
 
         protected void CalcStandGuardFee(Action<int, decimal, string> callback)
         {
-            var userId = DTRequest.GetQueryInt("user_id");
+            Model.users model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as Model.users;
+            if (model == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                HttpContext.Current.Response.Write(JsonConvert.SerializeObject(new { msg = "登录超时，请重新登陆" }));
+                return;
+            }
+
+            var userId = model.id;
             if (userId == 0)
             {
                 var userInfo = BasePage.GetUserInfo();

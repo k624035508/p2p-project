@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>我的消息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/mynews.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
-    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script>
+        var reqFilePath = "{Request.FilePath}", messageStatus = "{message_status}";
+    </script>
+    <script src="<%templateskin%>/build/mynews.bundle.js"></script>
     <style>
         /*加载提示*/
         .loading-hint {
@@ -19,40 +19,6 @@
             color: grey;
         }
     </style>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-        
-        function deleteMessage(ids) {
-            $.ajax({
-                type: "POST",
-                url: "{Request.FilePath}" + "/AjaxDeleteMessages",
-                data: JSON.stringify({ messageIds: ids}),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (msg) {
-                    console.log(msg.d);
-                }
-            }).fail(function () {
-                alert("删除失败");
-                location.reload();
-            });
-        }
-        $(function(){
-            var navBtns = $("div.nav-bar a");
-            //$("#receiving").addClass("nav-active nav-border-active");
-            navBtns.click(function(){
-                navBtns.removeClass("nav-active nav-border-active");
-                $(this).addClass("nav-active nav-border-active");
-            });
-
-            $('.type[data-status={message_status}]').addClass('nav-active nav-border-active');
-
-            toggleHintAndBtn();
-        });
-    </script>
 </head>
 <body>
     <div class="mynews-page">
@@ -81,48 +47,5 @@
         <%template src="_footer.html"%>
     </div>
 
-    <script>
-        $("div.notice-cell").click(function() {
-            var check = $(this).find(".select-icon:visible");
-            if (check.length === 0)
-                location.href = this.getAttribute("data-href");
-            else
-                check.toggleClass("blue");
-        });
-        function toggleHintAndBtn() {
-            // hide delete btn if no msgs
-            if ($("div.notice-cell:visible").length === 0) {
-                $(".news-manage").hide();
-                $("#no-content").show();
-            } else {
-                $(".news-manage").show();
-                $("#no-content").hide();
-            }
-        }
-        $("div.news-manage").click(function(){
-            if(this.innerHTML === "管理消息"){
-                // 切换按钮到删除功能
-                $(this).html("删除选定消息");
-                // 选择图标显示后的页面样式
-                $("div.news-content").css("width", "15.6rem");
-                $("span.notice-detail").css("width","100%");
-                $("div.select-icon").css("display","inline-block");
-            } else {
-                var hiddenMsg = $("div.select-icon").filter(function(index, elem){
-                    return $(elem).hasClass("blue");
-                }).parents(".notice-cell").hide();
-                $(this).html("管理消息");
-                $("div.select-icon").css("display","none");
-                $("div.news-content").css("width", "18rem");
-                var preDelIds = [].join.call(hiddenMsg.map(function(index, elem) {
-                    return elem.getAttribute("data-msgId");
-                }), ";");
-                if (preDelIds) {
-                    deleteMessage(preDelIds);
-                }
-                toggleHintAndBtn();
-            }
-        });
-    </script>
 </body>
 </html>

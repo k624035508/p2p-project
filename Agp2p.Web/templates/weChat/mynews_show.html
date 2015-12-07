@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>我的消息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/footer.css">
-    <link type="text/css" rel="stylesheet" href="<%templateskin%>/css/common.css">
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/newsdetail.bundle.js"></script>
 
     <style>
         body {margin:0;}
@@ -34,12 +34,6 @@
         }
         div.sender p {margin: 0 0 8px;}
     </style>
-    <script>
-        /*rem的相对单位定义*/
-        var viewportWidth = $(window).width();
-        var fontSizeUnit = viewportWidth / 20;
-        $("html").css("font-size", fontSizeUnit);
-    </script>
 </head>
 <body>
 <div class="news-detail-page">
