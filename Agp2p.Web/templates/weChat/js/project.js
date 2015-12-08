@@ -5,6 +5,8 @@ import "../less/claims-photos.less";
 import "../less/receive-plan-detail.less";
 import "../less/invest-success.less";
 import "../less/footer.less";
+import "fullpage.js/jquery.fullPage.css"
+import "fullpage.js"
 
 import footerInit from "./footer.js";
 import "./radialIndicator.min.js";

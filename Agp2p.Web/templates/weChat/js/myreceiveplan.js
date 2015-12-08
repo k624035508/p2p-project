@@ -84,10 +84,12 @@ function initFullpage() {
         }
     });
     $.fn.fullpage.setAllowScrolling(false);
-    if (history.pushState) {
-        history.pushState(null, null, '#projects');
-    } else {
-        location.href = '#projects';
+    if (location.hash != '#projects') {
+        if (history.pushState) {
+            history.pushState(null, null, '#projects');
+        } else {
+            location.href = '#projects';
+        }
     }
 }
 function fixAndroid2xOverflowCannotScroll($affectedElem) {
