@@ -32,6 +32,13 @@ namespace Agp2p.Core.NotifyLogic
             {
                 //找出项目投资信息
                 var investment = context.li_project_transactions.Single(p => p.id == projectTransactionId);
+
+                // TODO 新手体验标 不发投资协议
+                if (investment.li_projects.dt_article_category.call_index == "newbie")
+                {
+                    return;
+                }
+
                 //发送电子合同
                 siteconfig siteConfig = ConfigLoader.loadSiteConfig();
                 //增加协议号到投资记录中

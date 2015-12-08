@@ -793,7 +793,7 @@ namespace Agp2p.Core
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
-            if (pro.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
+            if (repaymentTask.only_repay_to == null && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
