@@ -32,6 +32,7 @@ namespace Agp2p.Core.NotifyLogic
             {
                 //找出项目投资信息
                 var investment = context.li_project_transactions.Single(p => p.id == projectTransactionId);
+
                 //发送电子合同
                 siteconfig siteConfig = ConfigLoader.loadSiteConfig();
                 //增加协议号到投资记录中
@@ -39,7 +40,8 @@ namespace Agp2p.Core.NotifyLogic
                 //获得投资协议邮件内容
                 var bodytxt = context.GetInvestContractContext(investment, AppDomain.CurrentDomain.BaseDirectory + "\\tools\\invest-agreement.html");
                 //发送投资协议邮件
-                if (!string.IsNullOrWhiteSpace(investment.dt_users.email))
+                // TODO 新手体验标 不发投资协议到邮箱
+                if (!string.IsNullOrWhiteSpace(investment.dt_users.email) && investment.li_projects.dt_article_category.call_index != "newbie")
                 {
                     DTMail.sendMail(siteConfig.emailsmtp,
                         siteConfig.emailusername,
@@ -97,9 +99,11 @@ namespace Agp2p.Core.NotifyLogic
             var context = new Agp2pDataContext();
             var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
             Debug.Assert(project != null, "project != null");
+
+            var finalProfitRate = project.GetFinalProfitRate(DateTime.Now);
             project.li_project_transactions.ForEach(pt =>
             {
-                pt.interest = pt.principal*project.GetFinalProfitRate(DateTime.Now);
+                pt.interest = pt.principal*finalProfitRate;
             });
             context.SubmitChanges();
 

@@ -344,6 +344,27 @@ namespace Agp2p.Core
             if (wallet.idle_money < investingMoney)
                 throw new InvalidOperationException("余额不足，无法投资");
 
+            // TODO 临时逻辑：限制对新手体验标的投资，只能投资 100，只能投 1 次，在特定时间内（12月10日-1月10日）
+            if (pr.dt_article_category.call_index == "newbie")
+            {
+                if (investingMoney != 100)
+                {
+                    throw new InvalidOperationException("新手体验标规定只能投 100 元");
+                }
+                if (wallet.dt_users.li_project_transactions.Any(tra => tra.li_projects.dt_article_category.call_index == "newbie"))
+                {
+                    throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
+                }
+                if (DateTime.Today < new DateTime(2015, 12, 10))
+                {
+                    throw new InvalidOperationException("活动未开始");
+                }
+                if (DateTime.Today > new DateTime(2016, 1, 10))
+                {
+                    throw new InvalidOperationException("活动已结束");
+                }
+            }
+
             // 修改项目已投资金额
             pr.investment_amount += investingMoney;
 
@@ -402,22 +423,13 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
-            /*if (project.tag == (int)Agp2pEnums.ProjectTagEnum.Trial) // 体验标的截标
-            {
-                var now = DateTime.Now;
-                project.invest_complete_time = now;
-                project.status = (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying; // 本来这里是截标，TODO 是否应该直接跳去还款中
-                context.SubmitChanges();
-                return project;
-            }*/
-
             // 项目投资完成时间应该等于最后一个人的投资时间
             var lastInvestment =
                 project.li_project_transactions.LastOrDefault(
                     tr =>
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                         tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest);
-            project.invest_complete_time = lastInvestment != null ? lastInvestment.create_time : DateTime.Now;
+            project.invest_complete_time = lastInvestment?.create_time ?? DateTime.Now;
 
             context.SubmitChanges();
             return project;
@@ -756,7 +768,7 @@ namespace Agp2p.Core
             var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
 
-            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
+            var moneyRepayRatio = GetInvestRatio(repaymentTask);
             var originalRepayInterest = repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest;
 
             foreach (var ptr in ptrs)
@@ -781,19 +793,30 @@ namespace Agp2p.Core
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
-            if (pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
+            if (repaymentTask.only_repay_to == null && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
+                // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
-                    // 广播项目完成的消息
             }
             return repaymentTask;
         }
 
-        private static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
+        private static Dictionary<dt_users, decimal> GetInvestRatio(li_repayment_tasks task)
         {
+            // 仅针对单个用户的还款
+            if (task.only_repay_to != null)
+            {
+                return new Dictionary<dt_users, decimal>()
+                {
+                    {task.dt_users, 1}
+                };
+            }
+
+            // 针对全部用户的还款
+            var proj = task.li_projects;
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord = proj.li_project_transactions.Where(
                 tr =>
@@ -812,10 +835,9 @@ namespace Agp2p.Core
         /// <param name="repaymentTask"></param>
         /// <param name="transactTime"></param>
         /// <returns></returns>
-        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask,
-            DateTime transactTime)
+        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime)
         {
-            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
+            var moneyRepayRatio = GetInvestRatio(repaymentTask);
 
             return moneyRepayRatio.Select(r =>
             {

@@ -704,8 +704,9 @@
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\wechat.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
     <Content Include="templates\AnGuang\imgs\help\charge.png" />
     <Content Include="templates\AnGuang\imgs\help\diagram-01.png" />
