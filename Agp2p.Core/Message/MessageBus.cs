@@ -1,4 +1,5 @@
-﻿using Agp2p.Core.AutoLogic;
+﻿using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.AutoLogic;
 using Agp2p.Core.InitLogic;
 using Agp2p.Core.NotifyLogic;
 using TinyMessenger;
@@ -26,6 +27,9 @@ namespace Agp2p.Core.Message
             InvestAnnounce.DoSubscribe();
             RepayAnnounce.DoSubscribe();
             BankTransactionNotify.DoSubscribe();
+
+            // Activity
+            TrialActivity.DoSubscribe();
         }
     }
 }
