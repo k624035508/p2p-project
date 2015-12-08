@@ -2327,29 +2327,29 @@ namespace Agp2p.Web.tools
                 new Agp2pDataContext().Withdraw(cardId, howmany);
 
                 //发送提现短信
-                var smsModel = new sms_template().GetModel("user_withdraw_info");
-                if (smsModel != null)
-                {
-                    try
-                    {
-                        //替换模板内容
-                        //var siteConfig = new BLL.siteconfig().loadConfig();
-                        var msgContent = smsModel.content;
-                        msgContent = msgContent.Replace("{user_name}", user.user_name);
-                        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
-                        msgContent = msgContent.Replace("{amount}", howmany.ToString());
+                //var smsModel = new sms_template().GetModel("user_withdraw_info");
+                //if (smsModel != null)
+                //{
+                //    try
+                //    {
+                //        //替换模板内容
+                //        //var siteConfig = new BLL.siteconfig().loadConfig();
+                //        var msgContent = smsModel.content;
+                //        msgContent = msgContent.Replace("{user_name}", user.user_name);
+                //        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
+                //        msgContent = msgContent.Replace("{amount}", howmany.ToString());
 
-                        string errorMsg = string.Empty;
-                        if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
-                        {
-                            new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
-                    }
-                }
+                //        string errorMsg = string.Empty;
+                //        if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
+                //        {
+                //            new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
+                //        }
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
+                //    }
+                //}
 
                 context.Response.Write("{\"status\":1, \"msg\":\"提现申请提交成功！\"}");                       
             }
