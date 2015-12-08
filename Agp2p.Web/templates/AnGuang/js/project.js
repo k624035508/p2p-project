@@ -69,9 +69,15 @@ $(function () {
                 return;
             }
 
-            // 计算预期收益
-            var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
-            $("span.profit").text(profit.toFixed(2) + " 元");
+            if ($investAmountInput[0].disabled && investAmount == 100) {
+                // TODO 新手体验标的临时逻辑
+                $investAmountInput.blur(); // 刷新 dialog 里面的投资金额
+                $("span.profit").text("10 元");
+            } else {
+                // 计算预期收益
+                var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
+                $("span.profit").text(profit.toFixed(2) + " 元");
+            }
 
             // 设置投资协议的链接
             $("#show-invest-contract").attr("href",
