@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheHelper.cs" />
+    <Compile Include="DailyTimer.cs" />
     <Compile Include="DESEncrypt.cs" />
     <Compile Include="DTEnums.cs" />
     <Compile Include="DTKeys.cs" />
