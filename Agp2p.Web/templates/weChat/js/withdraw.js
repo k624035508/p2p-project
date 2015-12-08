@@ -1,6 +1,7 @@
 ﻿import "bootstrap-webpack";
 import "../less/withdrawals.css";
 import "../less/card-select.css";
+import { classMappingPingYing as classMapping } from "../../AnGuang/js/bank-list.jsx";
 
 /*rem的相对单位定义*/
 $("html").css("font-size", $(window).width() / 20);
@@ -59,12 +60,9 @@ $(function() {
             alert("提交失败，请重试");
         });
     });
-    var bankClassMapping = JSON.parse('{"工商":"gonghang","农业":"nonghang","建设":"jianhang","中国":"zhonghang",' +
-        '"招商":"zhaohang","交通":"jiaohang","民生":"minsheng","平安":"pingan","光大":"guangda","广发":"guangfa",' +
-        '"邮政":"youzheng","中信":"zhongxin","浦发":"pufa","华夏":"huaxia","兴业":"xingye"}');
     $(".bank-select-body span").each(function(index, item) {
         var span = $(item);
-        var keyword = span.parent().attr("data-bankName").replace(/银行|储蓄/g, "");
-        span.prev().addClass("sprite-" + bankClassMapping[keyword]);
+        var keyword = span.parent().attr("data-bankName");
+        span.prev().addClass("sprite-" + classMapping[keyword]);
     });
 });
