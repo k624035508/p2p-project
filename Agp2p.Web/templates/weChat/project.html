@@ -81,7 +81,11 @@
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <span class="title-style">年化收益</span>
+                    <%if(projectModel.dt_article_category.call_index=="newbie")%>
+                    <p><span class="data-style">--</span></p>
+                    <%else%>
                     <p><span class="data-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%></span> %</p>
+                    <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
