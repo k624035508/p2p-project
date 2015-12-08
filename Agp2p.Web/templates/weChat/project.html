@@ -104,7 +104,7 @@
                 <div class="invest-action">
                     <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（大于100）">
+                        <input type="text" placeholder="请输入投资金额（大于100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>
