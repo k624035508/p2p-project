@@ -34,9 +34,11 @@ body { background: @body-color; }
 			.mask {
 				background: grey;
 				opacity: .6;
+				-moz-opacity: 0.60;
+				filter: alpha(opacity=60);
 			}
 			a:hover {
-				.mask { background: none; }
+				.mask { display: none; }
 			}
 		}
 	}
@@ -277,19 +279,12 @@ body { background: @body-color; }
 			.description {
 				text-align: center;
 				margin-top: 50px;
-				 & > div {
-					 display: inline-block;
-					 height: 350px;
-					 cursor: pointer;
-				 }
-				.business-license {
+				div {
+					display: inline-block;
 					width: 248px;
-					margin-right: 80px;
-					background: url("@{images}/license-bg.png") no-repeat;
-				}
-				.code-card {
-					width: 438px;
-					background: url("@{images}/codeCard-bg.png") no-repeat;
+					height: 350px;
+					cursor: pointer;
+					background: url("@{images}/license-bg.png");
 				}
 			}
 		}
@@ -364,6 +359,37 @@ body { background: @body-color; }
 					}
 					.wechat { margin-right: 120px; }
 				}
+			}
+		}
+	}
+}
+
+#picModal {
+	.modal-dialog {
+		width: 650px;
+		margin: 30px auto;
+		.modal-content .modal-body img { max-width: 100%; }
+	}
+}
+
+#picWall {
+	.modal-dialog {
+		width: 600px;
+		margin: 0 auto;
+		.modal-content .modal-body {
+			& > * {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			span {
+				width: 5%;
+				cursor: pointer;
+				text-align: center;
+			}
+			div {
+				width: 88%;
+				text-align: center;
+				img { max-width: 100%; }
 			}
 		}
 	}
