@@ -32,7 +32,7 @@ namespace Agp2p.Web.UI.Page
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public decimal ProfitRateYear { get; set; }
+            public string ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
         }
 
@@ -58,9 +58,10 @@ namespace Agp2p.Web.UI.Page
         public static List<MyRepayment> QueryProjectRepayments(int userId, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
             var context = new Agp2pDataContext();
-            var investedProjectValueMap = context.li_project_transactions.Where(
+            var user = GetUserInfoByLinq(context);
+
+            var investedProjectValueMap = user.li_project_transactions.Where(
                 tr =>
-                    tr.investor == userId &&
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .GroupBy(inv => inv.li_projects)
@@ -68,31 +69,32 @@ namespace Agp2p.Web.UI.Page
 
             return investedProjectValueMap.SelectMany(p =>
             {
-                var ratio1 = investedProjectValueMap[p.Key]/p.Key.investment_amount;
-                var query1 = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid);
+                var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
+                var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
+                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == userId);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
-                    query1 = query1.Where(tr => Convert.ToDateTime(startTime) <= tr.should_repay_time);
+                    query = query.Where(tr => Convert.ToDateTime(startTime) <= tr.should_repay_time);
                 }
                 if (!string.IsNullOrWhiteSpace(endTime))
                 {
-                    query1 = query1.Where(tr => tr.should_repay_time <= Convert.ToDateTime(endTime));
+                    query = query.Where(tr => tr.should_repay_time <= Convert.ToDateTime(endTime));
                 }
 
-                var validRepaymentTaskCount = query1.Count();
+                var validRepaymentTaskCount = query.Count();
 
                 var reps1 =
-                    query1.Where(tr =>
+                    query.Where(tr =>
                         type == Agp2pEnums.MyRepaymentQueryTypeEnum.Unpaid
-                            ? (int) Agp2pEnums.RepaymentStatusEnum.Unpaid == tr.status
+                            ? tr.status < (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid
                             : (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= tr.status)
                             .Select(task => new MyRepayment
                             {
                                 RepaymentId = task.id,
                                 Project = null,
-                                RepayInterest = Math.Round(task.repay_interest*ratio1, 2),
-                                RepayPrincipal = Math.Round(task.repay_principal*ratio1, 2),
+                                RepayInterest = Math.Round(task.repay_interest*ratio, 2),
+                                RepayPrincipal = Math.Round(task.repay_principal*ratio, 2),
                                 ShouldRepayDay = task.should_repay_time.ToString("yyyy/MM/dd"),
                                 Term = task.term.ToString() + "/" + validRepaymentTaskCount
                             }).ToList();
@@ -106,7 +108,7 @@ namespace Agp2p.Web.UI.Page
                     Id = p.Key.id,
                     Name = p.Key.title,
                     InvestValue = investedProjectValueMap[p.Key],
-                    ProfitRateYear = p.Key.profit_rate_year
+                    ProfitRateYear = p.Key.GetProfitRateYearly()
                 };
 
                 return reps1;
@@ -197,7 +199,7 @@ namespace Agp2p.Web.UI.Page
                     ProfitingAmount = (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
                         ? project.li_repayment_tasks.Sum(ta => Math.Round(investRatio * ta.repay_principal, 2) + Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
                         : "(未满标)",
-                    ProfitRateYear = project.profit_rate_year,
+                    ProfitRateYear = project.GetProfitRateYearly(),
                     InvestedValue = investAmount.ToString("c"),
                     TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new
                     {
@@ -217,7 +219,7 @@ namespace Agp2p.Web.UI.Page
                 {
                     Title = project.title,
                     ProfitingAmount = atr.value.ToString("c"),
-                    ProfitRateYear = project.profit_rate_year,
+                    ProfitRateYear = project.GetProfitRateYearly(),
                     InvestedValue = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("c"),
                     TermsData = new[]
                     {

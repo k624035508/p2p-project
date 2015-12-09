@@ -1248,6 +1248,11 @@ namespace Agp2p.Core
             return Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)proj.repayment_type);
         }
 
+        public static string GetProfitRateYearly(this li_projects proj)
+        {
+            return proj.dt_article_category.call_index == "newbie" ? "--" : (proj.profit_rate_year/100).ToString("p1");
+        }
+
         public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templatePath)
         {
             var project = investment.li_projects;
