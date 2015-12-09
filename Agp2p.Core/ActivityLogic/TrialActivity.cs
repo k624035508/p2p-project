@@ -22,7 +22,7 @@ namespace Agp2p.Core.ActivityLogic
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>
                     t.only_repay_to != null &&
-                    t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                    (t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid || t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime) &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
 
