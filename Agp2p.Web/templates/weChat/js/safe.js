@@ -1,6 +1,8 @@
 ﻿import "bootstrap-webpack";
-import "../less/safe-center.css";
+import "../less/safe.less";
 import "../less/footer.less";
+
+import footerInit from "./footer.js";
 
 /*rem的相对单位定义*/
 $("html").css("font-size", $(window).width() * 0.9 / 20);
@@ -193,6 +195,8 @@ function forgotTradePassword() {
     }
 }
 $(function(){
+    footerInit();
+
     $("a.toggle-btn").click(function(){
         var current = $(this).siblings(".fold");
         current.toggle();

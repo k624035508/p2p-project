@@ -1,6 +1,8 @@
 ﻿import "bootstrap-webpack";
 import "../less/register.less";
 
+window['$'] = window['jQuery'] = $;
+
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
 var fontSizeUnit = viewportWidth * 0.9 / 20;
