@@ -3,11 +3,11 @@ import "../less/binding-cards.css";
 import "../less/cards-list.css";
 import "../less/card-select.css";
 import "../less/footer.less";
-import "fullpage.js/jquery.fullPage.css"
-import "fullpage.js"
+import "fullpage.js/jquery.fullPage.css";
+import "fullpage.js";
 import { classMappingPingYing as classMapping } from "../../AnGuang/js/bank-list.jsx";
 import keys from "lodash/object/keys"
-
+import footerInit from "./footer.js";
 
 /*rem的相对单位定义*/
 $("html").css("font-size", $(window).width() / 20);
@@ -182,6 +182,8 @@ function initIframe(iframe) {
 }
 
 $(function() {
+    footerInit();
+
     if (!realName) {
         alert("请先进行实名认证");
         location.href = safeUrl;
