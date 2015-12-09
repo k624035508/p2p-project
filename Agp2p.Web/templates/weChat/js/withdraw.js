@@ -1,4 +1,5 @@
 ﻿import "bootstrap-webpack";
+import "../less/common.less";
 import "../less/withdrawals.css";
 import "../less/card-select.css";
 import { classMappingPingYing as classMapping } from "../../AnGuang/js/bank-list.jsx";

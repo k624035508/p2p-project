@@ -1,7 +1,8 @@
 ﻿import "bootstrap-webpack";
 import "../less/footer.less";
 import "../less/trade-record.css";
-import template from "lodash/string/template"
+import template from "lodash/string/template";
+import footerInit from "./footer.js";
 
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
@@ -47,6 +48,8 @@ function loadData(pageIndex, callback) {
     });
 }
 $(function() {
+    footerInit();
+
     $("#pending").on("click", ".record-cell", function() {
         $(".remark[data-id=" + $(this).attr("data-id") + "]").toggle();
     });

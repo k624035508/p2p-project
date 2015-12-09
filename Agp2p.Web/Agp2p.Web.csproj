@@ -922,11 +922,6 @@
     <Content Include="templates\weChat\imgs\input-icon\recommend.png" />
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
-    <Content Include="templates\weChat\imgs\login-icon.png" />
-    <Content Include="templates\weChat\imgs\logo.png" />
-    <Content Include="templates\weChat\imgs\myaccount-icon.png" />
-    <Content Include="templates\weChat\imgs\receiveplan-car.png" />
-    <Content Include="templates\weChat\imgs\receiveplan-house.png" />
     <Content Include="templates\weChat\imgs\safe-center-icon.png" />
     <Content Include="templates\weChat\imgs\set-up-icon.png" />
     <Content Include="templates\weChat\imgs\usercenter\my-invest.png" />
