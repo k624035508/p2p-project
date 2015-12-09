@@ -200,7 +200,7 @@ namespace Agp2p.Web.admin.repayment
                 //根据时间判断是否提前还款
                 var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
                 Debug.Assert(repay != null, "repay != null");
-                if (repay.should_repay_time >= DateTime.Now)
+                if (repay.should_repay_time.Date >= DateTime.Now.Date)
                 {
                     decimal cost = (decimal) Costconfig.earlier_pay;
                     context.EarlierRepayAll(repay.project, cost);
