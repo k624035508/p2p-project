@@ -1,0 +1,12 @@
+﻿<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
+<div class="">
+    <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">项目简介</span></div>
+    <div class="project-info project-info-properties">
+        <ul>
+            <li><span>项目描述 </span><span>{risk.loaner_content}</span></li>                        
+            <li><span>借款用途 </span><span>{risk.loan_usage}</span></li>
+            <li><span>还款来源 </span><span>{risk.source_of_repayment}</span></li>
+        </ul>
+    </div>
+</div>
+<%/if%>
