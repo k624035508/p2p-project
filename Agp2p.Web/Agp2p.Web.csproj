@@ -906,7 +906,6 @@
     <Content Include="templates\weChat\imgs\binding-cards-icon.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\charge-icon.png" />
-    <Content Include="templates\weChat\imgs\contrast.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
     <Content Include="templates\weChat\imgs\footer\index-active.png" />
     <Content Include="templates\weChat\imgs\footer\index.png" />
@@ -922,6 +921,7 @@
     <Content Include="templates\weChat\imgs\input-icon\recommend.png" />
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
+    <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\safe-center-icon.png" />
     <Content Include="templates\weChat\imgs\set-up-icon.png" />
     <Content Include="templates\weChat\imgs\usercenter\my-invest.png" />
@@ -950,7 +950,6 @@
     <Content Include="templates\weChat\js\settings.js" />
     <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\js\withdraw.js" />
-    <Content Include="templates\weChat\less\aboutus.css" />
     <Content Include="templates\weChat\less\binding-cards.css" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
     <Content Include="templates\weChat\less\card-select.css" />
@@ -1089,6 +1088,7 @@
     <Content Include="templates\weChat\less\safe.less" />
     <Content Include="templates\weChat\less\setting.less" />
     <Content Include="templates\weChat\less\charge.less" />
+    <Content Include="templates\weChat\less\aboutus.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
