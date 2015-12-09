@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/charge.css";
+import "../less/charge.less";
 import "../less/footer.less";
 
 window['$'] = window['jQuery'] = $;
