@@ -14,4 +14,5 @@ $(function(){
         $(this).find("i").toggleClass("glyphicon-menu-up");
         $(this).children(".office-detail").toggle();
     });
+    $('[data-toggle="popover"]').popover();
 });
