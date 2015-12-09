@@ -768,7 +768,7 @@ namespace Agp2p.Core
             var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
 
-            var moneyRepayRatio = GetInvestRatio(repaymentTask);
+            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
             var originalRepayInterest = repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest;
 
             foreach (var ptr in ptrs)
@@ -793,7 +793,7 @@ namespace Agp2p.Core
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
-            if (repaymentTask.only_repay_to == null && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
+            if (pro.dt_article_category.call_index != "newbie" && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
@@ -804,19 +804,15 @@ namespace Agp2p.Core
             return repaymentTask;
         }
 
-        private static Dictionary<dt_users, decimal> GetInvestRatio(li_repayment_tasks task)
+        public static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
         {
             // 仅针对单个用户的还款
-            if (task.only_repay_to != null)
+            if (proj.dt_article_category.call_index == "newbie")
             {
-                return new Dictionary<dt_users, decimal>()
-                {
-                    {task.dt_users, 1}
-                };
+                return proj.li_repayment_tasks.ToDictionary(t => t.dt_users, t => 1m);
             }
 
             // 针对全部用户的还款
-            var proj = task.li_projects;
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord = proj.li_project_transactions.Where(
                 tr =>
@@ -837,7 +833,7 @@ namespace Agp2p.Core
         /// <returns></returns>
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime)
         {
-            var moneyRepayRatio = GetInvestRatio(repaymentTask);
+            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
             return moneyRepayRatio.Select(r =>
             {

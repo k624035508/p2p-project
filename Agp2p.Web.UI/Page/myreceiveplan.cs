@@ -10,6 +10,7 @@ using System.Data.Linq;
 using System.Net;
 using System.Web.Services;
 using Agp2p.BLL;
+using Agp2p.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -123,7 +124,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize) // 微信端用到
+        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize) // 微信端用到到此 api
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -175,21 +176,21 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId) // 微信端用到
+        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId) // 微信端用到此 api
         {
-            var userInfo = GetUserInfo();
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
             if (userInfo == null)
             {
                 HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            var context = new Agp2pDataContext();
             if (ticketId == null)
             {
                 var project = context.li_projects.Single(p => p.id == projectId);
                 var investAmount = QueryInvestAmount(project, userInfo.id);
-                var investRatio = investAmount / project.financing_amount;
+                var investRatio = TransactionFacade.GetInvestRatio(project)[userInfo];
                 var result = new
                 {
                     Title = project.title,
