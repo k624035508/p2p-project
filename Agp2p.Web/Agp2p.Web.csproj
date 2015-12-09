@@ -923,7 +923,12 @@
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
     <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\safe-center-icon.png" />
-    <Content Include="templates\weChat\imgs\set-up-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\about-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\bank-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\exit-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\lottery-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\mynews-icon.png" />
+    <Content Include="templates\weChat\imgs\settings\safe-icon.png" />
     <Content Include="templates\weChat\imgs\usercenter\my-invest.png" />
     <Content Include="templates\weChat\imgs\usercenter\receive-plan.png" />
     <Content Include="templates\weChat\imgs\usercenter\trade-record.png" />
@@ -1086,9 +1091,9 @@
     <Content Include="templates\AnGuang\less\about_more.less" />
     <Content Include="templates\weChat\less\mynews.less" />
     <Content Include="templates\weChat\less\safe.less" />
-    <Content Include="templates\weChat\less\setting.less" />
     <Content Include="templates\weChat\less\charge.less" />
     <Content Include="templates\weChat\less\aboutus.less" />
+    <Content Include="templates\weChat\less\settings.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
