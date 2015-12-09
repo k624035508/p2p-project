@@ -199,7 +199,7 @@ namespace Agp2p.Web.UI.Page
                         : "(未满标)",
                     ProfitRateYear = project.profit_rate_year,
                     InvestedValue = investAmount.ToString("c"),
-                    TermsData = project.li_repayment_tasks.Select(ta => new
+                    TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new
                     {
                         RepayInterest = Math.Round(investRatio * ta.repay_interest, 2).ToString("c"),
                         RepayPrincipal = Math.Round(investRatio * ta.repay_principal, 2).ToString("c"),
