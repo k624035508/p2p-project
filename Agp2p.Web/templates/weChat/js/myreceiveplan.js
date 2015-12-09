@@ -2,9 +2,10 @@
 import "../less/receive-plan.css";
 import "../less/receive-plan-detail.less";
 import "../less/footer.less";
-import "fullpage.js/jquery.fullPage.css"
-import "fullpage.js"
-import template from "lodash/string/template"
+import "fullpage.js/jquery.fullPage.css";
+import "fullpage.js";
+import template from "lodash/string/template";
+import footerInit from "./footer.js";
 
 window['$'] = window['jQuery'] = $;
 
@@ -110,6 +111,7 @@ function fixAndroid2xOverflowCannotScroll($affectedElem) {
 }
 $(function(){
     initFullpage();
+    footerInit();
 
     // init
     var processing = false;

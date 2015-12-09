@@ -1,7 +1,8 @@
 ﻿import "bootstrap-webpack";
 import "../less/myinvest.css";
 import "../less/footer.less";
-import template from "lodash/string/template"
+import template from "lodash/string/template";
+import footerInit from "./footer.js";
 
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
@@ -48,6 +49,8 @@ function loadData(pageIndex, callback) {
     });
 }
 $(function () {
+    footerInit();
+
     // init
     var processing = false;
     var loadedPage = 0;
