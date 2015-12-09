@@ -2,21 +2,21 @@
 import "../less/receive-plan.css";
 import "../less/receive-plan-detail.less";
 import "../less/footer.less";
-import _ from "underscore";
 import "fullpage.js/jquery.fullPage.css"
 import "fullpage.js"
+import template from "lodash/string/template"
 
 window['$'] = window['jQuery'] = $;
 
 /*rem的相对单位定义*/
 $("html").css("font-size", $(window).width() / 20);
 
-_.templateSettings = {
+var templateSettings = {
     evaluate: /@\{([\s\S]+?)\}@/g, // 求值 @{ ... }@
     interpolate: /@\{=([\s\S]+?)\}@/g // 直接输出 @{= ...}@
 };
 
-var render = _.template($("#repaying-project-fragment").html());
+var render = template($("#repaying-project-fragment").html(), templateSettings);
 function loadData(pageIndex, callback) {
     var pageSize = 15;
     var projectFinish = $("a.nav-active").data("projectFinish");
@@ -50,7 +50,7 @@ function loadData(pageIndex, callback) {
         callback(false);
     });
 }
-var renderDetail = _.template($("#detail-page").html());
+var renderDetail = template($("#detail-page").html(), templateSettings);
 function loadDetailData(projectId, ticketId) {
     var pageWrapper = $(".receive-plan-detail-page");
     pageWrapper.html("<div class='loading-hint'>加载中...</div>");

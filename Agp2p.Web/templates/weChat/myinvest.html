@@ -17,7 +17,7 @@
     </style>
 
     <script type="text/html" id="investment-record">
-        @{ _.each(items, function(item, key, list){ }@
+        @{ items.forEach(function(item, key, list){ }@
         <div class="project-cell flex flex--align-items--center flex--flex-grow-first">
             <div class="title-box">
                 <p>@{=item.projectName}@</p>

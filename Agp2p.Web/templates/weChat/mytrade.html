@@ -22,7 +22,7 @@
     </script>
 
     <script type="text/html" id="record-item">
-        @{ _.each(items, function(item, key, list){ }@
+        @{ items.forEach(function(item, key, list){ }@
         <div class="record-cell flex flex--align-items--center flex--flex-grow-first" data-id="@{=item.id}@">
             <div class="trade-way">
                 <p> @{=item.type}@ </p>
