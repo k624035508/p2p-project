@@ -99,7 +99,7 @@ namespace Agp2p.Web.admin.statistic
                     income = pprt.prt.income,
                     occurTime = pprt.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
                     remark = pprt.prt.remark,
-                    user = pprt.prt.dt_users.user_name,
+                    user = string.IsNullOrEmpty(pprt.prt.dt_users.real_name) ? pprt.prt.dt_users.user_name : pprt.prt.dt_users.real_name,
                     project = pprt.prt.li_projects.title
                 }).AsQueryable();
         }
