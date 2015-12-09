@@ -835,7 +835,9 @@ namespace Agp2p.Core
         {
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
-            return moneyRepayRatio.Select(r =>
+            // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
+            return moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
+                .Select(r =>
             {
                 var realityInterest = Math.Round(r.Value*repaymentTask.repay_interest, 2);
                 string remark = null;
