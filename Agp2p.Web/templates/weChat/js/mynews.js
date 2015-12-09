@@ -1,6 +1,8 @@
 ﻿import "bootstrap-webpack";
-import "../less/mynews.css";
+import "../less/mynews.less";
 import "../less/footer.less";
+
+import footerInit from "./footer.js";
 
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
@@ -24,6 +26,8 @@ function deleteMessage(ids) {
 }
 
 $(() => {
+    footerInit();
+
     $("div.notice-cell").click(function() {
         var check = $(this).find(".select-icon:visible");
         if (check.length === 0)

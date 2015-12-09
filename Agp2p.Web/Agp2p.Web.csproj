@@ -965,10 +965,7 @@
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
     <Content Include="templates\weChat\less\myinvest.css" />
     <Content Include="templates\weChat\less\mylottery.css" />
-    <Content Include="templates\weChat\less\mynews.css" />
     <Content Include="templates\weChat\less\receive-plan.css" />
-    <Content Include="templates\weChat\less\safe-center.css" />
-    <Content Include="templates\weChat\less\set-up.css" />
     <Content Include="templates\weChat\less\trade-record.css" />
     <Content Include="templates\weChat\less\verified.css" />
     <Content Include="templates\weChat\less\withdrawals.css" />
@@ -1094,6 +1091,9 @@
     <Content Include="templates\weChat\less\usercenter.less" />
     <Content Include="templates\AnGuang\.eslintrc" />
     <Content Include="templates\AnGuang\less\about_more.less" />
+    <Content Include="templates\weChat\less\mynews.less" />
+    <Content Include="templates\weChat\less\safe.less" />
+    <Content Include="templates\weChat\less\setting.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
