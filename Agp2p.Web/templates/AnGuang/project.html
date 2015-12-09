@@ -154,7 +154,11 @@
             </div>
             <div class="apr">
                 <div>年化利率</div>
+                <%if(projectModel.dt_article_category.call_index=="newbie")%>
+                <div class="rules-style">--</div>
+                <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span>%</span></div>
+                <%/if%>
             </div>
         </div>
         <div class="repayment">

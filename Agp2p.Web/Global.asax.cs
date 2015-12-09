@@ -17,42 +17,25 @@ namespace Agp2p.Web
 {
     public class Global : HttpApplication
     {
-        private const string CacheName = "timer_task";
-
-        private static void AddTask(string name, object value, DateTime runAt, CacheItemRemovedCallback cb)
-        {
-            HttpRuntime.Cache.Insert(name, value, null,
-                runAt, Cache.NoSlidingExpiration,
-                CacheItemPriority.NotRemovable, cb); // 系统自身每 20 秒检查一次是否有缓存超时
-        }
+        private static DailyTimer dailyTimer;
 
         public static void SchaduleDailyTimer(int hours, int minutes = 0, int seconds = 0, bool todayExecuted = false)
         {
-            var todayTriggerTime = DateTime.Now.Date.AddHours(hours).AddMinutes(minutes).AddSeconds(seconds);
-            if (DateTime.Now < todayTriggerTime)
+            if (dailyTimer != null && dailyTimer.Running)
             {
-                AddTask(CacheName, 0, todayTriggerTime, (key, value, reason) =>
-                {
-                    if (reason == CacheItemRemovedReason.Removed) return; // 被替换/系统退出则不触发
-                    MessageBus.Main.PublishAsync(new TimerMsg(onTime: true));
-                    SchaduleDailyTimer(hours, minutes, seconds, todayExecuted: true);
-                });
+                dailyTimer.Release();
             }
-            else
+            dailyTimer = new DailyTimer(hours, minutes, seconds, callBackEnum =>
             {
-                if (!todayExecuted)
+                MessageBus.Main.Publish(new TimerMsg(onTime: callBackEnum == CallBackEnum.OnTime));
+                if (callBackEnum == CallBackEnum.OnTime)
                 {
-                    MessageBus.Main.PublishAsync(new TimerMsg(onTime: false));
+                    new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器执行了一次", true);
                 }
-
-                var nextDayTriggerTime = todayTriggerTime.AddDays(1);
-                AddTask(CacheName, 0, nextDayTriggerTime, (key, value, reason) =>
-                {
-                    if (reason == CacheItemRemovedReason.Removed) return; // 被替换/系统退出则不触发
-                    MessageBus.Main.PublishAsync(new TimerMsg(onTime: true));
-                    SchaduleDailyTimer(hours, minutes, seconds, todayExecuted: true);
-                });
-            }
+            }, ex =>
+            {
+                new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.Message, true);
+            });
         }
 
         /// <summary>

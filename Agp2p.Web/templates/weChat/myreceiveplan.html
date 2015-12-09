@@ -5,6 +5,7 @@
     <title>回款计划</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/fullpage.bundle.js"></script>
 
     <style>
         .loading-hint, .empty-box {
@@ -26,7 +27,7 @@
     </script>
 
     <script type="text/html" id="repaying-project-fragment">
-        @{ _.each(items, function(item, index, list){ }@
+        @{ items.forEach(function(item, index, list){ }@
         <div class="project-cell flex flex--align-items--center flex--flex-grow-first" data-projectId="@{=item.ProjectId}@" data-ticketId="@{=item.TicketId}@">
             <div class="title-box">
                 <div class="receiveplan-title">@{=item.ProjectTitle}@</div>
@@ -69,7 +70,7 @@
                     <p>@{=project.TermsData.length}@</p>
                 </div>
             </div>
-            @{ _.each(project.TermsData, function(item, index, list){ }@
+            @{ project.TermsData.forEach(function(item, index, list){ }@
             <div class="plan-list flex flex--align-items--center">
                 <div class="">
                     <p>第 @{=index+1}@ 期回款计划</p>

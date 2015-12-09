@@ -22,6 +22,7 @@ module.exports = {
         safe: "./js/safe.js",
         mycard: "./js/mycard.js",
         aboutus: "./js/aboutus.js",
+        citySelector: "./js/citySelector.js",
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -50,8 +51,9 @@ module.exports = {
         ]
     },
     plugins: [
-        new CommonsChunkPlugin("commons.bundle.js", ["index", "login", "register", "project", "projects", "usercenter", "recharge",
-             "withdraw", "mytrade", "myinvest", "myreceiveplan", "settings", "mynews", "newsdetail", "mylottery", "safe", "mycard", "aboutus"]),
+        new CommonsChunkPlugin("fullpage.bundle.js", ["project", "myreceiveplan", "mycard", "citySelector"]),
+        new CommonsChunkPlugin("commons.bundle.js", ["fullpage.bundle.js", "index", "login", "register", "projects", "usercenter", "recharge",
+             "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

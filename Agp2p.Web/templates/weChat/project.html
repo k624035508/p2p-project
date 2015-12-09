@@ -15,10 +15,9 @@
         var projectName = '{projectModel.title}';
     </script>
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/fullpage.bundle.js"></script>
     <script src="<%templateskin%>/build/project.bundle.js"></script>
     <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
-    <link type="text/css" rel="stylesheet" href="{config.webpath}scripts/fullpage/jquery.fullPage.css">
-    <script type="text/javascript" src="{config.webpath}scripts/fullpage/jquery.fullPage.min.js"></script>
 
     <style>
         .inner-scrollable { /*fullPage 可滚动*/
@@ -81,7 +80,11 @@
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <span class="title-style">年化收益</span>
+                    <%if(projectModel.dt_article_category.call_index=="newbie")%>
+                    <p><span class="data-style">--</span></p>
+                    <%else%>
                     <p><span class="data-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%></span> %</p>
+                    <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
@@ -104,7 +107,7 @@
                 <div class="invest-action">
                     <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（大于100）">
+                        <input type="text" placeholder="请输入投资金额（大于100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>

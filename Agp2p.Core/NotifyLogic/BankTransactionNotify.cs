@@ -56,7 +56,7 @@ namespace Agp2p.Core.NotifyLogic
             //替换模板内容
             var msgContent = dtSmsTemplate.content.Replace("{amount}", tr.value.ToString())
                 .Replace("{user_name}", withdrawer.user_name)
-                .Replace("{date}", DateTime.Today.ToString("yyyy-MM-dd"));
+                .Replace("{date}", tr.create_time.ToString("yyyy-MM-dd HH:mm"));
 
             if (sendSms)
             {

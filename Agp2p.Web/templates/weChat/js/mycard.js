@@ -5,6 +5,8 @@ import "../less/card-select.css";
 import "../less/footer.less";
 import "fullpage.js/jquery.fullPage.css"
 import "fullpage.js"
+import { classMappingPingYing as classMapping } from "../../AnGuang/js/bank-list.jsx";
+import keys from "lodash/object/keys"
 
 
 /*rem的相对单位定义*/
@@ -184,22 +186,22 @@ $(function() {
         alert("请先进行实名认证");
         location.href = safeUrl;
     }
+
+    var $bankListContainer = $("#bank-select-dialog .bank-select-body");
+    var bankNames = keys(classMapping);
+    bankNames.forEach(name => {
+        var el = $(`<div><i class="sprite-dlg sprite-${classMapping[name]}"></i><span>${name}</span></div>`);
+        $bankListContainer.append(el);
+    });
+
     initFullpage();
     initCardList();
     
     fixAndroid2xOverflowCannotScroll($(".inner-scrollable, .bank-select-body"));
 
-    // init card logo
-    var bankPicMapping = {};
-    $("#bank-select-dialog .bank-select-body span").each(function (index, item) {
-        var span = $(item);
-        var bankClass = span.prev()[0].className.split(/\s+/)[1];
-        bankPicMapping[span.text().replace(/银行|储蓄/g, "")] = bankClass.replace("sprite-", "");
-    });
     $("div.card-cell p").each(function(index, item) {
         var p = $(item);
-        var iconClass = 0 < p.text().indexOf("中国银行") ? "中国" : bankPicMapping[p.text().replace(/中国|银行|储蓄/g, "")];
-        p.parent().prev().addClass(iconClass);
+        p.parent().prev().addClass(classMapping[p.text()]);
     });
 
     $("iframe").on("load", ev => {

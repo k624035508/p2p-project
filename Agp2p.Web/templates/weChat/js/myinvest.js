@@ -1,19 +1,19 @@
 ﻿import "bootstrap-webpack";
 import "../less/myinvest.css";
 import "../less/footer.less";
-import _ from "underscore";
+import template from "lodash/string/template"
 
 /*rem的相对单位定义*/
 var viewportWidth = $(window).width();
 var fontSizeUnit = viewportWidth / 20;
 $("html").css("font-size", fontSizeUnit);
 
-_.templateSettings = {
+var templateSettings = {
     evaluate: /@\{([\s\S]+?)\}@/g, // 求值 @{ ... }@
     interpolate: /@\{=([\s\S]+?)\}@/g // 直接输出 @{= ...}@
 };
 
-var render = _.template($("#investment-record").html());
+var render = template($("#investment-record").html(), templateSettings);
 function loadData(pageIndex, callback) {
     var pageSize = 15;
     var status = Number($("a.nav-active").attr("data-project-status"));

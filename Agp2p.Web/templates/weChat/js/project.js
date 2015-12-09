@@ -5,6 +5,8 @@ import "../less/claims-photos.less";
 import "../less/receive-plan-detail.less";
 import "../less/invest-success.less";
 import "../less/footer.less";
+import "fullpage.js/jquery.fullPage.css"
+import "fullpage.js"
 
 import footerInit from "./footer.js";
 import "./radialIndicator.min.js";
@@ -29,7 +31,8 @@ function initPage(){
 
     $("#btnInvest").click(function() {
         // 初始化投资确认对话框
-        var investingValue = Number($(".invest-action input").val());
+        let $investingValueInput = $(".invest-action input");
+        var investingValue = Number($investingValueInput.val());
         if (0 >= investingValue || investingValue % 1 !== 0) {
             $.dialog.tips("请输入正整数");
             return;
@@ -41,13 +44,20 @@ function initPage(){
 
         var dlg = $("#dlgInvestConfirm");
         dlg.find("#dlgField_InvestAmount").text(investingValue + " 元");
-        dlg.find("#dlgField_ProfitPredict").text(profit.toFixed(2) + " 元");
+
+        if ($investingValueInput[0].disabled && investingValue == 100) {
+            // TODO 新手体验标的临时逻辑
+            dlg.find("#dlgField_ProfitPredict").text("10 元");
+        } else {
+            dlg.find("#dlgField_ProfitPredict").text(profit.toFixed(2) + " 元");
+        }
+
         dlg.find("#dlgField_IdleMoney").text(idleMoney + " 元");
         dlg.find("#dlgField_ProjectName").text(projectName);
         dlg.modal();
     });
 
-    var investActionUrl = "{config.webpath}tools/submit_ajax.ashx?action=invest_project";
+    var investActionUrl = "/tools/submit_ajax.ashx?action=invest_project";
     $("#dlgInvestConfirm .btn-primary").click(function() { // 确认投资
         $.post(investActionUrl, {
             investingAmount: $(".invest-action input").val(),

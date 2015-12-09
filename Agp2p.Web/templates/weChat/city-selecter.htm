@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title></title>
-<script src="js/jquery-2.1.4.min.js"></script>
-<link type="text/css" rel="stylesheet" href="/scripts/fullpage/jquery.fullPage.css">
-<script type="text/javascript" src="/scripts/fullpage/jquery.fullPage.min.js"></script>
+    <script src="build/commons.bundle.js"></script>
+    <script src="build/fullpage.bundle.js"></script>
+    <script src="build/citySelector.bundle.js"></script>
 
     <style>
         .selection {
@@ -21,123 +21,6 @@
             height: 100%;
         }
     </style>
-    <script>
-        function fixAndroid2xOverflowCannotScroll($affectedElem) {
-            var ua = navigator.userAgent;
-            if (ua.indexOf("Android") >= 0) {
-                var androidversion = parseFloat(ua.slice(ua.indexOf("Android") + 8));
-                if (androidversion < 3) {
-                    var script = document.createElement('script');
-                    script.src = "js/touchscroll.js";
-                    script.onload = function () {
-                        $affectedElem.each(function (index, elem) {
-                            touchScroll(elem);
-                        });
-                    };
-                    document.head.appendChild(script);
-                }
-            }
-        }
-        function createFacade(pros) {
-            var province = null, city = null, area = null;
-            return {
-                setProvince: function (index) {
-                    province = index;
-                    city = area = null;
-                    this.loadCities();
-                    $(".slide [data-level=area]").html("");
-                },
-                setCity: function (index) {
-                    city = index;
-                    area = null;
-                    this.loadAreas();
-                },
-                setArea: function (index) { area = index; },
-
-                loadProvinces: function () {
-                    var page = $(".slide [data-level=province]");
-                    page.html("");
-                    $.each(pros, function (index, pro) {
-                        page.append("<div class='selection'>" + pro.p + "</div>");
-                    });
-                },
-                loadCities: function () {
-                    var page = $(".slide [data-level=city]");
-                    page.html("");
-                    $.each(pros[province].c, function (index, city) {
-                        page.append("<div class='selection'>" + city.n + "</div>");
-                    });
-                },
-                loadAreas: function() {
-                    var page = $(".slide [data-level=area]");
-                    page.html("");
-                    $.each(pros[province].c[city].a, function (index, area) {
-                        page.append("<div class='selection'>" + area.s + "</div>");
-                    });
-                },
-                getLoc: function() {
-                    return [
-                        pros[province].p,
-                        city == null ? "" : pros[province].c[city].n,
-                        area == null ? "" : pros[province].c[city].a[area].s
-                    ].join(";");
-                }
-            };
-        }
-
-        function pickDone(loc) {
-            alert(loc);
-        }
-
-        $(function () {
-            $('#fullpage').fullpage({
-                controlArrows: false,
-                verticalCentered: false,
-                loopHorizontal: false,
-                anchors: ['pager']
-            });
-            $.fn.fullpage.setAllowScrolling(false); // 允许上下滚动
-
-            var facade;
-            // 加载地理数据
-            $.ajax({
-                url: "/templates/AnGuang/js/city.min.js",
-                success: function(data) {
-                    var startPoint = data.indexOf("[");
-                    data = JSON.parse(data.substr(startPoint));
-                    facade = createFacade(data);
-                    facade.loadProvinces();
-                },
-                error: function() {
-                    alert("加载地理信息失败，请刷新网页重试");
-                },
-                dataType: "text"
-            });
-
-            $(".slide").on("click", "div.selection", function () {
-                var parent = $(this).parents("[data-level]");
-                var level = parent.attr("data-level");
-                var clickedIndex = $(this).index();
-                if (level !== "area") {
-                    try {
-                        if (level === "province") {
-                            facade.setProvince(clickedIndex);
-                        } else if (level === "city") {
-                            facade.setCity(clickedIndex);
-                        }
-                        $.fn.fullpage.moveSlideRight();
-                    } catch (e) {
-                        pickDone(facade.getLoc());
-                    } 
-                } else {
-                    facade.setArea(clickedIndex);
-                    pickDone(facade.getLoc());
-                }
-            });
-
-            fixAndroid2xOverflowCannotScroll($(".inner-scrollable"));
-        });
-    </script>
 
 </head>
 <body>
