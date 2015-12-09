@@ -364,6 +364,14 @@ body { background: @body-color; }
 	}
 }
 
+.unselectable {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
 #picModal {
 	.modal-dialog {
 		width: 650px;
@@ -375,14 +383,17 @@ body { background: @body-color; }
 #picWall {
 	.modal-dialog {
 		width: 600px;
-		margin: 0 auto;
+		margin: 30px auto;
 		.modal-content .modal-body {
 			& > * {
 				display: inline-block;
 				vertical-align: middle;
+				.unselectable;
 			}
 			span {
 				width: 5%;
+				height: 50px;
+				line-height: 50px;
 				cursor: pointer;
 				text-align: center;
 			}

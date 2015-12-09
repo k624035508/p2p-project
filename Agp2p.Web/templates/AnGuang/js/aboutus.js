@@ -21,22 +21,35 @@ $(function(){
     });
 
     //员工风采、办公环境照片墙点击放大浏览
-    var $nailPic = $("#office ul.picWall li a");
+    var $nailOffice = $("#office ul.picWall li a");
+    var $nailStaff =  $("#staff ul.picWall li a");
     var $picBox = $("#picWall .modal-body img");
+
+    var $currentPics = null;
     var currentPicIndex = -1;
 
-    function enlarge (ev) {
-        var picSrc = $(this).data("src");
-        var picBox = $("#picWall .modal-body img");
-        picBox.attr("src", picSrc);
+    var enlarge = function($pics) {
+        return function  () {
+            $currentPics = $pics;
+            currentPicIndex = $.inArray(this, $pics);
 
-        currentPicIndex = $.inArray(this, $nailPic);
+            var picSrc = $(this).data("src");
+            var $picBox = $("#picWall .modal-body img");
+            $("#picWall").modal();
+
+            $picBox.attr("src", picSrc);
+
+            $picBox.one("load", () => {
+                var offsetHeight = ($(window).height() - $("#picWall .modal-content").height()) / 2;
+                $("#picWall .modal-dialog").css("margin-top", offsetHeight + "px");
+            }).each(function() {
+                if(this.complete) $(this).load();
+            });
+        };
     }
 
-    $nailPic.click(enlarge);
-
-    var offsetHeight = ($(window).height() - $("#picWall .modal-content").height()) / 2;
-    $("#picWall .modal-dialog").css("margin-top", offsetHeight + "px");
+    $nailOffice.click(enlarge($nailOffice));
+    $nailStaff.click(enlarge($nailStaff));
 
     var $prev = $("#picWall .modal-body .prev");
     var $next = $("#picWall .modal-body .next");
@@ -45,17 +58,17 @@ $(function(){
             alert("已经是第一张");
         } else {
             currentPicIndex = currentPicIndex - 1;
-            var prevPic = $nailPic.eq(currentPicIndex).data("src");
+            var prevPic = $currentPics.eq(currentPicIndex).data("src");
             $picBox.attr("src", prevPic);
         }
     });
 
     $next.click(function(){
-        if(currentPicIndex == $nailPic.length - 1){
+        if(currentPicIndex == $currentPics.length - 1){
             alert("已经是最后一张");
         } else {
             currentPicIndex = currentPicIndex + 1;
-            var nextPic = $nailPic.eq(currentPicIndex).data("src");
+            var nextPic = $currentPics.eq(currentPicIndex).data("src");
             $picBox.attr("src", nextPic);
         }
     });
