@@ -47,10 +47,6 @@
             color: #ff8d4e;
             font-size: 1.2em;
         }
-        /*债权照片*/
-        .photo-cell {
-            display: none;
-        }
         /*加载提示*/
         .loading-hint {
             padding-top: 25px;
@@ -120,7 +116,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <div class="debt-photos" onclick="location.href='#project/pics'">债权照片 <span class="glyphicon glyphicon-menu-right"></span></div>
+                <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
             </div>
         </div>
@@ -191,32 +187,19 @@
     </div>
     <div class="slide" data-anchor="pics">
         <div class="claims-photos inner-scrollable">
-            <div class="nav-btns">
-                <a id="spot-pics" href="javascript:;" data-display-picType="live">现场照片<span class="hr-style">|</span></a>
-                <a href="javascript:;" data-display-picType="credit">债权信息<span class="hr-style">|</span></a>
-                <a href="javascript:;" data-display-picType="mortgage">合同与凭证</a>
-            </div>
             <div class="photos-box">
-                <%set var pics = QueryAlbums().ToList()%>
-                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.Pictures))%>
-                <div class="photo-cell" data-picType="live">
+                <%set var pics=QueryAlbums()%>
+                <%foreach(var picture in pics)%>
+                <div class="photo-cell">
                     <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
                 </div>
                 <%/foreach%>
-                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.PropertyCertificate||a.type==(int)Agp2pEnums.AlbumTypeEnum.LienCertificate))%>
-                <div class="photo-cell" data-picType="credit">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
-                </div>
-                <%/foreach%>
-                <%foreach(var picture in pics.Where(a=>a.type==(int)Agp2pEnums.AlbumTypeEnum.LoanAgreement||a.type==(int)Agp2pEnums.AlbumTypeEnum.MortgageContract||a.type==(int)Agp2pEnums.AlbumTypeEnum.IdCard))%>
-                <div class="photo-cell" data-picType="mortgage">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
-                </div>
-                <%/foreach%>
+                <%if(!pics.Any())%>
                 <div class="loading-hint">
                     <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
                     <p style="color:#ccc">目前没有照片记录</p>
                 </div>
+                <%/if%>
             </div>
         </div>
     </div>

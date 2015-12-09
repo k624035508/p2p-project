@@ -102,25 +102,6 @@ function initFullpage() {
     }
 }
 function initPics() {
-    var loadingHintForPics = $(".claims-photos .loading-hint");
-    $("div.nav-btns a").click(function () {
-        var clickedTab = $(this);
-        if (clickedTab.hasClass("nav-active")) return;
-        clickedTab.siblings().removeClass("nav-active nav-border-active");
-        clickedTab.addClass("nav-active nav-border-active");
-
-        var displayType = clickedTab.attr("data-display-picType");
-        $(".photo-cell:not([data-picType=" + displayType + "])").hide();
-        var picsShouldShow = $(".photo-cell[data-picType=" + displayType + "]");
-        if (picsShouldShow.length === 0) {
-            loadingHintForPics.show();
-        } else {
-            loadingHintForPics.hide();
-            picsShouldShow.show();
-        }
-    });
-    $("#spot-pics").click();
-
     //照片大图弹出
     var zoomingImg = $("#photo-enlarge-dialog img");
     var dlgZooming = $('#photo-enlarge-dialog');

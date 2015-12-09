@@ -74,9 +74,9 @@ namespace Agp2p.Web.UI.Page
             invsetorCount = projectModel.GetInvestedUserCount();
 
             //还款计划
-            repayment_tasks = context.li_repayment_tasks
+            repayment_tasks = projectModel.li_repayment_tasks
+                .Where(task => task.only_repay_to == null)
                 .OrderBy(rt => rt.should_repay_time)
-                .Where(rt => rt.project == project_id)
                 .ToList();
         }
 
