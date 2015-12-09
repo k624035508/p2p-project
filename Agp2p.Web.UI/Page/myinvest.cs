@@ -93,15 +93,17 @@ namespace Agp2p.Web.UI.Page
             var result = ptrs.Select(ptr =>
             {
                 var proj = ptr.li_projects;
-                var profit = proj.profit_rate == 0
-                    ? Math.Round(ptr.principal * proj.GetFinalProfitRate(now), 2)
-                    : Math.Round(proj.profit_rate * ptr.principal, 2);
+                var profit = proj.dt_article_category.call_index == "newbie"
+                    ? 10
+                    : proj.profit_rate == 0
+                        ? Math.Round(ptr.principal*proj.GetFinalProfitRate(now), 2)
+                        : Math.Round(proj.profit_rate*ptr.principal, 2);
                 return new
                 {
                     ptrId = ptr.id,
                     projectId = proj.id,
                     projectName = proj.title,
-                    projectProfitRateYearly = proj.profit_rate_year,
+                    projectProfitRateYearly = proj.GetProfitRateYearly(),
                     term = proj.repayment_term_span_count + proj.GetProjectTermSpanEnumDesc(),
                     investTime = ptr.create_time.ToString("yy/MM/dd HH:mm"),
                     investValue = ptr.principal,

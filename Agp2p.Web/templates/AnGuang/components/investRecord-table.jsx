@@ -54,7 +54,7 @@ class InvestRecordTable extends React.Component {
                     { this.state.data.map(tr =>
                         <tr className="detailRow" key={tr.ptrId}>
                             <td><a href={`/project/${tr.projectId}.html`} target="_blank" title={tr.projectName}>{tr.projectName}</a></td>
-                            <td>{tr.projectProfitRateYearly + "%"}</td>
+                            <td>{tr.projectProfitRateYearly}</td>
                             <td>{tr.term}</td>
                             <td>{tr.investValue}</td>
                             <td>{tr.profit}</td>
