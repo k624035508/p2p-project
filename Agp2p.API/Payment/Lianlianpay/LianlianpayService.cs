@@ -167,7 +167,7 @@ namespace Agp2p.API.Payment.Lianlianpay
          */
         private String createRiskItem()
         {
-            return "{\"frms_ware_category\":\"1999\",\"user_info_full_name\":\"金汇丰会员\"}";
+            return "{\"frms_ware_category\":\"1999\",\"user_info_full_name\":\"安广融合会员\"}";
         }
     }
 }

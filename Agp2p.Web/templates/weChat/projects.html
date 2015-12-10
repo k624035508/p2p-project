@@ -19,7 +19,7 @@
         <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='project/@{=item.id}@.html#project'">
             <div class="invest-project">
                 <p class="invest-title">
-                    <span class="project-type">房贷宝</span>
+                    <span class="project-type">@{=item.categoryTitle}@</span>
                     @{=item.title}@
                     @{ if (item.tag=="1") { }@
                     <span class="book-icon">约标</span>
