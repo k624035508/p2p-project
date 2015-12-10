@@ -5,17 +5,8 @@ div.binding-cards-page {
     padding: 1rem 5%;
     form{
        & > div { margin-bottom: 1rem; }
-        button, input { height: 2.7rem; }
-        #submitBtn, input {  width: 100%; }
-        #delete-btn {
-            width: 40%;
-            background-color: #fd565d;
-        }
-        #modify-btn {
-            width: 40%;
-            float: right;
-        }
-        input { padding-left: 15%; }
+        .modify-btns-box button { width: 40%; }
+        #delete-btn { background-color: #fd565d; }
         #realName {
             background: url("@{recharge}/account.png") no-repeat 3% center;
             background-size: 8%;
@@ -35,12 +26,12 @@ div.binding-cards-page {
     }
     #for-bank {
         position: absolute;
-        top: 9.45rem;
+        top: 10.2rem;
         left: 37.5rem;
     }
     #for-city {
         position: absolute;
-        top: 13.1rem;
+        top: 14.2rem;
         left: 37.5rem;
     }
     .glyphicon-triangle-bottom:before { color: #ccc; }
