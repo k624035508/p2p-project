@@ -905,7 +905,6 @@
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\binding-cards-icon.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
-    <Content Include="templates\weChat\imgs\charge-icon.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
     <Content Include="templates\weChat\imgs\footer\index-active.png" />
     <Content Include="templates\weChat\imgs\footer\index.png" />
@@ -922,6 +921,12 @@
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
     <Content Include="templates\weChat\imgs\logo.png" />
+    <Content Include="templates\weChat\imgs\recharge\account.png" />
+    <Content Include="templates\weChat\imgs\recharge\amount.png" />
+    <Content Include="templates\weChat\imgs\recharge\bank-card.png" />
+    <Content Include="templates\weChat\imgs\recharge\bank.png" />
+    <Content Include="templates\weChat\imgs\recharge\position.png" />
+    <Content Include="templates\weChat\imgs\recharge\trade-pwd.png" />
     <Content Include="templates\weChat\imgs\safe-center-icon.png" />
     <Content Include="templates\weChat\imgs\settings\about-icon.png" />
     <Content Include="templates\weChat\imgs\settings\bank-icon.png" />
@@ -966,7 +971,6 @@
     <Content Include="templates\weChat\less\receive-plan.css" />
     <Content Include="templates\weChat\less\trade-record.css" />
     <Content Include="templates\weChat\less\verified.css" />
-    <Content Include="templates\weChat\less\withdrawals.css" />
     <Content Include="templates\weChat\project.html" />
     <Content Include="templates\weChat\projects.html" />
     <Content Include="templates\weChat\js\bootstrap.min.js" />
@@ -1097,9 +1101,10 @@
     <Content Include="templates\AnGuang\less\about_more.less" />
     <Content Include="templates\weChat\less\mynews.less" />
     <Content Include="templates\weChat\less\safe.less" />
-    <Content Include="templates\weChat\less\charge.less" />
     <Content Include="templates\weChat\less\aboutus.less" />
     <Content Include="templates\weChat\less\settings.less" />
+    <Content Include="templates\weChat\less\recharge.less" />
+    <Content Include="templates\weChat\less\withdraw.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
