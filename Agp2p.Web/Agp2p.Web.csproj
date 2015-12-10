@@ -899,7 +899,7 @@
     <Content Include="templates\weChat\aboutus.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="templates\weChat\forgot_pwd.html" />
+    <Content Include="templates\weChat\forgot_password.html" />
     <Content Include="templates\weChat\imgs\agrh.png" />
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
@@ -943,6 +943,7 @@
     <Content Include="templates\weChat\js\aboutus.js" />
     <Content Include="templates\weChat\js\citySelector.js" />
     <Content Include="templates\weChat\js\footer.js" />
+    <Content Include="templates\weChat\js\forgotPassword.js" />
     <Content Include="templates\weChat\js\index.js" />
     <Content Include="templates\weChat\js\login.js" />
     <Content Include="templates\weChat\js\mycard.js" />
