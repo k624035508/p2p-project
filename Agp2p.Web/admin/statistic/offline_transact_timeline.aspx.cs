@@ -152,7 +152,7 @@ namespace Agp2p.Web.admin.statistic
                     type = Utils.GetAgp2pEnumDes(
                         (Agp2pEnums.OfflineTransactionTypeEnum)pptr.prt.type),
                     remark = pptr.prt.remark,
-                    user = pptr.prt.dt_users.real_name ?? pptr.prt.dt_users.user_name,
+                    user = string.IsNullOrEmpty(pptr.prt.dt_users.real_name) ? pptr.prt.dt_users.user_name : pptr.prt.dt_users.real_name,
                     project = pptr.prt.li_projects == null ? "" : pptr.prt.li_projects.title
                 });
         }

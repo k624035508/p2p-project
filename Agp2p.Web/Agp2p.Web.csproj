@@ -994,7 +994,13 @@
     <Content Include="templates\weChat\verified.html" />
     <Content Include="templates\weChat\webpack.config.js" />
     <Content Include="templates\weChat\withdraw.html" />
+    <Content Include="templates\weChat\_company_info.html" />
     <Content Include="templates\weChat\_footer.html" />
+    <Content Include="templates\weChat\_loaner_info.html" />
+    <Content Include="templates\weChat\_project_intro.html" />
+    <Content Include="templates\weChat\_risk_control.html" />
+    <Content Include="templates\weChat\_ticket_info.html" />
+    <Content Include="templates\weChat\_ticket_intro.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\invest-agreement.html" />
     <Content Include="tools\submit_ajax.ashx" />

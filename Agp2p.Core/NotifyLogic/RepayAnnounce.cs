@@ -99,7 +99,7 @@ namespace Agp2p.Core.NotifyLogic
 
                     //发送短信
                     var msgContent = smsModel.content
-                        .Replace("{user_name}", t.dt_users.user_name)
+                        //.Replace("{user_name}", t.dt_users.user_name)
                         .Replace("{project_name}", t.li_projects.title)
                         .Replace("{amount}", (t.principal + t.interest).ToString());
 

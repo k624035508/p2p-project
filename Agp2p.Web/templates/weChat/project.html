@@ -123,25 +123,15 @@
     </div>
     <div class="slide" data-anchor="details">
         <div class="project-detail-page inner-scrollable">
-            <div class="borrower">
-                <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">借款人信息</span></div>
-                <div class="borrower-info">
-                    <ul>
-                        <li><span>借款用户： </span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>                        
-                        <li><span>年龄： </span><span>{loaner.age}</span></li>
-                        <li><span>性别： </span><span><%=loaner.dt_users.sex%></span></li>
-                        <li><span>籍贯： </span><span>{loaner.native_place}</span></li>
-                        <li><span>婚姻状况： </span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
-                        <li><span>每月收入： </span><span>{loaner.income}</span></li>
-                        <li><span>担任职业： </span><span>{loaner.job}</span></li>
-                        <li><span>工作地点： </span><span>{loaner.working_at}</span></li>
-                    </ul>
-                </div>
-                <div class="borrower-remark">
-                    <p class="remark-style">备注：</p>
-                    <span style="display:block;margin-top:0.5rem">{risk.loaner_content}</span>
-                </div>
-            </div>
+
+            <%template src="_project_intro.html"%>
+            <%template src="_loaner_info.html"%>
+            <%template src="_ticket_info.html"%>
+            <%template src="_ticket_intro.html"%>
+            <%template src="_company_info.html"%>
+            <%template src="_risk_control.html"%>
+
+            <!--
             <div class="pawn">
                 <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">抵押物信息</span></div>
                 <%foreach(var mortgage in mortgages)%>
@@ -157,15 +147,7 @@
                     <span style="display:block;margin-top:0.5rem">{mortgage.remark}</span>
                 </div>
                 <%/foreach%>
-            </div>
-            <div class="creditor">
-                <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">债权人信息</span></div>
-                <div class="creditor-info">{risk.creditor_content}</div>
-            </div>
-            <div class="risk-control">
-                <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">风控措施</span></div>
-                <div class="risk-control-info">{risk.risk_content}</div>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="slide" data-anchor="investments">
@@ -183,6 +165,12 @@
                 </div>
             </div>
             <%/for%>
+            <%if(!investments.Any())%>
+            <div class="loading-hint">
+                <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
+                <p style="color:#ccc">目前没有投资记录</p>
+            </div>
+            <%/if%>
         </div>
     </div>
     <div class="slide" data-anchor="pics">
@@ -207,7 +195,7 @@
         <%if(!repayment_tasks.Any())%>
         <div class="loading-hint">
             <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-            <p style="color:#ccc">此项目目前没有回款记录</p>
+            <p style="color:#ccc">此项目目前没有回款计划</p>
         </div>
         <%/if%>
         <div class="receive-plan-detail-page inner-scrollable">

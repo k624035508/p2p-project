@@ -1,0 +1,14 @@
+﻿<%if(projectModel.dt_article_category.call_index=="ypb")%>
+<div class="">
+    <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">票据信息</span></div>
+    <div class="project-info project-info-properties">
+        <ul>
+            <%foreach(var p in GetAllMortgagesInfo(false))%>
+            <%if(p.Item1!="票据号码")%>
+            <li><span><%=p.Item1%>：</span><span><%=p.Item2%></span></li>                        
+            <%/if%>
+            <%/foreach%>
+        </ul>
+    </div>
+</div>
+<%/if%>
