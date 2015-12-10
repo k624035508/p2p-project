@@ -1,4 +1,5 @@
 ﻿import "bootstrap-webpack";
+import "../less/common.less";
 import "../less/register.less";
 
 window['$'] = window['jQuery'] = $;
