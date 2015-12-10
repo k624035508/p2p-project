@@ -90,6 +90,7 @@ namespace Agp2p.Web.UI.Page
             var ptrs = QueryInvestment(userInfo.id, (Agp2pEnums.MyInvestRadioBtnTypeEnum) type, pageIndex, startTime, endTime, pageSize, out count);
 
             var now = DateTime.Now;
+            Model.siteconfig config = new BLL.siteconfig().loadConfig();
             var result = ptrs.Select(ptr =>
             {
                 var proj = ptr.li_projects;
@@ -102,6 +103,7 @@ namespace Agp2p.Web.UI.Page
                 {
                     ptrId = ptr.id,
                     projectId = proj.id,
+                    projectUrl = linkurl(config, "project", proj.id),
                     projectName = proj.title,
                     projectProfitRateYearly = proj.GetProfitRateYearly(),
                     term = proj.repayment_term_span_count + proj.GetProjectTermSpanEnumDesc(),

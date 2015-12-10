@@ -290,6 +290,7 @@ namespace Agp2p.Web.UI.Page
         public static string AjaxQueryProjectsDetail(short pageIndex, short pageSize)
         {
             int totalCount;
+            Model.siteconfig config = new BLL.siteconfig().loadConfig();
             var data = QueryProjects(pageSize, pageIndex, out totalCount).Select(p =>
             {
                 var pr = GetProjectInvestmentProgress(p);
@@ -318,7 +319,8 @@ namespace Agp2p.Web.UI.Page
                     project_investment_progress = pr.GetInvestmentProgress(), //项目进度
                     project_investment_balance = pr.GetInvestmentBalance(), //项目投资剩余金额
                     project_investment_count = p.GetInvestedUserCount(), //项目投资人数
-                    conversionBank = p.GetMortgageInfo("bank") // 承兑银行
+                    conversionBank = p.GetMortgageInfo("bank"), // 承兑银行
+                    linkurl = linkurl(config, "project", p.id)
                 };
             });
             return JsonConvert.SerializeObject(new { totalCount, data });
