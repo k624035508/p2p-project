@@ -32,6 +32,7 @@ namespace Agp2p.Web.UI
         public string categoryTitle { get; set; }
         public string categoryCallIndex { get; set; }
         public string conversionBank { get; set; }
+        public string linkurl { get; set; }
     }
 
     public partial class BasePage : System.Web.UI.Page
@@ -44,6 +45,7 @@ namespace Agp2p.Web.UI
 
         protected static DataTable get_project_list(int pageSize, int pageNum, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
+            Model.siteconfig config = new BLL.siteconfig().loadConfig();
             var queryToNewObj = QueryProjects(pageSize, pageNum - 1, out total, category_id, profit_rate_index, repayment_index, status_index).Select(p =>
             {
                 var pr = GetProjectInvestmentProgress(p);
@@ -71,7 +73,8 @@ namespace Agp2p.Web.UI
                     project_amount_str = p.financing_amount.ToString("n0"),//项目金额字符
                     project_investment_progress = pr.GetInvestmentProgress(),//项目进度
                     project_investment_balance = pr.GetInvestmentBalance(),//项目投资剩余金额
-                    project_investment_count = p.GetInvestedUserCount()//项目投资人数
+                    project_investment_count = p.GetInvestedUserCount(),//项目投资人数
+                    linkurl = linkurl(config, "project", p.id)
                 };
             });
 
