@@ -3,63 +3,47 @@
 
 div.binding-cards-page {
     padding: 1rem 5%;
-}
-
-div.binding-cards-page form > div {
-    margin-bottom: 1rem;
-}
-
-#for-bank {
-    position: absolute;
-    top: 9.45rem;
-    left: 37.5rem;
-}
-
-#for-city {
-    position: absolute;
-    top: 13.1rem;
-    left: 37.5rem;
-}
-
-.glyphicon-triangle-bottom:before {
-    color: #ccc;
-}
-
-div.submit-btn-wrap button {
-    width: 18rem;
-}
-
-button#delete-btn {
-    width: 40%;
-    height: 2.7rem;
-    background-color: #fd565d;
-}
-
-button#modify-btn {
-    width: 40%;
-    height: 2.7rem;
-    float: right;
-}
-
-div.binding-cards-page input {
-    width: 18rem;
-    height: 2.7rem;
-    background: url("../imgs/binding-cards-icon.png") no-repeat;
-    background-size: 13%;
-}
-
-input#realName {
-    background-position: 0 -11.45rem;
-}
-input#cardNumber, input#bankName {
-    background-position: 0 -2.2rem;
-}
-input#openingBank {
-    background-position: 0 -4.5rem;
-}
-
-input#bankLocation {
-    background-position: 0 0.15rem;
+    form{
+       & > div { margin-bottom: 1rem; }
+        button, input { height: 2.7rem; }
+        #submitBtn, input {  width: 100%; }
+        #delete-btn {
+            width: 40%;
+            background-color: #fd565d;
+        }
+        #modify-btn {
+            width: 40%;
+            float: right;
+        }
+        input { padding-left: 15%; }
+        #realName {
+            background: url("@{recharge}/account.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #cardNumber, #bankName {
+            background: url("@{recharge}/bank-card.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #bankLocation {
+            background: url("@{recharge}/position.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #openingBank {
+            background: url("@{recharge}/bank.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+    }
+    #for-bank {
+        position: absolute;
+        top: 9.45rem;
+        left: 37.5rem;
+    }
+    #for-city {
+        position: absolute;
+        top: 13.1rem;
+        left: 37.5rem;
+    }
+    .glyphicon-triangle-bottom:before { color: #ccc; }
 }
 
 .modal-header .close {margin-top: -1rem;}
