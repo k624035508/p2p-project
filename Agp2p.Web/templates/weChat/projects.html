@@ -65,6 +65,7 @@
 <body>
     <div class="invest-page">
         <div class="invest-nav">
+            <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
             <%foreach(var kvp in CategoryIdTitleMap)%>
             <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
             <%/foreach%>
