@@ -1105,6 +1105,7 @@
     <Content Include="templates\weChat\less\withdraw.less" />
     <Content Include="templates\weChat\less\mycard.less" />
     <Content Include="templates\weChat\less\forgot_password.less" />
+    <Content Include="templates\weChat\less\invest-record.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
