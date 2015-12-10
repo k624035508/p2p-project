@@ -17,8 +17,6 @@ namespace Agp2p.Web.api.payment.ecpss
             string result = Request.Params["Result"];//支付结果描述
             string signMD5info = Request.Params["SignMD5info"];//md5签名
 
-            Response.Redirect(new Web.UI.BasePage().linkurl("usercenter", "index"));
-
             var context = new Agp2p.Linq2SQL.Agp2pDataContext();
             var bankTran = context.li_bank_transactions.FirstOrDefault(b => b.no_order == billNo);
 
