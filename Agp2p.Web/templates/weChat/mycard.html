@@ -50,25 +50,25 @@
             <div class="binding-cards-page inner-scrollable">
                 <form>
                     <div class="name-wrap">
-                        <input id="realName" type="text" readonly="readonly" value="{userModel.real_name}">
+                        <input id="realName" type="text" class="input-l" readonly="readonly" value="{userModel.real_name}">
                     </div>
                     <div class="card-num-wrap">
-                        <input type="text" id="cardNumber" placeholder="请输入银行卡号">
+                        <input type="text" id="cardNumber" class="input-l" placeholder="请输入银行卡号">
                     </div>
                     <div class="bank-select-wrap" data-toggle="modal" data-target="#bank-select-dialog">
-                        <input type="text" id="bankName" placeholder="请选择银行" readonly="readonly">
+                        <input type="text" id="bankName" class="input-l" placeholder="请选择银行" readonly="readonly">
                     </div>
                     <div class="city-select-wrap" data-toggle="modal" data-target="#dlgSelectArea">
-                        <input type="text" id="bankLocation" placeholder="请选择开户行城市" readonly="readonly">
+                        <input type="text" id="bankLocation" class="input-l" placeholder="请选择开户行城市" readonly="readonly">
                     </div>
                     <div class="bank-name-wrap">
-                        <input type="text" id="openingBank" placeholder="请输入开户行名称">
+                        <input type="text" id="openingBank" class="input-l" placeholder="请输入开户行名称">
                     </div>
                     <div class="submit-btn-wrap">
-                        <button type="button" id="submitBtn">提 交</button>
+                        <button type="button" id="submitBtn" class="button-l" >提 交</button>
                         <div class="modify-btns-box">
-                            <button id="delete-btn" type="button">删 除</button>
-                            <button id="modify-btn" type="button">修 改</button>
+                            <button type="button" id="delete-btn">删 除</button>
+                            <button type="button" id="modify-btn" class="pull-right">修 改</button>
                         </div>
                     </div>
                 </form>

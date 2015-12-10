@@ -1,5 +1,4 @@
 ﻿/*register.less*/
-@import "common";
 @input: "../imgs/input-icon";
 
 .register-page {
@@ -7,13 +6,13 @@
     form {
         width: 20rem;
         & > div { margin-bottom: 1.2rem; }
-        input { padding-left: 15%; }
+        .pic-code-wrap span img { width: 100%; }
         #account {
-            background: url("@{input}/user.png") no-repeat 2% center;
+            background: url("@{input}/user.png") no-repeat 3% center;
             background-size: 8%;
         }
         #psw, #psw2 {
-            background: url("@{input}/pwd.png") no-repeat 2% center;
+            background: url("@{input}/pwd.png") no-repeat 3% center;
             background-size: 8%;
         }
         #pic-code {
@@ -25,46 +24,41 @@
             background-size: 15%;
         }
         #recommend-one {
-            background: url("@{input}/recommend.png") no-repeat 2% center;
+            background: url("@{input}/recommend.png") no-repeat 3% center;
             background-size: 8%;
         }
-        #agreement { padding: 0; }
-
-
+        .agreement-wrap {
+            #agreement {
+                width: 16px;
+                height: 16px;
+                margin-top: 1.5px;
+                margin-right: 5px;
+                padding: 0;
+                vertical-align: top;
+                border-radius: 0;
+                &:checked {
+                    background: url("../imgs/blue-tick.png") no-repeat center;
+                    background-size: contain;
+                }
+            }
+            label {
+                color: #3e4346;
+                font-weight: normal;
+                a {
+                    color: #1478d2;
+                    text-decoration: none;
+                }
+            }
+        }
     }
-}
-div.pic-code-wrap span img {
-    width: 100%;
-}
-input#agreement {
-    width: 16px;
-    height: 16px;
-    margin-top: 1.5px;
-    margin-right: 5px;
-    vertical-align: top;
-    -webkit-appearance: none;
-    border-radius: 0;
-    border: 1px solid #ccc;
-}
-input[type=checkbox]:checked {
-    background: url("../imgs/blue-tick.png") no-repeat center center;
-    background-size: 100%;
-}
-div.agreement-wrap label {
-    color: #3e4346;
-    font-weight: normal;
-}
-div.agreement-wrap label a {
-    color: @blue;
-    text-decoration: none;
-}
-div.login-now-wrap {
-    text-align: center;
-    color: #a9a9a9;
-    margin-bottom: 30px;
-}
-div.login-now-wrap a {
-    padding-left: 8px;
-    color: @blue;
-    text-decoration: none;
+    .login-now-wrap {
+        text-align: center;
+        color: #a9a9a9;
+        margin-bottom: 30px;
+        a {
+            padding-left: 8px;
+            color: #1478d2;
+            text-decoration: none;
+        }
+    }
 }

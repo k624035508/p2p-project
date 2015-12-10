@@ -19,13 +19,13 @@
     <div class="withdraw-page">
         <form>
             <div class="withdraw-amount-wrap">
-                <input type="text" id="withdrawals" placeholder="账户余额 <%=string.Format("{0:N}",userModel.li_wallets.idle_money)%> 元">
+                <input type="text" id="withdrawals" class="input-l" placeholder="账户余额 <%=string.Format("{0:N}",userModel.li_wallets.idle_money)%> 元">
             </div>
             <div class="select-card-wrap">
-                <input type="text" id="select-card" placeholder="请选择银行卡" readonly="readonly"/>
+                <input type="text" id="select-card" class="input-l" placeholder="请选择银行卡" readonly="readonly"/>
             </div>
             <div class="trade-psw-wrap">
-                <input type="text" id="trade-psw" placeholder="请输入交易密码" autocomplete="off">
+                <input type="text" id="trade-psw" class="input-l" placeholder="请输入交易密码" autocomplete="off">
             </div>
             <div class="withdrawals-tips-wrap">
                 手续费：<span id="handling-fee">?</span>
@@ -36,7 +36,7 @@
                 预计到账日期：<%=DateTime.Now.AddDays(2).ToString("yyyy-MM-dd")%>（1-2个工作日内到账，双休日和法定节假日除外）
             </div>
             <div class="submit-btn-wrap">
-                <button type="button" id="submit-btn">提 交</button>
+                <button type="button" id="submit-btn" class="button-l">提 交</button>
             </div>
         </form>
         <span class="glyphicon glyphicon-triangle-bottom" id="for-bank"></span>

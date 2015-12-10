@@ -1,5 +1,6 @@
 ﻿import "bootstrap-webpack";
-import "../less/forgot-psw.css"
+import "../less/common.less";
+import "../less/forgot_password.less";
 
 window['$'] = window["jQuery"] = $;
 

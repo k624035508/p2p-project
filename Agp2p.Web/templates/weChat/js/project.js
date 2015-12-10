@@ -1,6 +1,7 @@
 import "bootstrap-webpack";
 import "../less/project.less";
 import "../less/project-detail.less";
+import "../less/invest-record.less";
 import "../less/claims-photos.less";
 import "../less/receive-plan-detail.less";
 import "../less/invest-success.less";
