@@ -1,9 +1,9 @@
 ﻿<%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Personal)%>
     <%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
-    <div class="">
-        <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">借款方信息</span></div>
-        <div class="project-info project-info-properties">
-            <ul>
+    <div class="content-wrap">
+        <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">借款方信息</span></div>
+        <div class="project-info">
+            <ul class="list-unstyled">
                 <li><span>姓名：</span><span><%=loaner.dt_users.real_name.Substring(0, 1)+"**"%></span></li>                        
                 <li><span>婚姻状况：</span><span><%=Agp2p.Common.Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.MaritalStatusEnum)loaner.marital_status)%></span></li>
                 <li><span>职业：</span><span>{loaner.job}</span></li>

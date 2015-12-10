@@ -1,13 +1,13 @@
 ﻿<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
-<div class="">
-    <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">保障措施</span></div>
-    <div class="project-info project-info-properties">
+<div class="content-wrap">
+    <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">保障措施</span></div>
+    <div class="project-info">
         <%if(!string.IsNullOrWhiteSpace(risk.risk_content))%>
         <div class="measure">{risk.risk_content}</div>
         <%/if%>
 
         <%if(projectModel.dt_article_category.call_index!="fdb")%>
-        <ul>
+        <ul class="list-unstyled">
             <%foreach(var p in GetAllMortgagesInfo())%>
             <li><span><%=p.Item1%>：</span><span><%=p.Item2%></span></li>                        
             <%/foreach%>

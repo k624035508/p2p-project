@@ -1,11 +1,11 @@
 ﻿<%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
     <%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
         <%if(projectModel.type==(int)Agp2pEnums.LoanTypeEnum.Company)%>
-        <div class="">
-            <div class="project-detail-title"><span class="title-icon"><span class="blue-mark"></span><span class="orange-mark"></span></span><span class="title-orange">企业信息</span></div>
-            <div class="project-info project-info-properties">
+        <div class="content-wrap">
+            <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">企业信息</span></div>
+            <div class="project-info">
                 <%if(loaner_company!=null)%>
-                <ul>
+                <ul class="list-unstyled">
                     <li><span>企业名称：</span><span>{loaner_company.name}</span></li>
                     <li><span>企业地址：</span><span>{loaner_company.address}</span></li>
                     <li><span>企业法人：</span><span>{loaner_company.manager}</span></li>
