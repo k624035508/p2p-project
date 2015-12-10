@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/binding-cards.css";
+import "../less/mycard.less";
 import "../less/cards-list.css";
 import "../less/card-select.css";
 import "../less/footer.less";
