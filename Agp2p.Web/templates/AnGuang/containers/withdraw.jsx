@@ -125,7 +125,7 @@ class WithdrawPage extends React.Component {
 				    <div className="balance-withdraw"><span>可用余额：</span>{"￥" + this.props.idleMoney.toString()}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
-				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span>{"实际到账：" + this.state.realityWithdraw + " 元"}</span></div>
+				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span className="hidden">{"实际到账：" + this.state.realityWithdraw + " 元"}</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay + " （1-2个工作日内到账，双休日和法定节假日除外）"}</div>
 				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span>
 					    <input type="password"

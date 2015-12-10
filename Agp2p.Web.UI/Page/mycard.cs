@@ -59,7 +59,7 @@ namespace Agp2p.Web.UI.Page
             if (alreadyHave)
             {
                 HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Conflict;
-                return "你已经添加了卡号为 " + cardNumber + " 的卡，不能重复添加";
+                return "你已经添加了卡号为 " + cardNumber + " 的银行卡，不能重复添加";
             }
 
             var user = context.dt_users.Single(u => u.id == userInfo.id);

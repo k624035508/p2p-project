@@ -18,8 +18,8 @@ namespace Agp2p.Core
     /// </summary>
     public static class TransactionFacade
     {
-        public const decimal StandGuardFeeRate = 0.006m;
-        public const decimal DefaultHandlingFee = 1;
+        public const decimal StandGuardFeeRate = 0;//0.006m;
+        public const decimal DefaultHandlingFee = 0;//1;
 
         internal static void DoSubscribe()
         {
@@ -94,6 +94,12 @@ namespace Agp2p.Core
             var wallet = user.li_wallets;
             if (wallet.idle_money < withdrawMoney)
                 throw new InvalidOperationException("操作失败：用户 " + user.user_name + " 的账户余额小于需要提现的金额");
+
+            // 判断提现次数，每日每张卡的提现次数不能超过 3 次
+            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today))
+            {
+                throw new InvalidOperationException("每日每张卡的提现次数不能超过 3 次");
+            }
 
             // 计算出产生防套现手续费的部分 (空闲 - 未投资 = 回款，提现回款金额无需手续费)
             var unusedMoney = wallet.idle_money - wallet.unused_money <= withdrawMoney
