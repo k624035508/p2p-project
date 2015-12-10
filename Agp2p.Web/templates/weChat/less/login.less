@@ -1,22 +1,17 @@
 ﻿/*login.less*/
-@import "common";
 @input: "../imgs/input-icon";
 
 .login-page {
     padding: 1rem 5%;
     form {
-        width: 20rem;
         & > div, dl#msgtips { margin-bottom: 1.2rem; }
-        dl#msgtips dd { color: @red; }
-        .account-wrap, .psw-wrap {
-            input { padding-left: 15%; }
-        }
+        dl#msgtips dd { color: #ff4148; }
         #txtUserName {
-            background: url("@{input}/user.png") no-repeat 2% center;
+            background: url("@{input}/user.png") no-repeat 3% center;
             background-size: 8%;
         }
         #txtPassword {
-            background: url("@{input}/pwd.png") no-repeat 2% center;
+            background: url("@{input}/pwd.png") no-repeat 3% center;
             background-size: 8%;
         }
         .remember-psw-wrap {
@@ -40,18 +35,18 @@
             }
             a {
                 float: right;
-                color: @blue;
+                color: #1478d2;
                 text-decoration: none;
             }
         }
     }
     .register-now-wrap {
-        width: 20rem;
+        width: 100%;
         text-align: center;
         color: #a9a9a9;
         a {
             padding-left: 8px;
-            color: @blue;
+            color: #1478d2;
             text-decoration: none;
         }
     }

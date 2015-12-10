@@ -1,4 +1,5 @@
 import "bootstrap-webpack";
+import "../less/common.less";
 import "../less/login.less";
 
 /*rem的相对单位定义*/
