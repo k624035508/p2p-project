@@ -35,7 +35,7 @@
             <%foreach(var p in projects)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
                 <p class="invest-title">
-                    <span class="project-type">房贷宝</span>
+                    <span class="project-type">{p.dt_article_category.title}</span>
                     {p.title}
                     <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
                     <span class="book-icon">约标</span>
