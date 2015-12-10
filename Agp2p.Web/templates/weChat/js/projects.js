@@ -27,7 +27,7 @@ function loadData(pageIndex, callback) {
     $.ajax({
         type: "POST",
         url: aspxPath + "/AjaxQueryProjectList",
-        data: JSON.stringify({ category_id: categoryId, pageIndex: pageIndex, pageSize: pageSize }),
+        data: JSON.stringify({ categoryId, pageIndex, pageSize }),
         contentType: "application/json",
         dataType: "json",
         success: function (msg) {
@@ -52,14 +52,9 @@ $(function (){
     footerInit();
 
     var navBtns = $(".invest-nav a");
-    $("#projects").addClass("nav-active nav-border-active");
-    navBtns.click(function(){
-        navBtns.removeClass("nav-active nav-border-active");
-        $(this).addClass("nav-active nav-border-active");
-    });
     //首次进入页面加载数据
     var processing = false;
-    var loadedPage = 1;
+    var loadedPage = 0;
     loadData(loadedPage, function () {
         loadedPage += 1;
         //百分比样式
@@ -74,11 +69,6 @@ $(function (){
                 percentage: true
             });
         });
-        //分类样式选择
-        $(".invest-nav a").removeClass("nav-active nav-border-active");
-        if(categoryId==33) $("#golden-house").attr("class", "nav-active nav-border-active");
-        else if(categoryId==34) $("#cars-invest").attr("class", "nav-active nav-border-active");
-        else $("#projects").attr("class", "nav-active nav-border-active");
     });
     //拖动滚动条加载数据
     $(window).scroll(function() {

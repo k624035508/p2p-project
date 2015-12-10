@@ -29,7 +29,8 @@ namespace Agp2p.Web.UI.Page
         protected int project_status_index; // 项目状态
 
         protected Dictionary<int, string> CategoryIdTitleMap =
-            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id)
+            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6 && c.call_index != "newbie")
+                .OrderBy(c => c.sort_id)
                 .ToDictionary(c => c.id, c => c.title);
 
         /// <summary>
@@ -49,10 +50,10 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryProjectList(int category_id, short pageIndex, short pageSize)
+        public static string AjaxQueryProjectList(int categoryId, short pageIndex, short pageSize)
         {
             int total = 0;
-            var projectList = get_project_list(pageSize, pageIndex, out total, category_id, 0, 0, 0);
+            var projectList = get_project_list(pageSize, pageIndex + 1, out total, categoryId, 0, 0, 0);
             return JsonConvert.SerializeObject(projectList);
         }
 

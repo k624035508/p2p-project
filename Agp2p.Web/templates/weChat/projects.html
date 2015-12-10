@@ -64,10 +64,10 @@
 </head>
 <body>
     <div class="invest-page">
-        <div class="invest-nav hidden">
-            <a id="projects" href="<%linkurl("invest_list",0)%>">全部项目<span class="divider">|</span></a>
-            <a id="golden-house" href="<%linkurl("invest_list",33)%>">金屋子<span class="divider">|</span></a>
-            <a id="cars-invest" href="<%linkurl("invest_list",34)%>">丰车赚</a>
+        <div class="invest-nav">
+            <%foreach(var kvp in CategoryIdTitleMap)%>
+            <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
+            <%/foreach%>
         </div>
         <div id="pending"></div>
         <div id="loading-hint"></div>
