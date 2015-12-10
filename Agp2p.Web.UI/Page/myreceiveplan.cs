@@ -32,6 +32,7 @@ namespace Agp2p.Web.UI.Page
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public string Link { get; set; }
             public string ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
         }
@@ -67,6 +68,7 @@ namespace Agp2p.Web.UI.Page
                 .GroupBy(inv => inv.li_projects)
                 .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
 
+            Model.siteconfig config = new BLL.siteconfig().loadConfig();
             return investedProjectValueMap.SelectMany(p =>
             {
                 var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
@@ -107,6 +109,7 @@ namespace Agp2p.Web.UI.Page
                 {
                     Id = p.Key.id,
                     Name = p.Key.title,
+                    Link = linkurl(config, "project", p.Key.id),
                     InvestValue = investedProjectValueMap[p.Key],
                     ProfitRateYear = p.Key.GetProfitRateYearly()
                 };

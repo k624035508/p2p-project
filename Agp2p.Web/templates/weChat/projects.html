@@ -16,7 +16,7 @@
 
     <script type="text/html" id="invest-item">
         @{ items.forEach(function(item, key, list){ }@
-        <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='/project/@{=item.id}@.html#project'">
+        <div class="invest-list" data-id="@{=item.id}@" onclick="location.href='@{=item.linkurl}@#project'">
             <div class="invest-project">
                 <p class="invest-title">
                     <span class="project-type">@{=item.categoryTitle}@</span>
@@ -65,6 +65,7 @@
 <body>
     <div class="invest-page">
         <div class="invest-nav">
+            <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
             <%foreach(var kvp in CategoryIdTitleMap)%>
             <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
             <%/foreach%>

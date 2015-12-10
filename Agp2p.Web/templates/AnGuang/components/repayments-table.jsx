@@ -51,7 +51,7 @@ class TransactionTable extends React.Component {
                     {this.state.data.length != 0 ? null : <tr><td colSpan="7">暂无数据</td></tr>}
                     { this.state.data.map(tr => 
                         <tr className="detailRow" key={tr.RepaymentId}>
-                            <td>{tr.Project == null ? "" : <a href={`/project/${tr.Project.Id}.html`} target="_blank" title={tr.Project.Name}>{tr.Project.Name}</a>}</td>
+                            <td>{tr.Project == null ? "" : <a href={tr.Project.Link} target="_blank" title={tr.Project.Name}>{tr.Project.Name}</a>}</td>
                             <td>{tr.Project == null ? "" : tr.Project.ProfitRateYear}</td>
                             <td>{tr.Project == null ? "" : tr.Project.InvestValue}</td>
                             <td>{tr.ShouldRepayDay}</td>
