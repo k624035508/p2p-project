@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -12,6 +14,8 @@ namespace Agp2p.Web.UI.Page
         protected string category_ids;  //类别ID
         protected int totalcount;   //OUT数据总数
         protected string pagelist;  //分页页码
+
+        protected dt_article article;
 
         protected Model.article_category category = new Model.article_category { title = "所有信息" };
         /// <summary>
@@ -34,6 +38,15 @@ namespace Agp2p.Web.UI.Page
                 var bll = new BLL.article_category();
                 if (bll.Exists(firstCategoryId))
                     category = bll.GetModel(firstCategoryId);
+            }
+
+            var articleId = DTRequest.GetQueryInt("articleId");
+            if (articleId != 0)
+            {
+                var context = new Agp2pDataContext();
+                article = context.dt_article.Single(a => a.id == articleId);
+                article.click += 1;
+                context.SubmitChanges();
             }
         }
     }
