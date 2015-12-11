@@ -107,6 +107,103 @@ div.announcement-wrap {
         li:first-child { margin-left: 0; }
     }
 }
+/*新手标*/
+.new-hand {
+    margin-top: 25px !important;
+    height: 185px;
+    background: @white;
+    border: @border;
+    & > div {
+        .inline-block;
+        float: left;
+        height: 100%;
+    }
+    .project-icon {
+        width: 220px;
+        padding: 35px 0 0 10px;
+        background: url("@{images}/newhand-bg.png") no-repeat;
+        p {
+            color: @white;
+            font-size: @font13;
+            margin: 0 0 5px;
+        }
+        p:first-child { font-size: @font25; }
+    }
+    .rawProject-wrap {
+        padding: 20px 0;
+        .project-content {
+            width: 620px;
+            height: 100%;
+            padding: 0 35px;
+            border-right: @border;
+            .title-wrap {
+                & > span {
+                    .inline-block;
+                    padding: 0 8px;
+                    height: 30px;
+                    line-height: 29px;
+                    color: #1478d2;
+                    border: 1px solid #1478d2;
+                }
+                .title {
+                    margin-right: 70px;
+                    font-size: @font20;
+                }
+                .tips {
+                    font-size: @font13;
+                    border-radius: 14px;
+                }
+            }
+            .content-body {
+                margin-top: 35px;
+                & > div {
+                    .inline-block;
+                    width: 24%;
+                    height: 81px;
+                    margin-left: 72px;
+                }
+                & > div:first-child { margin-left: 0; }
+                .progress-custom {
+                    width: 125px;
+                    height: 15px;
+                    margin-bottom: 10px;
+                    .progress-bar {
+                        line-height: 14px;
+                        background-color: #38aaf0 !important;
+                    }
+                }
+                .bottom18px { margin-bottom: 18px; }
+            }
+        }
+    }
+    .rules {
+        width: 258px;
+        padding: 25px 50px;
+        background: url("@{images}/newhand-mark.png") no-repeat right top;
+        p {
+            height: 20px;
+            padding-left: 30px;
+            color: @dark-grey;
+            font-size: @font13;
+        }
+        .rule1 { background: url("@{images}/rule1.png") no-repeat; }
+        .rule2 { background: url("@{images}/rule2.png") no-repeat; }
+        .rule3 { background: url("@{images}/rule3.png") no-repeat; }
+        a {
+            display: block;
+            margin-top: 17px;
+            width: 155px;
+            height: 35px;
+            line-height: 35px;
+            color: @white;
+            font-size: @font17;
+            background: @red;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    }
+}
 
 /*动态三板块*/
 div.dynamic-wrap {

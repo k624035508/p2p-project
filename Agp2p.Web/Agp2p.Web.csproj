@@ -738,8 +738,13 @@
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
+    <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\newhand-mark.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\rule1.png" />
+    <Content Include="templates\AnGuang\imgs\index\rule2.png" />
+    <Content Include="templates\AnGuang\imgs\index\rule3.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
