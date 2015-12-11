@@ -15,8 +15,18 @@ function ToggleCode(obj, codeurl) {
     return false;
 }
 
+var forTransactPassword = 0 <= location.search.indexOf("forTransactPassword");
+if (forTransactPassword) {
+    document.title = "重置交易密码";
+}
+
 $(function () {
     window.alert = $.dialog.alert;
+
+    if (forTransactPassword) {
+        $("#newPwd").attr("placeholder", "请输入新交易密码");
+        $("#newPwd2").attr("placeholder", "请再次输入新交易密码");
+    }
 
     $("#imgVerifyCode").click(ev => {
         ToggleCode(ev.currentTarget, '/tools/verify_code.ashx');
@@ -57,7 +67,7 @@ $(function () {
         var originalText = submitBtn.text();
         submitBtn.text("正在发送…").attr('disabled', 'disabled').attr('style', 'background-color: gray');
 
-        $.post("/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=" + verifyCode, { newPwd }).done(function(data) {
+        $.post(`/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=${verifyCode}&forTransactPassword=${forTransactPassword}`, { newPwd }).done(function(data) {
             submitBtn.removeAttr('disabled').removeAttr('style').text(originalText);
             alert(data.msg, function() {
                 location.href = '/login.html'; // 重置密码成功，回首页
