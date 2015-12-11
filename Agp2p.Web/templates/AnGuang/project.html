@@ -146,18 +146,18 @@
         <div class="invest-rules">
             <div class="sum">
                 <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目金额":"借款金额"%></div>
-                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span>元</span></div>
+                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
             </div>
             <div class="deadline">
                 <div>期限</div>
-                <div class="rules-style">{projectModel.repayment_term_span_count}<span><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></div>
+                <div class="rules-style">{projectModel.repayment_term_span_count}<span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></div>
             </div>
             <div class="apr">
-                <div>年化利率</div>
+                <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目收益":"年化利率"%></div>
                 <%if(projectModel.dt_article_category.call_index=="newbie")%>
-                <div class="rules-style">--</div>
+                <div class="rules-style"><%=projectModel.dt_article_category.call_index=="newbie"?"10":"--"%><span> 元</span></div>
                 <%else%>
-                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span>%</span></div>
+                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
                 <%/if%>
             </div>
         </div>
