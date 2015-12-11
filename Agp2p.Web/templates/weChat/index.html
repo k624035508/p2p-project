@@ -33,13 +33,36 @@
             <!-- 新手标 -->
             <%set var np = GetFinancingNewbieProject()%>
             <%if(np!=null)%>
+            <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>#project'">
+                <p class="invest-title new-hand">
+                    <span class="project-type">{np.dt_article_category.title}</span>
+                    新手专享标
+                </p>
+                <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
+                    <div class="rate-wrap">
+                        <div class="title-style">项目收益</div>
+                        <div class="txt-red-s"><span class="txt-red-l">10</span> 元</div>
+                    </div>
+                    <div class="time-wrap">
+                        <div class="title-style">期限</div>
+                        <div><span class="txt-darkgrey-l">{np.repayment_term_span_count}</span> {np.GetProjectTermSpanEnumDesc()}</div>
+                    </div>
+                    <div class="amount-wrap">
+                        <div class="title-style">可投金额</div>
+                        <div><span class="txt-darkgrey-l"><%=np.financing_amount.ToString("n0")%></span> 元</div>
+                    </div>
+                    <div class="invest-status flex flex-center-wrapper">
+                        <div class="indicatorContainer" data-progress="<%=(np.GetInvestmentProgressPercent()*100)%>"></div>
+                    </div>
+                </div>
+            </div>
             <%/if%>
 
             <%set var totalcount=0%>
             <%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>
             <%foreach(var p in projects)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
-                <p class="invest-title new-hand">
+                <p class="invest-title">
                     <span class="project-type">{p.dt_article_category.title}</span>
                     {p.title}
                     <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
