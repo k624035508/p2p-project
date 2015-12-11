@@ -44,20 +44,19 @@ body {
         }
     }
     .invest-amount-detail {
+        padding: 0 4%;
         & > div > div {
             float: left;
             width: 50%;
             height: 4rem;
             text-align: center;
         }
-        .first-row {
-            & > div { border-bottom: @border; }
-            .txt-red {
-                color: @red;
-                font-size: 1.35em;
-            }
-            .txt-grey { color: grey; }
+        .first-row > div { border-bottom: @border; }
+        .txt-red {
+            color: @red;
+            font-size: 1.35em;
         }
+        .txt-grey { color: grey; }
     }
     .invest-record {
         padding: 0 2%;
@@ -74,9 +73,7 @@ body {
             font-size: 1.3em;
             padding-left: 1rem;
         }
-        span.glyphicon {
-            color: #ccc;
-        }
+        span.glyphicon { color: #ccc; }
         i {
             width: 1.7rem;
             height: 1.7rem;
