@@ -897,6 +897,7 @@
     <Content Include="templates\AnGuang\_ticket_intro.html" />
     <Content Include="templates\weChat\about.xml" />
     <Content Include="templates\weChat\aboutus.html" />
+    <Content Include="templates\weChat\activity.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_password.html" />

@@ -61,7 +61,7 @@ $(function (){
         $('.indicatorContainer').each(function (index, obj) {
             $(obj).radialIndicator({
                 radius: 28,
-                barColor: '#fd6500',
+                barColor: '#ff414b',
                 barBgColor: '#d9d9d9',
                 barWidth: 2,
                 initValue: $(obj).attr('data-progress'),
