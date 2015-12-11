@@ -30,6 +30,11 @@
             </div>
         </div>
         <div class="invest-list">
+            <!-- 新手标 -->
+            <%set var np = GetFinancingNewbieProject()%>
+            <%if(np!=null)%>
+            <%/if%>
+
             <%set var totalcount=0%>
             <%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>
             <%foreach(var p in projects)%>
