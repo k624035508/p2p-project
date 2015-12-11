@@ -178,7 +178,7 @@
             <div class="interest-way">
                 <table>
                     <tbody>
-                        <tr><td>计息方式</td><td>满标当天，立即计息</td></tr>
+                        <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
                         <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
                         <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
                         <%else%>

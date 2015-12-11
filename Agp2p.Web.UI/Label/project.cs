@@ -82,14 +82,24 @@ namespace Agp2p.Web.UI
             return dt ?? new DataTable();
         }
 
+        public static li_projects GetFinancingNewbieProject()
+        {
+            var context = new Agp2pDataContext();
+            return context.li_projects.OrderByDescending(p => p.id)
+                .FirstOrDefault(
+                    p =>
+                        p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                        p.dt_article_category.call_index == "newbie");
+        }
+
         public static IEnumerable<li_projects> QueryProjects(int pageSize, int pageIndex, out int total, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
         {
             var context = new Agp2pDataContext();
             //查出所以项目类别
             //var categoryList = get_category_list(channel_name, 0);
             var query =
-                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status);
-                    //.Where(p => p.tag == null || p.tag != (int) Agp2pEnums.ProjectTagEnum.Trial);
+                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status)
+                    .Where(p => p.dt_article_category.call_index != "newbie");
             if (0 < categoryId)
                 query = query.Where(p => p.category_id == categoryId);
 
