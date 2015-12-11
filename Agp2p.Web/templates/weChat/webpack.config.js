@@ -55,7 +55,7 @@ module.exports = {
     plugins: [
         new CommonsChunkPlugin("fullpage.bundle.js", ["project", "myreceiveplan", "mycard", "citySelector"]),
         new CommonsChunkPlugin("commons.bundle.js", ["fullpage.bundle.js", "index", "login", "register", "projects", "usercenter", "recharge",
-             "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus", "forgotPassword"]),
+             "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus", "forgotPassword","activity"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

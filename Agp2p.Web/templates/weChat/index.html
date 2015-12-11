@@ -34,7 +34,7 @@
             <%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>
             <%foreach(var p in projects)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
-                <p class="invest-title">
+                <p class="invest-title new-hand">
                     <span class="project-type">{p.dt_article_category.title}</span>
                     {p.title}
                     <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
