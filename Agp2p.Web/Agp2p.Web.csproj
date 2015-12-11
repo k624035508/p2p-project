@@ -935,6 +935,7 @@
     <Content Include="templates\weChat\imgs\input-icon\trade-pwd.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
     <Content Include="templates\weChat\imgs\logo.png" />
+    <Content Include="templates\weChat\imgs\newhand-mark.png" />
     <Content Include="templates\weChat\imgs\settings\about-icon.png" />
     <Content Include="templates\weChat\imgs\settings\bank-icon.png" />
     <Content Include="templates\weChat\imgs\settings\exit-icon.png" />

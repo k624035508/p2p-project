@@ -145,7 +145,7 @@
         </div>
         <div class="invest-rules">
             <div class="sum">
-                <div>借款金额</div>
+                <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目金额":"借款金额"%></div>
                 <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span>元</span></div>
             </div>
             <div class="deadline">
