@@ -6,9 +6,7 @@ import footerInit from "./footer.js";
 import "./radialIndicator.min.js";
 
 /*rem的相对单位定义*/
-var viewportWidth = $(window).width();
-var fontSizeUnit = viewportWidth / 20;
-$("html").css("font-size", fontSizeUnit);
+$("html").css("font-size", $(window).width() / 20);
 
 $(function () {
     footerInit();

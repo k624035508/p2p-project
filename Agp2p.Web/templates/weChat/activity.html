@@ -4,8 +4,40 @@
     <meta charset="UTF-8">
     <title>新手投标活动</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <script src="build/activity.bundle.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .activityPage {
+            width: 20rem;
+            height: 32.5rem;
+            background: url("imgs/activity-bg.png") no-repeat;
+            background-size: 100%;
+        }
+        .activityPage a {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            width: 4.3rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            color: #fff;
+            font-size: .75em;
+            background: #ff4148;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .invest-btn { top: 16.5rem; }
+        .register-btn { top: 27.8rem; }
+    </style>
 </head>
 <body>
-新手标活动
+<div class="activityPage">
+    <a class="invest-btn" href="/">马上投资</a>
+    <a class="register-btn" href="/register.html">马上注册</a>
+</div>
 </body>
 </html>
