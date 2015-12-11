@@ -120,14 +120,19 @@ div.announcement-wrap {
     }
     .project-icon {
         width: 220px;
-        padding: 35px 0 0 10px;
-        background: url("@{images}/newhand-bg.png") no-repeat;
-        p {
-            color: @white;
-            font-size: @font13;
-            margin: 0 0 5px;
+        a {
+            display: block;
+            height: 100%;
+            padding: 35px 0 0 10px;
+            text-decoration: none;
+            background: url("@{images}/newhand-bg.png") no-repeat;
+            p {
+                color: @white;
+                font-size: @font13;
+                margin: 0 0 5px;
+            }
+            p:first-child { font-size: @font25; }
         }
-        p:first-child { font-size: @font25; }
     }
     .rawProject-wrap {
         padding: 20px 0;
