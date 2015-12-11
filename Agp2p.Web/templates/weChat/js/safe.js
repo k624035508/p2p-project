@@ -185,15 +185,6 @@ function modTradePwd(btn, oldTradePwd, newTradePwd, newTradePwd2) {
         alert(jqXHR.responseJSON.msg);
     });
 }
-function forgotTradePassword() {
-    if (confirm("是否确认重置交易密码？")) {
-        $.post('/tools/trade_pwd.ashx', { action: "reset" }, function (data) {
-            alert(data.msg);
-        }, "json").fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.msg);
-        });
-    }
-}
 $(function(){
     footerInit();
 
@@ -242,9 +233,6 @@ $(function(){
     });
     
     // 交易密码用到
-    $("#btnForgotPassword").click(ev => {
-        forgotTradePassword();
-    });
     if (!haveTradePwd) {
         $(".trade-pwd input#oldTradePwd").hide();
         $(".trade-pwd .forgot-pwd").hide();

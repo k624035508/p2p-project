@@ -43,7 +43,7 @@ class ResetPasswordPage extends React.Component {
 			alert("两次输入的密码不一致");
 			return;
 		}
-		let url = "/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=" + this.state.smsCode;
+		let url = `/tools/mobile_verify.ashx?act=verifyForResetPwd&verifyCode=${this.state.smsCode}&forTransactPassword=${this.props.forTransactPassword}`;
 		ajax({
 			url: url,
 			type: "post",
@@ -77,7 +77,7 @@ class ResetPasswordPage extends React.Component {
 			    </div>
 			    <div className="steps-tips">
 			        <span className="tips1">验证手机</span>
-			        <span className="tips2">重置密码</span>
+			        <span className="tips2">{this.props.forTransactPassword?"重置交易密码":"重置密码"}</span>
 			        <span className="tips3">完成</span>
 			    </div>
 			    <div className="step-content">
@@ -108,9 +108,9 @@ class ResetPasswordPage extends React.Component {
 			        </ul>}
 			    	{this.state.step != 3 ? null :
 			        <div className="reset-step3">
-			            <p><span className="succeed-icon"></span><span className="succeed-tips">重置密码成功！</span></p>
+			            <p><span className="succeed-icon"></span><span className="succeed-tips">{this.props.forTransactPassword?"重置交易密码成功":"重置密码成功！"}</span></p>
 			            <p className="txt-style marginTop"><span>您的账号：{this.state.tel}</span></p>
-			            <p className="txt-style"><span>请牢记您的新密码。</span></p>
+			            <p className="txt-style"><span>{this.props.forTransactPassword?"请牢记您的新交易密码。":"请牢记您的新密码。"}</span></p>
 			            <a href="/login.html" className="btn">返回登录</a>
 			        </div>}
 			    </div>
@@ -127,6 +127,11 @@ $(function () {
 
 	//弹出窗popover初始化
 	$('[data-toggle="popover"]').popover();
+	var forTransactPassword = 0 <= location.search.indexOf("forTransactPassword");
 
-	ReactDom.render(<ResetPasswordPage />, document.getElementById("main"));
+	if (forTransactPassword) {
+		document.title = "重置交易密码";
+	}
+
+	ReactDom.render(<ResetPasswordPage forTransactPassword={forTransactPassword} />, document.getElementById("main"));
 });

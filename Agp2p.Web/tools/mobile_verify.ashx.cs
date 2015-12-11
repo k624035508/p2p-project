@@ -60,8 +60,9 @@ namespace Agp2p.Web.tools
                     break;
                 case "verifyForResetPwd":
                     verifyCode = nvc["verifyCode"];
+                    var forTransactPassword = string.Equals("true", nvc["forTransactPassword"], StringComparison.CurrentCultureIgnoreCase);
                     var pwd = DTRequest.GetFormString("newPwd");
-                    SetPasswordByMobile(verifyCode, pwd, defCallback);
+                    SetPasswordByMobile(verifyCode, pwd, forTransactPassword, defCallback);
                     break;
                 default:
                     defCallback((int)HttpStatusCode.BadRequest, "act 参数无效");
@@ -69,7 +70,7 @@ namespace Agp2p.Web.tools
             }
         }
 
-        private void SetPasswordByMobile(string verifyCode, string pwd, Action<int, string> callback)
+        private void SetPasswordByMobile(string verifyCode, string pwd, bool forTransactPassword, Action<int, string> callback)
         {
             if (string.IsNullOrWhiteSpace(verifyCode) || string.IsNullOrWhiteSpace(pwd))
             {
@@ -88,7 +89,14 @@ namespace Agp2p.Web.tools
                         callback((int) HttpStatusCode.NotFound, "不存在设有该电话号码的用户");
                         return;
                     }
-                    user.password = DESEncrypt.Encrypt(pwd, user.salt);
+                    if (forTransactPassword)
+                    {
+                        user.pay_password = Utils.MD5(pwd);
+                    }
+                    else
+                    {
+                        user.password = DESEncrypt.Encrypt(pwd, user.salt);
+                    }
                     context.SubmitChanges();
                     SessionHelper.Remove("mobile_verify_code");
                     callback((int)HttpStatusCode.OK, "密码重置成功");
