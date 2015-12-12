@@ -101,6 +101,7 @@ namespace Agp2p.Web.UI.Page
                 },
                 userInfo = new
                 {
+                    userName = userInfo.user_name,
                     nickName = userInfo.nick_name,
                     realName = userInfo.real_name,
                     idCardNumber = userInfo.id_card_number,
