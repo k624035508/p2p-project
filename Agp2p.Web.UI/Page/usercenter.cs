@@ -12,6 +12,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using Agp2p.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -101,6 +102,7 @@ namespace Agp2p.Web.UI.Page
                 },
                 userInfo = new
                 {
+                    userName = userInfo.user_name,
                     nickName = userInfo.nick_name,
                     realName = userInfo.real_name,
                     idCardNumber = userInfo.id_card_number,
@@ -244,11 +246,25 @@ namespace Agp2p.Web.UI.Page
             }
 
             var query = userInfo.li_invitations1;
-            var data = query.Skip(pageIndex * pageSize).Take(pageSize).Select(i => new
+            // 查询自己的奖励
+            var myRewards = context.li_activity_transactions.Where(
+                tr =>
+                    tr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.RefereeFirstTimeProfitBonus)
+                .ToDictionary(t => ((JObject) JsonConvert.DeserializeObject(t.details)).Value<int>("Invitee"),
+                    atr =>
+                        atr.value.ToString("c") +
+                        (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm ? "（已发放）" : "（待发放）"));
+
+            var data = query.Skip(pageIndex*pageSize).Take(pageSize).Select(i =>
             {
-                inviteeId = i.user_id,
-                inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
-                firstInvestmentAmount = i.li_project_transactions == null ? 0 : i.li_project_transactions.principal,
+                var firstInvestmentAmount = i.li_project_transactions?.principal ?? 0;
+                return new
+                {
+                    inviteeId = i.user_id,
+                    inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
+                    firstInvestmentAmount,
+                    reward = myRewards.ContainsKey(i.user_id) ? myRewards[i.user_id] : (firstInvestmentAmount == 0 ? "（未投资）" : "（已投资，未放款）")
+                };
             });
             return JsonConvert.SerializeObject(new {totalCount = query.Count, data});
         }

@@ -22,7 +22,7 @@ class UserStatus extends React.Component {
 		            	<Link to="/withdraw" className="withdraw">提 现</Link>
 		            </div>
 		            <div className="head-left">
-		                <p className="username">您好！ {this.props.userName}</p>
+		                <p className="username">您好！ {this.props.nickName?this.props.nickName:this.props.userName}</p>
 		                <p className="save-level">安全级别 <Link className={"level-icon " + this.props.safeLevel}
 		                	title="到 “个人中心 -> 安全中心” 进行相关设置以提高安全等级" to="/safe"></Link></p>
 		                <p className="login-time">上次登录时间：{this.props.prevLoginTime}</p>
@@ -46,6 +46,7 @@ function mapStateToProps(state) {
 	var safeLevelInt = (userInfo.realName ? 1 : 0) + (userInfo.email ? 1 : 0) + (userInfo.hasTransactPassword ? 1 : 0);
 	return {
 		userName: userInfo.userName,
+		nickName: userInfo.nickName,
 		prevLoginTime: userInfo.prevLoginTime,
 		idleMoney: walletInfo.idleMoney,
 		lockedMoney: walletInfo.lockedMoney,
