@@ -38,9 +38,20 @@ div.footer-wrap {
             }
         }
         .qrcode {
-            width: 95px;
-            height: 95px;
-            background: url("../imgs/index/qrcode.png") no-repeat;
+            & > div {
+                display: inline-block;
+                width: 95px;
+                height: 120px;
+                padding-top: 100px;
+                text-align: center;
+                color: @grey;
+                font-size: @font13;
+            }
+            .service {
+                margin-right: 30px;
+                background: url("../imgs/index/service-code.png") no-repeat center top;
+            }
+            .subscribe { background: url("../imgs/index/subscribe-code.png") no-repeat center top; }
         }
     }
     .footer-bottom {

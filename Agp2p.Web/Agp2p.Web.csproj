@@ -745,11 +745,12 @@
     <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
-    <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\rule1.png" />
     <Content Include="templates\AnGuang\imgs\index\rule2.png" />
     <Content Include="templates\AnGuang\imgs\index\rule3.png" />
+    <Content Include="templates\AnGuang\imgs\index\service-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
