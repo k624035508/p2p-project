@@ -989,8 +989,7 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="projectTransactionId"></param>
         /// <returns></returns>
-        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId,
-            bool save = true)
+        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, bool save = true)
         {
             // 判断项目状态
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
@@ -1021,6 +1020,7 @@ namespace Agp2p.Core
             if (save)
             {
                 context.SubmitChanges();
+                MessageBus.Main.PublishAsync(new UserRefundMsg(projectTransactionId));
             }
 
             return tr;
@@ -1047,6 +1047,8 @@ namespace Agp2p.Core
 
             proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingFail;
             context.SubmitChanges();
+
+            MessageBus.Main.PublishAsync(new ProjectFinancingFailMsg(projectId));
         }
 
         /// <summary>
