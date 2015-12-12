@@ -732,6 +732,7 @@
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\funds-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\funds.png" />
+    <Content Include="templates\AnGuang\imgs\index\guarantee-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
@@ -739,7 +740,11 @@
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-mark.png" />
+    <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\qrcode.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\rule1.png" />
@@ -889,6 +894,7 @@
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
     <Content Include="templates\AnGuang\_invest_record.html" />
+    <Content Include="templates\AnGuang\_new_hand.html" />
     <Content Include="templates\AnGuang\_repayment_task.html" />
     <Content Include="templates\AnGuang\_imgs_info.html" />
     <Content Include="templates\AnGuang\_risk_control.html" />
