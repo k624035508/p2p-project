@@ -262,7 +262,7 @@ namespace Agp2p.Web.UI.Page
                 {
                     inviteeId = i.user_id,
                     inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
-                    firstInvestmentAmount,
+                    firstInvestmentAmount = firstInvestmentAmount == 0 ? "" : firstInvestmentAmount.ToString(),
                     reward = myRewards.ContainsKey(i.user_id) ? myRewards[i.user_id] : (firstInvestmentAmount == 0 ? "（未投资）" : "（已投资，未放款）")
                 };
             });

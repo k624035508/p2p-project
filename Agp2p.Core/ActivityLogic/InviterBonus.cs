@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using Agp2p.Common;
@@ -17,6 +18,37 @@ namespace Lip2p.Core.ActivityLogic
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleUserInvestedMsg(m.ProjectTransactionId)); // 如果有邀请人，则标记投资记录
             MessageBus.Main.Subscribe<ProjectInvestCompletedMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 推荐人收益已知，创建活动交易记录
             MessageBus.Main.Subscribe<ProjectRepayCompletedMsg>(m => HandleProjectRepayCompletedMsg(m.ProjectId, m.ProjectCompleteTime)); // 项目放款完成，发放推荐人奖金
+            MessageBus.Main.Subscribe<ProjectFinancingFailMsg>(m => HandleProjectFinancingFailMsg(m.ProjectId)); // 项目流标，如果有被邀请人首次投资此项目，则不算为（撤销）首次投资
+            MessageBus.Main.Subscribe<UserRefundMsg>(m => HandleUserRefundMsg(m.ProjectTransactionId)); // 用户退款，如果是被邀请人的首次投资则撤销首次投资
+        }
+
+        private static void HandleUserRefundMsg(int projectTransactionId)
+        {
+            var context = new Agp2pDataContext();
+            var projectTransaction = context.li_project_transactions.Single(ptr => ptr.id == projectTransactionId);
+            if (projectTransaction.li_invitations.Any())
+            {
+                var invitation = projectTransaction.li_invitations.Single();
+                invitation.li_project_transactions = null;
+                context.SubmitChanges();
+            }
+        }
+
+        private static void HandleProjectFinancingFailMsg(int projectId)
+        {
+            var context = new Agp2pDataContext();
+            var proj = context.li_projects.Single(p => p.id == projectId);
+            var preUnbindFirstInvestment = proj.li_project_transactions.Where(
+                ptr =>
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback &&
+                    ptr.li_invitations.Any()).ToList();
+            preUnbindFirstInvestment.ForEach(ptr =>
+            {
+                var invitation = ptr.li_invitations.Single();
+                invitation.li_project_transactions = null;
+            });
+            context.SubmitChanges();
         }
 
         private static void HandleProjectRepayCompletedMsg(int projectId, DateTime projectCompleteTime)
