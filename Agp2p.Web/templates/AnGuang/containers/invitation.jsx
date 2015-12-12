@@ -131,7 +131,7 @@ class InvitationPage extends React.Component {
                                 <td>{index + 1}</td>
                                 <td>{inv.inviteeName}</td>
                                 <td>{inv.firstInvestmentAmount}</td>
-                                <td></td>
+                                <td>{inv.reward}</td>
                             </tr>)}
                         </tbody>
                     </table>
