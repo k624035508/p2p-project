@@ -508,5 +508,31 @@ div.project-content-wrap {
 			}
 		}
 	}
+	.project-detail-raw {
+		margin-bottom: 40px;
+		& > div { margin: 0 auto; }
+		.pro, .purchase, .profit, .guarantee {
+			width: 800px;
+			height: 180px;
+			padding: 60px 0 0 180px;
+			p {
+				font-size: @font15;
+				color: @dark-grey;
+			}
+			p:first-child {
+				color: @darker-grey;
+				font-weight: bold;
+			}
+		}
+		.pro { background: url("@{images}/pro-bg.png") no-repeat left center; }
+		.purchase { background: url("@{images}/purchase-bg.png") no-repeat left center; }
+		.profit { background: url("@{images}/profit-bg.png") no-repeat left center; }
+		.guarantee { background: url("@{images}/guarantee-bg.png") no-repeat left center; }
+		.hr {
+			width: 910px;
+			height: 1px;
+			background: url("@{images}/newhand-hr.png");
+		}
+	}
 }
 

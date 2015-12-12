@@ -155,7 +155,7 @@
             <div class="apr">
                 <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目收益":"年化利率"%></div>
                 <%if(projectModel.dt_article_category.call_index=="newbie")%>
-                <div class="rules-style"><%=projectModel.dt_article_category.call_index=="newbie"?"10":"--"%><span> 元</span></div>
+                <div class="rules-style">10<span> 元</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
                 <%/if%>
@@ -200,6 +200,10 @@
 <%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
+        <%if(projectModel.dt_article_category.call_index=="newbie")%>
+        <%template src="_new_hand.html"%>
+        <%template src="_invest_record.html"%>
+        <%else%>
         <%template src="_project_intro.html"%>
         <%template src="_loaner_info.html"%>
         <%template src="_ticket_info.html"%>
@@ -209,6 +213,7 @@
         <%template src="_imgs_info.html"%>
         <%template src="_repayment_task.html"%>
         <%template src="_invest_record.html"%>
+        <%/if%>
     </div>
 
     <div id="sidemenu" class="project-content-right">
