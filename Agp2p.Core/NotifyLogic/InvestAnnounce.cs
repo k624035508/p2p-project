@@ -27,11 +27,11 @@ namespace Agp2p.Core.NotifyLogic
             var context = new Agp2pDataContext();
             var project = context.li_projects.Single(p => p.id == projectId);
 
-            // 查出所有投资者
+            // 查出所有已经退款的投资者 TODO 排除自己退款的投资者
             var investors = project.li_project_transactions.Where(
                 ptr =>
                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
                 .GroupBy(ptr => ptr.dt_users).Select(g => g.Key);
 
             var sendTime = DateTime.Now;
@@ -48,34 +48,26 @@ namespace Agp2p.Core.NotifyLogic
             // 通知投资者项目流标
             investors.ForEach(investor =>
             {
-                var notificationSettings = investor.li_notification_settings.Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>().ToArray();
-
                 try
                 {
-                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForUserMsg))
+                    //发送站内消息
+                    var userMsg = new dt_user_message
                     {
-                        //发送站内消息
-                        var userMsg = new dt_user_message
-                        {
-                            type = 1,
-                            post_user_name = "",
-                            accept_user_name = investor.user_name,
-                            title = smsModel.title,
-                            content = msgContent,
-                            post_time = sendTime,
-                            receiver = investor.id
-                        };
-                        context.dt_user_message.InsertOnSubmit(userMsg);
-                        context.SubmitChanges();
-                    }
-                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForSms))
+                        type = 1,
+                        post_user_name = "",
+                        accept_user_name = investor.user_name,
+                        title = smsModel.title,
+                        content = msgContent,
+                        post_time = sendTime,
+                        receiver = investor.id
+                    };
+                    context.dt_user_message.InsertOnSubmit(userMsg);
+                    context.SubmitChanges();
+                    var errorMsg = string.Empty;
+                    if (!SMSHelper.SendTemplateSms(investor.mobile, msgContent, out errorMsg))
                     {
-                        var errorMsg = string.Empty;
-                        if (!SMSHelper.SendTemplateSms(investor.mobile, msgContent, out errorMsg))
-                        {
-                            context.AppendAdminLogAndSave("ProjectFinancingFailSms",
-                                string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, investor.user_name, project.title));
-                        }
+                        context.AppendAdminLogAndSave("ProjectFinancingFailSms",
+                            string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, investor.user_name, project.title));
                     }
                 }
                 catch (Exception ex)
