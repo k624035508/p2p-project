@@ -87,7 +87,7 @@ namespace Agp2p.Core.NotifyLogic
             {
                 // 检测用户是否接收放款的通知
                 var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == t.investor)
-                    .Select(n => n.type).Cast<Agp2pEnums.NotificationTypeEnum>();
+                    .Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>();
 
                 try
                 {
@@ -103,7 +103,7 @@ namespace Agp2p.Core.NotifyLogic
                         .Replace("{project_name}", t.li_projects.title)
                         .Replace("{amount}", (t.principal + t.interest).ToString());
 
-                    if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForUserMsg))
+                    if (!sendNotificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectRepaidForUserMsg))
                     {
                         //发送站内消息
                         var userMsg = new dt_user_message
@@ -119,7 +119,7 @@ namespace Agp2p.Core.NotifyLogic
                         context.dt_user_message.InsertOnSubmit(userMsg);
                         context.SubmitChanges();
                     }
-                    if (sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.ProjectRepaidForSms))
+                    if (!sendNotificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectRepaidForSms))
                     {
                         var errorMsg = string.Empty;
                         if (!SMSHelper.SendTemplateSms(t.dt_users.mobile, msgContent, out errorMsg))

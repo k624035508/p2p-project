@@ -584,7 +584,10 @@ namespace Agp2p.Common
             SendingBox = 3,
         }
 
-        public enum NotificationTypeEnum
+        /// <summary>
+        /// 已禁用的提醒的类别，数据库没有数据设置时代表需要发送提醒
+        /// </summary>
+        public enum DisabledNotificationTypeEnum
         {
             [Description("充值成功-站内消息")]
             ChargeSuccessForUserMsg = 1,
@@ -596,6 +599,8 @@ namespace Agp2p.Common
             InvestSuccessForUserMsg = 30,
             [Description("奖券过期提醒-站内消息")]
             LotteryWillExpireForUserMsg = 40,
+            [Description("项目流标-站内消息")]
+            ProjectFinancingFailForUserMsg = 50,
 
             [Description("充值成功-短信")]
             ChargeSuccessForSms = 1001,
@@ -603,6 +608,8 @@ namespace Agp2p.Common
             WithdrawApplyForSms = 1010,
             [Description("项目还款-短信")]
             ProjectRepaidForSms = 1020,
+            [Description("项目流标-短信")]
+            ProjectFinancingFailForSms = 1050,
         }
 
         /// <summary>

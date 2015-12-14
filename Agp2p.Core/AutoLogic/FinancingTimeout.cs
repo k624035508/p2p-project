@@ -27,7 +27,7 @@ namespace Agp2p.Core.AutoLogic
             timeoutProjects.ForEach(p =>
             {
                 p.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingTimeout;
-                db.AppendAdminLog("AutoSetProjectTimeout", string.Format("项目 {0} 募集已超时", p.title), true);
+                db.AppendAdminLog("AutoSetProjectTimeout", string.Format("项目 {0} 募集已超时", p.title));
             });
             db.SubmitChanges();
         }

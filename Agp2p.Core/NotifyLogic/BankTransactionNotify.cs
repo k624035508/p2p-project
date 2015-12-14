@@ -28,10 +28,10 @@ namespace Agp2p.Core.NotifyLogic
                 case Agp2pEnums.BankTransactionTypeEnum.Withdraw:
                     var notificationTypesForWithdrawer =
                         tr.li_bank_accounts.dt_users.li_notification_settings.AsEnumerable()
-                            .Select(n => (Agp2pEnums.NotificationTypeEnum)n.type)
+                            .Select(n => (Agp2pEnums.DisabledNotificationTypeEnum)n.type)
                             .ToList();
-                    var sendWithdrawApplySms = notificationTypesForWithdrawer.Contains(Agp2pEnums.NotificationTypeEnum.WithdrawApplyForSms);
-                    var sendWithdrawApplyUserMsg = notificationTypesForWithdrawer.Contains(Agp2pEnums.NotificationTypeEnum.WithdrawApplyForUserMsg);
+                    var sendWithdrawApplySms = !notificationTypesForWithdrawer.Contains(Agp2pEnums.DisabledNotificationTypeEnum.WithdrawApplyForSms);
+                    var sendWithdrawApplyUserMsg = !notificationTypesForWithdrawer.Contains(Agp2pEnums.DisabledNotificationTypeEnum.WithdrawApplyForUserMsg);
 
                     if (sendWithdrawApplySms || sendWithdrawApplyUserMsg)
                     {
@@ -101,10 +101,10 @@ namespace Agp2p.Core.NotifyLogic
                     {
                         var notificationTypesForCharger =
                             tr.dt_users.li_notification_settings.AsEnumerable()
-                                .Select(n => (Agp2pEnums.NotificationTypeEnum)n.type)
+                                .Select(n => (Agp2pEnums.DisabledNotificationTypeEnum)n.type)
                                 .ToList();
-                        var sendChargeSuccessSMS = notificationTypesForCharger.Contains(Agp2pEnums.NotificationTypeEnum.ChargeSuccessForSms);
-                        var sendChargeSuccessUserMsg = notificationTypesForCharger.Contains(Agp2pEnums.NotificationTypeEnum.ChargeSuccessForUserMsg);
+                        var sendChargeSuccessSMS = !notificationTypesForCharger.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ChargeSuccessForSms);
+                        var sendChargeSuccessUserMsg = !notificationTypesForCharger.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ChargeSuccessForUserMsg);
 
                         if (sendChargeSuccessSMS || sendChargeSuccessUserMsg)
                             SendChargeSuccessNotification(tr, sendChargeSuccessUserMsg, sendChargeSuccessSMS);

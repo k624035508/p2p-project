@@ -9,7 +9,7 @@ import alert from "../components/tips_alert.js";
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { valueTable: {}, enabledNotificationTypes: new Set([]), column: []};
+		this.state = { valueTable: {}, disabledNotificationTypes: new Set([]), column: []};
 		// valueTable format: {"充值成功" : {"站内消息": 10, "短信": 20}, ...}
 	}
 	componentDidMount() {
@@ -24,10 +24,10 @@ class Settings extends React.Component {
 			url: url,
 			data: "",
 			success: function(result) {
-				let {valueTable, enabledNotificationTypes} = JSON.parse(result.d);
+				let {valueTable, disabledNotificationTypes} = JSON.parse(result.d);
 				if (valueTable) {
 					let valuesOfFirstRow = values(valueTable)[0];
-					this.setState({ valueTable, enabledNotificationTypes: new Set(enabledNotificationTypes), column: keys(valuesOfFirstRow) });
+					this.setState({ valueTable, disabledNotificationTypes: new Set(disabledNotificationTypes), column: keys(valuesOfFirstRow) });
 				}
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -42,7 +42,7 @@ class Settings extends React.Component {
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
-			data: JSON.stringify({enabledNotificationTypes: Array.from(this.state.enabledNotificationTypes).join(",")}),
+			data: JSON.stringify({disabledNotificationTypes: Array.from(this.state.disabledNotificationTypes).join(",")}),
 			success: function(result) {
 				alert(result.d);
 			}.bind(this),
@@ -72,14 +72,14 @@ class Settings extends React.Component {
                                     state.valueTable[rowName][columnName] == undefined
                                         ? <td key={columnName}></td>
                                         : <td key={columnName}><input type="checkbox"
-                                        	checked={state.enabledNotificationTypes.has(state.valueTable[rowName][columnName])}
+                                        	checked={!state.disabledNotificationTypes.has(state.valueTable[rowName][columnName])}
                                         	onChange={ev => {
                                         		if (ev.target.checked) {
-                                        			state.enabledNotificationTypes.add(state.valueTable[rowName][columnName]);
+                                        			state.disabledNotificationTypes.delete(state.valueTable[rowName][columnName]);
                                         		} else {
-                                        			state.enabledNotificationTypes.delete(state.valueTable[rowName][columnName]);
+                                        			state.disabledNotificationTypes.add(state.valueTable[rowName][columnName]);
                                         		}
-                                        		this.setState({enabledNotificationTypes: state.enabledNotificationTypes});
+                                        		this.setState({disabledNotificationTypes: state.disabledNotificationTypes});
                                         	}}/></td>)}
                             </tr>)}
                         </tbody>
