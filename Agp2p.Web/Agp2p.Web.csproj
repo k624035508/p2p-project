@@ -676,7 +676,6 @@
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-bg.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\events-hr.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
