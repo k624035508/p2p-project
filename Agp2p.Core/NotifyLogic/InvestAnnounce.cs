@@ -107,7 +107,23 @@ namespace Agp2p.Core.NotifyLogic
             });
             context.SubmitChanges();
 
-            //TODO 是否发送放款通知
+            //发送放款通知
+            //判断用户是否设置发送满标通知
+
+            var dtSmsTemplate = context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success");
+            if (dtSmsTemplate == null) return;
+
+            var investTrans =
+                context.li_project_transactions.Where(
+                    t =>
+                        t.project == projectId && t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
+
+            investTrans.ForEach(i =>
+            {
+                var content = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日HH时mm分"))
+                                .Replace("{project}", i.li_projects.title);
+            });
         }
     }
 }
