@@ -676,6 +676,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\culture-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\emptyPic.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
@@ -691,19 +692,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\some-agency.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\someone.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-01.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-02.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-03.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-04.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-05.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-06.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-07.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-08.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-09.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\staff-10.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\strategy.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />

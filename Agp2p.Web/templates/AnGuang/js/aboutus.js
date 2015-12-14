@@ -9,6 +9,7 @@ import alert from "../components/tips_alert.js";
 $(function(){
     header.setHeaderHighlight(4);
 
+    //.about-nav-bar position fixed
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
         console.log(scrollTop);

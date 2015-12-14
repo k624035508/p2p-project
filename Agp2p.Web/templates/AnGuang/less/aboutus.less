@@ -25,6 +25,7 @@ body { background: @body-color; }
 	position: fixed;
 	width: 100%;
 	top: 0;
+	z-index: 10;
 }
 
 .aboutPage {
@@ -222,16 +223,7 @@ body { background: @body-color; }
 				.picWall-style;
 				.picWall {
 					margin-left: 0%;
-					.staff1 { background: url("@{images}/staff-01.png"); }
-					.staff2 { background: url("@{images}/staff-02.png"); }
-					.staff3 { background: url("@{images}/staff-03.png"); }
-					.staff4 { background: url("@{images}/staff-04.png"); }
-					.staff5 { background: url("@{images}/staff-05.png"); }
-					.staff6 { background: url("@{images}/staff-06.png"); }
-					.staff7 { background: url("@{images}/staff-07.png"); }
-					.staff8 { background: url("@{images}/staff-08.png"); }
-					.staff9 { background: url("@{images}/staff-09.png"); }
-					.staff10 { background: url("@{images}/staff-10.png"); }
+					.emptyPic { background: url("@{images}/emptyPic.jpg") no-repeat center; }
 				}
 			}
 		}
@@ -256,16 +248,7 @@ body { background: @body-color; }
 					.picWall-style;
 					.picWall {
 						margin-left: 0%;
-						.staff1 { background: url("@{images}/staff-01.png"); }
-						.staff2 { background: url("@{images}/staff-02.png"); }
-						.staff3 { background: url("@{images}/staff-03.png"); }
-						.staff4 { background: url("@{images}/staff-04.png"); }
-						.staff5 { background: url("@{images}/staff-05.png"); }
-						.staff6 { background: url("@{images}/staff-06.png"); }
-						.staff7 { background: url("@{images}/staff-07.png"); }
-						.staff8 { background: url("@{images}/staff-08.png"); }
-						.staff9 { background: url("@{images}/staff-09.png"); }
-						.staff10 { background: url("@{images}/staff-10.png"); }
+						.emptyPic { background: url("@{images}/emptyPic.jpg") no-repeat center; }
 					}
 				}
 			}
@@ -308,7 +291,11 @@ body { background: @body-color; }
 				margin-top: 50px;
 				.strategy-content {
 					height: 110px;
-					background: url("@{images}/strategy.png") no-repeat center;
+					line-height: 118px;
+					color: @grey;
+					font-size: @font22;
+					text-align: center;
+					border: @border;
 				}
 			}
 		}
