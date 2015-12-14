@@ -30,8 +30,8 @@ namespace Agp2p.Core.NotifyLogic
             // 查出所有投资者
             var investors = project.li_project_transactions.Where(
                 ptr =>
-                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .GroupBy(ptr => ptr.dt_users).Select(g => g.Key);
 
             var sendTime = DateTime.Now;
@@ -134,7 +134,7 @@ namespace Agp2p.Core.NotifyLogic
                 var content = dtSmsTemplate.content.Replace("{date}", investment.create_time.ToString("yyyy年MM月dd日HH时mm分"))
                     .Replace("{projectName}", investment.li_projects.title)
                     .Replace("{amount}", investment.principal.ToString("N"));
-                
+
                 var userMsg = new dt_user_message
                 {
                     type = 1,
@@ -156,7 +156,7 @@ namespace Agp2p.Core.NotifyLogic
         }
 
         /// <summary>
-        /// 满标
+        /// 放款
         /// </summary>
         /// <param name="projectId"></param>
         private static void HandleProjectInvestCompletedMsg(int projectId)
@@ -169,26 +169,38 @@ namespace Agp2p.Core.NotifyLogic
             var finalProfitRate = project.GetFinalProfitRate(DateTime.Now);
             project.li_project_transactions.ForEach(pt =>
             {
-                pt.interest = pt.principal*finalProfitRate;
+                pt.interest = pt.principal * finalProfitRate;
             });
             context.SubmitChanges();
 
-            //发送放款通知
-            //判断用户是否设置发送满标通知
-
-            var dtSmsTemplate = context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success");
+            //满标则发满标通知，否则发截标通知
+            var dtSmsTemplate = project.financing_amount == project.investment_amount
+                ? context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success")
+                : context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success_cut");
             if (dtSmsTemplate == null) return;
-
+            //查询所有投资记录
             var investTrans =
                 context.li_project_transactions.Where(
                     t =>
-                        t.project == projectId && t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
-
+                        t.project == projectId && t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
+            //发送通知给每个投资者
             investTrans.ForEach(i =>
             {
-                var content = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日HH时mm分"))
-                                .Replace("{project}", i.li_projects.title);
+                var msgContent = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日HH时mm分"))
+                    .Replace("{project}", i.li_projects.title);
+                try
+                {
+                    string errorMsg;
+                    if (!SMSHelper.SendTemplateSms(i.dt_users.mobile, msgContent, out errorMsg))
+                    {
+                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + i.dt_users.user_name + "）");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                }
             });
         }
     }

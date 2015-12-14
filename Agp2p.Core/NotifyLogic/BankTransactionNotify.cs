@@ -65,12 +65,12 @@ namespace Agp2p.Core.NotifyLogic
                     string errorMsg;
                     if (!SMSHelper.SendTemplateSms(withdrawer.mobile, msgContent, out errorMsg))
                     {
-                        context.AppendAdminLogAndSave("WithdrawSms", "发送提现提醒失败：" + errorMsg + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
+                        context.AppendAdminLogAndSave("WithdrawSms", "发送提现通知失败：" + errorMsg + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
                     }
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("WithdrawSms", "发送充值提醒失败：" + ex.Message + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送提现通知失败：" + ex.Message + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
                 }
             }
             if (sendUserMsg)
