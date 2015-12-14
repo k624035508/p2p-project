@@ -658,6 +658,7 @@
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\activity.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
@@ -723,6 +724,7 @@
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
