@@ -47,7 +47,10 @@ namespace Agp2p.Web.admin.transact
         {
             var users = context.dt_users.OrderByDescending(u => u.id);
             ddlInvestor.Items.Clear();
-            ddlInvestor.Items.AddRange(users.Select(u => new ListItem(u.user_name, u.id.ToString())).ToArray());
+            ddlInvestor.Items.AddRange(
+                users.Select(u => new ListItem(string.IsNullOrWhiteSpace(u.real_name)
+                    ? u.user_name
+                    : $"{u.user_name}（{u.real_name}）", u.id.ToString())).ToArray());
 
             var userId = Convert.ToInt32(ddlInvestor.SelectedValue);
             var wallet = context.li_wallets.First(u => u.user_id == userId);
