@@ -68,13 +68,6 @@ namespace Agp2p.Core.InitLogic
             };
             context.dt_user_message.InsertOnSubmit(dtUserMessage);
 
-            // 设置默认的通知设置
-            var initNotificationSettings = Enum.GetValues(typeof (Agp2pEnums.NotificationTypeEnum))
-                .Cast<Agp2pEnums.NotificationTypeEnum>()
-                .Select(e => new li_notification_settings {dt_users = newUser, type = (int) e})
-                .ToList();
-            context.li_notification_settings.InsertAllOnSubmit(initNotificationSettings);
-
             context.SubmitChanges();
         }
 
