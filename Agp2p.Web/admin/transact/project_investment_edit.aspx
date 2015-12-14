@@ -71,6 +71,10 @@
     <dt>投资金额</dt>
     <dd><asp:TextBox ID="txtValue" runat="server" CssClass="input normal" datatype="/^\S+$/"></asp:TextBox><span class="Validform_checktip">*</span></dd>
   </dl>
+  <dl>
+    <dt>交易密码</dt>
+    <dd><asp:TextBox ID="txtTransactPassword" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">*</span></dd>
+  </dl>
 </div>
 <!--/内容-->
 

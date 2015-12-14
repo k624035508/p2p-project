@@ -60,7 +60,21 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 var investingMoney = Math.Abs(Convert.ToDecimal(txtValue.Text.Trim()));
-                context.Invest(Convert.ToInt32(ddlInvestor.SelectedValue), projectId, investingMoney);
+                var userId = Convert.ToInt32(ddlInvestor.SelectedValue);
+
+                var user = context.dt_users.Single(u => u.id == userId);
+                if (string.IsNullOrWhiteSpace(user.pay_password))
+                {
+                    JscriptMsg("该用户没有设置交易密码，无法投资", "", "Error");
+                    return false;
+                }
+                if (!string.Equals(user.pay_password, Utils.MD5(txtTransactPassword.Text)))
+                {
+                    JscriptMsg("交易密码错误", "", "Error");
+                    return false;
+                }
+
+                context.Invest(userId, projectId, investingMoney);
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), ddlInvestor.SelectedItem.Text + " 被添加投资信息: " + investingMoney); //记录日志
                 return true;
             }
