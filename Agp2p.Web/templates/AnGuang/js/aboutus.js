@@ -9,6 +9,16 @@ import alert from "../components/tips_alert.js";
 $(function(){
     header.setHeaderHighlight(4);
 
+    $(window).scroll(function () {
+        var scrollTop = $(window).scrollTop();
+        console.log(scrollTop);
+        if (scrollTop >= 130) {
+            $(".about-nav-bar").addClass("scroll-style");
+        } else {
+            $(".about-nav-bar").removeClass("scroll-style");
+        }
+    });
+
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
