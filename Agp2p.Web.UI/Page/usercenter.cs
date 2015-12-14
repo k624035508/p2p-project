@@ -371,8 +371,8 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var valueTable = Enum.GetValues(typeof (Agp2pEnums.NotificationTypeEnum))
-                .Cast<Agp2pEnums.NotificationTypeEnum>()
+            var valueTable = Enum.GetValues(typeof (Agp2pEnums.DisabledNotificationTypeEnum))
+                .Cast<Agp2pEnums.DisabledNotificationTypeEnum>()
                 .Select(e =>
                 {
                     var split = Utils.GetAgp2pEnumDes(e).Split('-');
@@ -387,13 +387,13 @@ namespace Agp2p.Web.UI.Page
                 .GroupBy(a => a.row)
                 .ToDictionary(g => g.Key, g => g.ToDictionary(a => a.column, a => a.value));
 
-            var enabledNotificationTypes = userInfo.li_notification_settings.Select(n => n.type).ToList();
+            var disabledNotificationTypes = userInfo.li_notification_settings.Select(n => n.type).ToList();
 
-            return JsonConvert.SerializeObject(new {valueTable, enabledNotificationTypes });
+            return JsonConvert.SerializeObject(new {valueTable, disabledNotificationTypes });
         }
 
         [WebMethod]
-        public static string AjaxSaveNotificationSettings(string enabledNotificationTypes)
+        public static string AjaxSaveNotificationSettings(string disabledNotificationTypes)
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);
@@ -405,10 +405,13 @@ namespace Agp2p.Web.UI.Page
             }
 
             context.li_notification_settings.DeleteAllOnSubmit(userInfo.li_notification_settings);
-            var preAdd = enabledNotificationTypes.Split(',')
-                .Select(typeStr => new li_notification_settings {dt_users = userInfo, type = Convert.ToInt32(typeStr)})
-                .ToList();
-            context.li_notification_settings.InsertAllOnSubmit(preAdd);
+            if (!string.IsNullOrWhiteSpace(disabledNotificationTypes))
+            {
+                var preAdd = disabledNotificationTypes.Split(',')
+                    .Select(typeStr => new li_notification_settings { dt_users = userInfo, type = Convert.ToInt32(typeStr) })
+                    .ToList();
+                context.li_notification_settings.InsertAllOnSubmit(preAdd);
+            }
             context.SubmitChanges();
 
             return "保存成功";

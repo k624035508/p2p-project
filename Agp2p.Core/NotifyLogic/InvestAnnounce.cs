@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,71 @@ namespace Agp2p.Core.NotifyLogic
         {
             MessageBus.Main.Subscribe<ProjectInvestCompletedMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 计算每个投资者账单收益
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleProjectInvestMsg(m.ProjectTransactionId, m.InvestTime)); // 发送投资成功消息
+            MessageBus.Main.Subscribe<ProjectFinancingFailMsg>(m => HandleProjectFinancingFailMsg(m.ProjectId)); // 发送流标的通知
+        }
+
+        private static void HandleProjectFinancingFailMsg(int projectId)
+        {
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.Single(p => p.id == projectId);
+
+            // 查出所有投资者
+            var investors = project.li_project_transactions.Where(
+                ptr =>
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .GroupBy(ptr => ptr.dt_users).Select(g => g.Key);
+
+            var sendTime = DateTime.Now;
+
+            //找出模板
+            var smsModel = context.dt_sms_template.SingleOrDefault(te => te.call_index == "project_financing_fail");
+            if (smsModel == null) throw new InvalidOperationException("找不到流标提醒模板: project_financing_fail");
+
+            var msgContent = smsModel.content
+                .Replace("{project}", project.title)
+                .Replace("{date}", sendTime.ToString("yyyy-MM-dd HH:mm"));
+
+
+            // 通知投资者项目流标
+            investors.ForEach(investor =>
+            {
+                var notificationSettings = investor.li_notification_settings.Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>().ToArray();
+
+                try
+                {
+                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForUserMsg))
+                    {
+                        //发送站内消息
+                        var userMsg = new dt_user_message
+                        {
+                            type = 1,
+                            post_user_name = "",
+                            accept_user_name = investor.user_name,
+                            title = smsModel.title,
+                            content = msgContent,
+                            post_time = sendTime,
+                            receiver = investor.id
+                        };
+                        context.dt_user_message.InsertOnSubmit(userMsg);
+                        context.SubmitChanges();
+                    }
+                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForSms))
+                    {
+                        var errorMsg = string.Empty;
+                        if (!SMSHelper.SendTemplateSms(investor.mobile, msgContent, out errorMsg))
+                        {
+                            context.AppendAdminLogAndSave("ProjectFinancingFailSms",
+                                string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, investor.user_name, project.title));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLogAndSave("ProjectFinancingFailSms",
+                        string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", ex.Message, investor.user_name, project.title));
+                }
+            });
         }
 
         /// <summary>
@@ -54,9 +120,9 @@ namespace Agp2p.Core.NotifyLogic
 
                 // 检测用户是否接收放款的通知
                 var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == investment.investor)
-                    .Select(n => n.type).Cast<Agp2pEnums.NotificationTypeEnum>();
+                    .Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>();
 
-                if (!sendNotificationSettings.Contains(Agp2pEnums.NotificationTypeEnum.InvestSuccessForUserMsg))
+                if (sendNotificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.InvestSuccessForUserMsg))
                     return;
                 else
                     context.SubmitChanges();

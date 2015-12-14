@@ -30,11 +30,11 @@ namespace Agp2p.Web
                 MessageBus.Main.Publish(new TimerMsg(onTime: callBackEnum == CallBackEnum.OnTime));
                 if (callBackEnum == CallBackEnum.OnTime)
                 {
-                    new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器执行了一次", true);
+                    new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器执行了一次");
                 }
             }, ex =>
             {
-                new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.Message, true);
+                new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.Message);
             });
         }
 
