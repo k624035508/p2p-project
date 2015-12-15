@@ -593,23 +593,19 @@ namespace Agp2p.Common
             ChargeSuccessForUserMsg = 1,
             [Description("提现申请-站内消息")]
             WithdrawApplyForUserMsg = 10,
-            [Description("项目还款-站内消息")]
+            [Description("项目回款-站内消息")]
             ProjectRepaidForUserMsg = 20,
             [Description("投资成功-站内消息")]
             InvestSuccessForUserMsg = 30,
             [Description("奖券过期提醒-站内消息")]
             LotteryWillExpireForUserMsg = 40,
-            [Description("项目流标-站内消息")]
-            ProjectFinancingFailForUserMsg = 50,
 
             [Description("充值成功-短信")]
             ChargeSuccessForSms = 1001,
             [Description("提现申请-短信")]
             WithdrawApplyForSms = 1010,
-            [Description("项目还款-短信")]
+            [Description("项目回款-短信")]
             ProjectRepaidForSms = 1020,
-            [Description("项目流标-短信")]
-            ProjectFinancingFailForSms = 1050,
         }
 
         /// <summary>

@@ -27,11 +27,11 @@ namespace Agp2p.Core.NotifyLogic
             var context = new Agp2pDataContext();
             var project = context.li_projects.Single(p => p.id == projectId);
 
-            // 查出所有投资者
+            // 查出所有已经退款的投资者 TODO 排除自己退款的投资者
             var investors = project.li_project_transactions.Where(
                 ptr =>
-                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
                 .GroupBy(ptr => ptr.dt_users).Select(g => g.Key);
 
             var sendTime = DateTime.Now;
@@ -48,34 +48,26 @@ namespace Agp2p.Core.NotifyLogic
             // 通知投资者项目流标
             investors.ForEach(investor =>
             {
-                var notificationSettings = investor.li_notification_settings.Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>().ToArray();
-
                 try
                 {
-                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForUserMsg))
+                    //发送站内消息
+                    var userMsg = new dt_user_message
                     {
-                        //发送站内消息
-                        var userMsg = new dt_user_message
-                        {
-                            type = 1,
-                            post_user_name = "",
-                            accept_user_name = investor.user_name,
-                            title = smsModel.title,
-                            content = msgContent,
-                            post_time = sendTime,
-                            receiver = investor.id
-                        };
-                        context.dt_user_message.InsertOnSubmit(userMsg);
-                        context.SubmitChanges();
-                    }
-                    if (!notificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectFinancingFailForSms))
+                        type = 1,
+                        post_user_name = "",
+                        accept_user_name = investor.user_name,
+                        title = smsModel.title,
+                        content = msgContent,
+                        post_time = sendTime,
+                        receiver = investor.id
+                    };
+                    context.dt_user_message.InsertOnSubmit(userMsg);
+                    context.SubmitChanges();
+                    var errorMsg = string.Empty;
+                    if (!SMSHelper.SendTemplateSms(investor.mobile, msgContent, out errorMsg))
                     {
-                        var errorMsg = string.Empty;
-                        if (!SMSHelper.SendTemplateSms(investor.mobile, msgContent, out errorMsg))
-                        {
-                            context.AppendAdminLogAndSave("ProjectFinancingFailSms",
-                                string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, investor.user_name, project.title));
-                        }
+                        context.AppendAdminLogAndSave("ProjectFinancingFailSms",
+                            string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, investor.user_name, project.title));
                     }
                 }
                 catch (Exception ex)
@@ -134,7 +126,7 @@ namespace Agp2p.Core.NotifyLogic
                 var content = dtSmsTemplate.content.Replace("{date}", investment.create_time.ToString("yyyy年MM月dd日HH时mm分"))
                     .Replace("{projectName}", investment.li_projects.title)
                     .Replace("{amount}", investment.principal.ToString("N"));
-                
+
                 var userMsg = new dt_user_message
                 {
                     type = 1,
@@ -156,7 +148,7 @@ namespace Agp2p.Core.NotifyLogic
         }
 
         /// <summary>
-        /// 满标
+        /// 放款
         /// </summary>
         /// <param name="projectId"></param>
         private static void HandleProjectInvestCompletedMsg(int projectId)
@@ -166,14 +158,44 @@ namespace Agp2p.Core.NotifyLogic
             var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
             Debug.Assert(project != null, "project != null");
 
+            //查询所有投资记录
+            var investTrans =
+                context.li_project_transactions.Where(
+                    t =>
+                        t.project == projectId && t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
+
             var finalProfitRate = project.GetFinalProfitRate(DateTime.Now);
-            project.li_project_transactions.ForEach(pt =>
+            investTrans.ForEach(pt =>
             {
-                pt.interest = pt.principal*finalProfitRate;
+                pt.interest = pt.principal * finalProfitRate;
             });
             context.SubmitChanges();
 
-            //TODO 是否发送放款通知
+            //满标则发满标通知，否则发截标通知
+            var dtSmsTemplate = project.financing_amount == project.investment_amount
+                ? context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success")
+                : context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success_cut");
+            if (dtSmsTemplate == null) return;
+
+            //发送通知给每个投资者
+            investTrans.ForEach(i =>
+            {
+                var msgContent = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日"))
+                    .Replace("{project}", i.li_projects.title);
+                try
+                {
+                    string errorMsg;
+                    if (!SMSHelper.SendTemplateSms(i.dt_users.mobile, msgContent, out errorMsg))
+                    {
+                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + i.dt_users.user_name + "）");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                }
+            });
         }
     }
 }

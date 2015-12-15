@@ -343,7 +343,7 @@ namespace Agp2p.Core
             if (investingMoney < 100)
                 throw new InvalidOperationException("投资金额最低 100 元");
             if (canBeInvest != investingMoney && canBeInvest - investingMoney < 100)
-                throw new InvalidOperationException("最后一次投标的最低金额为 " + canBeInvest + " 元");
+                throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
 
             // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
             var wallet = context.li_wallets.Single(w => w.user_id == userId);
@@ -426,7 +426,7 @@ namespace Agp2p.Core
         {
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                throw new InvalidOperationException("项目不是发标状态，不能设置为满标/截标");
+                throw new InvalidOperationException("项目不是发标状态，不能设置为满标");
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
             // 项目投资完成时间应该等于最后一个人的投资时间
@@ -435,6 +435,31 @@ namespace Agp2p.Core
                     tr =>
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                         tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest);
+            project.invest_complete_time = lastInvestment?.create_time ?? DateTime.Now;
+
+            context.SubmitChanges();
+            return project;
+        }
+
+        /// <summary>
+        /// 投资超时，截标
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        public static li_projects FinishInvestmentEvenTimeout(this Agp2pDataContext context, int projectId)
+        {
+            var project = context.li_projects.Single(p => p.id == projectId);
+            if (project.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)
+                throw new InvalidOperationException("项目不是投资超时状态，不能设置为截标");
+            project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
+
+            // 项目投资完成时间应该等于最后一个人的投资时间
+            var lastInvestment =
+                project.li_project_transactions.LastOrDefault(
+                    tr =>
+                        tr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                        tr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest);
             project.invest_complete_time = lastInvestment?.create_time ?? DateTime.Now;
 
             context.SubmitChanges();
