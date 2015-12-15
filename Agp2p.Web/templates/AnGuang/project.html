@@ -78,7 +78,7 @@
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
-                <input type="text" placeholder="请输入投资金额" id="investAmount-input" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> />
+                <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> />
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}"
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
@@ -168,10 +168,10 @@
                         <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
                         <tr><td>投标人数</td><td colspan="2">{invsetorCount}人</td></tr>
                         <tr><td>投标进度</td><td><div class="progress progress-custom">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{investmentProgress}"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: {investmentProgress}%">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(projectModel.GetInvestmentProgressPercent()*100)%>'
+                                 aria-valuemin="0" aria-valuemax="100" style='width: <%=projectModel.GetInvestmentProgressPercent().ToString("p1")%>'>
                             </div>
-                        </div></td><td>{investmentProgress}%</td></tr>
+                        </div></td><td><%=projectModel.GetInvestmentProgressPercent().ToString("p1")%></td></tr>
                     </tbody>
                 </table>
             </div>
