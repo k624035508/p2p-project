@@ -347,6 +347,13 @@ namespace Agp2p.Core
 
             // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
             var wallet = context.li_wallets.Single(w => w.user_id == userId);
+
+            // TODO 解除投资限制
+            if (wallet.dt_users.dt_user_groups.title != "普通会员" && wallet.dt_users.dt_user_groups.title != "借款人")
+            {
+                throw new InvalidOperationException("安广融合平台正在内部试运行中，具体全面开放请留意官网公告。");
+            }
+
             if (wallet.idle_money < investingMoney)
                 throw new InvalidOperationException("余额不足，无法投资");
 

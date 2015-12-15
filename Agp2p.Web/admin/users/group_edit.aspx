@@ -62,7 +62,7 @@
                 <span class="Validform_checktip">*隐藏后，用户将无法升级或显示该组别。</span>
             </dd>
         </dl>
-        <%--<dl>
+        <dl>
             <dt>注册默认会员组：</dt>
             <dd>
                 <div class="rule-single-checkbox">
@@ -72,7 +72,7 @@
             </dd>
         </dl>
 
-        <dl>
+        <%--<dl>
             <dt>参与自动升级：</dt>
             <dd>
                 <div class="rule-single-checkbox">
