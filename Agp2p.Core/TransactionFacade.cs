@@ -343,7 +343,7 @@ namespace Agp2p.Core
             if (investingMoney < 100)
                 throw new InvalidOperationException("投资金额最低 100 元");
             if (canBeInvest != investingMoney && canBeInvest - investingMoney < 100)
-                throw new InvalidOperationException("最后一次投标的最低金额为 " + canBeInvest + " 元");
+                throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
 
             // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
             var wallet = context.li_wallets.Single(w => w.user_id == userId);

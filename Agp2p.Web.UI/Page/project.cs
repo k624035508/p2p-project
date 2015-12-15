@@ -22,7 +22,6 @@ namespace Agp2p.Web.UI.Page
         protected int project_id;         //项目id
         protected li_projects projectModel = new li_projects();//项目
         protected int invsetorCount = 0;//投资人数
-        protected string investmentProgress = string.Empty;//投资进度
         protected string investmentBalance = string.Empty;//剩余金额
         protected li_loaners loaner = new li_loaners();//借款人
         protected li_loaner_companies loaner_company;//借款人企业
@@ -58,8 +57,6 @@ namespace Agp2p.Web.UI.Page
             context.SubmitChanges();
 
             var pr = GetProjectInvestmentProgress(projectModel);
-            //投资进度
-            investmentProgress = pr.GetInvestmentProgress();
             //剩余金额
             investmentBalance = pr.GetInvestmentBalance();
             //风控信息

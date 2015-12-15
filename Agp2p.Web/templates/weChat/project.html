@@ -10,7 +10,7 @@
     <script>
         var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
         var idleMoney = {idle_money};
-        var investProgress = {investmentProgress};
+        var investProgress = <%=(projectModel.GetInvestmentProgressPercent()*100)%>;
         var projectId = {projectModel.id};
         var projectName = '{projectModel.title}';
     </script>
@@ -85,7 +85,7 @@
                 <div class="invest-action">
                     <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（大于100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
+                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>
