@@ -31,7 +31,6 @@ namespace Agp2p.Core.NotifyLogic
             var investors = project.li_project_transactions.Where(
                 ptr =>
                     ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
                 .GroupBy(ptr => ptr.dt_users).Select(g => g.Key);
 
@@ -159,8 +158,15 @@ namespace Agp2p.Core.NotifyLogic
             var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
             Debug.Assert(project != null, "project != null");
 
+            //查询所有投资记录
+            var investTrans =
+                context.li_project_transactions.Where(
+                    t =>
+                        t.project == projectId && t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
+
             var finalProfitRate = project.GetFinalProfitRate(DateTime.Now);
-            project.li_project_transactions.ForEach(pt =>
+            investTrans.ForEach(pt =>
             {
                 pt.interest = pt.principal * finalProfitRate;
             });
@@ -171,16 +177,11 @@ namespace Agp2p.Core.NotifyLogic
                 ? context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success")
                 : context.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_success_cut");
             if (dtSmsTemplate == null) return;
-            //查询所有投资记录
-            var investTrans =
-                context.li_project_transactions.Where(
-                    t =>
-                        t.project == projectId && t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
+
             //发送通知给每个投资者
             investTrans.ForEach(i =>
             {
-                var msgContent = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日HH时mm分"))
+                var msgContent = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日"))
                     .Replace("{project}", i.li_projects.title);
                 try
                 {
