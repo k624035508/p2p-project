@@ -12,13 +12,20 @@
     <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            //初始化表单验证
+            $("#form1").initValidform();
+
+        });
+    </script>
 </head>
 <body class="mainbody">
     <form id="form1" runat="server">
         <!--导航栏-->
         <div class="location">
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回列表页</span></a> <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
-             <i class="arrow"></i><span>借款明细</span>
+            <i class="arrow"></i><span>借款明细</span>
         </div>
         <div class="line10">
         </div>
@@ -118,8 +125,8 @@
                                 <span id="spa_bond_fee" runat="server"></span>
                             </td>
                         </tr>
-                        <% if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
-                           { %>
+                        <% if (ProjectStatus > (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                            { %>
                         <tr>
                             <th>借款标识
                             </th>
@@ -142,8 +149,8 @@
                                 <span id="spa_add_time" runat="server"></span>
                             </td>
                         </tr>
-                        <% if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
-                           { %>
+                        <% if (ProjectStatus > (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess)
+                            { %>
                         <tr>
                             <th>发布时间
                             </th>
@@ -152,8 +159,8 @@
                             </td>
                         </tr>
                         <% }
-                           if (ProjectStatus > (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
-                           { %>
+                            if (ProjectStatus > (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
+                            { %>
                         <tr>
                             <th>放款时间
                             </th>
@@ -437,7 +444,7 @@
                 <input type="hidden" name="hid_photo_name" value="splitter" />
                 <input type="hidden" name="hid_photo_remark" value="splitter" />
             </dl>
-            <div runat="server" id="div_fabiao" Visible="False">
+            <div runat="server" id="div_fabiao" visible="False">
                 <dl>
                     <dt>借款标识</dt>
                     <dd>
@@ -453,7 +460,7 @@
                         <div class="input-date">
                             <asp:TextBox ID="txtPublishTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                                 datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
-                                sucmsg=" "/>
+                                sucmsg=" " />
                             <i></i>
                         </div>
                         <span class="Validform_checktip">不选择默认当前发布时间</span>
@@ -463,8 +470,20 @@
                     <dt>募集期限</dt>
                     <dd>
                         <asp:TextBox ID="txt_financing_day" runat="server" CssClass="input small" datatype="n"
-                            sucmsg=" "></asp:TextBox>天
+                            sucmsg=" "></asp:TextBox>
+                        天
                     <asp:Label ID="financing_day_rate_tip" runat="server" CssClass="Validform_checktip" />
+                    </dd>
+                </dl>
+            </div>
+            <div runat="server" id="div_financing_add_day" visible="False">
+                <dl visible="False">
+                    <dt>募集顺延</dt>
+                    <dd>
+                        <asp:TextBox ID="txt_financing_add_day" runat="server" CssClass="input small" datatype="n"
+                            sucmsg=" "></asp:TextBox>
+                        天
+                    <asp:Label ID="Label1" runat="server" CssClass="Validform_checktip" />
                     </dd>
                 </dl>
             </div>
@@ -475,16 +494,18 @@
         <div class="page-footer">
             <div class="btn-list">
                 <asp:LinkButton runat="server"></asp:LinkButton>
-                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnAudit','是否确定审核通过？');" OnClick="btnAudit_OnClick" Visible="False"/>
-                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnNotAudit','是否确定审核不通过？');" OnClick="btnNotAudit_OnClick" Visible="False"/>
+                <asp:Button ID="btnAudit" runat="server" Text="通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnAudit','是否确定审核通过？');" OnClick="btnAudit_OnClick" Visible="False" />
+                <asp:Button ID="btnNotAudit" runat="server" Text="不通过" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnNotAudit','是否确定审核不通过？');" OnClick="btnNotAudit_OnClick" Visible="False" />
                 <asp:Button ID="btnApply" runat="server" Text="发布" CssClass="btn" OnClick="btnApply_OnClick" Visible="False" />
                 <asp:Button ID="btnApplyOnTime" runat="server" Text="定时发布" CssClass="btn" OnClick="btnApplyOnTime_OnClick" Visible="False" />
                 <asp:Button ID="btnDrop" runat="server" Text="撤销" OnClientClick="return ExeNoCheckPostBack('btnDrop','是否确定撤销该借款？');" CssClass="btn" OnClick="btnDrop_OnClick" Visible="False" />
                 <asp:Button ID="btnMakeLoan" runat="server" Text="放款" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnMakeLoan','是否确定放款给借款人？');" OnClick="btnMakeLoan_OnClick" Visible="False" />
-                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />                
-                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" 
-                    onclick="location.href='javascript:history.back(-1);'" />
-                <asp:Button runat="server" CssClass="btn" ID="btnExport" OnClick="btnExport_OnClick" Text="导出 Excel"/>
+                <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
+                <asp:Button ID="btnActivate" runat="server" Text="激活" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnActivate','是否确定重新激活该项目？');" OnClick="btnActivate_OnClick" Visible="False" />
+                <asp:Button ID="btnCut" runat="server" Text="截标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnCut','是否确定对改项目进行截标？');" OnClick="btnCut_OnClick" Visible="False" />
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
+                    onclick="location.href = 'javascript:history.back(-1);'" />
+                <asp:Button runat="server" CssClass="btn" ID="btnExport" OnClick="btnExport_OnClick" Text="导出 Excel" />
             </div>
             <div class="clear">
             </div>
