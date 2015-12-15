@@ -181,7 +181,7 @@ namespace Agp2p.Core.NotifyLogic
             //发送通知给每个投资者
             investTrans.ForEach(i =>
             {
-                var msgContent = dtSmsTemplate.content.Replace("{date}", i.create_time.ToString("yyyy年MM月dd日"))
+                var msgContent = dtSmsTemplate.content.Replace("{date}", DateTime.Now.ToString("yyyy年MM月dd日"))
                     .Replace("{project}", i.li_projects.title);
                 try
                 {

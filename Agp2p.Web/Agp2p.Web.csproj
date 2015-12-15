@@ -718,7 +718,8 @@
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
-    <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-01.png" />
+    <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\funds-hover.png" />
@@ -908,6 +909,7 @@
     <Content Include="templates\weChat\imgs\agrh.png" />
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
+    <Content Include="templates\weChat\imgs\banner\banner-2.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
     <Content Include="templates\weChat\imgs\footer\index-active.png" />

@@ -87,6 +87,9 @@ namespace Agp2p.Web.admin.project
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout:
                     btnFail.Visible = true;
+                    btnActivate.Visible = true;
+                    btnCut.Visible = true;
+                    div_financing_add_day.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess:
                     btnFail.Visible = true;
@@ -352,6 +355,89 @@ namespace Agp2p.Web.admin.project
         }
 
         /// <summary>
+        /// 重新激活项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnActivate_OnClick(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty(txt_financing_add_day.Text.Trim()))
+            {
+                JscriptMsg("请输入募集顺延天数！", "back", "Error");
+                return;
+            }
+
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            if (project != null)
+            {
+                try
+                {
+                    //ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
+                    project.status = (int)Agp2pEnums.ProjectStatusEnum.Financing;
+                    project.financing_day = (short) (int.Parse(txt_financing_add_day.Text) + DateTime.Now.Subtract((DateTime)project.publish_time).Days);
+                    LqContext.SubmitChanges();
+                    JscriptMsg("借款激活操作成功！",
+                        Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                            ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+                    //发送顺延通知短信
+                    var dtSmsTemplate = LqContext.dt_sms_template.FirstOrDefault(t => t.call_index == "project_financing_add_day");
+                    if (dtSmsTemplate != null)
+                    {
+                        project.li_project_transactions.Where(
+                            t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                                 t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                            .ToList()
+                            .ForEach(i =>
+                            {
+                                var msgContent = dtSmsTemplate.content.Replace("{date}",
+                                    DateTime.Now.ToString("yyyy年MM月dd日"))
+                                    .Replace("{day}", txt_financing_add_day.Text)
+                                    .Replace("{project}", i.li_projects.title);
+                                try
+                                {
+                                    string errorMsg;
+                                    if (!SMSHelper.SendTemplateSms(i.dt_users.mobile, msgContent, out errorMsg))
+                                    {
+                                        LqContext.AppendAdminLogAndSave("WithdrawSms",
+                                            "发送借款募集顺延通知失败：" + errorMsg + "（客户ID：" + i.dt_users.user_name + "）");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    LqContext.AppendAdminLogAndSave("WithdrawSms",
+                                        "发送借款募集顺延通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                                }
+                            });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    JscriptMsg("借款激活操作失败：" + ex.Message, "back", "Error");
+                }
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
+            }
+        }
+
+        protected void btnCut_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                //ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
+                LqContext.FinishInvestmentEvenTimeout(ProjectId);
+                JscriptMsg("借款截标操作成功！",
+                    Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                        ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("借款截标操作失败：" + ex.Message, "back", "Error");
+            }
+        }
+
+        /// <summary>
         /// 放款给借款人
         /// </summary>
         /// <param name="sender"></param>
@@ -600,6 +686,7 @@ namespace Agp2p.Web.admin.project
 
             }, Response);
         }
+
     }
 
 }
