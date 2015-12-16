@@ -96,11 +96,11 @@ namespace Agp2p.Web.admin.users
             {
                 rblIsLock.Checked = true;
             }
-            /*if (model.is_default == 1)
+            if (model.is_default == 1)
             {
                 rblIsDefault.Checked = true;
             }
-            if (model.is_upgrade == 1)
+            /*if (model.is_upgrade == 1)
             {
                 rblIsUpgrade.Checked = true;
             }
@@ -128,11 +128,11 @@ namespace Agp2p.Web.admin.users
             model.is_default = 0;            
             model.is_upgrade = 0;
 
-            /*if (rblIsDefault.Checked)
+            if (rblIsDefault.Checked)
             {
                 model.is_default = 1;
             }
-            if (rblIsUpgrade.Checked)
+            /*if (rblIsUpgrade.Checked)
             {
                 model.is_upgrade = 1;
             }
@@ -181,11 +181,11 @@ namespace Agp2p.Web.admin.users
             model.is_default = 0;            
             model.is_upgrade = 0;
 
-            /*if (rblIsDefault.Checked)
+            if (rblIsDefault.Checked)
             {
                 model.is_default = 1;
             }
-            if (rblIsUpgrade.Checked)
+            /*if (rblIsUpgrade.Checked)
             {
                 model.is_upgrade = 1;
             }

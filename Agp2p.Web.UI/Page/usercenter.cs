@@ -114,7 +114,8 @@ namespace Agp2p.Web.UI.Page
                     userInfo.area,
                     userInfo.address,
                     invitationCode = userCode == null ? myreward.GetInviteCode(context) : userCode.str_code,
-                    hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password)
+                    hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password),
+                    groupName = userInfo.dt_user_groups.title
                 }
             });
         }

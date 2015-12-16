@@ -46,6 +46,10 @@ class BankAccount extends React.Component {
                 <CardEditor rootClass="add-cards-wrap"
                     onOperationSuccess={() => this.setState({selectedCardIndex: -1})}
                     value={this.state.selectedCardIndex == -1 ? null : this.props.cards[this.state.selectedCardIndex]}/>
+                <div className="th-grey-style"><span>温馨提示</span></div>
+                <div className="warm-tips-style">
+                    <p>1. 如不知道开户行名称，可以填“某城市分行”。</p>
+                </div>
             </div>
         );
     }

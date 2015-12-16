@@ -14,8 +14,16 @@ class RechargePage extends React.Component {
 		$("#waitforPaymentDialog").on("hide.bs.modal", ev => {
 			this.props.dispatch(fetchWalletAndUserInfo());
 		});
+		if (this.props.groupName == "VIP会员") {
+			alert("您暂时无法充值：安广融合平台正在内部试运行中，具体全面开放请留意官网公告。");
+		}
 	}
 	doCharge(ev) {
+		if (this.props.groupName == "VIP会员") {
+			alert("您暂时无法充值：安广融合平台正在内部试运行中，具体全面开放请留意官网公告。");
+			ev.preventDefault();
+			return;
+		}
 		if (this.state.selectedBankId == "") {
 			alert("请先选择银行卡");
 			ev.preventDefault();
@@ -90,7 +98,7 @@ class RechargePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-	return {idleMoney: state.walletInfo.idleMoney };
+	return {idleMoney: state.walletInfo.idleMoney, groupName: state.userInfo.groupName };
 }
 
 import { connect } from 'react-redux';
