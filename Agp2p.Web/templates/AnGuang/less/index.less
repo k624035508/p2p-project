@@ -112,23 +112,21 @@ div.announcement-wrap {
         height: 40px;
         padding: 5.5px 0;
         margin: 0 auto;
-        & > * {
+        * {
             .inline-block;
-        }
-        .return-announce,
-        .return-announce a,
-        .web-announce,
-        .web-announce a,
-        .pull-right a {
             color: @darker-grey;
             font-size: @font15;
         }
-        .return-announce {margin: 0 5px 0 15px;}
-        .return-announce a, .web-announce a, .pull-right a {
+        a {
             text-decoration: none;
-            &:hover {
-                color:@red;
-            }
+            &:hover { color:@red; }
+        }
+        .return-announce { margin: 0 5px 0 15px; }
+        .web-announce a {
+            max-width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .pull-right a {line-height: 29px;}
         .announce-board-icon {
