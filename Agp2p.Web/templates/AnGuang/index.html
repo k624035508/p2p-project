@@ -19,6 +19,30 @@
 <%template src="_header.html"%>
 <!--head end-->
 
+<!--banner-floating-->
+<div class="banner-floating">
+    <div class="content-wrap">
+        <div class="floating-box">
+            <div class="opacity"></div>
+            <div class="content-body">
+                <%if(_userModel==null)%>
+                <p class="title">安广融合年化收益</p>
+                <p class="rate">最高<span class="num">15</span><span class="unit">%</span></p>
+                <p class="invest-amount">100元起投，享稳健收益</p>
+                <a class="register-btn" href='<%linkurl("register")%>'>免费注册</a>
+                <p class="switch">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></p>
+                <%else%>
+                <p class="title">欢迎来到安广融合</p>
+                <p class="user">您的账户：<span class="account"><%=Utils.GetUserNameHidden(_userModel.user_name)%></span></p>
+                <a class="register-btn enter" href='<%linkurl("usercenter","index")%>'>进入我的账户</a>
+                <p class="switch"><a href='<%linkurl("usercenter","exit")%>'>退出登录</a></p>
+                <%/if%>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--banner-->
 <div class="container-fluid">
     <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
@@ -31,7 +55,7 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <a href='<%linkurl("register")%>' target="_blank"><img src="<%templateskin%>/imgs/index/banner-01.png" alt="Chania"></a>
+                <a class="banner1"></a>
             </div>
             <!--<div class="item">-->
                 <!--<img src="<%templateskin%>/imgs/index/bannerTest-02.jpg" alt="Chania">-->
@@ -338,7 +362,7 @@
     <div class="btn-wrap"><button type="button" id="cal-btn" onclick="calculate()">计 算</button></div>'
     ><span id="floating-cal" class="floating-icon cal-icon"></span>
     </a>
-    <a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=4008878200&aty=1&a=0&curl=&ty=1" target="_blank"><span id="floating-qq"></span></a>
+    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODE3NTUwM18zNTE3MjNfNDAwODg3ODIwMF8yXw" target="_blank"><span id="floating-qq"></span></a>
     <a href="#" id="floating-top-wrap" style="display:none"><span id="floating-top" class="floating-icon top-icon"></span></a>
 </div>
 <!--floating icon end-->

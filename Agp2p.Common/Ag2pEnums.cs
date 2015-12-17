@@ -47,6 +47,8 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectStatusEnum
         {
+            [Description("作废")]
+            FinancingApplicationCancel = 0,
             // 发标前 (前台不可见)
             /// <summary>
             /// 借款申请待提交
