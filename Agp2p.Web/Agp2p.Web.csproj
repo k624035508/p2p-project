@@ -96,6 +96,7 @@
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
+    <Content Include="admin\js\bootstrap.config.js" />
     <Content Include="admin\js\common.js" />
     <Content Include="admin\js\jquery.skygqOneDblClick.1.1.js" />
     <Content Include="admin\js\layindex.js" />
@@ -660,6 +661,9 @@
     <Content Include="admin\.babelrc" />
     <Content Include="admin\package.json" />
     <Content Include="admin\js\pagination.jsx" />
+    <Content Include="admin\pwatch.bat" />
+    <Content Include="admin\watch.bat" />
+    <Content Include="admin\js\bootstrap.config.less" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
