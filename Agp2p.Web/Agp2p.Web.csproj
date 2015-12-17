@@ -113,6 +113,7 @@
     <Content Include="admin\loaner\mortgage_edit.aspx" />
     <Content Include="admin\loaner\mortgage_type_list.aspx" />
     <Content Include="admin\loaner\_shareholdersInfoTemplate.html" />
+    <Content Include="admin\manager-messages.html" />
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
@@ -243,6 +244,7 @@
     <Content Include="admin\users\user_config.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
     <Content Include="admin\loaner\mortgage_list.aspx" />
+    <Content Include="admin\webpack.config.js" />
     <Content Include="admin\weixin\account_edit.aspx" />
     <Content Include="admin\weixin\account_list.aspx" />
     <Content Include="admin\weixin\menu_edit.aspx" />
@@ -653,6 +655,11 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\about.xml" />
+    <Content Include="admin\js\dropdown-picker.jsx" />
+    <Content Include="admin\js\manager-messages.jsx" />
+    <Content Include="admin\.babelrc" />
+    <Content Include="admin\package.json" />
+    <Content Include="admin\js\pagination.jsx" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
@@ -1053,7 +1060,6 @@
     <Content Include="templates\AnGuang\containers\bankaccount.jsx" />
     <Content Include="templates\AnGuang\components\card-editor.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
-    <Content Include="templates\AnGuang\containers\mynews.jsx" />
     <Content Include="templates\AnGuang\containers\mynews.jsx" />
     <Content Include="templates\AnGuang\containers\settings.jsx" />
     <Content Include="templates\AnGuang\containers\mylottery.jsx" />

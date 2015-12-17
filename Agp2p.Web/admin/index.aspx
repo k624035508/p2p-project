@@ -15,14 +15,61 @@
 <script type="text/javascript" charset="utf-8" src="js/layindex.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/common.js"></script>
 <script type="text/javascript">
+
+var showMyMessages = function() {
+    var dialogMountPoint = $(".manager-msg")[0];
+    dialog({
+        width: '680px',
+        height: '650px',
+        content: '<iframe width="100%" height="100%" src="/admin/manager-messages.html"></iframe>',
+        quickClose: true
+    }).show(dialogMountPoint);
+}
+
+var checkMyMessage = function () {
+    var url = '<%=Request.FilePath%>' + "/AjaxQueryUnreadMessagesCount";
+    $.ajax({
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        url: url,
+        success: function(result) {
+            var originalHint = $(".manager-msg")[0].innerText;
+            var newHint = "未读消息：" + result.d;
+            if (originalHint != newHint) {
+                showMyMessages();
+                $(".manager-msg")[0].innerText = newHint;
+            }
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error(url, status, err.toString());
+        }.bind(this)
+    });
+}
+
+
 //页面加载完成时
 $(function () {
     //检测IE
     if ('undefined' == typeof(document.body.style.maxHeight)){
         window.location.href = 'ie6update.html';
     }
+
+    $(".manager-msg").click(showMyMessages);
+
+    checkMyMessage();
+
+    window.onfocus = checkMyMessage;
 });
 </script>
+<style>
+.manager-msg {
+    display: inline-block;
+    float: left;
+    margin: 0 15px;
+    cursor: pointer;
+}
+</style>
 </head>
 
 <body class="indexbody">
@@ -44,6 +91,7 @@ $(function () {
     <div id="main-nav" class="main-nav"></div>
     <div class="nav-right">
       <div class="info">
+        <div class="manager-msg">未读消息：0</div>
         <i></i>
         <span>
           您好，<%=admin_info.user_name %><br>

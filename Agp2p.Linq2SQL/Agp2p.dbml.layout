@@ -62,7 +62,7 @@
         <elementListCompartment Id="666f3044-c3fd-4b35-89d3-7e516cea5c8f" absoluteBounds="9.515, 4.835, 1.9700000000000002, 1.901275634765625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.25 : 19.7958437093099); (8.76041666666667 : 19.7958437093099 : JumpStart); (8.92708333333333 : 19.7958437093099 : JumpEnd); (9 : 19.7958437093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 19.7958437093099); (8.29166666666667 : 19.7958437093099 : JumpStart); (8.45833333333333 : 19.7958437093099 : JumpEnd); (8.54166666666667 : 19.7958437093099 : JumpStart); (8.70833333333333 : 19.7958437093099 : JumpEnd); (8.76041666666667 : 19.7958437093099 : JumpStart); (8.92708333333333 : 19.7958437093099 : JumpEnd); (9 : 19.7958437093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_bank_accounts/li_bank_accounts_li_bank_transactions" />
       <nodes>
         <classShapeMoniker Id="e9573200-2b05-46c7-bc50-30412fed611b" />
@@ -76,7 +76,7 @@
         <classShapeMoniker Id="9cbc2d7f-43b7-460c-af4b-41aa5ea248ad" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11 : 20.5417848714192); (11.2604166666667 : 20.5417848714192 : JumpStart); (11.4270833333333 : 20.5417848714192 : JumpEnd); (11.4635441666667 : 20.5417848714192 : JumpStart); (11.6302108333333 : 20.5417848714192 : JumpEnd); (14.5416666666667 : 20.5417848714192 : JumpStart); (14.7083333333333 : 20.5417848714192 : JumpEnd); (15.75 : 20.5417848714192); (15.75 : 19.0754520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(11 : 20.5417848714192); (11.4635441666667 : 20.5417848714192 : JumpStart); (11.6302108333333 : 20.5417848714192 : JumpEnd); (15.75 : 20.5417848714192); (15.75 : 19.0754520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_bank_transactions/li_bank_transactions_li_wallet_histories" />
       <nodes>
         <classShapeMoniker Id="de3ec63d-2d0f-44f6-9495-509450833e2d" />
@@ -96,7 +96,7 @@
         <elementListCompartment Id="07fa03c8-7d56-491b-98b7-7a636bb0975d" absoluteBounds="6.2650000000000006, 22.085, 1.9700000000000002, 0.60771687825520826" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.75 : 18.7710697428385); (1.75 : 24.4777754720052); (4.41666666666667 : 24.4777754720052 : JumpStart); (4.58333333333333 : 24.4777754720052 : JumpEnd); (4.94791916666667 : 24.4777754720052 : JumpStart); (5.11458583333333 : 24.4777754720052 : JumpEnd); (5.875 : 24.4777754720052); (5.875 : 22.2088584391276); (6.25 : 22.2088584391276)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.75 : 18.7710697428385); (1.75 : 24.4777754720052); (4.41666666666667 : 24.4777754720052 : JumpStart); (4.58333333333333 : 24.4777754720052 : JumpEnd); (5.875 : 24.4777754720052); (5.875 : 22.2088584391276); (6.25 : 22.2088584391276)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_user_groups/dt_user_groups_li_user_group_servers" />
       <nodes>
         <classShapeMoniker Id="95050d57-6a6f-4c80-9269-e19b2910493a" />
@@ -116,7 +116,7 @@
         <classShapeMoniker Id="0017899d-588e-4a3c-86cb-9ef1aa8c1f0c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 15.1827315266927); (3.04166666666667 : 15.1827315266927 : JumpStart); (3.20833333333333 : 15.1827315266927 : JumpEnd); (3.22916666666667 : 15.1827315266927 : JumpStart); (3.39583333333333 : 15.1827315266927 : JumpEnd); (5.69791666666667 : 15.1827315266927 : JumpStart); (5.86458333333333 : 15.1827315266927 : JumpEnd); (5.91666666666667 : 15.1827315266927 : JumpStart); (6.17708333333333 : 15.1827315266927 : JumpEnd); (7.16666666666667 : 15.1827315266927 : JumpStart); (7.33333333333333 : 15.1827315266927 : JumpEnd); (8.76041666666667 : 15.1827315266927 : JumpStart); (8.92708333333333 : 15.1827315266927 : JumpEnd); (9.5 : 15.1827315266927); (9.5 : 19.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 15.1827310266927); (3.04166666666667 : 15.1827310266927 : JumpStart); (3.20833333333333 : 15.1827310266927 : JumpEnd); (3.22916666666667 : 15.1827310266927 : JumpStart); (3.39583333333333 : 15.1827310266927 : JumpEnd); (5.69791666666667 : 15.1827310266927 : JumpStart); (5.86458333333333 : 15.1827310266927 : JumpEnd); (5.91666666666667 : 15.1827310266927 : JumpStart); (6.17708333333333 : 15.1827310266927 : JumpEnd); (7.16666666666667 : 15.1827310266927 : JumpStart); (7.33333333333333 : 15.1827310266927 : JumpEnd); (8.76041666666667 : 15.1827310266927 : JumpStart); (8.92708333333333 : 15.1827310266927 : JumpEnd); (9.5 : 15.1827310266927); (9.5 : 19.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_manager/dt_manager_li_bank_transactions" />
       <nodes>
         <classShapeMoniker Id="dd92d40e-6adb-4774-bed9-943c210dbfc9" />
@@ -205,7 +205,7 @@
         <classShapeMoniker Id="37ca1489-6460-41b1-afe4-cba7f18477f1" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 17.7651112296549); (3.22916666666667 : 17.7651112296549 : JumpStart); (3.39583333333333 : 17.7651112296549 : JumpEnd); (3.97844576282051 : 17.7651112296549 : JumpStart); (4.14511242948718 : 17.7651112296549 : JumpEnd); (4.4786873974359 : 17.7651112296549 : JumpStart); (4.64535406410256 : 17.7651112296549 : JumpEnd); (4.97892903205128 : 17.7651112296549 : JumpStart); (5.14559569871795 : 17.7651112296549 : JumpEnd); (5.78125 : 17.7651112296549); (5.78125 : 9.91771687825521)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 17.7651112296549); (3.22916666666667 : 17.7651112296549 : JumpStart); (3.39583333333333 : 17.7651112296549 : JumpEnd); (3.97844576282052 : 17.7651112296549 : JumpStart); (4.14511242948718 : 17.7651112296549 : JumpEnd); (4.4786873974359 : 17.7651112296549 : JumpStart); (4.64535406410256 : 17.7651112296549 : JumpEnd); (4.97892903205129 : 17.7651112296549 : JumpStart); (5.14559569871795 : 17.7651112296549 : JumpEnd); (5.78125 : 17.7651112296549); (5.78125 : 9.91771687825521)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_user_groups/dt_user_groups_li_user_group_departments" />
       <nodes>
         <classShapeMoniker Id="95050d57-6a6f-4c80-9269-e19b2910493a" />
@@ -296,7 +296,7 @@
         <elementListCompartment Id="cd533316-fe45-4201-a58c-f33907e66c0a" absoluteBounds="18.89, 3.585, 1.9700000000000002, 3.379628499348958" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(19.59375 : 7.06462849934896); (19.59375 : 10.34375); (17.375 : 10.34375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(19.59375 : 7.06462849934896); (19.59375 : 10.34375); (19.2864558333333 : 10.34375 : JumpStart); (19.1197891666667 : 10.34375 : JumpEnd); (17.375 : 10.34375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_guarantors/li_guarantors_li_risks" />
       <nodes>
         <classShapeMoniker Id="07503496-075b-4611-93a1-7132cb7d1fd4" />
@@ -323,42 +323,42 @@
         <classShapeMoniker Id="0017899d-588e-4a3c-86cb-9ef1aa8c1f0c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 19.3895962093099); (6.01041666666667 : 19.3895962093099 : JumpStart); (6.17708333333333 : 19.3895962093099 : JumpEnd); (6.25 : 19.3895962093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 19.3895962093099); (6.25 : 19.3895962093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_bank_accounts" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="e9573200-2b05-46c7-bc50-30412fed611b" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.29166666666667 : 20.8583437093099 : JumpStart); (8.45833333333333 : 20.8583437093099 : JumpEnd); (8.54166666666667 : 20.8583437093099 : JumpStart); (8.70833333333333 : 20.8583437093099 : JumpEnd); (8.76041666666667 : 20.8583437093099 : JumpStart); (8.92708333333333 : 20.8583437093099 : JumpEnd); (9 : 20.8583437093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.76041666666667 : 20.8583437093099 : JumpStart); (8.92708333333333 : 20.8583437093099 : JumpEnd); (9 : 20.8583437093099)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_bank_transactions" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="de3ec63d-2d0f-44f6-9495-509450833e2d" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 21.2416743546549); (8.625 : 21.2416743546549); (8.625 : 19); (8.76041666666667 : 19 : JumpStart); (8.92708333333333 : 19 : JumpEnd); (9.41666666666667 : 19 : JumpStart); (9.58333333333333 : 19 : JumpEnd); (11.2604166666667 : 19 : JumpStart); (11.4270833333333 : 19 : JumpEnd); (11.4635441666667 : 19 : JumpStart); (11.6302108333333 : 19 : JumpEnd); (12.25 : 19); (12.25 : 20.25); (14.5416666666667 : 20.25 : JumpStart); (14.7083333333333 : 20.25 : JumpEnd); (15.6666666666667 : 20.25 : JumpStart); (15.8333333333333 : 20.25 : JumpEnd); (16.9869770416667 : 20.25 : JumpStart); (17.1770828333333 : 20.25 : JumpEnd); (18.0104166666667 : 20.25 : JumpStart); (18.1770833333333 : 20.25 : JumpEnd); (19.1197891666667 : 20.25 : JumpStart); (19.2864558333333 : 20.25 : JumpEnd); (21.25 : 20.25); (21.25 : 19.3525109863281)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 21.2416743546549); (8.29166666666667 : 21.2416743546549 : JumpStart); (8.45833333333333 : 21.2416743546549 : JumpEnd); (8.625 : 21.2416743546549); (8.625 : 19); (8.76041666666667 : 19 : JumpStart); (8.92708333333333 : 19 : JumpEnd); (9.41666666666667 : 19 : JumpStart); (9.58333333333333 : 19 : JumpEnd); (11.2604166666667 : 19 : JumpStart); (11.4270833333333 : 19 : JumpEnd); (11.4635441666667 : 19 : JumpStart); (11.6302108333333 : 19 : JumpEnd); (11.9166666666667 : 19 : JumpStart); (12.0833333333333 : 19 : JumpEnd); (12.25 : 19); (12.25 : 20.25); (14.5416666666667 : 20.25 : JumpStart); (14.7083333333333 : 20.25 : JumpEnd); (15.6666666666667 : 20.25 : JumpStart); (15.8333333333333 : 20.25 : JumpEnd); (16.9869770416667 : 20.25 : JumpStart); (17.1770828333333 : 20.25 : JumpEnd); (18.0104166666667 : 20.25 : JumpStart); (18.1770833333333 : 20.25 : JumpEnd); (19.1197891666667 : 20.25 : JumpStart); (19.2864558333333 : 20.25 : JumpEnd); (21.25 : 20.25); (21.25 : 19.3525109863281)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_invitations" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="2ab9c7cb-5ceb-4bc6-8ba0-2078c0a26e2f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 20.4750130639648); (8.5 : 20.4750130639648); (8.5 : 18.75); (8.76041666666667 : 18.75 : JumpStart); (8.92708333333333 : 18.75 : JumpEnd); (9.41666666666667 : 18.75 : JumpStart); (9.58333333333333 : 18.75 : JumpEnd); (11.2604166666667 : 18.75 : JumpStart); (11.4270833333333 : 18.75 : JumpEnd); (11.4635441666667 : 18.75 : JumpStart); (11.6302108333333 : 18.75 : JumpEnd); (12 : 18.75); (12 : 20.125); (12.1666666666667 : 20.125 : JumpStart); (12.3333333333333 : 20.125 : JumpEnd); (14.5416666666667 : 20.125 : JumpStart); (14.7083333333333 : 20.125 : JumpEnd); (15.6666666666667 : 20.125 : JumpStart); (15.8333333333333 : 20.125 : JumpEnd); (16.9869770416667 : 20.125 : JumpStart); (17.1770828333333 : 20.125 : JumpEnd); (18.0104166666667 : 20.125 : JumpStart); (18.1770833333333 : 20.125 : JumpEnd); (19.1197891666667 : 20.125 : JumpStart); (19.2864558333333 : 20.125 : JumpEnd); (20.718748 : 20.125); (20.718748 : 19.3525109863281)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 20.4750130639648); (8.29166666666667 : 20.4750130639648 : JumpStart); (8.45833333333333 : 20.4750130639648 : JumpEnd); (8.5 : 20.4750130639648); (8.5 : 18.75); (8.76041666666667 : 18.75 : JumpStart); (8.92708333333333 : 18.75 : JumpEnd); (9.41666666666667 : 18.75 : JumpStart); (9.58333333333333 : 18.75 : JumpEnd); (11.2604166666667 : 18.75 : JumpStart); (11.4270833333333 : 18.75 : JumpEnd); (11.4635441666667 : 18.75 : JumpStart); (11.6302108333333 : 18.75 : JumpEnd); (12 : 18.75); (12 : 20.125); (12.1666666666667 : 20.125 : JumpStart); (12.3333333333333 : 20.125 : JumpEnd); (14.5416666666667 : 20.125 : JumpStart); (14.7083333333333 : 20.125 : JumpEnd); (15.6666666666667 : 20.125 : JumpStart); (15.8333333333333 : 20.125 : JumpEnd); (16.9869770416667 : 20.125 : JumpStart); (17.1770828333333 : 20.125 : JumpEnd); (18.0104166666667 : 20.125 : JumpStart); (18.1770833333333 : 20.125 : JumpEnd); (19.1197891666667 : 20.125 : JumpStart); (19.2864558333333 : 20.125 : JumpEnd); (20.718748 : 20.125); (20.718748 : 19.3525109863281)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_invitations1" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="2ab9c7cb-5ceb-4bc6-8ba0-2078c0a26e2f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 19.9302345283704); (8.76041666666667 : 19.9302345283704 : JumpStart); (9.02083333333333 : 19.9302345283704 : JumpEnd); (11.4635441666667 : 19.9302345283704 : JumpStart); (11.6302108333333 : 19.9302345283704 : JumpEnd); (15.2187475 : 19.9302345283704); (15.2187475 : 19.0754520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 19.9302345283704); (8.54166666666667 : 19.9302345283704 : JumpStart); (8.70833333333333 : 19.9302345283704 : JumpEnd); (8.76041666666667 : 19.9302345283704 : JumpStart); (8.92708333333333 : 19.9302345283704 : JumpEnd); (11.4635441666667 : 19.9302345283704 : JumpStart); (11.6302108333333 : 19.9302345283704 : JumpEnd); (12.1666666666667 : 19.9302345283704 : JumpStart); (12.3333333333333 : 19.9302345283704 : JumpEnd); (15.2187475 : 19.9302345283704); (15.2187475 : 19.0754520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_wallet_histories" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="9cbc2d7f-43b7-460c-af4b-41aa5ea248ad" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.5 : 24.2277754720052); (4.5 : 25.4806378173828); (4.94791916666667 : 25.4806378173828 : JumpStart); (5.11458583333333 : 25.4806378173828 : JumpEnd); (6.25 : 25.4806378173828)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.5 : 24.2277754720052); (4.5 : 25.4806378173828); (6.25 : 25.4806378173828)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_dt_user_code" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
@@ -386,7 +386,7 @@
         <classShapeMoniker Id="e0eba7b2-e52e-460e-b432-d63131a98568" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 23.1853422124023); (8.76041666666667 : 23.1853422124023 : JumpStart); (8.92708333333333 : 23.1853422124023 : JumpEnd); (11.4635441666667 : 23.1853422124023 : JumpStart); (11.6302108333333 : 23.1853422124023 : JumpEnd); (16.75 : 23.1853422124023)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 23.1853422124023); (5.79166666666667 : 23.1853422124023 : JumpStart); (5.95833333333333 : 23.1853422124023 : JumpEnd); (8.76041666666667 : 23.1853422124023 : JumpStart); (8.92708333333333 : 23.1853422124023 : JumpEnd); (11.2604166666667 : 23.1853422124023 : JumpStart); (11.4270833333333 : 23.1853422124023 : JumpEnd); (11.4635441666667 : 23.1853422124023 : JumpStart); (11.6302108333333 : 23.1853422124023 : JumpEnd); (16.75 : 23.1853422124023)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_albums" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
@@ -413,14 +413,14 @@
         <classShapeMoniker Id="2ab9c7cb-5ceb-4bc6-8ba0-2078c0a26e2f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(21.25 : 16.7605348714193); (18.1770833333333 : 16.7605348714193 : JumpStart); (18.0104166666667 : 16.7605348714193 : JumpEnd); (16.75 : 16.7605348714193)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(21.25 : 16.7605348714193); (16.75 : 16.7605348714193)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_project_transactions/li_project_transactions_li_wallet_histories" />
       <nodes>
         <classShapeMoniker Id="429845b0-63e6-43b1-8878-5a393c84529a" />
         <classShapeMoniker Id="9cbc2d7f-43b7-460c-af4b-41aa5ea248ad" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.9375 : 20.8583437093099); (8.9375 : 19.4150109863281); (22.3125 : 19.4150109863281); (22.3125 : 17.7398197428385); (22.25 : 17.7398197428385); (22.25 : 17.6460697428385)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.29166666666667 : 20.8583437093099 : JumpStart); (8.45833333333333 : 20.8583437093099 : JumpEnd); (8.54166666666667 : 20.8583437093099 : JumpStart); (8.70833333333333 : 20.8583437093099 : JumpEnd); (8.76041666666667 : 20.8583437093099 : JumpStart); (8.92708333333333 : 20.8583437093099 : JumpEnd); (8.9375 : 20.8583437093099); (8.9375 : 19.4150109863281); (9.41666666666667 : 19.4150109863281 : JumpStart); (9.58333333333333 : 19.4150109863281 : JumpEnd); (11.2604166666667 : 19.4150109863281 : JumpStart); (11.4270833333333 : 19.4150109863281 : JumpEnd); (11.4635441666667 : 19.4150109863281 : JumpStart); (11.6302108333333 : 19.4150109863281 : JumpEnd); (11.6666666666667 : 19.4150109863281 : JumpStart); (11.8333333333333 : 19.4150109863281 : JumpEnd); (11.9166666666667 : 19.4150109863281 : JumpStart); (12.0833333333333 : 19.4150109863281 : JumpEnd); (12.1666666666667 : 19.4150109863281 : JumpStart); (12.3333333333333 : 19.4150109863281 : JumpEnd); (14.5416666666667 : 19.4150109863281 : JumpStart); (14.7083333333333 : 19.4150109863281 : JumpEnd); (15.1354141666667 : 19.4150109863281 : JumpStart); (15.3020808333333 : 19.4150109863281 : JumpEnd); (15.6666666666667 : 19.4150109863281 : JumpStart); (15.8333333333333 : 19.4150109863281 : JumpEnd); (16.9869770416667 : 19.4150109863281 : JumpStart); (17.1770828333333 : 19.4150109863281 : JumpEnd); (18.0104166666667 : 19.4150109863281 : JumpStart); (18.1770833333333 : 19.4150109863281 : JumpEnd); (19.1197891666667 : 19.4150109863281 : JumpStart); (19.2864558333333 : 19.4150109863281 : JumpEnd); (22.3125 : 19.4150109863281); (22.3125 : 17.7398197428385); (22.25 : 17.7398197428385); (22.25 : 17.6460697428385)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_project_transactions" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
@@ -440,7 +440,7 @@
         <classShapeMoniker Id="5b4d3fad-7529-42f4-b4d3-9c860e6a9ce8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.56202073076923 : 18.625); (4.56202073076923 : 16.3901087296549); (4.97892903205128 : 16.3901087296549 : JumpStart); (5.14559569871795 : 16.3901087296549 : JumpEnd); (5.69791666666667 : 16.3901087296549 : JumpStart); (5.86458333333333 : 16.3901087296549 : JumpEnd); (5.91666666666667 : 16.3901087296549 : JumpStart); (6.17708333333333 : 16.3901087296549 : JumpEnd); (6.5 : 16.3901087296549)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.56202073076923 : 18.625); (4.56202073076923 : 16.3901087296549); (6.5 : 16.3901087296549)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_creditors" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
@@ -525,21 +525,21 @@
         <classShapeMoniker Id="bc379d8f-89d6-4088-8eb2-9e6917614c51" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(12 : 11.7578289794922); (14.5416666666667 : 11.7578289794922 : JumpStart); (14.7083333333333 : 11.7578289794922 : JumpEnd); (15.375 : 11.7578289794922)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(12 : 11.7578289794922); (15.375 : 11.7578289794922)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_loaners/li_loaners_li_risks" />
       <nodes>
         <classShapeMoniker Id="612619df-8dd4-490d-8572-b30f79d1547b" />
         <classShapeMoniker Id="5b4d3fad-7529-42f4-b4d3-9c860e6a9ce8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(12 : 13.3893050130208); (14.5416666666667 : 13.3893050130208 : JumpStart); (14.7083333333333 : 13.3893050130208 : JumpEnd); (15.0416666666667 : 13.3893050130208 : JumpStart); (15.2083333333333 : 13.3893050130208 : JumpEnd); (16.2916666666667 : 13.3893050130208 : JumpStart); (16.4583333333333 : 13.3893050130208 : JumpEnd); (16.9869770416667 : 13.3893050130208 : JumpStart); (17.1770828333333 : 13.3893050130208 : JumpEnd); (18.09375 : 13.3893050130208); (18.09375 : 22.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(12 : 13.3893050130208); (15.0416666666667 : 13.3893050130208 : JumpStart); (15.2083333333333 : 13.3893050130208 : JumpEnd); (16.2916666666667 : 13.3893050130208 : JumpStart); (16.4583333333333 : 13.3893050130208 : JumpEnd); (16.9869770416667 : 13.3893050130208 : JumpStart); (17.1536437083333 : 13.3893050130208 : JumpEnd); (18.09375 : 13.3893050130208); (18.09375 : 22.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_loaners/li_loaners_li_albums" />
       <nodes>
         <classShapeMoniker Id="612619df-8dd4-490d-8572-b30f79d1547b" />
         <classShapeMoniker Id="f5fe1d15-aea0-4ee0-94da-482a7409dce7" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 23.9080345672201); (5.79166666666667 : 23.9080345672201 : JumpStart); (5.95833333333333 : 23.9080345672201 : JumpEnd); (11.2604166666667 : 23.9080345672201 : JumpStart); (11.4270833333333 : 23.9080345672201 : JumpEnd); (11.5468775 : 23.9080345672201); (11.5468775 : 14.7004520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.5 : 23.9080345672201); (11.5468775 : 23.9080345672201); (11.5468775 : 14.7004520670573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_loaners" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
@@ -592,18 +592,31 @@
         <elementListCompartment Id="c0fdaf64-a3dc-4180-97c4-c90aacb959a9" absoluteBounds="21.515, 11.46, 1.9700000000000002, 2.270863850911458" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(25.5 : 12.4154319254557); (23.5 : 12.4154319254557)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(25.5 : 12.4154319254557); (23.5 : 12.4154319254557)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_projects/li_projects_li_repayment_tasks" />
       <nodes>
         <classShapeMoniker Id="fdbc4153-7005-4dc9-bef1-b83cb35238ee" />
         <classShapeMoniker Id="dc6ecaca-b0a1-411c-8465-b4770d69f69a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.06226236538462 : 18.625); (5.06226236538462 : 15.2927168782552); (5.69791666666667 : 15.2927168782552 : JumpStart); (5.86458333333333 : 15.2927168782552 : JumpEnd); (5.91666666666667 : 15.2927168782552 : JumpStart); (6.17708333333333 : 15.2927168782552 : JumpEnd); (7.16666666666667 : 15.2927168782552 : JumpStart); (7.33333333333333 : 15.2927168782552 : JumpEnd); (8.76041666666667 : 15.2927168782552 : JumpStart); (8.92708333333333 : 15.2927168782552 : JumpEnd); (9.41666666666667 : 15.2927168782552 : JumpStart); (9.58333333333333 : 15.2927168782552 : JumpEnd); (11.2604166666667 : 15.2927168782552 : JumpStart); (11.4270833333333 : 15.2927168782552 : JumpEnd); (11.4635441666667 : 15.2927168782552 : JumpStart); (11.6302108333333 : 15.2927168782552 : JumpEnd); (14.5416666666667 : 15.2927168782552 : JumpStart); (14.7083333333333 : 15.2927168782552 : JumpEnd); (15.125 : 15.2927168782552); (15.125 : 12.7337314860026); (16.2916666666667 : 12.7337314860026 : JumpStart); (16.4583333333333 : 12.7337314860026 : JumpEnd); (16.9869770416667 : 12.7337314860026 : JumpStart); (17.1770828333333 : 12.7337314860026 : JumpEnd); (19.1197891666667 : 12.7337314860026 : JumpStart); (19.2864558333333 : 12.7337314860026 : JumpEnd); (21.5 : 12.7337314860026)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.06226236538462 : 18.625); (5.06226236538462 : 15.2927168782552); (5.69791666666667 : 15.2927168782552 : JumpStart); (5.86458333333333 : 15.2927168782552 : JumpEnd); (5.91666666666667 : 15.2927168782552 : JumpStart); (6.17708333333333 : 15.2927168782552 : JumpEnd); (7.16666666666667 : 15.2927168782552 : JumpStart); (7.33333333333333 : 15.2927168782552 : JumpEnd); (8.76041666666667 : 15.2927168782552 : JumpStart); (8.92708333333333 : 15.2927168782552 : JumpEnd); (9.41666666666667 : 15.2927168782552 : JumpStart); (9.58333333333333 : 15.2927168782552 : JumpEnd); (11.2604166666667 : 15.2927168782552 : JumpStart); (11.4270833333333 : 15.2927168782552 : JumpEnd); (11.4635441666667 : 15.2927168782552 : JumpStart); (11.6302108333333 : 15.2927168782552 : JumpEnd); (14.5416666666667 : 15.2927168782552 : JumpStart); (14.7083333333333 : 15.2927168782552 : JumpEnd); (15.125 : 15.2927168782552); (15.125 : 12.7337314860026); (16.2916666666667 : 12.7337314860026 : JumpStart); (16.4583333333333 : 12.7337314860026 : JumpEnd); (16.9869770416667 : 12.7337314860026 : JumpStart); (17.1770828333333 : 12.7337314860026 : JumpEnd); (19.1197891666667 : 12.7337314860026 : JumpStart); (19.2864558333333 : 12.7337314860026 : JumpEnd); (21.5 : 12.7337314860026)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_repayment_tasks" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
         <classShapeMoniker Id="dc6ecaca-b0a1-411c-8465-b4770d69f69a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="28ae2698-9dc3-4461-8de9-86e6569802b3" absoluteBounds="26.875, 1.375, 2, 2.0916874186197916">
+      <DataClassMoniker Name="/Agp2pDataContext/li_manager_messages" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0ab76077-0bc7-4d76-9a2c-ca9cade9fdc0" absoluteBounds="26.89, 1.835, 1.9700000000000002, 1.5316874186197915" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 12.5827164627278); (3.22916666666667 : 12.5827164627278 : JumpStart); (3.39583333333333 : 12.5827164627278 : JumpEnd); (5.625 : 12.5827164627278); (5.625 : 11.25); (5.69791666666667 : 11.25 : JumpStart); (5.86458333333333 : 11.25 : JumpEnd); (6.01041666666667 : 11.25 : JumpStart); (6.17708333333333 : 11.25 : JumpEnd); (8.46353916666667 : 11.25 : JumpStart); (8.63020583333333 : 11.25 : JumpEnd); (8.76041666666667 : 11.25 : JumpStart); (8.92708333333333 : 11.25 : JumpEnd); (14.5416666666667 : 11.25 : JumpStart); (14.7083333333333 : 11.25 : JumpEnd); (15.125 : 11.25); (15.125 : 7.65148152669271); (19.1197891666667 : 7.65148152669271 : JumpStart); (19.2864558333333 : 7.65148152669271 : JumpEnd); (19.5104166666667 : 7.65148152669271 : JumpStart); (19.6770833333333 : 7.65148152669271 : JumpEnd); (23.3229166666667 : 7.65148152669271 : JumpStart); (23.4895833333333 : 7.65148152669271 : JumpEnd); (26.75 : 7.65148152669271); (26.75 : 3.84168741861979); (27.875 : 3.84168741861979); (27.875 : 3.46668741861979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Agp2pDataContext/dt_manager/dt_manager_li_manager_messages" />
+      <nodes>
+        <classShapeMoniker Id="dd92d40e-6adb-4774-bed9-943c210dbfc9" />
+        <classShapeMoniker Id="28ae2698-9dc3-4461-8de9-86e6569802b3" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

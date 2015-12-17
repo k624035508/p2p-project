@@ -63,12 +63,15 @@
     <Compile Include="DbExtensions.cs" />
     <Compile Include="InitLogic\UserLogin.cs" />
     <Compile Include="InitLogic\NewUserInit.cs" />
+    <Compile Include="Message\ProjectFinancingTimeoutMsg.cs" />
+    <Compile Include="Message\ProjectFinancingCompleteEvenTimeoutMsg.cs" />
+    <Compile Include="Message\ProjectFinancingCompletedMsg.cs" />
     <Compile Include="Message\UserRefundMsg.cs" />
     <Compile Include="Message\ProjectFinancingFailMsg.cs" />
     <Compile Include="Message\BankTransactionCreatedMsg.cs" />
     <Compile Include="Message\MessageBus.cs" />
     <Compile Include="Message\NewUserCreatedMsg.cs" />
-    <Compile Include="Message\ProjectInvestCompletedMsg.cs" />
+    <Compile Include="Message\ProjectStartRepaymentMsg.cs" />
     <Compile Include="Message\ProjectRepaidMsg.cs" />
     <Compile Include="Message\ProjectRepayCompletedMsg.cs" />
     <Compile Include="Message\ProjectSchedulePublishMsg.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="Message\UserLoginMsg.cs" />
     <Compile Include="NotifyLogic\BankTransactionNotify.cs" />
     <Compile Include="NotifyLogic\InvestAnnounce.cs" />
+    <Compile Include="NotifyLogic\ManagerNotifier.cs" />
     <Compile Include="NotifyLogic\RepayAnnounce.cs" />
     <Compile Include="AutoLogic\ScheduleAnnounce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

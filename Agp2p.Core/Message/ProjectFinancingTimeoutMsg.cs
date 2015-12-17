@@ -3,11 +3,11 @@ using TinyMessenger;
 
 namespace Agp2p.Core.Message
 {
-    class ProjectInvestCompletedMsg : ITinyMessage
+    class ProjectFinancingTimeoutMsg : ITinyMessage
     {
         public int ProjectId { get; protected set; }
 
-        public ProjectInvestCompletedMsg(int projectId)
+        public ProjectFinancingTimeoutMsg(int projectId)
         {
             ProjectId = projectId;
         }
