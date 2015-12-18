@@ -47,6 +47,8 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectStatusEnum
         {
+            [Description("作废")]
+            FinancingApplicationCancel = 0,
             // 发标前 (前台不可见)
             /// <summary>
             /// 借款申请待提交
@@ -680,6 +682,33 @@ namespace Agp2p.Common
             HXB = 14,
             [Description("中国邮政银行")]
             PSBC = 15
+        }
+
+        /// <summary>
+        /// 管理员消息来源枚举
+        /// </summary>
+        public enum ManagerMessageSourceEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("新用户注册")]
+            NewUserRegisted = 1,
+            [Description("用户充值成功")]
+            UserRechargeSuccess = 2,
+            [Description("用户提现申请")]
+            UserWithdrawApply = 3,
+            [Description("用户投标")]
+            UserInvested = 4,
+            [Description("项目满标")]
+            ProjectFinancingSuccess = 5,
+            [Description("项目超时")]
+            ProjectFinancingTimeout = 6,
+            [Description("项目截标")]
+            ProjectFinancingSuccessEvenTimeout = 7,
+            [Description("项目流标")]
+            ProjectFinancingFail = 8,
+            [Description("项目回款")]
+            ProjectRepaid = 9,
         }
     }
 }

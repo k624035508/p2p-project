@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Agp2p.Web</RootNamespace>
     <AssemblyName>Agp2p.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -45,6 +45,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,6 +54,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.76.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
@@ -66,10 +68,43 @@
     <Reference Include="LitJson">
       <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.JScript" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Senparc.Weixin.MP, Version=4.11.2.31351, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,6 +131,7 @@
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
+    <Content Include="admin\js\bootstrap.config.js" />
     <Content Include="admin\js\common.js" />
     <Content Include="admin\js\jquery.skygqOneDblClick.1.1.js" />
     <Content Include="admin\js\layindex.js" />
@@ -113,6 +149,7 @@
     <Content Include="admin\loaner\mortgage_edit.aspx" />
     <Content Include="admin\loaner\mortgage_type_list.aspx" />
     <Content Include="admin\loaner\_shareholdersInfoTemplate.html" />
+    <Content Include="admin\manager-messages.html" />
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
@@ -243,6 +280,7 @@
     <Content Include="admin\users\user_config.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
     <Content Include="admin\loaner\mortgage_list.aspx" />
+    <Content Include="admin\webpack.config.js" />
     <Content Include="admin\weixin\account_edit.aspx" />
     <Content Include="admin\weixin\account_list.aspx" />
     <Content Include="admin\weixin\menu_edit.aspx" />
@@ -535,6 +573,11 @@
     <Content Include="scripts\fullpage\jquery.fullPage.css" />
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
+    <None Include="scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="scripts\jquery-2.1.4.js" />
+    <Content Include="scripts\jquery-2.1.4.min.js" />
+    <Content Include="scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="scripts\jquery\jquery-1.10.2.min.js" />
     <Content Include="scripts\jquery\jquery-1.11.2.min.js" />
     <Content Include="scripts\jquery\jquery.form.min.js" />
@@ -653,6 +696,14 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\about.xml" />
+    <Content Include="admin\js\dropdown-picker.jsx" />
+    <Content Include="admin\js\manager-messages.jsx" />
+    <Content Include="admin\.babelrc" />
+    <Content Include="admin\package.json" />
+    <Content Include="admin\js\pagination.jsx" />
+    <Content Include="admin\pwatch.bat" />
+    <Content Include="admin\watch.bat" />
+    <Content Include="admin\js\bootstrap.config.less" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
@@ -1054,7 +1105,6 @@
     <Content Include="templates\AnGuang\components\card-editor.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
     <Content Include="templates\AnGuang\containers\mynews.jsx" />
-    <Content Include="templates\AnGuang\containers\mynews.jsx" />
     <Content Include="templates\AnGuang\containers\settings.jsx" />
     <Content Include="templates\AnGuang\containers\mylottery.jsx" />
     <Content Include="templates\AnGuang\components\img-verify-code.jsx" />
@@ -1115,6 +1165,8 @@
     <Content Include="templates\weChat\less\mycard.less" />
     <Content Include="templates\weChat\less\forgot_password.less" />
     <Content Include="templates\weChat\less\invest-record.less" />
+    <Content Include="scripts\jquery-2.1.4.min.map" />
+    <Content Include="templates\weChat\pwatch.bat" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -2226,6 +2278,7 @@
       <DependentUpon>step2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup1.cs" />
     <Compile Include="tools\admin_ajax.ashx.cs">
       <DependentUpon>admin_ajax.ashx</DependentUpon>
     </Compile>

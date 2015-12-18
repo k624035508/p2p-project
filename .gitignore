@@ -14,5 +14,7 @@ packages/
 *site.config
 *applicationhost.config
 node_modules/
+jspm_packages/
 build/
+jsbuild/
 npm-debug.log

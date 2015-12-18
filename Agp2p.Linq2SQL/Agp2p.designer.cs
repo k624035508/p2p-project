@@ -147,6 +147,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_repayment_tasks(li_repayment_tasks instance);
     partial void Updateli_repayment_tasks(li_repayment_tasks instance);
     partial void Deleteli_repayment_tasks(li_repayment_tasks instance);
+    partial void Insertli_manager_messages(li_manager_messages instance);
+    partial void Updateli_manager_messages(li_manager_messages instance);
+    partial void Deleteli_manager_messages(li_manager_messages instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -490,6 +493,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_repayment_tasks>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_manager_messages> li_manager_messages
+		{
+			get
+			{
+				return this.GetTable<li_manager_messages>();
 			}
 		}
 	}
@@ -4027,6 +4038,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<dt_manager> _dt_manager2;
 		
+		private EntitySet<li_manager_messages> _li_manager_messages;
+		
 		private EntityRef<dt_manager> _dt_manager1;
 		
 		private EntityRef<li_departments> _li_departments;
@@ -4071,6 +4084,7 @@ namespace Agp2p.Linq2SQL
 			this._li_bank_transactions = new EntitySet<li_bank_transactions>(new Action<li_bank_transactions>(this.attach_li_bank_transactions), new Action<li_bank_transactions>(this.detach_li_bank_transactions));
 			this._li_user_group_access_keys = new EntitySet<li_user_group_access_keys>(new Action<li_user_group_access_keys>(this.attach_li_user_group_access_keys), new Action<li_user_group_access_keys>(this.detach_li_user_group_access_keys));
 			this._dt_manager2 = new EntitySet<dt_manager>(new Action<dt_manager>(this.attach_dt_manager2), new Action<dt_manager>(this.detach_dt_manager2));
+			this._li_manager_messages = new EntitySet<li_manager_messages>(new Action<li_manager_messages>(this.attach_li_manager_messages), new Action<li_manager_messages>(this.detach_li_manager_messages));
 			this._dt_manager1 = default(EntityRef<dt_manager>);
 			this._li_departments = default(EntityRef<li_departments>);
 			OnCreated();
@@ -4416,6 +4430,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_li_manager_messages", Storage="_li_manager_messages", ThisKey="id", OtherKey="receiver")]
+		public EntitySet<li_manager_messages> li_manager_messages
+		{
+			get
+			{
+				return this._li_manager_messages;
+			}
+			set
+			{
+				this._li_manager_messages.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_dt_manager", Storage="_dt_manager1", ThisKey="parent_id", OtherKey="id", IsForeignKey=true)]
 		public dt_manager dt_manager1
 		{
@@ -4550,6 +4577,18 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.dt_manager1 = null;
+		}
+		
+		private void attach_li_manager_messages(li_manager_messages entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_manager = this;
+		}
+		
+		private void detach_li_manager_messages(li_manager_messages entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_manager = null;
 		}
 	}
 	
@@ -15372,6 +15411,253 @@ namespace Agp2p.Linq2SQL
 						this._only_repay_to = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_manager_messages")]
+	public partial class li_manager_messages : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _source;
+		
+		private int _receiver;
+		
+		private string _title;
+		
+		private string _body;
+		
+		private System.DateTime _creationTime;
+		
+		private bool _isRead;
+		
+		private EntityRef<dt_manager> _dt_manager;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnsourceChanging(int value);
+    partial void OnsourceChanged();
+    partial void OnreceiverChanging(int value);
+    partial void OnreceiverChanged();
+    partial void OntitleChanging(string value);
+    partial void OntitleChanged();
+    partial void OnbodyChanging(string value);
+    partial void OnbodyChanged();
+    partial void OncreationTimeChanging(System.DateTime value);
+    partial void OncreationTimeChanged();
+    partial void OnisReadChanging(bool value);
+    partial void OnisReadChanged();
+    #endregion
+		
+		public li_manager_messages()
+		{
+			this._dt_manager = default(EntityRef<dt_manager>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_source", DbType="Int NOT NULL")]
+		public int source
+		{
+			get
+			{
+				return this._source;
+			}
+			set
+			{
+				if ((this._source != value))
+				{
+					this.OnsourceChanging(value);
+					this.SendPropertyChanging();
+					this._source = value;
+					this.SendPropertyChanged("source");
+					this.OnsourceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_receiver", DbType="Int NOT NULL")]
+		public int receiver
+		{
+			get
+			{
+				return this._receiver;
+			}
+			set
+			{
+				if ((this._receiver != value))
+				{
+					if (this._dt_manager.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnreceiverChanging(value);
+					this.SendPropertyChanging();
+					this._receiver = value;
+					this.SendPropertyChanged("receiver");
+					this.OnreceiverChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_title", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string title
+		{
+			get
+			{
+				return this._title;
+			}
+			set
+			{
+				if ((this._title != value))
+				{
+					this.OntitleChanging(value);
+					this.SendPropertyChanging();
+					this._title = value;
+					this.SendPropertyChanged("title");
+					this.OntitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_body", DbType="NText NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string body
+		{
+			get
+			{
+				return this._body;
+			}
+			set
+			{
+				if ((this._body != value))
+				{
+					this.OnbodyChanging(value);
+					this.SendPropertyChanging();
+					this._body = value;
+					this.SendPropertyChanged("body");
+					this.OnbodyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_creationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime creationTime
+		{
+			get
+			{
+				return this._creationTime;
+			}
+			set
+			{
+				if ((this._creationTime != value))
+				{
+					this.OncreationTimeChanging(value);
+					this.SendPropertyChanging();
+					this._creationTime = value;
+					this.SendPropertyChanged("creationTime");
+					this.OncreationTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isRead", DbType="Bit NOT NULL")]
+		public bool isRead
+		{
+			get
+			{
+				return this._isRead;
+			}
+			set
+			{
+				if ((this._isRead != value))
+				{
+					this.OnisReadChanging(value);
+					this.SendPropertyChanging();
+					this._isRead = value;
+					this.SendPropertyChanged("isRead");
+					this.OnisReadChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_li_manager_messages", Storage="_dt_manager", ThisKey="receiver", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public dt_manager dt_manager
+		{
+			get
+			{
+				return this._dt_manager.Entity;
+			}
+			set
+			{
+				dt_manager previousValue = this._dt_manager.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_manager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_manager.Entity = null;
+						previousValue.li_manager_messages.Remove(this);
+					}
+					this._dt_manager.Entity = value;
+					if ((value != null))
+					{
+						value.li_manager_messages.Add(this);
+						this._receiver = value.id;
+					}
+					else
+					{
+						this._receiver = default(int);
+					}
+					this.SendPropertyChanged("dt_manager");
 				}
 			}
 		}

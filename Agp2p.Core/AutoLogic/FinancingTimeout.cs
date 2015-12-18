@@ -30,6 +30,11 @@ namespace Agp2p.Core.AutoLogic
                 db.AppendAdminLog("AutoSetProjectTimeout", string.Format("项目 {0} 募集已超时", p.title));
             });
             db.SubmitChanges();
+
+            timeoutProjects.ForEach(p =>
+            {
+                MessageBus.Main.PublishAsync(new ProjectFinancingTimeoutMsg(p.id)); // 广播项目融资超时的消息
+            });
         }
     }
 }

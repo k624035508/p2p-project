@@ -28,6 +28,7 @@ namespace Agp2p.Core.Message
             InvestAnnounce.DoSubscribe();
             RepayAnnounce.DoSubscribe();
             BankTransactionNotify.DoSubscribe();
+            ManagerNotifier.DoSubscribe();
 
             // Activity
             TrialActivity.DoSubscribe();

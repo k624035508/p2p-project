@@ -16,7 +16,7 @@ namespace Lip2p.Core.ActivityLogic
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleUserInvestedMsg(m.ProjectTransactionId)); // 如果有邀请人，则标记投资记录
-            MessageBus.Main.Subscribe<ProjectInvestCompletedMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 推荐人收益已知，创建活动交易记录
+            MessageBus.Main.Subscribe<ProjectStartRepaymentMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 推荐人收益已知，创建活动交易记录
             MessageBus.Main.Subscribe<ProjectRepayCompletedMsg>(m => HandleProjectRepayCompletedMsg(m.ProjectId, m.ProjectCompleteTime)); // 项目放款完成，发放推荐人奖金
             MessageBus.Main.Subscribe<ProjectFinancingFailMsg>(m => HandleProjectFinancingFailMsg(m.ProjectId)); // 项目流标，如果有被邀请人首次投资此项目，则不算为（撤销）首次投资
             MessageBus.Main.Subscribe<UserRefundMsg>(m => HandleUserRefundMsg(m.ProjectTransactionId)); // 用户退款，如果是被邀请人的首次投资则撤销首次投资

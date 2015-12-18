@@ -305,7 +305,7 @@ namespace Agp2p.Web.admin.project
                 try
                 {
                     ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Edit.ToString());
-                    project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail;
+                    project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel;
                     LqContext.SubmitChanges();
                     JscriptMsg("撤销借款成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
