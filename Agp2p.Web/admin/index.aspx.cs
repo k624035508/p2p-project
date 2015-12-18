@@ -8,6 +8,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 
@@ -36,16 +37,16 @@ namespace Agp2p.Web.admin
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true)]
-        public static string AjaxQueryUnreadMessagesCount()
+        public static int AjaxQueryUnreadMessagesCount()
         {
             var manager = GetAdminInfo();
             if (manager == null)
             {
-                return "?";
+                return 0;
             }
 
             var context = new Agp2pDataContext();
-            return context.li_manager_messages.Count(m => m.receiver == manager.id && !m.isRead).ToString();
+            return context.li_manager_messages.Count(m => m.receiver == manager.id && !m.isRead);
         }
 
         [WebMethod]
@@ -104,6 +105,7 @@ namespace Agp2p.Web.admin
                     m.isRead = true;
                 });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnManagerReadMsg(manager.user_name);
             return "设置成功";
         }
 

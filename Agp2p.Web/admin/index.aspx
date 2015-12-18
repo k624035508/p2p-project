@@ -14,6 +14,8 @@
 <script type="text/javascript" charset="utf-8" src="../scripts/artdialog/dialog-plus-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/layindex.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/common.js"></script>
+<script src="../scripts/jquery.signalR-2.2.0.min.js"></script>
+<script src="../signalr/hubs"></script>
 <script type="text/javascript">
 
 var showMyMessages = function() {
@@ -36,10 +38,10 @@ var checkMyMessage = function () {
         success: function(result) {
             var originalHint = $(".manager-msg")[0].innerText;
             var newHint = "未读消息：" + result.d;
-            if (originalHint != newHint) {
+            if (parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d)) {
                 showMyMessages();
-                $(".manager-msg")[0].innerText = newHint;
             }
+            $(".manager-msg")[0].innerText = newHint;
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(url, status, err.toString());
@@ -57,9 +59,25 @@ $(function () {
 
     $(".manager-msg").click(showMyMessages);
 
-    checkMyMessage();
 
-    window.onfocus = checkMyMessage;
+    var hub = $.connection.managerMessageHub;
+
+    $.connection.id = "<%=GetAdminInfo().id%>";
+
+    hub.client.onNewMsg = function() {
+        console.log("收到新消息");
+        checkMyMessage();
+    };
+
+    hub.client.onMsgRead = function() {
+        checkMyMessage();
+        console.log("有消息设置为已读了");
+    };
+
+    $.connection.hub.start().done(function () {
+        console.log("服务器已连接……");
+        checkMyMessage();
+    });
 });
 </script>
 <style>

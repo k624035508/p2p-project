@@ -5,6 +5,7 @@ using System.Text;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
+using Microsoft.AspNet.SignalR;
 
 namespace Agp2p.Core.NotifyLogic
 {
@@ -40,6 +41,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectRepaid, "项目回款", content, repaymentTask.repay_at.Value);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleProjectFinancingFailMsg(int projectId)
@@ -55,6 +57,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingFail, "项目流标", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleProjectFinancingTimeoutMsg(int projectId)
@@ -70,6 +73,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingTimeout, "项目融资超时", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleProjectFinancingCompleteEvenTimeoutMsg(int projectId)
@@ -85,6 +89,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccessEvenTimeout, "项目截标", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleProjectFinancingCompletedMsg(int projectId)
@@ -100,6 +105,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccess, "项目满标", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleUserInvestedMsg(int projectTransactionId, DateTime investTime)
@@ -115,6 +121,8 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserInvested, "用户投标", content, createTime);
             });
             context.SubmitChanges();
+
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleNewUserCreatedMsg(int userId, DateTime regTime)
@@ -130,6 +138,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.NewUserRegisted, "新用户注册", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleBankTransactionFinishedMsg(li_bank_transactions tr)
@@ -149,6 +158,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserRechargeSuccess, "用户充值成功", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
 
         private static void HandleBankTransactionCreatedMsg(li_bank_transactions tr)
@@ -168,6 +178,7 @@ namespace Agp2p.Core.NotifyLogic
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserWithdrawApply, "用户申请提现", content, createTime);
             });
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnNewMsg();
         }
     }
 }
