@@ -62,8 +62,6 @@ $(function () {
 
     var hub = $.connection.managerMessageHub;
 
-    $.connection.id = "<%=GetAdminInfo().id%>";
-
     hub.client.onNewMsg = function() {
         console.log("收到新消息");
         checkMyMessage();
