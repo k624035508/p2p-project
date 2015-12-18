@@ -24,6 +24,11 @@ namespace Agp2p.Core.NotifyLogic
             MessageBus.Main.Subscribe<ProjectRepaidMsg>(t => HandleProjectRepaidMsg(t.RepaymentTaskId));
         }
 
+        private static IQueryable<dt_manager> GetMessageSubscribers(Agp2pDataContext context, Agp2pEnums.ManagerMessageSourceEnum source)
+        {
+            return context.dt_manager.Where(ma => !ma.li_manager_notification_settings.Select(se => se.source).Contains((int) source));
+        }
+
         private static void HandleProjectRepaidMsg(int repaymentTaskId)
         {
             var context = new Agp2pDataContext();
@@ -36,7 +41,7 @@ namespace Agp2p.Core.NotifyLogic
                     repaymentTask.li_projects.title, repaymentTask.repay_at, repaymentTask.GetRepaymentTaskProgress(),
                     repaymentTask.repay_principal, repaymentTask.repay_interest);
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.ProjectRepaid).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectRepaid, "项目回款", content, repaymentTask.repay_at.Value);
             });
@@ -52,7 +57,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = DateTime.Now;
             var content = $"项目 {proj.title} 于 {createTime} 流标，款项已退还给 {proj.GetInvestedUserCount(Agp2pEnums.ProjectTransactionStatusEnum.Rollback)} 个投资者";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingFail).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingFail, "项目流标", content, createTime);
             });
@@ -68,7 +73,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = DateTime.Now;
             var content = $"项目 {proj.title} 于 {createTime} 融资超时";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingTimeout).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingTimeout, "项目融资超时", content, createTime);
             });
@@ -84,7 +89,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = DateTime.Now;
             var content = $"项目 {proj.title} 于 {createTime} 截标, 实际可投 {proj.financing_amount}，实际已投 {proj.investment_amount}，进度 {proj.GetInvestmentProgressPercent().ToString("p1")}";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccessEvenTimeout).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccessEvenTimeout, "项目截标", content, createTime);
             });
@@ -100,7 +105,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = DateTime.Now;
             var content = $"项目 {proj.title} 于 {createTime} 满标";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccess).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.ProjectFinancingSuccess, "项目满标", content, createTime);
             });
@@ -116,7 +121,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = DateTime.Now;
             var content = $"用户 {tr.dt_users.GetFriendlyUserName()} 投资了 {tr.principal} 到项目 {tr.li_projects.title}，目前其进度为 {tr.li_projects.GetInvestmentProgressPercent().ToString("p1")}";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.UserInvested).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserInvested, "用户投标", content, createTime);
             });
@@ -133,7 +138,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = regTime;
             var content = $"于 {createTime} 有新用户注册了：<a href='/admin/users/user_edit.aspx?action=Edit&id={user.id}' target='mainframe'>{user.GetFriendlyUserName()}</a>";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.NewUserRegisted).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.NewUserRegisted, "新用户注册", content, createTime);
             });
@@ -153,7 +158,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = tr.create_time;
             var content = $"用户 {tr.dt_users.GetFriendlyUserName()} 于 {createTime} 成功充值了 {tr.value}";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.UserRechargeSuccess).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserRechargeSuccess, "用户充值成功", content, createTime);
             });
@@ -173,7 +178,7 @@ namespace Agp2p.Core.NotifyLogic
             var createTime = tr.create_time;
             var content = $"用户 {tr.li_bank_accounts.dt_users.GetFriendlyUserName()} 于 {createTime} 申请了提现 {tr.value}";
 
-            context.dt_manager.ForEach(m =>
+            GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.UserWithdrawApply).ForEach(m =>
             {
                 context.AppendAdminMessage(m, Agp2pEnums.ManagerMessageSourceEnum.UserWithdrawApply, "用户申请提现", content, createTime);
             });

@@ -176,6 +176,7 @@
       <Association Name="dt_manager_li_user_group_access_keys" Member="li_user_group_access_keys" ThisKey="id" OtherKey="owner_manager" Type="li_user_group_access_keys" />
       <Association Name="dt_manager_dt_manager" Member="dt_manager2" ThisKey="id" OtherKey="parent_id" Type="dt_manager" />
       <Association Name="dt_manager_li_manager_messages" Member="li_manager_messages" ThisKey="id" OtherKey="receiver" Type="li_manager_messages" />
+      <Association Name="dt_manager_li_manager_notification_settings" Member="li_manager_notification_settings" ThisKey="id" OtherKey="manager_id" Type="li_manager_notification_settings" />
       <Association Name="dt_manager_dt_manager" Member="dt_manager1" ThisKey="parent_id" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
       <Association Name="li_departments_dt_manager" Member="li_departments" ThisKey="department_id" OtherKey="id" Type="li_departments" IsForeignKey="true" />
     </Type>
@@ -685,6 +686,13 @@
       <Column Name="creationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="isRead" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="dt_manager_li_manager_messages" Member="dt_manager" ThisKey="receiver" OtherKey="id" Type="dt_manager" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_manager_notification_settings" Member="li_manager_notification_settings">
+    <Type Name="li_manager_notification_settings">
+      <Column Name="manager_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="source" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="dt_manager_li_manager_notification_settings" Member="dt_manager" ThisKey="manager_id" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

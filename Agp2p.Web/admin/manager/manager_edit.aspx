@@ -39,6 +39,7 @@
     <div class="content-tab-ul-wrap">
       <ul>
         <li><a href="javascript:;" onclick="tabs(this);" class="selected">编辑管理员</a></li>
+        <li><a href="javascript:;" onclick="tabs(this);">接收通知设置</a></li>
       </ul>
     </div>
   </div>
@@ -102,6 +103,17 @@
       </div>
     </dd>
   </dl>
+</div>
+
+<div class="tab-content" style="display: none">
+    <dl>
+      <dt>接收的通知来源：</dt>
+      <dd>
+        <div class="rule-multi-porp">
+            <asp:CheckBoxList ID="cblNotificationSources" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"></asp:CheckBoxList>
+        </div>
+      </dd>
+    </dl>
 </div>
 <!--/内容-->
 

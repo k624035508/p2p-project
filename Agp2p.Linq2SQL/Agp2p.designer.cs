@@ -150,6 +150,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_manager_messages(li_manager_messages instance);
     partial void Updateli_manager_messages(li_manager_messages instance);
     partial void Deleteli_manager_messages(li_manager_messages instance);
+    partial void Insertli_manager_notification_settings(li_manager_notification_settings instance);
+    partial void Updateli_manager_notification_settings(li_manager_notification_settings instance);
+    partial void Deleteli_manager_notification_settings(li_manager_notification_settings instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -501,6 +504,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_manager_messages>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_manager_notification_settings> li_manager_notification_settings
+		{
+			get
+			{
+				return this.GetTable<li_manager_notification_settings>();
 			}
 		}
 	}
@@ -4040,6 +4051,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_manager_messages> _li_manager_messages;
 		
+		private EntitySet<li_manager_notification_settings> _li_manager_notification_settings;
+		
 		private EntityRef<dt_manager> _dt_manager1;
 		
 		private EntityRef<li_departments> _li_departments;
@@ -4085,6 +4098,7 @@ namespace Agp2p.Linq2SQL
 			this._li_user_group_access_keys = new EntitySet<li_user_group_access_keys>(new Action<li_user_group_access_keys>(this.attach_li_user_group_access_keys), new Action<li_user_group_access_keys>(this.detach_li_user_group_access_keys));
 			this._dt_manager2 = new EntitySet<dt_manager>(new Action<dt_manager>(this.attach_dt_manager2), new Action<dt_manager>(this.detach_dt_manager2));
 			this._li_manager_messages = new EntitySet<li_manager_messages>(new Action<li_manager_messages>(this.attach_li_manager_messages), new Action<li_manager_messages>(this.detach_li_manager_messages));
+			this._li_manager_notification_settings = new EntitySet<li_manager_notification_settings>(new Action<li_manager_notification_settings>(this.attach_li_manager_notification_settings), new Action<li_manager_notification_settings>(this.detach_li_manager_notification_settings));
 			this._dt_manager1 = default(EntityRef<dt_manager>);
 			this._li_departments = default(EntityRef<li_departments>);
 			OnCreated();
@@ -4443,6 +4457,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_li_manager_notification_settings", Storage="_li_manager_notification_settings", ThisKey="id", OtherKey="manager_id")]
+		public EntitySet<li_manager_notification_settings> li_manager_notification_settings
+		{
+			get
+			{
+				return this._li_manager_notification_settings;
+			}
+			set
+			{
+				this._li_manager_notification_settings.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_dt_manager", Storage="_dt_manager1", ThisKey="parent_id", OtherKey="id", IsForeignKey=true)]
 		public dt_manager dt_manager1
 		{
@@ -4586,6 +4613,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_manager_messages(li_manager_messages entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_manager = null;
+		}
+		
+		private void attach_li_manager_notification_settings(li_manager_notification_settings entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_manager = this;
+		}
+		
+		private void detach_li_manager_notification_settings(li_manager_notification_settings entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_manager = null;
@@ -15656,6 +15695,133 @@ namespace Agp2p.Linq2SQL
 					else
 					{
 						this._receiver = default(int);
+					}
+					this.SendPropertyChanged("dt_manager");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_manager_notification_settings")]
+	public partial class li_manager_notification_settings : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _manager_id;
+		
+		private int _source;
+		
+		private EntityRef<dt_manager> _dt_manager;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onmanager_idChanging(int value);
+    partial void Onmanager_idChanged();
+    partial void OnsourceChanging(int value);
+    partial void OnsourceChanged();
+    #endregion
+		
+		public li_manager_notification_settings()
+		{
+			this._dt_manager = default(EntityRef<dt_manager>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_manager_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int manager_id
+		{
+			get
+			{
+				return this._manager_id;
+			}
+			set
+			{
+				if ((this._manager_id != value))
+				{
+					if (this._dt_manager.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onmanager_idChanging(value);
+					this.SendPropertyChanging();
+					this._manager_id = value;
+					this.SendPropertyChanged("manager_id");
+					this.Onmanager_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_source", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int source
+		{
+			get
+			{
+				return this._source;
+			}
+			set
+			{
+				if ((this._source != value))
+				{
+					this.OnsourceChanging(value);
+					this.SendPropertyChanging();
+					this._source = value;
+					this.SendPropertyChanged("source");
+					this.OnsourceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_manager_li_manager_notification_settings", Storage="_dt_manager", ThisKey="manager_id", OtherKey="id", IsForeignKey=true)]
+		public dt_manager dt_manager
+		{
+			get
+			{
+				return this._dt_manager.Entity;
+			}
+			set
+			{
+				dt_manager previousValue = this._dt_manager.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_manager.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_manager.Entity = null;
+						previousValue.li_manager_notification_settings.Remove(this);
+					}
+					this._dt_manager.Entity = value;
+					if ((value != null))
+					{
+						value.li_manager_notification_settings.Add(this);
+						this._manager_id = value.id;
+					}
+					else
+					{
+						this._manager_id = default(int);
 					}
 					this.SendPropertyChanged("dt_manager");
 				}
