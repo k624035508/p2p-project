@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 
 namespace Agp2p.Core
 {
+    // 参考：http://www.asp.net/signalr/overview/getting-started/tutorial-server-broadcast-with-signalr
     public class ManagerMessageHub : Hub
     {
         private readonly ManagerMessageHubFacade _facade;

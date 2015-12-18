@@ -9,10 +9,14 @@ using Owin;
 
 namespace Agp2p.Web
 {
+    // 参考：http://www.asp.net/signalr/overview/guide-to-the-api/mapping-users-to-connections
     class MyIdProvider : IUserIdProvider
     {
         public string GetUserId(IRequest request)
         {
+            if(!request.Cookies.ContainsKey("AdminName"))
+                return request.User.Identity.Name;
+
             var cookie = request.Cookies["AdminName"];
             if (cookie == null)
             {
