@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
@@ -33,6 +32,11 @@ namespace Agp2p.Web
         public void Configuration(IAppBuilder app)
         {
             // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
+
+            // TODO https://github.com/SignalR/SignalR/issues/3414 临时修正 iis 卡死的问题，等待 signalR 升级 2.2.1
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
             app.MapSignalR();
 
             var idProvider = new MyIdProvider();
