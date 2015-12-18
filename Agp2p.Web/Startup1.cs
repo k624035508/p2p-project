@@ -13,6 +13,9 @@ namespace Agp2p.Web
     {
         public string GetUserId(IRequest request)
         {
+            if(!request.Cookies.ContainsKey("AdminName"))
+                return request.User.Identity.Name;
+
             var cookie = request.Cookies["AdminName"];
             if (cookie == null)
             {
