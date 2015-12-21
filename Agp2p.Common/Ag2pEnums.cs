@@ -708,7 +708,7 @@ namespace Agp2p.Common
             [Description("项目流标")]
             ProjectFinancingFail = 8,
             [Description("项目回款")]
-            ProjectRepaid = 9,
+            ProjectRepaid = 9
         }
     }
 }
