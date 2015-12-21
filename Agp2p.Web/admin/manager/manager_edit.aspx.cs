@@ -41,11 +41,36 @@ namespace Agp2p.Web.admin.manager
                 RoleBind(ddlRoleId, model.role_type);
                 ManagerBind();
                 TreeBind();
+                NotificationSourcesBind(id);
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
                 {
                     ShowInfo(id);
                 }
             }
+        }
+
+        private void NotificationSourcesBind(int managerId)
+        {
+            var disabledSources =
+                managerId == 0
+                    ? Enumerable.Empty<int>()
+                    : context.li_manager_notification_settings.Where(se => se.manager_id == managerId)
+                        .Select(se => se.source)
+                        .ToList();
+
+            var values = Enum.GetValues(typeof(Agp2pEnums.ManagerMessageSourceEnum)).Cast<Enum>();
+            cblNotificationSources.Items.Clear();
+            cblNotificationSources.Items.AddRange(
+                values.Where(e => Convert.ToInt32(e) != 0)
+                    .Select(
+                        e =>
+                            new ListItem
+                            {
+                                Text = Utils.GetAgp2pEnumDes(e),
+                                Value = Convert.ToInt32(e).ToString(),
+                                Selected = !disabledSources.Contains(Convert.ToInt32(e))
+                            })
+                    .ToArray());
         }
 
         private void ManagerBind()
@@ -176,10 +201,29 @@ namespace Agp2p.Web.admin.manager
             if (bll.Add(model) > 0)
             {
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加管理员:" + model.user_name); //记录日志
+                SaveNotifictionSettings(context.dt_manager.Single(ma => ma.user_name == model.user_name).id);
                 return true;
             }
             return false;
         }
+
+        private void SaveNotifictionSettings(int managerId)
+        {
+            var disabledSources = context.li_manager_notification_settings.Where(se => se.manager_id == managerId).ToList();
+            context.li_manager_notification_settings.DeleteAllOnSubmit(disabledSources);
+            var currentDisabled = cblNotificationSources.Items.Cast<ListItem>()
+                .Where(li => !li.Selected)
+                .Select(
+                    li =>
+                        new li_manager_notification_settings
+                        {
+                            manager_id = managerId,
+                            source = Convert.ToInt32(li.Value)
+                        });
+            context.li_manager_notification_settings.InsertAllOnSubmit(currentDisabled);
+            context.SubmitChanges();
+        }
+
         #endregion
 
         #region 修改操作=================================
@@ -223,6 +267,7 @@ namespace Agp2p.Web.admin.manager
             if (bll.Update(model))
             {
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改管理员:" + model.user_name); //记录日志
+                SaveNotifictionSettings(model.id);
                 result = true;
             }
 

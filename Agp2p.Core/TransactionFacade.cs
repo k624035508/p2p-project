@@ -411,7 +411,7 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 如果项目满标，则创建还款计划
+        /// 用户投资过后，如果项目可投金额为 0，则将状态设置为满标
         /// </summary>
         /// <param name="projectTransactionId"></param>
         private static void CreateRepaymentTaskIfProjectBiddingComplete(int projectTransactionId)
@@ -445,6 +445,8 @@ namespace Agp2p.Core
             project.invest_complete_time = lastInvestment?.create_time ?? DateTime.Now;
 
             context.SubmitChanges();
+
+            MessageBus.Main.PublishAsync(new ProjectFinancingCompletedMsg(projectId)); // 广播项目满标的消息
             return project;
         }
 
@@ -470,6 +472,8 @@ namespace Agp2p.Core
             project.invest_complete_time = lastInvestment?.create_time ?? DateTime.Now;
 
             context.SubmitChanges();
+
+            MessageBus.Main.PublishAsync(new ProjectFinancingCompleteEvenTimeoutMsg(projectId)); // 广播项目截标的消息
             return project;
         }
 
@@ -582,7 +586,7 @@ namespace Agp2p.Core
             }
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectInvestCompletedMsg(projectId)); // 广播项目投资完成的消息
+            MessageBus.Main.PublishAsync(new ProjectStartRepaymentMsg(projectId)); // 广播项目开始还款的消息
             return project;
         }
 
@@ -1112,11 +1116,11 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="pro"></param>
         /// <returns></returns>
-        public static int GetInvestedUserCount(this li_projects pro)
+        public static int GetInvestedUserCount(this li_projects pro, Agp2pEnums.ProjectTransactionStatusEnum filter = Agp2pEnums.ProjectTransactionStatusEnum.Success)
         {
             return
                 pro.li_project_transactions.Where(t => t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                                                       t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                                                       t.status == (int) filter)
                     .GroupBy(t => t.investor)
                     .Count();
         }
@@ -1291,6 +1295,12 @@ namespace Agp2p.Core
         public static string GetProfitRateYearly(this li_projects proj)
         {
             return proj.dt_article_category.call_index == "newbie" ? "--" : (proj.profit_rate_year/100).ToString("p1");
+        }
+
+        public static string GetRepaymentTaskProgress(this li_repayment_tasks task)
+        {
+            var count = task.li_projects.li_repayment_tasks.Count(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid);
+            return $"{task.term}/{count}";
         }
 
         public static string GetInvestContractContext(this Agp2pDataContext context, li_project_transactions investment, string templatePath)
