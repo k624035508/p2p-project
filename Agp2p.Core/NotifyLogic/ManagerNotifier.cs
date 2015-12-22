@@ -136,7 +136,7 @@ namespace Agp2p.Core.NotifyLogic
             var user = context.dt_users.Single(u => u.id == userId);
 
             var createTime = regTime;
-            var content = $"于 {createTime} 有新用户注册了：<a href='/admin/users/user_edit.aspx?action=Edit&id={user.id}' target='mainframe'>{user.GetFriendlyUserName()}</a>";
+            var content = $"于 {createTime} 有新用户注册了：{user.GetFriendlyUserName()}";
 
             GetMessageSubscribers(context, Agp2pEnums.ManagerMessageSourceEnum.NewUserRegisted).ForEach(m =>
             {
