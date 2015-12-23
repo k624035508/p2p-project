@@ -614,7 +614,7 @@ namespace Agp2p.Web.tools
 
                 //防止Session提前过期
                 Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", model.user_name, true);
-                Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
+                //Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
 
                 //写入登录日志
                 new BLL.user_login_log().Add(model.id, model.user_name, "会员登录");
@@ -1083,7 +1083,7 @@ namespace Agp2p.Web.tools
             context.Session.Timeout = 45;
             //记住登录状态，防止Session提前过期
             Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", model.user_name, true);
-            Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
+            //Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
             //写入登录日志
             new BLL.user_login_log().Add(model.id, model.user_name, "会员登录");
             //返回URL
@@ -1225,7 +1225,7 @@ namespace Agp2p.Web.tools
             context.Session.Timeout = 45;
             //记住登录状态，防止Session提前过期
             Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", model.user_name, true);
-            Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
+            //Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
             //写入登录日志
             new BLL.user_login_log().Add(model.id, model.user_name, "会员登录");
             //返回URL

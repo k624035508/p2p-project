@@ -152,10 +152,6 @@ namespace Agp2p.Common
         /// </summary>
         public const string COOKIE_USER_NAME_REMEMBER = "dt_cookie_user_name_remember";
         /// <summary>
-        /// 记住会员密码
-        /// </summary>
-        public const string COOKIE_USER_PWD_REMEMBER = "dt_cookie_user_pwd_remember";
-        /// <summary>
         /// 购物车
         /// </summary>
         public const string COOKIE_SHOPPING_CART = "dt_cookie_shopping_cart";

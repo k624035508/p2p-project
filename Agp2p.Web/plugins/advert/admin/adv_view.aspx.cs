@@ -9,7 +9,7 @@ using Agp2p.Common;
 
 namespace Agp2p.Web.Plugin.Advert.admin
 {
-    public partial class adv_view : Agp2p.Web.UI.ManagePage
+    public partial class adv_view : UI.ManagePage
     {
         protected int id = 0;
         protected Model.advert model = new Model.advert();

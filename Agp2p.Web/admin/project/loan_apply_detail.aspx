@@ -125,7 +125,7 @@
             <dl>
                 <dt>借款标题</dt>
                 <dd>
-                    <asp:TextBox ID="txtTitle" runat="server" CssClass="input normal" datatype="*2-100"
+                    <asp:TextBox ID="txtTitle" runat="server" CssClass="input normal" datatype="*0-100"
                         sucmsg=" " onBlur="changeProjectNo(this.value, txt_project_no)" />
                     <span class="Validform_checktip">*标题最多100个字符</span>
                 </dd>

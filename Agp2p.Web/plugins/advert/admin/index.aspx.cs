@@ -9,7 +9,7 @@ using Agp2p.Common;
 
 namespace Agp2p.Web.Plugin.Advert.admin
 {
-    public partial class index : Agp2p.Web.UI.ManagePage
+    public partial class index : UI.ManagePage
     {
         protected int totalCount;
         protected int page;
