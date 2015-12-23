@@ -10,7 +10,7 @@ var fontSizeUnit = viewportWidth * 0.9 / 20;
 $("html").css("font-size", fontSizeUnit);
 
 /*切换验证码*/
-function ToggleCode(obj, codeurl) {
+window.ToggleCode = function(obj, codeurl) {
     $(obj).attr("src", codeurl + "?time=" + Math.random());
     return false;
 }
