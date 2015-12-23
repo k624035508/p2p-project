@@ -135,7 +135,7 @@ class MyAccount extends React.Component {
 							<div className="progress progress-custom">
 								<div className="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
 									aria-valuemin="0" aria-valuemax="100" style={{width: pro.project_investment_progress + "%"}}>
-									<span className="sr-only">{`${pro.project_investment_progress}% Complete`}</span>
+									{`${pro.project_investment_progress}%`}
 								</div>
 							</div>
 							<div className="grey13px margin-bottom10px">可投金额 : <span className="dark-grey13px">{pro.project_investment_balance}</span></div>
