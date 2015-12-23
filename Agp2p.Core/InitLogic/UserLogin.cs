@@ -74,13 +74,11 @@ namespace Agp2p.Core.InitLogic
             if (remember)
             {
                 Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", user.user_name, 43200, true);
-                Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", user.password, 43200, true);
             }
             else
             {
                 //防止Session提前过期
                 Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", user.user_name, true);
-                Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", user.password, true);
             }
 
             //写入登录日志

@@ -61,7 +61,7 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] = null;
                 //清除Cookies
                 Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", -43200);
-                Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", -43200);
+                //Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", -43200);
                 Utils.WriteCookie("UserName", "Agp2p", -1);
                 Utils.WriteCookie("Password", "Agp2p", -1);
                 //自动登录,跳转URL

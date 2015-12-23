@@ -177,22 +177,22 @@ namespace Agp2p.Web.UI
             {
                 return true;
             }
-            else
-            {
-                //检查Cookies
-                string username = Utils.GetCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p");
-                string password = Utils.GetCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p");
-                if (username != "" && password != "")
-                {
-                    BLL.users bll = new BLL.users();
-                    Model.users model = bll.GetModel(username, password, 0, 0, false);
-                    if (model != null)
-                    {
-                        HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] = model;
-                        return true;
-                    }
-                }
-            }
+            //else
+            //{
+            //    //检查Cookies
+            //    string username = Utils.GetCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p");
+            //    string password = Utils.GetCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p");
+            //    if (username != "" && password != "")
+            //    {
+            //        BLL.users bll = new BLL.users();
+            //        Model.users model = bll.GetModel(username, password, 0, 0, false);
+            //        if (model != null)
+            //        {
+            //            HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] = model;
+            //            return true;
+            //        }
+            //    }
+            //}
             return false;
         }
 

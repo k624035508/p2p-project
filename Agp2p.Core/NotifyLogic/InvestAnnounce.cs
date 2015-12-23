@@ -179,21 +179,21 @@ namespace Agp2p.Core.NotifyLogic
             if (dtSmsTemplate == null) return;
 
             //发送通知给每个投资者
-            investTrans.ForEach(i =>
+            investTrans.Select(i => i.dt_users).Distinct().ForEach(i =>
             {
                 var msgContent = dtSmsTemplate.content.Replace("{date}", DateTime.Now.ToString("yyyy年MM月dd日"))
-                    .Replace("{project}", i.li_projects.title);
+                    .Replace("{project}", project.title);
                 try
                 {
                     string errorMsg;
-                    if (!SMSHelper.SendTemplateSms(i.dt_users.mobile, msgContent, out errorMsg))
+                    if (!SMSHelper.SendTemplateSms(i.mobile, msgContent, out errorMsg))
                     {
-                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + i.dt_users.user_name + "）");
+                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + i.user_name + "）");
                     }
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + i.user_name + "）");
                 }
             });
         }
