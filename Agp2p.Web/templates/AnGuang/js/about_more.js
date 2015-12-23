@@ -4,6 +4,7 @@ import "../less/about_more.less";
 import "../less/footerSmall.less";
 
 import header from "./header.js";
+window['$'] = $;
 
 $(function(){
     header.setHeaderHighlight(4);
