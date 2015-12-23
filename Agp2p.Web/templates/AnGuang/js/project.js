@@ -7,6 +7,8 @@ import header from "./header.js";
 import alert from "../components/tips_alert.js";
 import confirm from "../components/tips_confirm.js";
 
+window['$'] = $;
+
 let initRightSideNav = () => {
     let $navContainer = $("#sidemenu > ul");
     $("div.project-content-left > div").each((index, dom) => {
@@ -31,16 +33,6 @@ $(function () {
     });
 
     header.setHeaderHighlight(1);
-
-    // 返回顶部浮窗隐藏与出现
-    $(window).scroll(function () {
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop >= 250) {
-            $("#floating-top-wrap").show();
-        } else {
-            $("#floating-top-wrap").hide();
-        }
-    });
 
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();

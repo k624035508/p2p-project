@@ -5,6 +5,7 @@ import "../less/footerSmall.less";
 
 import header from "./header.js";
 import alert from "../components/tips_alert.js";
+window['$'] = $;
 
 $(function(){
     header.setHeaderHighlight(4);

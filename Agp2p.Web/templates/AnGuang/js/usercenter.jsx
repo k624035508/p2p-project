@@ -30,6 +30,7 @@ import MyLotteryPage from "../containers/mylottery.jsx"
 import MyInvestPage from "../containers/myinvest.jsx"
 
 import header from "./header.js"
+window['$'] = $;
 
 
 $(function(){

@@ -352,22 +352,7 @@
 </div>
 <!--dynamic boards end-->
 
-<!--floating icon-->
-<div class="floating-wrap">
-    <a class="btn cal-btn" data-toggle="popover" data-placement="left" data-html="true" data-content=
-    '<ul class="list-unstyled cal-ul">
-      <li><span>投资金额：</span><input type="text" id="money" />元</li>
-      <li><span>年化利率：</span><input type="text" id="rate" />%</li>
-      <li><span>投资期限：</span><input type="text" id="time" />日</li>
-      <li><span>投资收益：</span><span id="profit"></span>元</li>
-    </ul>
-    <div class="btn-wrap"><button type="button" id="cal-btn" onclick="calculate()">计 算</button></div>'
-    ><span id="floating-cal" class="floating-icon cal-icon"></span>
-    </a>
-    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&key=XzkzODE3NTUwM18zNTE3MjNfNDAwODg3ODIwMF8yXw" target="_blank"><span id="floating-qq"></span></a>
-    <a href="#" id="floating-top-wrap" style="display:none"><span id="floating-top" class="floating-icon top-icon"></span></a>
-</div>
-<!--floating icon end-->
+<%template src="_floating.html"%>
 
 <!--footer-->
 <%template src="_footer.html"%>

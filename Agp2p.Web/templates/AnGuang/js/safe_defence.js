@@ -3,7 +3,8 @@ import "../less/head.less"
 import "../less/safe_defence.less"
 import "../less/footerSmall.less"
 
-import header from "./header.js"
+import header from "./header.js";
+window['$'] = $;
 
 let selectedTabByHash = () => {
     var search = location.hash || "#tab0";
