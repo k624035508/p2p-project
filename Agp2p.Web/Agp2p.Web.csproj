@@ -938,6 +938,7 @@
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />
+    <Content Include="templates\AnGuang\_floating.html" />
     <Content Include="templates\AnGuang\_invest_record.html" />
     <Content Include="templates\AnGuang\_new_hand.html" />
     <Content Include="templates\AnGuang\_repayment_task.html" />
