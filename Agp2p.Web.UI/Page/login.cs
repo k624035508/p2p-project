@@ -23,7 +23,7 @@ namespace Agp2p.Web.UI.Page
         {
             turl = linkurl("usercenter", "index");
             code = DTRequest.GetQueryString("code");
-
+            
             //if (HttpContext.Current.Request.Url != null && HttpContext.Current.Request.UrlReferrer != null)
             //{
             //    if (HttpContext.Current.Request.Url.ToString().ToLower() != HttpContext.Current.Request.UrlReferrer.ToString().ToLower() && !HttpContext.Current.Request.UrlReferrer.ToString().Contains("register"))

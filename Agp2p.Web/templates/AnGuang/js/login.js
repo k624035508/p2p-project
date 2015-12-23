@@ -36,14 +36,14 @@ $(function(){
 				alert("操作超时，请重试");
 			}
 		});
-		if (document.addEventListener) { //  >=ie9
+		/*if (document.addEventListener) { //  >=ie9
 	        // 记住帐号
 	        if ($("input[type=checkbox]").is(":checked")) {
 	        	localStorage.setItem("webLogin_UserName", $("#account").val());
 	        } else {
 	        	localStorage.removeItem("webLogin_UserName");
 	        }
-	    }
+	    }*/
 	});
     $("#psw").keyup(function (e) {
         if (e.keyCode == 13) {
@@ -51,8 +51,8 @@ $(function(){
         }
     });
 
-    var userName = localStorage.getItem("webLogin_UserName");
+    /*var userName = localStorage.getItem("webLogin_UserName");
     if (userName) {
     	$("#account").val(userName);
-    }
+    }*/
 });
