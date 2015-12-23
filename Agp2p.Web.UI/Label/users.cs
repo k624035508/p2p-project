@@ -147,6 +147,11 @@ namespace Agp2p.Web.UI
             return new Agp2pDataContext().li_bank_accounts.Where(b => b.owner == user_id).ToList();
         }
 
+        protected int GetUserUnreadMessage(int userId)
+        {
+            return new Agp2pDataContext().dt_user_message.Count(m => m.receiver == userId && (m.is_read != 1 || m.is_read == null));
+        }
+
         protected string get_bank_css(string bank_name) {
             if ("中国工商银行".IndexOf(bank_name) >= 0)
                 return "icbc";

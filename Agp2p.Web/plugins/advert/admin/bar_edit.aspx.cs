@@ -9,7 +9,7 @@ using Agp2p.Common;
 
 namespace Agp2p.Web.Plugin.Advert.admin
 {
-    public partial class bar_edit : Agp2p.Web.UI.ManagePage
+    public partial class bar_edit : UI.ManagePage
     {
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
         protected int aid = 0; //广告位ID

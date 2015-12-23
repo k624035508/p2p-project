@@ -149,13 +149,13 @@ namespace Agp2p.Web.admin.popularize
             var projects = context.li_projects.Where(p => projIds.Contains(p.id)).ToList();
 
             //构造兑付项目表格
-            var tableTemplate = "<table class='table table-bordered'><tbody><tr><th>序号</th><th>项目名称</th><th>项目金额</th><th>项目期限</th><th>年化利率</th><th>还款方式</th><th>发标时间</th></tr>{trs}</tbody></table>";
-            var trTemplate = "<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></tr>";
+            var tableTemplate = "<table class='table table-bordered'><tbody><tr><th>序号</th><th>项目类别</th><th>项目名称</th><th>项目金额</th><th>项目期限</th><th>年化利率</th><th>还款方式</th><th>发标时间</th></tr>{trs}</tbody></table>";
+            var trTemplate = "<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td></tr>";
 
             var trAll = Enumerable.Range(0, projects.Count).Select(i =>
             {
                 var p = projects[i];
-                return string.Format(trTemplate, i + 1, p.title, p.financing_amount, p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
+                return string.Format(trTemplate, i + 1, p.dt_article_category.title, p.title, p.financing_amount, p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
                     (p.profit_rate_year / 100).ToString("p1"), p.GetProjectRepaymentTypeDesc(), publishTime);
             });
 

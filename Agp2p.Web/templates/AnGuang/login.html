@@ -17,12 +17,15 @@
 <%template src="_header.html"%>
 <!--head end-->
 
+<!-- hack autofill -->
+<div class="form-box hidden"><label for="account">手机号码 ：</label><input id="account0" class="input-l" type="text"/></div>
+<div class="form-box hidden"><label for="psw">登录密码 ：</label><input id="psw0" class="input-l" type="password"/></div>
 <!--register box-->
 <div class="content-wrap login-box">
     <div class="login-right pull-right"></div>
     <div class="login-left">
         <div class="title-tips">欢迎登录 <span class="pull-right">如无账号 <a href='<%linkurl("register")%>'>快速注册</a></span></div>
-        <div class="form-box"><label for="account">手机号码 ：</label><input id="account" class="input-l" type="text"/></div>
+        <div class="form-box"><label for="account">手机号码 ：</label><input id="account" class="input-l" type="text" value='<%=Utils.GetCookie(DTKeys.COOKIE_USER_NAME_REMEMBER,"Agp2p")%>'/></div>
         <div class="form-box"><label for="psw">登录密码 ：</label><input id="psw" class="input-l" type="password"/></div>
         <div class="agreement"><a class="pull-right" href='<%linkurl("forgot_password")%>'>忘记密码？</a><input type="checkbox" id="remember-user" checked="checked" />
             <label for="remember-user">记住用户名</label> </div>

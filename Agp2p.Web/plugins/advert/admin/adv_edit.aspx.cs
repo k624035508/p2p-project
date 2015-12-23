@@ -7,7 +7,7 @@ using Agp2p.Common;
 
 namespace Agp2p.Web.Plugin.Advert.admin
 {
-    public partial class adv_edit : Agp2p.Web.UI.ManagePage
+    public partial class adv_edit : UI.ManagePage
     {
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
         private int id = 0;

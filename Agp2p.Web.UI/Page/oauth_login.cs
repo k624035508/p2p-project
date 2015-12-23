@@ -54,7 +54,7 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] = model;
                 HttpContext.Current.Session.Timeout = 45;
                 Utils.WriteCookie(DTKeys.COOKIE_USER_NAME_REMEMBER, "Agp2p", model.user_name, true);
-                Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
+                //Utils.WriteCookie(DTKeys.COOKIE_USER_PWD_REMEMBER, "Agp2p", model.password, true);
                 //更新最新的Access Token
                 oauthModel.oauth_access_token = HttpContext.Current.Session["oauth_access_token"].ToString();
                 new BLL.user_oauth().Update(oauthModel);
