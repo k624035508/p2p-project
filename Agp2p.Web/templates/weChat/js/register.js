@@ -112,7 +112,7 @@ $(function () {
 
     //表单提交前
     function showRequest(formData, jqForm, options) {
-        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2")) {
+        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2").val()) {
             alert("两次输入的密码不一致");
             return false;
         }
