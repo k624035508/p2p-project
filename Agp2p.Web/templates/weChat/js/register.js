@@ -86,12 +86,14 @@ $(function () {
                     var i = 120;
 
                     btnSendCode.html(i.toString() + "秒后可重发");
+                    btnSendCode.css("font-size", "1.2em");
 
                     var timer = setInterval(function() {
                         i--;
                         if (i === 0) {
                             btnSendCode.attr("disabled", null);
                             btnSendCode.html("获取验证码");
+                            btnSendCode.css("font-size", "1.4em");
 
                             clearInterval(timer);
                         } else {
