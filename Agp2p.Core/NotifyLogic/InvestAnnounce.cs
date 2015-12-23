@@ -160,9 +160,9 @@ namespace Agp2p.Core.NotifyLogic
 
             //查询所有投资记录
             var investTrans =
-                context.li_project_transactions.Where(
+                project.li_project_transactions.Where(
                     t =>
-                        t.project == projectId && t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
 
             var finalProfitRate = project.GetFinalProfitRate(DateTime.Now);
@@ -179,21 +179,21 @@ namespace Agp2p.Core.NotifyLogic
             if (dtSmsTemplate == null) return;
 
             //发送通知给每个投资者
-            investTrans.Select(i => i.dt_users).Distinct().ForEach(i =>
+            investTrans.Select(ptr => ptr.dt_users).Distinct().ForEach(user =>
             {
                 var msgContent = dtSmsTemplate.content.Replace("{date}", DateTime.Now.ToString("yyyy年MM月dd日"))
                     .Replace("{project}", project.title);
                 try
                 {
                     string errorMsg;
-                    if (!SMSHelper.SendTemplateSms(i.mobile, msgContent, out errorMsg))
+                    if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
                     {
-                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + i.user_name + "）");
+                        context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
                     }
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + i.user_name + "）");
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + user.user_name + "）");
                 }
             });
         }

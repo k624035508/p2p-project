@@ -19,6 +19,7 @@ $(function(){
 			data: {
 				txtUserName: $("#account").val(),
 				txtPassword: $("#psw").val(),
+				chkRemember: $("input[type=checkbox]").is(":checked")
 			},
 			success: function(data){
 				if(data.status == 1){
