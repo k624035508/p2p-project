@@ -45,7 +45,7 @@ namespace Agp2p.Web.admin.project
                 CategoryDDLBind(this.channel_id);
                 BindControls();
 
-                if (!string.IsNullOrEmpty(action) && action == DTEnums.ActionEnum.Edit.ToString())
+                if (!string.IsNullOrEmpty(action) && (action == DTEnums.ActionEnum.Edit.ToString() || action == DTEnums.ActionEnum.Copy.ToString()))
                 {                    
                     if (this.project_id == 0)
                     {
@@ -136,14 +136,14 @@ namespace Agp2p.Web.admin.project
             txtSortId.Text = _project.sort_id.ToString();
             txtClick.Text = _project.click.ToString();
             txtImgUrl.Text = _project.img_url;
-            txtTitle.Text = _project.title;
+            txtTitle.Text = action == DTEnums.ActionEnum.Copy.ToString() ? "" : _project.title;
             txt_project_no.Text = _project.no;
             txt_project_amount.Text = _project.financing_amount.ToString();//借款金额            
             txt_project_repayment_number.Text = _project.repayment_term_span_count.ToString();//借款期限
             txt_project_repayment_term.SelectedValue = _project.repayment_term_span.ToString();//借款期限单位
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
             txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N1");//年化利率
-            txtAddTime.Text = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
+            txtAddTime.Text = action == DTEnums.ActionEnum.Copy.ToString() ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             txt_bond_fee_rate.Text = _project.bond_fee_rate.ToString();
             txt_loan_fee_rate.Text = _project.loan_fee_rate.ToString();
             txt_contact_no.Text = _project.contract_no;
@@ -341,6 +341,17 @@ namespace Agp2p.Web.admin.project
                     return;
                 }
                 JscriptMsg("修改信息成功！", String.Format("loan_apply.aspx?channel_id={0}", this.channel_id), "Success");
+            }
+            else if(action == DTEnums.ActionEnum.Copy.ToString()) //复制
+            {
+                txtTitle.Text = "";
+                ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Copy.ToString()); //检查权限
+                if (!DoAdd())
+                {
+                    JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                    return;
+                }
+                JscriptMsg("复制信息成功！", String.Format("loan_apply.aspx?channel_id={0}", this.channel_id), "Success");
             }
             else //添加
             {

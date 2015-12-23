@@ -83,7 +83,9 @@
                     <td><%#string.Format("{0:0.0}", Eval("profit_rate_year"))%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)Utils.StrToInt(Eval("repayment_type").ToString(), 0))%></td>                    
                     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
-                    <td><a href="../../aspx/main/project.aspx?project_id=<%#Eval("id")%>" target="_blank">预览</a></td>              
+                    <td><a href="../../aspx/main/project.aspx?project_id=<%#Eval("id")%>" target="_blank">预览</a>
+                        <a href="loan_apply_detail.aspx?channel_id=<%=this.ChannelId %>&action=<%=DTEnums.ActionEnum.Copy%>&id=<%#Eval("id")%>">复制</a>
+                    </td>              
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
