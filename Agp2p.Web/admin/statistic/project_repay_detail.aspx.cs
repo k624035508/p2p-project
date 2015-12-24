@@ -15,6 +15,8 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+
+        protected int CategoryId;
         protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
@@ -23,7 +25,8 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
-            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
+            this.CategoryId = DTRequest.GetQueryInt("category_id");
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -39,7 +42,19 @@ namespace Agp2p.Web.admin.statistic
                 txtKeywords.Text = keywords;
                 txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
                 txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
+                TreeBind();
                 RptBind();
+            }
+        }
+
+        protected void TreeBind()
+        {
+            this.ddlCategoryId.Items.Clear();
+            this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
+            if (this.CategoryId > 0)
+            {
+                this.ddlCategoryId.SelectedValue = this.CategoryId.ToString();
             }
         }
 
@@ -97,6 +112,8 @@ namespace Agp2p.Web.admin.statistic
             context.LoadOptions = loadOptions;
 
             var query = context.li_repayment_tasks.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid && r.li_projects.title.Contains(txtKeywords.Text));
+            if (CategoryId > 0)
+                query = query.Where(q => q.li_projects.category_id == CategoryId);
             // 限制当前管理员对会员的查询
             var canAccessGroups = context.li_user_group_access_keys.Where(k => k.owner_manager == GetAdminInfo().id).Select(k => k.user_group).ToArray();
 
@@ -209,16 +226,23 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
+        }
+
+        //筛选类别
+        protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         protected DateTime GetRepaymentCompleteTime(li_project_transactions pro)

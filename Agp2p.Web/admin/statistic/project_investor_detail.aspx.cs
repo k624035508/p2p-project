@@ -14,6 +14,8 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+
+        protected int CategoryId;
         protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
@@ -22,7 +24,8 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
-            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
+            this.CategoryId = DTRequest.GetQueryInt("category_id");
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -38,7 +41,19 @@ namespace Agp2p.Web.admin.statistic
                 txtKeywords.Text = keywords;
                 txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
                 txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
+                TreeBind();
                 RptBind();
+            }
+        }
+
+        protected void TreeBind()
+        {
+            this.ddlCategoryId.Items.Clear();
+            this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
+            if (this.CategoryId > 0)
+            {
+                this.ddlCategoryId.SelectedValue = this.CategoryId.ToString();
             }
         }
 
@@ -76,8 +91,8 @@ namespace Agp2p.Web.admin.statistic
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("project_investor_detail.aspx",
-                "keywords={0}&page={1}&year={2}&month={3}&status={4}", txtKeywords.Text, "__id__", txtYear.Text,
-                txtMonth.Text, rblProjectStatus.SelectedValue);
+                "keywords={0}&page={1}&year={2}&month={3}&status={4}&category_id={5}", txtKeywords.Text, "__id__", txtYear.Text,
+                txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue);
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -90,7 +105,8 @@ namespace Agp2p.Web.admin.statistic
             context.LoadOptions = loadOptions;
 
             var query = context.li_projects.Where(p => p.title.Contains(txtKeywords.Text));
-
+            if (CategoryId > 0)
+                query = query.Where(q => q.category_id == CategoryId);
             if (rblProjectStatus.SelectedValue == "1")
                 query = query.Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
             else if (rblProjectStatus.SelectedValue == "2")
@@ -167,14 +183,23 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_investor_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}", txtKeywords.Text, txtYear.Text, txtMonth.Text, rblProjectStatus.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_investor_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}", 
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("project_investor_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}", txtKeywords.Text, txtYear.Text, txtMonth.Text, rblProjectStatus.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_investor_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}", 
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue));
+        }
+
+        //筛选类别
+        protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("project_investor_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         protected void txtMonth_OnTextChanged(object sender, EventArgs e)

@@ -181,29 +181,43 @@ body { background: @body-color; }
 			}
 			.description {
 				margin-top: 45px;
+				text-align: center;
 				& > div {
 					display: inline-block;
-					float: left;
-					width: 50%;
+					vertical-align: top;
+					width: 40%;
 					.bank-nanyue {
 						height: 175px;
 						margin-bottom: 25px;
 						background: url("@{images}/bank-nanyue.png") no-repeat center;
 					}
-					.somebody {
+					.law-yingke {
 						height: 175px;
 						margin-bottom: 25px;
 						background: url("@{images}/some-agency.png") no-repeat center;
 					}
 					.name {
+						width: 90%;
+						margin: 0 auto;
 						text-align: center;
+						border-bottom: 1px solid @dark-grey;
 						.name-style {
 							color: @dark-grey;
 							font-size: @font25;
+							margin-bottom: 18px;
+						}
+					}
+					.info {
+						margin-top: 18px;
+						p {
+							color: @dark-grey;
+							font-size: @font15;
+							line-height: 28px;
+							text-align: left;
 						}
 					}
 				}
-
+				.nanyue-wrap { margin-right: 110px; }
 			}
 		}
 	}

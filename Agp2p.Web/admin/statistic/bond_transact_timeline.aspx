@@ -92,6 +92,11 @@ thead * {
                         sucmsg=" " Style="font-size: 15px" />
                     <i></i>
                 </div>
+                <div class="menu-list rl" style="display: inline-block;">
+                        <div class="rule-single-select">
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                    </div>
                 <asp:TextBox ID="txtKeywords" runat="server" CssClass="keyword" onkeydown="return Enter(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True" />
                 <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="btn-search" OnClick="btnSearch_Click">查询</asp:LinkButton>
             </div>

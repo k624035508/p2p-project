@@ -29,11 +29,13 @@ namespace Agp2p.Web.admin.statistic
         protected int pageSize;
 
         protected string keywords = string.Empty;
+        protected int categoryId;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
+            categoryId = DTRequest.GetQueryInt("category_id");
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("bond_transact_timeline", DTEnums.ActionEnum.View.ToString()); //检查权限
@@ -46,11 +48,24 @@ namespace Agp2p.Web.admin.statistic
                 var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
+                TreeBind();
                 RptBind();
             }
         }
 
         #region 数据绑定=================================
+        protected void TreeBind()
+        {
+            var categoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
+            ddlCategoryId.Items.Clear();
+            ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
+            ddlCategoryId.Items.AddRange(categoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
+            if (categoryId > 0)
+            {
+                ddlCategoryId.SelectedValue = categoryId.ToString();
+            }
+        }
+
         private void RptBind()
         {
             var transactions = QueryProjectTransactions();
@@ -66,8 +81,8 @@ namespace Agp2p.Web.admin.statistic
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}",
-                txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text);
+            string pageUrl = Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}&category_id={4}",
+                txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue);
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -78,7 +93,9 @@ namespace Agp2p.Web.admin.statistic
             IQueryable<li_company_inoutcome> query =
                 context.li_company_inoutcome.Where(
                     ptr => ptr.type == (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee);
-            
+
+            if (categoryId > 0)
+                query = query.Where(q => q.li_projects.category_id == categoryId);
             if (!string.IsNullOrWhiteSpace(txtKeywords.Text))
             { 
                 query = query.Where(b => b.dt_users.user_name.Contains(txtKeywords.Text) || b.dt_users.real_name.Contains(txtKeywords.Text)); 
@@ -109,16 +126,23 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}",
-                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text));
+            Response.Redirect(Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&category_id={3}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}",
-                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text));
+            Response.Redirect(Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&category_id={3}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue));
+        }
+
+        //筛选类别
+        protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&category_id={3}",
+               txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue));
         }
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
