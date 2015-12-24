@@ -57,6 +57,11 @@ td.center { text-align: center; }
                     <asp:TextBox ID="txtMonth" runat="server" CssClass="keyword" datatype="/^\d{1,2}$/" AutoPostBack="True" OnTextChanged="txtMonth_OnTextChanged" Width="2em" />
                 </div>
                 <div style="display: inline-block;" class="rl">月</div>
+                <div class="menu-list rl" style="display: inline-block; float: left;margin-left: 15px;">
+                        <div class="rule-single-select">
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                    </div>
                 <!--银行交易状态选择，选择后刷新列表-->
                 <div style="display: inline-block; padding-left: 2em;" class="rl">状态：</div>
                 <div class="rule-multi-radio" style="display: inline-block;float: left; margin-right:10px;">
