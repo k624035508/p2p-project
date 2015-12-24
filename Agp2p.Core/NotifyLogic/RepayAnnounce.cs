@@ -41,6 +41,7 @@ namespace Agp2p.Core.NotifyLogic
             willRepayTasks.ForEach(task =>
             {
                 var loaner = task.li_projects.li_risks.li_loaners.dt_users;
+                if(string.IsNullOrEmpty(loaner.mobile)) return;
                 var logTag = string.Format("LoanerRepayHint_{0}_{1}", loaner.id, task.id);
 
                 // 判断有没有发送过短信
