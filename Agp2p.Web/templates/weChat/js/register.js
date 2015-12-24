@@ -10,7 +10,7 @@ var fontSizeUnit = viewportWidth * 0.9 / 20;
 $("html").css("font-size", fontSizeUnit);
 
 /*切换验证码*/
-function ToggleCode(obj, codeurl) {
+window.ToggleCode = function(obj, codeurl) {
     $(obj).attr("src", codeurl + "?time=" + Math.random());
     return false;
 }
@@ -86,12 +86,14 @@ $(function () {
                     var i = 120;
 
                     btnSendCode.html(i.toString() + "秒后可重发");
+                    btnSendCode.css("font-size", "1.2em");
 
                     var timer = setInterval(function() {
                         i--;
                         if (i === 0) {
                             btnSendCode.attr("disabled", null);
                             btnSendCode.html("获取验证码");
+                            btnSendCode.css("font-size", "1.4em");
 
                             clearInterval(timer);
                         } else {
@@ -112,7 +114,7 @@ $(function () {
 
     //表单提交前
     function showRequest(formData, jqForm, options) {
-        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2")) {
+        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2").val()) {
             alert("两次输入的密码不一致");
             return false;
         }
