@@ -4,6 +4,7 @@ module.exports = {
     cache: true,
     entry: {
         manager_messages: "./js/manager-messages.jsx",
+        predict_table: "./predict/predict-table.jsx",
     },
     output: {
         path: path.join(__dirname, './jsbuild'),

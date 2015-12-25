@@ -191,6 +191,7 @@
     <Content Include="admin\popularize\project-publish-announce.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\predict\projects_costing_predict.aspx" />
     <Content Include="admin\project\loan_all.aspx" />
     <Content Include="admin\project\loan_detail.aspx" />
     <Content Include="admin\repayment\repay_earlier.aspx" />
@@ -1505,6 +1506,13 @@
     </Compile>
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\predict\projects_costing_predict.aspx.cs">
+      <DependentUpon>projects_costing_predict.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\predict\projects_costing_predict.aspx.designer.cs">
+      <DependentUpon>projects_costing_predict.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\project\loan_all.aspx.cs">
       <DependentUpon>loan_all.aspx</DependentUpon>
