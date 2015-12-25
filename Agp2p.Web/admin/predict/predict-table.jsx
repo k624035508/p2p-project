@@ -6,6 +6,7 @@ import lmap from "lodash/collection/map"
 import range from "lodash/utility/range"
 import assign from "lodash/object/assign"
 import indexOf from "lodash/array/indexOf"
+import last from "lodash/array/last"
 
 class ProjectCostingPredictTable extends React.Component {
 	constructor(props) {
@@ -19,8 +20,12 @@ class ProjectCostingPredictTable extends React.Component {
     		delta.push({date: today, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
     		this.forceUpdate();
     	};
-    	window.appendTomorrowPredict = () => {
-    		let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
+    	window.appendNextDayPredict = () => {
+            let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
+                sortedGroup = sortBy(group, (g, key) => key),
+                lastDay = sortedGroup.length == 0 ? new Date().toJSON().slice(0,10) : last(sortedGroup)[0].date;
+
+    		let tomorrow = new Date(new Date(lastDay).getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
     		let delta = this.state.projectPublishCostingPredict;
     		delta.push({date: tomorrow, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
     		this.forceUpdate();
@@ -45,8 +50,12 @@ class ProjectCostingPredictTable extends React.Component {
     		}
     	}
     }
-    genEditableTd(objRef, propertyName, extraProps = {}) {
-    	return objRef.editing == propertyName ? <td {...extraProps}><input
+    clonePredict(p) {
+        this.state.projectPublishCostingPredict.push(assign({}, p));
+        this.forceUpdate();
+    }
+    genEditableTd(objRef, propertyName, childrenProjector = x => x) {
+    	return objRef.editing == propertyName ? <td><input
     		style={{width: '100%'}}
     		autoFocus={true}
     		value={objRef[propertyName]}
@@ -58,11 +67,11 @@ class ProjectCostingPredictTable extends React.Component {
 	    		delete objRef.editing;
     			this.forceUpdate();
     		}}
-    	 /></td> : <td {...extraProps}
+    	 /></td> : <td
     	 	onClick={ev => {
 	    		objRef.editing = propertyName;
 	    		this.forceUpdate();
-	    	}}>{objRef[propertyName]}</td>
+	    	}}>{ childrenProjector(objRef[propertyName]) }</td>
     }
     getCostingOfPredict(p) {
     	return p.financingAmount * p.prepayRatePercent / 100 * p.profitRateYearlyPercent / 100 / 360 * p.termLength;
@@ -88,27 +97,28 @@ class ProjectCostingPredictTable extends React.Component {
 				    <th width="10%">成本</th>
 				    <th width="10%">错配期（天）</th>
 				    <th width="10%">错配成本</th>
-				    <th className="noPrint" width="5%">删除</th>
 			    </tr>
 			    </thead>
 			    <tbody>
-			  	{lmap(sortedGroup, predicts => {
+			  	{lmap(sortedGroup, (predicts, trIndex) => {
 			  		return predicts.map((p, index) => {
-			  			return <tr>
-			  				{this.genEditableTd(p, "date", index == 0 ? {} : {style: {fontSize: '0px'}})}
-			  				{this.genEditableTd(p, "financingAmount")}
+                        let deleteCurrentPredict = ev => {
+                            let pos = indexOf(this.state.projectPublishCostingPredict, p);
+                            this.state.projectPublishCostingPredict.splice(pos, 1);
+                            this.forceUpdate();
+                        };
+                        return <tr>
+                            {index == 0 ? <td>{p.date}</td> : <td></td>}
+			  				{this.genEditableTd(p, "financingAmount",
+                                children => <div>{children}
+                                    <a href="javascript:" onClick={ev => {ev.stopPropagation(); this.clonePredict(p);}} style={{marginLeft: '10px'}}>添加</a>
+                                    <a href="javascript:" onClick={deleteCurrentPredict} style={{marginLeft: '40px'}}>删除</a></div>)}
 			  				{this.genEditableTd(p, "prepayRatePercent")}
 			  				{this.genEditableTd(p, "profitRateYearlyPercent")}
 			  				{this.genEditableTd(p, "termLength")}
 			  				<td>{this.getCostingOfPredict(p).toFixed(2)}</td>
 			  				{this.genEditableTd(p, "repayDelayDays")}
 			  				<td>{this.getDelayCostingPredict(p).toFixed(2)}</td>
-			  				<td className="noPrint" style={{cursor: 'pointer',color: 'red'}}
-			  					onClick={ev => {
-			  						let pos = indexOf(this.state.projectPublishCostingPredict, p);
-			  						this.state.projectPublishCostingPredict.splice(pos, 1);
-			  						this.forceUpdate();
-			  					}}>X</td>
 			  			</tr>;
 			  		})
 			  	})}
@@ -119,7 +129,6 @@ class ProjectCostingPredictTable extends React.Component {
 			  		<td>{sumOfCosting.toFixed(2)}</td>
 			  		<td></td>
 			  		<td>{sumOfDelayCosting.toFixed(2)}</td>
-			  		<td className="noPrint"></td>
 			  	</tr>
 			  	</tbody>
 			</table>

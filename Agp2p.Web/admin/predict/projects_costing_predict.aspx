@@ -22,6 +22,9 @@ tbody td { text-align: center; }
     }
 }
 tr.pointer td { cursor: pointer;}
+
+tr:hover a { display: inline;position: absolute; }
+tr a { display: none; }
 </style>
 </head>
 
@@ -43,7 +46,7 @@ tr.pointer td { cursor: pointer;}
                <ul class="icon-list">
                     <li><a class="quotes" onclick="print()" href="javascript:"><i></i><span>打印</span></a></li>
                     <li><a class="add" onclick="appendPredict()" href="javascript:"><i></i><span>添加当日估算</span></a></li>
-                    <li><a class="add" onclick="appendTomorrowPredict()" href="javascript:"><i></i><span>添加明日估算</span></a></li>
+                    <li><a class="add" onclick="appendNextDayPredict()" href="javascript:"><i></i><span>添加下一日估算</span></a></li>
                     <li><a class="add" onclick="repeatPredict()" href="javascript:"><i></i><span>重复首日估算</span></a></li>
                 </ul>
             </div>

@@ -1684,6 +1684,7 @@
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.designer.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
@@ -1871,6 +1872,7 @@
     </Compile>
     <Compile Include="admin\users\ChoiceUser.aspx.cs">
       <DependentUpon>ChoiceUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\users\ChoiceUser.aspx.designer.cs">
       <DependentUpon>ChoiceUser.aspx</DependentUpon>
