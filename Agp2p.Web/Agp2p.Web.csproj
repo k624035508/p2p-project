@@ -574,6 +574,7 @@
     <Content Include="scripts\fullpage\jquery.fullPage.css" />
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
+    <Content Include="admin\predict\predict-table.jsx" />
     <None Include="scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="scripts\jquery-2.1.4.js" />
     <Content Include="scripts\jquery-2.1.4.min.js" />
@@ -1683,7 +1684,6 @@
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\statistic\project_repay_detail.aspx.designer.cs">
       <DependentUpon>project_repay_detail.aspx</DependentUpon>
@@ -1871,7 +1871,6 @@
     </Compile>
     <Compile Include="admin\users\ChoiceUser.aspx.cs">
       <DependentUpon>ChoiceUser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\users\ChoiceUser.aspx.designer.cs">
       <DependentUpon>ChoiceUser.aspx</DependentUpon>
