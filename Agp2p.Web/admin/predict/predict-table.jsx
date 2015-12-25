@@ -5,6 +5,7 @@ import sortBy from "lodash/collection/sortBy"
 import lmap from "lodash/collection/map"
 import range from "lodash/utility/range"
 import assign from "lodash/object/assign"
+import indexOf from "lodash/array/indexOf"
 
 class ProjectCostingPredictTable extends React.Component {
 	constructor(props) {
@@ -68,14 +69,15 @@ class ProjectCostingPredictTable extends React.Component {
             <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
             	<thead>
 			    <tr>
-				    <th width="15%">发标日期</th>
-				    <th width="15%">项目金额</th>
-				    <th width="13%">垫付率（%）</th>
-				    <th width="13%">年化利率（%）</th>
+				    <th width="13%">发标日期</th>
+				    <th width="13%">项目金额</th>
+				    <th width="10%">垫付率（%）</th>
+				    <th width="12%">年化利率（%）</th>
 				    <th width="10%">期限（天）</th>
-				    <th width="13%">成本</th>
-				    <th width="13%">错配期（天）</th>
-				    <th width="13%">错配成本</th>
+				    <th width="10%">成本</th>
+				    <th width="10%">错配期（天）</th>
+				    <th width="10%">错配成本</th>
+				    <th className="noPrint" width="5%">删除</th>
 			    </tr>
 			    </thead>
 			    <tbody>
@@ -90,19 +92,33 @@ class ProjectCostingPredictTable extends React.Component {
 			  				<td>{this.getCostingOfPredict(p).toFixed(2)}</td>
 			  				{this.genEditableTd(p, "repayDelayDays")}
 			  				<td>{this.getDelayCostingPredict(p).toFixed(2)}</td>
+			  				<td className="noPrint" style={{cursor: 'pointer',color: 'red'}}
+			  					onClick={ev => {
+			  						let pos = indexOf(this.state.projectPublishCostingPredict, p);
+			  						this.state.projectPublishCostingPredict.splice(pos, 1);
+			  						this.forceUpdate();
+			  					}}>X</td>
 			  			</tr>;
 			  		})
 			  	})}
-			  	<tr className="sum"><td>{sortedGroup.length + " 天"}</td><td>{sumOfFinancingAmount.toFixed(2)}</td><td colSpan="3"></td><td>{sumOfCosting.toFixed(2)}</td><td></td><td>{sumOfDelayCosting.toFixed(2)}</td></tr>
+			  	<tr className="sum">
+			  		<td>{sortedGroup.length + " 天"}</td>
+			  		<td>{sumOfFinancingAmount.toFixed(2)}</td>
+			  		<td colSpan="3"></td>
+			  		<td>{sumOfCosting.toFixed(2)}</td>
+			  		<td></td>
+			  		<td>{sumOfDelayCosting.toFixed(2)}</td>
+			  		<td className="noPrint"></td>
+			  	</tr>
 		  		{this.state.projectPublishCostingPredict.length == 0 ? 
 			  	<tr className="noPrint pointer">
-			  		<td colSpan="8" onClick={ev => this.appendPredict()}>添加当日估算</td>
+			  		<td colSpan="9" onClick={ev => this.appendPredict()}>添加当日估算</td>
 			  	</tr> :
 			  	<tr className="noPrint pointer">
 			  		<td colSpan="6" onClick={ev => this.appendPredict()}>添加当日估算</td>
 			  		<td colSpan="1">重复<input value={this.state.repeatDay} style={{width: '30px'}}
 			  			onChange={ev => this.setState({repeatDay: ev.target.value})} />日</td>
-			  		<td colSpan="1" onClick={ev => this.repeatPredict(parseInt(this.state.repeatDay || "0"))}>添加重复估算</td>
+			  		<td colSpan="2" onClick={ev => this.repeatPredict(parseInt(this.state.repeatDay || "0"))}>添加重复估算</td>
 			  	</tr>}
 			  	</tbody>
 			</table>
