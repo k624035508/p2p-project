@@ -96,7 +96,7 @@ td.center { text-align: center; }
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr <%# (Eval("Project.Name") + "").EndsWith("合计") ? "class='sum'" : ""%>>
+  <tr <%# (Eval("Project.Name") + "").EndsWith("计") ? "class='sum'" : ""%>>
     <td style="text-align: center;"><%# Eval("Project.Index")%></td>
     <td><%# Eval("Project.Name")%></td>
     <td align="center"><%#Eval("Project.Category")%></td>

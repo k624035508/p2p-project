@@ -197,7 +197,7 @@ namespace Agp2p.Web.admin.statistic
                         {
                             new RepaymentDetail
                             {
-                                RepaymentTask = new RepaymentTaskDetail {ProjectName = "合计"},
+                                RepaymentTask = new RepaymentTaskDetail {ProjectName = "小计"},
                                 InvestValue = repaymentDetails.Sum(p => p.InvestValue),
                                 RepayInterest = repaymentDetails.Sum(p => p.RepayInterest),
                                 RepayPrincipal = repaymentDetails.Sum(p => p.RepayPrincipal),
@@ -206,12 +206,12 @@ namespace Agp2p.Web.admin.statistic
                         });
                     }).ToList();
 
-            var sumRows = appendedSums.Where(p => p.RepaymentTask.ProjectName != null && p.RepaymentTask.ProjectName.EndsWith("合计")).ToList();
+            var sumRows = appendedSums.Where(p => p.RepaymentTask.ProjectName != null && p.RepaymentTask.ProjectName.EndsWith("小计")).ToList();
             var beforePaging = appendedSums.Concat(new[]
             {
                 new RepaymentDetail
                 {
-                    RepaymentTask = new RepaymentTaskDetail {ProjectName = "总合计"},
+                    RepaymentTask = new RepaymentTaskDetail {ProjectName = "总计"},
                     InvestValue = null,
                     RepayInterest = sumRows.Sum(p => p.RepayInterest),
                     RepayPrincipal = sumRows.Sum(p => p.RepayPrincipal),
