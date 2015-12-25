@@ -41,7 +41,10 @@ tr.pointer td { cursor: pointer;}
         <div id="floatHead" class="toolbar">
             <div class="l-list">
                <ul class="icon-list">
-                    <li><a id="btnExportExcel" class="quotes" onclick="print()"><i></i><span>打印</span></a></li>
+                    <li><a class="quotes" onclick="print()" href="javascript:"><i></i><span>打印</span></a></li>
+                    <li><a class="add" onclick="appendPredict()" href="javascript:"><i></i><span>添加当日估算</span></a></li>
+                    <li><a class="add" onclick="appendTomorrowPredict()" href="javascript:"><i></i><span>添加明日估算</span></a></li>
+                    <li><a class="add" onclick="repeatPredict()" href="javascript:"><i></i><span>重复首日估算</span></a></li>
                 </ul>
             </div>
             <div class="r-list">

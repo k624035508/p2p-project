@@ -12,33 +12,38 @@ class ProjectCostingPredictTable extends React.Component {
         super(props);
         this.state = {projectPublishCostingPredict: [], repeatDay: 30};
     }
-    appendPredict() {
-    	let today = new Date().toJSON().slice(0,10);
-    	let delta = this.state.projectPublishCostingPredict;
-    	delta.push({date: today, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
-    	this.forceUpdate();
-    }
-    appendTomorrowPredict() {
-    	let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
-    	let delta = this.state.projectPublishCostingPredict;
-    	delta.push({date: tomorrow, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
-    	this.forceUpdate();
-    }
-    repeatPredict(addDays) {
-    	let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
-    		sortedGroup = sortBy(group, (g, key) => key),
-    		preRepeats = sortedGroup[0];
+    componentDidMount() {
+    	window.appendPredict = () => {
+    		let today = new Date().toJSON().slice(0,10);
+    		let delta = this.state.projectPublishCostingPredict;
+    		delta.push({date: today, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
+    		this.forceUpdate();
+    	};
+    	window.appendTomorrowPredict = () => {
+    		let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
+    		let delta = this.state.projectPublishCostingPredict;
+    		delta.push({date: tomorrow, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
+    		this.forceUpdate();
+    	};
+    	window.repeatPredict = () => {
+    		let addDays = parseInt(prompt('请输入需要重复的次数：') || "0");
+    		if (!isNaN(addDays) && 0 < addDays) {
+    			let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
+    			sortedGroup = sortBy(group, (g, key) => key),
+    			preRepeats = sortedGroup[0];
 
-    	let todayTime = new Date().getTime();
-    	let delta = this.state.projectPublishCostingPredict;
-    	range(1, addDays + 1).forEach(i => {
-    		let thatDay = {date: new Date(todayTime + i * 24 * 60 * 60 * 1000).toJSON().slice(0,10)};
-    		preRepeats.forEach(preClone => {
-    			let repeated = assign({}, preClone, thatDay);
-    			delta.push(repeated);
-    		})
-    	})
-    	this.setState({projectPublishCostingPredict: delta});
+    			let todayTime = new Date().getTime();
+    			let delta = this.state.projectPublishCostingPredict;
+    			range(1, addDays + 1).forEach(i => {
+    				let thatDay = {date: new Date(todayTime + i * 24 * 60 * 60 * 1000).toJSON().slice(0,10)};
+    				preRepeats.forEach(preClone => {
+    					let repeated = assign({}, preClone, thatDay);
+    					delta.push(repeated);
+    				})
+    			})
+    			this.forceUpdate();
+    		}
+    	}
     }
     genEditableTd(objRef, propertyName, extraProps = {}) {
     	return objRef.editing == propertyName ? <td {...extraProps}><input
@@ -116,18 +121,6 @@ class ProjectCostingPredictTable extends React.Component {
 			  		<td>{sumOfDelayCosting.toFixed(2)}</td>
 			  		<td className="noPrint"></td>
 			  	</tr>
-		  		{this.state.projectPublishCostingPredict.length == 0 ? 
-			  	<tr className="noPrint pointer">
-			  		<td colSpan="7" onClick={ev => this.appendPredict()}>添加当日估算</td>
-			  		<td colSpan="2" onClick={ev => this.appendTomorrowPredict()}>添加明日估算</td>
-			  	</tr> :
-			  	<tr className="noPrint pointer">
-			  		<td colSpan="4" onClick={ev => this.appendPredict()}>添加当日估算</td>
-			  		<td colSpan="2" onClick={ev => this.appendTomorrowPredict()}>添加明日估算</td>
-			  		<td colSpan="1">重复<input value={this.state.repeatDay} style={{width: '30px'}}
-			  			onChange={ev => this.setState({repeatDay: ev.target.value})} />次</td>
-			  		<td colSpan="2" onClick={ev => this.repeatPredict(parseInt(this.state.repeatDay || "0"))}>重复首日估算</td>
-			  	</tr>}
 			  	</tbody>
 			</table>
         );
