@@ -21,6 +21,7 @@ tbody td { text-align: center; }
         display: none;
     }
 }
+tr.pointer td { cursor: pointer;}
 </style>
 </head>
 
