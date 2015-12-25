@@ -81,7 +81,7 @@ namespace Agp2p.Web.admin.statistic
         protected class RepaymentTaskAmountDetail
         {
             public ProjectDetail Project { get; set; }
-            public DateTime RepayTime { get; set; }
+            public string RepayTime { get; set; }
             public string Status { get; set; }
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
@@ -95,7 +95,18 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            var pageData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+            {
+                Project = new ProjectDetail()
+                {
+                    Index = null,
+                    Name = "总计"
+                },
+                RepayInterest = pageData.Sum(p => p.RepayInterest),
+                RepayPrincipal = pageData.Sum(p => p.RepayPrincipal),
+                RepayTotal = pageData.Sum(p => p.RepayTotal)
+            })) ;
             rptList.DataBind();
 
             //绑定页码
@@ -187,7 +198,7 @@ namespace Agp2p.Web.admin.statistic
                 return rgi.rg.Select(rg => new RepaymentTaskAmountDetail
                 {
                     Project = j++ == 0 ? projectDetail : new ProjectDetail(),
-                    RepayTime = rg.should_repay_time,
+                    RepayTime = rg.should_repay_time.ToString("yyyy-MM-dd"),
                     Status = Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) rg.status),
                     RepayPrincipal = rg.repay_principal,
                     RepayInterest = rg.repay_interest,

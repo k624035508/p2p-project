@@ -109,10 +109,10 @@
                 </thead>
         </HeaderTemplate>
         <ItemTemplate>
-            <tr <%# string.Equals(Eval("GroupName"), "合计") ? "class='sum'" : "" %>>
+            <tr <%# string.Equals(Eval("GroupName"), "总计") ? "class='sum'" : "" %>>
                 <td class="align-center"><asp:CheckBox ID="chkId" CssClass="checkall" runat="server" /><asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" /></td>
                 <td class="align-center">
-                    <%# string.Equals("合计", Eval("GroupName")) ? "合计" : "<a href='group_edit.aspx?action=Edit&id=" + Eval("id") + "'>" + Eval("GroupName") + "</a>" %><%# Eval("DepartmentName")==null?"":"("+Eval("DepartmentName")+")" %>
+                    <%# string.Equals("总计", Eval("GroupName")) ? "总计" : "<a href='group_edit.aspx?action=Edit&id=" + Eval("id") + "'>" + Eval("GroupName") + "</a>" %><%# Eval("DepartmentName")==null?"":"("+Eval("DepartmentName")+")" %>
                 </td>
                 <td class="align-left"><%# Eval("Servers") %></td>
                 <td><%# Eval("UserCount") %></td>

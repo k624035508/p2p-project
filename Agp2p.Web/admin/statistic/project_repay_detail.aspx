@@ -110,7 +110,7 @@
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
-                <tr <%# (Eval("RepaymentTask.ProjectName") + "").EndsWith("合计") ? "class='sum'" : ""%>>
+                <tr <%# (Eval("RepaymentTask.ProjectName") + "").EndsWith("计") ? "class='sum'" : ""%>>
                     <td style="text-align: center;"><%# Eval("RepaymentTask.Index")%></td>
                     <td><%# Eval("RepaymentTask.ProjectName")%></td>
                     <td><%# Eval("RepaymentTask.CreditorName")%></td>

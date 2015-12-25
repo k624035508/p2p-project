@@ -15,6 +15,9 @@
 <style>
 td.money { text-align: right; }
 td.center { text-align: center; }
+tr.sum td {
+            color: red;
+        }
 </style>
 </head>
 
@@ -104,7 +107,7 @@ td.center { text-align: center; }
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr>
+  <tr <%# ((RepaymentTaskAmountDetail)Container.DataItem).Project.Index == null ? "class='sum'" : ""%>>
     <td class="center"><%# Eval("Project.Index")%></td>
     <td><%# Eval("Project.Name")%></td>
     <td align="center"><%# Eval("Project.Creditor")%></td>
@@ -114,7 +117,7 @@ td.center { text-align: center; }
     <td align="center"><%# Eval("Project.InvestCompleteTime")%></td>
     <td align="center"><%# Eval("Project.RepayCompleteTime") != null ? ((DateTime)Eval("Project.RepayCompleteTime")).ToString("yyyy-MM-dd") : ""%></td>
     <td align="center"><%# Eval("RepayTerm")%></td>
-    <td align="center"><%# ((DateTime)Eval("RepayTime")).ToString("yyyy-MM-dd")%></td>
+    <td align="center"><%# Eval("RepayTime")%></td>
     <td align="center"><%# Eval("RepayAt")%></td>
     <td><%# Eval("Status")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>

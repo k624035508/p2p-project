@@ -122,7 +122,7 @@
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count >0 ? "<tr><td colspan=\"2\"></td><td style=\"color: red;\">合计</td><td style=\"color: red;\">"+Convert.ToDecimal(value).ToString("c")+"</td><td style=\"color: red;\">"+Convert.ToDecimal(value1).ToString("c")+"</td><td colspan=\"9\">&nbsp;</td></tr>" : ""%>
+  <%#rptList.Items.Count >0 ? "<tr><td colspan=\"2\"></td><td style=\"color: red;\">总计</td><td style=\"color: red;\">"+Convert.ToDecimal(value).ToString("c")+"</td><td style=\"color: red;\">"+Convert.ToDecimal(value1).ToString("c")+"</td><td colspan=\"9\">&nbsp;</td></tr>" : ""%>
   <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"14\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>

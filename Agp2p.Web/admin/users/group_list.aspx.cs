@@ -216,7 +216,7 @@ namespace Agp2p.Web.admin.users
 
             rptList.DataSource = groups.Concat(Enumerable.Range(0, 1).Select(i => new GroupDetails
             {
-                GroupName = "合计",
+                GroupName = "总计",
                 is_default = 1, // hide operation
                 UserCount = groups.Sum(g => g.UserCount),
                 //DepartmentName = groups.Select(g => g.DepartmentName).ToString(),
