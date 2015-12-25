@@ -148,7 +148,7 @@ namespace Agp2p.Core.NotifyLogic
 
         private static void HandleBankTransactionFinishedMsg(li_bank_transactions tr)
         {
-            if (tr.type != (int)Agp2pEnums.BankTransactionTypeEnum.Charge)
+            if (tr.type != (int)Agp2pEnums.BankTransactionTypeEnum.Charge || tr.status != (int)Agp2pEnums.BankTransactionStatusEnum.Confirm)
             {
                 return;
             }

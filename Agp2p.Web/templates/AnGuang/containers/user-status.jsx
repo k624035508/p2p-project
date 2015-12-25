@@ -29,7 +29,7 @@ class UserStatus extends React.Component {
 		            </div>
 		            <div className="head-center">
 		                <p className="balance">账户余额：<span>{this.props.idleMoney.format(2)}</span></p>
-		                <p className="balance-frozen">冻结金额： <span>{this.props.lockedMoney.format(2)}</span></p>
+		                <p className="balance-frozen">冻结金额：<span>{this.props.lockedMoney.format(2)}</span></p>
 		            </div>
 		        </div>
 

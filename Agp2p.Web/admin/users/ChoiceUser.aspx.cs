@@ -87,7 +87,7 @@ namespace Agp2p.Web.admin.users
         private IQueryable<dt_users> QueryUser(int groupId)
         {
             IQueryable<dt_users> query = context.dt_users;
-            query = query.Where(u => u.group_id == groupId && u.dt_user_groups.is_default != 1);
+            query = query.Where(u => u.group_id == groupId);
             return query.Where(u => u.real_name.Contains(txtKeywords.Text) || u.user_name.Contains(txtKeywords.Text) || u.mobile.Contains(txtKeywords.Text));
         }
 
