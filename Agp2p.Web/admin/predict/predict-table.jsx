@@ -52,17 +52,26 @@ class ProjectCostingPredictTable extends React.Component {
 	    		this.forceUpdate();
 	    	}}>{objRef[propertyName]}</td>
     }
+    getCostingOfPredict(p) {
+    	return p.financingAmount * p.prepayRatePercent / 100 * p.profitRateYearlyPercent / 100 / 360 * p.termLength;
+    }
+    getDelayCostingPredict(p) {
+    	return p.financingAmount * p.profitRateYearlyPercent / 100 / 360 * p.repayDelayDays;
+    }
     render() {
     	let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
     		sortedGroup = sortBy(group, (g, key) => key);
+    	let sumOfFinancingAmount = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + parseFloat(predict.financingAmount), 0),
+    		sumOfCosting = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getCostingOfPredict(predict), 0),
+    		sumOfDelayCosting = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getDelayCostingPredict(predict), 0);
         return (
             <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
             	<thead>
 			    <tr>
 				    <th width="15%">发标日期</th>
 				    <th width="15%">项目金额</th>
-				    <th width="10%">垫付率（%）</th>
-				    <th width="10%">年化利率（%）</th>
+				    <th width="13%">垫付率（%）</th>
+				    <th width="13%">年化利率（%）</th>
 				    <th width="10%">期限（天）</th>
 				    <th width="13%">成本</th>
 				    <th width="13%">错配期（天）</th>
@@ -78,12 +87,13 @@ class ProjectCostingPredictTable extends React.Component {
 			  				{this.genEditableTd(p, "prepayRatePercent")}
 			  				{this.genEditableTd(p, "profitRateYearlyPercent")}
 			  				{this.genEditableTd(p, "termLength")}
-			  				<td>{(p.financingAmount * p.prepayRatePercent / 100 * p.profitRateYearlyPercent / 100 / 360 * p.termLength).toFixed(2)}</td>
+			  				<td>{this.getCostingOfPredict(p).toFixed(2)}</td>
 			  				{this.genEditableTd(p, "repayDelayDays")}
-			  				<td>{(p.financingAmount * p.profitRateYearlyPercent / 100 / 360 * p.repayDelayDays).toFixed(2)}</td>
+			  				<td>{this.getDelayCostingPredict(p).toFixed(2)}</td>
 			  			</tr>;
 			  		})
 			  	})}
+			  	<tr className="sum"><td>{sortedGroup.length + " 天"}</td><td>{sumOfFinancingAmount.toFixed(2)}</td><td colSpan="3"></td><td>{sumOfCosting.toFixed(2)}</td><td></td><td>{sumOfDelayCosting.toFixed(2)}</td></tr>
 		  		{this.state.projectPublishCostingPredict.length == 0 ? 
 			  	<tr className="noPrint pointer">
 			  		<td colSpan="8" onClick={ev => this.appendPredict()}>添加当日估算</td>
