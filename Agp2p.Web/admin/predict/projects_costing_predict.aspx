@@ -5,12 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>发标成本预测</title>
+<link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+<link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 <script type="text/javascript" src="../js/layout.js"></script>
 <script type="text/javascript" src="../jsbuild/predict_table.bundle.js"></script>
-<link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
-<link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
 <style>
 tr.sum td { color: red; }
 td.money { text-align: right; }
@@ -25,6 +25,8 @@ tr.pointer td { cursor: pointer;}
 
 tr:hover a { display: inline;position: absolute; }
 tr a { display: none; }
+
+div.rl { margin-left: 10px;}
 </style>
 </head>
 
@@ -51,6 +53,26 @@ tr a { display: none; }
                 </ul>
             </div>
             <div class="r-list">
+                <div style="display: inline-block;" class="rl">默认项目金额：</div>
+                <div style="display: inline-block; float:left;">
+                    <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
+                <div style="display: inline-block;" class="rl">垫付率（%）：</div>
+                <div style="display: inline-block; float:left;">
+                    <input type="text" id="prepayRatePercent" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
+                <div style="display: inline-block;" class="rl">年化利率（%）：</div>
+                <div style="display: inline-block; float:left;">
+                    <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
+                <div style="display: inline-block;" class="rl">期限（天）：</div>
+                <div style="display: inline-block; float:left;">
+                    <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
+                <div style="display: inline-block;" class="rl">错配期（天）：</div>
+                <div style="display: inline-block; float:left;">
+                    <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
             </div>
         </div>
     </div>

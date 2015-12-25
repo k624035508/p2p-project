@@ -12,12 +12,12 @@ class ProjectCostingPredictTable extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {projectPublishCostingPredict: [], repeatDay: 30};
+        this.defaultValue = {financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2};
     }
     componentDidMount() {
     	window.appendPredict = () => {
     		let today = new Date().toJSON().slice(0,10);
-    		let delta = this.state.projectPublishCostingPredict;
-    		delta.push({date: today, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
+    		this.state.projectPublishCostingPredict.push(assign({date: today}, this.defaultValue));
     		this.forceUpdate();
     	};
     	window.appendNextDayPredict = () => {
@@ -26,9 +26,8 @@ class ProjectCostingPredictTable extends React.Component {
                 lastDay = sortedGroup.length == 0 ? new Date().toJSON().slice(0,10) : last(sortedGroup)[0].date;
 
     		let tomorrow = new Date(new Date(lastDay).getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
-    		let delta = this.state.projectPublishCostingPredict;
-    		delta.push({date: tomorrow, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
-    		this.forceUpdate();
+            this.state.projectPublishCostingPredict.push(assign({date: tomorrow}, this.defaultValue));
+            this.forceUpdate();
     	};
     	window.repeatPredict = () => {
     		let addDays = parseInt(prompt('请输入需要重复的次数：') || "0");
@@ -48,10 +47,16 @@ class ProjectCostingPredictTable extends React.Component {
     			})
     			this.forceUpdate();
     		}
-    	}
+    	};
+        $(".defaultValueSetter").each((index, el) => {
+            el.value = this.defaultValue[el.id];
+        });
+        $(".defaultValueSetter").blur(ev => {
+            this.defaultValue[ev.target.id] = ev.target.value;
+        });
     }
     clonePredict(p) {
-        this.state.projectPublishCostingPredict.push(assign({}, p));
+        this.state.projectPublishCostingPredict.push(assign({}, p, this.defaultValue));
         this.forceUpdate();
     }
     genEditableTd(objRef, propertyName, childrenProjector = x => x) {
