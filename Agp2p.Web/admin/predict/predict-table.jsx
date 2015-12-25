@@ -16,7 +16,13 @@ class ProjectCostingPredictTable extends React.Component {
     	let today = new Date().toJSON().slice(0,10);
     	let delta = this.state.projectPublishCostingPredict;
     	delta.push({date: today, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
-    	this.setState({projectPublishCostingPredict: delta});
+    	this.forceUpdate();
+    }
+    appendTomorrowPredict() {
+    	let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toJSON().slice(0,10);
+    	let delta = this.state.projectPublishCostingPredict;
+    	delta.push({date: tomorrow, financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2})
+    	this.forceUpdate();
     }
     repeatPredict(addDays) {
     	let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
@@ -112,13 +118,15 @@ class ProjectCostingPredictTable extends React.Component {
 			  	</tr>
 		  		{this.state.projectPublishCostingPredict.length == 0 ? 
 			  	<tr className="noPrint pointer">
-			  		<td colSpan="9" onClick={ev => this.appendPredict()}>添加当日估算</td>
+			  		<td colSpan="7" onClick={ev => this.appendPredict()}>添加当日估算</td>
+			  		<td colSpan="2" onClick={ev => this.appendTomorrowPredict()}>添加明日估算</td>
 			  	</tr> :
 			  	<tr className="noPrint pointer">
-			  		<td colSpan="6" onClick={ev => this.appendPredict()}>添加当日估算</td>
+			  		<td colSpan="4" onClick={ev => this.appendPredict()}>添加当日估算</td>
+			  		<td colSpan="2" onClick={ev => this.appendTomorrowPredict()}>添加明日估算</td>
 			  		<td colSpan="1">重复<input value={this.state.repeatDay} style={{width: '30px'}}
-			  			onChange={ev => this.setState({repeatDay: ev.target.value})} />日</td>
-			  		<td colSpan="2" onClick={ev => this.repeatPredict(parseInt(this.state.repeatDay || "0"))}>添加重复估算</td>
+			  			onChange={ev => this.setState({repeatDay: ev.target.value})} />次</td>
+			  		<td colSpan="2" onClick={ev => this.repeatPredict(parseInt(this.state.repeatDay || "0"))}>重复首日估算</td>
 			  	</tr>}
 			  	</tbody>
 			</table>
