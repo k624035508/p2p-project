@@ -35,6 +35,7 @@
                     <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
                     <li><asp:LinkButton ID="btnConfirm" runat="server" CssClass="save" OnClientClick="return ExePostBack('btnConfirm', '确认审批 通过 选中的充值申请？');" OnClick="btnConfirmCancel_Click"><i></i><span>审批通过</span></asp:LinkButton></li>
                     <li><asp:LinkButton ID="btnCancel" runat="server" CssClass="save" OnClientClick="return ExePostBack('btnCancel', '确认审批 不通过 选中的充值申请？');" OnClick="btnConfirmCancel_Click"><i></i><span>审批不通过</span></asp:LinkButton></li>
+                     <li><asp:LinkButton ID="btnExportExcel" runat="server" CssClass="quotes" onclick="btnExportExcel_Click"><i></i><span>导出Excel</span></asp:LinkButton></li>
                 </ul>
             </div>
             <div class="r-list">
