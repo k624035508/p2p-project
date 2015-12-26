@@ -68,6 +68,20 @@ namespace Agp2p.Web.admin.audit
 
         private void RptBind()
         {
+            var query = QueryReCharge();
+
+            rptList.DataSource = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            rptList.DataBind();
+
+            //绑定页码
+            totalCount = query.Count();
+            txtPageNum.Text = pageSize.ToString();
+            string pageUrl = Utils.CombUrlTxt("bank_transaction_charging_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
+            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+        }
+
+        private IQueryable<li_bank_transactions> QueryReCharge()
+        {
             var loadOptions = new DataLoadOptions();
             loadOptions.LoadWith<li_bank_transactions>(tr => tr.li_bank_accounts);
             loadOptions.LoadWith<li_bank_accounts>(tr => tr.dt_users);
@@ -75,7 +89,7 @@ namespace Agp2p.Web.admin.audit
 
             page = DTRequest.GetQueryInt("page", 1);
             var query =
-                context.li_bank_transactions.Where(b => b.type == (int) (Agp2pEnums.BankTransactionTypeEnum.Charge));
+                context.li_bank_transactions.Where(b => b.type == (int)(Agp2pEnums.BankTransactionTypeEnum.Charge));
             //用户分组查询
             if (0 < UserGroud) // 选择了某一组
             {
@@ -111,14 +125,7 @@ namespace Agp2p.Web.admin.audit
             if (rblBankTransactionStatus.SelectedValue != "0")
                 query = query.Where(b => b.status == Convert.ToInt32(rblBankTransactionStatus.SelectedValue));
 
-            rptList.DataSource = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataBind();
-
-            //绑定页码
-            totalCount = query.Count();
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("bank_transaction_charging_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            return query;
         }
         #endregion
 
@@ -206,6 +213,29 @@ namespace Agp2p.Web.admin.audit
                 li_bank_transactions wh = (li_bank_transactions)e.Item.DataItem;
                 value = value + wh.value;          
             }
+        }
+
+        protected void btnExportExcel_Click(object sender, EventArgs e)
+        {
+            var reCharge = QueryReCharge();
+            var lsData = reCharge.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
+                .ThenByDescending(q => q.create_time)
+                .Skip(pageSize * (page - 1))
+                .Take(pageSize)
+                .AsEnumerable()
+                .Select(bt => new
+                {
+                    user = bt.dt_users.real_name ?? bt.dt_users.user_name,
+                    bt.create_time,
+                    api = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum)bt.pay_api),
+                    bt.no_order,
+                    bt.value,
+                    status = Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionStatusEnum)bt.status),
+                    bt.transact_time
+
+                });
+            var titles = new[] { "用户名", "创建时间", "支付网关", "流水号", "充值金额", "充值状态", "完成时间"};
+            Utils.ExportXls("充值审批", titles, lsData, Response);
         }
     }
 }

@@ -144,7 +144,7 @@ namespace Agp2p.Web.admin.statistic
                         {
                             new InvestorDetail
                             {
-                                Project = new ProjectDetail {Name = "合计"},
+                                Project = new ProjectDetail {Name = "小计"},
                                 InvestValue = invested.Sum(t => t.principal),
                             }
                         }).ToList();
@@ -167,7 +167,7 @@ namespace Agp2p.Web.admin.statistic
                     {
                         new InvestorDetail
                         {
-                            Project = new ProjectDetail {Name = "总合计"},
+                            Project = new ProjectDetail {Name = "总计"},
                             InvestValue = query.SelectMany(p => p.li_project_transactions.Where(t =>
                                 t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                                 t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success))
