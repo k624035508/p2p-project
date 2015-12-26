@@ -174,7 +174,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryUserMessages(short readStatus = 0, short pageIndex = 0, short pageSize = 8)
+        public static string AjaxQueryUserMessages(short readStatus = 0, short pageIndex = 0, int pageSize = 8)
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);

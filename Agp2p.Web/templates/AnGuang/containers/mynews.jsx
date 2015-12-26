@@ -138,6 +138,25 @@ class MyNews extends React.Component {
 		}
 		confirm("确认删除已选中的消息？", () => this.deleteMessages(predelMsgIds));
 	}
+	deleteAllMessages() {
+		confirm(`确认删除全部${$(".news-wrap select option:selected").html()}？`, () => {
+			let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserMessages", pageSize = 5;
+			ajax({
+				type: "post",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				data: JSON.stringify({readStatus: this.state.readStatus, pageIndex: 0, pageSize: 999999}),
+				success: function(result) {
+					let {totalCount, msgs} = JSON.parse(result.d);
+					this.deleteMessages(msgs.map(m => m.id));
+				}.bind(this),
+				error: function(xhr, status, err) {
+					console.error(url, status, err.toString());
+				}.bind(this)
+			});
+		});
+	}
     render() {
         return(
             <div className="news-wrap">
@@ -149,6 +168,7 @@ class MyNews extends React.Component {
                         	this.setAllCheckedAlreadyRead();
                         }}>全部标为已读</span>
                         <span onClick={ev => this.deleteSelectedMessages()}>删除</span>
+                        <span onClick={ev => this.deleteAllMessages()}>全部删除</span>
                     </div>
                     <DropdownPicker
                         onTypeChange={newStatus => this.fetchMessages(newStatus, this.state.pageIndex) }
