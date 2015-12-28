@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta charset="utf-8" />
+    <meta name="description" content="{model.seo_description}">
+    <meta name="keywords" content="{model.seo_keywords}">
+    <title><%=string.IsNullOrWhiteSpace(model.seo_title) ? model.title : model.seo_title %></title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/article_show.bundle.js"></script>
+</head>
+<body>
+<!--head-->
+<%template src="_header.html"%>
+<!--head end-->
+
+<!--面包屑导航-->
+<div class="breadcrumbs">
+    <a href="/">首页</a>
+    <span> > </span>
+    <a href='<%linkurl("about_more")%>'>关于我们</a>
+    <span> > </span>
+    <span><a href='<%=linkurl("about_more",model.category_id)%>'>{categoryTitle}</a></span>
+</div>
+<!--面包屑导航 end-->
+
+<div class="content-wrap article-content">
+    <div class="article-th">{model.title}</div>
+    <div class="article-th-secondary"><span class="article-source">{article_attr.source} - {article_attr.author}</span><span class="pull-right time">{model.add_time}</span></div>
+    <div class="content-body">
+        <div class="basic-article">
+            {model.content}
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+<%template src="_footerSmall.html"%>
+<!--footer end-->
+</body>
+</html>
