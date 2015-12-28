@@ -24,7 +24,8 @@ module.exports = {
         aboutus: "./js/aboutus.js",
         citySelector: "./js/citySelector.js",
         forgotPassword: "./js/forgotPassword.js",
-        activity: "./js/activity.js"
+        activity: "./js/activity.js",
+        article_show: "./js/article_show.js"
     },
     output: {
         path: path.join(__dirname, './build'),
