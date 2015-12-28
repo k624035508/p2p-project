@@ -13,7 +13,7 @@ class MyNews extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			type: 1,
+			readStatus: 0,
 			pageIndex: 0,
 			pageCount: 0,
 			readingMsgIndex: -1,
@@ -24,7 +24,7 @@ class MyNews extends React.Component {
 		this.pendingDeletePromise = null;
 	}
 	componentDidMount() {
-		this.fetchMessages(this.state.type, this.state.pageIndex);
+		this.fetchMessages(this.state.readStatus, this.state.pageIndex);
 	}
 	componentWillUnmount() {
 		if (this.pendingFetchPromise != null) {
@@ -40,20 +40,20 @@ class MyNews extends React.Component {
 			this.pendingDeletePromise = null;
 		}
 	}
-	fetchMessages(type, pageIndex) {
-		this.setState({type, pageIndex});
+	fetchMessages(readStatus, pageIndex) {
+		this.setState({readStatus, pageIndex});
 		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserMessages", pageSize = 5;
 		this.pendingFetchPromise = ajax({
 			type: "post",
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
-			data: JSON.stringify({type, pageIndex, pageSize}),
+			data: JSON.stringify({readStatus, pageIndex, pageSize}),
 			success: function(result) {
 				this.pendingFetchPromise = null;
 				let {totalCount, msgs} = JSON.parse(result.d);
 				if (msgs.length == 0 && 0 < pageIndex) { // deleted all messages in final page
-					this.fetchMessages(type, pageIndex - 1);
+					this.fetchMessages(readStatus, pageIndex - 1);
 				} else {
 					this.setState({pageCount: Math.ceil(totalCount / pageSize), msgs});
 				}
@@ -95,7 +95,7 @@ class MyNews extends React.Component {
 			data: JSON.stringify({messageIds: msgIds.join(";")}),
 			success: function(result) {
 				this.pendingDeletePromise = null;
-				this.fetchMessages(this.state.type, this.state.pageIndex);
+				this.fetchMessages(this.state.readStatus, this.state.pageIndex);
 			}.bind(this),
 			error: function(xhr, status, err) {
 				this.pendingDeletePromise = null;
@@ -138,6 +138,25 @@ class MyNews extends React.Component {
 		}
 		confirm("确认删除已选中的消息？", () => this.deleteMessages(predelMsgIds));
 	}
+	deleteAllMessages() {
+		confirm(`确认删除全部${$(".news-wrap select option:selected").html()}？`, () => {
+			let url = USER_CENTER_ASPX_PATH + "/AjaxQueryUserMessages", pageSize = 5;
+			ajax({
+				type: "post",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				data: JSON.stringify({readStatus: this.state.readStatus, pageIndex: 0, pageSize: 999999}),
+				success: function(result) {
+					let {totalCount, msgs} = JSON.parse(result.d);
+					this.deleteMessages(msgs.map(m => m.id));
+				}.bind(this),
+				error: function(xhr, status, err) {
+					console.error(url, status, err.toString());
+				}.bind(this)
+			});
+		});
+	}
     render() {
         return(
             <div className="news-wrap">
@@ -149,10 +168,11 @@ class MyNews extends React.Component {
                         	this.setAllCheckedAlreadyRead();
                         }}>全部标为已读</span>
                         <span onClick={ev => this.deleteSelectedMessages()}>删除</span>
+                        <span onClick={ev => this.deleteAllMessages()}>全部删除</span>
                     </div>
                     <DropdownPicker
-                        onTypeChange={newType => this.fetchMessages(newType, this.state.pageIndex) }
-                        enumFullName="Agp2p.Common.Agp2pEnums+UserMessageTypeEnum" />
+                        onTypeChange={newStatus => this.fetchMessages(newStatus, this.state.pageIndex) }
+                        enumFullName="Agp2p.Common.Agp2pEnums+UserMessageReadStatusEnum" />
                 </div>
 				<div className="news-list">
 					<div className="news-tb">
@@ -194,7 +214,7 @@ class MyNews extends React.Component {
 				</div>
                 <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                     onPageSelected={pageIndex => {
-                    	this.fetchMessages(this.state.type, pageIndex);
+                    	this.fetchMessages(this.state.readStatus, pageIndex);
                     	this.setState({readingMsgIndex: -1})
                     }}/>
             </div>

@@ -45,13 +45,13 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            var ids = messageIds.Split(';').Select(str => Convert.ToInt32(str)).ToArray();
-            if (!ids.Any())
+            if (string.IsNullOrWhiteSpace(messageIds))
             {
                 HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "请先选择要删除的消息";
             }
+            var ids = messageIds.Split(';').Select(str => Convert.ToInt32(str)).ToArray();
             var context = new Agp2pDataContext();
             var msgs = context.dt_user_message.Where(m => ids.Contains(m.id)).ToList();
             context.dt_user_message.DeleteAllOnSubmit(msgs);

@@ -174,7 +174,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryUserMessages(short type = 1, short pageIndex = 0, short pageSize = 8)
+        public static string AjaxQueryUserMessages(short readStatus = 0, short pageIndex = 0, int pageSize = 8)
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);
@@ -185,7 +185,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var queryable = context.dt_user_message.Where(m => m.receiver == userInfo.id && m.type == type);
+            var queryable = userInfo.dt_user_message.Where(m => m.is_read.GetValueOrDefault() == readStatus);
             var totalCount = queryable.Count();
             var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
                 .Select(m => new

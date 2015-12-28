@@ -576,14 +576,12 @@ namespace Agp2p.Common
         /// <summary>
         /// 用户消息状态筛选枚举
         /// </summary>
-        public enum UserMessageTypeEnum
+        public enum UserMessageReadStatusEnum
         {
-            [Description("系统消息")]
-            SystemMessage = 1,
-            [Description("收件箱")]
-            ReceivingBox = 2,
-            [Description("发件箱")]
-            SendingBox = 3,
+            [Description("未读消息")]
+            Unread = 0,
+            [Description("已读消息")]
+            Read = 1,
         }
 
         /// <summary>
