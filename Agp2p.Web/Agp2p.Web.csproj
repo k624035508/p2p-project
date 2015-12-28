@@ -957,6 +957,7 @@
     <Content Include="templates\weChat\about.xml" />
     <Content Include="templates\weChat\aboutus.html" />
     <Content Include="templates\weChat\activity.html" />
+    <Content Include="templates\weChat\article_show.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_password.html" />
@@ -1004,6 +1005,7 @@
     <Content Include="templates\weChat\invest-success.html" />
     <Content Include="templates\weChat\js\aboutus.js" />
     <Content Include="templates\weChat\js\activity.js" />
+    <Content Include="templates\weChat\js\article_show.js" />
     <Content Include="templates\weChat\js\citySelector.js" />
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\forgotPassword.js" />
@@ -1171,6 +1173,7 @@
     <Content Include="templates\weChat\less\invest-record.less" />
     <Content Include="scripts\jquery-2.1.4.min.map" />
     <Content Include="templates\weChat\pwatch.bat" />
+    <Content Include="templates\weChat\less\article_show.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
