@@ -231,6 +231,51 @@ class GroupByTermLengthTable extends React.Component {
     }
 }
 
+class GroupByPrepayRateTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {projectPublishCostingPredict: _projectPublishCostingPredict};
+    } 
+    render() {
+        let group = groupBy(this.state.projectPublishCostingPredict, p => p.prepayRatePercent), // {7: [], ...}
+            sortedGroup = sortBy(group, (gs, key) => parseFloat(key)); // [ [], [], ...]
+        return (
+            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
+                <thead>
+                <tr>
+                    <th width="10%">垫付率</th>
+                    <th width="10%">垫付金额</th>
+                    <th width="10%">垫付资金成本</th>
+                    <th width="10%">错配期资金成本</th>
+                    <th width="10%">结算成本</th>
+                    <th width="10%">成本合计</th>
+                </tr>
+                </thead>
+                <tbody>
+                {sortedGroup.map((ps, index) => {
+                    return <tr key={index}>
+                        <td>{ps[0].prepayRatePercent + "%"}</td>
+                        <td>{ps.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + getHandlingFee(p), 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + getHandlingFee(p) + getDelayCostingPredict(p) + getCostingOfPredict(p), 0).format()}</td>
+                    </tr>
+                })}
+                <tr key="sum" className="sum">
+                    <td>合计</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getHandlingFee(p), 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getHandlingFee(p) + getDelayCostingPredict(p) + getCostingOfPredict(p), 0).format()}</td>
+                </tr>
+                </tbody>
+            </table>
+        );
+    }
+}
+
 window.openEditingTable = () => {
     let dom = $("#mounting-point")[0];
     ReactDom.unmountComponentAtNode(dom)
@@ -241,6 +286,12 @@ window.openGroupByTermLengthTable = () => {
     let dom = $("#mounting-point")[0];
     ReactDom.unmountComponentAtNode(dom);
     ReactDom.render(<GroupByTermLengthTable />, dom);
+}
+
+window.openGroupByPrepayRateTable = () => {
+    let dom = $("#mounting-point")[0];
+    ReactDom.unmountComponentAtNode(dom);
+    ReactDom.render(<GroupByPrepayRateTable />, dom);
 }
 
 $(() => {

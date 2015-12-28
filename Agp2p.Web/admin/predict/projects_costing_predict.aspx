@@ -53,6 +53,7 @@ div.rl { margin-left: 10px;}
                     <li>　</li>
                     <li><a class="copy" onclick="openEditingTable()" href="javascript:"><i></i><span>明细表</span></a></li>
                     <li><a class="copy" onclick="openGroupByTermLengthTable()" href="javascript:"><i></i><span>汇总表（按品种）</span></a></li>
+                    <li><a class="copy" onclick="openGroupByPrepayRateTable()" href="javascript:"><i></i><span>汇总表（按垫付率）</span></a></li>
                 </ul>
             </div>
             <div class="r-list">
