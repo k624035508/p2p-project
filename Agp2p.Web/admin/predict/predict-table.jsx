@@ -8,11 +8,33 @@ import assign from "lodash/object/assign"
 import indexOf from "lodash/array/indexOf"
 import last from "lodash/array/last"
 
+/**
+ * Number.prototype.format(n, x)
+ * 
+ * @param integer n: length of decimal
+ * @param integer x: length of sections
+ */
+Number.prototype.format = function(n = 2, x = 3) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return "¥" + this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+
+String.prototype.format = function() {
+    return parseFloat(this).format();
+}
+
 class ProjectCostingPredictTable extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {projectPublishCostingPredict: [], repeatDay: 30};
-        this.defaultValue = {financingAmount: 100000, prepayRatePercent: 30, profitRateYearlyPercent: 6, termLength: 7, repayDelayDays: 2};
+        this.defaultValue = {
+            financingAmount: 100000,
+            prepayRatePercent: 30,
+            profitRateYearlyPercent: 6,
+            termLength: 7,
+            repayDelayDays: 2,
+            handlingFeePercent: 0.25
+        };
     }
     componentDidMount() {
     	window.appendPredict = () => {
@@ -78,30 +100,42 @@ class ProjectCostingPredictTable extends React.Component {
 	    		this.forceUpdate();
 	    	}}>{ childrenProjector(objRef[propertyName]) }</td>
     }
+    getPrepayAmount(p) {
+        return p.financingAmount * p.prepayRatePercent / 100;
+    }
     getCostingOfPredict(p) {
     	return p.financingAmount * p.prepayRatePercent / 100 * p.profitRateYearlyPercent / 100 / 360 * p.termLength;
     }
     getDelayCostingPredict(p) {
     	return p.financingAmount * p.profitRateYearlyPercent / 100 / 360 * p.repayDelayDays;
     }
+    getHandlingFee(p) {
+        return this.getPrepayAmount(p) * p.handlingFeePercent / 100;
+    }
     render() {
     	let group = groupBy(this.state.projectPublishCostingPredict, p => p.date),
     		sortedGroup = sortBy(group, (g, key) => key);
     	let sumOfFinancingAmount = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + parseFloat(predict.financingAmount), 0),
     		sumOfCosting = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getCostingOfPredict(predict), 0),
-    		sumOfDelayCosting = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getDelayCostingPredict(predict), 0);
+    		sumOfDelayCosting = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getDelayCostingPredict(predict), 0),
+            sumOfPrepayAmount = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getPrepayAmount(predict), 0),
+            sumOfHandlingFee = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + this.getHandlingFee(predict), 0);
         return (
             <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
             	<thead>
 			    <tr>
-				    <th width="13%">发标日期</th>
-				    <th width="13%">项目金额</th>
-				    <th width="10%">垫付率（%）</th>
-				    <th width="12%">年化利率（%）</th>
-				    <th width="10%">期限（天）</th>
-				    <th width="10%">成本</th>
-				    <th width="10%">错配期（天）</th>
-				    <th width="10%">错配成本</th>
+				    <th width="10%">发标日期</th>
+				    <th width="8%">项目金额</th>
+				    <th width="8%">垫付率（%）</th>
+                    <th width="8%">垫付资金</th>
+				    <th width="8%">年化利率（%）</th>
+				    <th width="8%">期限（天）</th>
+				    <th width="8%">资金成本</th>
+				    <th width="8%">错配期（天）</th>
+				    <th width="8%">错配期成本</th>
+                    <th width="8%">手续费率（%）</th>
+                    <th width="8%">结算成本</th>
+                    <th width="8%">总成本</th>
 			    </tr>
 			    </thead>
 			    <tbody>
@@ -115,25 +149,34 @@ class ProjectCostingPredictTable extends React.Component {
                         return <tr>
                             {index == 0 ? <td>{p.date}</td> : <td></td>}
 			  				{this.genEditableTd(p, "financingAmount",
-                                children => <div>{children}
+                                children => <div>{children.format()}
                                     <a href="javascript:" onClick={ev => {ev.stopPropagation(); this.clonePredict(p);}} style={{marginLeft: '10px'}}>添加</a>
                                     <a href="javascript:" onClick={deleteCurrentPredict} style={{marginLeft: '40px'}}>删除</a></div>)}
 			  				{this.genEditableTd(p, "prepayRatePercent")}
+                            <td>{this.getPrepayAmount(p).format()}</td>
 			  				{this.genEditableTd(p, "profitRateYearlyPercent")}
 			  				{this.genEditableTd(p, "termLength")}
-			  				<td>{this.getCostingOfPredict(p).toFixed(2)}</td>
+			  				<td>{this.getCostingOfPredict(p).format()}</td>
 			  				{this.genEditableTd(p, "repayDelayDays")}
-			  				<td>{this.getDelayCostingPredict(p).toFixed(2)}</td>
+			  				<td>{this.getDelayCostingPredict(p).format()}</td>
+                            {this.genEditableTd(p, "handlingFeePercent")}
+                            <td>{this.getHandlingFee(p).format()}</td>
+                            <td>{(this.getCostingOfPredict(p) + this.getDelayCostingPredict(p) + this.getHandlingFee(p)).format()}</td>
 			  			</tr>;
 			  		})
 			  	})}
 			  	<tr className="sum">
 			  		<td>{sortedGroup.length + " 天"}</td>
-			  		<td>{sumOfFinancingAmount.toFixed(2)}</td>
-			  		<td colSpan="3"></td>
-			  		<td>{sumOfCosting.toFixed(2)}</td>
+			  		<td>{sumOfFinancingAmount.format()}</td>
+                    <td></td>
+			  		<td>{sumOfPrepayAmount.format()}</td>
+                    <td colSpan="2"></td>
+			  		<td>{sumOfCosting.format()}</td>
 			  		<td></td>
-			  		<td>{sumOfDelayCosting.toFixed(2)}</td>
+			  		<td>{sumOfDelayCosting.format()}</td>
+                    <td></td>
+                    <td>{sumOfHandlingFee.format()}</td>
+                    <td>{(sumOfCosting + sumOfDelayCosting + sumOfHandlingFee).format()}</td>
 			  	</tr>
 			  	</tbody>
 			</table>

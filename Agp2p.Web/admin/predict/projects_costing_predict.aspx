@@ -73,6 +73,10 @@ div.rl { margin-left: 10px;}
                 <div style="display: inline-block; float:left;">
                     <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 4em" />
                 </div>
+                <div style="display: inline-block;" class="rl">手续费率（%）：</div>
+                <div style="display: inline-block; float:left;">
+                    <input type="text" id="handlingFeePercent" class="keyword defaultValueSetter" style="width: 4em" />
+                </div>
             </div>
         </div>
     </div>
