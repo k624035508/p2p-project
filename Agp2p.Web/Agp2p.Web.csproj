@@ -242,6 +242,7 @@
     <Content Include="admin\statistic\project_investor_detail.aspx" />
     <Content Include="admin\statistic\investment_rank_list.aspx" />
     <Content Include="admin\statistic\offline_transact_timeline.aspx" />
+    <Content Include="admin\summary\offline_transact_summary.aspx" />
     <Content Include="admin\transact\bank_account_edit.aspx" />
     <Content Include="admin\transact\bank_account_list.aspx" />
     <Content Include="admin\transact\bank_transaction_charge.aspx" />
@@ -1739,6 +1740,12 @@
     </Compile>
     <Compile Include="admin\statistic\offline_transact_timeline.aspx.designer.cs">
       <DependentUpon>offline_transact_timeline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\summary\offline_transact_summary.aspx.cs">
+      <DependentUpon>offline_transact_summary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\summary\offline_transact_summary.aspx.designer.cs">
+      <DependentUpon>offline_transact_summary.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\transact\bank_account_edit.aspx.cs">
       <DependentUpon>bank_account_edit.aspx</DependentUpon>

@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Agp2p.Web.admin.statistic {
+namespace Agp2p.Web.admin.summary {
     
     
-    public partial class offline_transact_timeline {
+    public partial class offline_transact_summary {
         
         /// <summary>
         /// form1 控件。
@@ -29,15 +29,6 @@ namespace Agp2p.Web.admin.statistic {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnExportExcel;
-        
-        /// <summary>
-        /// rblType 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblType;
         
         /// <summary>
         /// txtStartTime 控件。
@@ -101,24 +92,6 @@ namespace Agp2p.Web.admin.statistic {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptList;
-        
-        /// <summary>
-        /// rptList_summary 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptList_summary;
-        
-        /// <summary>
-        /// div_page 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_page;
         
         /// <summary>
         /// txtPageNum 控件。
