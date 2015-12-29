@@ -273,13 +273,13 @@ namespace Agp2p.Web.admin.audit
             {
                 rptList.Visible = true;
                 rptList_summary.Visible = false;
-                div_page.Visible = true;
+                div_pagination.Visible = true;
             }
             else
             {
                 rptList.Visible = false;
                 rptList_summary.Visible = true;
-                div_page.Visible = false;
+                div_pagination.Visible = false;
             }
         }
     }

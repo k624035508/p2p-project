@@ -156,7 +156,7 @@
 
 <!--内容底部-->
 <div class="line20"></div>
-<div class="pagelist" id="div_page" runat="server">
+<div class="pagelist" id="div_pagination" runat="server">
   <div class="l-btns">
     <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
   </div>
