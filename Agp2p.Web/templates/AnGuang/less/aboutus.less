@@ -31,10 +31,8 @@ body { background: @body-color; }
 .aboutPage {
 	.picWall-style {
 		li {
-			padding: 0;
 			a, a span {
 				display: inline-block;
-				width: 207px;
 				height: 181px;
 			}
 			.mask {
@@ -236,7 +234,12 @@ body { background: @body-color; }
 				text-align: center;
 				.picWall-style;
 				.picWall {
-					margin-left: 0%;
+					width: 80%;
+					margin: 0 auto;
+					li {
+						padding: 0;
+						a, a span { width: 207px; }
+					}
 					.emptyPic { background: url("@{images}/emptyPic.jpg") no-repeat center; }
 				}
 			}
@@ -256,12 +259,17 @@ body { background: @body-color; }
 				margin-top: 50px;
 				text-align: center;
 				.background {
-					width: 1060px;
+					width: 835px;
 					height: 367px;
+					margin: 0 auto;
 					background: @white;
 					.picWall-style;
 					.picWall {
 						margin-left: 0%;
+						li {
+							padding: 0 .5px;
+							a, a span { width: 270px; }
+						}
 						.emptyPic { background: url("@{images}/emptyPic.jpg") no-repeat center; }
 					}
 				}

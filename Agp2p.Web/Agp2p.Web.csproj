@@ -1169,6 +1169,8 @@
     <Content Include="templates\weChat\less\invest-record.less" />
     <Content Include="scripts\jquery-2.1.4.min.map" />
     <Content Include="templates\weChat\pwatch.bat" />
+    <Content Include="templates\AnGuang\components\share.jsx" />
+    <Content Include="templates\AnGuang\less\share.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

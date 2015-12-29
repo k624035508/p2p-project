@@ -1,0 +1,46 @@
+/*share.less*/
+@import "common-style";
+@recommend: "../imgs/usercenter/recommend";
+
+.shareTo {
+	margin: 20px 0 65px 0;
+	& > * { .inline-block; }
+	span { margin-right: 35px; }
+	a {
+		width: 30px;
+		height: 30px;
+		margin-right: 15px;
+		background-repeat: no-repeat;
+
+		&:hover .qr-wrapper {
+			visibility: visible;
+			transform: translate(0, 0px);
+			opacity: 1;
+			color: #666666;
+		}
+
+		.qr-wrapper {
+			position:absolute;
+			margin-top: 35px;
+			margin-left: -50px;
+			visibility: hidden;
+			transform: translate(0, 10px);
+			opacity: 0;
+			transition: all .8s ease;
+			padding: 10px;
+			border:@border;
+			z-index: 9999;
+			background: @white;
+			text-align:center;
+			p {
+				font-size: @font13;
+				margin: 10px 0 0 0;
+			}
+		}
+	}
+	.weChat { background: url("@{recommend}/wechat.png"); }
+	.sinaWeibo { background: url("@{recommend}/sinaweibo.png"); }
+	.qq { background: url("@{recommend}/qq.png"); }
+	.qqZone { background: url("@{recommend}/qqzone.png"); }
+	.tencentWeibo { background: url("@{recommend}/tencentweibo.png"); }
+}

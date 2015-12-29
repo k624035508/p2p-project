@@ -1,9 +1,7 @@
 import "../less/invitation.less";
-
 import React from "react";
 import Pagination from "../components/pagination.jsx";
-import qr from "qr-image";
-
+import SharingButtons from "../components/share.jsx";
 import alert from "../components/tips_alert.js";
 
 class InvitationPage extends React.Component {
@@ -36,7 +34,6 @@ class InvitationPage extends React.Component {
 			});
 			this.setState({clipboard: clipboard});
 		}
-
 		this.fetchInvitationData();
     }
     getLocationOrigin() {
@@ -79,10 +76,7 @@ class InvitationPage extends React.Component {
             }.bind(this)
         });
 	}
-    genQrCodeBase64(str) {
-        let res = qr.imageSync(str, {size: 3, margin: 0});
-        return res.toString('base64');
-    }
+
     render(){
         return(
             <div className="recommend-wrap">
@@ -91,27 +85,14 @@ class InvitationPage extends React.Component {
                     <span className="site-link">{this.genSharingLink()}</span>
                     <a id="btn-copy" href="javascript:" data-clipboard-target=".site-link">复 制</a>
                 </div>
-                <div className="shareTo">
-                    <span>或分享到：</span>
-                    <a className="weChat" href="javascript:">
-                        <div className="qr-wrapper">
-                            <img src={`data:image/png;base64,${this.genQrCodeBase64(this.genSharingLink())}`} />
-                            <p>微信扫一扫：分享</p>
-                        </div>
-                    </a>
-                    <a className="sinaWeibo"
-                        target="_blank"
-                        href={`http://service.weibo.com/share/share.php?url=${this.genSharingLink()}&title=${this.genEncodedTitle() + this.genEncodedDescription()}&pic=${this.getLocationOrigin() + this.genPicUrl()}`}/>
-                    <a className="qq"
-                        target="_blank"
-                        href={`http://connect.qq.com/widget/shareqq/index.html?url=${this.genSharingLink()}&title=${this.genEncodedTitle()}&source=${this.getLocationOrigin()}&desc=${this.genEncodedDescription()}`}/>
-                    <a className="qqZone"
-                        target="_blank"
-                        href={`http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${this.genSharingLink()}&title=${this.genEncodedTitle()}&desc=${this.genEncodedDescription()}&summary=${this.genEncodedDescription()}&site=${this.getLocationOrigin() + this.genPicUrl()}`}/>
-                    <a className="tencentWeibo"
-                        target="_blank"
-                        href={`http://share.v.t.qq.com/index.php?c=share&a=index&title=${this.genEncodedTitle() + this.genEncodedDescription()}&url=${this.genSharingLink()}&pic=${this.getLocationOrigin() + this.genPicUrl()}`} />
-                </div>
+                <SharingButtons
+                    preText="或分享到："
+                    sharingUrl={this.genSharingLink()}
+                    encodedTitle={this.genEncodedTitle()}
+                    encodedDescription={this.genEncodedDescription()}
+                    locationOrigin={this.getLocationOrigin()}
+                    picUrl={this.genPicUrl()}
+                />
                 <div id="sharejs"></div>
                 <div className="invited-th"><span>已邀请的好友</span></div>
                 <div className="table-wrap">
