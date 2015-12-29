@@ -10,8 +10,12 @@
 <body>
     <div class="login-page">
         <form id="loginform" name="loginform" data-turl="{turl}">
+            <!-- hack autofill -->
+            <input type="text" id="txtUserName0" class="input-l hidden" name="txtUserName0" placeholder="请输入手机号码">
+            <input type="password" id="txtPassword0" class="input-l hidden" name="txtPassword0" placeholder="请输入密码">
+
             <div class="account-wrap">
-                <input type="text" id="txtUserName" class="input-l" name="txtUserName" placeholder="请输入手机号码">
+                <input type="text" id="txtUserName" class="input-l" name="txtUserName" placeholder="请输入手机号码"  value='<%=Utils.GetCookie(DTKeys.COOKIE_USER_NAME_REMEMBER,"Agp2p")%>'>
             </div>
             <div class="psw-wrap">
                 <input type="password" id="txtPassword" class="input-l" name="txtPassword" placeholder="请输入密码">
