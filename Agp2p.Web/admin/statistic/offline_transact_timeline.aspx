@@ -128,8 +128,8 @@
                         <tr>
                             <th align="center" width="5%" style="padding-left: 1em;">序号</th>
                             <th align="center">操作类型</th>
-                            <th align="right">收入</th>
-                            <th align="right">支出</th>
+                            <th align="center">收入</th>
+                            <th align="center">支出</th>
                         </tr>
                     </thead>
             </HeaderTemplate>
@@ -137,8 +137,8 @@
                 <tr <%# ((OfflineTransaction)Container.DataItem).index == null ? "class='sum'" : ""%>>
                     <td style="text-align: center;"><%# Eval("index") %></td>
                     <td style="text-align: center"><%# Eval("type")%></td>
-                    <td style="text-align: right"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
-                    <td style="text-align: right"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
