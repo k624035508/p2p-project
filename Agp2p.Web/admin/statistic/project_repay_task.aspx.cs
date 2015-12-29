@@ -95,26 +95,63 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            var pageData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
-            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+            if (rblType.SelectedValue == "0")
             {
-                Project = new ProjectDetail()
+                var pageData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
                 {
-                    Index = null,
-                    Name = "总计"
-                },
-                RepayInterest = pageData.Sum(p => p.RepayInterest),
-                RepayPrincipal = pageData.Sum(p => p.RepayPrincipal),
-                RepayTotal = pageData.Sum(p => p.RepayTotal)
-            })) ;
-            rptList.DataBind();
+                    Project = new ProjectDetail()
+                    {
+                        Index = null,
+                        Name = "总计"
+                    },
+                    RepayInterest = pageData.Sum(p => p.RepayInterest),
+                    RepayPrincipal = pageData.Sum(p => p.RepayPrincipal),
+                    RepayTotal = pageData.Sum(p => p.RepayTotal)
+                }));
+                rptList.DataBind();
 
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("project_repay_task.aspx",
-                "keywords={0}&page={1}&status={2}&year={3}&month={4}&orderby={5}&category_id={6}", txtKeywords.Text, "__id__",
-                rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue, ddlCategoryId.SelectedValue);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("project_repay_task.aspx",
+                    "keywords={0}&page={1}&status={2}&year={3}&month={4}&orderby={5}&category_id={6}", txtKeywords.Text,
+                    "__id__",
+                    rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue,
+                    ddlCategoryId.SelectedValue);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                var summaryData =
+                    beforePaging.GroupBy(d => d.Project.Category)
+                        .Zip(Utils.Infinite(1), (dg, no) => new {dg, no})
+                        .Select(d =>
+                        {
+                            return new RepaymentTaskAmountDetail()
+                            {
+                                Project = new ProjectDetail()
+                                {
+                                    Index = d.no.ToString(),
+                                    Category = d.dg.Key
+                                },
+                                RepayInterest = d.dg.Sum(t => t.RepayInterest),
+                                RepayPrincipal = d.dg.Sum(t => t.RepayPrincipal),
+                                RepayTotal = d.dg.Sum(t => t.RepayTotal)
+                            };
+                        }).ToList();
+                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+                {
+                    Project = new ProjectDetail()
+                    {
+                        Index = null,
+                        Category = "总计"
+                    },
+                    RepayInterest = summaryData.Sum(t => t.RepayInterest),
+                    RepayPrincipal = summaryData.Sum(t => t.RepayPrincipal),
+                    RepayTotal = summaryData.Sum(t => t.RepayTotal)
+                }));
+                rptList_summary.DataBind();
+            }
         }
 
         private IEnumerable<RepaymentTaskAmountDetail> QueryProjectRepayTaskData(out int count)
@@ -300,6 +337,28 @@ namespace Agp2p.Web.admin.statistic
 
         protected void ddlOrderBy_SelectedIndexChanged(object sender, EventArgs e)
         {
+            RptBind();
+        }
+
+        /// <summary>
+        /// 切换汇总/明细列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_page.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_page.Visible = false;
+            }
             RptBind();
         }
     }
