@@ -11,6 +11,8 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.audit
 {
+    
+
     public partial class bank_transaction_charging_list : UI.ManagePage
     {
         protected int totalCount;
@@ -20,6 +22,13 @@ namespace Agp2p.Web.admin.audit
         public decimal value = 0;
 
         private Agp2pDataContext context = new Agp2pDataContext();
+
+        protected class GroupByUserGroupSummery
+        {
+            public int? Index { get; set; }
+            public string GroupName { get; set; }
+            public decimal TransactionAmount { get; set; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -70,8 +79,28 @@ namespace Agp2p.Web.admin.audit
         {
             var query = QueryReCharge();
 
-            rptList.DataSource = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            var bankTransactions = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = bankTransactions;
             rptList.DataBind();
+
+            var groupByUserGroupSummeries = bankTransactions.GroupBy(tr => tr.dt_users.dt_user_groups)
+                .Zip(Utils.Infinite(1), (gr, index) => new {gr, index})
+                .Select(gi =>
+                {
+                    return new GroupByUserGroupSummery
+                    {
+                        Index = gi.index,
+                        GroupName = gi.gr.Key.title,
+                        TransactionAmount = gi.gr.Aggregate(0m, (sum, tr) => sum + tr.value)
+                    };
+                }).ToList();
+            rptList_summary.DataSource = groupByUserGroupSummeries.Concat(Enumerable.Range(0,1).Select(i => new GroupByUserGroupSummery
+            {
+                Index = null,
+                GroupName = "总计",
+                TransactionAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.TransactionAmount)
+            }));
+            rptList_summary.DataBind();
 
             //绑定页码
             totalCount = query.Count();
@@ -236,6 +265,22 @@ namespace Agp2p.Web.admin.audit
                 });
             var titles = new[] { "用户名", "创建时间", "支付网关", "流水号", "充值金额", "充值状态", "完成时间"};
             Utils.ExportXls("充值审批", titles, lsData, Response);
+        }
+
+        protected void rblTableType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblTableType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_pagination.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_pagination.Visible = false;
+            }
         }
     }
 }

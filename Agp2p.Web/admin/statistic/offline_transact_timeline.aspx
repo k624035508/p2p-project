@@ -1,14 +1,12 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="offline_transact_timeline.aspx.cs" Inherits="Agp2p.Web.admin.statistic.offline_transact_timeline" %>
 
-<%@ Import Namespace="Agp2p.Common" %>
-<%@ Import Namespace="Agp2p.Linq2SQL" %>
 <%@ Import Namespace="Agp2p.Web.admin.statistic" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>用户钱包列表</title>
+    <title>平台收支明细</title>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/tablesorter/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -28,55 +26,6 @@
             box-sizing: border-box;
         }
     </style>
-    <script>
-        function smartFloatTableHeader() {
-            $('thead').smartFloat(function (elem) {
-                $(elem).css('top', '52px');
-            });
-
-            var firstRowTds = $('tbody tr:first td');
-            $('thead th').each(function (index, elem) {
-
-                //keep th width
-                $(elem).css('width', firstRowTds[index].offsetWidth + 'px');
-
-                // keep td width
-                firstRowTds[index].setAttribute('width', elem.getAttribute('width'));
-            });
-        }
-
-        $(function () {
-            $.tablesorter.addParser({
-                id: 'rmb',
-                is: function () { return false; },
-                format: function (s) { return s.replace(/[¥,]/g, ''); },
-                type: 'numeric'
-            });
-            $.tablesorter.addParser({
-                id: 'short-date',
-                is: function () { return false; },
-                format: function (s) { return s; },
-                type: 'text'
-            });
-            /*$("table#wallet").tablesorter({
-                headers: {
-                    2: { sorter: 'rmb' },
-                    3: { sorter: 'rmb' },
-                    4: { sorter: 'rmb' },
-                    5: { sorter: 'rmb' },
-                    6: { sorter: 'rmb' },
-                    7: { sorter: 'rmb' },
-                    8: { sorter: 'rmb' },
-                    9: { sorter: 'rmb' },
-                    10: { sorter: 'rmb' },
-                    11: { sorter: 'rmb' },
-                    12: { sorter: 'short-date' }
-                }
-            });*/
-
-            //smartFloatTableHeader();
-        });
-    </script>
 </head>
 
 <body class="mainbody">
@@ -100,6 +49,12 @@
                     </ul>
                 </div>
                 <div class="r-list">
+                    <div class="rule-multi-radio" style="display: inline-block; margin-right: 10px; float: left;">
+                        <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblType_OnSelectedIndexChanged">
+                            <asp:ListItem Value="0" Selected="True">明细</asp:ListItem>
+                            <asp:ListItem Value="1">汇总</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </div>
                     <div style="display: inline-block;" class="rl">时间段：</div>
                     <div class="input-date" style="display: inline-block; float: left;">
                         <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
@@ -115,7 +70,7 @@
                         <i></i>
                     </div>
                     <span class="rl">
-                        <asp:CheckBox runat="server" ID="cb_today" Checked="False" Text="当天" AutoPostBack="True" OnCheckedChanged="cb_today_OnCheckedChanged"/></span>
+                        <asp:CheckBox runat="server" ID="cb_today" Checked="False" Text="当天" AutoPostBack="True" OnCheckedChanged="cb_today_OnCheckedChanged" /></span>
 
                     <div class="menu-list" style="display: inline-block; float: left; margin-right: 8px; margin-left: 8px;">
                         <div class="rule-single-select">
@@ -129,7 +84,7 @@
         </div>
         <!--/工具栏-->
 
-        <!--列表-->
+        <!--明细列表-->
         <asp:Repeater ID="rptList" runat="server">
             <HeaderTemplate>
                 <table id="wallet" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
@@ -163,11 +118,39 @@
 </table>
             </FooterTemplate>
         </asp:Repeater>
-        <!--/列表-->
+        <!--/明细列表-->
+
+        <!--汇总列表-->
+        <asp:Repeater ID="rptList_summary" runat="server" Visible="False">
+            <HeaderTemplate>
+                <table id="wallet" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <thead>
+                        <tr>
+                            <th align="center" width="5%" style="padding-left: 1em;">序号</th>
+                            <th align="center">操作类型</th>
+                            <th align="center">收入</th>
+                            <th align="center">支出</th>
+                        </tr>
+                    </thead>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr <%# ((OfflineTransaction)Container.DataItem).index == null ? "class='sum'" : ""%>>
+                    <td style="text-align: center;"><%# Eval("index") %></td>
+                    <td style="text-align: center"><%# Eval("type")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("income")).ToString("c")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("outcome")).ToString("c")%></td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                <%#rptList_summary.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+</table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <!--/汇总列表-->
 
         <!--内容底部-->
         <div class="line20"></div>
-        <div class="pagelist">
+        <div class="pagelist" id="div_page" runat="server">
             <div class="l-btns">
                 <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);"
                     OnTextChanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>

@@ -34,7 +34,7 @@ let getDelayCostingPredict = p => {
     return p.financingAmount * p.profitRateYearlyPercent / 100 / 360 * p.repayDelayDays;
 }
 let getHandlingFee = p => {
-    return getPrepayAmount(p) * p.handlingFeePercent / 100;
+    return p.financingAmount * p.handlingFeePercent / 100;
 }
 
 class ProjectCostingPredictTable extends React.Component {

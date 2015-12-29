@@ -23,7 +23,7 @@ $(function () {
                 "txtUserName": $("#txtUserName").val(),
                 "txtPassword": $("#txtPassword").val(),
                 "code": $("#code").val(),
-                "chkRemember": $("#chkRemember").attr("checked")
+                "chkRemember": $("input[type=checkbox]").is(":checked")
             },
             timeout: 20000,
             beforeSend: function(XMLHttpRequest) {
