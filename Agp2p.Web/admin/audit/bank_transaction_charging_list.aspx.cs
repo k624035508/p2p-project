@@ -83,7 +83,7 @@ namespace Agp2p.Web.admin.audit
             rptList.DataSource = bankTransactions;
             rptList.DataBind();
 
-            var groupByUserGroupSummeries = bankTransactions.GroupBy(tr => tr.dt_users.dt_user_groups)
+            var groupByUserGroupSummeries = query.GroupBy(tr => tr.dt_users.dt_user_groups).AsEnumerable()
                 .Zip(Utils.Infinite(1), (gr, index) => new {gr, index})
                 .Select(gi =>
                 {
