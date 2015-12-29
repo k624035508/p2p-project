@@ -211,7 +211,7 @@ class GroupByTermLengthTable extends React.Component {
                 {sortedGroup.map((ps, index) => {
                     return <tr key={index}>
                         <td>{ps[0].termLength + " 天"}</td>
-                        <td>{ps.reduce((sum, p) => sum + p.financingAmount, 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + parseFloat(p.financingAmount), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
@@ -221,7 +221,7 @@ class GroupByTermLengthTable extends React.Component {
                 })}
                 <tr key="sum" className="sum">
                     <td>合计</td>
-                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + p.financingAmount, 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + parseFloat(p.financingAmount), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
@@ -259,7 +259,7 @@ class GroupByPrepayRateTable extends React.Component {
                 {sortedGroup.map((ps, index) => {
                     return <tr key={index}>
                         <td>{ps[0].prepayRatePercent + "%"}</td>
-                        <td>{ps.reduce((sum, p) => sum + p.financingAmount, 0).format()}</td>
+                        <td>{ps.reduce((sum, p) => sum + parseFloat(p.financingAmount), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
                         <td>{ps.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
@@ -269,7 +269,7 @@ class GroupByPrepayRateTable extends React.Component {
                 })}
                 <tr key="sum" className="sum">
                     <td>合计</td>
-                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + p.financingAmount, 0).format()}</td>
+                    <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + parseFloat(p.financingAmount), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getPrepayAmount(p), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getCostingOfPredict(p), 0).format()}</td>
                     <td>{this.state.projectPublishCostingPredict.reduce((sum, p) => sum + getDelayCostingPredict(p), 0).format()}</td>
