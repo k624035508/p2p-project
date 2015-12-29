@@ -14,6 +14,11 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+    <style>
+        tr.sum td {
+            color: red;
+        }
+    </style>
 </head>
 
 <body class="mainbody">
@@ -39,6 +44,12 @@
                 </ul>
             </div>
             <div class="r-list">
+                <div class="rule-multi-radio" style="display: inline-block; margin-right: 10px; float: left;">
+                    <asp:RadioButtonList ID="rblTableType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblTableType_OnSelectedIndexChanged">
+                        <asp:ListItem Value="0" Selected="True">明细</asp:ListItem>
+                        <asp:ListItem Value="1">汇总</asp:ListItem>
+                    </asp:RadioButtonList>
+                </div>
                 <!--银行交易状态选择，选择后刷新列表-->
                 <div style="display: inline-block;" class="rl">充值状态：</div>
                 <div class="rule-multi-radio" style="display: inline-block; margin-right: 10px; float: left;">
@@ -117,10 +128,35 @@
 </FooterTemplate>
 </asp:Repeater>
 <!--/列表-->
+    
+<!--汇总列表-->
+<asp:Repeater ID="rptList_summary" runat="server" Visible="False">
+    <HeaderTemplate>
+        <table id="wallet" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+            <thead>
+                <tr>
+                    <th align="center" width="5%" style="padding-left: 1em;">序号</th>
+                    <th align="center">会员组</th>
+                    <th align="right">充值金额</th>
+                </tr>
+            </thead>
+    </HeaderTemplate>
+    <ItemTemplate>
+        <tr <%# ((GroupByUserGroupSummery)Container.DataItem).Index == null ? "class='sum'" : ""%>>
+            <td style="text-align: center;"><%# Eval("index") %></td>
+            <td style="text-align: center"><%# Eval("GroupName")%></td>
+            <td style="text-align: right"><%# Convert.ToDecimal(Eval("TransactionAmount")).ToString("c")%></td>
+        </tr>
+    </ItemTemplate>
+    <FooterTemplate>
+        <%#rptList_summary.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"3\">暂无记录</td></tr>" : ""%>
+        </table>
+    </FooterTemplate>
+</asp:Repeater>
 
 <!--内容底部-->
 <div class="line20"></div>
-<div class="pagelist">
+<div class="pagelist" id="div_pagination" runat="server">
   <div class="l-btns">
     <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
   </div>
