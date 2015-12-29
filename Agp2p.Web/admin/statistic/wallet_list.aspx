@@ -94,6 +94,12 @@ thead * {
                 </ul>
             </div>
             <div class="r-list">
+                <div class="rule-multi-radio" style="display: inline-block; margin-right: 10px; float: left;">
+                    <asp:RadioButtonList ID="rblTableType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblTableType_OnSelectedIndexChanged">
+                        <asp:ListItem Value="0" Selected="True">明细</asp:ListItem>
+                        <asp:ListItem Value="1">汇总</asp:ListItem>
+                    </asp:RadioButtonList>
+                </div>
                 <div style="display: inline-block;" class="rl">时间段：</div>
                 <div class="input-date" style="display: inline-block; float:left;">
                     <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
@@ -174,7 +180,7 @@ thead * {
 
 <!--内容底部-->
 <div class="line20"></div>
-<div class="pagelist">
+<div class="pagelist" id="div_pagination" runat="server">
   <div class="l-btns">
     <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"></asp:TextBox><span>条/页</span>
   </div>
