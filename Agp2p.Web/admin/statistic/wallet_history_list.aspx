@@ -134,7 +134,7 @@
             <FooterTemplate>
                 <% if (string.IsNullOrWhiteSpace(user_id))
                     { %>
-                <%# 0 < rptList.Items.Count ? "<tr><td></td><td style=\"color: red;\">合计</td><td>&nbsp;</td><td style=\"color: red;text-align:right;\">"
+                <%# 0 < rptList.Items.Count ? "<tr><td></td><td style=\"color: red;\">总计</td><td>&nbsp;</td><td style=\"color: red;text-align:right;\">"
     +TransactionIncome.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
     +TransactionOutcome.ToString("c")+"</td><td style=\"color: red;text-align:right;\">"
     +"<td colspan=\"7\">&nbsp;</td></tr>" : ""%>

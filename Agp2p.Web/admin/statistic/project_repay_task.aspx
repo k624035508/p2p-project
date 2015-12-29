@@ -15,6 +15,9 @@
 <style>
 td.money { text-align: right; }
 td.center { text-align: center; }
+tr.sum td {
+            color: red;
+        }
 </style>
 </head>
 
@@ -57,6 +60,11 @@ td.center { text-align: center; }
                     <asp:TextBox ID="txtMonth" runat="server" CssClass="keyword" datatype="/^\d{1,2}$/" AutoPostBack="True" OnTextChanged="txtMonth_OnTextChanged" Width="2em" />
                 </div>
                 <div style="display: inline-block;" class="rl">月</div>
+                <div class="menu-list rl" style="display: inline-block; float: left;margin-left: 15px;">
+                        <div class="rule-single-select">
+                            <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                    </div>
                 <!--银行交易状态选择，选择后刷新列表-->
                 <div style="display: inline-block; padding-left: 2em;" class="rl">状态：</div>
                 <div class="rule-multi-radio" style="display: inline-block;float: left; margin-right:10px;">
@@ -99,7 +107,7 @@ td.center { text-align: center; }
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr>
+  <tr <%# ((RepaymentTaskAmountDetail)Container.DataItem).Project.Index == null ? "class='sum'" : ""%>>
     <td class="center"><%# Eval("Project.Index")%></td>
     <td><%# Eval("Project.Name")%></td>
     <td align="center"><%# Eval("Project.Creditor")%></td>
@@ -109,7 +117,7 @@ td.center { text-align: center; }
     <td align="center"><%# Eval("Project.InvestCompleteTime")%></td>
     <td align="center"><%# Eval("Project.RepayCompleteTime") != null ? ((DateTime)Eval("Project.RepayCompleteTime")).ToString("yyyy-MM-dd") : ""%></td>
     <td align="center"><%# Eval("RepayTerm")%></td>
-    <td align="center"><%# ((DateTime)Eval("RepayTime")).ToString("yyyy-MM-dd")%></td>
+    <td align="center"><%# Eval("RepayTime")%></td>
     <td align="center"><%# Eval("RepayAt")%></td>
     <td><%# Eval("Status")%></td>
     <td class="money"><%# Convert.ToDecimal(Eval("RepayPrincipal")).ToString("c")%></td>

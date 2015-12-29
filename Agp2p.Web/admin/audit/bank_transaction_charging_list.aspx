@@ -35,6 +35,7 @@
                     <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
                     <li><asp:LinkButton ID="btnConfirm" runat="server" CssClass="save" OnClientClick="return ExePostBack('btnConfirm', '确认审批 通过 选中的充值申请？');" OnClick="btnConfirmCancel_Click"><i></i><span>审批通过</span></asp:LinkButton></li>
                     <li><asp:LinkButton ID="btnCancel" runat="server" CssClass="save" OnClientClick="return ExePostBack('btnCancel', '确认审批 不通过 选中的充值申请？');" OnClick="btnConfirmCancel_Click"><i></i><span>审批不通过</span></asp:LinkButton></li>
+                     <li><asp:LinkButton ID="btnExportExcel" runat="server" CssClass="quotes" onclick="btnExportExcel_Click"><i></i><span>导出Excel</span></asp:LinkButton></li>
                 </ul>
             </div>
             <div class="r-list">
@@ -110,7 +111,7 @@
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count >0 ? "<tr><td colspan=\"2\">&nbsp;</td><td style=\"color: red;\">合计</td><td colspan=\"3\"></td><td style=\"color: red;\">"+Convert.ToDecimal(value).ToString("c")+"</td><td colspan=\"2\">&nbsp;</td></tr>" : ""%>
+  <%#rptList.Items.Count >0 ? "<tr><td colspan=\"2\">&nbsp;</td><td style=\"color: red;\">总计</td><td colspan=\"3\"></td><td style=\"color: red;\">"+Convert.ToDecimal(value).ToString("c")+"</td><td colspan=\"2\">&nbsp;</td></tr>" : ""%>
   <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"9\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>

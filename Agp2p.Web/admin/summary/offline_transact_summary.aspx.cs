@@ -9,7 +9,7 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Text;
 
-namespace Agp2p.Web.admin.statistic
+namespace Agp2p.Web.admin.summary
 {
     public class OfflineTransaction
     {
@@ -23,7 +23,7 @@ namespace Agp2p.Web.admin.statistic
         public string project { get; set; }
     }
 
-    public partial class offline_transact_timeline : UI.ManagePage
+    public partial class offline_transact_summary : UI.ManagePage
     {
         protected int totalCount;
         protected int page;
@@ -81,47 +81,21 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var transactions = QueryProjectTransactions();
-            if (rblType.SelectedValue == "0")
+            var pageData = transactions.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new OfflineTransaction
             {
-                var pageData = transactions.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-                rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new OfflineTransaction
-                {
-                    index = null,
-                    occurTime = "总计",
-                    income = pageData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
-                    outcome = pageData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
-                }));
-                rptList.DataBind();
-                //绑定页码
-                txtPageNum.Text = pageSize.ToString();
-                string pageUrl = Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}&transactType={4}",
-                    txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, transactType);
-                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
-            }
-            else
-            {
-                var summaryData = transactions.GroupBy(tr => tr.type).Zip(Utils.Infinite(1), (trg, no) => new { trg = trg, no }).Select(tr =>
-                {
-                    var summaryRechange = new OfflineTransaction {index = tr.no, type = tr.trg.Key };
-                    if (tr.trg.Key == Utils.GetAgp2pEnumDes(Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee))
-                    {
-                        summaryRechange.outcome = tr.trg.Sum(t => t.outcome);
-                    }
-                    else
-                    {
-                        summaryRechange.income = tr.trg.Sum(t => t.income);
-                    }
-                    return summaryRechange;
-                }).ToList();
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new OfflineTransaction
-                {
-                    index = null,
-                    type = "总计",
-                    income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
-                    outcome = summaryData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
-                }));
-                rptList_summary.DataBind();
-            }
+                index = null,
+                occurTime = "总计",
+                income = pageData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
+                outcome = pageData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
+            }));
+            rptList.DataBind();
+
+            //绑定页码
+            txtPageNum.Text = pageSize.ToString();
+            string pageUrl = Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}&transactType={4}",
+                txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, transactType);
+            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
         private static readonly int[] OfflineProjectTransactionType =
@@ -220,28 +194,6 @@ namespace Agp2p.Web.admin.statistic
         {
             Response.Redirect(Utils.CombUrlTxt("offline_transact_timeline.aspx", "keywords={0}&startTime={1}&endTime={2}&transactType={3}&today={4}",
                 txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, ddlRecordType.SelectedItem.Value, cb_today.Checked.ToString()));
-        }
-
-        /// <summary>
-        /// 切换汇总/明细列表
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (rblType.SelectedValue == "0")
-            {
-                rptList.Visible = true;
-                rptList_summary.Visible = false;
-                div_page.Visible = true;
-            }
-            else
-            {
-                rptList.Visible = false;
-                rptList_summary.Visible = true;
-                div_page.Visible = false;
-            }
-            RptBind();
         }
     }
 }

@@ -191,6 +191,7 @@
     <Content Include="admin\popularize\project-publish-announce.aspx" />
     <Content Include="admin\popularize\projectContent_edit.aspx" />
     <Content Include="admin\popularize\projectContent_list.aspx" />
+    <Content Include="admin\predict\projects_costing_predict.aspx" />
     <Content Include="admin\project\loan_all.aspx" />
     <Content Include="admin\project\loan_detail.aspx" />
     <Content Include="admin\repayment\repay_earlier.aspx" />
@@ -241,6 +242,7 @@
     <Content Include="admin\statistic\project_investor_detail.aspx" />
     <Content Include="admin\statistic\investment_rank_list.aspx" />
     <Content Include="admin\statistic\offline_transact_timeline.aspx" />
+    <Content Include="admin\summary\offline_transact_summary.aspx" />
     <Content Include="admin\transact\bank_account_edit.aspx" />
     <Content Include="admin\transact\bank_account_list.aspx" />
     <Content Include="admin\transact\bank_transaction_charge.aspx" />
@@ -573,6 +575,7 @@
     <Content Include="scripts\fullpage\jquery.fullPage.css" />
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
+    <Content Include="admin\predict\predict-table.jsx" />
     <None Include="scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="scripts\jquery-2.1.4.js" />
     <Content Include="scripts\jquery-2.1.4.min.js" />
@@ -955,6 +958,7 @@
     <Content Include="templates\weChat\about.xml" />
     <Content Include="templates\weChat\aboutus.html" />
     <Content Include="templates\weChat\activity.html" />
+    <Content Include="templates\weChat\article_show.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_password.html" />
@@ -1002,6 +1006,7 @@
     <Content Include="templates\weChat\invest-success.html" />
     <Content Include="templates\weChat\js\aboutus.js" />
     <Content Include="templates\weChat\js\activity.js" />
+    <Content Include="templates\weChat\js\article_show.js" />
     <Content Include="templates\weChat\js\citySelector.js" />
     <Content Include="templates\weChat\js\footer.js" />
     <Content Include="templates\weChat\js\forgotPassword.js" />
@@ -1171,6 +1176,7 @@
     <Content Include="templates\weChat\pwatch.bat" />
     <Content Include="templates\AnGuang\components\share.jsx" />
     <Content Include="templates\AnGuang\less\share.less" />
+    <Content Include="templates\weChat\less\article_show.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1508,6 +1514,13 @@
     <Compile Include="admin\popularize\projectContent_list.aspx.designer.cs">
       <DependentUpon>projectContent_list.aspx</DependentUpon>
     </Compile>
+    <Compile Include="admin\predict\projects_costing_predict.aspx.cs">
+      <DependentUpon>projects_costing_predict.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\predict\projects_costing_predict.aspx.designer.cs">
+      <DependentUpon>projects_costing_predict.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\project\loan_all.aspx.cs">
       <DependentUpon>loan_all.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1729,6 +1742,12 @@
     </Compile>
     <Compile Include="admin\statistic\offline_transact_timeline.aspx.designer.cs">
       <DependentUpon>offline_transact_timeline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\summary\offline_transact_summary.aspx.cs">
+      <DependentUpon>offline_transact_summary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\summary\offline_transact_summary.aspx.designer.cs">
+      <DependentUpon>offline_transact_summary.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\transact\bank_account_edit.aspx.cs">
       <DependentUpon>bank_account_edit.aspx</DependentUpon>

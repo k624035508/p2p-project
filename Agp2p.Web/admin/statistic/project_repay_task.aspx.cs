@@ -15,6 +15,8 @@ namespace Agp2p.Web.admin.statistic
         protected int totalCount;
         protected int page;
         protected int pageSize;
+
+        protected int CategoryId;
         protected Dictionary<int, string> CategoryIdTitleMap;
 
         private Agp2pDataContext context = new Agp2pDataContext();
@@ -23,7 +25,8 @@ namespace Agp2p.Web.admin.statistic
         {
             pageSize = GetPageSize(GetType().Name + "_page_size");
             page = DTRequest.GetQueryInt("page", 1);
-            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).ToDictionary(c => c.id, c => c.title);
+            this.CategoryId = DTRequest.GetQueryInt("category_id");
+            CategoryIdTitleMap = new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6).OrderBy(c => c.sort_id).ToDictionary(c => c.id, c => c.title);
 
             if (!Page.IsPostBack)
             {
@@ -47,8 +50,19 @@ namespace Agp2p.Web.admin.statistic
                 {
                     ddlOrderBy.SelectedValue = orderBy;
                 }
-
+                TreeBind();
                 RptBind();
+            }
+        }
+
+        protected void TreeBind()
+        {
+            this.ddlCategoryId.Items.Clear();
+            this.ddlCategoryId.Items.Add(new ListItem("所有产品", ""));
+            this.ddlCategoryId.Items.AddRange(CategoryIdTitleMap.Select(c => new ListItem(c.Value, c.Key.ToString())).ToArray());
+            if (this.CategoryId > 0)
+            {
+                this.ddlCategoryId.SelectedValue = this.CategoryId.ToString();
             }
         }
 
@@ -67,7 +81,7 @@ namespace Agp2p.Web.admin.statistic
         protected class RepaymentTaskAmountDetail
         {
             public ProjectDetail Project { get; set; }
-            public DateTime RepayTime { get; set; }
+            public string RepayTime { get; set; }
             public string Status { get; set; }
             public decimal RepayPrincipal { get; set; }
             public decimal RepayInterest { get; set; }
@@ -81,14 +95,25 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            var pageData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+            {
+                Project = new ProjectDetail()
+                {
+                    Index = null,
+                    Name = "总计"
+                },
+                RepayInterest = pageData.Sum(p => p.RepayInterest),
+                RepayPrincipal = pageData.Sum(p => p.RepayPrincipal),
+                RepayTotal = pageData.Sum(p => p.RepayTotal)
+            })) ;
             rptList.DataBind();
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("project_repay_task.aspx",
-                "keywords={0}&page={1}&status={2}&year={3}&month={4}&orderby={5}", txtKeywords.Text, "__id__",
-                rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue);
+                "keywords={0}&page={1}&status={2}&year={3}&month={4}&orderby={5}&category_id={6}", txtKeywords.Text, "__id__",
+                rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue, ddlCategoryId.SelectedValue);
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -101,6 +126,9 @@ namespace Agp2p.Web.admin.statistic
             var query1 =
                 context.li_repayment_tasks.Where(rt =>
                     (int) Agp2pEnums.ProjectStatusEnum.Financing < rt.li_projects.status && rt.li_projects.title.Contains(txtKeywords.Text));
+
+            if (CategoryId > 0)
+                query1 = query1.Where(q => q.li_projects.category_id == CategoryId);
 
             if (rblRepaymentStatus.SelectedValue == "20")
             {
@@ -170,7 +198,7 @@ namespace Agp2p.Web.admin.statistic
                 return rgi.rg.Select(rg => new RepaymentTaskAmountDetail
                 {
                     Project = j++ == 0 ? projectDetail : new ProjectDetail(),
-                    RepayTime = rg.should_repay_time,
+                    RepayTime = rg.should_repay_time.ToString("yyyy-MM-dd"),
                     Status = Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) rg.status),
                     RepayPrincipal = rg.repay_principal,
                     RepayInterest = rg.repay_interest,
@@ -189,16 +217,23 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",
-                txtKeywords.Text, rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}&category_id={5}",
+                txtKeywords.Text, rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}",
-                txtKeywords.Text, rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}&category_id={5}",
+                txtKeywords.Text, rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue, ddlCategoryId.SelectedValue));
+        }
+
+        //筛选类别
+        protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Redirect(Utils.CombUrlTxt("project_repay_task.aspx", "keywords={0}&status={1}&year={2}&month={3}&orderby={4}&category_id={5}",
+                txtKeywords.Text, rblRepaymentStatus.SelectedValue, txtYear.Text, txtMonth.Text, ddlOrderBy.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         protected DateTime GetRepaymentCompleteTime(li_projects liProjects)
