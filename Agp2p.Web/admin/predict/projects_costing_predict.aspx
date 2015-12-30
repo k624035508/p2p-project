@@ -68,7 +68,7 @@ div.rl { margin-left: 10px;}
                 <div style="display: inline-block; float:left;">
                     <input type="text" id="prepayRatePercent" class="keyword defaultValueSetter" style="width: 2em" />
                 </div>
-                <div style="display: inline-block;" class="rl">年化利率（%）：</div>
+                <div style="display: inline-block;" class="rl">资金年化利率（%）：</div>
                 <div style="display: inline-block; float:left;">
                     <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 1em" />
                 </div>
@@ -80,7 +80,7 @@ div.rl { margin-left: 10px;}
                 <div style="display: inline-block; float:left;">
                     <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 1em" />
                 </div>
-                <div style="display: inline-block;" class="rl">手续费率（%）：</div>
+                <div style="display: inline-block;" class="rl">结算手续费率（%）：</div>
                 <div style="display: inline-block; float:left;">
                     <input type="text" id="handlingFeePercent" class="keyword defaultValueSetter" style="width: 4em" />
                 </div>
