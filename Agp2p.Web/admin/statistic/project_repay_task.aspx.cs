@@ -89,6 +89,7 @@ namespace Agp2p.Web.admin.statistic
             public string RepayTerm { get; set; }
             public int OverTimeDay { get; set; }
             public string RepayAt { get; set; }
+            public int CategoryId { get; set; }
         }
 
         #region 数据绑定=================================
@@ -123,7 +124,7 @@ namespace Agp2p.Web.admin.statistic
             else
             {
                 var summaryData =
-                    beforePaging.GroupBy(d => d.Project.Category)
+                    beforePaging.GroupBy(d => d.CategoryId)
                         .Zip(Utils.Infinite(1), (dg, no) => new {dg, no})
                         .Select(d =>
                         {
@@ -132,7 +133,7 @@ namespace Agp2p.Web.admin.statistic
                                 Project = new ProjectDetail()
                                 {
                                     Index = d.no.ToString(),
-                                    Category = d.dg.Key
+                                    Category = CategoryIdTitleMap[d.dg.Key]
                                 },
                                 RepayInterest = d.dg.Sum(t => t.RepayInterest),
                                 RepayPrincipal = d.dg.Sum(t => t.RepayPrincipal),
@@ -244,7 +245,7 @@ namespace Agp2p.Web.admin.statistic
                                 ? "1/1"
                                 : $"{rg.term.ToString()}/{rg.li_projects.repayment_term_span_count}",
                     RepayAt = rg.repay_at?.ToString("yyyy-MM-dd") ?? "",
-
+                    CategoryId = rg.li_projects.category_id
                 });
             });
         }
