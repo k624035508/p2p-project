@@ -47,6 +47,9 @@ div.rl { margin-left: 10px;}
             <div class="l-list">
                <ul class="icon-list">
                     <li><a class="quotes" onclick="print()" href="javascript:"><i></i><span>打印</span></a></li>
+                    <li><a class="quotes" onclick="exportExcel(['editingTable', 'groupByTermLengthTable', 'groupByPrepayRateTable'], ['明细表', '汇总表（按品种）', '汇总表（按垫付率）'], '业务预测—资金成本.xls')"
+                        href="javascript:"><i></i><span>导出 Excel</span></a></li>
+                    <li>　</li>
                     <li><a class="add" onclick="appendPredict()" href="javascript:"><i></i><span>添加当日估算</span></a></li>
                     <li><a class="add" onclick="appendNextDayPredict()" href="javascript:"><i></i><span>添加下一日估算</span></a></li>
                     <li><a class="add" onclick="repeatPredict()" href="javascript:"><i></i><span>重复首日估算</span></a></li>
@@ -59,7 +62,7 @@ div.rl { margin-left: 10px;}
             <div class="r-list">
                 <div style="display: inline-block;" class="rl">默认项目金额：</div>
                 <div style="display: inline-block; float:left;">
-                    <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 4em" />
+                    <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 5em" />
                 </div>
                 <div style="display: inline-block;" class="rl">垫付率（%）：</div>
                 <div style="display: inline-block; float:left;">
@@ -67,15 +70,15 @@ div.rl { margin-left: 10px;}
                 </div>
                 <div style="display: inline-block;" class="rl">年化利率（%）：</div>
                 <div style="display: inline-block; float:left;">
-                    <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 2em" />
+                    <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 1em" />
                 </div>
                 <div style="display: inline-block;" class="rl">期限（天）：</div>
                 <div style="display: inline-block; float:left;">
-                    <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 2em" />
+                    <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 1em" />
                 </div>
                 <div style="display: inline-block;" class="rl">错配期（天）：</div>
                 <div style="display: inline-block; float:left;">
-                    <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 2em" />
+                    <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 1em" />
                 </div>
                 <div style="display: inline-block;" class="rl">手续费率（%）：</div>
                 <div style="display: inline-block; float:left;">
@@ -85,7 +88,10 @@ div.rl { margin-left: 10px;}
         </div>
     </div>
     <!--/工具栏-->
-<div id="mounting-point"></div>
+
+<div id="editingTable-mountingPoint"></div>
+<div id="groupByTermLengthTable-mountingPoint" style="display: none"></div>
+<div id="groupByPrepayRateTable-mountingPoint" style="display: none"></div>
 
 
 </form>
