@@ -54,15 +54,15 @@ div.rl { margin-left: 10px;}
         </div>
         <div style="display: inline-block;">资金年化利率（%）：</div>
         <div style="display: inline-block; ">
-            <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 1em" />
+            <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 2em" />
         </div>
         <div style="display: inline-block;">期限（天）：</div>
         <div style="display: inline-block; ">
-            <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 1em" />
+            <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 2em" />
         </div>
         <div style="display: inline-block;">错配期（天）：</div>
         <div style="display: inline-block; ">
-            <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 1em" />
+            <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 2em" />
         </div>
         <div style="display: inline-block;">结算手续费率（%）：</div>
         <div style="display: inline-block; ">
