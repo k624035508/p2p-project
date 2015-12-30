@@ -40,7 +40,32 @@ div.rl { margin-left: 10px;}
   <span>业务预测—资金成本</span>
 </div>
 <!--/导航栏-->
-
+    <div style="margin: 10px 0 0 15px; font-size: 14px;">
+        <div style="display: inline-block;">默认项目金额：</div>
+        <div style="display: inline-block; ">
+            <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 5em" />
+        </div>
+        <div style="display: inline-block;">垫付率（%）：</div>
+        <div style="display: inline-block; ">
+            <input type="text" id="prepayRatePercent" class="keyword defaultValueSetter" style="width: 2em" />
+        </div>
+        <div style="display: inline-block;">资金年化利率（%）：</div>
+        <div style="display: inline-block; ">
+            <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 1em" />
+        </div>
+        <div style="display: inline-block;">期限（天）：</div>
+        <div style="display: inline-block; ">
+            <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 1em" />
+        </div>
+        <div style="display: inline-block;">错配期（天）：</div>
+        <div style="display: inline-block; ">
+            <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 1em" />
+        </div>
+        <div style="display: inline-block;">结算手续费率（%）：</div>
+        <div style="display: inline-block; ">
+            <input type="text" id="handlingFeePercent" class="keyword defaultValueSetter" style="width: 4em" />
+        </div>
+    </div>
     <!--工具栏-->
     <div class="toolbar-wrap noPrint">
         <div id="floatHead" class="toolbar">
@@ -59,32 +84,7 @@ div.rl { margin-left: 10px;}
                     <li><a class="copy" onclick="openGroupByPrepayRateTable()" href="javascript:"><i></i><span>汇总表（按垫付率）</span></a></li>
                 </ul>
             </div>
-            <div class="r-list">
-                <div style="display: inline-block;" class="rl">默认项目金额：</div>
-                <div style="display: inline-block; float:left;">
-                    <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 5em" />
-                </div>
-                <div style="display: inline-block;" class="rl">垫付率（%）：</div>
-                <div style="display: inline-block; float:left;">
-                    <input type="text" id="prepayRatePercent" class="keyword defaultValueSetter" style="width: 2em" />
-                </div>
-                <div style="display: inline-block;" class="rl">资金年化利率（%）：</div>
-                <div style="display: inline-block; float:left;">
-                    <input type="text" id="profitRateYearlyPercent" class="keyword defaultValueSetter" style="width: 1em" />
-                </div>
-                <div style="display: inline-block;" class="rl">期限（天）：</div>
-                <div style="display: inline-block; float:left;">
-                    <input type="text" id="termLength" class="keyword defaultValueSetter" style="width: 1em" />
-                </div>
-                <div style="display: inline-block;" class="rl">错配期（天）：</div>
-                <div style="display: inline-block; float:left;">
-                    <input type="text" id="repayDelayDays" class="keyword defaultValueSetter" style="width: 1em" />
-                </div>
-                <div style="display: inline-block;" class="rl">结算手续费率（%）：</div>
-                <div style="display: inline-block; float:left;">
-                    <input type="text" id="handlingFeePercent" class="keyword defaultValueSetter" style="width: 4em" />
-                </div>
-            </div>
+            
         </div>
     </div>
     <!--/工具栏-->
