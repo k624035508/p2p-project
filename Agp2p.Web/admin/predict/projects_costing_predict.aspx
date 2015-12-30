@@ -27,6 +27,9 @@ tr:hover a { display: inline;position: absolute; }
 tr a { display: none; }
 
 div.rl { margin-left: 10px;}
+
+.toolbar2{ padding:5px 0 0 15px; min-height:32px; font-size:12px; color:#333; }
+.keyword{ display:block; margin:0; padding:0 5px; width:110px; height:30px; line-height:28px; font-size:12px; border:1px solid #eee; color:#444; }
 </style>
 </head>
 
@@ -40,7 +43,7 @@ div.rl { margin-left: 10px;}
   <span>业务预测—资金成本</span>
 </div>
 <!--/导航栏-->
-    <div style="margin: 10px 0 0 15px; font-size: 14px;">
+    <div class="toolbar2">
         <div style="display: inline-block;">默认项目金额：</div>
         <div style="display: inline-block; ">
             <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 5em" />
