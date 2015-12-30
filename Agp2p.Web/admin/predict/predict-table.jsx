@@ -84,6 +84,16 @@ class ProjectCostingPredictTable extends React.Component {
     			this.forceUpdate();
     		}
     	};
+        window.openEditingTable = () => {
+            $("#editingTable-mountingPoint").show();
+            $("#groupByTermLengthTable-mountingPoint,#groupByPrepayRateTable-mountingPoint").hide();
+            this.forceUpdate();
+        };
+        var originalExport = window.exportExcel;
+        window.exportExcel = (...args) => {
+            this.forceUpdate();
+            originalExport(...args);
+        };
         $(".defaultValueSetter").each((index, el) => {
             el.value = this.defaultValue[el.id];
         });
@@ -123,7 +133,7 @@ class ProjectCostingPredictTable extends React.Component {
             sumOfPrepayAmount = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + getPrepayAmount(predict), 0),
             sumOfHandlingFee = this.state.projectPublishCostingPredict.reduce((sum, predict) => sum + getHandlingFee(predict), 0);
         return (
-            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
+            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable" id="editingTable">
             	<thead>
 			    <tr>
 				    <th width="14%">发标日期</th>
@@ -172,7 +182,8 @@ class ProjectCostingPredictTable extends React.Component {
 			  		<td>{sumOfFinancingAmount.format()}</td>
                     <td></td>
 			  		<td>{sumOfPrepayAmount.format()}</td>
-                    <td colSpan="2"></td>
+                    <td></td>
+                    <td></td>
 			  		<td>{sumOfCosting.format()}</td>
 			  		<td></td>
 			  		<td>{sumOfDelayCosting.format()}</td>
@@ -186,16 +197,32 @@ class ProjectCostingPredictTable extends React.Component {
     }
 }
 
+
+
+
 class GroupByTermLengthTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {projectPublishCostingPredict: _projectPublishCostingPredict};
     } 
+    componentDidMount() {
+        window.openGroupByTermLengthTable = () => {
+            $("#editingTable-mountingPoint").hide();
+            $("#groupByTermLengthTable-mountingPoint").show();
+            $("#groupByPrepayRateTable-mountingPoint").hide();
+            this.forceUpdate();
+        };
+        var originalExport = window.exportExcel;
+        window.exportExcel = (...args) => {
+            this.forceUpdate();
+            originalExport(...args);
+        };
+    }
     render() {
         let group = groupBy(this.state.projectPublishCostingPredict, p => p.termLength), // {7: [], ...}
             sortedGroup = sortBy(group, (gs, key) => parseFloat(key)); // [ [], [], ...]
         return (
-            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
+            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable" id="groupByTermLengthTable">
                 <thead>
                 <tr>
                     <th width="10%">品种</th>
@@ -234,16 +261,32 @@ class GroupByTermLengthTable extends React.Component {
     }
 }
 
+
+
+
 class GroupByPrepayRateTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {projectPublishCostingPredict: _projectPublishCostingPredict};
     } 
+    componentDidMount() {
+        window.openGroupByPrepayRateTable = () => {
+            $("#editingTable-mountingPoint").hide();
+            $("#groupByTermLengthTable-mountingPoint").hide();
+            $("#groupByPrepayRateTable-mountingPoint").show();
+            this.forceUpdate();
+        };
+        var originalExport = window.exportExcel;
+        window.exportExcel = (...args) => {
+            this.forceUpdate();
+            originalExport(...args);
+        };
+    }
     render() {
         let group = groupBy(this.state.projectPublishCostingPredict, p => p.prepayRatePercent), // {7: [], ...}
             sortedGroup = sortBy(group, (gs, key) => parseFloat(key)); // [ [], [], ...]
         return (
-            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable">
+            <table width="100%" border="0" cellSpacing="0" cellPadding="0" className="ltable" id="groupByPrepayRateTable">
                 <thead>
                 <tr>
                     <th width="10%">垫付率</th>
@@ -282,24 +325,67 @@ class GroupByPrepayRateTable extends React.Component {
     }
 }
 
-window.openEditingTable = () => {
-    let dom = $("#mounting-point")[0];
-    ReactDom.unmountComponentAtNode(dom)
-    ReactDom.render(<ProjectCostingPredictTable />, dom);
-}
-
-window.openGroupByTermLengthTable = () => {
-    let dom = $("#mounting-point")[0];
-    ReactDom.unmountComponentAtNode(dom);
-    ReactDom.render(<GroupByTermLengthTable />, dom);
-}
-
-window.openGroupByPrepayRateTable = () => {
-    let dom = $("#mounting-point")[0];
-    ReactDom.unmountComponentAtNode(dom);
-    ReactDom.render(<GroupByPrepayRateTable />, dom);
-}
-
 $(() => {
-    openEditingTable();
+    ReactDom.render(<ProjectCostingPredictTable />, $("#editingTable-mountingPoint")[0]);
+    ReactDom.render(<GroupByTermLengthTable />, $("#groupByTermLengthTable-mountingPoint")[0]);
+    ReactDom.render(<GroupByPrepayRateTable />, $("#groupByPrepayRateTable-mountingPoint")[0]);
 });
+
+// http://stackoverflow.com/questions/29698796/how-to-convert-html-table-to-excel-with-multiple-sheet
+window.exportExcel = (function() {
+    var uri = 'data:application/vnd.ms-excel;base64,'
+    , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
+      + '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>'
+      + '<Styles>'
+      + '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>'
+      + '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
+      + '</Styles>' 
+      + '{worksheets}</Workbook>'
+    , tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
+    , tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+    return function(tables, wsnames, wbname, appname) {
+      var ctx = "";
+      var workbookXML = "";
+      var worksheetsXML = "";
+      var rowsXML = "";
+
+      for (var i = 0; i < tables.length; i++) {
+        if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
+        for (var j = 0; j < tables[i].rows.length; j++) {
+          rowsXML += '<Row>'
+          for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
+            var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
+            var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
+            var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
+            dataValue = (dataValue)?dataValue:tables[i].rows[j].cells[k].innerText; // innerHTML
+            var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
+            dataFormula = (dataFormula)?dataFormula:(appname=='Calc' && dataType=='DateTime')?dataValue:null;
+            ctx = {  attributeStyleID: (dataStyle=='Currency' || dataStyle=='Date')?' ss:StyleID="'+dataStyle+'"':''
+                   , nameType: (dataType=='Number' || dataType=='DateTime' || dataType=='Boolean' || dataType=='Error')?dataType:'String'
+                   , data: (dataFormula)?'':dataValue
+                   , attributeFormula: (dataFormula)?' ss:Formula="'+dataFormula+'"':''
+                  };
+            rowsXML += format(tmplCellXML, ctx);
+          }
+          rowsXML += '</Row>'
+        }
+        ctx = {rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i};
+        worksheetsXML += format(tmplWorksheetXML, ctx);
+        rowsXML = "";
+      }
+
+      ctx = {created: (new Date()).getTime(), worksheets: worksheetsXML};
+      workbookXML = format(tmplWorkbookXML, ctx);
+
+
+      var link = document.createElement("A");
+      link.href = uri + base64(workbookXML);
+      link.download = wbname || 'Workbook.xls';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  })();

@@ -78,6 +78,7 @@ namespace Agp2p.Web.admin.statistic
             public decimal InvestValue { get; set; }
             public decimal UnInvestValue { get; set; }
             public string InvestTime { get; set; }
+            public int CategoryId { get; set; }
         }
 
         #region 数据绑定=================================
@@ -101,7 +102,7 @@ namespace Agp2p.Web.admin.statistic
             else
             {
                 var summaryData =
-                    beforePaging.GroupBy(d => d.Project.Category)
+                    beforePaging.Where(d => d.CategoryId != 0).GroupBy(d => d.CategoryId)
                         .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
                         .Select(d =>
                         {
@@ -110,7 +111,7 @@ namespace Agp2p.Web.admin.statistic
                                 Project = new ProjectDetail()
                                 {
                                     Index = d.no.ToString(),
-                                    Category = d.dg.Key,
+                                    Category = CategoryIdTitleMap[d.dg.Key],
                                     FinancingAmount = d.dg.Sum(t => t.Project.FinancingAmount)
                                 },
                                 InvestValue = d.dg.Sum(t => t.InvestValue)
@@ -181,13 +182,15 @@ namespace Agp2p.Web.admin.statistic
                             InvestorUserName = tr.dt_users.user_name,
                             InvestorGroupName = tr.dt_users.dt_user_groups.title,
                             InvestValue = tr.principal,
-                            InvestTime = tr.create_time.ToString()
+                            InvestTime = tr.create_time.ToString(),
+                            CategoryId = tr.li_projects.category_id
                         }).Concat(new[]
                         {
                             new InvestorDetail
                             {
                                 Project = new ProjectDetail {Name = "小计"},
                                 InvestValue = invested.Sum(t => t.principal),
+                                CategoryId = 0
                             }
                         }).ToList();
                         investorDetails.First().Project = new ProjectDetail
@@ -215,6 +218,7 @@ namespace Agp2p.Web.admin.statistic
                                 t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success))
                                 .Select(t => t.principal)
                                 .AsEnumerable().DefaultIfEmpty(0).Sum(),
+                            CategoryId = 0
                         }
                     }).ToList();
             return beforePaging;

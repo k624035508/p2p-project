@@ -775,6 +775,12 @@
     <Content Include="templates\AnGuang\imgs\index\banner-02.png" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon1.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon1Hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon2.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon2Hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon3.png" />
+    <Content Include="templates\AnGuang\imgs\index\footerIcon3Hover.png" />
     <Content Include="templates\AnGuang\imgs\index\funds-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\funds.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee-bg.png" />
