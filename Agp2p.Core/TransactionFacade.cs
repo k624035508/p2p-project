@@ -1189,8 +1189,7 @@ namespace Agp2p.Core
             if (his.li_project_transactions != null)
             {
                 decimal? receivedPrincipal, profited;
-                if (his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                    && his.li_project_transactions.status != (int)Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
+                if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.Invest || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess)
                 {
                     receivedPrincipal = profited = null;
                 }
@@ -1263,8 +1262,7 @@ namespace Agp2p.Core
             {
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess) // 项目满标不显示支出
                     return null;
-                return his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                    && his.li_project_transactions.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback
+                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess
                     ? his.li_project_transactions.principal // 投资
                     : (decimal?) null;
             }
