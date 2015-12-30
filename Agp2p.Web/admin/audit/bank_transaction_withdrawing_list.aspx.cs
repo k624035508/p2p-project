@@ -22,6 +22,14 @@ namespace Agp2p.Web.admin.audit
 
         private Agp2pDataContext context = new Agp2pDataContext();
 
+        protected class GroupByUserGroupSummery
+        {
+            public int? Index { get; set; }
+            public string GroupName { get; set; }
+            public decimal WithdrawAmount { get; set; }
+            public decimal TransactionAmount { get; set; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             UserGroud = DTRequest.GetQueryInt("UserGroud");
@@ -72,14 +80,35 @@ namespace Agp2p.Web.admin.audit
             var query = QueryWithdraws();
 
             totalCount = query.Count();
-            rptList.DataSource = query.OrderBy(q => q.status)
-                    .ThenByDescending(q => q.transact_time)
-                    .ThenByDescending(q => q.create_time)
-                    .Skip(pageSize*(page - 1))
-                    .Take(pageSize)
-                    .ToList();
-
+            var bankTransactions = query.OrderBy(q => q.status)
+                .ThenByDescending(q => q.transact_time)
+                .ThenByDescending(q => q.create_time)
+                .Skip(pageSize*(page - 1))
+                .Take(pageSize)
+                .ToList();
+            rptList.DataSource = bankTransactions;
             rptList.DataBind();
+
+            var groupByUserGroupSummeries = query.GroupBy(tr => tr.li_bank_accounts.dt_users.dt_user_groups).AsEnumerable()
+                .Zip(Utils.Infinite(1), (gr, index) => new { gr, index })
+                .Select(gi =>
+                {
+                    return new GroupByUserGroupSummery
+                    {
+                        Index = gi.index,
+                        GroupName = gi.gr.Key.title,
+                        WithdrawAmount = gi.gr.Aggregate(0m, (sum, tr) => sum + tr.value),
+                        TransactionAmount = gi.gr.Aggregate(0m, (sum, tr) => sum + tr.value - GetHandlingFee(tr))
+                    };
+                }).ToList();
+            rptList_summary.DataSource = groupByUserGroupSummeries.Concat(Enumerable.Range(0, 1).Select(i => new GroupByUserGroupSummery
+            {
+                Index = null,
+                GroupName = "总计",
+                WithdrawAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.WithdrawAmount),
+                TransactionAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.TransactionAmount)
+            }));
+            rptList_summary.DataBind();
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
@@ -235,6 +264,22 @@ namespace Agp2p.Web.admin.audit
                 li_bank_transactions bt = (li_bank_transactions) e.Item.DataItem;
                 value = value + bt.value;
                 value1 = value1 + ((bt.value) - GetHandlingFee(bt));
+            }
+        }
+
+        protected void rblTableType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblTableType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_pagination.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_pagination.Visible = false;
             }
         }
     }

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>发标成本预测</title>
+<title>业务预测—资金成本</title>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
@@ -37,7 +37,7 @@ div.rl { margin-left: 10px;}
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>发标成本预测</span>
+  <span>业务预测—资金成本</span>
 </div>
 <!--/导航栏-->
 
@@ -85,7 +85,6 @@ div.rl { margin-left: 10px;}
         </div>
     </div>
     <!--/工具栏-->
-
 <div id="mounting-point"></div>
 
 

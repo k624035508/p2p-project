@@ -31,6 +31,15 @@ namespace Agp2p.Web.admin.statistic {
         protected global::System.Web.UI.WebControls.LinkButton btnExportExcel;
         
         /// <summary>
+        /// rblTableType 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblTableType;
+        
+        /// <summary>
         /// txtStartTime 控件。
         /// </summary>
         /// <remarks>
@@ -83,6 +92,15 @@ namespace Agp2p.Web.admin.statistic {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptList;
+        
+        /// <summary>
+        /// div_pagination 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_pagination;
         
         /// <summary>
         /// txtPageNum 控件。

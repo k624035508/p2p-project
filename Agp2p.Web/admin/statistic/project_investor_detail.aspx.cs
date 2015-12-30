@@ -76,6 +76,7 @@ namespace Agp2p.Web.admin.statistic
             public string InvestorUserName { get; set; }
             public string InvestorGroupName { get; set; }
             public decimal InvestValue { get; set; }
+            public decimal UnInvestValue { get; set; }
             public string InvestTime { get; set; }
         }
 
@@ -83,17 +84,58 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var beforePaging = QueryInvestorDetails();
+            if (rblType.SelectedValue == "0")
+            {
+                totalCount = beforePaging.Count();
+                rptList.DataSource = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                rptList.DataBind();
 
-            totalCount = beforePaging.Count();
-            rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataBind();
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("project_investor_detail.aspx",
+                    "keywords={0}&page={1}&year={2}&month={3}&status={4}&category_id={5}", txtKeywords.Text, "__id__",
+                    txtYear.Text,
+                    txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                var summaryData =
+                    beforePaging.GroupBy(d => d.Project.Category)
+                        .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
+                        .Select(d =>
+                        {
+                            var data = new InvestorDetail()
+                            {
+                                Project = new ProjectDetail()
+                                {
+                                    Index = d.no.ToString(),
+                                    Category = d.dg.Key,
+                                    FinancingAmount = d.dg.Sum(t => t.Project.FinancingAmount)
+                                },
+                                InvestValue = d.dg.Sum(t => t.InvestValue)
+                            };
+                            data.UnInvestValue = (decimal) (data.Project.FinancingAmount - data.InvestValue);
+                            return data;
+                        }).ToList();
+                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i =>
+                {
+                    var data = new InvestorDetail()
+                    {
+                        Project = new ProjectDetail()
+                        {
+                            Index = null,
+                            Category = "总计",
+                            FinancingAmount = summaryData.Sum(t => t.Project.FinancingAmount)
+                        },
+                        InvestValue = summaryData.Sum(t => t.InvestValue)
+                    };
+                    data.UnInvestValue = (decimal)(data.Project.FinancingAmount - data.InvestValue);
+                    return data;
+                }));
 
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("project_investor_detail.aspx",
-                "keywords={0}&page={1}&year={2}&month={3}&status={4}&category_id={5}", txtKeywords.Text, "__id__", txtYear.Text,
-                txtMonth.Text, rblProjectStatus.SelectedValue, ddlCategoryId.SelectedValue);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                rptList_summary.DataBind();
+            }
         }
 
         private List<InvestorDetail> QueryInvestorDetails()
@@ -242,6 +284,28 @@ namespace Agp2p.Web.admin.statistic
 
         protected void rblProjectStatus_OnSelectedIndexChanged(object sender, EventArgs e)
         {
+            RptBind();
+        }
+
+        /// <summary>
+        /// 切换汇总/明细列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_page.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_page.Visible = false;
+            }
             RptBind();
         }
     }

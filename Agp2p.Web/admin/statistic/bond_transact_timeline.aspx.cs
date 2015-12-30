@@ -20,6 +20,7 @@ namespace Agp2p.Web.admin.statistic
         public string project { get; set; }
         public string user { get; set; }
         public string remark { get; set; }
+        public string category { get; set; }
     }
 
     public partial class bond_transact_timeline : UI.ManagePage
@@ -69,21 +70,46 @@ namespace Agp2p.Web.admin.statistic
         private void RptBind()
         {
             var transactions = QueryProjectTransactions();
-            var pageData = transactions.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
+            if (rblType.SelectedValue == "0")
             {
-                index = null,
-                occurTime = "总计",
-                income = pageData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
-                outcome = pageData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
-            }));
-            rptList.DataBind();
+                var pageData = transactions.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                rptList.DataSource = pageData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
+                {
+                    index = null,
+                    occurTime = "总计",
+                    income = pageData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
+                    outcome = pageData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
+                }));
+                rptList.DataBind();
 
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("bond_transact_timeline.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}&category_id={4}",
-                txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("bond_transact_timeline.aspx",
+                    "keywords={0}&page={1}&startTime={2}&endTime={3}&category_id={4}",
+                    txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, ddlCategoryId.SelectedValue);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                var summaryData =
+                    transactions.GroupBy(tr => tr.category)
+                        .Zip(Utils.Infinite(1), (trg, no) => new {trg = trg, no})
+                        .Select(tr => new BondTransaction
+                        {
+                            index = tr.no,
+                            category = tr.trg.Key,
+                            income = tr.trg.Sum(t => t.income)
+                        })
+                        .ToList();
+
+                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
+                {
+                    index = null,
+                    category = "总计",
+                    income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault())
+                }));
+                rptList_summary.DataBind();
+            }
         }
 
         private IEnumerable<BondTransaction> QueryProjectTransactions()
@@ -117,7 +143,8 @@ namespace Agp2p.Web.admin.statistic
                     occurTime = pprt.prt.create_time.ToString("yyyy-MM-dd HH:mm"),
                     remark = pprt.prt.remark,
                     user = string.IsNullOrEmpty(pprt.prt.dt_users.real_name) ? pprt.prt.dt_users.user_name : pprt.prt.dt_users.real_name,
-                    project = pprt.prt.li_projects.title
+                    project = pprt.prt.li_projects.title,
+                    category = pprt.prt.li_projects.dt_article_category.title
                 }).AsQueryable();
         }
 
@@ -152,6 +179,23 @@ namespace Agp2p.Web.admin.statistic
 
             var titles = new[] { "序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
             Utils.ExportXls("风险保证金明细", titles, xlsData, Response);
+        }
+
+        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_page.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_page.Visible = false;
+            }
+            RptBind();
         }
     }
 }
