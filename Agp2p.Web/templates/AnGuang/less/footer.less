@@ -55,11 +55,44 @@ div.footer-wrap {
         }
     }
     .footer-bottom {
-        height: 60px;
-        line-height: 60px;
-        color: @white;
-        font-size: @font17;
+        height: 110px;
+        padding: 15px 0;
         text-align: center;
         background: #dcdcdc;
+        div {
+            text-align: center;
+            & > span {
+                display: inline-block;
+                width: 110px;
+                height: 40px;
+                margin-left: 85px;
+            }
+            span:first-child { margin-left: 0; }
+            .icon1 {
+                 background: url("../imgs/index/footerIcon1.png");
+                 &:hover {
+                     background: url("../imgs/index/footerIcon1Hover.png");
+                 }
+             }
+            .icon2 {
+                background: url("../imgs/index/footerIcon2.png");
+                &:hover {
+                    background: url("../imgs/index/footerIcon2Hover.png");
+                }
+            }
+            .icon3 {
+                width: 83px !important;
+                background: url("../imgs/index/footerIcon3.png");
+                &:hover {
+                    background: url("../imgs/index/footerIcon3Hover.png");
+                }
+            }
+        }
+        p {
+            color: @white;
+            font-size: @font17;
+            text-align: center;
+            margin-top: 10px;
+        }
     }
 }
