@@ -1262,7 +1262,7 @@ namespace Agp2p.Core
             {
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess) // 项目满标不显示支出
                     return null;
-                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess
+                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest
                     ? his.li_project_transactions.principal // 投资
                     : (decimal?) null;
             }
