@@ -1620,7 +1620,7 @@ namespace Agp2p.Common
         {
             var workbook = GenXlsForSingleTable(worksheetName, wsAction);
 
-            StreamingFile("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{worksheetName}_{DateTime.Now:yyyyMMddHHmmss}.xlsx", s => workbook.SaveAs(s), httpResponse);
+            StreamingFile("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{worksheetName}_{DateTime.Now:yyyyMMddHHmmss}.xls", s => workbook.SaveAs(s), httpResponse);
         }
 
         public static void ExportXls<T>(string worksheetName, IEnumerable<string> titles, IEnumerable<T> xlsData, HttpResponse httpResponse)
