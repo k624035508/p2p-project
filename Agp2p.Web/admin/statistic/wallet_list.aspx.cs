@@ -67,8 +67,40 @@ namespace Agp2p.Web.admin.statistic
             //txtKeywords.Text = keywords;
 
             var wallets = QueryWallets(out totalCount);
-            rptList.DataSource = wallets.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataBind();
+            if (rblTableType.SelectedValue == "0")
+            {
+                div_pagination.Visible = true;
+                rptList.DataSource = wallets.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+                rptList.DataBind();
+            }
+            else
+            {
+                div_pagination.Visible = false;
+                var grouped = wallets.Where(w => w.user_id != 0).GroupBy(w => w.dt_users.dt_user_groups).Select(g => new li_wallets
+                {
+                    dt_users = new dt_users { id = -1, user_name = g.Key.title },
+                    idle_money = g.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
+                    locked_money = g.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
+                    investing_money = g.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
+                    total_investment = g.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
+                    profiting_money = g.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
+                    total_profit = g.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
+                    total_charge = g.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
+                    total_withdraw = g.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
+                }).ToList();
+                rptList.DataSource = grouped.Concat(Enumerable.Range(0,1).Select(i => new li_wallets
+                {
+                    idle_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
+                    locked_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
+                    investing_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
+                    total_investment = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
+                    profiting_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
+                    total_profit = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
+                    total_charge = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
+                    total_withdraw = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
+                }));
+                rptList.DataBind();
+            }
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
@@ -174,6 +206,11 @@ namespace Agp2p.Web.admin.statistic
 
             var titles = new[] { "用户", "姓名", "可用余额", "冻结金额", "在投金额", "已还本金", "累计投资", "待收益", "已收益", "累计收益", "累计充值", "累计提现", "更新时间" };
             Utils.ExportXls("用户资金", titles, xlsData, Response);
+        }
+
+        protected void rblTableType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            RptBind();
         }
     }
 }
