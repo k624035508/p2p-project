@@ -48,7 +48,7 @@ namespace Agp2p.Web.admin.statistic
             };
 
         protected void Page_Load(object sender, EventArgs e)
-        {            
+        {
             user_id = DTRequest.GetQueryString("user_id");
             action_type = DTRequest.GetQueryInt("action_type");
             userGroup = DTRequest.GetQueryInt("userGroup");
@@ -86,7 +86,7 @@ namespace Agp2p.Web.admin.statistic
             var userId = string.IsNullOrWhiteSpace(user_id) ? 0 : Convert.ToInt32(user_id);
             var listItems = Utils.GetEnumValues<Agp2pEnums.WalletHistoryTypeEnum>()
                 .Where(en => userId == 0 ? !_ignoringHistoryTypes.Contains((int)en) : !_ignoringHistoryTypesSpecificUser.Contains((int)en))
-                .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int) te).ToString()))
+                .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
                 .ToArray();
             ddlWalletHistoryTypeId.Items.AddRange(listItems);
 
@@ -114,24 +114,100 @@ namespace Agp2p.Web.admin.statistic
 
         #region 数据绑定=================================
 
+        protected class UserGroupData
+        {
+            public string Index { get; set; }
+            public string GroupName { get; set; }
+            public decimal ReCharge { get; set; }
+            public decimal WithDraw { get; set; }
+            public decimal Invest { get; set; }
+            public decimal Principal { get; set; }
+            public decimal Interest { get; set; }
+        }
+
         private void RptBind()
         {
             var query = QueryWalletHistories();
+            if (rblType.SelectedValue == "0")
+            {
+                totalCount = query.Count();
+                rptList.DataSource =
+                    query.OrderByDescending(h => h.id)
+                        .Skip(pageSize * (page - 1))
+                        .Take(pageSize)
+                        .ToList();
+                rptList.DataBind();
 
-            totalCount = query.Count();
-            rptList.DataSource =
-                query.OrderByDescending(h => h.id)
-                    .Skip(pageSize*(page - 1))
-                    .Take(pageSize)
-                    .ToList();
-            rptList.DataBind();
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                var pageUrl = Utils.CombUrlTxt("wallet_history_list.aspx",
+                    "user_id={0}&page={1}&action_type={2}&startTime={3}&endTime={4}&keywords={5}&userGroup={6}&today={7}",
+                    user_id, "__id__",
+                    action_type.ToString(), txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(),
+                    userGroup.ToString(), today);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                var summaryData =
+                    query.AsEnumerable().GroupBy(d => d.dt_users.group_id)
+                    .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
+                        .Select(d => new UserGroupData()
+                        {
+                            Index = d.no.ToString(),
+                            GroupName = d.dg.First().dt_users.dt_user_groups.title,
+                            //充值金额
+                            ReCharge =
+                                    d.dg.Where(
+                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ChargeConfirm)
+                                        .Sum(i => i.li_bank_transactions.value),
+                            //提现金额
+                            WithDraw =
+                                    d.dg.Where(
+                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm)
+                                        .Sum(i => i.li_bank_transactions.value),
+                            //投资金额
+                            Invest =
+                                    d.dg.Where(
+                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest)
+                                        .Sum(i => i.li_project_transactions.principal),
+                            //返还本金
+                            Principal =
+                                    d.dg.Where(
+                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal
+                                             ||
+                                             i.action_type ==
+                                             (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest)
+                                        .Sum(i => i.li_project_transactions.principal),
+                            //返还利息
+                            Interest =
+                                    d.dg.Where(
+                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest
+                                             ||
+                                             i.action_type ==
+                                             (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest
+                                             ||
+                                             i.action_type ==
+                                             (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidOverdueFine)
+                                        .Sum(i => i.li_project_transactions.interest ?? 0)
 
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            var pageUrl = Utils.CombUrlTxt("wallet_history_list.aspx",
-                "user_id={0}&page={1}&action_type={2}&startTime={3}&endTime={4}&keywords={5}&userGroup={6}&today={7}", user_id, "__id__",
-                action_type.ToString(), txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), today);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                        }).ToList();
+                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i =>
+                        new UserGroupData()
+                        {
+                            Index = null,
+                            GroupName = "总计",
+                            ReCharge = summaryData.Sum(s => s.ReCharge),
+                            WithDraw = summaryData.Sum(s => s.WithDraw),
+                            Invest = summaryData.Sum(s => s.Invest),
+                            Principal = summaryData.Sum(s => s.Principal),
+                            Interest = summaryData.Sum(s => s.Interest)
+                        }
+                    ));
+
+                rptList_summary.DataBind();
+            }
+
         }
 
         private IQueryable<li_wallet_histories> QueryWalletHistories()
@@ -230,19 +306,19 @@ namespace Agp2p.Web.admin.statistic
         {
             if (his.li_project_transactions != null)
             {
-                if (his.li_project_transactions.type != (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                if (his.li_project_transactions.type != (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                 {
                     // 查出 还款期数/总期数
                     var term = context.li_wallet_histories.Count(
                         h => h.user_id == his.user_id && h.create_time <= his.create_time &&
-                             (h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest ||
-                              h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
-                              h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
+                             (h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest ||
+                              h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
+                              h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
                              h.li_project_transactions.project == his.li_project_transactions.project);
-                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid));
+                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid));
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
                 }
-                return 
+                return
                     string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his));
             }
             if (his.li_bank_transactions != null)
@@ -288,7 +364,7 @@ namespace Agp2p.Web.admin.statistic
                     h.profiting_money,
                     h.total_profit,
                     h.create_time,
-                    remark = QueryTransactionRemark(h, his => his.li_project_transactions.li_projects.title) 
+                    remark = QueryTransactionRemark(h, his => his.li_project_transactions.li_projects.title)
                 });
 
             var titles = new[] { "用户", "姓名", "操作类型", "收入金额", "支出金额", "可用余额", "在投金额", "累计投资", "待收利润", "已收利润", "交易时间", "备注" };
@@ -325,6 +401,28 @@ namespace Agp2p.Web.admin.statistic
             Response.Redirect(Utils.CombUrlTxt("wallet_history_list.aspx",
                 "user_id={0}&action_type={1}&startTime={2}&endTime={3}&keywords={4}&userGroup={5}&today={6}", user_id,
                 ddlWalletHistoryTypeId.SelectedValue, txtStartTime.Text, txtEndTime.Text, txtKeywords.Text.Trim(), userGroup.ToString(), cb_today.Checked.ToString()));
+        }
+
+        /// <summary>
+        /// 切换汇总/明细列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_page.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_page.Visible = false;
+            }
+            RptBind();
         }
     }
 }
