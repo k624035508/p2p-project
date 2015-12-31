@@ -85,6 +85,7 @@ class ProjectCostingPredictTable extends React.Component {
     		}
     	};
         window.openEditingTable = () => {
+            $("#title").html("业务预测—资金成本");
             $("#editingTable-mountingPoint").show();
             $("#groupByTermLengthTable-mountingPoint,#groupByPrepayRateTable-mountingPoint").hide();
             this.forceUpdate();
@@ -207,6 +208,7 @@ class GroupByTermLengthTable extends React.Component {
     } 
     componentDidMount() {
         window.openGroupByTermLengthTable = () => {
+            $("#title").html("汇总表（按品种）");
             $("#editingTable-mountingPoint").hide();
             $("#groupByTermLengthTable-mountingPoint").show();
             $("#groupByPrepayRateTable-mountingPoint").hide();
@@ -271,6 +273,7 @@ class GroupByPrepayRateTable extends React.Component {
     } 
     componentDidMount() {
         window.openGroupByPrepayRateTable = () => {
+            $("#title").html("汇总表（按垫付率）");
             $("#editingTable-mountingPoint").hide();
             $("#groupByTermLengthTable-mountingPoint").hide();
             $("#groupByPrepayRateTable-mountingPoint").show();
