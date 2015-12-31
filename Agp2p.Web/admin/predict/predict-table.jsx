@@ -106,8 +106,8 @@ class ProjectCostingPredictTable extends React.Component {
         this.state.projectPublishCostingPredict.push(assign({}, p, this.defaultValue));
         this.forceUpdate();
     }
-    genEditableTd(objRef, propertyName, childrenProjector = x => x) {
-    	return objRef.editing == propertyName ? <td><input
+    genEditableTd(objRef, propertyName, childrenProjector = x => x, extraProps = {}) {
+    	return objRef.editing == propertyName ? <td {...extraProps}><input
     		style={{width: '100%'}}
     		autoFocus={true}
     		value={objRef[propertyName]}
@@ -119,7 +119,7 @@ class ProjectCostingPredictTable extends React.Component {
 	    		delete objRef.editing;
     			this.forceUpdate();
     		}}
-    	 /></td> : <td
+    	 /></td> : <td {...extraProps}
     	 	onClick={ev => {
 	    		objRef.editing = propertyName;
 	    		this.forceUpdate();
@@ -164,7 +164,8 @@ class ProjectCostingPredictTable extends React.Component {
 			  				{this.genEditableTd(p, "financingAmount",
                                 children => <div>{children.format()}
                                     <a href="javascript:" onClick={ev => {ev.stopPropagation(); this.clonePredict(p);}} style={{marginLeft: '10px'}}>添加</a>
-                                    <a href="javascript:" onClick={deleteCurrentPredict} style={{marginLeft: '40px'}}>删除</a></div>)}
+                                    <a href="javascript:" onClick={deleteCurrentPredict} style={{marginLeft: '40px'}}>删除</a></div>,
+                                    {'data-value': p.financingAmount.format()})}
 			  				{this.genEditableTd(p, "prepayRatePercent")}
                             <td>{getPrepayAmount(p).format()}</td>
 			  				{this.genEditableTd(p, "profitRateYearlyPercent")}
@@ -362,7 +363,7 @@ window.exportExcel = (function() {
             var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
             var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
             var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
-            dataValue = (dataValue)?dataValue:tables[i].rows[j].cells[k].innerText; // innerHTML
+            dataValue = (dataValue)?dataValue:tables[i].rows[j].cells[k].innerHTML;
             var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
             dataFormula = (dataFormula)?dataFormula:(appname=='Calc' && dataType=='DateTime')?dataValue:null;
             ctx = {  attributeStyleID: (dataStyle=='Currency' || dataStyle=='Date')?' ss:StyleID="'+dataStyle+'"':''
