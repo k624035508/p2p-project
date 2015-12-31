@@ -123,9 +123,16 @@ namespace Agp2p.Web.admin.statistic
             }
             else
             {
-                var summaryData =
-                    beforePaging.GroupBy(d => d.CategoryId)
-                        .Zip(Utils.Infinite(1), (dg, no) => new {dg, no})
+                rptList_summary.DataSource = QueryGroupData(beforePaging);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<RepaymentTaskAmountDetail> QueryGroupData(IEnumerable<RepaymentTaskAmountDetail> query)
+        {
+            var summaryData =
+                    query.GroupBy(d => d.CategoryId)
+                        .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
                         .Select(d =>
                         {
                             return new RepaymentTaskAmountDetail()
@@ -140,19 +147,18 @@ namespace Agp2p.Web.admin.statistic
                                 RepayTotal = d.dg.Sum(t => t.RepayTotal)
                             };
                         }).ToList();
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+            summaryData.Add(new RepaymentTaskAmountDetail()
+            {
+                Project = new ProjectDetail()
                 {
-                    Project = new ProjectDetail()
-                    {
-                        Index = null,
-                        Category = "总计"
-                    },
-                    RepayInterest = summaryData.Sum(t => t.RepayInterest),
-                    RepayPrincipal = summaryData.Sum(t => t.RepayPrincipal),
-                    RepayTotal = summaryData.Sum(t => t.RepayTotal)
-                }));
-                rptList_summary.DataBind();
-            }
+                    Index = null,
+                    Category = "总计"
+                },
+                RepayInterest = summaryData.Sum(t => t.RepayInterest),
+                RepayPrincipal = summaryData.Sum(t => t.RepayPrincipal),
+                RepayTotal = summaryData.Sum(t => t.RepayTotal)
+            });
+            return summaryData;
         }
 
         private IEnumerable<RepaymentTaskAmountDetail> QueryProjectRepayTaskData(out int count)
@@ -312,28 +318,50 @@ namespace Agp2p.Web.admin.statistic
         {
             int totalCount;
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
-            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => CategoryIdTitleMap != null ? new
+            if (rblType.SelectedValue == "0")
             {
-                d.Project.Index,
-                d.Project.Name,
-                d.Project.Creditor,
-                d.Project.Category,
-                d.Project.FinancingAmount,
-                d.Project.ProfitRateYear,
-                d.Project.InvestCompleteTime,
-                d.Project.RepayCompleteTime,
-                d.RepayTerm,
-                d.RepayTime,
-                d.RepayAt,
-                d.Status,
-                d.RepayPrincipal,
-                d.RepayInterest,
-                d.RepayTotal,
-                
-            } : null);
+                var lsData =
+                    beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => CategoryIdTitleMap != null
+                        ? new
+                        {
+                            d.Project.Index,
+                            d.Project.Name,
+                            d.Project.Creditor,
+                            d.Project.Category,
+                            d.Project.FinancingAmount,
+                            d.Project.ProfitRateYear,
+                            d.Project.InvestCompleteTime,
+                            d.Project.RepayCompleteTime,
+                            d.RepayTerm,
+                            d.RepayTime,
+                            d.RepayAt,
+                            d.Status,
+                            d.RepayPrincipal,
+                            d.RepayInterest,
+                            d.RepayTotal,
 
-            var titles = new[] { "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "满标时间", "到期日", "期数", "应付日期", "实付日期", "状态", "应还本金", "应还利息", "本息合计" };
-            Utils.ExportXls("应还借款明细", titles, lsData, Response);
+                        }
+                        : null);
+                var titles = new[]
+                {
+                    "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "满标时间", "到期日", "期数", "应付日期", "实付日期", "状态", "应还本金", "应还利息",
+                    "本息合计"
+                };
+                Utils.ExportXls("应还款明细", titles, lsData, Response);
+            }
+            else
+            {
+                var lsData = QueryGroupData(beforePaging).Select(d => new
+                {
+                    d.Project.Index,
+                    d.Project.Category,
+                    d.RepayPrincipal,
+                    d.RepayInterest,
+                    d.RepayTotal
+                });
+                var titles = new[] {"序号", "产品", "借款金额", "利息", "本息合计"};
+                Utils.ExportXls("应还款汇总", titles, lsData, Response);
+            }
         }
 
         protected void ddlOrderBy_SelectedIndexChanged(object sender, EventArgs e)

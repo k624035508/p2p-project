@@ -59,9 +59,9 @@ namespace Agp2p.Web.admin.statistic
                     Index = rs.no.ToString(),
                     YearMonth = repayTask.Key,
                     ShouldRepayCount = repayTask.Count(),
-                    ShouldRepayAmount = repayTask.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
+                    ShouldRepayAmount = repayTask.Sum(r => r.repay_interest + r.repay_principal).ToString("c"),
                     RepayCount = alreadyRepayQuery.Count(),
-                    RepayAmount = alreadyRepayQuery.Sum(r => r.repay_interest + r.repay_principal).ToString("N"),
+                    RepayAmount = alreadyRepayQuery.Sum(r => r.repay_interest + r.repay_principal).ToString("c"),
                     RepayOnTimeCount = alreadyRepayQuery.Count(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.OverTimePaid),
                     OverNoRepayCount = repayTask.Count(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime), 
                 };
