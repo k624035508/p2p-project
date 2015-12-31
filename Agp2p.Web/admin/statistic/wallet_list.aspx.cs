@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Text;
+using Senparc.Weixin.MP.AdvancedAPIs;
 
 namespace Agp2p.Web.admin.statistic
 {
@@ -76,29 +77,7 @@ namespace Agp2p.Web.admin.statistic
             else
             {
                 div_pagination.Visible = false;
-                var grouped = wallets.Where(w => w.user_id != 0).GroupBy(w => w.dt_users.dt_user_groups).Select(g => new li_wallets
-                {
-                    dt_users = new dt_users { id = -1, user_name = g.Key.title },
-                    idle_money = g.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
-                    locked_money = g.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
-                    investing_money = g.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
-                    total_investment = g.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
-                    profiting_money = g.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
-                    total_profit = g.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
-                    total_charge = g.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
-                    total_withdraw = g.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
-                }).ToList();
-                rptList.DataSource = grouped.Concat(Enumerable.Range(0,1).Select(i => new li_wallets
-                {
-                    idle_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
-                    locked_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
-                    investing_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
-                    total_investment = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
-                    profiting_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
-                    total_profit = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
-                    total_charge = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
-                    total_withdraw = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
-                }));
+                rptList.DataSource = QueryGroupData(wallets);
                 rptList.DataBind();
             }
 
@@ -106,6 +85,34 @@ namespace Agp2p.Web.admin.statistic
             txtPageNum.Text = pageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("wallet_list.aspx", "keywords={0}&page={1}&startTime={2}&endTime={3}&UserGroud={4}", txtKeywords.Text, "__id__", txtStartTime.Text, txtEndTime.Text, UserGroud.ToString());
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+        }
+
+        private List<li_wallets> QueryGroupData(IEnumerable<li_wallets> wallets)
+        {
+            var grouped = wallets.Where(w => w.user_id != 0).GroupBy(w => w.dt_users.dt_user_groups).Select(g => new li_wallets
+            {
+                dt_users = new dt_users { id = -1, user_name = g.Key.title },
+                idle_money = g.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
+                locked_money = g.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
+                investing_money = g.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
+                total_investment = g.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
+                profiting_money = g.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
+                total_profit = g.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
+                total_charge = g.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
+                total_withdraw = g.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
+            }).ToList();
+            grouped.Add(new li_wallets
+            {
+                idle_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.idle_money),
+                locked_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.locked_money),
+                investing_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.investing_money),
+                total_investment = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_investment),
+                profiting_money = grouped.Aggregate(0m, (sum, wa) => sum + wa.profiting_money),
+                total_profit = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_profit),
+                total_charge = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_charge),
+                total_withdraw = grouped.Aggregate(0m, (sum, wa) => sum + wa.total_withdraw),
+            });
+            return grouped;
         }
 
         private IEnumerable<li_wallets> QueryWallets(out int count)
@@ -185,27 +192,53 @@ namespace Agp2p.Web.admin.statistic
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var wallets = QueryWallets(out totalCount);
-            var xlsData = wallets.Skip(pageSize * (page - 1)).Take(pageSize)
-                .Select(
-                    w => new
-                    {
-                        user = w.dt_users == null ? "" : w.dt_users.user_name,
-                        name = w.dt_users == null ? "" : w.dt_users.real_name,
-                        w.idle_money,
-                        w.locked_money,
-                        w.investing_money,
-                        invested = w.total_investment - w.investing_money,
-                        w.total_investment,
-                        w.profiting_money,
-                        w.total_profit,
-                        allProfit = w.total_profit + w.profiting_money,
-                        w.total_charge,
-                        w.total_withdraw,
-                        w.last_update_time
-                    });
+            if (rblTableType.SelectedValue == "0")
+            {
+                var xlsData = wallets.Skip(pageSize*(page - 1)).Take(pageSize)
+                    .Select(
+                        w => new
+                        {
+                            user = w.dt_users == null ? "" : w.dt_users.user_name,
+                            name = w.dt_users == null ? "" : w.dt_users.real_name,
+                            w.idle_money,
+                            w.locked_money,
+                            w.investing_money,
+                            invested = w.total_investment - w.investing_money,
+                            w.total_investment,
+                            w.profiting_money,
+                            w.total_profit,
+                            allProfit = w.total_profit + w.profiting_money,
+                            w.total_charge,
+                            w.total_withdraw,
+                            w.last_update_time
+                        });
 
-            var titles = new[] { "用户", "姓名", "可用余额", "冻结金额", "在投金额", "已还本金", "累计投资", "待收益", "已收益", "累计收益", "累计充值", "累计提现", "更新时间" };
-            Utils.ExportXls("用户资金", titles, xlsData, Response);
+                var titles = new[]
+                {"用户", "姓名", "可用余额", "冻结金额", "在投金额", "已还本金", "累计投资", "待收益", "已收益", "累计收益", "累计充值", "累计提现", "更新时间"};
+                Utils.ExportXls("用户资金", titles, xlsData, Response);
+            }
+            else
+            {
+                var xlsData = QueryGroupData(wallets).Select(w => new
+                {
+                    groupName = w.dt_users != null ? w.dt_users.user_name : "总计",
+                    w.idle_money,
+                    w.locked_money,
+                    w.investing_money,
+                    invested = w.total_investment - w.investing_money,
+                    w.total_investment,
+                    w.profiting_money,
+                    w.total_profit,
+                    allProfit = w.total_profit + w.profiting_money,
+                    w.total_charge,
+                    w.total_withdraw,
+                    w.last_update_time
+                });
+
+                var titles = new[]
+                {"会员组", "可用余额", "冻结金额", "在投金额", "已还本金", "累计投资", "待收益", "已收益", "累计收益", "累计充值", "累计提现", "更新时间"};
+                Utils.ExportXls("用户资金", titles, xlsData, Response);
+            }
         }
 
         protected void rblTableType_OnSelectedIndexChanged(object sender, EventArgs e)
