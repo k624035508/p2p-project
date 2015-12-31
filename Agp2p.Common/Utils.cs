@@ -1648,6 +1648,8 @@ namespace Agp2p.Common
                 memoryStream.WriteTo(httpResponse.OutputStream);
                 memoryStream.Close();
             }
+
+            httpResponse.End(); // 不能删
         }
 
 
