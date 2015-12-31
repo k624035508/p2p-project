@@ -78,6 +78,7 @@ namespace Agp2p.Web.admin.statistic
             public decimal InvestValue { get; set; }
             public decimal UnInvestValue { get; set; }
             public string InvestTime { get; set; }
+            public int CategoryId { get; set; }
         }
 
         #region 数据绑定=================================
@@ -100,8 +101,15 @@ namespace Agp2p.Web.admin.statistic
             }
             else
             {
-                var summaryData =
-                    beforePaging.GroupBy(d => d.Project.Category)
+                rptList_summary.DataSource = QueryGroupData(beforePaging);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<InvestorDetail> QueryGroupData(List<InvestorDetail> beforePaging)
+        {
+            var summaryData =
+                    beforePaging.Where(d => d.CategoryId != 0).GroupBy(d => d.CategoryId)
                         .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
                         .Select(d =>
                         {
@@ -110,32 +118,27 @@ namespace Agp2p.Web.admin.statistic
                                 Project = new ProjectDetail()
                                 {
                                     Index = d.no.ToString(),
-                                    Category = d.dg.Key,
+                                    Category = CategoryIdTitleMap[d.dg.Key],
                                     FinancingAmount = d.dg.Sum(t => t.Project.FinancingAmount)
                                 },
                                 InvestValue = d.dg.Sum(t => t.InvestValue)
                             };
-                            data.UnInvestValue = (decimal) (data.Project.FinancingAmount - data.InvestValue);
+                            data.UnInvestValue = (decimal)(data.Project.FinancingAmount - data.InvestValue);
                             return data;
                         }).ToList();
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i =>
+            var totalData = new InvestorDetail()
+            {
+                Project = new ProjectDetail()
                 {
-                    var data = new InvestorDetail()
-                    {
-                        Project = new ProjectDetail()
-                        {
-                            Index = null,
-                            Category = "总计",
-                            FinancingAmount = summaryData.Sum(t => t.Project.FinancingAmount)
-                        },
-                        InvestValue = summaryData.Sum(t => t.InvestValue)
-                    };
-                    data.UnInvestValue = (decimal)(data.Project.FinancingAmount - data.InvestValue);
-                    return data;
-                }));
-
-                rptList_summary.DataBind();
-            }
+                    Index = null,
+                    Category = "总计",
+                    FinancingAmount = summaryData.Sum(t => t.Project.FinancingAmount)
+                },
+                InvestValue = summaryData.Sum(t => t.InvestValue)
+            };
+            totalData.UnInvestValue = (decimal)(totalData.Project.FinancingAmount - totalData.InvestValue);
+            summaryData.Add(totalData);
+            return summaryData;
         }
 
         private List<InvestorDetail> QueryInvestorDetails()
@@ -181,13 +184,15 @@ namespace Agp2p.Web.admin.statistic
                             InvestorUserName = tr.dt_users.user_name,
                             InvestorGroupName = tr.dt_users.dt_user_groups.title,
                             InvestValue = tr.principal,
-                            InvestTime = tr.create_time.ToString()
+                            InvestTime = tr.create_time.ToString(),
+                            CategoryId = tr.li_projects.category_id
                         }).Concat(new[]
                         {
                             new InvestorDetail
                             {
                                 Project = new ProjectDetail {Name = "小计"},
                                 InvestValue = invested.Sum(t => t.principal),
+                                CategoryId = 0
                             }
                         }).ToList();
                         investorDetails.First().Project = new ProjectDetail
@@ -215,6 +220,7 @@ namespace Agp2p.Web.admin.statistic
                                 t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success))
                                 .Select(t => t.principal)
                                 .AsEnumerable().DefaultIfEmpty(0).Sum(),
+                            CategoryId = 0
                         }
                     }).ToList();
             return beforePaging;
@@ -261,25 +267,43 @@ namespace Agp2p.Web.admin.statistic
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var beforePaging = QueryInvestorDetails();
-            var lsData = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).Select(d => new
+            if (rblType.SelectedValue == "0")
             {
-                d.Project.Index,
-                d.Project.Name,
-                d.Project.Category,
-                d.Project.FinancingAmount,
-                d.Project.ProfitRateYear,
-                d.Project.Term,
-                d.Project.PublishTime,
-                d.Project.InvestCompleteTime,
-                d.Project.RepayCompleteTime,
-                d.InvestorRealName,
-                d.InvestorUserName,
-                d.InvestorGroupName,
-                d.InvestValue,
-                d.InvestTime
-            });
-            var titles = new[] { "序号", "标题", "产品", "融资金额", "年利率", "期限", "发标时间", "满标时间", "到期时间", "投资者", "会员号", "会员组", "投资金额", "投资时间" };
-            Utils.ExportXls("借款满标明细", titles, lsData, Response);
+                var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
+                {
+                    d.Project.Index,
+                    d.Project.Name,
+                    d.Project.Category,
+                    d.Project.FinancingAmount,
+                    d.Project.ProfitRateYear,
+                    d.Project.Term,
+                    d.Project.PublishTime,
+                    d.Project.InvestCompleteTime,
+                    d.Project.RepayCompleteTime,
+                    d.InvestorRealName,
+                    d.InvestorUserName,
+                    d.InvestorGroupName,
+                    d.InvestValue,
+                    d.InvestTime
+                });
+                var titles = new[]
+                {"序号", "标题", "产品", "融资金额", "年利率", "期限", "发标时间", "满标时间", "到期时间", "投资者", "会员号", "会员组", "投资金额", "投资时间"};
+                Utils.ExportXls("借款满标明细", titles, lsData, Response);
+            }
+            else
+            {
+                var lsData = QueryGroupData(beforePaging).Select(d => new
+                {
+                    d.Project.Index,
+                    d.Project.Category,
+                    d.Project.FinancingAmount,
+                    d.InvestValue,
+                    d.UnInvestValue
+                });
+                var titles = new[]
+                {"序号", "产品", "借款金额", "已投金额", "未投金额"};
+                Utils.ExportXls("借款满标汇总", titles, lsData, Response);
+            }
         }
 
         protected void rblProjectStatus_OnSelectedIndexChanged(object sender, EventArgs e)

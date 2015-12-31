@@ -115,6 +115,7 @@
     <th align="left">标题</th>
     <th align="left" width="12%">所属类别</th>
     <th align="left" width="16%">发布时间</th>
+    <th align="left" width="8%">点击数</th>
     <th align="left" width="65">排序</th>
     <th align="left" width="110">属性</th>
     <th width="8%">操作</th>
@@ -126,6 +127,7 @@
     <td><a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+      <td><%#Eval("click")%></td>
     <td><asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" /></td>
     <td>
       <div class="btn-tools">

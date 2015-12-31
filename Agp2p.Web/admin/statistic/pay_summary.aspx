@@ -75,7 +75,7 @@ td.center { text-align: center; }
       <td><%# Eval("ShouldRepayCount")%></td>
       <td><%# Eval("ShouldRepayAmount")%></td>
       <td><%# Eval("RepayCount")%></td>
-      <td><%# Eval("RepayAmount")%></td>
+      <td><%# Convert.ToDecimal(Eval("RepayAmount")).ToString("c")%></td>
       <td><%# Eval("RepayRate")%></td>
       <td><%# Eval("RepayOnTimeCount")%></td>
       <td><%# Eval("RepayOnTimeRate")%></td>

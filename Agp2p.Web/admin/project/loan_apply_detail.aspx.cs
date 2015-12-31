@@ -427,7 +427,7 @@ namespace Agp2p.Web.admin.project
                 var loaner = LqContext.li_loaners.SingleOrDefault(l => l.id == loanId);
                 ShowLoanerInfo(loaner);
             }
-        } 
+        }
 
         /// <summary>
         /// 切换借款主体
@@ -491,8 +491,11 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_term.SelectedIndex = 1;
 
                 txt_project_repayment_type.Items.Clear();
-                txt_project_repayment_type.Items.Add(new ListItem("先息后本", "10"));
-                txt_project_repayment_type.Items.Add(new ListItem("等额本息", "20"));
+                if (!category.call_index.Equals("newbie"))
+                {
+                    txt_project_repayment_type.Items.Add(new ListItem("先息后本", "10"));
+                    txt_project_repayment_type.Items.Add(new ListItem("等额本息", "20"));
+                }
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
                 txt_project_repayment_type.SelectedIndex = 0;
                 txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");

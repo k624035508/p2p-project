@@ -100,28 +100,34 @@ namespace Agp2p.Web.admin.statistic
             }
             else
             {
-                var summaryData = transactions.GroupBy(tr => tr.type).Zip(Utils.Infinite(1), (trg, no) => new { trg = trg, no }).Select(tr =>
-                {
-                    var summaryRechange = new OfflineTransaction {index = tr.no, type = tr.trg.Key };
-                    if (tr.trg.Key == Utils.GetAgp2pEnumDes(Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee))
-                    {
-                        summaryRechange.outcome = tr.trg.Sum(t => t.outcome);
-                    }
-                    else
-                    {
-                        summaryRechange.income = tr.trg.Sum(t => t.income);
-                    }
-                    return summaryRechange;
-                }).ToList();
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new OfflineTransaction
-                {
-                    index = null,
-                    type = "总计",
-                    income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
-                    outcome = summaryData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
-                }));
+                rptList_summary.DataSource = QueryGroupData(transactions);
                 rptList_summary.DataBind();
             }
+        }
+
+        private List<OfflineTransaction> QueryGroupData(IEnumerable<OfflineTransaction> query)
+        {
+            var summaryData = query.GroupBy(tr => tr.type).Zip(Utils.Infinite(1), (trg, no) => new { trg = trg, no }).Select(tr =>
+            {
+                var summaryRechange = new OfflineTransaction { index = tr.no, type = tr.trg.Key };
+                if (tr.trg.Key == Utils.GetAgp2pEnumDes(Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee))
+                {
+                    summaryRechange.outcome = tr.trg.Sum(t => t.outcome);
+                }
+                else
+                {
+                    summaryRechange.income = tr.trg.Sum(t => t.income);
+                }
+                return summaryRechange;
+            }).ToList();
+            summaryData.Add(new OfflineTransaction
+            {
+                index = null,
+                type = "总计",
+                income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
+                outcome = summaryData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
+            });
+            return summaryData;
         }
 
         private static readonly int[] OfflineProjectTransactionType =
@@ -203,10 +209,25 @@ namespace Agp2p.Web.admin.statistic
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var data = QueryProjectTransactions();
-            var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
+            if (rblType.SelectedValue == "0")
+            {
+                var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
+                var titles = new[] {"序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
+                Utils.ExportXls("平台收支明细", titles, xlsData, Response);
+            }
+            else
+            {
+                var xlsData = QueryGroupData(data).Select(d => new
+                {
+                    d.index,
+                    d.type,
+                    d.income,
+                    d.outcome   
+                });
+                var titles = new[] { "序号", "操作类型", "收入", "支出" };
+                Utils.ExportXls("平台收支汇总", titles, xlsData, Response);
+            }
 
-            var titles = new[] { "序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
-            Utils.ExportXls("用户资金", titles, xlsData, Response);
         }
 
         //筛选类别

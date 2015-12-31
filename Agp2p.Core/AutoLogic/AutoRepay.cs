@@ -44,13 +44,14 @@ namespace Agp2p.Core.AutoLogic
             if (temp != null)
             {
                 //构造兑付项目表格
-                var tableTemplate = "<table class='table table-bordered'><tbody><tr><th>序号</th><th>项目名称</th><th>返回金额</th><th>返回本金</th><th>返回收益</th></tr>{tr}</tbody></table>";
-                var trTemplate = "<tr><td>{no}</td><td>{project_name}</td><td>{amount}</td><td>{principal}</td><td>{interest}</td></tr>";
+                var tableTemplate = "<table class='table table-bordered'><tbody><tr><th>序号</th><th>项目类别</th><th>项目名称</th><th>返回金额</th><th>返回本金</th><th>返回收益</th></tr>{tr}</tbody></table>";
+                var trTemplate = "<tr><td>{no}</td><td>{project_type}</td><td>{project_name}</td><td>{amount}</td><td>{principal}</td><td>{interest}</td></tr>";
 
                 var trAll = Enumerable.Range(0, tasks.Count).Select(i =>
                 {
                     var t = tasks[i];
                     return trTemplate.Replace("{no}", (i + 1).ToString())
+                        .Replace("{project_type}", t.li_projects.dt_article_category.title)
                         .Replace("{project_name}", t.li_projects.title)
                         .Replace("{amount}", (t.repay_principal + t.repay_interest).ToString("c"))
                         .Replace("{principal}", t.repay_principal.ToString("c"))

@@ -29,7 +29,7 @@ function getUrlParameter(sParam) {
 //=====================初始化代码======================
 $(function () {
     // 初始化邀请码 input
-    var inviteCode = getUrlParameter("invite_code");
+    var inviteCode = getUrlParameter("inviteCode");
     if (inviteCode != null) {
         var inviterInput = $("#recommend-one");
         inviterInput.val(inviteCode);

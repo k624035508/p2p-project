@@ -94,7 +94,7 @@ namespace Agp2p.Web.admin.statistic
                 });
 
                 paySummary.ShouldRepayCount = paySummary.RepayCount + overTimeNotPay + noYetPay;
-                paySummary.ShouldRepayAmount = (paySummary.RepayAmount + overTimeNotPayAmount + noYetPayAmount).ToString("N");
+                paySummary.ShouldRepayAmount = (paySummary.RepayAmount + overTimeNotPayAmount + noYetPayAmount).ToString("c");
                 paySummary.RepayRate = (paySummary.RepayCount/paySummary.ShouldRepayCount).ToString("P1");
                 paySummary.RepayOnTimeCount = paySummary.RepayCount - overTimePay;
                 paySummary.RepayOnTimeRate = (paySummary.RepayOnTimeCount/paySummary.ShouldRepayCount).ToString("P1");
