@@ -71,8 +71,8 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
                         <th width="4%">序号</th>
-                        <th align="left" width="6%">收款人</th>
-                        <th align="left" width="6%">应兑付本金(元)</th>
+                        <th align="left" width="10%">收款人</th>
+                        <th align="left" width="8%">应兑付本金(元)</th>
                         <th align="left" width="6%">应兑付利息(元)</th>
                         <th align="left" width="8%">应兑付时间</th>
                         <th align="left" width="8%">实兑付时间</th>
@@ -89,8 +89,8 @@
                     <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     
                     <td><%#Eval("Invester")%></td>
-                    <td><%#Eval("Principal")%></td>
-                    <td><%#Eval("Interest")%></td>
+                    <td><%#Convert.ToDecimal(Eval("Principal")).ToString("C")%></td>
+                    <td><%#Convert.ToDecimal(Eval("Interest")).ToString("C")%></td>
                     <td><%#Eval("ShouldPayTime")%></td>
                     <td><%#Eval("PayTime")%></td>
                     <td><%#Eval("AgreeNo")%></td>

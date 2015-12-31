@@ -63,9 +63,9 @@
                     <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
                     <td><a href="../project/loan_detail.aspx?channel_id=<%=this.ChannelId %>&id=<%#Eval("ProjectID")%>&status=<%#Eval("ProjectStatus")%>&repay_status=<%#Eval("RepayStatus")%>"><%#Eval("ProjectTitle")%></a></td>
                     <td><%#Eval("Loaner")%></td>
-                    <td><%#Eval("Amount")%></td>
-                    <td><%#Eval("FactAmount")%></td>
-                    <td><%#Eval("Cost")%></td>
+                    <td><%#Convert.ToDecimal(Eval("Amount")).ToString("C")%></td>
+                    <td><%#Convert.ToDecimal(Eval("FactAmount")).ToString("C")%></td>
+                    <td><%#Convert.ToDecimal(Eval("Cost")).ToString("C")%></td>
                     <td><%#Eval("TimeTerm")%></td>
                     <td><%#Eval("DayCount")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
