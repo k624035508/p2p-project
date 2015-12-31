@@ -149,8 +149,14 @@ namespace Agp2p.Web.admin.statistic
             }
             else
             {
-                var summaryData =
-                    query.AsEnumerable().GroupBy(d => d.dt_users.group_id)
+                rptList_summary.DataSource = QueryGroupData(query);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<UserGroupData> QueryGroupData(IQueryable<li_wallet_histories> query)
+        {
+            var gData = query.AsEnumerable().GroupBy(d => d.dt_users.group_id)
                     .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
                         .Select(d => new UserGroupData()
                         {
@@ -192,22 +198,19 @@ namespace Agp2p.Web.admin.statistic
                                         .Sum(i => i.li_project_transactions.interest ?? 0)
 
                         }).ToList();
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i =>
-                        new UserGroupData()
-                        {
-                            Index = null,
-                            GroupName = "总计",
-                            ReCharge = summaryData.Sum(s => s.ReCharge),
-                            WithDraw = summaryData.Sum(s => s.WithDraw),
-                            Invest = summaryData.Sum(s => s.Invest),
-                            Principal = summaryData.Sum(s => s.Principal),
-                            Interest = summaryData.Sum(s => s.Interest)
-                        }
-                    ));
-
-                rptList_summary.DataBind();
-            }
-
+            gData.Add(
+                new UserGroupData()
+                {
+                    Index = null,
+                    GroupName = "总计",
+                    ReCharge = gData.Sum(s => s.ReCharge),
+                    WithDraw = gData.Sum(s => s.WithDraw),
+                    Invest = gData.Sum(s => s.Invest),
+                    Principal = gData.Sum(s => s.Principal),
+                    Interest = gData.Sum(s => s.Interest)
+                }
+                );
+            return gData;
         }
 
         private IQueryable<li_wallet_histories> QueryWalletHistories()
@@ -349,33 +352,51 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
-            var query = QueryWalletHistories().OrderByDescending(h => h.id)
-                .Skip(pageSize * (page - 1))
-                .Take(pageSize).AsEnumerable().Select(h => new
-                {
-                    user = h.dt_users == null ? "" : h.dt_users.user_name,
-                    name = h.dt_users == null ? "" : h.dt_users.real_name,
-                    actionType = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)h.action_type),
-                    income = TransactionFacade.QueryTransactionIncome<decimal?>(h),
-                    outcome = TransactionFacade.QueryTransactionOutcome(h),
-                    h.idle_money,
-                    h.investing_money,
-                    h.total_investment,
-                    h.profiting_money,
-                    h.total_profit,
-                    h.create_time,
-                    remark = QueryTransactionRemark(h, his => his.li_project_transactions.li_projects.title)
-                });
-
-            var titles = new[] { "用户", "姓名", "操作类型", "收入金额", "支出金额", "可用余额", "在投金额", "累计投资", "待收利润", "已收利润", "交易时间", "备注" };
+            var query = QueryWalletHistories();
             var userName = getUserName();
-            if (!string.IsNullOrWhiteSpace(userName))
+            if (rblType.SelectedValue == "0")
             {
-                Utils.ExportXls(userName + "的交易记录", titles, query, Response);
+                var data = query.OrderByDescending(h => h.id)
+                    .Skip(pageSize * (page - 1))
+                    .Take(pageSize).AsEnumerable().Select(h => new
+                    {
+                        user = h.dt_users == null ? "" : h.dt_users.user_name,
+                        name = h.dt_users == null ? "" : h.dt_users.real_name,
+                        actionType = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)h.action_type),
+                        income = TransactionFacade.QueryTransactionIncome<decimal?>(h),
+                        outcome = TransactionFacade.QueryTransactionOutcome(h),
+                        h.idle_money,
+                        h.investing_money,
+                        h.total_investment,
+                        h.profiting_money,
+                        h.total_profit,
+                        h.create_time,
+                        remark = QueryTransactionRemark(h, his => his.li_project_transactions.li_projects.title)
+                    });
+
+                var titles = new[] { "用户", "姓名", "操作类型", "收入金额", "支出金额", "可用余额", "在投金额", "累计投资", "待收利润", "已收利润", "交易时间", "备注" };
+                if (!string.IsNullOrWhiteSpace(userName))
+                {
+                    Utils.ExportXls(userName + "的资金明细", titles, data, Response);
+                }
+                else
+                {
+                    Utils.ExportXls("会员资金明细", titles, data, Response);
+                }
             }
             else
             {
-                Utils.ExportXls("平台交易流水", titles, query, Response);
+                var data = QueryGroupData(query).Select(h => new
+                {
+                    h.GroupName,
+                    h.ReCharge,
+                    h.WithDraw,
+                    h.Invest,
+                    h.Principal,
+                    h.Interest
+                });
+                var titles = new[] { "会员组", "充值金额", "提现金额", "投资金额", "返还本金", "返还利息"};
+                Utils.ExportXls("会员资金明细汇总", titles, data, Response);
             }
         }
 
