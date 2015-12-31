@@ -91,9 +91,16 @@ namespace Agp2p.Web.admin.statistic
             }
             else
             {
-                var summaryData =
-                    transactions.GroupBy(tr => tr.category)
-                        .Zip(Utils.Infinite(1), (trg, no) => new {trg = trg, no})
+                rptList_summary.DataSource = QueryGroupData(transactions);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<BondTransaction> QueryGroupData(IEnumerable<BondTransaction> query)
+        {
+            var summaryData =
+                    query.GroupBy(tr => tr.category)
+                        .Zip(Utils.Infinite(1), (trg, no) => new { trg = trg, no })
                         .Select(tr => new BondTransaction
                         {
                             index = tr.no,
@@ -101,15 +108,13 @@ namespace Agp2p.Web.admin.statistic
                             income = tr.trg.Sum(t => t.income)
                         })
                         .ToList();
-
-                rptList_summary.DataSource = summaryData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
-                {
-                    index = null,
-                    category = "总计",
-                    income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault())
-                }));
-                rptList_summary.DataBind();
-            }
+            summaryData.Add(new BondTransaction()
+            {
+                index = null,
+                category = "总计",
+                income = summaryData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault())
+            });
+            return summaryData;
         }
 
         private IEnumerable<BondTransaction> QueryProjectTransactions()
@@ -175,10 +180,23 @@ namespace Agp2p.Web.admin.statistic
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var data = QueryProjectTransactions();
-            var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
-
-            var titles = new[] { "序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
-            Utils.ExportXls("风险保证金明细", titles, xlsData, Response);
+            if (rblType.SelectedValue == "0")
+            {
+                var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
+                var titles = new[] {"序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
+                Utils.ExportXls("风险保障金明细", titles, xlsData, Response);
+            }
+            else
+            {
+                var xlsData = QueryGroupData(data).Select(d => new
+                {
+                    d.index,
+                    d.category,
+                    d.income
+                });
+                var titles = new[] { "序号", "产品", "风险保障金" };
+                Utils.ExportXls("风险保障金汇总", titles, xlsData, Response);
+            }
         }
 
         protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
