@@ -427,7 +427,7 @@ namespace Agp2p.Web.admin.project
                 var loaner = LqContext.li_loaners.SingleOrDefault(l => l.id == loanId);
                 ShowLoanerInfo(loaner);
             }
-        } 
+        }
 
         /// <summary>
         /// 切换借款主体

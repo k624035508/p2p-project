@@ -62,12 +62,12 @@ namespace Agp2p.Web.admin.statistic
                     Index = rs.no.ToString(),
                     YearMonth = rs.rt.Key,
                     TotalCount = overTimeRepay.Count() + overTimeNotRepay.Count(),
-                    TotalAmount = (overTimeRepay.Sum(o => o.repay_interest + o.repay_principal) + overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal)).ToString("N"),
+                    TotalAmount = (overTimeRepay.Sum(o => o.repay_interest + o.repay_principal) + overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal)).ToString("c"),
                     NotRepayCount = overTimeNotRepay.Count(),
-                    NotRepayAmount = overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal).ToString("N"),
+                    NotRepayAmount = overTimeNotRepay.Sum(o => o.repay_interest + o.repay_principal).ToString("c"),
                     PepayCount = repayTask.Count(r => r.prepay != null),
-                    PepayAmount = repayTask.Where(r => r.prepay != null).Sum(r => r.prepay)?.ToString("N"),
-                    Cost = repayTask.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.EarlierPaid).Sum(r => r.cost)?.ToString("N")
+                    PepayAmount = repayTask.Where(r => r.prepay != null).Sum(r => r.prepay)?.ToString("c"),
+                    Cost = repayTask.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.EarlierPaid).Sum(r => r.cost)?.ToString("c")
                 };
                 badDebtSummary.Rate = (badDebtSummary.TotalCount/repayTask.Count()).ToString("P1");
 
