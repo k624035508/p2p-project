@@ -16,9 +16,13 @@ tr.sum td { color: red; }
 td.money { text-align: right; }
 td.center { text-align: center; }
 tbody td { text-align: center; }
+#title {text-align: center; display: none; margin: 0 0 15px 0}
 @media print {
     .noPrint {
         display: none;
+    }
+    #title {
+        display: block;
     }
 }
 tr.pointer td { cursor: pointer;}
@@ -42,8 +46,9 @@ div.rl { margin-left: 10px;}
   <i class="arrow"></i>
   <span>业务预测—资金成本</span>
 </div>
+    <h1 id="title" >业务预测—资金成本</h1>
 <!--/导航栏-->
-    <div class="toolbar2">
+    <div class="toolbar2 noPrint">
         <div style="display: inline-block;">默认项目金额：</div>
         <div style="display: inline-block; ">
             <input id="financingAmount" type="text" class="keyword defaultValueSetter" style="width: 5em" />
