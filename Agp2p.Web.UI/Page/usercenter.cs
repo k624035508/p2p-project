@@ -503,10 +503,10 @@ namespace Agp2p.Web.UI.Page
             switch ((Agp2pEnums.ChartQueryEnum)type)
             {
                 case Agp2pEnums.ChartQueryEnum.TotalInvestment:
-                    queryStrategy = mouthlyHistories => MouthlyTotalInvestment(mouthlyHistories) + MouthlyTotalRepayPrincipal(mouthlyHistories);
+                    queryStrategy = MouthlyTotalInvestment;
                     break;
                 case Agp2pEnums.ChartQueryEnum.InvestingMoney:
-                    queryStrategy = MouthlyTotalInvestment;
+                    queryStrategy = mouthlyHistories => MouthlyTotalInvestment(mouthlyHistories) - MouthlyTotalRepayPrincipal(mouthlyHistories);
                     break;
                 case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
                     queryStrategy = MouthlyTotalRepayPrincipal;
