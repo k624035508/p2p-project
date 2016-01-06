@@ -437,7 +437,7 @@ namespace Agp2p.Web.UI.Page
                     .Aggregate(0m, (sum, investOutcome) => sum + investOutcome);
         }
 
-        private static decimal MouthlyInvestingPrincipal(List<li_wallet_histories> mouthlyHistories)
+        private static decimal MouthlyRepayedPrincipal(List<li_wallet_histories> mouthlyHistories)
         {
             return
                 mouthlyHistories.Where(
@@ -506,10 +506,10 @@ namespace Agp2p.Web.UI.Page
                     queryStrategy = MouthlyTotalInvestment;
                     break;
                 case Agp2pEnums.ChartQueryEnum.InvestingMoney:
-                    queryStrategy = MouthlyInvestingPrincipal;
+                    queryStrategy = mouthlyHistories => MouthlyTotalInvestment(mouthlyHistories) - MouthlyRepayedPrincipal(mouthlyHistories);
                     break;
                 case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
-                    queryStrategy = mouthlyHistories => MouthlyTotalInvestment(mouthlyHistories) - MouthlyInvestingPrincipal(mouthlyHistories);
+                    queryStrategy = MouthlyRepayedPrincipal;
                     break;
                 case Agp2pEnums.ChartQueryEnum.AccumulativeProfit:
                     return PredictMouthlyProfiting(userInfo, (predictTimeSpans, predictsTimeline) =>
