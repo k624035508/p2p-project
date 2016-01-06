@@ -432,7 +432,9 @@ namespace Agp2p.Web.UI.Page
         private static decimal MouthlyTotalInvestment(List<li_wallet_histories> mouthlyHistories)
         {
             return
-                mouthlyHistories.Where(h => h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.Invest)
+                mouthlyHistories.Where(h =>
+                        h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.Invest &&
+                        h.li_project_transactions.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success) // 排除流标 / 退款的
                     .Select(h => h.QueryTransactionOutcome().GetValueOrDefault(0))
                     .Aggregate(0m, (sum, investOutcome) => sum + investOutcome);
         }
