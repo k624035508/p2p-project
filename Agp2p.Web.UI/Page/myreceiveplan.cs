@@ -50,17 +50,13 @@ namespace Agp2p.Web.UI.Page
         /// <summary>
         /// 查询普通项目的回款记录
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="userId"></param>
+        /// <param name="user"></param>
         /// <param name="type"></param>
-        /// <param name="startTick"></param>
-        /// <param name="endTick"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
         /// <returns></returns>
-        public static List<MyRepayment> QueryProjectRepayments(int userId, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
+        public static List<MyRepayment> QueryProjectRepayments(dt_users user, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
-            var context = new Agp2pDataContext();
-            var user = GetUserInfoByLinq(context);
-
             var investedProjectValueMap = user.li_project_transactions.Where(
                 tr =>
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
@@ -73,7 +69,7 @@ namespace Agp2p.Web.UI.Page
             {
                 var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
-                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == userId);
+                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
