@@ -489,15 +489,14 @@ namespace Agp2p.Web.UI.Page
         {
             var myRepayments = myreceiveplan.QueryProjectRepayments(user.id, Agp2pEnums.MyRepaymentQueryTypeEnum.Paid);
 
-            var predictMap =
-                myRepayments.GroupBy(r => GetFirstDayOfThisMouth(Convert.ToDateTime(r.ShouldRepayDay)))
+            var repaidMputhMap = myRepayments.GroupBy(r => GetFirstDayOfThisMouth(Convert.ToDateTime(r.ShouldRepayDay)))
                     .ToDictionary(g => g.Key, g => g.Sum(rt => rt.RepayPrincipal));
 
             var now = DateTime.Now;
             // 生成时间间隔
             var timeSpans = GenMountlyTimeSpan(now.AddYears(-1), now).ToList();
 
-            var predictsTimeline = timeSpans.Select(m => predictMap.ContainsKey(m.Item2) ? predictMap[m.Item2] : 0m);
+            var predictsTimeline = timeSpans.Select(m => repaidMputhMap.ContainsKey(m.Item2) ? repaidMputhMap[m.Item2] : 0m);
 
             return callback(timeSpans, predictsTimeline);
         }
@@ -523,9 +522,6 @@ namespace Agp2p.Web.UI.Page
                     queryStrategy = MouthlyTotalInvestment;
                     break;
                 case Agp2pEnums.ChartQueryEnum.InvestingMoney:
-                    return JsonConvert.SerializeObject(QueryMouthlyPrincipleRepayment(userInfo, (pastMouth, repaidPrincipleList) =>
-                            pastMouth.Zip(repaidPrincipleList, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } })));
-                case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
                     return QueryMouthlyPrincipleRepayment(userInfo, (pastMouth, repaidPrincipleList) =>
                     {
                         var repaidInvestmentsVal = pastMouth.Select(s =>
@@ -535,6 +531,9 @@ namespace Agp2p.Web.UI.Page
                         return
                             JsonConvert.SerializeObject(pastMouth.Zip(repaidInvestmentsVal, (tuple, arg2) => new Dictionary<string, decimal> {{tuple.Item1, arg2}}));
                     });
+                case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
+                    return JsonConvert.SerializeObject(QueryMouthlyPrincipleRepayment(userInfo, (pastMouth, repaidPrincipleList) =>
+                            pastMouth.Zip(repaidPrincipleList, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } })));
                 case Agp2pEnums.ChartQueryEnum.AccumulativeProfit:
                     return PredictMouthlyProfiting(userInfo, (predictTimeSpans, predictsTimeline) =>
                     {
