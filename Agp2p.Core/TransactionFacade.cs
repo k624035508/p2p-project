@@ -770,8 +770,7 @@ namespace Agp2p.Core
             }
         }
 
-        public static Agp2pEnums.WalletHistoryTypeEnum GetWalletHistoryTypeByProjectTransaction(
-            li_project_transactions ptr)
+        public static Agp2pEnums.WalletHistoryTypeEnum GetWalletHistoryTypeByProjectTransaction(li_project_transactions ptr)
         {
             if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor)
             {
@@ -1250,7 +1249,7 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="his"></param>
         /// <returns></returns>
-        public static decimal? QueryTransactionOutcome(li_wallet_histories his)
+        public static decimal? QueryTransactionOutcome(this li_wallet_histories his)
         {
             if (his.li_bank_transactions != null)
             {
