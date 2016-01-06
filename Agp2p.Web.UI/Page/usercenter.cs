@@ -160,7 +160,7 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public static string AjaxQueryRepayments(short type, short pageSize, short pageIndex, string startTime="", string endTime="")
         {
-            var userInfo = GetUserInfo();
+            var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
@@ -168,7 +168,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo.id, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
+            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
             var repayments = myRepayments.Skip(pageSize * pageIndex).Take(pageSize);
             return JsonConvert.SerializeObject(new {totalCount = myRepayments.Count, data = repayments});
         }
@@ -472,7 +472,7 @@ namespace Agp2p.Web.UI.Page
 
         private static T PredictMouthlyProfiting<T>(dt_users user, Func<IEnumerable<Tuple<string, DateTime, DateTime>>, IEnumerable<decimal>, T> callback)
         {
-            var myRepayments = myreceiveplan.QueryProjectRepayments(user.id, Agp2pEnums.MyRepaymentQueryTypeEnum.Unpaid);
+            var myRepayments = myreceiveplan.QueryProjectRepayments(user, Agp2pEnums.MyRepaymentQueryTypeEnum.Unpaid);
 
             var predictMap =
                 myRepayments.GroupBy(r => GetFirstDayOfThisMouth(Convert.ToDateTime(r.ShouldRepayDay)))
@@ -489,7 +489,7 @@ namespace Agp2p.Web.UI.Page
 
         private static T QueryMouthlyPrincipleRepayment<T>(dt_users user, Func<IEnumerable<Tuple<string, DateTime, DateTime>>, IEnumerable<decimal>, T> callback)
         {
-            var myRepayments = myreceiveplan.QueryProjectRepayments(user.id, Agp2pEnums.MyRepaymentQueryTypeEnum.Paid);
+            var myRepayments = myreceiveplan.QueryProjectRepayments(user, Agp2pEnums.MyRepaymentQueryTypeEnum.Paid);
 
             var repaidMputhMap = myRepayments.GroupBy(r => GetFirstDayOfThisMouth(Convert.ToDateTime(r.ShouldRepayDay)))
                     .ToDictionary(g => g.Key, g => g.Sum(rt => rt.RepayPrincipal));
