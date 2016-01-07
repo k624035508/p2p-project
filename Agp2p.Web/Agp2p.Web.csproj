@@ -802,6 +802,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-02.png" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
+    <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\footerIcon1.png" />
     <Content Include="templates\AnGuang\imgs\index\footerIcon1Hover.png" />
