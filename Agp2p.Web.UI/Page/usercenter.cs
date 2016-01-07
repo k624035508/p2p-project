@@ -160,7 +160,7 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public static string AjaxQueryRepayments(short type, short pageSize, short pageIndex, string startTime="", string endTime="")
         {
-            var userInfo = GetUserInfo();
+            var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
@@ -168,7 +168,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo.id, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
+            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
             var repayments = myRepayments.Skip(pageSize * pageIndex).Take(pageSize);
             return JsonConvert.SerializeObject(new {totalCount = myRepayments.Count, data = repayments});
         }
@@ -429,6 +429,95 @@ namespace Agp2p.Web.UI.Page
             }
         }
 
+        private static decimal MouthlyProfiting(List<li_wallet_histories> mouthlyHistories)
+        {
+            if (!mouthlyHistories.Any())
+            {
+                return 0;
+            }
+            var firstHis = mouthlyHistories.First();
+            var mouthlyProfit = mouthlyHistories.Last().total_profit - firstHis.total_profit;
+            if (firstHis.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest
+                || firstHis.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest)
+            {
+                return firstHis.li_project_transactions.interest.GetValueOrDefault(0) + mouthlyProfit;
+            }
+            return mouthlyProfit;
+        }
+
+        private static DateTime GetFirstDayOfThisMouth(DateTime day)
+        {
+            return day.Date.AddDays(-(day.Day - 1));
+        }
+
+        private static T PredictMouthlyProfiting<T>(dt_users user, Func<IEnumerable<Tuple<string, DateTime, DateTime>>, IEnumerable<decimal>, T> callback)
+        {
+            var myRepayments = myreceiveplan.QueryProjectRepayments(user, Agp2pEnums.MyRepaymentQueryTypeEnum.Unpaid, DateTime.Now.AddMonths(-13).ToString("yyyy-MM-dd")); // 不需要查一年前的
+
+            var predictMap =
+                myRepayments.GroupBy(r => GetFirstDayOfThisMouth(Convert.ToDateTime(r.ShouldRepayDay)))
+                    .ToDictionary(g => g.Key, g => g.Sum(rt => rt.RepayInterest));
+
+            var now = DateTime.Now;
+            // 生成时间间隔
+            var timeSpans = GenMountlyTimeSpan(now, now.AddYears(1)).ToList();
+
+            var predictsTimeline = timeSpans.Select(m => predictMap.ContainsKey(m.Item2) ? predictMap[m.Item2] : 0m);
+
+            return callback(timeSpans, predictsTimeline);
+        }
+
+        private static T QueryMouthlyPrincipleRepayment<T>(dt_users user, Func<IEnumerable<Tuple<string, DateTime, DateTime>>, IEnumerable<decimal>, T> callback)
+        {
+            var myRepayments = myreceiveplan.QueryProjectRepayments(user, Agp2pEnums.MyRepaymentQueryTypeEnum.Paid, DateTime.Now.AddMonths(-13).ToString("yyyy-MM-dd"));  // 不需要查一年前的
+
+            // 回款将会算到项目的满标时间；如果未满标（新手标），则算到最后一次投资时间
+            var repaidMputhMap = myRepayments.GroupBy(r =>
+            {
+                if (r.Project.InvestCompleteTime != null)
+                {
+                    return GetFirstDayOfThisMouth(r.Project.InvestCompleteTime.Value);
+                }
+                var lastInvestmentTime = user.li_project_transactions.Last(
+                    ptr =>
+                        ptr.project == r.Project.Id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).create_time;
+                return GetFirstDayOfThisMouth(lastInvestmentTime);
+            }).ToDictionary(g => g.Key, g => g.Sum(rt => rt.RepayPrincipal));
+
+            var now = DateTime.Now;
+            // 生成时间间隔
+            var timeSpans = GenMountlyTimeSpan(now.AddYears(-1), now).ToList();
+
+            var predictsTimeline = timeSpans.Select(m => repaidMputhMap.ContainsKey(m.Item2) ? repaidMputhMap[m.Item2] : 0m);
+
+            return callback(timeSpans, predictsTimeline);
+        }
+
+        private static T QueryMouthlyTotalInvestment<T>(dt_users user, Func<IEnumerable<Tuple<string, DateTime, DateTime>>, IEnumerable<decimal>, T> callback)
+        {
+            // 月度投资金额：某个项目的投资金额以项目满标时间的那个月为准，如果未满标则按最后一次投资时间为准
+            var mouthlyInvestedAmount = user.li_project_transactions.Where(
+                ptr =>
+                    DateTime.Now.AddMonths(-13) <= ptr.create_time && // 不需要查一年前的
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success) // 排除流标 / 退款的
+                .GroupBy(ptr => ptr.li_projects)
+                .GroupBy(pptr =>
+                    pptr.Key.invest_complete_time == null
+                        ? GetFirstDayOfThisMouth(pptr.Last().create_time)
+                        : GetFirstDayOfThisMouth(pptr.Key.invest_complete_time.Value))
+                .ToDictionary(g => g.Key, g => g.SelectMany(x => x).Sum(ptr => ptr.principal));
+
+            var now = DateTime.Now;
+            // 生成时间间隔
+            var timeSpans = GenMountlyTimeSpan(now.AddYears(-1), now).ToList();
+
+            var investedAmounts = timeSpans.Select(span => mouthlyInvestedAmount.ContainsKey(span.Item2) ? mouthlyInvestedAmount[span.Item2] : 0m);
+
+            return callback(timeSpans, investedAmounts);
+        }
+
         [WebMethod]
         public static string AjaxQueryMouthlyHistory(short type)
         {
@@ -440,50 +529,80 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            var histories = userInfo.li_wallet_histories.ToList();
 
-            Func<li_wallet_histories, decimal> selector;
+            var histories = userInfo.li_wallet_histories.ToLazyList();
+            Func<List<li_wallet_histories>, decimal> queryStrategy;
+
             switch ((Agp2pEnums.ChartQueryEnum)type)
             {
                 case Agp2pEnums.ChartQueryEnum.TotalInvestment:
-                    selector = h => h.total_investment;
-                    break;
+                    return JsonConvert.SerializeObject(QueryMouthlyTotalInvestment(userInfo,
+                            (pastMouths, investments) => pastMouths.Zip(investments, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } })));
                 case Agp2pEnums.ChartQueryEnum.InvestingMoney:
-                    selector = h => h.investing_money;
-                    break;
+                    return QueryMouthlyPrincipleRepayment(userInfo, (pastMouth, repaidPrincipleList) =>
+                    {
+                        return QueryMouthlyTotalInvestment(userInfo, (tuples, mouthlyInvestments) =>
+                        {
+                            var repaidInvestmentsVal = mouthlyInvestments.Zip(repaidPrincipleList, (investment, repaidPrinciple) => investment - repaidPrinciple);
+                            return JsonConvert.SerializeObject(pastMouth.Zip(repaidInvestmentsVal, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } }));
+                        });
+                    });
                 case Agp2pEnums.ChartQueryEnum.RepaidInvestment:
-                    selector = h => h.total_investment - h.investing_money;
-                    break;
+                    return JsonConvert.SerializeObject(QueryMouthlyPrincipleRepayment(userInfo, (pastMouth, repaidPrincipleList) =>
+                            pastMouth.Zip(repaidPrincipleList, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } })));
                 case Agp2pEnums.ChartQueryEnum.AccumulativeProfit:
-                    selector = h => h.total_profit + h.profiting_money;
-                    break;
+                    return PredictMouthlyProfiting(userInfo, (predictTimeSpans, predictsTimeline) =>
+                    {
+                        var zipped = predictTimeSpans.Zip(predictsTimeline, (tuple, prof) => new {tuple, prof}).ToList();
+                        var lastMouthProfiting = zipped.LastOrDefault(x => x.prof != 0);
+                        var chartLastMouth = lastMouthProfiting?.tuple.Item2 ?? DateTime.Today;
+
+                        var accumulativeProfitTimeSpans = GenMountlyTimeSpan(chartLastMouth.AddYears(-1), chartLastMouth).ToList();
+                        var profited = accumulativeProfitTimeSpans.Select(span =>
+                                    MouthlyProfiting(histories.Where(h => span.Item2 <= h.create_time && h.create_time < span.Item3).ToList())).ToList();
+
+                        IEnumerable<Dictionary<string, decimal>> accumulativeProfitData;
+                        if (lastMouthProfiting != null)
+                        {
+                            var dict = zipped.ToDictionary(v => v.tuple.Item2, v => v.prof);
+                            accumulativeProfitData = accumulativeProfitTimeSpans.Zip(profited,
+                                (tuple, arg2) =>
+                                    new Dictionary<string, decimal>
+                                    {
+                                        {tuple.Item1, dict.ContainsKey(tuple.Item2) ? dict[tuple.Item2] + arg2 : arg2}
+                                    });
+                        }
+                        else
+                        {
+                            accumulativeProfitData = accumulativeProfitTimeSpans.Zip(profited, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } });
+                        }
+                        return JsonConvert.SerializeObject(accumulativeProfitData);
+                    });
                 case Agp2pEnums.ChartQueryEnum.ProfitingMoney:
-                    selector = h => h.profiting_money;
-                    break;
+                    // 预测待收益
+                    return JsonConvert.SerializeObject(PredictMouthlyProfiting(userInfo, (predictTimeSpans, predictsTimeline) =>
+                                predictTimeSpans.Zip(predictsTimeline, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } })));
                 case Agp2pEnums.ChartQueryEnum.TotalProfit:
-                    selector = h => h.total_profit;
+                    queryStrategy = MouthlyProfiting;
                     break;
                 default:
                     throw new Exception("不支持的类型");
             }
 
-            var newestHistoryCreateTime = histories.Any() ? histories.Last().create_time : DateTime.Now;
+
+            var now = DateTime.Now;
 
             // 生成时间间隔
-            var timeSpans = GenMountlyTimeSpan(newestHistoryCreateTime.AddYears(-1), newestHistoryCreateTime).ToList();
+            var timeSpans = GenMountlyTimeSpan(now.AddYears(-1), now).ToList();
 
             // 查询数据
-            var totalInvestments = timeSpans.Select(s =>
+            var currencyVals = timeSpans.Select(s =>
             {
-                return
-                    histories.Where(h => s.Item2 <= h.create_time && h.create_time < s.Item3)
-                        .Select(selector)
-                        .LastOrDefault();
+                return queryStrategy(histories.Where(h => s.Item2 <= h.create_time && h.create_time < s.Item3).ToList());
             });
 
             // [{'2015年1月':0},{'2月':100}]
-            return
-                JsonConvert.SerializeObject(timeSpans.Zip(totalInvestments, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
+            return JsonConvert.SerializeObject(timeSpans.Zip(currencyVals, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
         }
 
     }

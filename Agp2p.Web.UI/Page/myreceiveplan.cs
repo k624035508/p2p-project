@@ -35,6 +35,7 @@ namespace Agp2p.Web.UI.Page
             public string Link { get; set; }
             public string ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
+            public DateTime? InvestCompleteTime { get; set; } // “我的投资”的图表需要
         }
 
         public class MyRepayment
@@ -50,17 +51,13 @@ namespace Agp2p.Web.UI.Page
         /// <summary>
         /// 查询普通项目的回款记录
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="userId"></param>
+        /// <param name="user"></param>
         /// <param name="type"></param>
-        /// <param name="startTick"></param>
-        /// <param name="endTick"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
         /// <returns></returns>
-        public static List<MyRepayment> QueryProjectRepayments(int userId, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
+        public static List<MyRepayment> QueryProjectRepayments(dt_users user, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
-            var context = new Agp2pDataContext();
-            var user = GetUserInfoByLinq(context);
-
             var investedProjectValueMap = user.li_project_transactions.Where(
                 tr =>
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
@@ -68,12 +65,12 @@ namespace Agp2p.Web.UI.Page
                 .GroupBy(inv => inv.li_projects)
                 .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
 
-            Model.siteconfig config = new BLL.siteconfig().loadConfig();
+            Model.siteconfig config = new siteconfig().loadConfig();
             return investedProjectValueMap.SelectMany(p =>
             {
                 var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
-                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == userId);
+                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
@@ -111,7 +108,8 @@ namespace Agp2p.Web.UI.Page
                     Name = p.Key.title,
                     Link = linkurl(config, "project", p.Key.id),
                     InvestValue = investedProjectValueMap[p.Key],
-                    ProfitRateYear = p.Key.GetProfitRateYearly()
+                    ProfitRateYear = p.Key.GetProfitRateYearly(),
+                    InvestCompleteTime = p.Key.invest_complete_time
                 };
 
                 return reps1;
