@@ -35,6 +35,7 @@ namespace Agp2p.Web.UI.Page
             public string Link { get; set; }
             public string ProfitRateYear { get; set; }
             public decimal InvestValue { get; set; }
+            public DateTime? InvestCompleteTime { get; set; } // “我的投资”的图表需要
         }
 
         public class MyRepayment
@@ -64,7 +65,7 @@ namespace Agp2p.Web.UI.Page
                 .GroupBy(inv => inv.li_projects)
                 .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
 
-            Model.siteconfig config = new BLL.siteconfig().loadConfig();
+            Model.siteconfig config = new siteconfig().loadConfig();
             return investedProjectValueMap.SelectMany(p =>
             {
                 var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
@@ -107,7 +108,8 @@ namespace Agp2p.Web.UI.Page
                     Name = p.Key.title,
                     Link = linkurl(config, "project", p.Key.id),
                     InvestValue = investedProjectValueMap[p.Key],
-                    ProfitRateYear = p.Key.GetProfitRateYearly()
+                    ProfitRateYear = p.Key.GetProfitRateYearly(),
+                    InvestCompleteTime = p.Key.invest_complete_time
                 };
 
                 return reps1;
