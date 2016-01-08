@@ -79,12 +79,30 @@ namespace Agp2p.Web.admin.audit
         {
             var query = QueryReCharge();
 
-            var bankTransactions = query.OrderByDescending(q => q.create_time).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataSource = bankTransactions;
-            rptList.DataBind();
+            if (rblTableType.SelectedValue == "0")
+            {
+                var bankTransactions =
+                    query.OrderByDescending(q => q.create_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                rptList.DataSource = bankTransactions;
+                rptList.DataBind();
 
-            var groupByUserGroupSummeries = query.GroupBy(tr => tr.dt_users.dt_user_groups).AsEnumerable()
-                .Zip(Utils.Infinite(1), (gr, index) => new {gr, index})
+                //绑定页码
+                totalCount = query.Count();
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("bank_transaction_charging_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                rptList_summary.DataSource = QueryGroupData(query);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<GroupByUserGroupSummery> QueryGroupData(IQueryable<li_bank_transactions> query)
+        {
+            var data = query.GroupBy(tr => tr.dt_users.dt_user_groups).AsEnumerable()
+                .Zip(Utils.Infinite(1), (gr, index) => new { gr, index })
                 .Select(gi =>
                 {
                     return new GroupByUserGroupSummery
@@ -94,19 +112,13 @@ namespace Agp2p.Web.admin.audit
                         TransactionAmount = gi.gr.Aggregate(0m, (sum, tr) => sum + tr.value)
                     };
                 }).ToList();
-            rptList_summary.DataSource = groupByUserGroupSummeries.Concat(Enumerable.Range(0,1).Select(i => new GroupByUserGroupSummery
+            data.Add(new GroupByUserGroupSummery()
             {
                 Index = null,
                 GroupName = "总计",
-                TransactionAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.TransactionAmount)
-            }));
-            rptList_summary.DataBind();
-
-            //绑定页码
-            totalCount = query.Count();
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("bank_transaction_charging_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                TransactionAmount = data.Aggregate(0m, (sum, tr) => sum + tr.TransactionAmount)
+            });
+            return data;
         }
 
         private IQueryable<li_bank_transactions> QueryReCharge()
@@ -247,24 +259,38 @@ namespace Agp2p.Web.admin.audit
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var reCharge = QueryReCharge();
-            var lsData = reCharge.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
-                .ThenByDescending(q => q.create_time)
-                .Skip(pageSize * (page - 1))
-                .Take(pageSize)
-                .AsEnumerable()
-                .Select(bt => new
-                {
-                    user = bt.dt_users.real_name ?? bt.dt_users.user_name,
-                    bt.create_time,
-                    api = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum)bt.pay_api),
-                    bt.no_order,
-                    bt.value,
-                    status = Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionStatusEnum)bt.status),
-                    bt.transact_time
+            if (rblTableType.SelectedValue == "0")
+            {
+                var lsData = reCharge.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
+                    .ThenByDescending(q => q.create_time)
+                    .Skip(pageSize*(page - 1))
+                    .Take(pageSize)
+                    .AsEnumerable()
+                    .Select(bt => new
+                    {
+                        user = bt.dt_users.real_name ?? bt.dt_users.user_name,
+                        bt.create_time,
+                        api = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum) bt.pay_api),
+                        bt.no_order,
+                        bt.value,
+                        status = Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionStatusEnum) bt.status),
+                        bt.transact_time
 
+                    });
+                var titles = new[] {"用户名", "创建时间", "支付网关", "流水号", "充值金额", "充值状态", "完成时间"};
+                Utils.ExportXls("充值审批", titles, lsData, Response);
+            }
+            else
+            {
+                var lsData = QueryGroupData(reCharge).Select(bt => new
+                {
+                    bt.Index,
+                    bt.GroupName,
+                    bt.TransactionAmount
                 });
-            var titles = new[] { "用户名", "创建时间", "支付网关", "流水号", "充值金额", "充值状态", "完成时间"};
-            Utils.ExportXls("充值审批", titles, lsData, Response);
+                var titles = new[] { "序号", "会员组", "充值金额"};
+                Utils.ExportXls("充值审批汇总", titles, lsData, Response);
+            }
         }
 
         protected void rblTableType_OnSelectedIndexChanged(object sender, EventArgs e)
@@ -281,6 +307,7 @@ namespace Agp2p.Web.admin.audit
                 rptList_summary.Visible = true;
                 div_pagination.Visible = false;
             }
+            RptBind();
         }
     }
 }
