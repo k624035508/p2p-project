@@ -61,15 +61,50 @@ namespace Agp2p.Web.admin.statistic
         {
             var beforePaging = QueryRepayDetails(out totalCount);
 
-            rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataBind();
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.DataSource = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                rptList.DataBind();
 
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("investor_invest_detail.aspx",
-                "keywords={0}&page={1}&year={2}&month={3}", txtKeywords.Text, "__id__", txtYear.Text,
-                txtMonth.Text);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("investor_invest_detail.aspx",
+                    "keywords={0}&page={1}&year={2}&month={3}", txtKeywords.Text, "__id__", txtYear.Text,
+                    txtMonth.Text);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                rptList_summary.DataSource = QueryGroupData(beforePaging);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<InvestorInvestDetail> QueryGroupData(IEnumerable<InvestorInvestDetail> query)
+        {
+            var summaryData =
+                    query.Where(d => d.Index != null).GroupBy(d => d.InvestorUserName)
+                        .Zip(Utils.Infinite(1), (dg, no) => new { dg, no })
+                        .Select(d =>
+                        {
+                            return new InvestorInvestDetail()
+                            {
+                                Index = d.no.ToString(),
+                                InvestorUserName = string.IsNullOrEmpty(d.dg.First().InvestorRealName) ? d.dg.First().InvestorUserName : d.dg.First().InvestorRealName,
+                                InvestValue = d.dg.Sum(i => i.InvestValue),
+                                RepayTotal = d.dg.Sum(i => i.RepayTotal),
+                                Total = d.dg.Sum(i => i.Total)
+                            };
+                        }).ToList();
+            summaryData.Add(new InvestorInvestDetail()
+            {
+                Index = null,
+                InvestorUserName = "总计",
+                InvestValue = summaryData.Sum(i => i.InvestValue),
+                RepayTotal = summaryData.Sum(i => i.RepayTotal),
+                Total = summaryData.Sum(i => i.Total)
+            });
+            return summaryData;
         }
 
         private IEnumerable<InvestorInvestDetail> QueryRepayDetails(out int count)
@@ -216,23 +251,66 @@ namespace Agp2p.Web.admin.statistic
         {
             int count;
             var beforePaging = QueryRepayDetails(out count);
-            var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
+            if (rblType.SelectedValue == "0")
             {
-                d.InvestorRealName,
-                d.ProjectName,
-                d.Category,
-                d.InvestTime,
-                d.ProjectCompleteTime,
-                d.Term,
-                d.ProfitRateYear,
-                d.InvestValue,
-                d.RepayTotal,
-                d.Total
-            });
-            var titles = new[] {
-                "投资者", "标题", "产品", "投资时间", "到期时间", "期限", "年利率", "投资本金", "利息", "合计"
-            };
-            Utils.ExportXls("投资人投资明细汇总", titles, lsData, Response);
+                var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
+                {
+                    d.InvestorRealName,
+                    d.ProjectName,
+                    d.Category,
+                    d.InvestTime,
+                    d.ProjectCompleteTime,
+                    d.Term,
+                    d.ProfitRateYear,
+                    d.InvestValue,
+                    d.RepayTotal,
+                    d.Total
+                });
+                var titles = new[]
+                {
+                    "投资者", "标题", "产品", "投资时间", "到期时间", "期限", "年利率", "投资本金", "利息", "本息合计"
+                };
+                Utils.ExportXls("会员投资明细", titles, lsData, Response);
+            }
+            else
+            {
+                var lsData = QueryGroupData(beforePaging).ToList();
+                var lsData2 = lsData.Select(d => new
+                {
+                    d.Index,
+                    d.InvestorUserName,
+                    d.InvestValue,
+                    d.RepayTotal,
+                    d.Total
+                });
+                var titles = new[]
+                {
+                    "序号", "投资者", "投资本金", "利息", "本息合计"
+                };
+                Utils.ExportXls("会员投资汇总", titles, lsData2, Response);
+            }
+        }
+
+        /// <summary>
+        /// 切换汇总/明细列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rblType_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rblType.SelectedValue == "0")
+            {
+                rptList.Visible = true;
+                rptList_summary.Visible = false;
+                div_page.Visible = true;
+            }
+            else
+            {
+                rptList.Visible = false;
+                rptList_summary.Visible = true;
+                div_page.Visible = false;
+            }
+            RptBind();
         }
     }
 }
