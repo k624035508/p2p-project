@@ -82,7 +82,8 @@ namespace Agp2p.Web.admin.audit
             if (rblTableType.SelectedValue == "0")
             {
                 var bankTransactions =
-                    query.OrderByDescending(q => q.create_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                    query.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
+                    .ThenByDescending(q => q.create_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList();
                 rptList.DataSource = bankTransactions;
                 rptList.DataBind();
 

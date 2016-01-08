@@ -321,33 +321,44 @@ namespace Agp2p.Web.admin.statistic
             if (rblType.SelectedValue == "0")
             {
                 var lsData =
-                    beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => CategoryIdTitleMap != null
-                        ? new
-                        {
-                            d.Project.Index,
-                            d.Project.Name,
-                            d.Project.Creditor,
-                            d.Project.Category,
-                            d.Project.FinancingAmount,
-                            d.Project.ProfitRateYear,
-                            d.Project.InvestCompleteTime,
-                            d.Project.RepayCompleteTime,
-                            d.RepayTerm,
-                            d.RepayTime,
-                            d.RepayAt,
-                            d.Status,
-                            d.RepayPrincipal,
-                            d.RepayInterest,
-                            d.RepayTotal,
+                    beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                var lsData2 = lsData.Concat(Enumerable.Range(0, 1).Select(i => new RepaymentTaskAmountDetail
+                {
+                    Project = new ProjectDetail()
+                    {
+                        Index = null,
+                        Name = "总计"
+                    },
+                    RepayInterest = lsData.Sum(p => p.RepayInterest),
+                    RepayPrincipal = lsData.Sum(p => p.RepayPrincipal),
+                    RepayTotal = lsData.Sum(p => p.RepayTotal)
+                })).Select(d => CategoryIdTitleMap != null
+                    ? new
+                    {
+                        d.Project.Index,
+                        d.Project.Name,
+                        d.Project.Creditor,
+                        d.Project.Category,
+                        d.Project.FinancingAmount,
+                        d.Project.ProfitRateYear,
+                        d.Project.InvestCompleteTime,
+                        d.Project.RepayCompleteTime,
+                        d.RepayTerm,
+                        d.RepayTime,
+                        d.RepayAt,
+                        d.Status,
+                        d.RepayPrincipal,
+                        d.RepayInterest,
+                        d.RepayTotal,
 
-                        }
-                        : null);
+                    }
+                    : null);
                 var titles = new[]
                 {
                     "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "满标时间", "到期日", "期数", "应付日期", "实付日期", "状态", "应还本金", "应还利息",
                     "本息合计"
                 };
-                Utils.ExportXls("应还款明细", titles, lsData, Response);
+                Utils.ExportXls("应还款明细", titles, lsData2, Response);
             }
             else
             {
