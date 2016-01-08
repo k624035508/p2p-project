@@ -8,6 +8,8 @@ using Agp2p.Linq2SQL;
 using System.Collections.Generic;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Agp2p.Web.admin.audit
 {
@@ -79,16 +81,32 @@ namespace Agp2p.Web.admin.audit
         {
             var query = QueryWithdraws();
 
-            totalCount = query.Count();
-            var bankTransactions = query.OrderBy(q => q.status)
-                .ThenByDescending(q => q.transact_time)
-                .ThenByDescending(q => q.create_time)
-                .Skip(pageSize*(page - 1))
-                .Take(pageSize)
-                .ToList();
-            rptList.DataSource = bankTransactions;
-            rptList.DataBind();
+            if (rblTableType.SelectedValue == "0")
+            {
+                totalCount = query.Count();
+                var bankTransactions = query.OrderBy(q => q.status)
+                    .ThenByDescending(q => q.transact_time)
+                    .ThenByDescending(q => q.create_time)
+                    .Skip(pageSize*(page - 1))
+                    .Take(pageSize)
+                    .ToList();
+                rptList.DataSource = bankTransactions;
+                rptList.DataBind();
 
+                //绑定页码
+                txtPageNum.Text = pageSize.ToString();
+                string pageUrl = Utils.CombUrlTxt("bank_transaction_withdrawing_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
+                PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            }
+            else
+            {
+                rptList_summary.DataSource = QueryGroupData(query);
+                rptList_summary.DataBind();
+            }
+        }
+
+        private List<GroupByUserGroupSummery> QueryGroupData(IQueryable<li_bank_transactions> query)
+        {
             var groupByUserGroupSummeries = query.GroupBy(tr => tr.li_bank_accounts.dt_users.dt_user_groups).AsEnumerable()
                 .Zip(Utils.Infinite(1), (gr, index) => new { gr, index })
                 .Select(gi =>
@@ -101,19 +119,14 @@ namespace Agp2p.Web.admin.audit
                         TransactionAmount = gi.gr.Aggregate(0m, (sum, tr) => sum + tr.value - GetHandlingFee(tr))
                     };
                 }).ToList();
-            rptList_summary.DataSource = groupByUserGroupSummeries.Concat(Enumerable.Range(0, 1).Select(i => new GroupByUserGroupSummery
+            groupByUserGroupSummeries.Add(new GroupByUserGroupSummery()
             {
                 Index = null,
                 GroupName = "总计",
                 WithdrawAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.WithdrawAmount),
                 TransactionAmount = groupByUserGroupSummeries.Aggregate(0m, (sum, tr) => sum + tr.TransactionAmount)
-            }));
-            rptList_summary.DataBind();
-
-            //绑定页码
-            txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("bank_transaction_withdrawing_list.aspx", "page={0}&status={1}&keywords={2}&UserGroud={3}&startTime={4}&endTime={5}", "__id__", rblBankTransactionStatus.SelectedValue, txtKeywords.Text.Trim(), UserGroud.ToString(), txtStartTime.Text, txtEndTime.Text);
-            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+            });
+            return groupByUserGroupSummeries;
         }
 
        private IQueryable<li_bank_transactions> QueryWithdraws()
@@ -233,28 +246,44 @@ namespace Agp2p.Web.admin.audit
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
             var withdraws = QueryWithdraws();
-            var lsData = withdraws.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
-                .ThenByDescending(q => q.create_time)
-                .Skip(pageSize * (page - 1))
-                .Take(pageSize)
-                .AsEnumerable()
-                .Select(bt => new
+            if (rblTableType.SelectedValue == "0")
+            {
+                var lsData = withdraws.OrderBy(q => q.status).ThenByDescending(q => q.transact_time)
+                    .ThenByDescending(q => q.create_time)
+                    .Skip(pageSize*(page - 1))
+                    .Take(pageSize)
+                    .AsEnumerable()
+                    .Select(bt => new
+                    {
+                        user = bt.li_bank_accounts.dt_users.user_name,
+                        bt.value,
+                        finalVal = bt.value - GetHandlingFee(bt),
+                        bt.create_time,
+                        bt.transact_time,
+                        idleMoney = QueryIdleMoney(bt),
+                        bt.li_bank_accounts.bank,
+                        name = bt.li_bank_accounts.dt_users.real_name,
+                        bt.li_bank_accounts.opening_bank,
+                        bt.li_bank_accounts.account,
+                        status = Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionStatusEnum) bt.status),
+                        handlingFee = GetHandlingFee(bt)
+                    });
+                var titles = new[]
+                {"申请人", "提现金额", "实付金额", "申请时间", "付款时间", "操作后余额", "银行名称", "银行开户名", "银行开户行", "银行帐号", "提现状态", "手续费"};
+                Utils.ExportXls("提现明细", titles, lsData, Response);
+            }
+            else
+            {
+                var lsData = QueryGroupData(withdraws).Select(q => new
                 {
-                    user = bt.li_bank_accounts.dt_users.user_name,
-                    bt.value,
-                    finalVal = bt.value - GetHandlingFee(bt),
-                    bt.create_time,
-                    bt.transact_time,
-                    idleMoney = QueryIdleMoney(bt),
-                    bt.li_bank_accounts.bank,
-                    name = bt.li_bank_accounts.dt_users.real_name,
-                    bt.li_bank_accounts.opening_bank,
-                    bt.li_bank_accounts.account,
-                    status = Utils.GetAgp2pEnumDes((Agp2pEnums.BankTransactionStatusEnum)bt.status),
-                    handlingFee = GetHandlingFee(bt)
+                    q.Index,
+                    q.GroupName,
+                    q.WithdrawAmount,
+                    q.TransactionAmount
                 });
-            var titles = new[] { "申请人", "提现金额", "实付金额", "申请时间", "付款时间", "操作后余额", "银行名称", "银行开户名", "银行开户行", "银行帐号", "提现状态", "手续费" };
-            Utils.ExportXls("提现申请", titles, lsData, Response);
+                var titles = new[] {"序号", "会员组", "提现金额", "实付金额"};
+                Utils.ExportXls("提现汇总", titles, lsData, Response);
+            }
         }
 
         protected void rptList_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -281,6 +310,7 @@ namespace Agp2p.Web.admin.audit
                 rptList_summary.Visible = true;
                 div_pagination.Visible = false;
             }
+            RptBind();
         }
     }
 }

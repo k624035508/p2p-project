@@ -137,7 +137,7 @@
                 <tr>
                     <th align="center" width="5%" style="padding-left: 1em;">序号</th>
                     <th align="center">会员组</th>
-                    <th align="right">充值金额</th>
+                    <th align="center">充值金额</th>
                 </tr>
             </thead>
     </HeaderTemplate>
@@ -145,7 +145,7 @@
         <tr <%# ((GroupByUserGroupSummery)Container.DataItem).Index == null ? "class='sum'" : ""%>>
             <td style="text-align: center;"><%# Eval("index") %></td>
             <td style="text-align: center"><%# Eval("GroupName")%></td>
-            <td style="text-align: right"><%# Convert.ToDecimal(Eval("TransactionAmount")).ToString("c")%></td>
+            <td style="text-align: center"><%# Convert.ToDecimal(Eval("TransactionAmount")).ToString("c")%></td>
         </tr>
     </ItemTemplate>
     <FooterTemplate>
