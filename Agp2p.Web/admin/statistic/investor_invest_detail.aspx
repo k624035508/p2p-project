@@ -62,6 +62,12 @@ td { text-align: center; }
                 </ul>
             </div>
             <div class="r-list">
+                <div class="rule-multi-radio" style="display: inline-block; margin-right: 10px; float: left;">
+                        <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True" OnSelectedIndexChanged="rblType_OnSelectedIndexChanged">
+                            <asp:ListItem Value="0" Selected="True">明细</asp:ListItem>
+                            <asp:ListItem Value="1">汇总</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </div>
                 <div style="display: inline-block;" class="rl">按投资时间查询：</div>
                 <div style="display: inline-block; float:left;">
                     <asp:TextBox ID="txtYear" runat="server" CssClass="keyword" datatype="/^\d{4}$/" AutoPostBack="True" OnTextChanged="txtYear_OnTextChanged" Width="4em" />
@@ -101,7 +107,7 @@ td { text-align: center; }
     </thead>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr <%# string.Equals(Eval("InvestorUserName"), "小计") || string.Equals(Eval("InvestorUserName"), "合计") ? "class='sum'" : ""%>>
+  <tr <%# string.Equals(Eval("InvestorUserName"), "小计") || string.Equals(Eval("InvestorUserName"), "总计") ? "class='sum'" : ""%>>
     <td style="text-align: center;"><%# Eval("Index")%></td>
     <td><%# string.IsNullOrWhiteSpace((string) Eval("InvestorRealName")) ? Eval("InvestorUserName") : Eval("InvestorRealName") %></td>
     <td style="text-align: left; padding-left:5px;"><%# Eval("ProjectName")%></td>
@@ -121,10 +127,39 @@ td { text-align: center; }
 </FooterTemplate>
 </asp:Repeater>
 <!--/列表-->
+    <!--汇总列表-->
+        <asp:Repeater ID="rptList_summary" runat="server" Visible="False">
+            <HeaderTemplate>
+                <table id="wallet" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <thead>
+                        <tr>
+                            <th align="center" width="5%" style="padding-left: 1em;">序号</th>
+                            <th align="center">投资者</th>
+                            <th align="center">投资本金</th>
+                            <th align="center">利息</th>
+                            <th align="center">本息合计</th>
+                        </tr>
+                    </thead>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr <%# ((InvestorInvestDetail)Container.DataItem).Index == null ? "class='sum'" : ""%>>
+                    <td style="text-align: center;"><%# Eval("Index") %></td>
+                    <td style="text-align: center"><%# Eval("InvestorUserName")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("RepayTotal")).ToString("c")%></td>
+                    <td style="text-align: center"><%# Convert.ToDecimal(Eval("Total")).ToString("c")%></td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                <%#rptList_summary.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+</table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <!--/汇总列表-->
 
 <!--内容底部-->
 <div class="line20"></div>
-<div class="pagelist">
+<div class="pagelist" id="div_page" runat="server">
   <div class="l-btns">
       <span>显示</span><asp:TextBox ID="txtPageNum" runat="server" CssClass="pagenum" onkeydown="return checkNumber(event);" ontextchanged="txtPageNum_TextChanged" AutoPostBack="True"/><span>条/页</span>
   </div>

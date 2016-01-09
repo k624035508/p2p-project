@@ -182,9 +182,16 @@ namespace Agp2p.Web.admin.statistic
             var data = QueryProjectTransactions();
             if (rblType.SelectedValue == "0")
             {
-                var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize);
+                var xlsData = data.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+                var xlsData2 = xlsData.Concat(Enumerable.Range(0, 1).Select(i => new BondTransaction
+                {
+                    index = null,
+                    occurTime = "总计",
+                    income = xlsData.Aggregate(0m, (sum, tr) => sum + tr.income.GetValueOrDefault()),
+                    outcome = xlsData.Aggregate(0m, (sum, tr) => sum + tr.outcome.GetValueOrDefault()),
+                }));
                 var titles = new[] {"序号", "时间", "收入", "支出", "操作类型", "关联人员", "备注"};
-                Utils.ExportXls("风险保障金明细", titles, xlsData, Response);
+                Utils.ExportXls("风险保障金明细", titles, xlsData2, Response);
             }
             else
             {
