@@ -734,7 +734,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\license-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
