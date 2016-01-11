@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<meta charset="utf-8" />
     <title>安广融合App</title>
-    <style type='text/css'>@-webkit-keyframes uil-default-anim{0%{opacity:1}100%{opacity:0}}@keyframes uil-default-anim{0%{opacity:1}100%{opacity:0}}.uil-default-css>div:nth-of-type(1){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.5s;animation-delay:-0.5s}.uil-default-css{position:relative;background:0;width:200px;height:200px}.uil-default-css>div:nth-of-type(2){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.4166666666666667s;animation-delay:-0.4166666666666667s}.uil-default-css>div:nth-of-type(3){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.33333333333333337s;animation-delay:-0.33333333333333337s}.uil-default-css>div:nth-of-type(4){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.25s;animation-delay:-0.25s}.uil-default-css>div:nth-of-type(5){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.16666666666666669s;animation-delay:-0.16666666666666669s}.uil-default-css>div:nth-of-type(6){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:-0.08333333333333331s;animation-delay:-0.08333333333333331s}.uil-default-css>div:nth-of-type(7){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:0s;animation-delay:0s}.uil-default-css>div:nth-of-type(8){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.08333333333333337s;animation-delay:.08333333333333337s}.uil-default-css>div:nth-of-type(9){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.16666666666666663s;animation-delay:.16666666666666663s}.uil-default-css>div:nth-of-type(10){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.25s;animation-delay:.25s}.uil-default-css>div:nth-of-type(11){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.33333333333333337s;animation-delay:.33333333333333337s}.uil-default-css>div:nth-of-type(12){-webkit-animation:uil-default-anim 1s linear infinite;animation:uil-default-anim 1s linear infinite;-webkit-animation-delay:.41666666666666663s;animation-delay:.41666666666666663s}</style>
     <style>
     	.font {font-weight: bold; }
     	.vertical-align {
@@ -20,7 +19,7 @@
     		box-sizing: border-box;
     	}
     	html, body {height: 100%;margin: 0;}
-    	.titlebar {height: 7%; background-color: #38373d;}
+    	.titlebar {height: 7%; background-color: #38373d; min-height: 40px;}
     	iframe {}
     	.back { display: inline-block; vertical-align: top; width: 10%; margin-left: 10px; color: white;} 
     	.iframeTitle {
@@ -43,15 +42,13 @@
     		background-color: rgba(0,0,0,0.5);
     		text-align: center;
     		border-radius: 20px;
-    		display: none;
+            padding: 15px;
     	}
     	.loading-indicator span {
     		font-weight: bold;
     		color: white;
-    		margin-top: -20px;
-    		position: relative;
-    		top: -24px;
     		font-size: 17px;
+            display: block;
     	}
     </style>
 </head>
@@ -59,7 +56,9 @@
 <div class="titlebar font"><span class="back vertical-align">《</span><span class="iframeTitle vertical-align">加载中...</span></div>
 <iframe src="/" width="100%" height="92.4%" frameborder="0" onload="content_finished_loading(this)"></iframe>
 <div class="loading-indicator">
-	<div class='uil-default-css' style='transform:scale(0.5);'><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(0deg) translate(0,-60px);transform:rotate(0deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(30deg) translate(0,-60px);transform:rotate(30deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(60deg) translate(0,-60px);transform:rotate(60deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(90deg) translate(0,-60px);transform:rotate(90deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(120deg) translate(0,-60px);transform:rotate(120deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(150deg) translate(0,-60px);transform:rotate(150deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(180deg) translate(0,-60px);transform:rotate(180deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(210deg) translate(0,-60px);transform:rotate(210deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(240deg) translate(0,-60px);transform:rotate(240deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(270deg) translate(0,-60px);transform:rotate(270deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(300deg) translate(0,-60px);transform:rotate(300deg) translate(0,-60px);border-radius:10px;position:absolute;'></div><div style='top:80px;left:93px;width:14px;height:40px;background:#ffffff;-webkit-transform:rotate(330deg) translate(0,-60px);transform:rotate(330deg) translate(0,-60px);border-radius:10px;position:absolute;'></div></div>
+    <svg width="120" height="120">
+      <image xlink:href="<%templateskin%>/imgs/loading.svg" src="<%templateskin%>/imgs/loading.gif" width="120" height="120" />
+    </svg>
 	<span>加载中...</span>
 </div>
 <script>
@@ -71,26 +70,16 @@
 		hist.back();
 	});
 
+    var indicator = document.querySelector('.loading-indicator');
+    var content_start_loading = function() {
+        indicator.style.display = 'block';
+    };
+
 	var content_finished_loading = function(iframe) {
-		document.querySelector('.loading-indicator').style.display = 'none';
-		titleSpan.innerText = iframe.contentDocument.title;
-	}
-	var content_start_loading = function() {
-		document.querySelector('.loading-indicator').style.display = 'block';
-	}
-
-	window.addEventListener("message", function receiveMessage(e){
-		var url = window.location.href,
-		url_parts = url.split("/"),
-		allowed = url_parts[0] + "//" + url_parts[2];
-
-        // Only react to messages from same domain as current document
-        if (e.origin !== allowed) return;
-        // Handle the message
-        switch (e.data) {
-        	case 'iframe_change': content_start_loading(); break;
-        }
-    }, false);
+		indicator.style.display = 'none';
+        iframe.contentWindow.onunload = content_start_loading;
+        titleSpan.innerText = iframe.contentDocument.title;
+	};
 </script>
 </body>
 </html>

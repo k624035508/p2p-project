@@ -1026,6 +1026,8 @@
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\trade-pwd.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
+    <Content Include="templates\weChat\imgs\loading.gif" />
+    <Content Include="templates\weChat\imgs\loading.svg" />
     <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\newhand-mark.png" />
     <Content Include="templates\weChat\imgs\settings\about-icon.png" />
