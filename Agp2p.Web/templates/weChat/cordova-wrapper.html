@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta charset="utf-8" />
+    <title>安广融合App</title>
+    <style>
+    	.font {font-weight: bold; }
+    	.vertical-align {
+    		position: relative;
+    		top: 50%;
+    		-webkit-transform: translateY(-50%);
+    		-ms-transform: translateY(-50%);
+    		transform: translateY(-50%);
+    	}
+    	* {
+    		-webkit-box-sizing: border-box;
+    		-moz-box-sizing: border-box;
+    		box-sizing: border-box;
+    	}
+    	html, body {height: 100%;margin: 0;}
+    	.titlebar {height: 7%; background-color: #38373d; min-height: 40px;}
+    	iframe {}
+    	.back { display: inline-block; vertical-align: top; width: 10%; margin-left: 10px; color: white;} 
+    	.iframeTitle {
+    		display: inline-block;
+    		vertical-align: top;
+    		text-align: center;
+    		width: 80%;
+    		color: white;
+    		white-space: nowrap;
+    		overflow: hidden;
+    		text-overflow: ellipsis;
+    	}
+    	.loading-indicator {
+    		position: fixed;
+    		top: 50%;
+    		left: 50%;
+    		-webkit-transform: translate(-50%,-50%) scale(0.8);
+    		-ms-transform: translate(-50%,-50%) scale(0.8);
+    		transform: translate(-50%,-50%) scale(0.8);
+    		background-color: rgba(0,0,0,0.5);
+    		text-align: center;
+    		border-radius: 20px;
+            padding: 15px;
+    	}
+    	.loading-indicator span {
+    		font-weight: bold;
+    		color: white;
+    		font-size: 17px;
+            display: block;
+    	}
+    </style>
+</head>
+<body>
+<div class="titlebar font"><span class="back vertical-align">《</span><span class="iframeTitle vertical-align">加载中...</span></div>
+<iframe src="/" width="100%" height="92.4%" frameborder="0" onload="content_finished_loading(this)"></iframe>
+<div class="loading-indicator">
+    <svg width="120" height="120">
+      <image xlink:href="<%templateskin%>/imgs/loading.svg" src="<%templateskin%>/imgs/loading.gif" width="120" height="120" />
+    </svg>
+	<span>加载中...</span>
+</div>
+<script>
+	var titleSpan = document.querySelector('span.iframeTitle');
+	var backBtn = document.querySelector('span.back');
+
+	backBtn.addEventListener('click', function () {
+		var hist = document.querySelector('iframe').contentWindow.history;
+		hist.back();
+	});
+
+    var indicator = document.querySelector('.loading-indicator');
+    var content_start_loading = function() {
+        indicator.style.display = 'block';
+    };
+
+	var content_finished_loading = function(iframe) {
+		indicator.style.display = 'none';
+        iframe.contentWindow.onunload = content_start_loading;
+        titleSpan.innerText = iframe.contentDocument.title;
+	};
+</script>
+</body>
+</html>
