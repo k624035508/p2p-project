@@ -12,10 +12,3 @@
         <a id="a_setting" href="<%linkurl("settings")%>" class="txt-default"><span id="span_setting" class="center-block"></span>设置</a>
     </div>
 </div>
-<script>
-window.onunload = function() {
-    // Notify top window of the unload event
-    window.top.postMessage('iframe_change', '*');
-};
-</script>
-
