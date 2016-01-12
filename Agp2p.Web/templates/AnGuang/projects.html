@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="novice-guide pull-right">
-            <p class="topic-title">新手指引</p>
+            <p class="topic-title"><a href="#">新手指引</a></p>
             <ul class="guide-list">
                 <li><a href="#">为什么要开通第三方资金托管平台账户?</a></li>
                 <li><a href="#">为什么要开通第三方资金托管平台账户?</a></li>
@@ -93,12 +93,7 @@
             </ul>
         </div>
     </div>
-    <%set var projects=QueryProjects(PAGE_SIZE,page-1,out totalcount,category_id,project_profit_rate_index,project_repayment_index,project_status_index)%>
-    <%if(!projects.Any())%>
-    <div class="empty-box content-wrap">
-        <div class="empty-icon">暂没有找到相关数据</div>
-    </div>
-    <%/if%>
+
     <div class="invest-list content-wrap">
         <div class="list-head">
             <span class="title-th">借款标题</span>
@@ -109,6 +104,12 @@
             <span class="progress-th">进度</span>
             <span class="status pull-right">状态</span>
         </div>
+        <%set var projects=QueryProjects(PAGE_SIZE,page-1,out totalcount,category_id,project_profit_rate_index,project_repayment_index,project_status_index)%>
+        <%if(!projects.Any())%>
+        <div class="empty-box content-wrap">
+            <div class="empty-icon">暂没有找到相关数据</div>
+        </div>
+        <%/if%>
         <%foreach(var p in projects)%>
         <div class="invest-per">
             <span class="title">
@@ -138,15 +139,15 @@
             </span>
             <span class="btn-wrap pull-right">
                 <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                <a href='<%linkurl("project",p.id)%>'>待发标</a>
+                <a class="btn-grey" href='<%linkurl("project",p.id)%>'>待发标</a>
                 <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                <a href='<%linkurl("project",p.id)%>'>立即投资</a>
+                <a class="btn-red" href='<%linkurl("project",p.id)%>'>立即投资</a>
                 <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                <a href='<%linkurl("project",p.id)%>'>审核中</a>
+                <a class="btn-grey" href='<%linkurl("project",p.id)%>'>审核中</a>
                 <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                <a href='<%linkurl("project",p.id)%>'>还款中</a>
+                <a class="btn-grey" href='<%linkurl("project",p.id)%>'>还款中</a>
                 <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-                <a href='<%linkurl("project",p.id)%>'>已完成</a>
+                <a class="btn-grey" href='<%linkurl("project",p.id)%>'>已完成</a>
                 <%/if%>
             </span>
         </div>

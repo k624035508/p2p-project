@@ -52,11 +52,14 @@ body { background: @body-color; }
 		width: 305px;
 		* { font-size: @font15; }
 		.topic-title {
-			color: @dark-grey;
 			line-height: 50px;
 			padding-left: 30px;
 			margin-bottom: 0;
 			border-bottom: @border;
+			a {
+				color: @blue;
+				text-decoration: none;
+			}
 		}
 		.guide-list {
 			list-style-type: square;
@@ -155,11 +158,17 @@ body { background: @body-color; }
 				width: 85px;
 				height: 25px;
 				line-height: 25px;
-				color: @white;
 				text-align: center;
 				text-decoration: none;
-				background: #ff414b;
 				border-radius: 4px;
+			}
+			.btn-red {
+				color: @white;
+				background: #ff414b;
+			}
+			.btn-grey {
+				color: @dark-grey;
+				background: @light-grey;
 			}
 		}
 	}
@@ -192,12 +201,12 @@ body { background: @body-color; }
 }
 
 .empty-box {
-	margin-top: 30px !important;
 	height: 300px;
+	padding-top: 100px;
 	background: @white;
 	border: @border;
+	border-top: none;
 	.empty-icon {
-		margin-top: 100px;
 		height: 80px;
 		text-align: center;
 		line-height: 220px;
