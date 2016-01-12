@@ -18,7 +18,7 @@ namespace Agp2p.Web.UI.Page
     /// </summary>
     public partial class projects : Web.UI.BasePage
     {
-        protected const int PAGE_SIZE = 6;         //当前页码
+        protected const int PAGE_SIZE = 15;         //当前页码
         protected int page;         //当前页码
         protected int category_id;  //类别ID
         protected int totalcount;   //OUT数据总数
