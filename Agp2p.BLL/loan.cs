@@ -72,10 +72,12 @@ namespace Agp2p.BLL
                      status = (byte)Agp2pEnums.MortgageStatusEnum.Mortgaged,
                      check = r.id == risk_id,
                      enable = r.id == risk_id
-                 }).GroupBy(m => m.id).ToDictionary(m => m.Key, m => m.First()); // 旧数据中可能会有一个抵押物多次绑定多个未完成的风控信息的情况，这里只取第一个
+                 })
+                 // 只显示当前风险信息关联的抵押物
+                 .GroupBy(m => m.id).ToDictionary(m => m.Key, m => m.SingleOrDefault(mm => mm.enable)); 
 
             return !can_check
-                ? mortgageInUse.Values.Where(m => m.check).AsQueryable()
+                ? mortgageInUse.Values.Where(m => m != null && m.check).AsQueryable()
                 : allMortgages.Select(m => mortgageInUse.ContainsKey(m.id) ? mortgageInUse[m.id] : m);
 
         }

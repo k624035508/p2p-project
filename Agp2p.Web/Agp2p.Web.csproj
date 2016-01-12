@@ -22,7 +22,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <TargetFrameworkProfile />
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -994,6 +994,7 @@
     <Content Include="templates\weChat\activity.html" />
     <Content Include="templates\weChat\article_show.html" />
     <Content Include="templates\weChat\city-selecter.htm" />
+    <Content Include="templates\weChat\cordova-wrapper.html" />
     <Content Include="templates\weChat\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="templates\weChat\forgot_password.html" />
     <Content Include="templates\weChat\imgs\activity-bg.png" />
@@ -1025,6 +1026,8 @@
     <Content Include="templates\weChat\imgs\input-icon\sms-code.png" />
     <Content Include="templates\weChat\imgs\input-icon\trade-pwd.png" />
     <Content Include="templates\weChat\imgs\input-icon\user.png" />
+    <Content Include="templates\weChat\imgs\loading.gif" />
+    <Content Include="templates\weChat\imgs\loading.svg" />
     <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\newhand-mark.png" />
     <Content Include="templates\weChat\imgs\settings\about-icon.png" />

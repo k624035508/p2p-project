@@ -1166,7 +1166,8 @@ namespace Agp2p.Web.tools
             //赠送积分金额
             if (modelGroup.point > 0)
             {
-                new BLL.user_point_log().Add(model.id, model.user_name, modelGroup.point, "注册赠送积分", false);
+                new BLL.user_point_log().Add(model.id, string.IsNullOrEmpty(model.real_name) ? model.user_name :
+                    $"{model.user_name}({model.real_name})", modelGroup.point, "注册赠送积分", false);
             }
             if (modelGroup.amount > 0)
             {

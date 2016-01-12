@@ -62,7 +62,8 @@ namespace Agp2p.Core.InitLogic
                 var dtUserPointLog = new dt_user_point_log
                 {
                     user_id = user.id,
-                    user_name = user.user_name,
+                    user_name = string.IsNullOrEmpty(user.real_name) ? user.user_name :
+                    $"{user.user_name}({user.real_name})",
                     add_time = DateTime.Now,
                     value = 10,
                     remark = "每天登录获得积分"

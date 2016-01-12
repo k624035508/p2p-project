@@ -1507,6 +1507,7 @@ namespace Agp2p.Common
                 {"Delete", "删除"},
                 {"Audit", "审核"},
                 {"Reply", "回复"},
+                {"Copy", "复制"},
                 {"Confirm", "确认"},
                 {"Cancel", "取消"},
                 {"Invalid", "作废"},
