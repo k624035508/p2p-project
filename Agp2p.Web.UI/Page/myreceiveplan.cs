@@ -66,7 +66,8 @@ namespace Agp2p.Web.UI.Page
                 .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
 
             Model.siteconfig config = new siteconfig().loadConfig();
-            return investedProjectValueMap.SelectMany(p =>
+
+            var unsorted = investedProjectValueMap.Select(p =>
             {
                 var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
@@ -114,6 +115,8 @@ namespace Agp2p.Web.UI.Page
 
                 return reps1;
             }).ToList();
+
+            return unsorted.Where(ts => ts.Any()).OrderBy(ts => ts.First().ShouldRepayDay).SelectMany(x => x).ToList();
         }
 
         private static decimal QueryInvestAmount(li_projects proj, int userId)
