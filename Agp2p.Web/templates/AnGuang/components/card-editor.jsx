@@ -4,6 +4,7 @@ import { bankList } from "../js/bank-list.jsx";
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js";
 
 import alert from "../components/tips_alert.js";
+import mask from "../js/mask.js";
 
 class CardEditor extends React.Component {
 	constructor(props) {
@@ -78,7 +79,7 @@ class CardEditor extends React.Component {
 					<li><span>开户行名称：</span><input type="text" value={this.state.openingBank}
 						onChange={ev => this.setState({openingBank: ev.target.value})} disabled={!this.props.realName} /></li>
 					{editingCard
-						? <li><span>银行卡号：</span>{this.state.cardNumber}</li>
+						? <li><span>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
 						: <li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
 						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>}
 					{editingCard ? null :
