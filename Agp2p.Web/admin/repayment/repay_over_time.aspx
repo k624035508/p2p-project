@@ -60,8 +60,8 @@
                         <th align="left" width="8%">逾期罚金(元)</th>
                         <th align="left" width="6%">逾期期数</th>
                         <th align="left" width="6%">逾期天数</th>
-                        <th align="left" width="8%">应还时间</th>
-                        <th align="left" width="8%">实还时间</th>
+                        <th align="left" width="8%">应还日期</th>
+                        <th align="left" width="8%">实还日期</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
                         <th align="left" width="6%">还款方式</th>

@@ -118,8 +118,8 @@ namespace Agp2p.Web.admin.repayment
 
                 repay.Cost = r.cost??0;
                 repay.DayCount = (r.should_repay_time.Subtract((DateTime)r.repay_at)).Days;//提前天数
-                repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm");//应还时间
-                repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "";//实还时间
+                repay.ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd");//应还时间
+                repay.RepayTime = r.repay_at?.ToString("yyyy-MM-dd") ?? "";//实还时间
                 repay.Category = r.li_projects.category_id;
                 repay.ProfitRate = r.li_projects.profit_rate_year;
                 repay.RepaymentType =
