@@ -198,9 +198,9 @@ namespace Agp2p.Web.admin.statistic
             if (ddlOrderBy.SelectedValue == "invest_complete_time")
             {
                 if (txtYear.Text != "-")
-                    query1 = query1.Where(rt => rt.li_projects.invest_complete_time.Value.Year == Convert.ToInt32(txtYear.Text));
+                    query1 = query1.Where(rt => rt.li_projects.make_loan_time.Value.Year == Convert.ToInt32(txtYear.Text));
                 if (txtMonth.Text != "-")
-                    query1 = query1.Where(rt => rt.li_projects.invest_complete_time.Value.Month == Convert.ToInt32(txtMonth.Text));
+                    query1 = query1.Where(rt => rt.li_projects.make_loan_time.Value.Month == Convert.ToInt32(txtMonth.Text));
             }
             else if (ddlOrderBy.SelectedValue == "should_repay_time")
             {
@@ -234,7 +234,7 @@ namespace Agp2p.Web.admin.statistic
                     Term =
                         p.repayment_term_span_count + " " +
                         Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum) p.repayment_term_span),
-                    InvestCompleteTime = p.invest_complete_time,
+                    InvestCompleteTime = p.make_loan_time,
                     RepayCompleteTime = p.li_repayment_tasks.Select(r => r.should_repay_time).Last(),
                     Creditor = context.GetLonerName(p.id)
                 };

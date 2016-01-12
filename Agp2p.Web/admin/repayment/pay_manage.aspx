@@ -74,8 +74,8 @@
                         <th align="left" width="10%">收款人</th>
                         <th align="left" width="8%">应兑付本金(元)</th>
                         <th align="left" width="6%">应兑付利息(元)</th>
-                        <th align="left" width="8%">应兑付时间</th>
-                        <th align="left" width="8%">实兑付时间</th>
+                        <th align="left" width="8%">应兑付日期</th>
+                        <th align="left" width="8%">实兑付日期</th>
                         <th align="left" width="6%">投资协议</th>
                         <th align="left" width="5%">状态</th>
                         <th align="left" width="15%">关联项目</th>

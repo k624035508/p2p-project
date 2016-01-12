@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router';
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
+import mask from "../js/mask.js";
 
 
 class UserStatus extends React.Component {
@@ -22,7 +23,7 @@ class UserStatus extends React.Component {
 		            	<Link to="/withdraw" className="withdraw">提 现</Link>
 		            </div>
 		            <div className="head-left">
-		                <p className="username">您好！ {this.props.nickName?this.props.nickName:this.props.userName}</p>
+		                <p className="username">您好！ {this.props.nickName?this.props.nickName:mask(this.props.userName)}</p>
 		                <p className="save-level">安全级别 <Link className={"level-icon " + this.props.safeLevel}
 		                	title="到 “个人中心 -> 安全中心” 进行相关设置以提高安全等级" to="/safe"></Link></p>
 		                <p className="login-time">上次登录时间：{this.props.prevLoginTime}</p>
