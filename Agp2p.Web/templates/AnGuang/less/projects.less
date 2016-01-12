@@ -2,55 +2,211 @@
 
 body { background: @body-color; }
 
-.select-box {
-	* {
-		font-size: @font15;
-		color: @dark-grey;
+.top-part {
+	& > div {
+		.inline-block;
+		height: 210px;
+		border: @border;
+		background: @white;
 	}
-	height: 210px;
-	border: @border;
-	background: @white;
-	.project-time {
-		height: 50px;
-		line-height: 50px;
-		padding: 0 30px;
-		border-bottom: @border;
-		a {
-			color: @blue;
-			text-decoration: none;
+	.select-box {
+		width: 775px;
+		* {
+			font-size: @font15;
+			color: @dark-grey;
+		}
+		.project-time {
+			height: 50px;
+			line-height: 50px;
+			padding: 0 30px;
+			border-bottom: @border;
+			a {
+				color: @blue;
+				text-decoration: none;
+			}
+		}
+		.type-select {
+			padding: 0 30px;
+			& > div {
+				margin: 23px 0;
+				& > * { .inline-block; }
+				& > span:first-child { margin-right: 45px; }
+				ul {
+					li {
+						min-width: 90px;
+						a {
+							text-decoration: none;
+							padding: 2px 8px;
+							color: #000;
+						}
+						.selected {
+							color: white;
+							background-color: @red;
+						}
+					}
+				}
+			}
 		}
 	}
-	.type-select {
-		padding: 0 30px;
-		& > div {
-			margin: 23px 0;
-			& > * { .inline-block; }
-			& > span:first-child { margin-right: 45px; }
-			ul {
-				li {
-					min-width: 90px;
-					a {
-						text-decoration: none;
-						padding: 2px 8px;
-						color: #000;
-					}
-					.selected {
-						 color: white;
-						 background-color: @red;
-					 }
+	.novice-guide {
+		width: 305px;
+		* { font-size: @font15; }
+		.topic-title {
+			line-height: 50px;
+			padding-left: 30px;
+			margin-bottom: 0;
+			border-bottom: @border;
+			a {
+				color: @blue;
+				text-decoration: none;
+			}
+		}
+		.guide-list {
+			list-style-type: square;
+			color: @grey;
+			margin: 13px auto auto -10px;
+			li {
+				line-height: 30px;
+				a {
+					.inline-block;
+					max-width: 260px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					color: @dark-grey;
+					text-decoration: none;
 				}
 			}
 		}
 	}
 }
 
+.invest-list {
+	margin-top: 20px !important;
+	.list-head {
+		padding: 0 30px;
+		background: #fff5ed;
+		border-bottom: @border;
+		span {
+			.inline-block;
+			color: @grey;
+			font-size: @font13;
+			line-height: 40px;
+		}
+	}
+	.invest-per {
+		height: 50px;
+		background: @white;
+		margin-bottom: 5px;
+		padding: 12.5px 30px;
+		&:hover { background: #f1f5ff; }
+		& > * { .inline-block; }
+		& > span { }
+		* { font-size: @font15; }
+		i { font-style: normal; }
+		.title-mark {
+			color: #37aaf0;
+			padding: 0 5px;
+			margin-right: 5px;
+			border: 1px solid;
+		}
+		.title a {
+			.inline-block;
+			color: @darker-grey;
+			text-decoration: none;
+			max-width: 115px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.invest-list-icon {
+			.inline-block;
+			width: 20px;
+			height: 20px;
+			margin-left: 6px;
+		}
+		.jian-icon { background: url("../imgs/index/jian.png"); }
+
+		.xin-icon { background: url("../imgs/index/xin.png"); }
+
+		.yue-icon { background: url("../imgs/index/yue.png"); }
+
+		.apr {
+			color: #ff414b;
+			font-size: @font18;
+		}
+		.sum, .deadline {
+			color: @dark-grey;
+			font-size: @font18;
+		}
+		.back-way { color: @dark-grey; }
+		.progress-wrap {
+			.progress-custom {
+				width: 125px;
+				height: 15px;
+				margin-bottom: 0;
+				background: #cdcdcd;
+				.progress-bar-info {
+					line-height: 14px;
+					background-color: #38aaf0 !important;
+				}
+			}
+		}
+		.btn-wrap {
+			a {
+				display: inline-block;
+				width: 85px;
+				height: 25px;
+				line-height: 25px;
+				text-align: center;
+				text-decoration: none;
+				border-radius: 4px;
+			}
+			.btn-red {
+				color: @white;
+				background: #ff414b;
+			}
+			.btn-grey {
+				color: @dark-grey;
+				background: @light-grey;
+			}
+		}
+	}
+	.title-th, .title { width: 20%; }
+	.apr-th, .apr {
+		width: 10%;
+		text-align: center;
+	}
+	.sum-th, .sum {
+		width: 16%;
+		text-align: center;
+	}
+	.deadline-th, .deadline {
+		width: 9%;
+		text-align: center;
+	}
+	.back-way-th, .back-way {
+		width: 16%;
+		text-align: center;
+	}
+	.progress-th, .progress-wrap {
+		width: 14%;
+		text-align: center;
+	}
+	.progress-wrap { padding-left: 11px; }
+	.status, .btn-wrap {
+		width: 9%;
+		text-align: center;
+	}
+}
+
 .empty-box {
-	margin-top: 30px !important;
 	height: 300px;
+	padding-top: 100px;
 	background: @white;
 	border: @border;
+	border-top: none;
 	.empty-icon {
-		margin-top: 100px;
 		height: 80px;
 		text-align: center;
 		line-height: 220px;
