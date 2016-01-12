@@ -75,8 +75,9 @@
                         <th align="left" width="8%">应还本金(元)</th>
                         <th align="left" width="8%">应还利息(元)</th>
                         <th align="left" width="6%">还款期数</th>
-                        <th align="left" width="8%">应还时间</th>
-                        <th align="left" width="8%">实还时间</th>
+                        <th align="left" width="6%">放款日期</th>
+                        <th align="left" width="6%">应还日期</th>
+                        <th align="left" width="6%">实还日期</th>
                         <th align="left" width="6%">状态</th>
                         <th align="left" width="6%">产品</th>
                         <th align="left" width="6%">年化利率(%)</th>
@@ -92,6 +93,7 @@
                     <td><%#Convert.ToDecimal(Eval("Principal")).ToString("C")%></td>
                     <td><%#Convert.ToDecimal(Eval("Interest")).ToString("C")%></td>
                     <td><%#Eval("TimeTerm")%></td>
+                    <td><%#Eval("MakeLoanTime")%></td>
                     <td><%#Eval("ShouldRepayTime")%></td>
                     <td><%#Eval("RepayTime")%></td>
                     <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.RepaymentStatusEnum) Convert.ToInt16(Eval("RepayStatus")))%></td>

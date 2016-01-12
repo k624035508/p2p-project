@@ -61,7 +61,7 @@
                         <div class="rule-single-select">
                             <asp:DropDownList ID="ddlOrderBy" AutoPostBack="True" runat="server" OnSelectedIndexChanged="ddlOrderBy_SelectedIndexChanged">
                                 <asp:ListItem Text="还款时间" Value="should_repay_time" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="满标时间" Value="invest_complete_time"></asp:ListItem>
+                                <asp:ListItem Text="放款时间" Value="invest_complete_time"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                         <th align="center">产品</th>
                         <th align="right">借款金额</th>
                         <th align="center">年利率</th>
-                        <th align="center">满标时间</th>
+                        <th align="center">放款时间</th>
                         <th align="center">到期日</th>
                         <th align="center">期数</th>
                         <th align="center">应还日期</th>
