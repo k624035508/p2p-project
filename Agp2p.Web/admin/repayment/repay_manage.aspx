@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="repay_manage.aspx.cs" Inherits="Agp2p.Web.admin.repayment.repay_manage" %>
+
 <%@ Import Namespace="Agp2p.Common" %>
 
 <!DOCTYPE html>
@@ -12,9 +13,37 @@
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../../scripts/swfupload/swfupload.handlers.js"></script>
     <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../../scripts/tablesorter/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+    <link href="../../scripts/tablesorter/table-sorter-style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        $(function () {
+            $.tablesorter.addParser({
+                id: 'rmb',
+                is: function () { return false; },
+                format: function (s) { return s.replace(/[¥,]/g, ''); },
+                type: 'numeric'
+            });
+            $.tablesorter.addParser({
+                id: 'short-date',
+                is: function () { return false; },
+                format: function (s) { return s; },
+                type: 'text'
+            });
+            $("table#repayTable").tablesorter({
+                headers: {
+                    3: { sorter: 'rmb' },
+                    4: { sorter: 'rmb' },
+                    6: { sorter: 'short-date' },
+                    7: { sorter: 'short-date' },
+                    8: { sorter: 'short-date' }
+                }
+            });
+        });
+    </script>
 </head>
 <body class="mainbody">
     <form id="form1" runat="server">
@@ -32,7 +61,7 @@
                 <div class="l-list">
                     <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
                         <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True"
-                             OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
+                            OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
                             <asp:ListItem Value="0" Selected="True">待还款</asp:ListItem>
                             <asp:ListItem Value="1">已还款</asp:ListItem>
                         </asp:RadioButtonList>
@@ -67,23 +96,25 @@
 
         <asp:Repeater ID="rptList1" runat="server">
             <HeaderTemplate>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
-                    <tr>
-                        <th width="4%">序号</th>
-                        <th align="left" width="15%">标题</th>
-                        <th align="left" width="13%">借款人</th>
-                        <th align="left" width="8%">应还本金(元)</th>
-                        <th align="left" width="8%">应还利息(元)</th>
-                        <th align="left" width="6%">还款期数</th>
-                        <th align="left" width="6%">放款日期</th>
-                        <th align="left" width="6%">应还日期</th>
-                        <th align="left" width="6%">实还日期</th>
-                        <th align="left" width="6%">状态</th>
-                        <th align="left" width="6%">产品</th>
-                        <th align="left" width="6%">年化利率(%)</th>
-                        <th align="left" width="6%">还款方式</th>
-                        <th width="6%">操作</th>
-                    </tr>
+                <table id="repayTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <thead>
+                        <tr>
+                            <th width="4%">序号</th>
+                            <th align="left" width="15%">标题</th>
+                            <th align="left" width="13%">借款人</th>
+                            <th align="left" width="8%">应还本金(元)</th>
+                            <th align="left" width="8%">应还利息(元)</th>
+                            <th align="left" width="6%">还款期数</th>
+                            <th align="left" width="6%">放款日期</th>
+                            <th align="left" width="6%">应还日期</th>
+                            <th align="left" width="6%">实还日期</th>
+                            <th align="left" width="6%">状态</th>
+                            <th align="left" width="6%">产品</th>
+                            <th align="left" width="6%">年化利率(%)</th>
+                            <th align="left" width="6%">还款方式</th>
+                            <th width="6%">操作</th>
+                        </tr>
+                    </thead>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
@@ -102,9 +133,9 @@
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
                         <% if (rblStatus.SelectedValue == "0")
-                           { %>
-                        <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
-                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton> 
+                            { %>
+                        <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');"
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton>
                         <% } %>
                     </td>
                 </tr>
