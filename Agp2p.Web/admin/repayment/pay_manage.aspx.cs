@@ -131,8 +131,8 @@ namespace Agp2p.Web.admin.repayment
                         Invester = $"{p.dt_users.real_name}({p.dt_users.user_name})",
                         Principal = p.principal,
                         Interest = p.interest??0,
-                        ShouldPayTime = r.should_repay_time.ToString("yyyy-MM-dd HH:mm"),
-                        PayTime = r.repay_at?.ToString("yyyy-MM-dd HH:mm") ?? "",
+                        ShouldPayTime = r.should_repay_time.ToString("yyyy-MM-dd"),
+                        PayTime = r.repay_at?.ToString("yyyy-MM-dd") ?? "",
                         Category = pro.category_id,
                         ProfitRate = pro.profit_rate_year,
                         RepaymentType =

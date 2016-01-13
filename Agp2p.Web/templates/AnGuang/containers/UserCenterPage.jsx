@@ -44,7 +44,7 @@ class UserCenterPage extends React.Component {
 			lotteriesValue : lotteriesValue.toNum()
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
-		this.props.dispatch(updateUserInfo({ userName, prevLoginTime }));
+		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime }));
 	}
 	render() {
 		return (

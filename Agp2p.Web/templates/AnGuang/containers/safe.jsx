@@ -8,6 +8,7 @@ import { ajax } from "jquery";
 import "../less/safe.less";
 import alert from "../components/tips_alert.js";
 import confirm from "../components/tips_confirm.js";
+import mask from "../js/mask.js";
 
 let emptyIfNull = str => str == null ? "" : str;
 
@@ -61,7 +62,7 @@ class UserInfoEditor extends React.Component {
 				</div>
 				<div className="personal-info-list">
 					<ul className="list-unstyled list-inline">
-						<li><span>用 户 名：</span>{ this.props.userName }</li>
+						<li><span>用 户 名：</span>{ mask(this.props.userName) }</li>
 						<li><span>昵　　称：</span>{ this.genInputBox("nickName") }</li>
 						<li><span>姓　　名：</span>{ this.props.realName }</li>
 						<li><span>性　　别：</span>{ this.state.editing
@@ -69,7 +70,7 @@ class UserInfoEditor extends React.Component {
 								[<input type="radio" name="sex" value={v} key={v} checked={this.props.sex == v}
 									onChange={ev => this.onUserInfoModify("sex", v)} />, v])}</form>
 							: this.props.sex }</li>
-						<li><span>邮箱地址：</span>{ this.props.email }</li>
+						<li><span>邮箱地址：</span>{ mask(this.props.email) }</li>
 						<li><span>出生日期：</span>{ this.state.editing
 							? <DatePicker className="input-box" onBlur={ev => this.onUserInfoModify("birthday", ev.target.value)}
 								defaultValue={this.props.birthday} />
@@ -147,7 +148,7 @@ class EmailBinding extends React.Component {
 							onClick={ev => this.setState({bindingEmail: false})}></span>
 					</div>
 					<div className="settings">
-						<div className="form-group"><label htmlFor="email">原邮箱：</label>{ this.props.email || "（未绑定）" }</div>
+						<div className="form-group"><label htmlFor="email">原邮箱：</label>{ mask(this.props.email) || "（未绑定）" }</div>
 						<div className="form-group">
 							<label htmlFor="email">新邮箱：</label>
 							<input type="text" id="email" onBlur={ev => this.setState({newEmail: ev.target.value})}
@@ -217,7 +218,7 @@ class MobileBinding extends React.Component {
 					<div className="settings">
 						<div className="oldPhone">
 							<span>原手机号码：</span>
-							<span className="phoneNum">{this.props.mobile || "（未绑定）"}</span>
+							<span className="phoneNum">{mask(this.props.mobile) || "（未绑定）"}</span>
 						</div>
 						<div className="form-group">
 							<label htmlFor="phone">新手机号码：</label>
@@ -305,7 +306,7 @@ class IdentityBinding extends React.Component {
 						<div className="form-group">
 							<label htmlFor="personalID">身份证号：</label>
 							<input type="text" id="personalID" onBlur={ev => this.setState({idCardNumber: ev.target.value})}
-								defaultValue={this.props.idCardNumber} disabled={this.props.idCardNumber} />
+								defaultValue={mask(this.props.idCardNumber)} disabled={this.props.idCardNumber} />
 						</div>
 						<div className="btn-wrap" style={this.props.realName ? {display: "none"} : null}><a href="javascript:"
 							onClick={ev => this.bindIdentity()}>提 交</a></div>
