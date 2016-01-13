@@ -1679,8 +1679,7 @@ namespace Agp2p.Common
             // Print in black and white
             ws.PageSetup.BlackAndWhite = false; //单色打印
 
-            // Print in draft quality
-            ws.PageSetup.DraftQuality = true; //草稿品质
+            ws.PageSetup.DraftQuality = false; // 关闭草稿品质，才能打印网格线
 
             // Show row and column headings
             ws.PageSetup.ShowRowAndColumnHeadings = false; //行号列标
