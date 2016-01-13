@@ -319,6 +319,7 @@ namespace Agp2p.Web.admin.statistic
             int totalCount;
             var beforePaging = QueryProjectRepayTaskData(out totalCount);
             if (rblType.SelectedValue == "0")
+
             {
                 var lsData =
                     beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).ToList();
@@ -350,12 +351,11 @@ namespace Agp2p.Web.admin.statistic
                         d.RepayPrincipal,
                         d.RepayInterest,
                         d.RepayTotal,
-
                     }
                     : null);
                 var titles = new[]
                 {
-                    "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "满标时间", "到期日", "期数", "应付日期", "实付日期", "状态", "应还本金", "应还利息",
+                    "序号", "标题", "债权/借款人", "产品", "借款金额", "年利率", "放款时间", "到期日", "期数", "应还日期", "实还日期", "状态", "应还本金", "应还利息",
                     "本息合计"
                 };
                 Utils.ExportXls("应还款明细", titles, lsData2, Response);
