@@ -8,6 +8,7 @@ import "../less/mynews.less";
 
 import alert from "../components/tips_alert.js";
 import confirm from "../components/tips_confirm.js";
+import mask from "../js/mask.js";
 
 class MyNews extends React.Component {
 	constructor(props) {
@@ -204,7 +205,7 @@ class MyNews extends React.Component {
 								</div>
 								{this.state.readingMsgIndex != index ? null :
 								<div className="news-detail">
-									<p className="appellation">{"亲爱的会员 " + this.props.userName}：</p>
+									<p className="appellation">{"亲爱的会员 " + mask(this.props.userName)}：</p>
 									<p className="txt">您好！</p>
 									<p className="txt">{m.content}</p>
 									<p className="sender">安广融合团队</p>
