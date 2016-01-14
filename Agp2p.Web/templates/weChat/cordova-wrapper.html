@@ -5,32 +5,49 @@
 	<meta charset="utf-8" />
     <title>安广融合App</title>
     <style>
-    	.font {font-weight: bold; }
-    	.vertical-align {
-    		position: relative;
-    		top: 50%;
-    		-webkit-transform: translateY(-50%);
-    		-ms-transform: translateY(-50%);
-    		transform: translateY(-50%);
-    	}
+    	.flex {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .flex > * {
+            display: block;
+        }
+        .flex--align-items--center {
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .flex--flex-grow-second :nth-child(2) {
+            -webkit-box-flex: 1;
+            -moz-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-grow: 1;
+            flex-grow: 1
+        }
     	* {
     		-webkit-box-sizing: border-box;
     		-moz-box-sizing: border-box;
     		box-sizing: border-box;
     	}
     	html, body {height: 100%;margin: 0;}
-    	.titlebar {height: 7%; background-color: #38373d; min-height: 40px;}
-    	iframe {}
-    	.back { display: inline-block; vertical-align: top; width: 10%; margin-left: 10px; color: white;} 
+    	.titlebar {height: 7%; background-color: #38373d; min-height: 40px; padding: 0 15px;}
+    	.back {
+            width: 14px;
+        } 
     	.iframeTitle {
-    		display: inline-block;
-    		vertical-align: top;
     		text-align: center;
-    		width: 80%;
     		color: white;
     		white-space: nowrap;
     		overflow: hidden;
     		text-overflow: ellipsis;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 14px;
     	}
     	.loading-indicator {
     		position: fixed;
@@ -53,9 +70,9 @@
     </style>
 </head>
 <body>
-<div class="titlebar font">
-    <span class="back vertical-align"><img src="<%templateskin%>/imgs/cordova-back.png" width="14px"/></span>
-    <span class="iframeTitle vertical-align">加载中...</span>
+<div class="titlebar flex flex--flex-grow-second flex--align-items--center">
+    <img class="back" src="<%templateskin%>/imgs/cordova-back.png"/>
+    <span class="iframeTitle">加载中...</span>
 </div>
 <iframe src="/" width="100%" height="92.4%" frameborder="0" onload="content_finished_loading(this)"></iframe>
 <div class="loading-indicator">
@@ -66,7 +83,7 @@
 </div>
 <script>
 	var titleSpan = document.querySelector('span.iframeTitle');
-	var backBtn = document.querySelector('span.back');
+	var backBtn = document.querySelector('img.back');
 
 	backBtn.addEventListener('click', function () {
 		var hist = document.querySelector('iframe').contentWindow.history;
