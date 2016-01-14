@@ -1004,6 +1004,7 @@
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\banner\banner-2.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
+    <Content Include="templates\weChat\imgs\cordova-back.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
     <Content Include="templates\weChat\imgs\footer\index-active.png" />
     <Content Include="templates\weChat\imgs\footer\index.png" />
