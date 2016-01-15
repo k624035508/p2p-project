@@ -35,13 +35,10 @@ namespace Agp2p.Web.admin.statistic
                 if (!string.IsNullOrEmpty(status))
                     rblRepaymentTaskStatus.SelectedValue = status;
 
-                var keywords = DTRequest.GetQueryString("keywords");
-                var y = DTRequest.GetQueryString("year");
-                var m = DTRequest.GetQueryString("month");
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
 
-                txtKeywords.Text = keywords;
-                txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
-                txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
                 TreeBind();
                 RptBind();
             }
@@ -98,8 +95,8 @@ namespace Agp2p.Web.admin.statistic
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("project_repay_detail.aspx",
-                "keywords={0}&page={1}&year={2}&month={3}&status={4}", txtKeywords.Text, "__id__", txtYear.Text,
-                txtMonth.Text, rblRepaymentTaskStatus.SelectedValue);
+                "keywords={0}&page={1}&startTime={2}&endTime={3}&status={4}", txtKeywords.Text, "__id__", txtStartTime.Text,
+                txtEndTime.Text, rblRepaymentTaskStatus.SelectedValue);
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
@@ -125,10 +122,14 @@ namespace Agp2p.Web.admin.statistic
                     query = query.Where(r => Convert.ToByte(rblRepaymentTaskStatus.SelectedValue) == r.status || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
             }
 
-            if (txtYear.Text != "-")
-                query = query.Where(t => t.should_repay_time.Year == Convert.ToInt32(txtYear.Text));
-            if (txtMonth.Text != "-")
-                query = query.Where(t => t.should_repay_time.Month == Convert.ToInt32(txtMonth.Text));
+            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
+            {
+                query = query.Where(q => Convert.ToDateTime(txtStartTime.Text) <= q.should_repay_time.Date);
+            }
+            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
+            {
+                query = query.Where(q => q.should_repay_time.Date <= Convert.ToDateTime(txtEndTime.Text));
+            }
 
             var sorted = query.OrderBy(r => r.should_repay_time).AsEnumerable();
 
@@ -226,23 +227,23 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&startTime={1}&endTime={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&startTime={1}&endTime={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&year={1}&month={2}&status={3}&category_id={4}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
+            Response.Redirect(Utils.CombUrlTxt("project_repay_detail.aspx", "keywords={0}&startTime={1}&endTime={2}&status={3}&category_id={4}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text, rblRepaymentTaskStatus.SelectedValue, ddlCategoryId.SelectedValue));
         }
 
         protected DateTime GetRepaymentCompleteTime(li_project_transactions pro)
@@ -284,20 +285,6 @@ namespace Agp2p.Web.admin.statistic
                     t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .Select(t => t.create_time).Max();
-        }
-
-        protected void txtMonth_OnTextChanged(object sender, EventArgs e)
-        {
-            if (txtMonth.Text == "")
-                txtMonth.Text = "-"; // 减号表示不限，如果不用减号的话会认为是首次加载网页，未填写月份，会默认设为当前月份
-            RptBind();
-        }
-
-        protected void txtYear_OnTextChanged(object sender, EventArgs e)
-        {
-            if (txtYear.Text == "")
-                txtYear.Text = "-";
-            RptBind();
         }
 
         protected void btnExportExcel_Click(object sender, EventArgs e)

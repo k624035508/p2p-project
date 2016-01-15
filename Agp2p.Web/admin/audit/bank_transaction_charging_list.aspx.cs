@@ -43,15 +43,9 @@ namespace Agp2p.Web.admin.audit
                 {
                     rblBankTransactionStatus.SelectedValue = status;
                 }
-                var keywords = DTRequest.GetQueryString("keywords");
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 TreeBind();
                 RptBind();
             }
