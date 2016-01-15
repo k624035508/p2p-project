@@ -1000,6 +1000,7 @@
     <Content Include="templates\weChat\forgot_password.html" />
     <Content Include="templates\weChat\imgs\activity-bg.png" />
     <Content Include="templates\weChat\imgs\agrh.png" />
+    <Content Include="templates\weChat\imgs\app-loading.png" />
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\banner\banner-2.png" />
