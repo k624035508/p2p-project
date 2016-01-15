@@ -31,15 +31,9 @@ namespace Agp2p.Web.admin.statistic
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("statistics_wallet", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
-                var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 TreeBind();
                 RptBind();
             }

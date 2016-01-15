@@ -44,14 +44,9 @@ namespace Agp2p.Web.admin.statistic
             if(!IsPostBack)
             {
                 ChkAdminLevel("statistics_offline_transactions", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
+                txtKeywords.Text = keywords;
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 if (!string.IsNullOrEmpty(today))
                     cb_today.Checked = bool.Parse(today);
 
@@ -163,11 +158,11 @@ namespace Agp2p.Web.admin.statistic
             {
                 if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
                 {
-                    queryTran = queryTran.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
+                    queryTran = queryTran.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time.Date);
                 }
                 if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
                 {
-                    queryTran = queryTran.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+                    queryTran = queryTran.Where(h => h.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
                 }
             }
             queryTran = queryTran.Where(ptr => (OfflineProjectTransactionType.Contains(ptr.type)));

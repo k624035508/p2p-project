@@ -40,22 +40,22 @@ namespace Agp2p.Web.admin.statistic {
         protected global::System.Web.UI.WebControls.RadioButtonList rblType;
         
         /// <summary>
-        /// txtYear 控件。
+        /// txtStartTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtYear;
+        protected global::System.Web.UI.WebControls.TextBox txtStartTime;
         
         /// <summary>
-        /// txtMonth 控件。
+        /// txtEndTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMonth;
+        protected global::System.Web.UI.WebControls.TextBox txtEndTime;
         
         /// <summary>
         /// txtKeywords 控件。

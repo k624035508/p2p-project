@@ -58,15 +58,9 @@ namespace Agp2p.Web.admin.statistic
             page = DTRequest.GetQueryInt("page", 1);
             if (!Page.IsPostBack)
             {
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
-                var keywords = DTRequest.GetQueryString("keywords");
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 if (!string.IsNullOrEmpty(today))
                     cb_today.Checked = bool.Parse(today);
 

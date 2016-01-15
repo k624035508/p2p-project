@@ -43,14 +43,9 @@ namespace Agp2p.Web.admin.repayment
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("repay_manage", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
-                if (!string.IsNullOrEmpty(Keywords))
-                    txtKeywords.Text = Keywords;
+                txtKeywords.Text = Keywords;
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 TreeBind(); //绑定类别
                 RptBind();
             }
@@ -109,9 +104,9 @@ namespace Agp2p.Web.admin.repayment
             else if (rblStatus.SelectedValue == "1")
                 query = query.Where(r => r.status >= (int)Agp2pEnums.RepaymentStatusEnum.ManualPaid);
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.should_repay_time);
+                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.should_repay_time.Date);
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                query = query.Where(h => h.should_repay_time <= Convert.ToDateTime(txtEndTime.Text));
+                query = query.Where(h => h.should_repay_time.Date <= Convert.ToDateTime(txtEndTime.Text));
 
             var repayList = query.AsEnumerable().Select(r => new RepayOverTime
             {
