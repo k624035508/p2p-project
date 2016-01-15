@@ -11,6 +11,8 @@
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+
     <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
     <style>
@@ -56,14 +58,19 @@
                         </asp:RadioButtonList>
                     </div>
                     <div style="display: inline-block;" class="rl">按满标时间查询：</div>
-                    <div style="display: inline-block; float: left;">
-                        <asp:TextBox ID="txtYear" runat="server" CssClass="keyword" datatype="/^\d{4}$/" AutoPostBack="True" OnTextChanged="txtYear_OnTextChanged" Width="4em" />
+                    <div class="input-date" style="display: inline-block; float: left;">
+                        <asp:TextBox ID="txtStartTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                            sucmsg=" " Style="font-size: 15px" />
+                        <i></i>
                     </div>
-                    <div style="display: inline-block;" class="rl">年</div>
-                    <div style="display: inline-block; float: left;">
-                        <asp:TextBox ID="txtMonth" runat="server" CssClass="keyword" datatype="/^\d{1,2}$/" AutoPostBack="True" OnTextChanged="txtMonth_OnTextChanged" Width="2em" />
+                    <span class="rl">到</span>
+                    <div class="input-date" style="display: inline-block; float: left; margin-right: 10px;">
+                        <asp:TextBox ID="txtEndTime" runat="server" CssClass="input date" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期"
+                            sucmsg=" " Style="font-size: 15px" />
+                        <i></i>
                     </div>
-                    <div style="display: inline-block;" class="rl">月</div>
                     <div class="menu-list rl" style="display: inline-block; float: left; margin-left: 10px;">
                         <div class="rule-single-select">
                             <asp:DropDownList ID="ddlCategoryId" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCategoryId_SelectedIndexChanged"></asp:DropDownList>

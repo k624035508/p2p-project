@@ -29,13 +29,9 @@ namespace Agp2p.Web.admin.statistic
             {
                 ChkAdminLevel("statistics_investor_invest_detail", DTEnums.ActionEnum.View.ToString()); //检查权限
 
-                var keywords = DTRequest.GetQueryString("keywords");
-                var y = DTRequest.GetQueryString("year");
-                var m = DTRequest.GetQueryString("month");
-
-                txtKeywords.Text = keywords;
-                txtYear.Text = y == "" ? DateTime.Now.Year.ToString() : y;
-                txtMonth.Text = m == "" ? DateTime.Now.Month.ToString() : m;
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 RptBind();
             }
         }
@@ -69,8 +65,7 @@ namespace Agp2p.Web.admin.statistic
                 //绑定页码
                 txtPageNum.Text = pageSize.ToString();
                 string pageUrl = Utils.CombUrlTxt("investor_invest_detail.aspx",
-                    "keywords={0}&page={1}&year={2}&month={3}", txtKeywords.Text, "__id__", txtYear.Text,
-                    txtMonth.Text);
+                    "keywords={0}&page={1}&startTime={2}&endTime={3}", txtKeywords.Text, "__id__", txtStartTime.Text,txtEndTime.Text);
                 PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
             }
             else
@@ -129,13 +124,13 @@ namespace Agp2p.Web.admin.statistic
                     .ToArray();
             query = query.Where(tr => !canAccessGroups.Any() || canAccessGroups.Contains(tr.dt_users.group_id));
 
-            if (txtYear.Text != "-")
+            if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
             {
-                query = query.Where(tr => tr.create_time.Year == Convert.ToInt32(txtYear.Text));
+                query = query.Where(q => Convert.ToDateTime(txtStartTime.Text) <= q.create_time.Date);
             }
-            if (txtMonth.Text != "-")
+            if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
             {
-                query = query.Where(tr => tr.create_time.Month == Convert.ToInt32(txtMonth.Text));
+                query = query.Where(q => q.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
             }
             var qu = query.GroupBy(tr => tr.dt_users);
 
@@ -216,35 +211,21 @@ namespace Agp2p.Web.admin.statistic
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("investor_invest_detail.aspx", "keywords={0}&year={1}&month={2}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text));
+            Response.Redirect(Utils.CombUrlTxt("investor_invest_detail.aspx", "keywords={0}&startTime={1}&endTime={2}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("investor_invest_detail.aspx", "keywords={0}&year={1}&month={2}",
-                txtKeywords.Text, txtYear.Text, txtMonth.Text));
+            Response.Redirect(Utils.CombUrlTxt("investor_invest_detail.aspx", "keywords={0}&startTime={1}&endTime={2}",
+                txtKeywords.Text, txtStartTime.Text, txtEndTime.Text));
         }
 
         protected DateTime GetRepaymentCompleteTime(li_project_transactions pro)
         {
             return pro.li_projects.li_repayment_tasks.Max(r => r.should_repay_time);
-        }
-
-        protected void txtMonth_OnTextChanged(object sender, EventArgs e)
-        {
-            if (txtMonth.Text == "")
-                txtMonth.Text = "-"; // 减号表示不限，如果不用减号的话会认为是首次加载网页，未填写月份，会默认设为当前月份
-            RptBind();
-        }
-
-        protected void txtYear_OnTextChanged(object sender, EventArgs e)
-        {
-            if (txtYear.Text == "")
-                txtYear.Text = "-";
-            RptBind();
         }
 
         protected void btnExportExcel_Click(object sender, EventArgs e)

@@ -40,15 +40,9 @@ namespace Agp2p.Web.admin.statistic
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("bond_transact_timeline", DTEnums.ActionEnum.View.ToString()); //检查权限
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
-                var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
-                if (!string.IsNullOrEmpty(keywords))
-                    txtKeywords.Text = keywords;
+                txtKeywords.Text = DTRequest.GetQueryString("keywords");
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 TreeBind();
                 RptBind();
             }
@@ -133,9 +127,9 @@ namespace Agp2p.Web.admin.statistic
             }
 
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time);
+                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.create_time.Date);
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                query = query.Where(h => h.create_time <= Convert.ToDateTime(txtEndTime.Text));
+                query = query.Where(h => h.create_time.Date <= Convert.ToDateTime(txtEndTime.Text));
 
             totalCount = query.Count();
 

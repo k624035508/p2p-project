@@ -41,14 +41,9 @@ namespace Agp2p.Web.admin.project
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("loan_all", DTEnums.ActionEnum.View.ToString()); //检查权限
-                if (!string.IsNullOrEmpty(Keywords))
-                    txtKeywords.Text = Keywords;
-                var startTime = DTRequest.GetQueryString("startTime");
-                if (!string.IsNullOrEmpty(startTime))
-                    txtStartTime.Text = startTime;
-                var endTime = DTRequest.GetQueryString("endTime");
-                if (!string.IsNullOrEmpty(endTime))
-                    txtEndTime.Text = endTime;
+                txtKeywords.Text = Keywords;
+                txtStartTime.Text = DTRequest.GetQueryString("startTime");
+                txtEndTime.Text = DTRequest.GetQueryString("endTime");
                 TreeBind(); //绑定类别
                 RptBind();
             }
@@ -113,9 +108,9 @@ namespace Agp2p.Web.admin.project
             if (this.ProjectStatus > 0)
                 query = query.Where(q => q.status == this.ProjectStatus);
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
-                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.add_time);
+                query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.add_time.Date);
             if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
-                query = query.Where(h => h.add_time <= Convert.ToDateTime(txtEndTime.Text));
+                query = query.Where(h => h.add_time.Date <= Convert.ToDateTime(txtEndTime.Text));
 
             this.TotalCount = query.Count();
             return query.OrderByDescending(q => q.sort_id).ThenByDescending(q => q.add_time).ThenByDescending(q => q.id)
