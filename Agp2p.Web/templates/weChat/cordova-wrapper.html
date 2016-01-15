@@ -69,20 +69,23 @@
     		text-align: center;
     		border-radius: 20px;
             padding: 15px;
+            display: none;
     	}
     	.loading-indicator span {
     		font-weight: bold;
     		color: white;
     		font-size: 17px;
-            display: block;
     	}
         .main-content {
             height: 100%;
         }
+        .loading-app {
+            background: no-repeat center/80% url(<%templateskin%>/imgs/app-loading.png);
+        }
     </style>
 </head>
-<body>
-<div class="main-content flex flex--column flex--flex-grow-second">
+<body class="loading-app">
+<div class="main-content flex flex--column flex--flex-grow-second" style="opacity:0">
     <div class="titlebar flex flex--flex-grow-second flex--align-items--center">
         <img class="back" src="<%templateskin%>/imgs/cordova-back.png"/>
         <span class="iframeTitle">加载中...</span>
@@ -114,6 +117,11 @@
 		indicator.style.display = 'none';
         iframe.contentWindow.onunload = content_start_loading;
         titleSpan.innerText = iframe.contentDocument.title;
+
+        if (document.body.className == 'loading-app') {
+            document.querySelector('.main-content').removeAttribute('style');
+            document.body.className = '';
+        }
 	};
 </script>
 </body>

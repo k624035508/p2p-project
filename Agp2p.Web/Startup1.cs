@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
@@ -34,13 +35,21 @@ namespace Agp2p.Web
             // 有关如何配置应用程序的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=316888
 
             // TODO https://github.com/SignalR/SignalR/issues/3414 临时修正 iis 卡死的问题，等待 signalR 升级 2.2.1
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            var originalUiCulture = System.Threading.Thread.CurrentThread.CurrentUICulture;
+            var originalCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
             app.MapSignalR();
 
             var idProvider = new MyIdProvider();
             GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => idProvider);
+
+
+            // 还原设置
+            System.Threading.Thread.CurrentThread.CurrentUICulture = originalUiCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = originalCulture;
         }
     }
 }
