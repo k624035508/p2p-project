@@ -102,7 +102,13 @@ namespace Agp2p.Web.admin.project
         private List<li_projects> GetList()
         {
             PageSize = GetPageSize(GetType().Name + "_page_size");
-            var query = context.li_projects.Where(p => p.title.Contains(this.Keywords) || p.no.Contains(this.Keywords));
+            var query = (from p in context.li_projects
+                from m in context.li_risk_mortgage
+                where p.risk_id == m.risk && (string.IsNullOrEmpty(this.Keywords) || p.title.Contains(this.Keywords) ||
+                                              p.no.Contains(this.Keywords) ||
+                                              m.li_mortgages.name.Contains(this.Keywords))
+                select p).AsQueryable();
+
             if (this.CategoryId > 0)
                 query = query.Where(q => q.category_id == this.CategoryId);
             if (this.ProjectStatus > 0)
