@@ -162,5 +162,35 @@ namespace Agp2p.Test
             var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
+
+        [TestMethod]
+        public void TestPerfectRounding()
+        {
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> {3.333m, 3.334m, 3.333m}, 10, 2),
+                new List<decimal> {3.33m, 3.34m, 3.33m});
+
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> {3.33m, 3.34m, 3.33m}, 10, 1),
+                new List<decimal> {3.3m, 3.4m, 3.3m});
+
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> {3.333m, 3.334m, 3.333m}, 10, 1),
+                new List<decimal> {3.3m, 3.4m, 3.3m});
+
+
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> { 13.626332m, 47.989636m, 9.596008m, 28.788024m }, 100, 0),
+                new List<decimal> {14, 48, 9, 29});
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> { 16.666m, 16.666m, 16.666m, 16.666m, 16.666m, 16.666m }, 100, 0),
+                new List<decimal> { 17, 17, 17, 17, 16, 16 });
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> { 33.333m, 33.333m, 33.333m }, 100, 0),
+                new List<decimal> { 34, 33, 33 });
+            CollectionAssert.AreEqual(Utils.GetPerfectRounding(
+                new List<decimal> { 33.3m, 33.3m, 33.3m, 0.1m }, 100, 0),
+                new List<decimal> { 34, 33, 33, 0 });
+        }
     }
 }
