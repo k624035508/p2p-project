@@ -1703,6 +1703,11 @@ namespace Agp2p.Common
                 act(e);
         }
 
+        public static void ZipEach<T, T2>(this IEnumerable<T> en, IEnumerable<T2> en2, Action<T, T2> act)
+        {
+            en.Zip(en2, (x, y) => new {x, y}).ForEach(z => act(z.x, z.y));
+        }
+
         public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> en, int len)
         {
             return en.Select((x, i) => new {Group = i/len, Value = x})
@@ -1735,7 +1740,7 @@ namespace Agp2p.Common
         {
             var rounded = original.Select(x => Math.Round(x, decimals)).ToList();
             var delta = forceSum - rounded.Sum();
-            if (delta == 0) return original;
+            if (delta == 0) return rounded;
             var deltaUnit = Convert.ToDecimal(Math.Pow(0.1, decimals)) * Math.Sign(delta);
 
             List<int> applyDeltaSequence; 

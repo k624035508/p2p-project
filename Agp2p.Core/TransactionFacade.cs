@@ -879,7 +879,7 @@ namespace Agp2p.Core
             var rounded = moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(r =>
             {
-                var realityInterest = Math.Round(r.Value*repaymentTask.repay_interest, 2);
+                var realityInterest = r.Value*repaymentTask.repay_interest; // perfect round later
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
@@ -901,24 +901,20 @@ namespace Agp2p.Core
                     project = repaymentTask.project,
                     dt_users = r.Key,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    principal = Math.Round(r.Value*repaymentTask.repay_principal, 2),
+                    principal = r.Value*repaymentTask.repay_principal,  // perfect round later
                     interest = realityInterest,
                     remark = remark
                 };
             }).ToList();
 
-            if (rounded.Aggregate(0m, (sum, tr) => sum + tr.interest.GetValueOrDefault()) != repaymentTask.repay_interest)
-            {
-                var notPerfectRounded = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
-                var perfectRounded = Utils.GetPerfectRounding(notPerfectRounded, repaymentTask.repay_interest, 2);
-                perfectRounded.Zip(Utils.Infinite(), (newVal, i) => new {newVal, i}).ForEach(x => rounded[x.i].interest = x.newVal);
-            }
-            if (rounded.Aggregate(0m, (sum, tr) => sum + tr.principal) != repaymentTask.repay_principal)
-            {
-                var notPerfectRounded = rounded.Select(ptr => ptr.principal).ToList();
-                var perfectRounded = Utils.GetPerfectRounding(notPerfectRounded, repaymentTask.repay_principal, 2);
-                perfectRounded.Zip(Utils.Infinite(), (newVal, i) => new { newVal, i }).ForEach(x => rounded[x.i].principal= x.newVal);
-            }
+            var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
+            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, repaymentTask.repay_interest, 2);
+            rounded.ZipEach(perfectRoundedInterest, (ptr, newInterest) => ptr.interest = newInterest);
+
+            var notPerfectRoundedPrincipal = rounded.Select(ptr => ptr.principal).ToList();
+            var perfectRoundedPrincipal = Utils.GetPerfectRounding(notPerfectRoundedPrincipal, repaymentTask.repay_principal, 2);
+            rounded.ZipEach(perfectRoundedPrincipal, (ptr, newPrincipal) => ptr.principal = newPrincipal);
+
             return rounded;
         }
 
