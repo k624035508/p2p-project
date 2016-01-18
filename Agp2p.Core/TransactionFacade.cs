@@ -614,8 +614,7 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="project"></param>
         /// <param name="tasks"></param>
-        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context,
-            li_projects project, List<li_repayment_tasks> tasks)
+        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context, li_projects project, List<li_repayment_tasks> tasks)
         {
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord =
@@ -877,7 +876,7 @@ namespace Agp2p.Core
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
-            return moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
+            var rounded = moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(r =>
             {
                 var realityInterest = Math.Round(r.Value*repaymentTask.repay_interest, 2);
@@ -907,6 +906,20 @@ namespace Agp2p.Core
                     remark = remark
                 };
             }).ToList();
+
+            if (rounded.Aggregate(0m, (sum, tr) => sum + tr.interest.GetValueOrDefault()) != repaymentTask.repay_interest)
+            {
+                var notPerfectRounded = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
+                var perfectRounded = Utils.GetPerfectRounding(notPerfectRounded, repaymentTask.repay_interest, 2);
+                perfectRounded.Zip(Utils.Infinite(), (newVal, i) => new {newVal, i}).ForEach(x => rounded[x.i].interest = x.newVal);
+            }
+            if (rounded.Aggregate(0m, (sum, tr) => sum + tr.principal) != repaymentTask.repay_principal)
+            {
+                var notPerfectRounded = rounded.Select(ptr => ptr.principal).ToList();
+                var perfectRounded = Utils.GetPerfectRounding(notPerfectRounded, repaymentTask.repay_principal, 2);
+                perfectRounded.Zip(Utils.Infinite(), (newVal, i) => new { newVal, i }).ForEach(x => rounded[x.i].principal= x.newVal);
+            }
+            return rounded;
         }
 
         /// <summary>
