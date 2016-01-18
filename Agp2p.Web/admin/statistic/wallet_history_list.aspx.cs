@@ -34,7 +34,6 @@ namespace Agp2p.Web.admin.statistic
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Withdrawing, (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawCancel,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund,
                 (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
@@ -42,7 +41,7 @@ namespace Agp2p.Web.admin.statistic
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Withdrawing, (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawCancel,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,(int) Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund,
+                (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,
                 (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
@@ -169,7 +168,8 @@ namespace Agp2p.Web.admin.statistic
                             //投资金额
                             Invest =
                                     d.dg.Where(
-                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest)
+                                        i => i.li_project_transactions.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success && 
+                                        i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest)
                                         .Sum(i => i.li_project_transactions.principal),
                             //返还本金
                             Principal =

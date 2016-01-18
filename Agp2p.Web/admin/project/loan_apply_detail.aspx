@@ -136,7 +136,7 @@
                 <dd>
                     <asp:TextBox ID="txt_project_no" runat="server" CssClass="input normal" datatype="*0-100"
                         sucmsg=" " />
-                    <span class="Validform_checktip">*</span>
+                    <span class="Validform_checktip"></span>
                 </dd>
             </dl>
             <dl id="div_contact_no">
@@ -145,7 +145,7 @@
                 <dd>
                     <asp:TextBox ID="txt_contact_no" runat="server" CssClass="input normal" datatype="*0-100"
                         sucmsg=" " />
-                    <span class="Validform_checktip">*</span>
+                    <span class="Validform_checktip"></span>
                 </dd>
             </dl>
             <dl id="div_project_amount">

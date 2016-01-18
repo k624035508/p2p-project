@@ -372,7 +372,7 @@ namespace Agp2p.Core
                 {
                     throw new InvalidOperationException("活动未开始");
                 }
-                if (DateTime.Today > new DateTime(2016, 1, 10))
+                if (DateTime.Today > new DateTime(2016, 2, 10))
                 {
                     throw new InvalidOperationException("活动已结束");
                 }
@@ -614,8 +614,7 @@ namespace Agp2p.Core
         /// <param name="context"></param>
         /// <param name="project"></param>
         /// <param name="tasks"></param>
-        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context,
-            li_projects project, List<li_repayment_tasks> tasks)
+        private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context, li_projects project, List<li_repayment_tasks> tasks)
         {
             // 查询每个用户的投资记录（一个用户可能投资多次）
             var investRecord =
@@ -877,10 +876,10 @@ namespace Agp2p.Core
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
-            return moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
+            var rounded = moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(r =>
             {
-                var realityInterest = Math.Round(r.Value*repaymentTask.repay_interest, 2);
+                var realityInterest = r.Value*repaymentTask.repay_interest; // perfect round later
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
@@ -902,11 +901,21 @@ namespace Agp2p.Core
                     project = repaymentTask.project,
                     dt_users = r.Key,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    principal = Math.Round(r.Value*repaymentTask.repay_principal, 2),
+                    principal = r.Value*repaymentTask.repay_principal,  // perfect round later
                     interest = realityInterest,
                     remark = remark
                 };
             }).ToList();
+
+            var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
+            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, repaymentTask.repay_interest, 2);
+            rounded.ZipEach(perfectRoundedInterest, (ptr, newInterest) => ptr.interest = newInterest);
+
+            var notPerfectRoundedPrincipal = rounded.Select(ptr => ptr.principal).ToList();
+            var perfectRoundedPrincipal = Utils.GetPerfectRounding(notPerfectRoundedPrincipal, repaymentTask.repay_principal, 2);
+            rounded.ZipEach(perfectRoundedPrincipal, (ptr, newPrincipal) => ptr.principal = newPrincipal);
+
+            return rounded;
         }
 
         /// <summary>
