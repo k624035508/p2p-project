@@ -196,7 +196,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixRepaymentTaskByRepaidSum()
         {
-            var context = new Agp2pDataContext("server=120.25.136.228,3433;uid=ag;pwd=a123456;database=agrh;");
+            var context = new Agp2pDataContext(str);
             int count = 0;
             context.li_repayment_tasks.Where(t => t.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                 .AsEnumerable()
