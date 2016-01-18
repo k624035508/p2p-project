@@ -192,5 +192,29 @@ namespace Agp2p.Test
                 new List<decimal> { 33.3m, 33.3m, 33.3m, 0.1m }, 100, 0),
                 new List<decimal> { 34, 33, 33, 0 });
         }
+
+        [TestMethod]
+        public void FixRepaymentTaskByRepaidSum()
+        {
+            var context = new Agp2pDataContext("server=120.25.136.228,3433;uid=ag;pwd=a123456;database=agrh;");
+            int count = 0;
+            context.li_repayment_tasks.Where(t => t.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
+                .AsEnumerable()
+                .ForEach(
+                    task =>
+                    {
+                        var repayments = context.li_project_transactions.Where(
+                            ptr => ptr.project == task.project && ptr.create_time == task.repay_at.Value).ToList();
+                        var sumOfRepaidInterest = repayments.Sum(r => r.interest.GetValueOrDefault());
+                        if (task.repay_interest != sumOfRepaidInterest)
+                        {
+                            count++;
+                            Debug.WriteLine($"Fix project（{task.li_projects.title}） repayment task（{task.term}）, from {task.repay_interest} to {sumOfRepaidInterest}");
+                            task.repay_interest = sumOfRepaidInterest;
+                        }
+                    });
+            Debug.WriteLine("Fix repayment task repay interest: " + count);
+            //context.SubmitChanges();
+        }
     }
 }
