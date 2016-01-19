@@ -60,7 +60,7 @@ class InvestRecordTable extends React.Component {
                             <td>{tr.profit}</td>
                             <td>{tr.status}</td>
                             <td>{tr.investTime}</td>
-                            <td><a href={`/tools/submit_ajax.ashx?action=generate_user_invest_contract&id=${tr.ptrId}`} target="_blank">查看</a></td>
+                            <td>{tr.isNewbieProject ? null : <a href={`/tools/submit_ajax.ashx?action=generate_user_invest_contract&id=${tr.ptrId}`} target="_blank">查看</a>}</td>
                         </tr>
                     )}
                     </tbody>
