@@ -111,6 +111,7 @@ namespace Agp2p.Web.UI.Page
                     investValue = ptr.principal,
                     profit,
                     status = proj.GetProjectStatusDesc(),
+                    isNewbieProject = proj.dt_article_category.call_index == "newbie"
                 };
             });
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});

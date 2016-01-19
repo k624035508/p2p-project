@@ -115,6 +115,23 @@ class ManagerMessage extends React.Component {
 			this.deleteMessages(predelMsgIds);
 		}
 	}
+	deleteAllMessages() {
+		let url = "/admin/index.aspx/AjaxQueryManagerMessages";
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			contentType: "application/json",
+			url: url,
+			data: {type: this.state.type, pageIndex: 0, pageSize: 9999},
+			success: function(result) {
+				let {totalCount, msgs} = JSON.parse(result.d);
+				this.deleteMessages(msgs.map(m => m.id));
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(url, status, err.toString());
+			}.bind(this)
+		});
+	}
 	render() {
 		return (
 			<div className="news-wrap">
@@ -126,6 +143,7 @@ class ManagerMessage extends React.Component {
                         	this.setAllCheckedAlreadyRead();
                         }}>全部标为已读</span>
                         <span onClick={ev => this.deleteSelectedMessages()}>删除</span>
+                        <span onClick={ev => this.deleteAllMessages()}>全部删除</span>
                     </div>
                     <DropdownPicker
                         onTypeChange={newType => this.fetchMessages(newType, this.state.pageIndex) }
