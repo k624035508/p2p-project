@@ -372,7 +372,7 @@ namespace Agp2p.Core
                 {
                     throw new InvalidOperationException("活动未开始");
                 }
-                if (DateTime.Today > new DateTime(2016, 1, 10))
+                if (DateTime.Today > new DateTime(2016, 2, 10))
                 {
                     throw new InvalidOperationException("活动已结束");
                 }

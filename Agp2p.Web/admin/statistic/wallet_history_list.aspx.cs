@@ -167,8 +167,8 @@ namespace Agp2p.Web.admin.statistic
                                         .Sum(i => i.li_bank_transactions.value),
                             //投资金额
                             Invest =
-                                    d.dg.Where(
-                                        i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest)
+                                    d.dg.Where(i => i.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest 
+                                        && i.li_project_transactions.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
                                         .Sum(i => i.li_project_transactions.principal),
                             //返还本金
                             Principal =
