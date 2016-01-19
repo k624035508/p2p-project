@@ -188,106 +188,270 @@ div.announcement-wrap {
         li:first-child { margin-left: 0; }
     }
 }
+/*标书*/
+.grey13px {
+    color: @grey;
+    font-size: @font13;
+}
+.dark-grey13px {
+    color: @dark-grey;
+    font-size: @font13;
+}
+.dark-grey15px {
+    color: @dark-grey;
+    font-size: @font15;
+}
+.dark-grey25px {
+    color: @dark-grey;
+    font-size: @font25;
+}
+.white35px {
+    color: @white;
+    font-size: 35px;
+    text-align: center;
+}
+.white13px {
+    color: @white;
+    font-size: @font13;
+    text-indent: 26px;
+    margin: 0 0 3px;
+}
+.white18px {
+    color: @white;
+    font-size: @font18;
+    text-indent: 26px;
+}
+.icon-corner {
+    height: 10px;
+    background: url("@{images}/corner.png") no-repeat left;
+}
+.progress-custom {
+    height: 15px;
+    margin-bottom: 10px;
+    background: #cdcdcd;
+    .progress-bar {
+        line-height: 14px;
+        background-color: #38aaf0 !important;
+    }
+}
+.invest-btn {
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    font-size: @font15;
+    background: @red;
+    text-align: center;
+    border-radius: 4px;
+}
 /*新手标*/
 .new-hand {
-    margin-top: 25px !important;
-    height: 185px;
-    background: @white;
-    border: @border;
+    margin-top: 30px !important;
+    height: 195px;
     & > div {
         .inline-block;
         float: left;
         height: 100%;
     }
-    .project-icon {
+    .newHand-left {
         width: 220px;
         a {
             display: block;
             height: 100%;
-            padding: 35px 0 0 10px;
+            padding-top: 15px;
             text-decoration: none;
             background: url("@{images}/newhand-bg.png") no-repeat;
-            p {
-                color: @white;
-                font-size: @font13;
-                margin: 0 0 5px;
-            }
-            p:first-child { font-size: @font25; }
         }
     }
-    .rawProject-wrap {
-        padding: 20px 0;
-        .project-content {
-            width: 620px;
-            height: 100%;
-            padding: 0 35px;
-            border-right: @border;
-            .title-wrap {
-                & > span {
-                    .inline-block;
-                    padding: 0 8px;
-                    height: 30px;
-                    line-height: 29px;
-                    color: #1478d2;
-                    border: 1px solid #1478d2;
-                }
-                .title {
-                    margin-right: 70px;
-                    font-size: @font20;
-                }
-                .tips {
-                    font-size: @font13;
-                    border-radius: 14px;
-                }
-            }
-            .content-body {
-                margin-top: 35px;
-                & > div {
-                    .inline-block;
-                    width: 24%;
-                    height: 81px;
-                    margin-left: 72px;
-                }
-                & > div:first-child { margin-left: 0; }
-                .progress-custom {
-                    width: 125px;
-                    height: 15px;
-                    margin-bottom: 10px;
-                    background: #cdcdcd;
-                    .progress-bar {
-                        line-height: 14px;
-                        background-color: #38aaf0 !important;
+    .newHand-right {
+        .content-bottom {
+            height: 185px;
+            background: @white;
+            border: @border;
+            & > div { .inline-block; }
+             .project-content {
+                width: 440px;
+                height: 100%;
+                padding: 0 15px;
+                border-right: @border;
+                .title-wrap {
+                    margin-top: 13px;
+                    & > span {
+                        .inline-block;
+                        line-height: 29px;
+                    }
+                    .title { font-size: @font18; }
+                    .tips {
+                        width: 185px;
+                        height: 30px;
+                        color: #1478d2;
+                        font-size: @font13;
+                        text-align: center;
+                        border: 1px solid #1478d2;
                     }
                 }
-                .bottom18px { margin-bottom: 18px; }
+                .content-body {
+                    margin-top: 25px;
+                    .margin-left30 { margin-left: 30px; }
+                    & > div {
+                        .inline-block;
+                        height: 81px;
+                    }
+                    .left-part {
+                        .progress-custom { width: 185px; }
+                    }
+                    .invest-btn {
+                        width: 155px;
+                        margin-top: 17px;
+                        color: @white;
+                        text-decoration: none;
+                    }
+                    .bottom18px { margin-bottom: 18px; }
+                }
+             }
+            .rules {
+                width: 433px;
+                height: 155px;
+                padding: 45px 50px 0 230px;
+                background: url("@{images}/apps-bg.png") no-repeat center;
+                p {
+                    width: 165px;
+                    color: @white;
+                    font-size: @font20;
+                    text-align: center;
+                    span {
+                        color: #fff600;
+                        font-size: @font13;
+                        margin: 0 5px;
+                    }
+                }
             }
         }
     }
-    .rules {
-        width: 258px;
-        padding: 25px 50px;
-        background: url("@{images}/newhand-mark.png") no-repeat right top;
-        p {
-            height: 20px;
-            padding-left: 30px;
-            color: @dark-grey;
-            font-size: @font13;
+}
+
+.tender {
+    margin-top: 30px !important;
+    height: 370px;
+    & > div {
+        .inline-block;
+        height: 100%;
+        float: left;
+    }
+    .tender-left {
+        width: 220px;
+        padding-top: 15px;
+        p span:first-child { margin-right: 20px; }
+        .geometry-icon {
+            height: 150px;
+            margin-top: 8px;
         }
-        .rule1 { background: url("@{images}/rule1.png") no-repeat; }
-        .rule2 { background: url("@{images}/rule2.png") no-repeat; }
-        .rule3 { background: url("@{images}/rule3.png") no-repeat; }
         a {
             display: block;
-            margin-top: 17px;
-            width: 155px;
-            height: 35px;
-            line-height: 35px;
+            margin: 20px auto 0 auto;
+            width: 70px;
+            height: 25px;
+            line-height: 24px;
             color: @white;
-            font-size: @font17;
-            background: @red;
-            text-align: center;
+            font-size: @font15;
             text-decoration: none;
-            border-radius: 4px;
+            text-align: center;
+            border: 1px solid @white;
+        }
+    }
+    .tender-right {
+        width: 878px;
+        .title-wrap {
+            border-bottom: @border;
+            padding-bottom: 20px;
+            margin-bottom: 13px;
+            & > * { .inline-block; }
+            span {
+                max-width: 115px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: @darker-grey;
+                font-size: @font18;
+            }
+            i {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+            }
+            i:first-child { margin-right: 15px; }
+            .jian-icon { background: url("@{images}/jian.png"); }
+            .xin-icon { background: url("@{images}/xin.png"); }
+            .yue-icon { background: url("@{images}/yue.png"); }
+        }
+        .back-way { margin-bottom: 13px; }
+        .amount-status {
+            margin-top: 11px;
+            color: @dark-grey;
+            font-size: @font13;
+            text-align: center;
+            .hr { margin: 0 5px; }
+        }
+        .data-box {
+            height: 75px;
+            & > span {
+                .inline-block;
+                width: 50%;
+                height: 65px;
+                float: left;
+                p { text-align: center; }
+            }
+            & > span:first-child { border-right: @border; }
+        }
+        .invest-btn {
+            width: 185px;
+            margin-top: 15px;
+            color: @white;
+            text-decoration: none;
+        }
+    }
+    .content-bottom {
+        height: 360px;
+        background: @white;
+        border: @border;
+        & > div {
+            display: inline-block;
+            width: 25%;
+            height: 100%;
+            padding: 25px 15px 30px 15px;
+            float: left;
+            border-left: @border;
+        }
+        & > div:first-child { border-left: none; }
+    }
+}
+
+/*天盈宝*/
+.tianyingbao {
+    .tender-left {
+        background: #5ac3fa;
+        .geometry-icon {
+            background: url("@{images}/tianyingbao-geo.png") no-repeat center;
+        }
+    }
+    .tender-right {
+        .tender-cell {
+            .data-box {  margin-top: 40px; }
+        }
+    }
+}
+
+/*银票宝*/
+.yinpiaobao {
+    .tender-left {
+        background: #4ea4f2;
+        .geometry-icon {
+            background: url("@{images}/yinpiaobao-geo.png") no-repeat center;
+        }
+    }
+    .tender-right {
+        .tender-cell {
+            .cash-bank { text-align: center; }
+            .data-box {  margin-top: 16px; }
         }
     }
 }
