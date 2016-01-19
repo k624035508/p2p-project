@@ -176,159 +176,74 @@
 </div>
 <%/if%>
 
-<div class="tianyingbao tender content-wrap">
-    <div class="tender-left">
-        <p class="white35px">天盈宝</p>
-        <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
-        <p class="white13px">到期还本付息</p>
-        <p class="white13px">到期还本付息</p>
-        <div class="geometry-icon"></div>
-        <a href="#" target="_blank">查看更多</a>
-    </div>
-    <div class="tender-right">
-        <div class="icon-corner"></div>
-        <div class="content-bottom">
-            <div class="tender-cell">
-                <div class="title-wrap"><span>YPL00026</span><span class="pull-right"><i class="jian-icon"></i><i class="xin-icon"></i></span></div>
-                <p class="grey13px back-way">到期还本付息</p>
-                <div class="progress progress-custom">
-                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow=""
-                         aria-valuemin="0" aria-valuemax="100">
-                        60%
-                    </div>
-                </div>
-                <p class="amount-status"><span class="invested">60000 元</span><span class="hr">/</span><span class="total">100000 元</span></p>
-                <div class="data-box">
-                    <span>
-                        <p class="dark-grey25px">4.2<span class="dark-grey15px">%</span></p>
-                        <p class="grey13px">年化利率</p>
-                    </span>
-                    <span>
-                        <p class="dark-grey25px">15<span class="dark-grey15px">天</span></p>
-                        <p class="grey13px">项目期限</p>
-                    </span>
-                </div>
-                <a href="#" class="invest-btn">立即投资</a>
-            </div>
-            <div class="tender-cell"></div>
-            <div class="tender-cell"></div>
-            <div class="tender-cell"></div>
+<%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62))%>
+    <%set var totalcount0=0%>
+    <div class='<%=cid==62?"tianyingbao":"yinpiaobao"%> tender content-wrap'>
+        <div class="tender-left">
+            <p class="white35px"><%=CategoryIdTitleMap[cid]%></p>
+            <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
+            <p class="white13px">到期还本付息</p>
+            <p class="white13px">到期还本付息</p>
+            <div class="geometry-icon"></div>
+            <a href='<%linkurl("projects",cid,0,0,0,1)%>' target="_blank">查看更多</a>
         </div>
-    </div>
-</div>
+        <div class="tender-right">
+            <div class="icon-corner"></div>
+            <div class="content-bottom">
+                <%set var projects0=QueryProjects(4,0,out totalcount0,cid,0,0,0)%>
+                <%foreach(var p in projects0)%>
+                <div class="tender-cell">
+                    <div class="title-wrap"><span>{p.title}</span>
+                        <span class="pull-right">
+                            <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
+                            <i class="jian-icon"></i>
+                            <%/if%>
+                            <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
+                            <i class="xin-icon"></i>
+                            <%/if%>
+                        </span>
+                    </div>
+                    <p class="grey13px back-way">{p.GetProjectRepaymentTypeDesc()}</p>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar progress-bar-info" role="progressbar"
+                             aria-valuenow='<%=(p.GetInvestmentProgressPercent()*100)%>' aria-valuemin="0" aria-valuemax="100"
+                             style='width: <%=p.GetInvestmentProgressPercent().ToString("p1")%>'>
+                            <%=p.GetInvestmentProgressPercent().ToString("p1")%>
+                        </div>
+                    </div>
+                    <p class="amount-status"><span class="invested">{p.investment_amount} 元</span><span class="hr">/</span><span class="total">{p.financing_amount} 元</span></p>
+                    <%if(p.dt_article_category.call_index=="ypb")%>
+                    <p class="cash-bank grey13px"><%=p.GetMortgageInfo("bank")%>承兑</p>
+                    <%/if%>
+                    <div class="data-box">
+                        <span>
+                            <p class="dark-grey25px"><%=p.profit_rate_year.ToString("f1")%><span class="dark-grey15px">%</span></p>
+                            <p class="grey13px">年化利率</p>
+                        </span>
+                        <span>
+                            <p class="dark-grey25px">{p.repayment_term_span_count}<span class="dark-grey15px">{p.GetProjectTermSpanEnumDesc()}</span></p>
+                            <p class="grey13px">项目期限</p>
+                        </span>
+                    </div>
 
-<div class="yinpiaobao tender content-wrap">
-    <div class="tender-left">
-        <p class="white35px">银票宝</p>
-        <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
-        <p class="white13px">到期还本付息</p>
-        <p class="white13px">到期还本付息</p>
-        <div class="geometry-icon"></div>
-        <a href="#" target="_blank">查看更多</a>
-    </div>
-    <div class="tender-right">
-        <div class="icon-corner"></div>
-        <div class="content-bottom">
-            <div class="tender-cell">
-                <div class="title-wrap"><span>YPL00026</span><span class="pull-right"><i class="jian-icon"></i><i class="xin-icon"></i></span></div>
-                <p class="grey13px back-way">到期还本付息</p>
-                <div class="progress progress-custom">
-                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow=""
-                         aria-valuemin="0" aria-valuemax="100">
-                        60%
-                    </div>
+                    <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>待发标</a>
+                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                    <a href='<%linkurl("project",p.id)%>' class="invest-btn invest-btn-red">立即投资</a>
+                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>审核中</a>
+                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>还款中</a>
+                    <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>已完成</a>
+                    <%/if%>
                 </div>
-                <p class="amount-status"><span class="invested">60000 元</span><span class="hr">/</span><span class="total">100000 元</span></p>
-                <p class="cash-bank grey13px">萧山农商银行承兑</p>
-                <div class="data-box">
-                    <span>
-                        <p class="dark-grey25px">4.2<span class="dark-grey15px">%</span></p>
-                        <p class="grey13px">年化利率</p>
-                    </span>
-                    <span>
-                        <p class="dark-grey25px">15<span class="dark-grey15px">天</span></p>
-                        <p class="grey13px">项目期限</p>
-                    </span>
-                </div>
-                <a href="#" class="invest-btn">立即投资</a>
+                <%/foreach%>
             </div>
-            <div class="tender-cell"></div>
-            <div class="tender-cell"></div>
-            <div class="tender-cell"></div>
         </div>
     </div>
-</div>
-<!--invest list-->
-<!--<div class="container-fluid">-->
-    <!--<%set var totalcount=0%>-->
-    <!--<%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>-->
-    <!--<%foreach(var p in projects)%>-->
-    <!--<div class="invest-cell">-->
-        <!--<div class="invest-title-wrap">-->
-            <!--<span class="invest-style-tab"><%=p.dt_article_category.title%></span>-->
-            <!--<%if(p.dt_article_category.call_index=="ypb")%>-->
-            <!--<span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>-->
-            <!--<span class="pull-right acceptance-bank"><i></i>承兑银行：<%=p.GetMortgageInfo("bank")%></span>-->
-            <!--<%else%>-->
-            <!--<span class="invest-title"><a href='<%linkurl("project",p.id)%>'>{p.title}</a></span>-->
-            <!--<%/if%>-->
-            <!--<%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>-->
-            <!--<span class="invest-list-icon yue-icon"></span>-->
-            <!--<%/if%>-->
-            <!--<%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>-->
-            <!--<span class="invest-list-icon jian-icon"></span>-->
-            <!--<%/if%>-->
-            <!--<%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>-->
-            <!--<span class="invest-list-icon xin-icon"></span>-->
-            <!--<%/if%>-->
-        <!--</div>-->
-        <!--<div class="invest-content">-->
-            <!--<div class="apr">-->
-                <!--<div class="red25px margin-bottom10px"><%=p.profit_rate_year.ToString("f1")%><span class="red15px">%</span></div>-->
-                <!--<div class="grey13px">年化利率</div>-->
-            <!--</div>-->
-            <!--<div class="deadline">-->
-                <!--<div class="grey25px margin-bottom10px">{p.repayment_term_span_count}<span-->
-                        <!--class="grey15px">{p.GetProjectTermSpanEnumDesc()}</span></div>-->
-                <!--<div class="grey13px">期限</div>-->
-            <!--</div>-->
-            <!--<div class="sum">-->
-                <!--<div class="grey25px margin-bottom10px"><%=p.financing_amount.ToString("n0")%><span class="grey15px">元</span></div>-->
-                <!--<div class="grey13px">借款金额</div>-->
-            <!--</div>-->
-            <!--<div class="repayment">-->
-                <!--<div class="progress progress-custom">-->
-                    <!--<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%=(p.GetInvestmentProgressPercent()*100)%>"-->
-                         <!--aria-valuemin="0" aria-valuemax="100" style='width: <%=p.GetInvestmentProgressPercent().ToString("p1")%>'>-->
-                        <!--<%=p.GetInvestmentProgressPercent().ToString("p1")%>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>-->
-                <!--<div class="grey13px margin-bottom10px">可投金额 : <span class="dark-grey13px">{p.GetInvestmentBalance()}</span></div>-->
-                <!--<%else %>-->
-                <!--<div class="grey13px margin-bottom10px">投资人数 : <span class="dark-grey13px">{p.GetInvestedUserCount()}人</span></div>-->
-                <!--<%/if%>-->
-                <!--<div class="grey13px">{p.GetProjectRepaymentTypeDesc()}</div>-->
-            <!--</div>-->
-            <!--<div class="invest-btn">-->
-                <!--<%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>-->
-                <!--<a class="invest-full-btn" href='<%linkurl("project",p.id)%>'>待发标</a>-->
-                <!--<%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>-->
-                <!--<a class="invest-now-btn" href='<%linkurl("project",p.id)%>'>立即投资</a>-->
-                <!--<%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>-->
-                <!--<a class="invest-full-btn" href='<%linkurl("project",p.id)%>'>审核中</a>-->
-                <!--<%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>-->
-                <!--<a class="invest-full-btn" href='<%linkurl("project",p.id)%>'>还款中</a>-->
-                <!--<%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>-->
-                <!--<a class="invest-full-btn" href='<%linkurl("project",p.id)%>'>已完成</a>-->
-                <!--<%/if%>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<%/foreach%>-->
-    <!--<div class="more-projects"><a href='<%linkurl("projects")%>'>查看更多投资理财项目</a></div>-->
-<!--</div>-->
-<!--invest list end-->
+<%/foreach%>
+
 
 <!--dynamic boards-->
 <div class="container-fluid">
