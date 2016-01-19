@@ -28,10 +28,10 @@ namespace Agp2p.Web.UI.Page
         protected int project_repayment_index; //还款期限序号
         protected int project_status_index; // 项目状态
 
-        protected Dictionary<int, string> CategoryIdTitleMap =
-            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6 && c.call_index != "newbie")
-                .OrderBy(c => c.sort_id)
-                .ToDictionary(c => c.id, c => c.title);
+        protected Agp2pDataContext context = new Agp2pDataContext();
+
+        protected Dictionary<int, string> CategoryIdTitleMap;
+        protected Dictionary<int, int> FinancingProjectMap;
 
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
@@ -47,6 +47,17 @@ namespace Agp2p.Web.UI.Page
             category_id = DTRequest.GetQueryInt("category_id");
 
             //HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+
+            CategoryIdTitleMap = context.dt_article_category.Where(
+                c => c.channel_id == 6 && c.call_index != "newbie")
+                .OrderBy(c => c.sort_id)
+                .ToDictionary(c => c.id, c => c.title);
+
+            FinancingProjectMap =
+                context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
+                    .GroupBy(p => p.category_id)
+                    .Where(g => g.Any())
+                    .ToDictionary(g => g.Key, g => g.Count());
         }
 
         [WebMethod]
