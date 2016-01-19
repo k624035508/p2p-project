@@ -364,7 +364,10 @@ namespace Agp2p.Core
                 {
                     throw new InvalidOperationException("新手体验标规定只能投 100 元");
                 }
-                if (wallet.dt_users.li_project_transactions.Any(tra => tra.li_projects.dt_article_category.call_index == "newbie"))
+                if (wallet.dt_users.li_project_transactions.Any(tra =>
+                    tra.li_projects.dt_article_category.call_index == "newbie"
+                    && tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success
+                    && tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest))
                 {
                     throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
                 }

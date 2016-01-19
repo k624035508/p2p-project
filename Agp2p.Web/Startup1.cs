@@ -39,9 +39,6 @@ namespace Agp2p.Web
             // TODO https://github.com/SignalR/SignalR/issues/3414 临时修正 iis 卡死的问题，等待 signalR 升级 2.2.1
             var currentThread = Thread.CurrentThread;
 
-            var originalUiCulture = currentThread.CurrentUICulture;
-            var originalCulture = currentThread.CurrentCulture;
-
             currentThread.CurrentUICulture = new CultureInfo("en-US");
             currentThread.CurrentCulture = new CultureInfo("en-US");
 
@@ -49,16 +46,6 @@ namespace Agp2p.Web
 
             var idProvider = new MyIdProvider();
             GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => idProvider);
-
-
-            // 还原设置
-            Action a = () =>
-            {
-                Thread.Sleep(3000);
-                currentThread.CurrentUICulture = originalUiCulture;
-                currentThread.CurrentCulture = originalCulture;
-            };
-            a.BeginInvoke(null, null);
         }
     }
 }
