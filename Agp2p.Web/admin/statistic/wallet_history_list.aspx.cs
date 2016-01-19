@@ -290,7 +290,7 @@ namespace Agp2p.Web.admin.statistic
 
         readonly Dictionary<Agp2pEnums.WalletHistoryTypeEnum, string> RemarkHintMap = new Dictionary<Agp2pEnums.WalletHistoryTypeEnum, string>
         {
-            {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0} {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund, "投资撤回 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 还款 {1}"},
@@ -315,7 +315,11 @@ namespace Agp2p.Web.admin.statistic
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
                 }
                 return
-                    string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his));
+                    string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
+                        projectNameMapper(his),
+                        his.li_project_transactions.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success
+                            ? ""
+                            : "已撤销");
             }
             if (his.li_bank_transactions != null)
             {
