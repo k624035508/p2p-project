@@ -214,7 +214,11 @@
                             <%=p.GetInvestmentProgressPercent().ToString("p1")%>
                         </div>
                     </div>
-                    <p class="amount-status"><span class="invested">{p.investment_amount} 元</span><span class="hr">/</span><span class="total">{p.financing_amount} 元</span></p>
+                    <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                    <p class="amount-status"><span class="invested"><%=p.investment_amount.ToString("n0")%> 元</span><span class="hr">/</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
+                    <%else %>
+                    <p class="amount-status"><span class="invested">融资完成，金额 <%=p.investment_amount.ToString("n0")%> 元</span></p>
+                    <%/if%>
                     <%if(p.dt_article_category.call_index=="ypb")%>
                     <p class="cash-bank grey13px"><%=p.GetMortgageInfo("bank")%>承兑</p>
                     <%/if%>
