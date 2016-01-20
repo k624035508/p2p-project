@@ -284,11 +284,16 @@ a.invest-btn-grey {
                 border-right: @border;
                 .title-wrap {
                     margin-top: 13px;
-                    & > span {
+                    & > * {
                         .inline-block;
                         line-height: 29px;
                     }
-                    .title { font-size: @font18; }
+                    .title {
+                        color: @darker-grey;
+                        font-size: @font18;
+                        text-decoration: none;
+                        &:hover { color: @red; }
+                    }
                     .tips {
                         width: 185px;
                         height: 30px;
