@@ -193,13 +193,16 @@
                 <%set var projects0=QueryProjects(4,0,out totalcount0,cid,0,0,0)%>
                 <%foreach(var p in projects0)%>
                 <div class="tender-cell">
-                    <div class="title-wrap"><span>{p.title}</span>
+                    <div class="title-wrap"><a href='<%linkurl("project",p.id)%>'>{p.title}</a>
                         <span class="pull-right">
                             <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
                             <i class="jian-icon"></i>
                             <%/if%>
                             <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
                             <i class="xin-icon"></i>
+                            <%/if%>
+                            <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
+                            <i class="yue-icon"></i>
                             <%/if%>
                         </span>
                     </div>

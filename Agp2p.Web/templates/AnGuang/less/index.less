@@ -372,20 +372,22 @@ a.invest-btn-grey {
             padding-bottom: 20px;
             margin-bottom: 13px;
             & > * { .inline-block; }
-            span {
+            a {
                 max-width: 115px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: @darker-grey;
                 font-size: @font18;
+                text-decoration: none;
+                &:hover { color: @red; }
             }
             i {
                 display: inline-block;
                 width: 20px;
                 height: 20px;
+                margin-left: 12px;
             }
-            i:first-child { margin-right: 15px; }
             .jian-icon { background: url("@{images}/jian.png"); }
             .xin-icon { background: url("@{images}/xin.png"); }
             .yue-icon { background: url("@{images}/yue.png"); }
