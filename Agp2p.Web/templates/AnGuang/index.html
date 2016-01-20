@@ -176,14 +176,14 @@
 </div>
 <%/if%>
 
-<%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62))%>
+<%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
     <%set var totalcount0=0%>
     <div class='<%=cid==62?"tianyingbao":"yinpiaobao"%> tender content-wrap'>
         <div class="tender-left">
             <p class="white35px"><%=CategoryIdTitleMap[cid]%></p>
             <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
-            <p class="white13px">到期还本付息</p>
-            <p class="white13px">到期还本付息</p>
+            <p class="white13px">　</p>
+            <p class="white13px">　</p>
             <div class="geometry-icon"></div>
             <a href='<%linkurl("projects",cid,0,0,0,1)%>' target="_blank">查看更多</a>
         </div>
