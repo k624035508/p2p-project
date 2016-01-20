@@ -126,7 +126,7 @@
         </li>
         <li><a href='<%linkurl("safe_defence")%>'class="guarantee-icon"></a>
             <div>
-                <p>本息保障</p>
+                <p>本息安全</p>
                 <p>风险保证金垫付</p>
             </div>
         </li>
@@ -181,7 +181,12 @@
     <div class='<%=cid==62?"tianyingbao":"yinpiaobao"%> tender content-wrap'>
         <div class="tender-left">
             <p class="white35px"><%=CategoryIdTitleMap[cid]%></p>
+            <%if(cid==62)%>
             <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
+            <%/if%>
+            <%if(cid==60)%>
+            <p class="white18px"><span>银行承兑</span><span>本息安全</span></p>
+            <%/if%>
             <p class="white13px">　</p>
             <p class="white13px">　</p>
             <div class="geometry-icon"></div>
