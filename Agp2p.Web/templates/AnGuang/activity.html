@@ -1,21 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>体验金活动</title>
+    <title>新手标活动</title>
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/index.bundle.js"></script>
     <style>
-        body { margin: 0; }
+        body {
+            margin: 0;
+        }
+
         .activity-page {
             height: 1875px;
-            background: url("imgs/index/activity-bg.jpg") no-repeat center top;
+            background: url("templates/AnGuang/imgs/index/activity-bg.jpg") no-repeat center top;
         }
-        a {
+
+        .activity-page a {
             position: relative;
             display: block;
             margin: 0 auto;
             width: 195px;
             height: 60px;
-            line-height: 60px;;
+            line-height: 60px;
             color: #fff;
             font-size: 30px;
             text-align: center;
@@ -23,14 +30,26 @@
             background: #ff414b;
             border-radius: 10px;
         }
-        .invest-btn { top: 985px; }
-        .register-btn { top: 1640px; }
+
+        .invest-btn {
+            top: 985px;
+        }
+
+        .register-btn {
+            top: 1640px;
+        }
     </style>
 </head>
 <body>
-<div class="activity-page">
-    <a class="invest-btn" href="/">马上投资</a>
-    <a class="register-btn" href="/register.html">马上注册</a>
-</div>
+    <!--head-->
+    <%template src="_header.html"%>
+    <!--head end-->
+    <div class="activity-page">
+        <a class="invest-btn" href="/">马上投资</a>
+        <a class="register-btn" href="/register.html">马上注册</a>
+    </div>
+    <!--footer-->
+    <%template src="_footer.html"%>
+    <!--footer end-->
 </body>
 </html>

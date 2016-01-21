@@ -33,7 +33,8 @@ namespace Agp2p.Web.UI.Page
             {
                 if (!bll.Exists(id))
                 {
-                    HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                    //HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                    HttpContext.Current.Response.Redirect(linkurl("404"));
                     return;
                 }
                 model = bll.GetModel(id);
@@ -42,7 +43,7 @@ namespace Agp2p.Web.UI.Page
             {
                 if (!bll.Exists(page))
                 {
-                    HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                    HttpContext.Current.Response.Redirect(linkurl("404"));
                     return;
                 }
                 model = bll.GetModel(page);
