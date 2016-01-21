@@ -18,165 +18,172 @@
     <script src="<%templateskin%>/build/index.bundle.js"></script>
 </head>
 <body>
-<!--head-->
-<%template src="_header.html"%>
-<!--head end-->
-
-<!--banner-floating-->
-<div class="banner-floating">
-    <div class="content-wrap">
-        <div class="floating-box">
-            <div class="opacity"></div>
-            <div class="content-body">
-                <%if(_userModel==null)%>
-                <p class="title">安广融合年化收益</p>
-                <p class="rate">最高<span class="num">15</span><span class="unit">%</span></p>
-                <p class="invest-amount">100元起投，享稳健收益</p>
-                <a class="register-btn" href='<%linkurl("register")%>'>免费注册</a>
-                <p class="switch">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></p>
-                <%else%>
-                <p class="title">欢迎来到安广融合</p>
-                <p class="user">您的账户：<span class="account"><%=Utils.GetUserNameHidden(_userModel.user_name)%></span></p>
-                <a class="register-btn enter" href='<%linkurl("usercenter","index")%>'>进入我的账户</a>
-                <p class="switch"><a href='<%linkurl("usercenter","exit")%>'>退出登录</a></p>
-                <%/if%>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!--banner-->
-<div class="container-fluid">
-    <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <!--<li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>-->
-            <!--<li data-target="#bannerCarousel" data-slide-to="1"></li>-->
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <a class="banner1"></a>
-            </div>
-            <!--<div class="item">-->
-                <!--<img src="<%templateskin%>/imgs/index/bannerTest-02.jpg" alt="Chania">-->
-            <!--</div>-->
-
-            <!-- Left and right controls -->
-            <!--<a class="left carousel-control" href="#bannerCarousel" role="button" data-slide="prev">-->
-                <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
-                <!--<span class="sr-only">Previous</span>-->
-            <!--</a>-->
-            <!--<a class="right carousel-control" href="#bannerCarousel" role="button" data-slide="next">-->
-                <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
-                <!--<span class="sr-only">Next</span>-->
-            <!--</a>-->
-
-        </div>
-    </div>
-</div>
-<!--banner end-->
-
-<!--announcement-->
-<div class="container-fluid announcement-wrap">
-    <div class="announcement">
-        <span class="pull-right"><a href='<%=linkurl("about_more","43,54")%>' target="_blank">更多></a></span>
-        <span class="announce-board-icon announce-icon"></span>
-        <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
-        <span class="return-announce">发标公告：
-            <%if(projectAnnounce!=null)%>
-            <a href='<%linkurl("article_show",projectAnnounce.id)%>' target="_blank">
-            <%=projectAnnounce.title.Length>25?projectAnnounce.title.Substring(0, 25)+"...":projectAnnounce.title%>
-            </a>
-            <%else%>
-            <span>暂无内容</span>
-            <%/if%>
-        </span>
-        <span class="announce-board-icon news-icon"></span>
-        <%set var newestAnnounce=GetArticles(42, 1).FirstOrDefault()%>
-        <span class="web-announce">最新动态：
-            <%if(newestAnnounce!=null)%>
-            <a href='<%linkurl("article_show",newestAnnounce.id)%>' target="_blank">
-            <%=newestAnnounce.title.Length>30?newestAnnounce.title.Substring(0, 30)+"...":newestAnnounce.title%>
-            </a>
-            <%else%>
-            <span>暂无内容</span>
-            <%/if%>
-        </span>
-        <span class="announce-board-icon news-icon"></span>
-    </div>
-</div>
-<!--announcement end-->
-
-<div class="container-fluid features">
-    <ul class="list-unstyled list-inline content-wrap">
-        <li><a href='<%linkurl("safe_defence")%>' class="funds-icon"></a>
-            <div>
-                <p>资金存管</p>
-                <p>坚持中介本质</p>
-            </div>
-        </li>
-        <li><a href='<%linkurl("safe_defence")%>' class="acceptance-icon"></a>
-            <div>
-                <p>银行承兑</p>
-                <p>低风险、短期高收益</p>
-            </div>
-        </li>
-        <li><a href='<%linkurl("safe_defence")%>'class="guarantee-icon"></a>
-            <div>
-                <p>本息安全</p>
-                <p>风险保证金垫付</p>
-            </div>
-        </li>
-    </ul>
-</div>
-
-<%set var np = GetFinancingNewbieProject()%>
-<%if(np!=null)%>
-<div class="content-wrap new-hand">
-    <div class="newHand-left">
-        <a href='<%=linkurl("help")%>' target="_blank">
-            <p class="white35px">新手指引</p>
-            <p class="white13px">安广融合带您理财</p>
-        </a>
-    </div>
-    <div class="newHand-right">
-        <div class="icon-corner"></div>
-        <div class="content-bottom">
-            <div class="project-content">
-                <div class="title-wrap">
-                    <a class="title" href='<%linkurl("project",np.id)%>'>新手专享标</a>
-                    <span class="tips pull-right">新用户专享，固定限投100元</span>
-                </div>
+    <!--head-->
+    <%template src="_header.html"%>
+    <!--head end-->
+    <!--banner-floating-->
+    <div class="banner-floating">
+        <div class="content-wrap">
+            <div class="floating-box">
+                <div class="opacity"></div>
                 <div class="content-body">
-                    <div class="left-part">
-                        <p class="grey13px">项目收益<span class="dark-grey25px margin-left30">10</span><span class="dark-grey15px"> 元</span></p>
-                        <div class="progress progress-custom">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="<%=(np.GetInvestmentProgressPercent()*100)%>"
-                                 aria-valuemin="0" aria-valuemax="100" style='width: <%=np.GetInvestmentProgressPercent().ToString("p1")%>;'>
-                                <%=np.GetInvestmentProgressPercent().ToString("p1")%>
-                            </div>
-                        </div>
-                        <p class="grey13px">项目金额：<span class="dark-grey13px">200000元</span></p>
-                    </div>
-                    <div class="right-part pull-right">
-                        <p class="grey13px">项目期限<span class="dark-grey25px margin-left30">1</span><span class="dark-grey15px"> 天</span></p>
-                        <a href='<%linkurl("project",np.id)%>' class="invest-btn invest-btn-red">立即投资</a>
-                    </div>
+                    <%if(_userModel==null)%>
+                    <p class="title">安广融合年化收益</p>
+                    <p class="rate">最高<span class="num">15</span><span class="unit">%</span></p>
+                    <p class="invest-amount">100元起投，享稳健收益</p>
+                    <a class="register-btn" href='<%linkurl("register")%>'>免费注册</a>
+                    <p class="switch">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></p>
+                    <%else%>
+                    <p class="title">欢迎来到安广融合</p>
+                    <p class="user">您的账户：<span class="account"><%=Utils.GetUserNameHidden(_userModel.user_name)%></span></p>
+                    <a class="register-btn enter" href='<%linkurl("usercenter","index")%>'>进入我的账户</a>
+                    <p class="switch"><a href='<%linkurl("usercenter","exit")%>'>退出登录</a></p>
+                    <%/if%>
                 </div>
-            </div>
-            <div class="rules">
-                <p>安广融合移动端</p>
-                <p><span>稳健收益</span><span>门槛低</span><span>期限短</span></p>
             </div>
         </div>
     </div>
-</div>
-<%/if%>
 
-<%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
+
+    <!--banner-->
+    <div class="container-fluid">
+        <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#bannerCarousel" data-slide-to="1"></li>
+                <li data-target="#bannerCarousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a class="banner1"></a>
+                </div>
+                <div class="item">
+                    <a href='<%linkurl("activities")%>' class="banner2" target="_blank"></a>
+                </div>
+                <div class="item">
+                    <a href='<%linkurl("article_show",195)%>' target="_blank" class="banner3"></a>
+                </div>
+
+                <!--Left and right controls -->
+                <!--<a class="left carousel-control" href="#bannerCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#bannerCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>-->
+
+            </div>
+        </div>
+    </div>
+    <!--banner end-->
+    <!--announcement-->
+    <div class="container-fluid announcement-wrap">
+        <div class="announcement">
+            <span class="pull-right"><a href='<%=linkurl("about_more","43,54")%>' target="_blank">更多></a></span>
+            <span class="announce-board-icon announce-icon"></span>
+            <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
+            <span class="return-announce">
+                发标公告：
+                <%if(projectAnnounce!=null)%>
+                <a href='<%linkurl("article_show",projectAnnounce.id)%>' target="_blank">
+                    <%=projectAnnounce.title.Length>25?projectAnnounce.title.Substring(0, 25)+"...":projectAnnounce.title%>
+                </a>
+                <%else%>
+                <span>暂无内容</span>
+                <%/if%>
+            </span>
+            <span class="announce-board-icon news-icon"></span>
+            <%set var newestAnnounce=GetArticles(42, 1).FirstOrDefault()%>
+            <span class="web-announce">
+                最新动态：
+                <%if(newestAnnounce!=null)%>
+                <a href='<%linkurl("article_show",newestAnnounce.id)%>' target="_blank">
+                    <%=newestAnnounce.title.Length>30?newestAnnounce.title.Substring(0, 30)+"...":newestAnnounce.title%>
+                </a>
+                <%else%>
+                <span>暂无内容</span>
+                <%/if%>
+            </span>
+            <span class="announce-board-icon news-icon"></span>
+        </div>
+    </div>
+    <!--announcement end-->
+
+    <div class="container-fluid features">
+        <ul class="list-unstyled list-inline content-wrap">
+            <li>
+                <a href='<%linkurl("safe_defence")%>' class="funds-icon"></a>
+                <div>
+                    <p>资金存管</p>
+                    <p>坚持中介本质</p>
+                </div>
+            </li>
+            <li>
+                <a href='<%linkurl("safe_defence")%>' class="acceptance-icon"></a>
+                <div>
+                    <p>银行承兑</p>
+                    <p>低风险、短期高收益</p>
+                </div>
+            </li>
+            <li>
+                <a href='<%linkurl("safe_defence")%>' class="guarantee-icon"></a>
+                <div>
+                    <p>本息安全</p>
+                    <p>风险保证金垫付</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <%set var np = GetFinancingNewbieProject()%>
+    <%if(np!=null)%>
+    <div class="content-wrap new-hand">
+        <div class="newHand-left">
+            <a href='<%=linkurl("help")%>' target="_blank">
+                <p class="white35px">新手指引</p>
+                <p class="white13px">安广融合带您理财</p>
+            </a>
+        </div>
+        <div class="newHand-right">
+            <div class="icon-corner"></div>
+            <div class="content-bottom">
+                <div class="project-content">
+                    <div class="title-wrap">
+                        <a class="title" href='<%linkurl("project",np.id)%>'>新手专享标</a>
+                        <span class="tips pull-right">新用户专享，固定限投100元</span>
+                    </div>
+                    <div class="content-body">
+                        <div class="left-part">
+                            <p class="grey13px">项目收益<span class="dark-grey25px margin-left30">10</span><span class="dark-grey15px"> 元</span></p>
+                            <div class="progress progress-custom">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="<%=(np.GetInvestmentProgressPercent()*100)%>"
+                                     aria-valuemin="0" aria-valuemax="100" style='width: <%=np.GetInvestmentProgressPercent().ToString("p1")%>;'>
+                                    <%=np.GetInvestmentProgressPercent().ToString("p1")%>
+                                </div>
+                            </div>
+                            <p class="grey13px">项目金额：<span class="dark-grey13px">200000元</span></p>
+                        </div>
+                        <div class="right-part pull-right">
+                            <p class="grey13px">项目期限<span class="dark-grey25px margin-left30">1</span><span class="dark-grey15px"> 天</span></p>
+                            <a href='<%linkurl("project",np.id)%>' class="invest-btn invest-btn-red">立即投资</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="rules" onclick="window.open('/article/195.html', '_blank')">
+                    <p>安广融合移动端</p>
+                    <p><span>稳健收益</span><span>门槛低</span><span>期限短</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%/if%>
+
+    <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
     <%set var totalcount0=0%>
     <div class='<%=cid==62?"tianyingbao":"yinpiaobao"%> tender content-wrap'>
         <div class="tender-left">
@@ -198,7 +205,8 @@
                 <%set var projects0=QueryProjects(4,0,out totalcount0,cid,0,0,0)%>
                 <%foreach(var p in projects0)%>
                 <div class="tender-cell">
-                    <div class="title-wrap"><a href='<%linkurl("project",p.id)%>'>{p.title}</a>
+                    <div class="title-wrap">
+                        <a href='<%linkurl("project",p.id)%>'>{p.title}</a>
                         <span class="pull-right">
                             <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
                             <i class="jian-icon"></i>
@@ -222,149 +230,150 @@
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                     <p class="amount-status"><span class="invested"><%=p.investment_amount.ToString("n0")%> 元</span><span class="hr">/</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
                     <%else if(p.status<(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
-                    <p class="amount-status"><span class="invested">融资结束</span></p>
-                    <%else %>
-                    <p class="amount-status"><span class="invested">融资完成，金额 <%=p.investment_amount.ToString("n0")%> 元</span></p>
-                    <%/if%>
-                    <%if(p.dt_article_category.call_index=="ypb")%>
-                    <p class="cash-bank grey13px"><%=p.GetMortgageInfo("bank")%>承兑</p>
-                    <%/if%>
-                    <div class="data-box">
-                        <span>
-                            <p class="dark-grey25px"><%=p.profit_rate_year.ToString("f1")%><span class="dark-grey15px">%</span></p>
-                            <p class="grey13px">年化利率</p>
-                        </span>
-                        <span>
-                            <p class="dark-grey25px">{p.repayment_term_span_count}<span class="dark-grey15px">{p.GetProjectTermSpanEnumDesc()}</span></p>
-                            <p class="grey13px">项目期限</p>
-                        </span>
-                    </div>
+                        <p class="amount-status"><span class="invested">融资结束</span></p>
+                        <%else %>
+                        <p class="amount-status"><span class="invested">融资完成，金额 <%=p.investment_amount.ToString("n0")%> 元</span></p>
+                        <%/if%>
+                        <%if(p.dt_article_category.call_index=="ypb")%>
+                        <p class="cash-bank grey13px"><%=p.GetMortgageInfo("bank")%>承兑</p>
+                        <%/if%>
+                        <div class="data-box">
+                            <span>
+                                <p class="dark-grey25px"><%=p.profit_rate_year.ToString("f1")%><span class="dark-grey15px">%</span></p>
+                                <p class="grey13px">年化利率</p>
+                            </span>
+                            <span>
+                                <p class="dark-grey25px">{p.repayment_term_span_count}<span class="dark-grey15px">{p.GetProjectTermSpanEnumDesc()}</span></p>
+                                <p class="grey13px">项目期限</p>
+                            </span>
+                        </div>
 
-                    <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>待发标</a>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <a href='<%linkurl("project",p.id)%>' class="invest-btn invest-btn-red">立即投资</a>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>审核中</a>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>还款中</a>
-                    <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-                    <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>已完成</a>
-                    <%/if%>
+                        <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                        <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>待发标</a>
+                        <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                        <a href='<%linkurl("project",p.id)%>' class="invest-btn invest-btn-red">立即投资</a>
+                        <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                        <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>审核中</a>
+                        <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                        <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>还款中</a>
+                        <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                        <a class="invest-btn invest-btn-grey" href='<%linkurl("project",p.id)%>'>已完成</a>
+                        <%/if%>
                 </div>
                 <%/foreach%>
             </div>
         </div>
     </div>
-<%/foreach%>
+    <%/foreach%>
 
 
-<!--dynamic boards-->
-<div class="container-fluid">
-    <div class="dynamic-wrap">
-        <!--公司动态-->
-        <div class="company-news">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more",42)%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">公司动态</span>
-                </a>
-            </div>
-            <div class="news-wrap">
-                <%set var inc_news_ls=GetArticles(42, 4)%>
-                <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
-                <%if(inc_news_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>' target="_blank">
-                    <img src="{inc_news_first.img_url}" alt=""/>
-                </a>
-                <div class="img-title">{inc_news_first.title}</div>
-                <%else%>
-                <div style="text-align: center">暂无内容</div>
-                <%/if%>
-                <div class="news-list">
-                    <ul class="list-unstyled">
-                        <%foreach(var a in inc_news_ls.Skip(1))%>
-                        <li>
-                            <span class="list-title-wrap">
-                                <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
-                                    <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
-                                    <span class="list-mark"></span>
-                                    <span class="list-title"><%=a.title%></span>
-                                </a>
-                            </span>
-                        </li>
-                        <%/foreach%>
-                    </ul>
+    <!--dynamic boards-->
+    <div class="container-fluid">
+        <div class="dynamic-wrap">
+            <!--公司动态-->
+            <div class="company-news">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more",42)%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">公司动态</span>
+                    </a>
+                </div>
+                <div class="news-wrap">
+                    <%set var inc_news_ls=GetArticles(42, 4)%>
+                    <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
+                    <%if(inc_news_first!=null)%>
+                    <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>' target="_blank">
+                        <img src="{inc_news_first.img_url}" alt="" />
+                    </a>
+                    <div class="img-title">{inc_news_first.title}</div>
+                    <%else%>
+                    <div style="text-align: center">暂无内容</div>
+                    <%/if%>
+                    <div class="news-list">
+                        <ul class="list-unstyled">
+                            <%foreach(var a in inc_news_ls.Skip(1))%>
+                            <li>
+                                <span class="list-title-wrap">
+                                    <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
+                                        <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
+                                        <span class="list-mark"></span>
+                                        <span class="list-title"><%=a.title%></span>
+                                    </a>
+                                </span>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--媒体报道-->
-        <div class="media-report">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more",44)%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">媒体报道</span>
-                </a>
+            <!--媒体报道-->
+            <div class="media-report">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more",44)%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">媒体报道</span>
+                    </a>
+                </div>
+                <div class="report-wrap">
+                    <%set var media_dt_ls=GetArticles(44, 4)%>
+                    <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
+                    <%if(media_dt_first!=null)%>
+                    <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>' target="_blank">
+                        <img src="{media_dt_first.img_url}" alt="" />
+                    </a>
+                    <div class="img-title">{media_dt_first.title}</div>
+                    <%else%>
+                    <div style="text-align: center">暂无内容</div>
+                    <%/if%>
+                    <div class="report-list">
+                        <ul class="list-unstyled">
+                            <%foreach(var a in media_dt_ls.Skip(1))%>
+                            <li>
+                                <span class="list-title-wrap">
+                                    <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
+                                        <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
+                                        <span class="list-mark"></span>
+                                        <span class="list-title"><%=a.title%></span>
+                                    </a>
+                                </span>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="report-wrap">
-                <%set var media_dt_ls=GetArticles(44, 4)%>
-                <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
-                <%if(media_dt_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>' target="_blank">
-                    <img src="{media_dt_first.img_url}" alt=""/>
-                </a>
-                <div class="img-title">{media_dt_first.title}</div>
-                <%else%>
-                <div style="text-align: center">暂无内容</div>
-                <%/if%>
-                <div class="report-list">
-                    <ul class="list-unstyled">
-                        <%foreach(var a in media_dt_ls.Skip(1))%>
-                        <li><span class="list-title-wrap">
+
+            <!--网站公告-->
+            <div class="company-placard">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more","43,54")%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">公司公告</span>
+                    </a>
+                </div>
+                <ul class="list-unstyled">
+                    <%set var announces_ls=GetArticles("43,54", 10, 0)%>
+                    <%foreach(var a in announces_ls)%>
+                    <li>
+                        <span class="list-title-wrap">
                             <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                 <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                 <span class="list-mark"></span>
                                 <span class="list-title"><%=a.title%></span>
                             </a>
-                            </span>
-                        </li>
-                        <%/foreach%>
-                    </ul>
-                </div>
+                        </span>
+                    </li>
+                    <%/foreach%>
+                </ul>
             </div>
-        </div>
-
-        <!--网站公告-->
-        <div class="company-placard">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more","43,54")%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">公司公告</span>
-                </a>
-            </div>
-            <ul class="list-unstyled">
-                <%set var announces_ls=GetArticles("43,54", 10, 0)%>
-                <%foreach(var a in announces_ls)%>
-                <li><span class="list-title-wrap">
-                        <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
-                            <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
-                            <span class="list-mark"></span>
-                            <span class="list-title"><%=a.title%></span>
-                        </a>
-                    </span>
-                </li>
-                <%/foreach%>
-            </ul>
         </div>
     </div>
-</div>
-<!--dynamic boards end-->
+    <!--dynamic boards end-->
+    <%template src="_floating.html"%>
 
-<%template src="_floating.html"%>
-
-<!--footer-->
-<%template src="_footer.html"%>
-<!--footer end-->
+    <!--footer-->
+    <%template src="_footer.html"%>
+    <!--footer end-->
 </body>
 </html>
