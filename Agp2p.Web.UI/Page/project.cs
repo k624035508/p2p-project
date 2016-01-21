@@ -134,37 +134,18 @@ namespace Agp2p.Web.UI.Page
         //投标记录
         protected List<ProjectTransactions> QueryProjectTransactions()
         {
-            //投标记录
-            if (projectModel.tag == (int)Agp2pEnums.ProjectTagEnum.Trial)
-            {
-                project_transactions =
-                    context.li_activity_transactions.Where(atr => atr.details.Contains("\"ProjectId\":" + projectModel.id + ",")) // 防止跨项目查询(ProjectId 不能是最后一个属性)
-                        .OrderByDescending(atr => atr.create_time)
-                        .AsEnumerable()
-                        .Select(atr => new ProjectTransactions
-                        {
-                            id = atr.id,
-                            user_name = Utils.GetUserNameHidden(atr.dt_users.user_name),
-                            user_id = atr.dt_users.id,
-                            create_time = atr.li_wallet_histories.First().create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                            value = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("c")
-                        }).ToList();
-            }
-            else
-            {
-                project_transactions = projectModel.li_project_transactions
-                    .Where(pt => pt.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest && pt.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .OrderByDescending(pt => pt.create_time)
-                    .AsEnumerable()
-                    .Select(pt => new ProjectTransactions
-                    {
-                        id = pt.id,
-                        user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
-                        user_id = pt.dt_users.id,
-                        create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                        value = pt.principal.ToString("c0")
-                    }).ToList();
-            }
+            project_transactions = projectModel.li_project_transactions
+                .Where(pt => pt.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest && pt.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                .OrderByDescending(pt => pt.create_time)
+                .AsEnumerable()
+                .Select(pt => new ProjectTransactions
+                {
+                    id = pt.id,
+                    user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
+                    user_id = pt.dt_users.id,
+                    create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
+                    value = pt.principal.ToString("c0")
+                }).ToList();
             return project_transactions;
         }
 
