@@ -50,7 +50,9 @@
                             <a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                                class='<%=kvp.Key==category_id?"selected":""%>'><%=kvp.Value%>
                                 <%if(kvp.Key!=category_id)%>
-                                <span style="color: red"><%=FinancingProjectMap.ContainsKey(kvp.Key)?"("+FinancingProjectMap[kvp.Key]+")":""%></span>
+                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: red;padding:0 5px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
+                                <%else%>
+                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: white;padding:0 5px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
                                 <%/if%>
                             </a>
                         </li>
