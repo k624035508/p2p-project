@@ -204,12 +204,18 @@ namespace Agp2p.Web.UI.Page
                 var project = context.li_projects.Single(p => p.id == projectId);
                 var investAmount = QueryInvestAmount(project, userInfo.id);
                 var investRatio = TransactionFacade.GetInvestRatio(project)[userInfo];
+                var profitAmount = project.dt_article_category.call_index == "newbie"
+                    ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
+                    : (int) Agp2pEnums.ProjectStatusEnum.Financing < project.status
+                        ? project.li_repayment_tasks.Sum(
+                            ta =>
+                                Math.Round(investRatio*ta.repay_principal, 2) +
+                                Math.Round(investRatio*ta.repay_interest, 2)).ToString("c") // 模拟放款累计
+                        : "(未满标)";
                 var result = new
                 {
                     Title = project.title,
-                    ProfitingAmount = (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
-                        ? project.li_repayment_tasks.Sum(ta => Math.Round(investRatio * ta.repay_principal, 2) + Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
-                        : "(未满标)",
+                    ProfitingAmount = profitAmount,
                     ProfitRateYear = project.GetProfitRateYearly(),
                     InvestedValue = investAmount.ToString("c"),
                     TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new
