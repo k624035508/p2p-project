@@ -57,17 +57,33 @@ namespace Agp2p.Web.UI.Page
             int pageIndex, string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
-            var query =
+
+            IEnumerable<li_project_transactions> query =
                 context.li_project_transactions.Where(
                     tr =>
                         tr.investor == userId && tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success);
-            if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
-                query = query.Where(tr => MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(tr.li_projects.status));
             if (!string.IsNullOrWhiteSpace(startTime))
                 query = query.Where(tr => Convert.ToDateTime(startTime) <= tr.create_time);
             if (!string.IsNullOrWhiteSpace(endTime))
                 query = query.Where(tr => tr.create_time <= Convert.ToDateTime(endTime));
+            if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
+                query = query.AsEnumerable().Where(tr =>
+                {
+                    if (tr.li_projects.dt_article_category.call_index != "newbie")
+                        return MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(tr.li_projects.status);
+                    switch (type)
+                    {
+                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing:
+                            return false;
+                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying:
+                            return tr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userId).repay_at == null;
+                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete:
+                            return tr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userId).repay_at != null;
+                        default:
+                            throw new Exception("未知的查询类型");
+                    }
+                }).ToList();
 
             count = query.Count();
             return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();

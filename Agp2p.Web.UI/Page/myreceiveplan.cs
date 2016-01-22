@@ -144,10 +144,17 @@ namespace Agp2p.Web.UI.Page
             // 查出投资过的项目
             var investedProjects = context.li_project_transactions.Where(ptr =>
                 ptr.investor == userInfo.id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .Where(ptr => projectFinish
-                            ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                            : ptr.li_projects.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).AsEnumerable()
+                .Where(ptr =>
+                {
+                    if (ptr.li_projects.dt_article_category.call_index == "newbie")
+                    {
+                        return projectFinish && ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_at != null;
+                    }
+                    return projectFinish
+                        ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                        : ptr.li_projects.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                })
                 .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
 
             var result = investedProjects

@@ -519,7 +519,7 @@ namespace Agp2p.Common
             All = 0,
             [Description("投资中")]
             Investing = 1,
-            [Description("还款中")]
+            [Description("回款中")]
             Repaying = 2,
             [Description("已完成")]
             RepayComplete = 3,
@@ -565,9 +565,9 @@ namespace Agp2p.Common
         /// </summary>
         public enum MyRepaymentQueryTypeEnum
         {
-            [Description("未还款")]
+            [Description("未回款")]
             Unpaid = 1,
-            [Description("已还款")]
+            [Description("已回款")]
             Paid = 2,
         }
 
