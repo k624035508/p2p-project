@@ -58,12 +58,13 @@ namespace Agp2p.Web.tools
                 if (HttpContext.Current.Request.UrlReferrer != null)
                 {
                     var urlReferrer = HttpContext.Current.Request.UrlReferrer.ToString();
+
                     //使充值后正确返回会员中心
                     if (!urlReferrer.Contains("user/center/index.html"))
                     {
-                        urlReferrer = string.IsNullOrEmpty(urlReferrer.Substring(urlReferrer.LastIndexOf("/") + 1))
-                            ? "index.html"
-                            : urlReferrer.Substring(urlReferrer.LastIndexOf("/") + 1);
+                        //var substring = urlReferrer.Substring(urlReferrer.LastIndexOf("/") + 1);
+                        var substring = new Uri(urlReferrer).PathAndQuery;
+                        urlReferrer = string.IsNullOrEmpty(substring) || substring == "/" ? "index.html" : substring;
                     }
                     else
                         urlReferrer = "user/center/index.html";

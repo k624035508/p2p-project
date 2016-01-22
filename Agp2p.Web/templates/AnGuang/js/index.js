@@ -2,6 +2,7 @@
 import "../less/head.less";
 import "../less/index.less";
 import "../less/footer.less";
+import "bootstrap/js/transition.js"
 
 import header from "./header.js"
 window['$'] = $;

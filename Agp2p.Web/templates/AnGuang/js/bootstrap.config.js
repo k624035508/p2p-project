@@ -4,9 +4,9 @@ module.exports = {
   styleLoader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
     
   scripts: {
-    'transition': true,
-    'alert': true,
-    'button': true,
+    'transition': false,
+    'alert': false,
+    'button': false,
     'carousel': true,
     'collapse': true,
     'dropdown': true,
@@ -36,8 +36,8 @@ module.exports = {
     "dropdowns": true,
     "button-groups": true,
     "input-groups": true,
-    "navs": true,
-    "navbar": true,
+    "navs": false,
+    "navbar": false,
     "breadcrumbs": true,
     "pagination": true,
     "pager": true,
