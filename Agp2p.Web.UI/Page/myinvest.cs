@@ -35,10 +35,7 @@ namespace Agp2p.Web.UI.Page
             MyTradeTypeMapHistoryEnum = new Dictionary<Agp2pEnums.MyInvestRadioBtnTypeEnum, Agp2pEnums.ProjectStatusEnum[]>
             {
                 {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing, new[] { Agp2pEnums.ProjectStatusEnum.Financing }
-                },
-                {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.InvestEndding, new[] { Agp2pEnums.ProjectStatusEnum.FinancingSuccess, Agp2pEnums.ProjectStatusEnum.FinancingTimeout }
+                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing, new[] { Agp2pEnums.ProjectStatusEnum.Financing, Agp2pEnums.ProjectStatusEnum.FinancingSuccess, Agp2pEnums.ProjectStatusEnum.FinancingTimeout }
                 },
                 {
                     Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying}

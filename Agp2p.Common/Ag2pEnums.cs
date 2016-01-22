@@ -519,12 +519,10 @@ namespace Agp2p.Common
             All = 0,
             [Description("投资中")]
             Investing = 1,
-            [Description("投资结束")]
-            InvestEndding = 2,
             [Description("还款中")]
-            Repaying = 3,
+            Repaying = 2,
             [Description("已完成")]
-            RepayComplete = 4,
+            RepayComplete = 3,
         }
 
         /// <summary>
