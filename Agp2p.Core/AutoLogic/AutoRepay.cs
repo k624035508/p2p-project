@@ -23,6 +23,7 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>
+                    t.li_projects.dt_article_category.call_index != "newbie" &&
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
