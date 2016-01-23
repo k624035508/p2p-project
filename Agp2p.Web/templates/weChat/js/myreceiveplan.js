@@ -20,7 +20,7 @@ var templateSettings = {
 var render = template($("#repaying-project-fragment").html(), templateSettings);
 function loadData(pageIndex, callback) {
     var pageSize = 15;
-    var projectFinish = $("a.nav-active").data("projectFinish");
+    var projectStatus = $("a.nav-active").data("projectStatus");
     var loadingHint = $(".loading-hint");
     var emptyBox = $("div.empty-box");
     loadingHint.text("加载中...");
@@ -29,7 +29,7 @@ function loadData(pageIndex, callback) {
     $.ajax({
         type: "POST",
         url: reqFilePath + "/AjaxQueryInvestedProject",
-        data: JSON.stringify({ projectFinish, pageIndex, pageSize }),
+        data: JSON.stringify({ projectStatus, pageIndex, pageSize }),
         contentType: "application/json",
         dataType: "json",
         success: function (msg) {

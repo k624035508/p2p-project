@@ -130,7 +130,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize) // 微信端用到到此 api
+        public static string AjaxQueryInvestedProject(short projectStatus, short pageIndex, short pageSize) // 微信端用到到此 api
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -141,13 +141,29 @@ namespace Agp2p.Web.UI.Page
             }
             var context = new Agp2pDataContext();
 
+            var stat = (Agp2pEnums.MyInvestRadioBtnTypeEnum) projectStatus;
             // 查出投资过的项目
             var investedProjects = context.li_project_transactions.Where(ptr =>
                 ptr.investor == userInfo.id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .Where(ptr => projectFinish
-                            ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                            : ptr.li_projects.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).AsEnumerable()
+                .Where(ptr =>
+                {
+                    if (ptr.li_projects.dt_article_category.call_index == "newbie")
+                    {
+                        if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+                        {
+                            return false;
+                        }
+                        return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete && ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_at != null;
+                    }
+                    if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+                    {
+                        return ptr.li_projects.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
+                    }
+                    return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete
+                        ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                        : ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
+                })
                 .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
 
             var result = investedProjects
@@ -197,12 +213,18 @@ namespace Agp2p.Web.UI.Page
                 var project = context.li_projects.Single(p => p.id == projectId);
                 var investAmount = QueryInvestAmount(project, userInfo.id);
                 var investRatio = TransactionFacade.GetInvestRatio(project)[userInfo];
+                var profitAmount = project.dt_article_category.call_index == "newbie"
+                    ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
+                    : (int) Agp2pEnums.ProjectStatusEnum.Financing < project.status
+                        ? project.li_repayment_tasks.Sum(
+                            ta =>
+                                Math.Round(investRatio*ta.repay_principal, 2) +
+                                Math.Round(investRatio*ta.repay_interest, 2)).ToString("c") // 模拟放款累计
+                        : "(未满标)";
                 var result = new
                 {
                     Title = project.title,
-                    ProfitingAmount = (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
-                        ? project.li_repayment_tasks.Sum(ta => Math.Round(investRatio * ta.repay_principal, 2) + Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
-                        : "(未满标)",
+                    ProfitingAmount = profitAmount,
                     ProfitRateYear = project.GetProfitRateYearly(),
                     InvestedValue = investAmount.ToString("c"),
                     TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new

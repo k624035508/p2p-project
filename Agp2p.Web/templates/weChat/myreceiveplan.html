@@ -21,6 +21,7 @@
             height: 100%;
         }
         .myinvest-page { padding-top: 50px; }
+        span.glyphicon { color: #ccc;}
     </style>
     <script>
         
@@ -37,6 +38,7 @@
                 <p style="margin:0 0 6px">投资金额</p>
                 <span>@{=item.InvestValue}@</span>
             </div>
+            <span class="glyphicon glyphicon-menu-right"></span>
         </div>
         @{ }); }@
     </script>
@@ -59,7 +61,7 @@
             <div class="invest-standard flex flex--align-items--center">
                 <div class="return-rate">
                     <span>年化收益</span>
-                    <p>@{=project.ProfitRateYear}@%</p>
+                    <p>@{=project.ProfitRateYear}@</p>
                 </div>
                 <div class="invest-amount">
                     <span>投资金额</span>
@@ -95,8 +97,9 @@
     <div class="section">
         <div class="slide">
             <div class="nav-bar">
-                <a id="recieving" href="javascript:;" data-project-finish="false" class="nav-active nav-border-active">回款中<span class="float-right hr-style">|</span></a>
-                <a id="received" href="javascript:;" data-project-finish="true">已回款</a>
+                <a id="investing" href="javascript:;" data-project-status="1" class="nav-active nav-border-active">投资中<span class="float-right hr-style">|</span></a>
+                <a id="recieving" href="javascript:;" data-project-status="2">回款中<span class="float-right hr-style">|</span></a>
+                <a id="received" href="javascript:;" data-project-status="3">已回款</a>
             </div>
             <div class="myinvest-page inner-scrollable">
                 <div class="project-list">
