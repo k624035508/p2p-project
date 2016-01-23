@@ -210,8 +210,10 @@ namespace Agp2p.Web.admin.weixin
                             SingleViewButton sub = new SingleViewButton();
                             sub.name = txtSubName.Text.Trim();
                             //2015-6-8 链接跳转加入OAuth授权
-                            sub.url = txtSubUrl.Text.Trim().Contains("https://open.weixin.qq.com/") ? txtSubUrl.Text.Trim() :
-                                OAuth.GetAuthorizeUrl(accountModel.appid, txtSubUrl.Text.Trim(), "1", OAuthScope.snsapi_base);
+                            //删除OAuth授权
+                            //sub.url = txtSubUrl.Text.Trim().Contains("https://open.weixin.qq.com/") ? txtSubUrl.Text.Trim() :
+                            //    OAuth.GetAuthorizeUrl(accountModel.appid, txtSubUrl.Text.Trim(), "1", OAuthScope.snsapi_base);
+                            sub.url = txtSubUrl.Text.Trim();
                             subList.Add(sub);
                         }
                         else if (txtSubKey.Text.Trim() != "")

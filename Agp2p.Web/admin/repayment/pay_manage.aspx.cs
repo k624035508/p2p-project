@@ -96,7 +96,11 @@ namespace Agp2p.Web.admin.repayment
         private List<PayBill> GetList()
         {
             //查询还款计划
-            var query = context.li_repayment_tasks.Where(r => r.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid && r.li_projects.title.Contains(txtKeywords.Text));
+            var query =
+                context.li_repayment_tasks.Where(
+                    r =>
+                        r.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid && r.only_repay_to == null &&
+                        r.li_projects.title.Contains(txtKeywords.Text));
             if (CategoryId > 0)
                 query = query.Where(q => q.li_projects.category_id == CategoryId);
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
