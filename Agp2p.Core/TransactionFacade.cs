@@ -561,31 +561,34 @@ namespace Agp2p.Core
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
 
             // 计算平台服务费
-            if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
+            if (!project.dt_article_category.call_index.Equals("newbie"))
             {
-                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome()
+                if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
                 {
-                    user_id = project.li_risks.li_loaners.dt_users.id,
-                    income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
-                    project_id = projectId,
-                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
-                    create_time = DateTime.Now,
-                    remark = $"借款项目'{project.title}'收取平台服务费"
-                });
-            }
+                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome()
+                    {
+                        user_id = project.li_risks.li_loaners.dt_users.id,
+                        income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
+                        project_id = projectId,
+                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
+                        create_time = DateTime.Now,
+                        remark = $"借款项目'{project.title}'收取平台服务费"
+                    });
+                }
 
-            //计算风险保证金
-            if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
-            {
-                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                //计算风险保证金
+                if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
                 {
-                    user_id = project.li_risks.li_loaners.dt_users.id,
-                    income = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
-                    project_id = projectId,
-                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee,
-                    create_time = DateTime.Now,
-                    remark = $"借款项目'{project.title}'收取风险保证金"
-                });
+                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                    {
+                        user_id = project.li_risks.li_loaners.dt_users.id,
+                        income = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
+                        project_id = projectId,
+                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee,
+                        create_time = DateTime.Now,
+                        remark = $"借款项目'{project.title}'收取风险保证金"
+                    });
+                }
             }
             context.SubmitChanges();
 
