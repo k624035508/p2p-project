@@ -130,7 +130,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryInvestedProject(bool projectFinish, short pageIndex, short pageSize) // 微信端用到到此 api
+        public static string AjaxQueryInvestedProject(short projectStatus, short pageIndex, short pageSize) // 微信端用到到此 api
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
@@ -141,6 +141,7 @@ namespace Agp2p.Web.UI.Page
             }
             var context = new Agp2pDataContext();
 
+            var stat = (Agp2pEnums.MyInvestRadioBtnTypeEnum) projectStatus;
             // 查出投资过的项目
             var investedProjects = context.li_project_transactions.Where(ptr =>
                 ptr.investor == userInfo.id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
@@ -149,11 +150,19 @@ namespace Agp2p.Web.UI.Page
                 {
                     if (ptr.li_projects.dt_article_category.call_index == "newbie")
                     {
-                        return projectFinish && ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_at != null;
+                        if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+                        {
+                            return false;
+                        }
+                        return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete && ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_at != null;
                     }
-                    return projectFinish
+                    if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+                    {
+                        return ptr.li_projects.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
+                    }
+                    return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete
                         ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                        : ptr.li_projects.status != (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                        : ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
                 })
                 .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
 
