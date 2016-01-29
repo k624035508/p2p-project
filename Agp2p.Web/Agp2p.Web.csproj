@@ -734,6 +734,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\lawyer-yingke.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
@@ -772,7 +773,6 @@
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\qualification-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\some-agency.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
