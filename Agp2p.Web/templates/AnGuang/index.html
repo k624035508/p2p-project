@@ -224,7 +224,7 @@
                         </div>
                     </div>
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                    <p class="amount-status"><span class="invested"><%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
+                    <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
                     <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                     <p class="amount-status"><span class="invested"><%=p.investment_amount.ToString("n0")%> 元</span><span class="hr">/</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
                     <%else if(p.status<(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
