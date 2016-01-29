@@ -26,6 +26,7 @@ namespace Agp2p.Core.NotifyLogic
             var willRepayTasks =
                 context.li_repayment_tasks.Where(
                     t =>
+                        t.li_projects.dt_article_category.call_index != "newbie" &&
                         t.should_repay_time.Date == DateTime.Today.AddDays(3) &&
                         t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!willRepayTasks.Any()) return;
