@@ -800,7 +800,6 @@
     <Content Include="templates\AnGuang\imgs\index\apps-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
-    <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
