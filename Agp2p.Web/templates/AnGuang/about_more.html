@@ -126,15 +126,16 @@
             <div class="topic-th">{category.title}</div>
             <ul class="list-unstyled content-list">
                 <%set var queryKey = category_id==0?category_ids:"" + category_id%>
-                <%set var articles = GetArticles(queryKey,10,page-1,out totalcount)%>
+                <%set var pageSize = 10%>
+                <%set var articles = GetArticles(queryKey,pageSize,page-1,out totalcount)%>
                 <%foreach(var a in articles)%>
                 <li><span class="pull-right">{a.add_time}</span><i></i><a href='<%=linkurl("article_show",a.id)%>'>{a.title}</a></li>
                 <%/foreach%>
             </ul>
             <%if(category_id!=0)%>
-            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about_more",category_id,"__id__"),8)%></div>
+            <div class="pages"><%=Utils.OutPageList(pageSize,page,totalcount,linkurl("about_more",category_id,"__id__"),8)%></div>
             <%else%>
-            <div class="pages"><%=Utils.OutPageList(10,page,totalcount,linkurl("about_more",category_ids,"__id__"),8)%></div>
+            <div class="pages"><%=Utils.OutPageList(pageSize,page,totalcount,linkurl("about_more",category_ids,"__id__"),8)%></div>
             <%/if%>
         </div>
         <%/if%>
