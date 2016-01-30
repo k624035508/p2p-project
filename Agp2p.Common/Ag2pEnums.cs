@@ -706,5 +706,20 @@ namespace Agp2p.Common
             [Description("项目回款")]
             ProjectRepaid = 9
         }
+
+        public enum ClaimStatusEnum
+        {
+            [Description("失效")]
+            Invalid = 1,
+            [Description("不可转让")]
+            Nontransferable = 10,
+            [Description("可转让")]
+            Transferable = 11,
+            [Description("需要转让")]
+            NeedTransfer = 20,
+            [Description("已转让")]
+            Transferred = 30,
+        }
+
     }
 }
