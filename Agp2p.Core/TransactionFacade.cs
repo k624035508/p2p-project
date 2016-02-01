@@ -371,14 +371,6 @@ namespace Agp2p.Core
                 {
                     throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
                 }
-                if (DateTime.Today < new DateTime(2015, 12, 10))
-                {
-                    throw new InvalidOperationException("活动未开始");
-                }
-                if (DateTime.Today > new DateTime(2016, 2, 10))
-                {
-                    throw new InvalidOperationException("活动已结束");
-                }
             }
 
             // 修改项目已投资金额
