@@ -337,7 +337,7 @@ namespace Agp2p.Core
             // 判断投资金额的数额是否合理
             var canBeInvest = pr.financing_amount - pr.investment_amount;
             if (canBeInvest == 0)
-                throw new InvalidOperationException("项目已经满标");
+                throw new InvalidOperationException("项目已经投满");
             if (canBeInvest < investingMoney)
                 throw new InvalidOperationException("投资金额 " + investingMoney + " 超出项目可投资金额 " + canBeInvest);
             if (investingMoney < 100)
@@ -370,14 +370,6 @@ namespace Agp2p.Core
                     && tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest))
                 {
                     throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
-                }
-                if (DateTime.Today < new DateTime(2015, 12, 10))
-                {
-                    throw new InvalidOperationException("活动未开始");
-                }
-                if (DateTime.Today > new DateTime(2016, 2, 10))
-                {
-                    throw new InvalidOperationException("活动已结束");
                 }
             }
 
@@ -423,6 +415,7 @@ namespace Agp2p.Core
             var project = context.li_project_transactions.Single(tr => tr.id == projectTransactionId).li_projects;
             var canBeInvest = project.financing_amount - project.investment_amount;
             if (0 < canBeInvest) return; // 未满标
+            if (project.IsHuoqiProject()) return; // 活期项目不会满标
             FinishInvestment(context, project.id);
         }
 
@@ -437,6 +430,9 @@ namespace Agp2p.Core
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int) Agp2pEnums.ProjectStatusEnum.Financing)
                 throw new InvalidOperationException("项目不是发标状态，不能设置为满标");
+            if (project.IsHuoqiProject())
+                throw new InvalidOperationException("活期项目不会满标");
+
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
             // 项目投资完成时间应该等于最后一个人的投资时间
@@ -1386,6 +1382,16 @@ namespace Agp2p.Core
                 }
             }
             return "";
+        }
+
+        public static bool IsNewbieProject(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "newbie";
+        }
+
+        public static bool IsHuoqiProject(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "huoqi";
         }
     }
 }
