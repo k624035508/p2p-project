@@ -16059,7 +16059,7 @@ namespace Agp2p.Linq2SQL
 		
 		private System.Nullable<int> _parentClaimId;
 		
-		private System.Nullable<int> _createFromInvestment;
+		private int _createFromInvestment;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
 		
@@ -16095,7 +16095,7 @@ namespace Agp2p.Linq2SQL
     partial void OncreateTimeChanged();
     partial void OnparentClaimIdChanging(System.Nullable<int> value);
     partial void OnparentClaimIdChanged();
-    partial void OncreateFromInvestmentChanging(System.Nullable<int> value);
+    partial void OncreateFromInvestmentChanging(int value);
     partial void OncreateFromInvestmentChanged();
     #endregion
 		
@@ -16287,8 +16287,8 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_createFromInvestment", DbType="Int")]
-		public System.Nullable<int> createFromInvestment
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_createFromInvestment", DbType="Int NOT NULL")]
+		public int createFromInvestment
 		{
 			get
 			{
@@ -16432,7 +16432,7 @@ namespace Agp2p.Linq2SQL
 					}
 					else
 					{
-						this._createFromInvestment = default(Nullable<int>);
+						this._createFromInvestment = default(int);
 					}
 					this.SendPropertyChanged("li_project_transactions1");
 				}
