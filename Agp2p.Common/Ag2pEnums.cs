@@ -294,6 +294,8 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
+            [Description("债权转让")]
+            ClaimTransfer = 4,
         }
 
         /// <summary>
@@ -363,6 +365,8 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
+            [Description("债权转让成功")]
+            ClaimTransfer = 24,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -711,16 +715,18 @@ namespace Agp2p.Common
 
         public enum ClaimStatusEnum
         {
-            [Description("失效")]
-            Invalid = 1,
             [Description("不可转让")]
-            Nontransferable = 10,
+            Nontransferable = 1,
             [Description("可转让")]
-            Transferable = 11,
+            Transferable = 2,
             [Description("需要转让")]
-            NeedTransfer = 20,
+            NeedTransfer = 3,
             [Description("已转让")]
-            Transferred = 30,
+            Transferred = 10,
+            [Description("完成")]
+            Completed = 11,
+            [Description("失效")]
+            Invalid = 12,
         }
 
     }
