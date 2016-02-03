@@ -250,7 +250,7 @@ namespace Agp2p.Web.admin.users
             int errorCount = 0;
             BLL.user_groups bll = new BLL.user_groups();
             //批量删除
-            for (int i = 0; i < rptList.Items.Count; i++)
+            for (int i = 0; i < rptList.Items.Count - 1; i++)
             {
                 int id = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
                 CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
