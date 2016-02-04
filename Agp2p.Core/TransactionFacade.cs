@@ -819,7 +819,10 @@ namespace Agp2p.Core
                 var wallet = ptr.dt_users.li_wallets;
                 wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
                 wallet.investing_money -= ptr.principal;
-                wallet.profiting_money -= Math.Round(originalRepayInterest*moneyRepayRatio[ptr.dt_users], 2);
+                // 由于 提前还款/逾期还款 的缘故，需要修正待收益
+                wallet.profiting_money -= repaymentTask.cost.GetValueOrDefault() == 0
+                    ? ptr.interest.GetValueOrDefault()
+                    : Math.Round(originalRepayInterest*moneyRepayRatio[ptr.dt_users], 2);
                 wallet.total_profit += ptr.interest.GetValueOrDefault(0);
                 wallet.last_update_time = ptr.create_time;
 
