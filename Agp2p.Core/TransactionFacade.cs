@@ -810,20 +810,23 @@ namespace Agp2p.Core
             var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
 
-            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
-            var originalRepayInterest = repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest;
+            Dictionary<int, li_project_transactions> ptrAddedCost = null;
+            if (repaymentTask.cost.GetValueOrDefault() != 0)
+            {
+                ptrAddedCost = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, false, true).ToDictionary(tr => tr.investor);
+            }
 
             foreach (var ptr in ptrs)
             {
                 // 增加钱包空闲金额与减去待收本金和待收利润
                 var wallet = ptr.dt_users.li_wallets;
-                wallet.idle_money += ptr.interest.GetValueOrDefault(0) + ptr.principal;
+                wallet.idle_money += ptr.interest.GetValueOrDefault() + ptr.principal;
                 wallet.investing_money -= ptr.principal;
                 // 由于 提前还款/逾期还款 的缘故，需要修正待收益
-                wallet.profiting_money -= repaymentTask.cost.GetValueOrDefault() == 0
+                wallet.profiting_money -= ptrAddedCost == null
                     ? ptr.interest.GetValueOrDefault()
-                    : Math.Round(originalRepayInterest*moneyRepayRatio[ptr.dt_users], 2);
-                wallet.total_profit += ptr.interest.GetValueOrDefault(0);
+                    : ptrAddedCost[ptr.investor].interest.GetValueOrDefault();
+                wallet.total_profit += ptr.interest.GetValueOrDefault();
                 wallet.last_update_time = ptr.create_time;
 
                 // 添加钱包历史
@@ -877,8 +880,10 @@ namespace Agp2p.Core
         /// <param name="repaymentTask"></param>
         /// <param name="transactTime"></param>
         /// <param name="unsafeCreateEntities"></param>
+        /// <param name="applyCostIntoInterest">如果为 true ，则 interest 实际上为计算了 cost 的收益</param>
         /// <returns></returns>
-        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false)
+        public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime,
+            bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
         {
             var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
 
@@ -890,15 +895,21 @@ namespace Agp2p.Core
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
-                    remark = string.Format("提前还款：本期原来的待收益 {0:f2}，实际收益 {1:f2}",
-                        Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
-                        realityInterest);
+                    var originalInterest = r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                    remark = $"提前还款：本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
+                    if (applyCostIntoInterest)
+                    {
+                        realityInterest = originalInterest;
+                    }
                 }
                 else if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
                 {
-                    remark = string.Format("逾期还款：本期原来的待收益 {0:f2}，实际收益 {1:f2}",
-                        Math.Round(r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault()), 2),
-                        realityInterest);
+                    var originalInterest = r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                    remark = $"逾期还款：本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
+                    if (applyCostIntoInterest)
+                    {
+                        realityInterest = originalInterest;
+                    }
                 }
 
                 // 不能直接复制实体类，否则 context 保存后会添加记录
@@ -921,7 +932,10 @@ namespace Agp2p.Core
             }).ToList();
 
             var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
-            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, repaymentTask.repay_interest, 2);
+            var forceSum = applyCostIntoInterest
+                ? repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest
+                : repaymentTask.repay_interest;
+            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, forceSum, 2);
             rounded.ZipEach(perfectRoundedInterest, (ptr, newInterest) => ptr.interest = newInterest);
 
             var notPerfectRoundedPrincipal = rounded.Select(ptr => ptr.principal).ToList();
