@@ -721,12 +721,12 @@ namespace Agp2p.Common
             Transferable = 2,
             [Description("需要转让")]
             NeedTransfer = 3,
-            [Description("已转让")]
-            Transferred = 10,
             [Description("完成")]
-            Completed = 11,
+            Completed = 10,
+            [Description("已转让")]
+            Transferred = 20,
             [Description("失效")]
-            Invalid = 12,
+            Invalid = 30,
         }
 
     }

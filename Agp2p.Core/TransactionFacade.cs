@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -647,25 +648,7 @@ namespace Agp2p.Core
             var context = new Agp2pDataContext();
             var ptr = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
             var project = ptr.li_projects;
-            var canBeInvest = project.financing_amount - project.investment_amount;
-            if (0 < canBeInvest) return; // 未满标
             if (project.IsHuoqiProject()) {
-                // TODO test 如果活期项目明天没有还款计划，则生成（为了记录当天是否进行过活期还款）
-                var nextDay = DateTime.Today.AddDays(1);
-                if (project.li_repayment_tasks.All(ta => ta.should_repay_time.Date != nextDay))
-                {
-                    var nextDayTask = new li_repayment_tasks
-                    {
-                        should_repay_time = nextDay.AddHours(15),
-                        repay_principal = 0,
-                        repay_interest = 0,
-                        project = project.id,
-                        status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                        term = (short) (project.li_repayment_tasks.Any() ? project.li_repayment_tasks.Last().term + 1 : 1),
-                    };
-                    context.li_repayment_tasks.InsertOnSubmit(nextDayTask);
-                    context.SubmitChanges();
-                }
                 // TODO test 判断自动投标的项目是否满标
                 var financingCompletedProject = ptr.li_claims.Where(
                     c =>
@@ -676,6 +659,9 @@ namespace Agp2p.Core
                 financingCompletedProject.ForEach(p => FinishInvestment(context, p.id));
                 return; // 活期项目不会满标
             }
+
+            var canBeInvest = project.financing_amount - project.investment_amount;
+            if (0 < canBeInvest) return; // 未满标
             FinishInvestment(context, project.id);
         }
 
@@ -697,7 +683,7 @@ namespace Agp2p.Core
             project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess;
 
             // 项目投资完成时间应该等于最后一个债权的创建时间
-            var lastClaim = project.li_claims.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred).OrderByDescending(c => c.createTime).FirstOrDefault();
+            var lastClaim = project.li_claims.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed).OrderByDescending(c => c.createTime).FirstOrDefault();
             project.invest_complete_time = lastClaim?.createTime ?? DateTime.Now;
 
             context.SubmitChanges();
@@ -871,7 +857,7 @@ namespace Agp2p.Core
         private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context, li_projects project, List<li_repayment_tasks> tasks)
         {
             // 查询每个用户的债权记录（一个用户可能投资多次）
-            var userClaims = project.li_claims1.ToLookup(c => c.dt_users);
+            var userClaims = project.li_claims1.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed).ToLookup(c => c.dt_users);
 
             var wallets = userClaims.Select(ir => ir.Key.li_wallets).ToList();
             var walletDict = wallets.ToDictionary(w => w.user_id);
@@ -1088,7 +1074,7 @@ namespace Agp2p.Core
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
             var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
-            if (pro.dt_article_category.call_index != "newbie" && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
+            if (!pro.IsNewbieProject() && !pro.IsHuoqiProject() && pro.li_repayment_tasks.All(r => r.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid))
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
@@ -1099,9 +1085,16 @@ namespace Agp2p.Core
             return repaymentTask;
         }
 
-        public static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
+        private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
         {
-            var allClaims = proj.li_claims.ToList();
+            if (proj.IsHuoqiProject())
+            {
+                var claims = proj.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
+                Debug.Assert(claims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
+                return claims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
+            }
+
+            var allClaims = proj.li_claims.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
             Debug.Assert(allClaims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
 
             // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
@@ -1131,7 +1124,9 @@ namespace Agp2p.Core
             var moneyRepayRatio = GetClaimRatio(repaymentTask.li_projects);
 
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
-            var rounded = moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
+            var rounded = moneyRepayRatio
+                .Where(c => c.Key.status < (int) Agp2pEnums.ClaimStatusEnum.Completed) // 只为未完成/有效的债权回款
+                .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(c =>
             {
                 var realityInterest = c.Value*repaymentTask.repay_interest; // perfect round later
