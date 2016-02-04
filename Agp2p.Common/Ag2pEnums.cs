@@ -203,7 +203,9 @@ namespace Agp2p.Common
             /// 到期还本付息 
             /// </summary>
             [Description("到期还本付息")]
-            DaoQi = 30
+            DaoQi = 30,
+            [Description("每日收益")]
+            HuoQi = 40
         }
 
         /// <summary>

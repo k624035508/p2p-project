@@ -216,5 +216,60 @@ namespace Agp2p.Test
             Debug.WriteLine("Fix repayment task repay interest: " + count);
             //context.SubmitChanges();
         }
+
+        private static void DoHistoryFixing(Agp2pDataContext context, li_wallet_histories his)
+        {
+            // 计算出偏差：和上一个历史记录对比后得出原待收益
+            var prevHis = his.dt_users.li_wallet_histories.OrderByDescending(h => h.create_time)
+                .First(h => h.create_time < his.create_time);
+            var originalProfiting = his.profiting_money - prevHis.profiting_money;
+
+            var project = his.li_project_transactions.li_projects;
+            var realInvestment = project.li_project_transactions.Where(
+                tr =>
+                    tr.investor == his.user_id &&
+                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).Sum(pt => pt.principal);
+
+
+            // 计算出正确的待收益金额和：通过 GenerateRepayTransactions
+            var myPtr = project.li_repayment_tasks.AsEnumerable().SelectMany(
+                t => TransactionFacade.GenerateRepayTransactions(t, t.repay_at ?? t.should_repay_time))
+                .Where(ptr => ptr.investor == his.user_id)
+                .ToList();
+            var predictProfiting = myPtr.Sum(pt => pt.interest.GetValueOrDefault());
+            var predictInvesting = myPtr.Sum(pt => pt.principal);
+
+            if (realInvestment != predictInvesting)
+            {
+                throw new Exception("归还的本金不等于投入的本金");
+            }
+
+            // 修正往后的历史
+            if (predictProfiting != originalProfiting)
+            {
+                var deltaProfiting = predictProfiting - originalProfiting;
+                var prefixHis = his.dt_users.li_wallet_histories.OrderByDescending(h => h.create_time)
+                    .Where(h => his.create_time <= h.create_time).ToList();
+                Debug.WriteLine(string.Format("修正 {0} 用户从 {1} 开始出现待收益偏差：{2}，影响历史记录 {3} 条",
+                    his.dt_users.GetFriendlyUserName(), his.create_time, deltaProfiting, prefixHis.Count));
+                prefixHis.ForEach(h =>
+                    {
+                        h.profiting_money += deltaProfiting;
+                    });
+            }
+        }
+
+        [TestMethod]
+        public void FixProfitingMoneyBias()
+        {
+            var context = new Agp2pDataContext(str);
+            var biasSources = context.li_wallet_histories.Where(h => new DateTime(2016, 1, 18) < h.create_time)
+                .Where(h => h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess).ToList();
+
+            biasSources.ForEach(h => DoHistoryFixing(context, h));
+
+            //context.SubmitChanges();
+        }
     }
 }

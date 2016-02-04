@@ -18,8 +18,9 @@ namespace Agp2p.Core.AutoLogic
         private static void CheckTimeoutProject(bool onTime)
         {
             var db = new Agp2pDataContext();
+            // 活期项目不会过时
             var timeoutProjects = db.li_projects.Where(
-                p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing && p.publish_time != null)
+                p => p.dt_article_category.call_index != "huoqi" && p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing && p.publish_time != null)
                 .AsEnumerable()
                 .Where(p => p.publish_time.Value.AddDays(p.financing_day).Date <= DateTime.Today).ToList();
             if (!timeoutProjects.Any()) return;
