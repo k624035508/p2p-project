@@ -357,7 +357,7 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("余额不足，无法投资");
 
             // 限制对新手体验标的投资，只能投资 100，只能投 1 次
-            if (pr.dt_article_category.call_index == "newbie")
+            if (pr.IsNewbieProject())
             {
                 if (investingMoney != 100)
                 {
@@ -369,6 +369,15 @@ namespace Agp2p.Core
                     && tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest))
                 {
                     throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
+                }
+            }
+            else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 5 w
+            {
+                var alreadyInvest = wallet.dt_users.li_claims.Where(c => c.profitingProjectId == projectId)
+                    .Aggregate(0m, (sum, c) => sum + c.principal);
+                if (50000 < alreadyInvest + investingMoney)
+                {
+                    throw new InvalidOperationException("对活期项目最多可投 ¥50,000，你目前已投 " + alreadyInvest.ToString("c"));
                 }
             }
 
