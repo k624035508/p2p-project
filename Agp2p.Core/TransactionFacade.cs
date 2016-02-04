@@ -1099,22 +1099,22 @@ namespace Agp2p.Core
             return repaymentTask;
         }
 
-        public static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
+        public static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
         {
             var allClaims = proj.li_claims.ToList();
             Debug.Assert(allClaims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
 
             // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
-            var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId).ToLookup(c => c.dt_users);
+            var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId);
 
             // 仅针对单个用户的还款
             if (proj.IsNewbieProject())
             {
-                return profitingClaims.ToDictionary(lk => lk.Key, lk => 1m);
+                return profitingClaims.ToDictionary(c => c, c => 1m);
             }
 
-            // 计算出每个用户的投资占比，公式：用户投资总额 / 项目投资总额
-            return profitingClaims.ToDictionary(pc => pc.Key, cs => cs.Sum(c => c.principal)/proj.investment_amount);
+            // 计算出每个债权的本金占比，公式：债权金额 / 项目投资总额
+            return profitingClaims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
         }
 
         /// <summary>
@@ -1128,18 +1128,18 @@ namespace Agp2p.Core
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime,
             bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
         {
-            var moneyRepayRatio = GetInvestRatio(repaymentTask.li_projects);
+            var moneyRepayRatio = GetClaimRatio(repaymentTask.li_projects);
 
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio.Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
-                .Select(r =>
+                .Select(c =>
             {
-                var realityInterest = r.Value*repaymentTask.repay_interest; // perfect round later
+                var realityInterest = c.Value*repaymentTask.repay_interest; // perfect round later
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
-                    var originalInterest = r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
-                    remark = $"提前还款：本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
+                    var originalInterest = c.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                    remark = $"提前还款：此债权本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
                     if (applyCostIntoInterest)
                     {
                         realityInterest = originalInterest;
@@ -1147,8 +1147,8 @@ namespace Agp2p.Core
                 }
                 else if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
                 {
-                    var originalInterest = r.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
-                    remark = $"逾期还款：本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
+                    var originalInterest = c.Value*(repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                    remark = $"逾期还款：此债权本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
                     if (applyCostIntoInterest)
                     {
                         realityInterest = originalInterest;
@@ -1161,16 +1161,16 @@ namespace Agp2p.Core
                     create_time = transactTime, // 变更时间应该等于还款计划的还款时间
                     type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
                     project = repaymentTask.project,
-                    investor = r.Key.id,
+                    investor = c.Key.dt_users.id,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    principal = r.Value*repaymentTask.repay_principal,  // perfect round later
+                    principal = c.Value*repaymentTask.repay_principal,  // perfect round later
                     interest = realityInterest,
                     remark = remark,
-                    gainFromClaim = 
+                    gainFromClaim = c.Key.id
                 };
                 if (unsafeCreateEntities)
                 {
-                    ptr.dt_users = r.Key;
+                    ptr.dt_users = c.Key.dt_users;
                 }
                 return ptr;
             }).ToList();
