@@ -433,6 +433,16 @@ namespace Agp2p.Core
             MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
         }
 
+        /*TODO 活期项目：
+            1、固定资金100万，100元起投，每个客户最大投资5万
+            2、收益T+0，固定利率3.3%，计算当天利息，次日返回
+            3、购买活期项目后即设置为自动投标：
+            第一优先匹配“活期项目的债权转让”，
+            第二是“公司内部账号购买的标的债权转让”，
+            最后是“正在发标中的项目”
+            4、提现T+1，申请提现即转变为“活期项目的债权转让”项目，等待接手（下一个买入活期项目的客户），
+                次日15:00回款前仍未有人接手，则使用公司内部账号自动购买此债权，15:00点返回客户提现资金到平台账户。*/
+
         private static void AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr)
         {
             // 接手债权或找出可投资项目并投资（创建债权），如果项目可投金额不足，则抛异常
@@ -860,21 +870,16 @@ namespace Agp2p.Core
         /// <param name="tasks"></param>
         private static void CalcProfitingMoneyAfterRepaymentTasksCreated(this Agp2pDataContext context, li_projects project, List<li_repayment_tasks> tasks)
         {
-            // 查询每个用户的投资记录（一个用户可能投资多次）
-            var investRecord =
-                project.li_project_transactions.Where(
-                    tr =>
-                        tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                    .ToLookup(tr => tr.dt_users);
+            // 查询每个用户的债权记录（一个用户可能投资多次）
+            var userClaims = project.li_claims1.ToLookup(c => c.dt_users);
 
-            var wallets = investRecord.Select(ir => ir.Key.li_wallets).ToList();
+            var wallets = userClaims.Select(ir => ir.Key.li_wallets).ToList();
             var walletDict = wallets.ToDictionary(w => w.user_id);
 
             // 重新计算代收本金前，先减去原来的投资金额
-            investRecord.ForEach(ir =>
+            userClaims.ForEach(uc =>
             {
-                ir.Key.li_wallets.investing_money -= ir.Sum(tr => tr.principal);
+                uc.Key.li_wallets.investing_money -= uc.Sum(c => c.principal);
             });
 
             // 修改钱包的值（待收益金额和时间）
@@ -897,7 +902,7 @@ namespace Agp2p.Core
             var histories = wallets.Select(w =>
             {
                 var his = CloneFromWallet(w, Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess);
-                his.li_project_transactions = investRecord[w.dt_users].Last();
+                his.li_project_transactions = userClaims[w.dt_users].Last().li_project_transactions;
                 return his;
             });
             context.li_wallet_histories.InsertAllOnSubmit(histories);
@@ -1090,24 +1095,20 @@ namespace Agp2p.Core
 
         public static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
         {
-            // 针对全部用户的还款
-            // 查询每个用户的投资记录（一个用户可能投资多次）
-            var investRecord = proj.li_project_transactions.Where(
-                tr =>
-                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .ToLookup(tr => tr.dt_users);
+            var allClaims = proj.li_claims.ToList();
+            Debug.Assert(allClaims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
+
+            // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
+            var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId).ToLookup(c => c.dt_users);
 
             // 仅针对单个用户的还款
-            if (proj.dt_article_category.call_index == "newbie")
+            if (proj.IsNewbieProject())
             {
-                return investRecord.ToDictionary(lk => lk.Key, lk => 1m);
+                return profitingClaims.ToDictionary(lk => lk.Key, lk => 1m);
             }
 
-            // 计算出每个用户的投资占比
-            var moneyRepayRatio = investRecord.ToDictionary(ir => ir.Key,
-                records => records.Sum(tr => tr.principal)/proj.investment_amount); // 公式：用户投资总额 / 项目投资总额
-            return moneyRepayRatio;
+            // 计算出每个用户的投资占比，公式：用户投资总额 / 项目投资总额
+            return profitingClaims.ToDictionary(pc => pc.Key, cs => cs.Sum(c => c.principal)/proj.investment_amount);
         }
 
         /// <summary>
@@ -1150,7 +1151,8 @@ namespace Agp2p.Core
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     principal = r.Value*repaymentTask.repay_principal,  // perfect round later
                     interest = realityInterest,
-                    remark = remark
+                    remark = remark,
+                    gainFromClaim = 
                 };
                 if (unsafeCreateEntities)
                 {
