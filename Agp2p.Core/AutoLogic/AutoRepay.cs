@@ -14,38 +14,39 @@ namespace Agp2p.Core.AutoLogic
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoQiRepay(m.OnTime)); // 每日定时还款活期项目
+            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划
         }
 
-        private static void DoHuoQiRepay(bool onTime)
+        private static void GenerateHuoqiRepaymentTask(bool onTime)
         {
             var context = new Agp2pDataContext();
+            var nextDay = DateTime.Today.AddDays(1);
 
-            // TODO test 如果存在需要回款的活期项目债权，并且当天没有生成过活期项目的回款计划，则生成当天的回款计划然后执行
+            // TODO test 计算当天利息，次日返回：如果存在需要回款的活期项目债权，并且明天没有该项目的回款计划，则生成明日的回款计划
             var huoqiProjects = context.li_projects
                 .Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing && p.dt_article_category.call_index == "huoqi")
-                .Where(p => !p.li_repayment_tasks.Any(ta => ta.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && ta.should_repay_time.Date == DateTime.Today))
+                .Where(p => !p.li_repayment_tasks.Any(ta => ta.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && ta.should_repay_time.Date == nextDay))
                 .Where(p => p.li_claims1.Any(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
-            var dailyRepayment = huoqiProjects.Select(p =>
+
+            var dailyRepayments = huoqiProjects.Select(p =>
             {
                 var shouldRepayTo = p.li_claims1.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed);
-                var nextDayTask = new li_repayment_tasks
+                return new li_repayment_tasks
                 {
-                    should_repay_time = DateTime.Now,
+                    should_repay_time = nextDay.AddHours(15),
                     repay_principal = 0,
                     repay_interest = 1m / 365 * 0.033m * shouldRepayTo.Sum(c => c.principal),
                     project = p.id,
                     status = (byte)Agp2pEnums.RepaymentStatusEnum.Unpaid,
                     term = (short)((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)
                 };
-                context.li_repayment_tasks.InsertOnSubmit(nextDayTask);
-                return nextDayTask;
             }).ToList();
+            context.li_repayment_tasks.InsertAllOnSubmit(dailyRepayments);
             context.SubmitChanges();
-            dailyRepayment.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
-            context.AppendAdminLogAndSave("AutoRepay",
-                "今日 " + dailyRepayment.Count + " 个活期项目自动还款：" +
-                dailyRepayment.Aggregate(0m, (sum, tasks) => sum + tasks.repay_interest).ToString("c"));
+
+            context.AppendAdminLogAndSave("Huoqi",
+                "自动生成明天 " + dailyRepayments.Count + " 个活期项目的还款计划，利润总计：" +
+                dailyRepayments.Aggregate(0m, (sum, tasks) => sum + tasks.repay_interest).ToString("c"));
         }
 
         private static void DoRepay(bool onTime)
