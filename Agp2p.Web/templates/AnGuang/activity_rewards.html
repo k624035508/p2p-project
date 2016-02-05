@@ -14,7 +14,22 @@
     }
     .activity-wrap {
         height: 2347px;
+        padding-top: 1800px;
         background: url("<%templateskin%>/imgs/index/activity_rewards_bg.jpg") no-repeat center top;
+    }
+    .activity-wrap a {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        width: 195px;
+        height: 60px;
+        line-height: 60px;
+        color: #fff;
+        font-size: 30px;
+        text-align: center;
+        text-decoration: none;
+        background: #ff414b;
+        border-radius: 10px;
     }
 </style>
 <body>
@@ -22,7 +37,9 @@
 <%template src="_header.html"%>
 <!--head end-->
 
-<div class="activity-wrap"></div>
+<div class="activity-wrap">
+    <a href='<%linkurl("usercenter","index")%>#/invitation'>立即推荐</a>
+</div>
 
 <!--footer-->
 <%template src="_footer.html"%>
