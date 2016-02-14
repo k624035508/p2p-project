@@ -99,7 +99,7 @@ namespace Agp2p.Web.admin.transact
         {
             var repayments = pro.li_repayment_tasks.Select(r => r.status).ToList();
             if (repayments.Count == 0) return "未满标";
-            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid), repayments.Count);
+            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r != (int)Agp2pEnums.RepaymentStatusEnum.OverTime), repayments.Count);
         }
 
         protected void btnRepayNow_OnClick(object sender, EventArgs e)
@@ -108,7 +108,11 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 var repaymentTaskId = context.li_projects.Single(p => p.id == projectId)
-                    .li_repayment_tasks.First(t => t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && t.should_repay_time.Date <= DateTime.Today).id;
+                    .li_repayment_tasks.First(
+                        t =>
+                            (t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                             t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime) &&
+                            t.should_repay_time.Date <= DateTime.Today).id;
                 var repayment = context.ExecuteRepaymentTask(repaymentTaskId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 RptBind();
                 var remark = "执行还款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
@@ -130,7 +134,12 @@ namespace Agp2p.Web.admin.transact
 
         protected bool IsProjectCanRepayToday(li_projects pro)
         {
-            return pro.li_repayment_tasks.Any(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r.should_repay_time.Date <= DateTime.Today);
+            return
+                pro.li_repayment_tasks.Any(
+                    r =>
+                        (r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                         r.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime) &&
+                        r.should_repay_time.Date <= DateTime.Today);
         }
     }
 }
