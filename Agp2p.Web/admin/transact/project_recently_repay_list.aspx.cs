@@ -99,7 +99,7 @@ namespace Agp2p.Web.admin.transact
         {
             var repayments = pro.li_repayment_tasks.Select(r => r.status).ToList();
             if (repayments.Count == 0) return "未满标";
-            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid), repayments.Count);
+            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r != (int)Agp2pEnums.RepaymentStatusEnum.OverTime), repayments.Count);
         }
 
         protected void btnRepayNow_OnClick(object sender, EventArgs e)
@@ -130,7 +130,12 @@ namespace Agp2p.Web.admin.transact
 
         protected bool IsProjectCanRepayToday(li_projects pro)
         {
-            return pro.li_repayment_tasks.Any(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r.should_repay_time.Date <= DateTime.Today);
+            return
+                pro.li_repayment_tasks.Any(
+                    r =>
+                        (r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                         r.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime) &&
+                        r.should_repay_time.Date <= DateTime.Today);
         }
     }
 }
