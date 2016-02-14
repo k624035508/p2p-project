@@ -75,7 +75,7 @@ namespace Agp2p.Web.admin.transact
             if (pro.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
                 return "未开始还款";
             var repayments = pro.li_repayment_tasks.Select(r => r.status).ToList();
-            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid), repayments.Count);
+            return string.Format("{0}/{1}", repayments.Count(r => r != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid && r != (int) Agp2pEnums.RepaymentStatusEnum.OverTime), repayments.Count);
         }
 
         protected void btnFinishInvestment_OnClick(object sender, EventArgs e)
