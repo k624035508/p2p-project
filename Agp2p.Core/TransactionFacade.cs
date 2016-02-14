@@ -807,7 +807,7 @@ namespace Agp2p.Core
             repaymentTask.status = (byte) statusAfterPay;
             repaymentTask.repay_at = DateTime.Now;
 
-            var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value); //变更时间应该等于还款计划的还款时间
+            var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, true); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
 
             Dictionary<int, li_project_transactions> ptrAddedCost = null;
