@@ -108,7 +108,11 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 var repaymentTaskId = context.li_projects.Single(p => p.id == projectId)
-                    .li_repayment_tasks.First(t => t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && t.should_repay_time.Date <= DateTime.Today).id;
+                    .li_repayment_tasks.First(
+                        t =>
+                            (t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                             t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime) &&
+                            t.should_repay_time.Date <= DateTime.Today).id;
                 var repayment = context.ExecuteRepaymentTask(repaymentTaskId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
                 RptBind();
                 var remark = "执行还款计划成功, 利息: " + repayment.repay_interest + " 返还本金: " + repayment.repay_principal;
