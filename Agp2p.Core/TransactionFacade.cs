@@ -411,7 +411,11 @@ namespace Agp2p.Core
 
             if (pr.IsHuoqiProject())
             {
-                AutoInvestment(context, investingMoney, tr);
+                var exceed = AutoInvestment(context, investingMoney, tr);
+                if (exceed != 0)
+                {
+                    throw new Exception("没有足够的项目可投，超出：" + exceed);
+                }
             }
             else
             {
@@ -444,84 +448,79 @@ namespace Agp2p.Core
             4、提现T+1，申请提现即转变为“活期项目的债权转让”项目，等待接手（下一个买入活期项目的客户），
                 次日15:00回款前仍未有人接手，则使用公司内部账号自动购买此债权，15:00点返回客户提现资金到平台账户。*/
 
-        private static void AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="apportionAmount"></param>
+        /// <param name="tr"></param>
+        /// <param name="exceedCallback"></param>
+        /// <returns>剩余可投</returns>
+        private static decimal AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr)
         {
             // 接手债权或找出可投资项目并投资（创建债权），如果项目可投金额不足，则抛异常
 
             // 优先匹配需要转让的债权
             var needTransferClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList();
-            if (needTransferClaims.Any())
-            {
-                apportionAmount = ApportionToClaims(context, needTransferClaims, apportionAmount, tr);
-            }
+            apportionAmount = ApportionToClaims(context, needTransferClaims, apportionAmount, tr);
 
             if (0 < apportionAmount)
             {
                 // 匹配可转让债权（公司内部的）
                 var transferableClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList();
-                if (transferableClaims.Any())
-                {
-                    apportionAmount = ApportionToClaims(context, transferableClaims, apportionAmount, tr);
-                }
+                apportionAmount = ApportionToClaims(context, transferableClaims, apportionAmount, tr);
             }
 
-            if (0 < apportionAmount)
-            {
-                // 匹配项目
-                var investableProjects =
-                    context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                        .AsEnumerable()
-                        .Where(p => !p.IsNewbieProject() && !p.IsHuoqiProject())
-                        .ToList();
-                if (investableProjects.Any())
-                {
-                    var investableAmount = investableProjects.Sum(p => p.financing_amount - p.investment_amount);
-                    if (investableAmount < apportionAmount)
-                    {
-                        throw new Exception("没有足够的项目可投，超出：" + (apportionAmount - investableAmount));
-                    }
-                    ApportionToProjects(context, investableProjects, apportionAmount, tr);
-                }
-                else
-                {
-                    throw new Exception("没有足够的项目可投，超出：" + apportionAmount);
-                }
-            }
-            else if (apportionAmount < 0)
-            {
-                throw new Exception("投资失败：自动投资计算出错");
-            }
+            if (apportionAmount == 0) return apportionAmount;
+
+            // 匹配项目
+            var investableProjects =
+                context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
+                    .AsEnumerable()
+                    .Where(p => !p.IsNewbieProject() && !p.IsHuoqiProject())
+                    .ToList();
+
+            return ApportionToProjects(context, investableProjects, apportionAmount, tr);
         }
 
-        private static void ApportionToProjects(Agp2pDataContext context, List<li_projects> investableProjects, decimal investingMoney, li_project_transactions tr)
+        private static decimal ApportionToProjects(Agp2pDataContext context, List<li_projects> investableProjects, decimal investingMoney, li_project_transactions tr)
         {
+            if (!investableProjects.Any() || investingMoney == 0)
+                return investingMoney;
+            Debug.Assert(0 < investingMoney);
+
+            if (investableProjects.Sum(p => p.financing_amount - p.investment_amount) < investingMoney)
+            {
+                // 全部投资
+                return investingMoney -
+                       investableProjects.Select(
+                           p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr)).Sum();
+            }
+
             var averageInvestment = investingMoney / investableProjects.Count;
             var priorityProjects = investableProjects.Where(p => p.financing_amount - p.investment_amount <= averageInvestment).ToList();
             if (priorityProjects.Any())
             {
                 // 可投资金额低于平均值的项目，全部投资，其余的递归处理
                 var notPriorityProjects = investableProjects.Where(p => averageInvestment < p.financing_amount - p.investment_amount).ToList();
-                var preinvestAmount = priorityProjects.Sum(p => p.financing_amount - p.investment_amount);
 
-                priorityProjects.ForEach(p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr));
-                ApportionToProjects(context, notPriorityProjects, investingMoney - preinvestAmount, tr);
+                var consumed = priorityProjects.Select(p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr)).Sum();
+                return ApportionToProjects(context, notPriorityProjects, investingMoney - consumed, tr);
             }
             else
             {
                 // 部分投资
                 var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(investableProjects.Count).ToList(), investingMoney, 0);
-                investableProjects.ZipEach(perfectRounding, (p, investAmount) =>
-                {
-                    if (0 < investAmount)
-                    {
-                        ClaimCreate(context, p, investAmount, tr);
-                    }
-                });
+                return investingMoney -
+                       investableProjects.Zip(perfectRounding,
+                           (p, investAmount) => 0 < investAmount ? ClaimCreate(context, p, investAmount, tr) : 0).Sum();
             }
         }
 
-        private static void ClaimCreate(Agp2pDataContext context, li_projects project, decimal investment, li_project_transactions tr)
+        private static decimal ClaimCreate(Agp2pDataContext context, li_projects project, decimal investment, li_project_transactions tr)
         {
+            Debug.Assert(investment != 0);
+
             project.investment_amount += investment;
             var liClaims = new li_claims
             {
@@ -534,41 +533,44 @@ namespace Agp2p.Core
                 principal = investment,
             };
             context.li_claims.InsertOnSubmit(liClaims);
+            return investment;
         }
 
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr)
         {
-            if (investingMoney < needTransferClaims.Sum(c => c.principal))
-            {
-                var averageTransfer = investingMoney/needTransferClaims.Count;
-                var priorityClaimses = needTransferClaims.Where(c => c.principal <= averageTransfer).ToList();
-                if (priorityClaimses.Any())
-                {
-                    // 本金低于平均值的债权，全部接手，其余的递归处理
-                    var notPriorityClaimses = needTransferClaims.Where(c => averageTransfer < c.principal).ToList();
-                    priorityClaimses.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
-                    return ApportionToClaims(context, notPriorityClaimses, investingMoney - priorityClaimses.Sum(c => c.principal), tr);
-                }
-                else
-                {
-                    // 全部拆分
-                    // 注意：债权的本金不能为小数
-                    var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(needTransferClaims.Count).ToList(), investingMoney, 0);
-                    needTransferClaims.ZipEach(perfectRounding, (c, transferAmount) =>
-                    {
-                        if (0 < transferAmount)
-                        {
-                            ClaimTransfer(context, c, transferAmount, tr);
-                        }
-                    });
-                    return investingMoney - perfectRounding.Sum();
-                }
-            }
-            else
+            if (!needTransferClaims.Any() || investingMoney == 0)
+                return investingMoney;
+            Debug.Assert(0 < investingMoney);
+
+            if (needTransferClaims.Sum(c => c.principal) <= investingMoney)
             {
                 // 全部接手
                 needTransferClaims.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
                 return investingMoney - needTransferClaims.Sum(c => c.principal);
+            }
+
+            var averageTransfer = investingMoney/needTransferClaims.Count;
+            var priorityClaimses = needTransferClaims.Where(c => c.principal <= averageTransfer).ToList();
+            if (priorityClaimses.Any())
+            {
+                // 本金低于平均值的债权，全部接手，其余的递归处理
+                var notPriorityClaimses = needTransferClaims.Where(c => averageTransfer < c.principal).ToList();
+                priorityClaimses.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
+                return ApportionToClaims(context, notPriorityClaimses, investingMoney - priorityClaimses.Sum(c => c.principal), tr);
+            }
+            else
+            {
+                // 全部拆分
+                // 注意：债权的本金不能为小数
+                var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(needTransferClaims.Count).ToList(), investingMoney, 0);
+                needTransferClaims.ZipEach(perfectRounding, (c, transferAmount) =>
+                {
+                    if (0 < transferAmount)
+                    {
+                        ClaimTransfer(context, c, transferAmount, tr);
+                    }
+                });
+                return investingMoney - perfectRounding.Sum();
             }
         }
 
