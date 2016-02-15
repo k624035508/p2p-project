@@ -723,9 +723,13 @@ namespace Agp2p.Common
             NeedTransfer = 3,
             [Description("完成")]
             Completed = 10,
+            [Description("已完成未回款")] // 提现 T + 1，债权在提现后被完成，则设置为这个状态
+            CompletedUnpaid = 11,
             [Description("已转让")]
             Transferred = 20,
-            [Description("失效")]
+            [Description("已转让未回款")] // 提现 T + 1，债权在提现后被转让，则设置为这个状态
+            TransferredUnpaid = 21,
+            [Description("失效")] // 项目流标/投资退款
             Invalid = 30,
         }
 

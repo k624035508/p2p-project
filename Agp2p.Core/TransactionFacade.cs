@@ -583,8 +583,6 @@ namespace Agp2p.Core
             if (originalClaim.principal < amount)
                 throw new InvalidOperationException("债权转让金额不能超出债权的本金");
 
-            originalClaim.status = (byte)Agp2pEnums.ClaimStatusEnum.Transferred;
-
             if (amount < originalClaim.principal)
             {
                 // 债权未完全转让
@@ -614,29 +612,39 @@ namespace Agp2p.Core
             };
             context.li_claims.InsertOnSubmit(liClaims);
 
-            // TODO test 处理债权转让的本金交易
-            var claimTransferPtr = new li_project_transactions
+            if (originalClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
             {
-                principal = amount,
-                project = originalClaim.projectId,
-                create_time = tr.create_time,
-                investor = originalClaim.userId,
-                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer,
-                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                gainFromClaim = originalClaim.id,
-                remark = $"项目【{originalClaim.li_projects.title}】的 {originalClaim.principal} 债权转让成功，转让金额 {amount}，剩余债权金额 {originalClaim.principal - amount}"
-            };
-            context.li_project_transactions.InsertOnSubmit(claimTransferPtr);
+                // 提现 T + 1
+                originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid;
+            }
+            else
+            {
+                originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
 
-            var wallet = originalClaim.dt_users.li_wallets;
-            wallet.idle_money += amount;
-            wallet.investing_money -= amount;
-            wallet.last_update_time = tr.create_time;
+                // TODO test 处理债权转让的本金交易
+                var claimTransferPtr = new li_project_transactions
+                {
+                    principal = amount,
+                    project = originalClaim.projectId,
+                    create_time = tr.create_time,
+                    investor = originalClaim.userId,
+                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer,
+                    status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    gainFromClaim = originalClaim.id,
+                    remark = $"项目【{originalClaim.li_projects.title}】的 {originalClaim.principal} 债权转让成功，转让金额 {amount}，剩余债权金额 {originalClaim.principal - amount}"
+                };
+                context.li_project_transactions.InsertOnSubmit(claimTransferPtr);
 
-            // 修改钱包历史
-            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
-            his.li_project_transactions = tr;
-            context.li_wallet_histories.InsertOnSubmit(his);
+                var wallet = originalClaim.dt_users.li_wallets;
+                wallet.idle_money += amount;
+                wallet.investing_money -= amount;
+                wallet.last_update_time = tr.create_time;
+
+                // 修改钱包历史
+                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+                his.li_project_transactions = tr;
+                context.li_wallet_histories.InsertOnSubmit(his);
+            }
 
             return liClaims;
         }
