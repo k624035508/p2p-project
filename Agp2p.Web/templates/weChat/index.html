@@ -33,7 +33,7 @@
         </div>
         <div class="invest-list">
             <!-- 新手标 -->
-            <%set var np = GetFinancingNewbieProject()%>
+            <%set var np = GetUncompletedNewbieProject()%>
             <%if(np!=null)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>#project'">
                 <p class="invest-title new-hand">
