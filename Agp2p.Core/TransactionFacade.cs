@@ -282,7 +282,7 @@ namespace Agp2p.Core
                 if (tr.handling_fee_type ==
                     (int) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee)
                 {
-                    wallet.unused_money += tr.handling_fee/StandGuardFeeRate; // 恢复防套现手续费的部分
+                    wallet.unused_money += StandGuardFeeRate == 0 ? 0 : tr.handling_fee/StandGuardFeeRate; // 恢复防套现手续费的部分
                 }
                 wallet.last_update_time = tr.transact_time.Value;
 
