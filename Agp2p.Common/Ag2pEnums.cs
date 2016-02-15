@@ -298,6 +298,8 @@ namespace Agp2p.Common
             ClaimTransfer = 4,
             [Description("活期项目续投失败回款")]
             AutoInvestFailRepay = 5,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdraw = 6,
         }
 
         /// <summary>
@@ -371,6 +373,8 @@ namespace Agp2p.Common
             ClaimTransfer = 24,
             [Description("活期项目续投失败回款")]
             AutoInvestFailRepaySuccess = 25,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdrawSuccess = 26,
 
             [Description("获得金钱待确认")]
             Gaining = 40,

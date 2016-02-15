@@ -1037,7 +1037,11 @@ namespace Agp2p.Core
             {
                 return Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess;
             }
-            throw new Exception("还款状态异常");
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess;
+            }
+            throw new Exception("项目交易状态异常");
         }
 
         /// <summary>
@@ -1118,7 +1122,7 @@ namespace Agp2p.Core
             var transferableClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList(); // 可转让
             var needTransferClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList(); // 需要转让
 
-            Debug.Assert(!transferableClaims.Any()); // TODO 自动投标不应该产生可转让的债权
+            Debug.Assert(!transferableClaims.Any(), "自动投标不应该产生可转让的债权");
 
             needComplete.ForEach(c => c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed); // 先全部完成，以免自动投标投了这些项目
 
