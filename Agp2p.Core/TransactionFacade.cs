@@ -1029,6 +1029,14 @@ namespace Agp2p.Core
             {
                 return Agp2pEnums.WalletHistoryTypeEnum.RepaidOverdueFine;
             }
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.ClaimTransfer;
+            }
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvestFailRepay)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess;
+            }
             throw new Exception("还款状态异常");
         }
 
@@ -1089,11 +1097,69 @@ namespace Agp2p.Core
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
+
+                AutoInvestAfterProjectCompleted(newContext, pro);
                 newContext.SubmitChanges();
+
                 // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
             }
             return repaymentTask;
+        }
+
+        private static void AutoInvestAfterProjectCompleted(Agp2pDataContext newContext, li_projects pro)
+        {
+            // 将债权设置为完成，活期收益的债权需要继续自动投标，如果自动投标失败，则部分退款
+            var needComplete = pro.li_claims.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed).ToList();
+
+            // 自动投标的债权
+            var huoqiProfitingClaims = needComplete.Where(c => c.profitingProjectId != c.projectId).ToList(); // 自动投标的项目
+            var nonTransferableClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable).ToList(); // 不可转让
+            var transferableClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList(); // 可转让
+            var needTransferClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList(); // 需要转让
+
+            Debug.Assert(!transferableClaims.Any()); // TODO 自动投标不应该产生可转让的债权
+
+            needComplete.ForEach(c => c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed); // 先全部完成，以免自动投标投了这些项目
+
+            // 提现中的活期债权状态设为完成，未回款
+            needTransferClaims.ForEach(c => c.status = (byte) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid);
+
+            var noMoreInvestable = false;
+            // 不可转让的活期债权继续自动投标
+            nonTransferableClaims.ToLookup(c => c.li_project_transactions).ForEach(ptrcs =>
+            {
+                var needTransfer = ptrcs.Sum(c => c.principal);
+                var srcPtr = ptrcs.Key;
+                var exceed = noMoreInvestable ? needTransfer : AutoInvestment(newContext, needTransfer, srcPtr);
+                if (0 < exceed)
+                {
+                    noMoreInvestable = true; // 优化：没有项目可以投资的时候，直接跳过这个步骤
+
+                    // 超出的部分退款
+                    var autoInvestFailRepay = new li_project_transactions
+                    {
+                        type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvestFailRepay,
+                        status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                        project = srcPtr.project,
+                        create_time = pro.complete_time.Value,
+                        investor = srcPtr.investor,
+                        principal = exceed,
+                        remark = $"自动续投失败回款，总续投：{needTransfer}，成功续投：{(needTransfer - exceed)}",
+                    };
+                    newContext.li_project_transactions.InsertOnSubmit(autoInvestFailRepay);
+
+                    var wallet = srcPtr.dt_users.li_wallets;
+                    wallet.idle_money += autoInvestFailRepay.principal;
+                    wallet.investing_money -= autoInvestFailRepay.principal;
+                    wallet.last_update_time = autoInvestFailRepay.create_time;
+
+                    // 添加钱包历史
+                    var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(autoInvestFailRepay));
+                    his.li_project_transactions = srcPtr;
+                    newContext.li_wallet_histories.InsertOnSubmit(his);
+                }
+            });
         }
 
         private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)

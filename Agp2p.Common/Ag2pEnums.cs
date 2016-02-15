@@ -296,6 +296,8 @@ namespace Agp2p.Common
             RepayOverdueFine = 3,
             [Description("债权转让")]
             ClaimTransfer = 4,
+            [Description("活期项目续投失败回款")]
+            AutoInvestFailRepay = 5,
         }
 
         /// <summary>
@@ -365,8 +367,10 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
-            [Description("债权转让成功")]
+            [Description("债权转让")]
             ClaimTransfer = 24,
+            [Description("活期项目续投失败回款")]
+            AutoInvestFailRepaySuccess = 25,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
