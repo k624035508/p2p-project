@@ -17,9 +17,6 @@
         }
         .remark { display: none;}
     </style>
-    <script>
-        
-    </script>
 
     <script type="text/html" id="record-item">
         @{ items.forEach(function(item, key, list){ }@
@@ -50,14 +47,16 @@
     <script src="<%templateskin%>/build/mytrade.bundle.js"></script>
 </head>
 <body>
-<div class="trade-record-page">
-    <div id="pending"></div>
-    <div id="loading-hint"></div>
-    <div class="loading-hint" style="display: none">
-        <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
-        <p style="color:#ccc">您目前没有交易记录</p>
-   </div> 
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="trade-record-page scroll">
+        <div id="pending"></div>
+        <div id="loading-hint"></div>
+        <div class="loading-hint" style="display: none">
+            <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+            <p style="color:#ccc">您目前没有交易记录</p>
+        </div>
+    </div>
+    <div><%template src="_footer.html"%></div>
 </div>
-    <%template src="_footer.html"%>
 </body>
 </html>
