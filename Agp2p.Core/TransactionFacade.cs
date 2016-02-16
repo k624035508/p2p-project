@@ -415,7 +415,7 @@ namespace Agp2p.Core
             var project = context.li_project_transactions.Single(tr => tr.id == projectTransactionId).li_projects;
             var canBeInvest = project.financing_amount - project.investment_amount;
             if (0 < canBeInvest) return; // 未满标
-            if (project.IsHuoqiProject()) return; // 活期项目不会满标
+            if (project.IsHuoqiProject() || project.IsNewbieProject()) return; // 新手标/活期项目不会满标
             FinishInvestment(context, project.id);
         }
 
