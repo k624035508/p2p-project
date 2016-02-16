@@ -38,7 +38,7 @@ var checkMyMessage = function () {
         success: function(result) {
             var originalHint = $(".manager-msg")[0].innerText;
             var newHint = "未读消息：" + result.d;
-            if (parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d)) {
+            if (parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d) && localStorage.getItem("newMsgAutoPopup") !== "false") {
                 showMyMessages();
             }
             $(".manager-msg")[0].innerText = newHint;
@@ -48,7 +48,6 @@ var checkMyMessage = function () {
         }.bind(this)
     });
 }
-
 
 //页面加载完成时
 $(function () {
@@ -76,14 +75,19 @@ $(function () {
         console.log("服务器已连接……");
         checkMyMessage();
     });
+
+    document.getElementById("cbxAutoPopup").checked = localStorage.getItem("newMsgAutoPopup") !== "false";
 });
 </script>
 <style>
-.manager-msg {
+.manager-msg, .info:hover > .manager-msg-auto-pop {
     display: inline-block;
     float: left;
     margin: 0 15px;
     cursor: pointer;
+}
+.manager-msg-auto-pop {
+    display: none;
 }
 </style>
 </head>
@@ -107,6 +111,7 @@ $(function () {
     <div id="main-nav" class="main-nav"></div>
     <div class="nav-right">
       <div class="info">
+        <div class="manager-msg-auto-pop">自动弹出：<input id="cbxAutoPopup" type="checkbox" onclick='localStorage.setItem("newMsgAutoPopup", this.checked)' /> </div>
         <div class="manager-msg">未读消息：0</div>
         <i></i>
         <span>
