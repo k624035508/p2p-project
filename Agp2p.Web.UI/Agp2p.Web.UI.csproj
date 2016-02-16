@@ -128,9 +128,7 @@
     <Compile Include="Page\myinformation.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\myreceiveplan.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Page\myreceiveplan.cs" />
     <Compile Include="Page\oauth_login.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
