@@ -1,6 +1,6 @@
 ﻿import "bootstrap-webpack";
 import "../less/footer.less";
-import "../less/trade-record.css";
+import "../less/mytrade.less";
 import template from "lodash/string/template";
 import footerInit from "./footer.js";
 
