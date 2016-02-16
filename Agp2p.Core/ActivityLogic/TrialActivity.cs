@@ -8,7 +8,7 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.ActivityLogic
 {
-    class TrialActivity
+    public class TrialActivity
     {
         internal static void DoSubscribe()
         {
@@ -30,7 +30,7 @@ namespace Agp2p.Core.ActivityLogic
             context.AppendAdminLogAndSave("AutoRepay", "新手体验标自动还款：" + string.Join(", ", shouldRepayTask.Select(t => t.dt_users.user_name).ToArray()));
         }
 
-        private static void CheckNewbieInvest(int projectTransactionId)
+        public static void CheckNewbieInvest(int projectTransactionId)
         {
             var context = new Agp2pDataContext();
             var ptr = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
@@ -43,6 +43,11 @@ namespace Agp2p.Core.ActivityLogic
             if (project.repayment_type != (int) Agp2pEnums.ProjectRepaymentTypeEnum.DaoQi)
             {
                 throw new InvalidOperationException("新手标只考虑了到期还款付息的情况");
+            }
+
+            if (project.li_repayment_tasks.Any(r => r.only_repay_to == ptr.investor))
+            {
+                throw new InvalidOperationException("已经创建过此投资者的回款计划");
             }
 
             // 创建针对单个用户的还款计划
@@ -73,6 +78,7 @@ namespace Agp2p.Core.ActivityLogic
             if (project.financing_amount == project.investment_amount)
             {
                 project.status = (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                project.invest_complete_time = ptr.create_time;
                 project.complete_time = ptr.create_time;
             }
             context.SubmitChanges();

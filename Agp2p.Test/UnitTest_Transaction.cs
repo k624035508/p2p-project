@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using Agp2p.Common;
 using Agp2p.Core;
+using Agp2p.Core.ActivityLogic;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -280,6 +281,36 @@ namespace Agp2p.Test
             biasSources.ForEach(h => DoHistoryFixing(context, h));
 
             //context.SubmitChanges();
+        }
+
+        [TestMethod]
+        public void FixNewbieProjectMissGenerateRepaymentTask()
+        {
+            var context = new Agp2pDataContext(str);
+            context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
+            {
+                var investments = p.li_project_transactions.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    .ToDictionary(ptr => ptr.investor);
+                var repayments = p.li_repayment_tasks.Where(r => r.only_repay_to != null).ToDictionary(r => r.only_repay_to.GetValueOrDefault());
+                if (repayments.Count < investments.Count)
+                {
+                    investments.Keys.Except(repayments.Keys).ForEach(userId =>
+                    {
+                        try
+                        {
+                            TrialActivity.CheckNewbieInvest(userId);
+                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                        }
+                    });
+                }
+            });
         }
     }
 }
