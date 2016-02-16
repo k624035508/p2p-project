@@ -42,7 +42,9 @@
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </div>
                 <%/foreach%>
+                <%if(!bank_accounts.Any())%>
                 <div class="add-cards">添加银行卡</div>
+                <%/if%>
                 <div class="tips">绑定的银行卡开户人姓名必须与实名认证保持一致，否则无法提现。</div>
             </div>
         </div>
