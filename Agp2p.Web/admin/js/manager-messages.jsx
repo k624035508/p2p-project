@@ -20,6 +20,7 @@ class ManagerMessage extends React.Component {
 	}
 	componentDidMount() {
 		this.fetchMessages(this.state.type, this.state.pageIndex);
+		window.refreshDlg = () => this.fetchMessages(this.state.type, this.state.pageIndex);
 	}
 	fetchMessages(type, pageIndex) {
 		this.setState({type, pageIndex});
