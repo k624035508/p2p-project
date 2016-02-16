@@ -82,13 +82,12 @@ namespace Agp2p.Web.UI
             return dt ?? new DataTable();
         }
 
-        public static li_projects GetUncompletedNewbieProject()
+        public static li_projects GetFirstNewbieProject()
         {
             var context = new Agp2pDataContext();
             return context.li_projects.OrderByDescending(p => p.id)
                 .FirstOrDefault(
                     p =>
-                        p.status < (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime &&
                         p.dt_article_category.call_index == "newbie");
         }
 
