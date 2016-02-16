@@ -19,11 +19,16 @@
 <script type="text/javascript">
 
 var showMyMessages = function() {
+    var prevDlg = $("iframe.msg-dlg");
+    if (prevDlg.length !== 0) {
+        prevDlg[0].contentWindow.refreshDlg();
+        return;
+    }
     var dialogMountPoint = $(".manager-msg")[0];
     dialog({
         width: '680px',
         height: '650px',
-        content: '<iframe width="100%" height="100%" src="/admin/manager-messages.html"></iframe>',
+        content: '<iframe class="msg-dlg" width="100%" height="100%" src="/admin/manager-messages.html"></iframe>',
         quickClose: true
     }).show(dialogMountPoint);
 }
