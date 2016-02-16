@@ -1222,6 +1222,7 @@
     <Content Include="templates\AnGuang\components\share.jsx" />
     <Content Include="templates\AnGuang\less\share.less" />
     <Content Include="templates\weChat\less\article_show.less" />
+    <Content Include="templates\weChat\less\mytrade.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
