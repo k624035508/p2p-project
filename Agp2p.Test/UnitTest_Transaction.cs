@@ -301,7 +301,7 @@ namespace Agp2p.Test
                     {
                         try
                         {
-                            TrialActivity.CheckNewbieInvest(userId);
+                            TrialActivity.CheckNewbieInvest(investments[userId].id);
                             Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
                         }
                         catch (Exception ex)
