@@ -21,7 +21,8 @@
     </style>
 </head>
 <body>
-    <div class="mynews-page">
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="mynews-page scroll">
         <div class="nav-bar">
             <a id="receiving" class="type" href="<%linkurl("mynews","mynews",0)%>" data-status="0">全部<span class="float-right hr-style">|</span></a>
             <a id="investing" class="type" href="<%linkurl("mynews","mynews",2)%>" data-status="2">未读<span class="float-right hr-style">|</span></a>
@@ -44,8 +45,8 @@
         </div>
         <div class="news-manage" style="display: none">管理消息</div>
         <script>var forceFooterKey = "settings";</script>
-        <%template src="_footer.html"%>
     </div>
-
+    <div><%template src="_footer.html"%></div>
+</div>
 </body>
 </html>

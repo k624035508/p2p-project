@@ -14,83 +14,85 @@
 
 </head>
 <body>
-<div class="safe-center-page">
-    <div class="safe-center-body">
-        <div class="group">
-            <div class="email-approve">
-                <span>邮箱认证</span>
-                <a class="toggle-btn" href="javascript:;">修改</a>
-                <div class="fold">
-                    <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
-                    <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
-                    <input id="email-verify-code" class="input-s" type="text" placeholder="请输入邮箱验证码">
-                    <button type="button" class="button-s pull-right" id="btnVerifyEmail">验 证</button>
-                    <button type="button" class="button-l long-btn" id="btnBindEmail">提 交</button>
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="safe-center-page scroll">
+        <div class="safe-center-body">
+            <div class="group">
+                <div class="email-approve">
+                    <span>邮箱认证</span>
+                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <div class="fold">
+                        <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
+                        <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
+                        <input id="email-verify-code" class="input-s" type="text" placeholder="请输入邮箱验证码">
+                        <button type="button" class="button-s pull-right" id="btnVerifyEmail">验 证</button>
+                        <button type="button" class="button-l long-btn" id="btnBindEmail">提 交</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="phone-bind">
-                <span>绑定手机</span>
-                <a class="toggle-btn" href="javascript:;">修改</a>
-                <div class="fold">
-                    <p><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "（未设置）" : userModel.mobile%></p>
-                    <input id="phone" class="input-l" type="text" placeholder="请输入新的手机号码">
-                    <input id="pic-code" class="input-s" type="text" placeholder="请输入图形验证码"/>
+            <div class="group">
+                <div class="phone-bind">
+                    <span>绑定手机</span>
+                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <div class="fold">
+                        <p><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "（未设置）" : userModel.mobile%></p>
+                        <input id="phone" class="input-l" type="text" placeholder="请输入新的手机号码">
+                        <input id="pic-code" class="input-s" type="text" placeholder="请输入图形验证码"/>
                     <span class="pic-code-span pull-right flex flex-center-wrapper">
                         <img src="/tools/verify_code.ashx" id="imgVerifyCode"/>
                     </span>
-                    <input id="sms-code" class="input-s" type="text" placeholder="请输入短信验证码">
-                    <button type="button" class="button-s pull-right" id="btnVerifyMobile">获 取</button>
-                    <button type="button" class="button-l long-btn" id="btnBindMobile">提 交</button>
+                        <input id="sms-code" class="input-s" type="text" placeholder="请输入短信验证码">
+                        <button type="button" class="button-s pull-right" id="btnVerifyMobile">获 取</button>
+                        <button type="button" class="button-l long-btn" id="btnBindMobile">提 交</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="user-approve">
-                <span>实名认证</span>
-                <a class="toggle-btn" href="javascript:;">设置</a>
-                <div class="fold">
-                    <input id="name" class="input-l" type="text" placeholder="请输入您的真实姓名" value="{userModel.real_name}">
-                    <input id="ID" class="input-l" type="text" placeholder="请输入您的身份证号码" value="{userModel.id_card_number}">
-                    <div class="tips"><span>*</span>&nbsp;实名认证是您平台账户操作的重要凭证，若因盗用他人信息注册认证导致您的账户资金无法提现，平台除锁定该账户外，必要时将依法提交至执法部门处理！</div>
-                    <button type="button" class="button-l long-btn" id="btnBindIdCard">提 交</button>
+            <div class="group">
+                <div class="user-approve">
+                    <span>实名认证</span>
+                    <a class="toggle-btn" href="javascript:;">设置</a>
+                    <div class="fold">
+                        <input id="name" class="input-l" type="text" placeholder="请输入您的真实姓名" value="{userModel.real_name}">
+                        <input id="ID" class="input-l" type="text" placeholder="请输入您的身份证号码" value="{userModel.id_card_number}">
+                        <div class="tips"><span>*</span>&nbsp;实名认证是您平台账户操作的重要凭证，若因盗用他人信息注册认证导致您的账户资金无法提现，平台除锁定该账户外，必要时将依法提交至执法部门处理！</div>
+                        <button type="button" class="button-l long-btn" id="btnBindIdCard">提 交</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="login-pwd">
-                <span>登录密码</span>
-                <a class="toggle-btn" href="javascript:;">修改</a>
-                <div class="fold">
-                    <input id="oldPwd" class="input-l pwd" type="password" placeholder="请输入您的原密码">
-                    <input id="newPwd" class="input-l pwd" type="password" placeholder="请输入您的新密码">
-                    <input id="newPwd2" class="input-l pwd" type="password" placeholder="请再次输入您的新密码">
-                    <div class="tips"><span>*</span>为了您的账户安全，请定期更改登录密码，并确保登录密码设置与交易密码不同。</div>
-                    <button type="button" class="button-l long-btn" id="btnModifyPassword">提 交</button>
+            <div class="group">
+                <div class="login-pwd">
+                    <span>登录密码</span>
+                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <div class="fold">
+                        <input id="oldPwd" class="input-l pwd" type="password" placeholder="请输入您的原密码">
+                        <input id="newPwd" class="input-l pwd" type="password" placeholder="请输入您的新密码">
+                        <input id="newPwd2" class="input-l pwd" type="password" placeholder="请再次输入您的新密码">
+                        <div class="tips"><span>*</span>为了您的账户安全，请定期更改登录密码，并确保登录密码设置与交易密码不同。</div>
+                        <button type="button" class="button-l long-btn" id="btnModifyPassword">提 交</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="trade-pwd">
-                <span>交易密码</span>
-                <a class="toggle-btn" href="javascript:;">修改</a>
-                <div class="fold">
-                    <input id="oldTradePwd" class="input-l pwd" type="password" placeholder="请输入您的原交易密码">
-                    <input id="newTradePwd" class="input-l pwd" type="password" placeholder="请输入您新的交易密码">
-                    <input id="newTradePwd2" class="input-l pwd" type="password" placeholder="请再次输入您新的交易密码">
-                    <a class="forgot-pwd pull-right" href="/forgot_password.html?forTransactPassword" id="btnForgotPassword">忘记密码?</a>
-                    <button type="button" class="button-l long-btn">提 交</button>
+            <div class="group">
+                <div class="trade-pwd">
+                    <span>交易密码</span>
+                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <div class="fold">
+                        <input id="oldTradePwd" class="input-l pwd" type="password" placeholder="请输入您的原交易密码">
+                        <input id="newTradePwd" class="input-l pwd" type="password" placeholder="请输入您新的交易密码">
+                        <input id="newTradePwd2" class="input-l pwd" type="password" placeholder="请再次输入您新的交易密码">
+                        <a class="forgot-pwd pull-right" href="/forgot_password.html?forTransactPassword" id="btnForgotPassword">忘记密码?</a>
+                        <button type="button" class="button-l long-btn">提 交</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div><%template src="_footer.html"%></div>
 </div>
 <script>var forceFooterKey = "settings";</script>
-<%template src="_footer.html"%>
 </body>
 </html>

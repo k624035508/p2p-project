@@ -92,7 +92,10 @@ function initFullpage() {
         verticalCentered: false,
         loopHorizontal: false,
         autoScrolling: false,
-        fitToSection: false
+        fitToSection: false,
+        onSlideLeave: function(){
+            $(".section").scrollTop(0);
+        }
     });
     $.fn.fullpage.setAllowScrolling(false);
     if (!location.hash) {
