@@ -31,6 +31,11 @@ namespace Agp2p.Core
             Clients.All.onNewMsg();
         }
 
+        public void OnManagerReadDelete(string managerUserName)
+        {
+            Clients.User(managerUserName).onMsgDelete();
+        }
+
         public void OnManagerReadMsg(string managerUserName)
         {
             Clients.User(managerUserName).onMsgRead();

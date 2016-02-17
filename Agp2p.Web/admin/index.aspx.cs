@@ -132,6 +132,7 @@ namespace Agp2p.Web.admin
             var msgs = context.li_manager_messages.Where(m => m.receiver == manager.id).Where(m => preRead.Contains(m.id)).ToList();
             context.li_manager_messages.DeleteAllOnSubmit(msgs);
             context.SubmitChanges();
+            ManagerMessageHubFacade.Instance.OnManagerReadDelete(manager.user_name);
             return "删除成功";
         }
     }
