@@ -40,8 +40,10 @@ namespace Agp2p.Web.admin
         public static int AjaxQueryUnreadMessagesCount()
         {
             var manager = GetAdminInfo();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (manager == null)
             {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return 0;
             }
 
@@ -51,7 +53,7 @@ namespace Agp2p.Web.admin
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true)]
-        public static string AjaxQueryManagerMessages(int type, int pageSize, int pageIndex)
+        public static string AjaxQueryManagerMessages(int type, int pageSize, int pageIndex, bool idOnly)
         {
             var manager = GetAdminInfo();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -66,15 +68,17 @@ namespace Agp2p.Web.admin
             var msgs =
                 query
                     .OrderByDescending(msg => msg.id)
-                    .Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
-                    .Select(msg => new
-                    {
-                        msg.id,
-                        msg.title,
-                        msg.body,
-                        msg.isRead,
-                        creationTime = msg.creationTime.ToString("yyyy-MM-dd HH:mm")
-                    }).ToList();
+                    .Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable()
+                    .Select(idOnly
+                        ? (Func<li_manager_messages, object>) (msg => new {msg.id})
+                        : msg => new
+                        {
+                            msg.id,
+                            msg.title,
+                            msg.body,
+                            msg.isRead,
+                            creationTime = msg.creationTime.ToString("yyyy-MM-dd HH:mm")
+                        }).ToList();
             return JsonConvert.SerializeObject(new {totalCount = query.Count(), msgs});
         }
 
