@@ -63,14 +63,14 @@
     <script src="<%templateskin%>/build/projects.bundle.js"></script>
 </head>
 <body>
-<div class="height-100 flex flex--column flex--flex-grow-first">
+<div class="height-100 flex flex--column flex--flex-grow-second">
+    <div class="invest-nav">
+        <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
+        <%foreach(var kvp in CategoryIdTitleMap)%>
+        <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
+        <%/foreach%>
+    </div>
     <div class="invest-page scroll">
-        <div class="invest-nav">
-            <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
-            <%foreach(var kvp in CategoryIdTitleMap)%>
-            <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
-            <%/foreach%>
-        </div>
         <div id="pending"></div>
         <div id="loading-hint"></div>
         <div class="loading-hint" style="display: none">
