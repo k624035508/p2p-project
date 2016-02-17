@@ -40,7 +40,8 @@
 </head>
 <body>
 <div id="fullpage">
-<div class="section">
+    <div class="flex flex--column flex--flex-grow-first height-100">
+<div class="section fp-auto-height" style="overflow: scroll">
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
             <div class="top-screen">
@@ -198,8 +199,9 @@
         </div>
     </div>
 </div>
+    <div><%template src="_footer.html"%></div>
+    </div>
 </div>
-    <%template src="_footer.html"%>
     <!-- Modal -->
     <div class="modal fade" id="dlgInvestConfirm" tabindex="-1" role="dialog" aria-labelledby="dlgInvestConfirmLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
