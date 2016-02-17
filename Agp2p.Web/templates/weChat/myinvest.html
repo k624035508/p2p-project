@@ -37,21 +37,23 @@
 
 </head>
 <body>
-<div class="myinvest-page">
+<div class="height-100 flex flex--column flex--flex-grow-second">
     <div class="nav-bar">
         <a id="receiving" href="javascript:;" data-project-status="1" class="nav-active nav-border-active">投资中<span class="float-right hr-style">|</span></a>
         <a id="investing" href="javascript:;" data-project-status="2">回款中<span class="float-right hr-style">|</span></a>
         <a id="done" href="javascript:;" data-project-status="3">已完成</a>
     </div>
-    <div class="project-list">
-        <div id="pending"></div>
-        <div id="loading-hint"></div>
-        <div class="loading-hint" style="display: none">
-            <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
-            <p style="color:#ccc">您目前没有投资记录</p>
-        </div> 
+    <div class="myinvest-page scroll">
+        <div class="project-list">
+            <div id="pending"></div>
+            <div id="loading-hint"></div>
+            <div class="loading-hint" style="display: none">
+                <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+                <p style="color:#ccc">您目前没有投资记录</p>
+            </div>
+        </div>
     </div>
-    <%template src="_footer.html"%>
+    <div><%template src="_footer.html"%></div>
 </div>
 </body>
 </html>

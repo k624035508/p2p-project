@@ -21,13 +21,13 @@
     </style>
 </head>
 <body>
-<div class="height-100 flex flex--column flex--flex-grow-first">
+<div class="height-100 flex flex--column flex--flex-grow-second">
+    <div class="nav-bar">
+        <a id="receiving" class="type" href="<%linkurl("mynews","mynews",0)%>" data-status="0">全部<span class="float-right hr-style">|</span></a>
+        <a id="investing" class="type" href="<%linkurl("mynews","mynews",2)%>" data-status="2">未读<span class="float-right hr-style">|</span></a>
+        <a id="done" class="type" href="<%linkurl("mynews","mynews",1)%>" data-status="1">已读</a>
+    </div>
     <div class="mynews-page scroll">
-        <div class="nav-bar">
-            <a id="receiving" class="type" href="<%linkurl("mynews","mynews",0)%>" data-status="0">全部<span class="float-right hr-style">|</span></a>
-            <a id="investing" class="type" href="<%linkurl("mynews","mynews",2)%>" data-status="2">未读<span class="float-right hr-style">|</span></a>
-            <a id="done" class="type" href="<%linkurl("mynews","mynews",1)%>" data-status="1">已读</a>
-        </div>
         <%loop dr messageDt%>
         <div class="notice-cell" data-href='<%linkurl("mynews_show",{message_status},{dr[id]})%>' data-msgId="{dr[id]}">
             <div class="vertical-align">
