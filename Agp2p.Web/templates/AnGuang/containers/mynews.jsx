@@ -49,7 +49,7 @@ class MyNews extends React.Component {
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
-			data: JSON.stringify({readStatus, pageIndex, pageSize}),
+			data: JSON.stringify({readStatus, pageIndex, pageSize, idOnly: false}),
 			success: function(result) {
 				this.pendingFetchPromise = null;
 				let {totalCount, msgs} = JSON.parse(result.d);
@@ -147,7 +147,7 @@ class MyNews extends React.Component {
 				dataType: "json",
 				contentType: "application/json",
 				url: url,
-				data: JSON.stringify({readStatus: this.state.readStatus, pageIndex: 0, pageSize: 999999}),
+				data: JSON.stringify({readStatus: this.state.readStatus, pageIndex: 0, pageSize: 9999, idOnly: true}),
 				success: function(result) {
 					let {totalCount, msgs} = JSON.parse(result.d);
 					this.deleteMessages(msgs.map(m => m.id));
@@ -215,6 +215,7 @@ class MyNews extends React.Component {
 				</div>
                 <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                     onPageSelected={pageIndex => {
+                    	if (this.state.pageIndex == pageIndex) return;
                     	this.fetchMessages(this.state.readStatus, pageIndex);
                     	this.setState({readingMsgIndex: -1})
                     }}/>
