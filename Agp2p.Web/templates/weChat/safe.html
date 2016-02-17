@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="safe-center-page scroll">
+    <div class="safe-center-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div class="safe-center-body">
             <div class="group">
                 <div class="email-approve">
@@ -91,7 +91,7 @@
             </div>
         </div>
     </div>
-    <div><%template src="_footer.html"%></div>
+    <%template src="_footer.html"%>
 </div>
 <script>var forceFooterKey = "settings";</script>
 </body>
