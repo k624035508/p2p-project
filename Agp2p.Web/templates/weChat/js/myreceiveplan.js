@@ -71,11 +71,12 @@ function loadDetailData(projectId, ticketId) {
 }
 function initFullpage() {
     $('#fullpage').fullpage({
-        paddingBottom: '50px',
         anchors: ['projects'],
         controlArrows: false,
         verticalCentered: false,
         loopHorizontal: false,
+        autoScrolling: false,
+        fitToSection: false,
         onSlideLeave: function(anchorLink, index, slideIndex, direction, nextSlideIndex) { // 修复 android 对 position: fixed 兼容性不好的问题
             if (direction === 'right') {
                 $('div.nav-bar').hide('slow');

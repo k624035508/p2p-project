@@ -4,12 +4,8 @@ body {
 
 div.nav-bar {
     -webkit-backface-visibility: hidden;
-    position: fixed;
-    z-index: 999;
     width: 20rem;
     height: 50px;
-    top: 0;
-    left: 0;
     background-color: #fff;
 }
 
