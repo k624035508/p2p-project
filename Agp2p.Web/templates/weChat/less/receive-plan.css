@@ -7,6 +7,7 @@ div.nav-bar {
     width: 20rem;
     height: 50px;
     background-color: #fff;
+    z-index: 1;
 }
 
 div.nav-bar > a {
