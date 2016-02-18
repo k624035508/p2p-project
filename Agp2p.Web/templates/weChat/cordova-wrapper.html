@@ -86,7 +86,7 @@
         <img class="back" src="<%templateskin%>/imgs/cordova-back.png"/>
         <span class="iframeTitle">加载中...</span>
     </div>
-    <iframe src="/mobile/index.html" frameborder="0" style="width:100%;height:100%" onload="content_finished_loading(this)"></iframe>
+    <iframe src="/mobile/index.html" frameborder="0" style="width:100%;height:100%" sandbox="allow-forms allow-scripts allow-same-origin allow-popups" onload="content_finished_loading(this)"></iframe>
 </div>
 
 <div class="loading-indicator">
