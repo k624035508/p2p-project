@@ -438,6 +438,87 @@ namespace Agp2p.Core
             MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
         }
 
+        public static void HuoqiProjectWithdraw(Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
+        {
+            // 将活期项目的债权设置为 需要转让
+            var user = context.dt_users.Single(u => u.id == userId);
+            var huoqiClaims =
+                user.li_claims.Where(
+                    c =>
+                        c.profitingProjectId == huoqiProjectId &&
+                        c.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable).ToList();
+            if (!huoqiClaims.Any())
+                throw new InvalidOperationException("您目前没有投资此活期项目，无法提现");
+
+            var sumOfPrincipal = huoqiClaims.Sum(c => c.principal);
+            if (sumOfPrincipal < withdrawMoney)
+            {
+                throw new InvalidOperationException("您提现的金额不能超出您投资的本金：" + sumOfPrincipal.ToString("c"));
+            }
+            else if (sumOfPrincipal == withdrawMoney)
+            {
+                // 全部提现
+                huoqiClaims.ForEach(c => c.status = (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+            }
+            else
+            {
+                // 部分提现，优先提现接近完成的项目
+                var sortedClaims = huoqiClaims.OrderBy(
+                    c => c.li_projects.li_repayment_tasks.Last(t =>
+                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime).should_repay_time)
+                    .ThenBy(c => c.principal)
+                    .ToList();
+                HuoqiClaimsPartialWithdraw(context, sortedClaims, withdrawMoney);
+            }
+            context.SubmitChanges();
+        }
+
+        private static void HuoqiClaimsPartialWithdraw(Agp2pDataContext context, IEnumerable<li_claims> claims, decimal withdrawMoney)
+        {
+            if (!claims.Any() || withdrawMoney == 0) return;
+            Debug.Assert(0 < withdrawMoney, "提现的金额不能是负数");
+
+            var headClaim = claims.First();
+            if (headClaim.principal <= withdrawMoney)
+            {
+                headClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                HuoqiClaimsPartialWithdraw(context, claims.Skip(1), withdrawMoney - headClaim.principal);
+            }
+            else
+            {
+                // 提现了某个债权的一部分，需要进行拆分
+                var splitTime = DateTime.Now;
+                var remain = new li_claims
+                {
+                    parentClaimId = headClaim.id,
+                    createTime = splitTime,
+                    principal = headClaim.principal - withdrawMoney,
+                    userId = headClaim.userId,
+                    status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                    projectId = headClaim.projectId,
+                    profitingProjectId = headClaim.profitingProjectId,
+                    li_project_transactions = headClaim.li_project_transactions
+                };
+                context.li_claims.InsertOnSubmit(remain);
+
+                var splited = new li_claims
+                {
+                    parentClaimId = headClaim.id,
+                    createTime = splitTime,
+                    principal = withdrawMoney,
+                    userId = headClaim.userId,
+                    status = (byte)Agp2pEnums.ClaimStatusEnum.NeedTransfer,
+                    projectId = headClaim.projectId,
+                    profitingProjectId = headClaim.profitingProjectId,
+                    li_project_transactions = headClaim.li_project_transactions
+                };
+                context.li_claims.InsertOnSubmit(splited);
+
+                headClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.Invalid;
+            }
+        }
+
         /*TODO 活期项目：
             1、固定资金100万，100元起投，每个客户最大投资5万
             2、收益T+0，固定利率3.3%，次日开始返息

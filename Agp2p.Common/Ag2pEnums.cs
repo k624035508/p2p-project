@@ -727,7 +727,7 @@ namespace Agp2p.Common
             Nontransferable = 1,
             [Description("可转让")]
             Transferable = 2,
-            [Description("需要转让")]
+            [Description("需要转让")] // 标记为提现中的活期债权
             NeedTransfer = 3,
             [Description("完成")]
             Completed = 10,
@@ -737,7 +737,7 @@ namespace Agp2p.Common
             Transferred = 20,
             [Description("已转让未回款")] // 提现 T + 1，债权在提现后被转让，则设置为这个状态
             TransferredUnpaid = 21,
-            [Description("失效")] // 项目流标/投资退款
+            [Description("失效")] // 项目流标 / 投资退款 / 债权拆分（提现时发生，旧债权的本金不变，标记为失效，创建一个新的债权，债权编号不变）
             Invalid = 30,
         }
 
