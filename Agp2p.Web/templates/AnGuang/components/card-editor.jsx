@@ -63,7 +63,7 @@ class CardEditor extends React.Component {
 	render() {
 		let creatingCard = !this.props.value, editingCard = !creatingCard;
 		return (
-			<div className={this.props.rootClass}>
+			<div className={this.props.rootClass} style={this.props.style}>
 				<ul className="list-unstyled">
 					<li><span>开户名：</span><span style={this.props.realName ? null : {color: "red"}} >
 						{this.props.realName || "（请先到 “个人中心 -> 安全中心” 进行实名认证）"}</span></li>

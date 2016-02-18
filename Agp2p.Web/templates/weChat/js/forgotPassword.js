@@ -1,6 +1,7 @@
 ﻿import "bootstrap-webpack";
 import "../less/common.less";
 import "../less/forgot_password.less";
+import footerInit from "./footer.js";
 
 window['$'] = window["jQuery"] = $;
 

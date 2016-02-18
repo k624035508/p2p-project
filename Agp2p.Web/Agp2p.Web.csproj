@@ -1072,14 +1072,11 @@
     <Content Include="templates\weChat\js\settings.js" />
     <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\js\withdraw.js" />
+    <Content Include="templates\weChat\less\aboutus.less" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
     <Content Include="templates\weChat\less\card-select.css" />
     <Content Include="templates\weChat\less\cards-list.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\less\myinvest.css" />
-    <Content Include="templates\weChat\less\mylottery.css" />
-    <Content Include="templates\weChat\less\receive-plan.css" />
-    <Content Include="templates\weChat\less\trade-record.css" />
     <Content Include="templates\weChat\less\verified.css" />
     <Content Include="templates\weChat\project.html" />
     <Content Include="templates\weChat\projects.html" />
@@ -1210,7 +1207,6 @@
     <Content Include="templates\AnGuang\less\about_more.less" />
     <Content Include="templates\weChat\less\mynews.less" />
     <Content Include="templates\weChat\less\safe.less" />
-    <Content Include="templates\weChat\less\aboutus.less" />
     <Content Include="templates\weChat\less\settings.less" />
     <Content Include="templates\weChat\less\recharge.less" />
     <Content Include="templates\weChat\less\withdraw.less" />
@@ -1222,6 +1218,10 @@
     <Content Include="templates\AnGuang\components\share.jsx" />
     <Content Include="templates\AnGuang\less\share.less" />
     <Content Include="templates\weChat\less\article_show.less" />
+    <Content Include="templates\weChat\less\mytrade.less" />
+    <Content Include="templates\weChat\less\mylottery.less" />
+    <Content Include="templates\weChat\less\myinvest.less" />
+    <Content Include="templates\weChat\less\receive-plan.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/mylottery.css";
+import "../less/mylottery.less";
 import "../less/footer.less";
 import footerInit from "./footer.js";
 

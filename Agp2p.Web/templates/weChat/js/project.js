@@ -87,11 +87,15 @@ function initPage(){
 };
 function initFullpage() {
     $('#fullpage').fullpage({
-        paddingBottom: '50px',
         anchors:['project'],
         controlArrows: false,
         verticalCentered: false,
         loopHorizontal: false,
+        autoScrolling: false,
+        fitToSection: false,
+        onSlideLeave: function(){
+            $(".scroll").scrollTop(0);
+        }
     });
     $.fn.fullpage.setAllowScrolling(false);
     if (!location.hash) {

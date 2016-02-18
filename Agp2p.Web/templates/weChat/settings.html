@@ -8,39 +8,41 @@
     <script src="<%templateskin%>/build/settings.bundle.js"></script>
 </head>
 <body>
-<div class="set-up-page">
-    <div class="header flex flex--align-items--center">
-        <div class="">
-            <span class="picture"><img src="<%templateskin%>/imgs/headshot.png"></span>
-            <span class="account"><%=Utils.GetUserNameHidden(userModel.user_name)%></span>
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="set-up-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
+        <div class="header flex flex--align-items--center">
+            <div class="">
+                <span class="picture"><img src="<%templateskin%>/imgs/headshot.png"></span>
+                <span class="account"><%=Utils.GetUserNameHidden(userModel.user_name)%></span>
+            </div>
         </div>
-    </div>
-    <div class="nav-bars">
-        <div class="my-news flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mynews","mynews")%>'">
-            <span class="title-style">我的消息</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
+        <div class="nav-bars">
+            <div class="my-news flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mynews","mynews")%>'">
+                <span class="title-style">我的消息</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
+            <div class="my-lottery flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mylottery","mylottery",1)%>'">
+                <span class="title-style">我的奖券</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
+            <div class="safe-center flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("safe","safe")%>'">
+                <span class="title-style">安全中心</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
+            <div class="cards-binding flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mycard","mycard")%>'">
+                <span class="title-style">银行卡绑定</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
         </div>
-        <div class="my-lottery flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mylottery","mylottery",1)%>'">
-            <span class="title-style">我的奖券</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
-        </div>
-        <div class="safe-center flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("safe","safe")%>'">
-            <span class="title-style">安全中心</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
-        </div>
-        <div class="cards-binding flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mycard","mycard")%>'">
-            <span class="title-style">银行卡绑定</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
-        </div>
-    </div>
-    <div class="bottom-bars">
-        <div class="about-us flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("about")%>'">
-            <span class="title-style">关于我们</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
-        </div>
-        <div class="exit flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("usercenter","exit")%>'">
-            <span class="title-style">注销登录</span>
-            <span class="glyphicon glyphicon-menu-right"></span>
+        <div class="bottom-bars">
+            <div class="about-us flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("about")%>'">
+                <span class="title-style">关于我们</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
+            <div class="exit flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("usercenter","exit")%>'">
+                <span class="title-style">注销登录</span>
+                <span class="glyphicon glyphicon-menu-right"></span>
+            </div>
         </div>
     </div>
     <%template src="_footer.html"%>
