@@ -33,7 +33,7 @@ var showMyMessages = function() {
     }).show(dialogMountPoint);
 }
 
-var checkMyMessage = function () {
+var checkMyMessage = function (silence) {
     var url = '<%=Request.FilePath%>' + "/AjaxQueryUnreadMessagesCount";
     $.ajax({
         type: "get",
@@ -43,7 +43,7 @@ var checkMyMessage = function () {
         success: function(result) {
             var originalHint = $(".manager-msg")[0].innerText;
             var newHint = "未读消息：" + result.d;
-            if (parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d) && localStorage.getItem("newMsgAutoPopup") !== "false") {
+            if (!silence && parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d) && localStorage.getItem("newMsgAutoPopup") !== "false") {
                 showMyMessages();
             }
             $(".manager-msg")[0].innerText = newHint;
@@ -74,6 +74,11 @@ $(function () {
     hub.client.onMsgRead = function() {
         checkMyMessage();
         console.log("有消息设置为已读了");
+    };
+
+    hub.client.onMsgDelete = function () {
+        checkMyMessage(true);
+        console.log("有消息被删除了");
     };
 
     $.connection.hub.start().done(function () {
