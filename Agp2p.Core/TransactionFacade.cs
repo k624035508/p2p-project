@@ -422,7 +422,7 @@ namespace Agp2p.Core
                 // 创建债权
                 var liClaims = new li_claims
                 {
-                    li_project_transactions = tr,
+                    li_project_transactions1 = tr,
                     createTime = wallet.last_update_time,
                     projectId = projectId,
                     principal = investingMoney,
@@ -605,7 +605,7 @@ namespace Agp2p.Core
             project.investment_amount += investment;
             var liClaims = new li_claims
             {
-                li_project_transactions = tr,
+                li_project_transactions1 = tr,
                 createTime = tr.create_time,
                 projectId = project.id,
                 profitingProjectId = tr.li_projects.id,
@@ -689,7 +689,7 @@ namespace Agp2p.Core
                 status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 projectId = originalClaim.projectId,
                 profitingProjectId = tr.li_projects.id,
-                li_project_transactions = tr
+                li_project_transactions1 = tr
             };
             context.li_claims.InsertOnSubmit(liClaims);
 
@@ -741,7 +741,7 @@ namespace Agp2p.Core
             var project = ptr.li_projects;
             if (project.IsHuoqiProject()) {
                 // TODO test 判断自动投标的项目是否满标
-                var financingCompletedProject = ptr.li_claims.Where(
+                var financingCompletedProject = ptr.li_claims1.Where(
                     c =>
                         c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
                         c.li_projects.financing_amount == c.li_projects.investment_amount)
@@ -980,7 +980,7 @@ namespace Agp2p.Core
             var histories = wallets.Select(w =>
             {
                 var his = CloneFromWallet(w, Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess);
-                his.li_project_transactions = userClaims[w.dt_users].Last().li_project_transactions;
+                his.li_project_transactions = userClaims[w.dt_users].Last().li_project_transactions1;
                 return his;
             });
             context.li_wallet_histories.InsertAllOnSubmit(histories);
@@ -1213,7 +1213,7 @@ namespace Agp2p.Core
 
             var noMoreInvestable = false;
             // 不可转让的活期债权继续自动投标
-            nonTransferableClaims.ToLookup(c => c.li_project_transactions).ForEach(ptrcs =>
+            nonTransferableClaims.ToLookup(c => c.li_project_transactions1).ForEach(ptrcs =>
             {
                 var needTransfer = ptrcs.Sum(c => c.principal);
                 var srcPtr = ptrcs.Key;
