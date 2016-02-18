@@ -1077,7 +1077,6 @@
     <Content Include="templates\weChat\less\card-select.css" />
     <Content Include="templates\weChat\less\cards-list.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\less\receive-plan.css" />
     <Content Include="templates\weChat\less\verified.css" />
     <Content Include="templates\weChat\project.html" />
     <Content Include="templates\weChat\projects.html" />
@@ -1222,6 +1221,7 @@
     <Content Include="templates\weChat\less\mytrade.less" />
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
+    <Content Include="templates\weChat\less\receive-plan.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

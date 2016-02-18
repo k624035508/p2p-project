@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/receive-plan.css";
+import "../less/receive-plan.less";
 import "../less/receive-plan-detail.less";
 import "../less/footer.less";
 import "fullpage.js/jquery.fullPage.css";
