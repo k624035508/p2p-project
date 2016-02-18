@@ -2534,7 +2534,7 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"你已经认证过了\"}");
                     return;
                 }
-                if (!new Regex(@"^[\u4e00-\u9fa5]{2,15}$").IsMatch(truename))
+                if (!new Regex(@"^[\u4e00-\u9fa5·]{2,15}$").IsMatch(truename))
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的中文名称\"}");
                     return;
