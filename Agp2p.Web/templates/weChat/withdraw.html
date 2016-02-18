@@ -16,7 +16,8 @@
     </script>
 </head>
 <body>
-    <div class="withdraw-page">
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="withdraw-page scroll" style="height: 0">
         <form>
             <div class="withdraw-amount-wrap">
                 <input type="text" id="withdrawals" class="input-l" placeholder="账户余额 <%=string.Format("{0:N}",userModel.li_wallets.idle_money)%> 元">
@@ -42,6 +43,9 @@
         </form>
         <span class="glyphicon glyphicon-triangle-bottom" id="for-bank"></span>
     </div>
+    <%template src="_footer.html"%>
+</div>
+
     <!-- 提现银行卡选择弹窗 -->
     <div class="modal fade" id="bank-select-dialog" tabindex="-1" role="dialog" aria-labelledby="bank-select-label" aria-hidden="true">
         <div class="modal-dialog">

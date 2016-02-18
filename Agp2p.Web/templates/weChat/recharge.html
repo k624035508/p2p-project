@@ -9,7 +9,8 @@
     <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 </head>
 <body>
-    <div class="charge-page">
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="charge-page scroll" style="height: 0">
         <form class="form-horizontal" id="formRecharge" method="post" action="{config.webpath}api/payment/lianlianpay/index.aspx">
             <div class="charge-amount-wrap">
                 <input type="text" id="amount" class="input-l" placeholder="请输入充值金额（元）">
@@ -20,5 +21,6 @@
         </form>
     </div>
     <%template src="_footer.html"%>
+</div>
 </body>
 </html>

@@ -63,20 +63,22 @@
     <script src="<%templateskin%>/build/projects.bundle.js"></script>
 </head>
 <body>
-    <div class="invest-page">
-        <div class="invest-nav">
-            <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
-            <%foreach(var kvp in CategoryIdTitleMap)%>
-            <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
-            <%/foreach%>
-        </div>
+<div class="height-100 flex flex--column flex--flex-grow-second">
+    <div class="invest-nav">
+        <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
+        <%foreach(var kvp in CategoryIdTitleMap)%>
+        <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
+        <%/foreach%>
+    </div>
+    <div class="invest-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div id="pending"></div>
         <div id="loading-hint"></div>
         <div class="loading-hint" style="display: none">
             <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
             <p style="color:#ccc">您目前没有投资记录</p>
-        </div>       
-        <%template src="_footer.html"%>
+        </div>
     </div>
+    <%template src="_footer.html"%>
+</div>
 </body>
 </html>

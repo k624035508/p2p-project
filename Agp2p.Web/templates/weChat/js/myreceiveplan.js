@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/receive-plan.css";
+import "../less/receive-plan.less";
 import "../less/receive-plan-detail.less";
 import "../less/footer.less";
 import "fullpage.js/jquery.fullPage.css";
@@ -71,18 +71,12 @@ function loadDetailData(projectId, ticketId) {
 }
 function initFullpage() {
     $('#fullpage').fullpage({
-        paddingBottom: '50px',
         anchors: ['projects'],
         controlArrows: false,
         verticalCentered: false,
         loopHorizontal: false,
-        onSlideLeave: function(anchorLink, index, slideIndex, direction, nextSlideIndex) { // 修复 android 对 position: fixed 兼容性不好的问题
-            if (direction === 'right') {
-                $('div.nav-bar').hide('slow');
-            } else {
-                $('div.nav-bar').show();
-            }
-        }
+        autoScrolling: false,
+        fitToSection: false
     });
     $.fn.fullpage.setAllowScrolling(false);
     if (location.hash != '#projects') {
