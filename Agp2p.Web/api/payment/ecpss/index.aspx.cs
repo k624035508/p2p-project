@@ -18,9 +18,13 @@ namespace Agp2p.Web.api.payment.ecpss
             string bankCode = DTRequest.GetQueryString("bankcode");
             string amount = DTRequest.GetQueryString("amount");
 
+            decimal amountD = 0;
+            if (!decimal.TryParse(amount, out amountD))
+                throw new ArgumentNullException("请输入正确的金额！");
+
             //创建充值订单
             var context = new Agp2pDataContext();
-            var charge_order = context.Charge(model.id, decimal.Parse(amount),
+            var charge_order = context.Charge(model.id, amountD,
                 bankCode == "NOCARD" ? Agp2pEnums.PayApiTypeEnum.EcpssQ : Agp2pEnums.PayApiTypeEnum.Ecpss);
             //跳转到汇潮支付页面
             Service server = new Service(bankCode == "NOCARD");
