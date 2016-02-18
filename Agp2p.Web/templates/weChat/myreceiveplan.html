@@ -15,11 +15,6 @@
             text-align: center;
             color: grey;
         }
-        .inner-scrollable { /*fullPage 可滚动*/
-            -webkit-overflow-scrolling: touch;
-            overflow-y: scroll;
-            height: 100%;
-        }
         .myinvest-page { padding-top: 2px; }
         span.glyphicon { color: #ccc;}
     </style>
@@ -91,30 +86,28 @@
 </head>
 <body>
 <div id="fullpage">
-    <div class="height-100 flex flex--column flex--flex-grow-second">
-        <div class="nav-bar">
-            <a id="investing" href="javascript:;" data-project-status="1" class="nav-active nav-border-active">投资中<span class="float-right hr-style">|</span></a>
-            <a id="recieving" href="javascript:;" data-project-status="2">回款中<span class="float-right hr-style">|</span></a>
-            <a id="received" href="javascript:;" data-project-status="3">已完成</a>
-        </div>
-        <div class="section fp-auto-height">
-            <div class="slide">
-                <div class="myinvest-page inner-scrollable">
-                    <div class="project-list">
-                        <div id="pending"></div>
-                        <div class="loading-hint"></div>
-                        <div class="empty-box" style="display: none">
-                            <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-                            <p style="color:#ccc">目前没有相关记录</p>
-                        </div>
+    <div class="section ">
+        <div class="slide fp-auto-height">
+            <div class="myinvest-page height-100 flex flex--column flex--flex-grow-second">
+                <div class="nav-bar">
+                    <a id="investing" href="javascript:;" data-project-status="1" class="nav-active nav-border-active">投资中<span class="float-right hr-style">|</span></a>
+                    <a id="recieving" href="javascript:;" data-project-status="2">回款中<span class="float-right hr-style">|</span></a>
+                    <a id="received" href="javascript:;" data-project-status="3">已完成</a>
+                </div>
+                <div class="project-list scroll" style="height: 0">
+                    <div id="pending"></div>
+                    <div class="loading-hint"></div>
+                    <div class="empty-box" style="display: none">
+                        <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
+                        <p style="color:#ccc">目前没有相关记录</p>
                     </div>
                 </div>
-            </div>
-            <div class="slide">
-                <div class="receive-plan-detail-page inner-scrollable"></div>
+                <%template src="_footer.html"%>
             </div>
         </div>
-        <div><%template src="_footer.html"%></div>
+        <div class="slide">
+            <div class="receive-plan-detail-page inner-scrollable"></div>
+        </div>
     </div>
 </div>
 </body>

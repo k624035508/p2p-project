@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="index-page scroll">
+    <div class="index-page scroll" style="height:0"> <!--/ ios flex box bug hack /-->
         <%if(!IsUserLogin())%>
         <div class="reglog-bar flex flex-vertical-align flex--flex-grow-first">
             <span><img src="<%templateskin%>/imgs/agrh.png"></span>
@@ -107,7 +107,7 @@
             <%/foreach%>
         </div>
     </div>
-    <div><%template src="_footer.html"%></div>
+    <%template src="_footer.html"%>
 </div>
 </body>
 </html>

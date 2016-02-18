@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="mylottery-page scroll">
+    <div class="mylottery-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div class="nav-bar">
             <a id="receiving" class="type" href="<%linkurl("mylottery","mylottery",1)%>">未使用<span class="float-right hr-style">|</span></a>
             <a id="investing" class="type" href="<%linkurl("mylottery","mylottery",2)%>">已使用<span class="float-right hr-style">|</span></a>

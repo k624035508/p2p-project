@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="aboutus-page scroll">
+    <div class="aboutus-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div  class="top-screen">
             <img src="<%templateskin%>/imgs/logo.png">
         </div>
@@ -30,7 +30,7 @@
             <p>安广融合团队是一群拥有金融专业精神和互联网极客精神的实力源。团队管理成员来自各大银行及业内知名机构，风控高管在信贷、供应链金融领域有多年实操经验，还有众多金融资本领导的顶级专家顾问参与，致力将安广融合打造成全国最具价值的互联网金融服务平台。</p>
         </div>
     </div>
-    <div><%template src="_footer.html"%></div>
+    <%template src="_footer.html"%>
 </div>
 
 <script>var forceFooterKey = "settings";</script>

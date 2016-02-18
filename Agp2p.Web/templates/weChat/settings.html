@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="set-up-page scroll">
+    <div class="set-up-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div class="header flex flex--align-items--center">
             <div class="">
                 <span class="picture"><img src="<%templateskin%>/imgs/headshot.png"></span>
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div><%template src="_footer.html"%></div>
+    <%template src="_footer.html"%>
 </div>
 </body>
 </html>

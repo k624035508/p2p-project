@@ -70,7 +70,7 @@
         <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
         <%/foreach%>
     </div>
-    <div class="invest-page scroll">
+    <div class="invest-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div id="pending"></div>
         <div id="loading-hint"></div>
         <div class="loading-hint" style="display: none">
@@ -78,7 +78,7 @@
             <p style="color:#ccc">您目前没有投资记录</p>
         </div>
     </div>
-    <div><%template src="_footer.html"%></div>
+    <%template src="_footer.html"%>
 </div>
 </body>
 </html>

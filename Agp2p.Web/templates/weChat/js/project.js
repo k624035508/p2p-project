@@ -94,7 +94,7 @@ function initFullpage() {
         autoScrolling: false,
         fitToSection: false,
         onSlideLeave: function(){
-            $(".section").scrollTop(0);
+            $(".scroll").scrollTop(0);
         }
     });
     $.fn.fullpage.setAllowScrolling(false);

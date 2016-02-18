@@ -76,14 +76,7 @@ function initFullpage() {
         verticalCentered: false,
         loopHorizontal: false,
         autoScrolling: false,
-        fitToSection: false,
-        onSlideLeave: function(anchorLink, index, slideIndex, direction, nextSlideIndex) { // 修复 android 对 position: fixed 兼容性不好的问题
-            if (direction === 'right') {
-                $('div.nav-bar').hide('slow');
-            } else {
-                $('div.nav-bar').show();
-            }
-        }
+        fitToSection: false
     });
     $.fn.fullpage.setAllowScrolling(false);
     if (location.hash != '#projects') {

@@ -96,7 +96,7 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("操作失败：用户 " + user.user_name + " 的账户余额小于需要提现的金额");
 
             // 判断提现次数，每日每张卡的提现次数不能超过 3 次
-            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today))
+            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today) && !Utils.IsDebugging())
             {
                 throw new InvalidOperationException("每日每张卡的提现次数不能超过 3 次");
             }

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="register-page scroll">
+    <div class="register-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <form id="regform" autocomplete="off">
             <div class="account-wrap">
                 <input type="text" id="account" class="input-l" name="txtMobile" placeholder="请输入手机号码" datatype="m" errormsg="手机号码格式不正确">

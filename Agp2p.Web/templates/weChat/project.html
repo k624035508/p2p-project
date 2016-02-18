@@ -20,11 +20,6 @@
     <script type="text/javascript" src="{config.webpath}scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
 
     <style>
-        .inner-scrollable { /*fullPage 可滚动*/
-            -webkit-overflow-scrolling: touch;
-            overflow-y: scroll;
-            height: 100%;
-        }
         /*隐藏滚动条*/
         .inner-scrollable::-webkit-scrollbar {width: 0 !important;}
 
@@ -40,8 +35,9 @@
 </head>
 <body>
 <div id="fullpage">
-    <div class="flex flex--column flex--flex-grow-first height-100">
-        <div class="section fp-auto-height" style="overflow: scroll">
+    <div class="height-100 flex flex--column flex--flex-grow-first">
+        <div class="scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
+    <div class="section fp-auto-height">
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
             <div class="top-screen">
@@ -198,8 +194,9 @@
             <%/for%>
         </div>
     </div>
-</div>
-        <div><%template src="_footer.html"%></div>
+    </div>
+        </div>
+    <%template src="_footer.html"%>
     </div>
 </div>
     <!-- Modal -->
