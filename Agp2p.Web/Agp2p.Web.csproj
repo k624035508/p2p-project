@@ -818,6 +818,7 @@
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\news-ring.png" />
+    <Content Include="templates\AnGuang\imgs\index\over-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
