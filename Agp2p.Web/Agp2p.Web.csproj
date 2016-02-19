@@ -545,15 +545,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
-    <Content Include="install\css\styles.css" />
-    <Content Include="install\db.sql" />
-    <Content Include="install\images\error.gif" />
-    <Content Include="install\images\logo.jpg" />
-    <Content Include="install\images\ok.gif" />
-    <Content Include="install\images\succeed.jpg" />
-    <Content Include="install\index.aspx" />
-    <Content Include="install\step1.aspx" />
-    <Content Include="install\step2.aspx" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -2324,20 +2315,6 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="install\step1.aspx.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step1.aspx.designer.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="install\step2.aspx.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step2.aspx.designer.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup1.cs" />

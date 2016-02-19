@@ -91,6 +91,9 @@ namespace Agp2p.Web.admin.loaner
 
             rptPropertyCertificates.DataSource = model.li_albums.Where(a => a.mortgage == id && a.type == (int) Agp2pEnums.AlbumTypeEnum.PropertyCertificate);
             rptPropertyCertificates.DataBind();
+
+            //已绑定的抵押物不能修改
+            btnSubmit.Visible = !context.li_risk_mortgage.Any(rm => rm.mortgage == model.id);
         }
         #endregion
 

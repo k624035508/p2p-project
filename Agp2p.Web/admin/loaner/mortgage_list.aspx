@@ -61,6 +61,7 @@
   <tr>
     <th width="5%">选择</th>
     <th align="left">名称</th>
+    <th align="left">关联项目</th>
     <th align="left" width="10%">类型</th>
     <th align="left" width="10%">所有者</th>
     <%= GenerateDynamicTableHead() %>
@@ -71,17 +72,18 @@
   <tr>
     <td align="center">
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
-      <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
+      <asp:HiddenField ID="hidId" Value='<%#Eval("li_mortgage.id")%>' runat="server" />
     </td>
       <% if (IsReadonly()) { %>
-    <td><%# Eval("name") %></td>
+    <td><%# Eval("li_mortgage.name") %></td>
       <% } else { %>
-    <td><a href="mortgage_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%# Eval("name") %></a></td>
+    <td><a href="mortgage_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("li_mortgage.id")%>"><%# Eval("li_mortgage.name") %></a></td>
       <% } %>
-    <td><%# Eval("li_mortgage_types.name") %></td>
-    <td><%# QueryOwnerNameById(Eval("owner"))%></td>
-    <%# GenerateDynamicTableData((li_mortgages) Container.DataItem) %>
-    <td><%# Eval("valuation")%></td>
+    <td><%# Eval("projects") %></td>
+    <td><%# Eval("li_mortgage.li_mortgage_types.name") %></td>
+    <td><%# QueryOwnerNameById(Eval("li_mortgage.owner"))%></td>
+    <%# GenerateDynamicTableData((li_mortgages) Eval("li_mortgage")) %>
+    <td><%# Eval("li_mortgage.valuation")%></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
