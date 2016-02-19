@@ -964,7 +964,7 @@ namespace Agp2p.Core
             {
                 if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
                 {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome()
+                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                     {
                         user_id = project.li_risks.li_loaners.dt_users.id,
                         income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
@@ -1543,8 +1543,10 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectTransactionId"></param>
+        /// <param name="refundTime"></param>
+        /// <param name="save"></param>
         /// <returns></returns>
-        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, bool save = true)
+        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, DateTime refundTime, bool save = true)
         {
             // 判断项目状态
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
@@ -1553,6 +1555,13 @@ namespace Agp2p.Core
 
             // 更改交易状态
             tr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
+
+            // 债权失效
+            tr.li_claims1.ForEach(c =>
+            {
+                c.status = (byte) Agp2pEnums.ClaimStatusEnum.Invalid;
+                c.statusUpdateTime = refundTime;
+            });
 
             // 修改项目已投资金额
             tr.li_projects.investment_amount -= tr.principal;
@@ -1565,7 +1574,7 @@ namespace Agp2p.Core
             wallet.idle_money += investedMoney;
             wallet.investing_money -= investedMoney;
             wallet.total_investment -= investedMoney;
-            wallet.last_update_time = DateTime.Now;
+            wallet.last_update_time = refundTime;
 
             // 添加钱包历史
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund);
@@ -1593,12 +1602,13 @@ namespace Agp2p.Core
             if ((int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= proj.status)
                 throw new InvalidOperationException("项目所在的状态不能退款");
 
+            var refundTime = DateTime.Now;
             proj.li_project_transactions.Where(
                 tr =>
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .Select(tr => tr.id)
-                .ForEach(trId => context.Refund(trId, false));
+                .ForEach(trId => context.Refund(trId, refundTime, false));
 
             proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingFail;
             context.SubmitChanges();
