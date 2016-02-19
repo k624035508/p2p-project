@@ -115,11 +115,12 @@ $(function(){
     });
 
     // auto load
-    $(".inner-scrollable").scroll(function () {
+    var $scrollable = $(".scroll");
+    $scrollable.scroll(function () {
         if (processing) return;
         if ($(".nav-active").attr("data-loadCompleted") === "true") return; // load complete
 
-        if (($(document).height() - $(this).height()) * 0.7 <= $(this).scrollTop()) {
+        if (($scrollable[0].scrollHeight - $scrollable.height()) * 0.8 <= $scrollable.scrollTop()) {
             processing = true; //sets a processing AJAX request flag
 
             loadData(loadedPage, function (succ) {
