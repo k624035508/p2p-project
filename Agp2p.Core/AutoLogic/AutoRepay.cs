@@ -11,19 +11,77 @@ namespace Agp2p.Core.AutoLogic
 {
     public class AutoRepay
     {
+        public const string ClaimTakeOverGroupName = "公司账号";
+
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划
+            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
+
+            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，没有人接手的，由公司接手
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime)); // 活期项目的提现
         }
 
-        private static bool IsCreateInToday(li_claims claim)
+        private static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
         {
-            if (claim.parentClaimId == null)
+            // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
+            var context = new Agp2pDataContext();
+            var group = context.dt_user_groups.SingleOrDefault(g => g.title == ClaimTakeOverGroupName);
+            if (group == null)
+                throw new InvalidOperationException("请先创建“公司账号”的会员组，并且往其添加会员");
+            var companyUsers = group.dt_users.ToList();
+            if (!companyUsers.Any())
+                throw new InvalidOperationException("请先往“公司账号”的会员组添加会员");
+
+            // 接手昨日/更早的提现
+            var needTransferClaims = context.li_claims.Where(
+                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.statusUpdateTime.GetValueOrDefault(c.createTime).Date < DateTime.Today)
+                .ToList();
+
+            if (!needTransferClaims.Any()) return;
+            if (companyUsers.Sum(u => u.li_wallets.idle_money) < needTransferClaims.Sum(c => c.principal))
+                throw new InvalidOperationException("警告：公司账号的金额不足以接手需要转让的债权");
+
+            ClaimTakeOver(context, companyUsers, needTransferClaims.GroupBy(c => c.li_projects1).ToList());
+            context.SubmitChanges();
+        }
+
+        private static void ClaimTakeOver(Agp2pDataContext context, List<dt_users> companyUsers, List<IGrouping<li_projects, li_claims>> claimsByHuoqiProject, decimal groupAlreadyInvest = 0)
+        {
+            if (!claimsByHuoqiProject.Any()) return;
+            var investor = companyUsers.First();
+            var headClaimsGroup = claimsByHuoqiProject.First();
+
+            var needTransferAmount = headClaimsGroup.Sum(c => c.principal) - groupAlreadyInvest;
+            var willInvestAmount = investor.li_wallets.idle_money;
+            if (needTransferAmount <= willInvestAmount)
             {
-                return claim.createTime.Date == DateTime.Today;
+                context.TakeOverHuoqiProject(investor, headClaimsGroup.Key, needTransferAmount);
+                ClaimTakeOver(context, companyUsers, claimsByHuoqiProject.Skip(1).ToList());
             }
-            return IsCreateInToday(claim.li_claims1);
+            else
+            {
+                context.TakeOverHuoqiProject(investor, headClaimsGroup.Key, willInvestAmount);
+                ClaimTakeOver(context, companyUsers.Skip(1).ToList(), claimsByHuoqiProject, groupAlreadyInvest + willInvestAmount);
+            }
+        }
+
+        private static void DoHuoqiProjectWithdraw(bool onTime)
+        {
+            var context = new Agp2pDataContext();
+
+            // TODO 执行昨天活期提现，减少项目的在投金额
+            var claims = context.li_claims.Where(
+                c =>
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid).ToList();
+            claims.ToLookup(c => c.profitingProjectId).ForEach(pcs =>
+            {
+                pcs.ToLookup(c => c.dt_users).ForEach(ucs =>
+                {
+
+                });
+            });
         }
 
         private static void GenerateHuoqiRepaymentTask(bool onTime)
@@ -40,10 +98,7 @@ namespace Agp2p.Core.AutoLogic
             var dailyRepayments = huoqiProjects.Select(p =>
             {
                 // 如果是今天才投的活期标，则不返利
-                var shouldRepayTo =
-                    p.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed)
-                        .AsEnumerable()
-                        .Where(c => !IsCreateInToday(c));
+                var shouldRepayTo = p.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.createTime.Date < DateTime.Today);
                 return new li_repayment_tasks
                 {
                     should_repay_time = nextDay.AddHours(15),
