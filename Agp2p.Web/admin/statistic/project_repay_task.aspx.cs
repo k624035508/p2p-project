@@ -190,11 +190,11 @@ namespace Agp2p.Web.admin.statistic
             {
                 if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
                 {
-                    query1 = query1.Where(rt => Convert.ToDateTime(txtStartTime.Text) <= rt.li_projects.make_loan_time.GetValueOrDefault().Date);
+                    query1 = query1.Where(rt => Convert.ToDateTime(txtStartTime.Text) <= rt.li_projects.make_loan_time.GetValueOrDefault(DateTime.MaxValue).Date);
                 }
                 if (!string.IsNullOrWhiteSpace(txtEndTime.Text))
                 {
-                    query1 = query1.Where(rt => rt.li_projects.make_loan_time.GetValueOrDefault().Date <= Convert.ToDateTime(txtEndTime.Text));
+                    query1 = query1.Where(rt => rt.li_projects.make_loan_time.GetValueOrDefault(DateTime.MaxValue).Date <= Convert.ToDateTime(txtEndTime.Text));
                 }
             }
             else if (ddlOrderBy.SelectedValue == "should_repay_time")

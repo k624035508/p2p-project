@@ -30,7 +30,7 @@ class RechargePage extends React.Component {
 			return;
 		}
 		var amount = parseFloat(this.state.chargingAmount || "0");
-		if (amount <= 0) {
+		if (isNaN(amount) || amount <= 0) {
 			alert("请输入正确的金额");
 			ev.preventDefault();
 			return;
