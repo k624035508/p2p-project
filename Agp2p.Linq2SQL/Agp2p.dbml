@@ -713,6 +713,7 @@
       <Column Name="parentClaimId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="createFromInvestment" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="number" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="statusUpdateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="li_claims_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="gainFromClaim" Type="li_project_transactions" />
       <Association Name="li_claims_li_claims" Member="li_claims2" ThisKey="id" OtherKey="parentClaimId" Type="li_claims" />
       <Association Name="dt_users_li_claims" Member="dt_users" ThisKey="userId" OtherKey="id" Type="dt_users" IsForeignKey="true" />

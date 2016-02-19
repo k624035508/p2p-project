@@ -16063,6 +16063,8 @@ namespace Agp2p.Linq2SQL
 		
 		private string _number;
 		
+		private System.Nullable<System.DateTime> _statusUpdateTime;
+		
 		private EntitySet<li_project_transactions> _li_project_transactions;
 		
 		private EntitySet<li_claims> _li_claims2;
@@ -16101,6 +16103,8 @@ namespace Agp2p.Linq2SQL
     partial void OncreateFromInvestmentChanged();
     partial void OnnumberChanging(string value);
     partial void OnnumberChanged();
+    partial void OnstatusUpdateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnstatusUpdateTimeChanged();
     #endregion
 		
 		public li_claims()
@@ -16331,6 +16335,26 @@ namespace Agp2p.Linq2SQL
 					this._number = value;
 					this.SendPropertyChanged("number");
 					this.OnnumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_statusUpdateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> statusUpdateTime
+		{
+			get
+			{
+				return this._statusUpdateTime;
+			}
+			set
+			{
+				if ((this._statusUpdateTime != value))
+				{
+					this.OnstatusUpdateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._statusUpdateTime = value;
+					this.SendPropertyChanged("statusUpdateTime");
+					this.OnstatusUpdateTimeChanged();
 				}
 			}
 		}
