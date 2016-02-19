@@ -69,19 +69,53 @@ namespace Agp2p.Core.AutoLogic
         private static void DoHuoqiProjectWithdraw(bool onTime)
         {
             var context = new Agp2pDataContext();
+            var repayTime = DateTime.Now;
 
-            // TODO 执行昨天活期提现，减少项目的在投金额
+            // 执行昨天活期提现，减少项目的在投金额
             var claims = context.li_claims.Where(
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid).ToList();
-            claims.ToLookup(c => c.profitingProjectId).ForEach(pcs =>
+            claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
             {
+                var huoqiProject = pcs.Key;
                 pcs.ToLookup(c => c.dt_users).ForEach(ucs =>
                 {
+                    var investor = ucs.Key;
+                    var wallet = investor.li_wallets;
 
+                    ucs.ForEach(c =>
+                    {
+                        c.status = (byte) (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid
+                            ? Agp2pEnums.ClaimStatusEnum.Completed
+                            : Agp2pEnums.ClaimStatusEnum.Transferred);
+                        c.statusUpdateTime = repayTime;
+
+                        var withdrawTransact = new li_project_transactions
+                        {
+                            principal = c.principal,
+                            project = huoqiProject.id,
+                            create_time = repayTime,
+                            investor = investor.id,
+                            type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw,
+                            status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                            gainFromClaim = c.id,
+                            // remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
+                        };
+                        context.li_project_transactions.InsertOnSubmit(withdrawTransact);
+
+                        wallet.idle_money += c.principal;
+                        wallet.investing_money -= c.principal;
+                        wallet.last_update_time = repayTime;
+
+                        var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess);
+                        his.li_project_transactions = withdrawTransact;
+                        context.li_wallet_histories.InsertOnSubmit(his);
+                    });
                 });
             });
+
+            context.SubmitChanges();
         }
 
         private static void GenerateHuoqiRepaymentTask(bool onTime)
