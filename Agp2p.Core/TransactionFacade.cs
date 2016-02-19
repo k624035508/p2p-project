@@ -428,7 +428,8 @@ namespace Agp2p.Core
                     principal = investingMoney,
                     status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     userId = wallet.user_id,
-                    profitingProjectId = projectId
+                    profitingProjectId = projectId,
+                    number = GenerateClaimNumber(pr, wallet.user_id)
                 };
                 context.li_claims.InsertOnSubmit(liClaims);
             }
@@ -498,7 +499,8 @@ namespace Agp2p.Core
                     status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     projectId = headClaim.projectId,
                     profitingProjectId = headClaim.profitingProjectId,
-                    li_project_transactions = headClaim.li_project_transactions
+                    li_project_transactions = headClaim.li_project_transactions,
+                    number = headClaim.number
                 };
                 context.li_claims.InsertOnSubmit(remain);
 
@@ -511,7 +513,8 @@ namespace Agp2p.Core
                     status = (byte)Agp2pEnums.ClaimStatusEnum.NeedTransfer,
                     projectId = headClaim.projectId,
                     profitingProjectId = headClaim.profitingProjectId,
-                    li_project_transactions = headClaim.li_project_transactions
+                    li_project_transactions = headClaim.li_project_transactions,
+                    number = headClaim.number
                 };
                 context.li_claims.InsertOnSubmit(splited);
 
@@ -612,9 +615,19 @@ namespace Agp2p.Core
                 userId = tr.dt_users.id,
                 status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 principal = investment,
+                number = GenerateClaimNumber(project, tr.dt_users.id),
             };
             context.li_claims.InsertOnSubmit(liClaims);
             return investment;
+        }
+
+        private static string GenerateClaimNumber(li_projects project, int userId)
+        {
+            return string.Format("{0:d10}{1:d10}{2:d2}", project.id, userId,
+                project.li_project_transactions.Count(
+                    ptr =>
+                        ptr.investor == userId &&
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)); // 确保投资撤销后债权编号仍然增加
         }
 
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr)
@@ -676,7 +689,8 @@ namespace Agp2p.Core
                     principal = originalClaim.principal - amount,
                     status = originalClaim.status,
                     createTime = tr.create_time,
-                    createFromInvestment = originalClaim.createFromInvestment
+                    createFromInvestment = originalClaim.createFromInvestment,
+                    number = originalClaim.number
                 };
                 context.li_claims.InsertOnSubmit(remainClaim);
             }
@@ -689,7 +703,8 @@ namespace Agp2p.Core
                 status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 projectId = originalClaim.projectId,
                 profitingProjectId = tr.li_projects.id,
-                li_project_transactions1 = tr
+                li_project_transactions1 = tr,
+                number = GenerateClaimNumber(tr.li_projects, tr.dt_users.id)
             };
             context.li_claims.InsertOnSubmit(liClaims);
 

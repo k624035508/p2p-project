@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 33.75, 34.125" name="Agp2p">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 33.875, 34.125" name="Agp2p">
   <DataContextMoniker Name="/Agp2pDataContext" />
   <nestedChildShapes>
     <classShape Id="0017899d-588e-4a3c-86cb-9ef1aa8c1f0c" absoluteBounds="6.25, 11.875, 2, 2.8308638509114559">
@@ -465,7 +465,7 @@
         <classShapeMoniker Id="fdbc4153-7005-4dc9-bef1-b83cb35238ee" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(17.375 : 9.578125); (19.1197891666667 : 9.578125 : JumpStart); (19.2864558333333 : 9.578125 : JumpEnd); (25.5 : 9.578125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(17.375 : 9.578125); (19.1197891666667 : 9.578125 : JumpStart); (19.2864558333333 : 9.578125 : JumpEnd); (19.5104166666667 : 9.578125 : JumpStart); (19.6770833333333 : 9.578125 : JumpEnd); (25.5 : 9.578125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_risks/li_risks_li_projects" />
       <nodes>
         <classShapeMoniker Id="5b4d3fad-7529-42f4-b4d3-9c860e6a9ce8" />
@@ -611,7 +611,7 @@
         <classShapeMoniker Id="2ab9c7cb-5ceb-4bc6-8ba0-2078c0a26e2f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(25.125 : 17.34375); (19.2864558333333 : 17.34375 : JumpStart); (19.1197891666667 : 17.34375 : JumpEnd); (18.1770833333333 : 17.34375 : JumpStart); (18.0104166666667 : 17.34375 : JumpEnd); (17.1770828333333 : 17.34375 : JumpStart); (17.0104161666667 : 17.34375 : JumpEnd); (16.75 : 17.34375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(25.125 : 17.34375); (19.2864558333333 : 17.34375 : JumpStart); (19.1197891666667 : 17.34375 : JumpEnd); (16.75 : 17.34375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_project_transactions/li_project_transactions_li_wallet_histories" />
       <nodes>
         <classShapeMoniker Id="c2b5f70a-ea6f-4dec-bcb4-e0b19a00c6ae" />
@@ -632,52 +632,52 @@
         <classShapeMoniker Id="c2b5f70a-ea6f-4dec-bcb4-e0b19a00c6ae" />
       </nodes>
     </associationConnector>
-    <classShape Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" absoluteBounds="31.5, 17, 2, 2.6460697428385416">
+    <classShape Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" absoluteBounds="31.625, 17.375, 2, 2.6460697428385416">
       <DataClassMoniker Name="/Agp2pDataContext/li_claims" />
       <nestedChildShapes>
-        <elementListCompartment Id="382cc571-cb9b-400d-8673-767002d9f730" absoluteBounds="31.515, 17.46, 1.9700000000000002, 2.0860697428385415" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8d617684-84f6-4346-aa2e-5a6ac5f01880" absoluteBounds="31.64, 17.835, 1.9700000000000002, 2.0860697428385415" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(31.5 : 18.2904319254557); (28.3645828333333 : 18.2904319254557 : JumpStart); (28.1979161666667 : 18.2904319254557 : JumpEnd); (27.125 : 18.2904319254557)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(31.625 : 18.4779319254557); (28.3645828333333 : 18.4779319254557 : JumpStart); (28.1979161666667 : 18.4779319254557 : JumpEnd); (27.5364608333333 : 18.4779319254557 : JumpStart); (27.2604166666667 : 18.4779319254557 : JumpEnd); (27.125 : 18.4779319254557)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Agp2pDataContext/li_claims/li_claims_li_project_transactions" />
       <nodes>
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
         <classShapeMoniker Id="c2b5f70a-ea6f-4dec-bcb4-e0b19a00c6ae" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.29166666666667 : 20.8583437093099 : JumpStart); (8.45833333333333 : 20.8583437093099 : JumpEnd); (8.625 : 20.8583437093099); (8.625 : 19); (8.76041666666667 : 19 : JumpStart); (8.92708333333333 : 19 : JumpEnd); (9.41666666666667 : 19 : JumpStart); (9.58333333333333 : 19 : JumpEnd); (11.2604166666667 : 19 : JumpStart); (11.4270833333333 : 19 : JumpEnd); (11.5 : 19); (11.5 : 20.375); (14.5416666666667 : 20.375 : JumpStart); (14.7083333333333 : 20.375 : JumpEnd); (15.6666666666667 : 20.375 : JumpStart); (15.8333333333333 : 20.375 : JumpEnd); (16.9869770416667 : 20.375 : JumpStart); (17.1770828333333 : 20.375 : JumpEnd); (18.0104166666667 : 20.375 : JumpStart); (18.1770833333333 : 20.375 : JumpEnd); (19.1197891666667 : 20.375 : JumpStart); (19.2864558333333 : 20.375 : JumpEnd); (26.0416666666667 : 20.375 : JumpStart); (26.2083333333333 : 20.375 : JumpEnd); (32.5 : 20.375); (32.5 : 19.6460697428385)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 20.8583437093099); (8.29166666666667 : 20.8583437093099 : JumpStart); (8.45833333333333 : 20.8583437093099 : JumpEnd); (8.625 : 20.8583437093099); (8.625 : 19); (8.76041666666667 : 19 : JumpStart); (8.92708333333333 : 19 : JumpEnd); (9.41666666666667 : 19 : JumpStart); (9.58333333333333 : 19 : JumpEnd); (11.2604166666667 : 19 : JumpStart); (11.4270833333333 : 19 : JumpEnd); (11.5 : 19); (11.5 : 20.375); (14.5416666666667 : 20.375 : JumpStart); (14.7083333333333 : 20.375 : JumpEnd); (15.6666666666667 : 20.375 : JumpStart); (15.8333333333333 : 20.375 : JumpEnd); (16.9869770416667 : 20.375 : JumpStart); (17.1770828333333 : 20.375 : JumpEnd); (18.0104166666667 : 20.375 : JumpStart); (18.1770833333333 : 20.375 : JumpEnd); (19.1197891666667 : 20.375 : JumpStart); (19.2864558333333 : 20.375 : JumpEnd); (26.0416666666667 : 20.375 : JumpStart); (26.2083333333333 : 20.375 : JumpEnd); (32.625 : 20.375); (32.625 : 20.0210697428385)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Agp2pDataContext/dt_users/dt_users_li_claims" />
       <nodes>
         <classShapeMoniker Id="385c18d1-f4b4-4155-bb38-2f79be77614d" />
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(32.2092307692308 : 17); (32.2092307692308 : 16.75); (32.8046153846154 : 16.75); (32.8046153846154 : 17)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(32.3342307692308 : 17.375); (32.3342307692308 : 17.125); (32.9296153846154 : 17.125); (32.9296153846154 : 17.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Agp2pDataContext/li_claims/li_claims_li_claims" />
       <nodes>
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(27.125 : 17.5827159627279); (28.1979161666667 : 17.5827159627279 : JumpStart); (28.3645828333333 : 17.5827159627279 : JumpEnd); (31.5 : 17.5827159627279)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(27.125 : 17.8639659627279); (27.2604166666667 : 17.8639659627279 : JumpStart); (27.5364608333333 : 17.8639659627279 : JumpEnd); (28.1979161666667 : 17.8639659627279 : JumpStart); (28.3645828333333 : 17.8639659627279 : JumpEnd); (31.625 : 17.8639659627279)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Agp2pDataContext/li_project_transactions/li_project_transactions_li_claims" />
       <nodes>
         <classShapeMoniker Id="c2b5f70a-ea6f-4dec-bcb4-e0b19a00c6ae" />
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(27.5 : 12.4807700602214); (28.1979161666667 : 12.4807700602214 : JumpStart); (28.3645828333333 : 12.4807700602214 : JumpEnd); (31.8233628846154 : 12.4807700602214); (31.8233628846154 : 17)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(27.34375 : 15.8365401204427); (27.34375 : 19.832216796875); (28.1979161666667 : 19.832216796875 : JumpStart); (28.3645828333333 : 19.832216796875 : JumpEnd); (31.625 : 19.832216796875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Agp2pDataContext/li_projects/li_projects_li_claims" />
       <nodes>
         <classShapeMoniker Id="fdbc4153-7005-4dc9-bef1-b83cb35238ee" />
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(27.5 : 14.189907590332); (28.1979161666667 : 14.189907590332 : JumpStart); (28.3645828333333 : 14.189907590332 : JumpEnd); (31.7400295512821 : 14.189907590332 : JumpStart); (31.9066962179487 : 14.189907590332 : JumpEnd); (33.1835601923077 : 14.189907590332); (33.1835601923077 : 17)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(27.4531275 : 15.8365401204427); (27.4531275 : 19.7065378238932); (28.1979161666667 : 19.7065378238932 : JumpStart); (28.3645828333333 : 19.7065378238932 : JumpEnd); (31.625 : 19.7065378238932)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Agp2pDataContext/li_projects/li_projects_li_claims1" />
       <nodes>
         <classShapeMoniker Id="fdbc4153-7005-4dc9-bef1-b83cb35238ee" />
-        <classShapeMoniker Id="22256c9e-95b1-46f1-885c-cbf21298f9d2" />
+        <classShapeMoniker Id="427edf2a-c0f5-4780-93c3-d2a9a5547f11" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>
