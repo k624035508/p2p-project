@@ -704,6 +704,7 @@
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
+    <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
