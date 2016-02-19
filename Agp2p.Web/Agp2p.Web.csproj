@@ -702,6 +702,7 @@
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
     <Content Include="templates\AnGuang\app_download.html" />
