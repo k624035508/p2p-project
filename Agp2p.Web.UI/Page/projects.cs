@@ -49,13 +49,13 @@ namespace Agp2p.Web.UI.Page
             //HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
 
             CategoryIdTitleMap = context.dt_article_category.Where(
-                c => c.channel_id == 6 && c.call_index != "newbie")
+                c => c.channel_id == 6 && c.parent_id == 0)
                 .OrderBy(c => c.sort_id)
                 .ToDictionary(c => c.id, c => c.title);
 
             FinancingProjectMap =
                 context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                    .GroupBy(p => p.category_id)
+                    .GroupBy(p => p.dt_article_category.parent_id ?? p.category_id)
                     .Where(g => g.Any())
                     .ToDictionary(g => g.Key, g => g.Count());
         }
