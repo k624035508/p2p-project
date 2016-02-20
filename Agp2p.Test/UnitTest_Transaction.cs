@@ -312,5 +312,53 @@ namespace Agp2p.Test
                 }
             });
         }
+
+
+        [TestMethod]
+        public void GenerateClaimFromOldData()
+        {
+            // 补充旧的债权
+            var context = new Agp2pDataContext(str);
+
+            // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
+            var ptrs =
+                context.li_project_transactions.Where(
+                    ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                    .ToList();
+
+            var proUserMap = ptrs.GroupBy(ptr => ptr.project)
+                .ToDictionary(pptr => pptr.Key,
+                    pptr =>
+                        pptr.GroupBy(ptr => ptr.investor)
+                            .ToDictionary(uptr => uptr.Key,
+                                uptr =>
+                                    uptr.Zip(Utils.Infinite(1), (ptr, index) => new {ptr, index})
+                                        .ToDictionary(pair => pair.ptr, pair => pair.index)));
+                            
+
+            ptrs.ForEach(ptr =>
+            {
+                if (ptr.li_claims1.Any()) return;
+                var claimFromInvestment = new li_claims
+                {
+                    principal = ptr.principal,
+                    projectId = ptr.project,
+                    profitingProjectId = ptr.project,
+                    createFromInvestment = ptr.id,
+                    createTime = ptr.create_time,
+                    userId = ptr.investor,
+                    status =
+                        (byte)
+                            (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                                ? Agp2pEnums.ClaimStatusEnum.Completed
+                                : Agp2pEnums.ClaimStatusEnum.Nontransferable),
+                    number = string.Format("{0:d10}{1:d10}{2:d2}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
+                    statusUpdateTime = ptr.li_projects.complete_time
+                };
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
+            });
+            context.SubmitChanges();
+            Debug.WriteLine("创建债权：" + ptrs.Count);
+        }
     }
 }
