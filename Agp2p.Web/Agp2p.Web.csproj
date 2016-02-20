@@ -789,6 +789,10 @@
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
