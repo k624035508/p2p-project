@@ -790,6 +790,8 @@
     <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\apps-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
@@ -812,6 +814,8 @@
     <Content Include="templates\AnGuang\imgs\index\guarantee-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
