@@ -10,7 +10,6 @@
         body {  margin: 0; }
         .activity-page {
             height: 3100px;
-            padding-top: 326px;
             background: url("<%templateskin%>/imgs/index/activity_apps_bg.jpg") no-repeat center top;
         }
         .activity-page a {
@@ -19,14 +18,20 @@
             width: 200px;
             height: 50px;
             left: 50%;
+        }
+        .btns-top {
+            padding-top: 326px;
             margin-left: -48px;
         }
+        .btns-bottom {
+            padding-top: 2247px;
+            margin-left: 260px;
+        }
+        .btns-top .ios-btn { margin-top: 62px; }
+        .btns-bottom .ios-btn { margin-top: 30px; }
         .android-btn { background: url("<%templateskin%>/imgs/index/activity-android-btn.png"); }
         .android-btn:hover, .android-btn:visited { background: url("<%templateskin%>/imgs/index/activity-android-btn-hover.png"); }
-        .ios-btn {
-            margin-top: 62px;
-            background: url("<%templateskin%>/imgs/index/activity-ios-btn.png");
-        }
+        .ios-btn { background: url("<%templateskin%>/imgs/index/activity-ios-btn.png"); }
         .ios-btn:hover, .ios-btn:visited { background: url("<%templateskin%>/imgs/index/activity-ios-btn-hover.png"); }
     </style>
 </head>
@@ -35,8 +40,14 @@
 <%template src="_header.html"%>
 <!--head end-->
 <div class="activity-page">
-    <a href="" class="android-btn" target="_blank"></a>
-    <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
+    <div class="btns-top">
+        <a href="" class="android-btn" target="_blank"></a>
+        <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
+    </div>
+    <div class="btns-bottom">
+        <a href="" class="android-btn" target="_blank"></a>
+        <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
+    </div>
 </div>
 <!--footer-->
 <%template src="_footer.html"%>

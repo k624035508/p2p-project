@@ -837,6 +837,8 @@
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
