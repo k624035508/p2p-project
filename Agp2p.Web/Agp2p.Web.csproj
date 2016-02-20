@@ -545,15 +545,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
-    <Content Include="install\css\styles.css" />
-    <Content Include="install\db.sql" />
-    <Content Include="install\images\error.gif" />
-    <Content Include="install\images\logo.jpg" />
-    <Content Include="install\images\ok.gif" />
-    <Content Include="install\images\succeed.jpg" />
-    <Content Include="install\index.aspx" />
-    <Content Include="install\step1.aspx" />
-    <Content Include="install\step2.aspx" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -711,8 +702,10 @@
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
+    <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
@@ -796,13 +789,15 @@
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\apps-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
-    <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
@@ -821,6 +816,8 @@
     <Content Include="templates\AnGuang\imgs\index\guarantee-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
@@ -2325,20 +2322,6 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="install\step1.aspx.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step1.aspx.designer.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="install\step2.aspx.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step2.aspx.designer.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup1.cs" />

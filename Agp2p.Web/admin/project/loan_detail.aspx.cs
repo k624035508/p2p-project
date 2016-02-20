@@ -231,7 +231,7 @@ namespace Agp2p.Web.admin.project
             {
                 project.status = auditSuccess
                     ? (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess
-                    : (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail;
+                    : (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel;
                 LqContext.SubmitChanges();
                 AddAdminLog(DTEnums.ActionEnum.Audit.ToString(), "审核操作成功！"); //记录日志
                 JscriptMsg("审核操作成功！", Utils.CombUrlTxt("loan_audit.aspx", "channel_id={0}", this.ChannelId.ToString()));

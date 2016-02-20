@@ -75,7 +75,20 @@ namespace Agp2p.Web.admin.loaner
                 query = query.Where(q => q.owner == Convert.ToInt32(loaner_id));
 
             totalCount = query.Count();
-            rptList.DataSource = query.OrderByDescending(q => q.last_update_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = query.OrderByDescending(q => q.last_update_time).Skip(pageSize*(page - 1)).Take(pageSize).ToList().Select(q => new
+            {
+                li_mortgage = new li_mortgages()
+                {
+                    id = q.id,
+                    name = q.name,
+                    li_mortgage_types = q.li_mortgage_types,
+                    owner = q.owner,
+                    valuation = q.valuation,
+                    properties = q.properties,
+                    remark = q.remark
+                },
+                projects = string.Join(",", q.li_risk_mortgage.Select(rm => string.Join(",", rm.li_risks.li_projects.Select(p => p.title))))
+            });
             rptList.DataBind();
 
             //绑定页码
