@@ -80,7 +80,7 @@ namespace Agp2p.Test
         {
             return string.IsNullOrWhiteSpace(user.real_name)
                 ? user.user_name
-                : string.Format("{0}({1})", user.user_name, user.real_name);
+                : $"{user.user_name}({user.real_name})";
         }
 
         private static string GetUserPassword(dt_users user)
@@ -352,7 +352,7 @@ namespace Agp2p.Test
                             (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
                                 ? Agp2pEnums.ClaimStatusEnum.Completed
                                 : Agp2pEnums.ClaimStatusEnum.Nontransferable),
-                    number = string.Format("{0:d10}{1:d10}{2:d2}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
+                    number = string.Format("{0:d10}{1:d10}{2:d4}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
                     statusUpdateTime = ptr.li_projects.complete_time
                 };
                 context.li_claims.InsertOnSubmit(claimFromInvestment);

@@ -679,7 +679,7 @@ namespace Agp2p.Core
 
         private static string GenerateClaimNumber(li_projects project, int userId)
         {
-            return string.Format("{0:d10}{1:d10}{2:d2}", project.id, userId,
+            return string.Format("{0:d10}{1:d10}{2:d4}", project.id, userId,
                 project.li_project_transactions.Count(
                     ptr =>
                         ptr.investor == userId &&

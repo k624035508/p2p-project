@@ -59,9 +59,37 @@ namespace Agp2p.Web.admin.project
                 }
                 Loan = new BLL.loan(LqContext);
                 ShowByStatus();
-                ShowInfo(project);
+                ShowProjectInfo(project);
+                ShowClaimsInfo(project);
                 LoanType = project.type;
             }
+        }
+
+        private void ShowClaimsInfo(li_projects project)
+        {
+            rptClaimList.DataSource = project.li_claims.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
+        protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
+        {
+            int claimId = Convert.ToInt32(((Button)sender).CommandArgument);
+            var claim = LqContext.li_claims.Single(c => c.id == claimId);
+
+            claim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferable;
+            claim.statusUpdateTime = DateTime.Now;
+            LqContext.SubmitChanges();
+
+            var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
+            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
+            JscriptMsg(remark, "");
+        }
+
+        protected static string GetFriendlyUserName(dt_users user)
+        {
+            return string.IsNullOrWhiteSpace(user.real_name)
+                ? user.user_name
+                : $"{user.user_name}({user.real_name})";
         }
 
         private void ShowByStatus()
@@ -102,7 +130,7 @@ namespace Agp2p.Web.admin.project
         /// 显示项目信息
         /// </summary>
         /// <param name="_project"></param>
-        public virtual void ShowInfo(li_projects _project)
+        public virtual void ShowProjectInfo(li_projects _project)
         {
             spa_category.InnerText = new article_category().GetTitle(_project.category_id);//项目类别
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
@@ -686,7 +714,6 @@ namespace Agp2p.Web.admin.project
 
             }, Response);
         }
-
     }
 
 }
