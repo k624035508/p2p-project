@@ -73,6 +73,9 @@ namespace Agp2p.Web.tools
                             urlReferrer = "user/center/index.html";
                         str.Append("location.href='" + siteConfig.webpath + "mobile/" + urlReferrer + "';");
                     }
+                    else
+                        str.Append("location.href='" + urlReferrer + "';");
+                    
                 }
                 else
                     str.Append("location.href='" + siteConfig.webpath + "mobile/index.aspx';");
