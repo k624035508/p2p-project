@@ -60,13 +60,30 @@ namespace Agp2p.Web.admin.project
                 Loan = new BLL.loan(LqContext);
                 ShowByStatus();
                 ShowProjectInfo(project);
-                ShowClaimsInfo(project);
+                if (project.IsHuoqiProject())
+                {
+                    ShowProfitingClaimInfo(project);
+                }
+                else
+                {
+                    ShowClaimsInfo(project);
+                }
                 LoanType = project.type;
             }
         }
 
+        protected bool isHuoqiProject;
+
+        private void ShowProfitingClaimInfo(li_projects project)
+        {
+            isHuoqiProject = true;
+            rptClaimList.DataSource = project.li_claims1.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
         private void ShowClaimsInfo(li_projects project)
         {
+            isHuoqiProject = false;
             rptClaimList.DataSource = project.li_claims.OrderBy(c => c.userId).AsEnumerable();
             rptClaimList.DataBind();
         }

@@ -36,9 +36,12 @@
             <div id="floatHead" class="content-tab">
                 <div class="content-tab-ul-wrap">
                     <ul>
-                        <% %>
                         <li><a href="javascript:;" onclick="tabs(this);" class="selected">借款详细</a></li>
-                        <li><a href="javascript:;" onclick="tabs(this);" >债权详细</a></li>
+                        <% if (isHuoqiProject) { %>
+                        <li runat="server" id="btnShowProfitingClaim"><a href="javascript:;" onclick="tabs(this);" >自动投标明细</a></li>
+                        <% } else { %>
+                        <li runat="server" id="btnShowProjectClaim"><a href="javascript:;" onclick="tabs(this);" >债权详细</a></li>
+                        <% } %>
                     </ul>
                 </div>
             </div>
@@ -503,7 +506,11 @@
                         <th align="left" width="12%">债权编号</th>
                         <th align="left" width="10%">创建时间</th>
                         <th align="left" width="10%">状态更新时间</th>
+                        <% if (isHuoqiProject) { %>
+                        <th align="left" width="10%">关联定期项目</th>
+                        <% } else { %>
                         <th align="left" width="10%">关联活期项目</th>
+                        <% } %>
                         <th align="left" width="6%">父债权</th>
                         <th align="left" width="10%">操作</th>
                     </tr>
@@ -517,7 +524,11 @@
                     <td><%#Eval("number")%></td>
                     <td><%#Eval("createTime")%></td>
                     <td><%#Eval("statusUpdateTime")%></td>
+                    <% if (isHuoqiProject) { %>
+                    <td><%# ((li_claims) Container.DataItem).li_projects.title %></td>
+                    <% } else { %>
                     <td><%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId ? "" : ((li_claims) Container.DataItem).li_projects1.title %></td>
+                    <% } %>
                     <td><%# Eval("parentClaimId")%></td>
                     <td>
                         <asp:Button runat="server"
