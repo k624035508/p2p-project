@@ -335,10 +335,11 @@ namespace Agp2p.Test
                                     uptr.Zip(Utils.Infinite(1), (ptr, index) => new {ptr, index})
                                         .ToDictionary(pair => pair.ptr, pair => pair.index)));
                             
-
             ptrs.ForEach(ptr =>
             {
                 if (ptr.li_claims1.Any()) return;
+
+                
                 var claimFromInvestment = new li_claims
                 {
                     principal = ptr.principal,
@@ -355,6 +356,21 @@ namespace Agp2p.Test
                     number = string.Format("{0:d10}{1:d10}{2:d4}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
                     statusUpdateTime = ptr.li_projects.complete_time
                 };
+
+                if (ptr.li_projects.IsNewbieProject())
+                {
+                    var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
+                    if (task.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    {
+                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable;
+                        claimFromInvestment.statusUpdateTime = null;
+                    }
+                    else
+                    {
+                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                        claimFromInvestment.statusUpdateTime = task.repay_at;
+                    }
+                }
                 context.li_claims.InsertOnSubmit(claimFromInvestment);
             });
             //context.SubmitChanges();
