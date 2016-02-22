@@ -1368,13 +1368,16 @@ namespace Agp2p.Core
         {
             var moneyRepayRatio = GetClaimRatio(repaymentTask.li_projects);
 
+            if (!moneyRepayRatio.Any())
+                return Enumerable.Empty<li_project_transactions>().ToList();
+
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio
                 .Where(c => c.Key.status < (int) Agp2pEnums.ClaimStatusEnum.Completed) // 只为未完成/有效的债权回款
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(c =>
             {
-                var realityInterest = c.Value*repaymentTask.repay_interest; // perfect round later
+                var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
@@ -1403,7 +1406,7 @@ namespace Agp2p.Core
                     project = repaymentTask.project,
                     investor = c.Key.dt_users.id,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    principal = c.Value*repaymentTask.repay_principal,  // perfect round later
+                    principal = Math.Round(c.Value*repaymentTask.repay_principal, 2),
                     interest = realityInterest,
                     remark = remark,
                     gainFromClaim = c.Key.id
@@ -1414,6 +1417,10 @@ namespace Agp2p.Core
                 }
                 return ptr;
             }).ToList();
+
+            // 因为有自动投标债权的缘故，项目的回款计划必定不能全部回款，所以无需调整四舍五入
+            if (repaymentTask.li_projects.li_claims.Any(c => c.profitingProjectId != c.projectId))
+                return rounded;
 
             var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
             var forceSum = applyCostIntoInterest
