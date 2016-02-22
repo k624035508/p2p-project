@@ -74,7 +74,7 @@ namespace Agp2p.Web.tools
                         str.Append("location.href='" + siteConfig.webpath + "mobile/" + urlReferrer + "';");
                     }
                     else
-                        str.Append("location.href='" + urlReferrer + "';");
+                        str.Append("location.href=aa'" + siteConfig.webpath + "download/android-v1.0.apk';");
                     
                 }
                 else
