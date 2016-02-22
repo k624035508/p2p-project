@@ -1418,6 +1418,9 @@ namespace Agp2p.Core
                 return ptr;
             }).ToList();
 
+            if (!rounded.Any())
+                return Enumerable.Empty<li_project_transactions>().ToList();
+
             // 因为有自动投标债权的缘故，项目的回款计划必定不能全部回款，所以无需调整四舍五入
             if (repaymentTask.li_projects.li_claims.Any(c => c.profitingProjectId != c.projectId))
                 return rounded;
