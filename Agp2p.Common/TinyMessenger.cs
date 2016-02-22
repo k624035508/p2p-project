@@ -397,6 +397,8 @@ namespace TinyMessenger
     /// </summary>
     public sealed class TinyMessengerHub : ITinyMessengerHub
     {
+        public Action<Exception> exceptionCallback; 
+
         #region Private Types and Interfaces
         private class WeakTinyMessageSubscription<TMessage> : ITinyMessageSubscription
             where TMessage : class, ITinyMessage
@@ -779,6 +781,8 @@ namespace TinyMessenger
                 {
                     // Ignore any errors and carry on
                     // TODO - add to a list of erroring subs and remove them?
+
+                    exceptionCallback?.BeginInvoke(ex, null, null);
 
                     if (Utils.IsDebugging())
                         throw;

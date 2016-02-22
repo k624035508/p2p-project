@@ -73,6 +73,10 @@ namespace Agp2p.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            MessageBus.Main.exceptionCallback = ex =>
+            {
+                new Agp2pDataContext().AppendAdminLogAndSave("MessageBusError", ex.Message);
+            };
             InitDailyTimer();
             DelayedRelease();
         }
