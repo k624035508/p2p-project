@@ -55,7 +55,7 @@ namespace Agp2p.Web.UI.Page
 
             FinancingProjectMap =
                 context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                    .GroupBy(p => p.dt_article_category.parent_id ?? p.category_id)
+                    .GroupBy(p => p.dt_article_category.parent_id == 0 ? p.category_id : p.dt_article_category.parent_id.Value)
                     .Where(g => g.Any())
                     .ToDictionary(g => g.Key, g => g.Count());
         }

@@ -357,8 +357,9 @@ namespace Agp2p.Test
                 };
                 context.li_claims.InsertOnSubmit(claimFromInvestment);
             });
-            context.SubmitChanges();
+            //context.SubmitChanges();
             Debug.WriteLine("创建债权：" + ptrs.Count);
         }
+
     }
 }

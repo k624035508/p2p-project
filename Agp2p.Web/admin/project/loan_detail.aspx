@@ -527,7 +527,7 @@
                             CommandArgument='<%# Eval("id") %>'
                             OnClientClick="return ExeNoCheckPostBack(this.name, '确认将此债权转为可转让债权？');"
                             OnClick="btnBecomeTransferable_OnClick"
-                            Visible="<%# ((li_claims) Container.DataItem).profitingProjectId != ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable %>" />
+                            Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable %>" />
                     </td>            
                 </tr>
             </ItemTemplate>
