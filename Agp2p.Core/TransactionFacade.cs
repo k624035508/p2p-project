@@ -683,7 +683,7 @@ namespace Agp2p.Core
                 profitingProject.li_project_transactions.Count(
                     ptr =>
                         ptr.investor == userId &&
-                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest) + 1); // 确保投资撤销后债权编号仍然增加
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)); // 确保投资撤销后债权编号仍然增加
         }
 
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr)
