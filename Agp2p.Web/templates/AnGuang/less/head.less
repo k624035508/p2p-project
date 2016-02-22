@@ -64,11 +64,19 @@ div.top-bar-wrap {
             line-height: 26px;
             ul {
                 li {
+                    display: inline-block;
+                    vertical-align: top;
                     padding: 0 0 0 20px;
                     a {
                         color: @dark-grey;
                         text-decoration: none;
                         &:hover, &:focus { color: @red; }
+                    }
+                    #apps {
+                        display: inline-block;
+                        width: 80px;
+                        height: 25px;
+                        background: url("../imgs/index/top-bar-app-icon.png");
                     }
                 }
                 .hr-line { color: #bbbabf; }
