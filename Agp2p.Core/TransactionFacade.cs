@@ -1219,7 +1219,7 @@ namespace Agp2p.Core
             if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                 repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("这个还款计划已经执行过了");
-            if (Agp2pEnums.RepaymentStatusEnum.ManualPaid <= statusAfterPay)
+            if (statusAfterPay < Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                 throw new InvalidOperationException("还款计划的执行状态不正确");
 
             // 执行还款
