@@ -23,8 +23,14 @@ namespace Agp2p.Core
 
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserInvestedMsg>(
-                m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成还款计划
+            MessageBus.Main.Subscribe<UserInvestedMsg>(m => CreateRepaymentTaskIfProjectBiddingComplete(m.ProjectTransactionId)); // 项目满标需要生成还款计划
+            MessageBus.Main.Subscribe<ProjectRepaidMsg>(m =>
+            {
+                if (m.IsProjectNeedComplete)
+                {
+                    CompleteProject(m.RepaymentTaskId);
+                }
+            });
         }
 
         /// <summary>
@@ -802,6 +808,8 @@ namespace Agp2p.Core
             if (repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                 repaymentTask.status != (int) Agp2pEnums.RepaymentStatusEnum.OverTime)
                 throw new InvalidOperationException("这个还款计划已经执行过了");
+            if (Agp2pEnums.RepaymentStatusEnum.ManualPaid <= statusAfterPay)
+                throw new InvalidOperationException("还款计划的执行状态不正确");
 
             // 执行还款
             repaymentTask.status = (byte) statusAfterPay;
@@ -836,21 +844,32 @@ namespace Agp2p.Core
             }
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectRepaidMsg(repaymentId)); // 广播项目还款的消息
+            var proj = repaymentTask.li_projects;
 
+            var projectNeedComplete = !proj.IsHuoqiProject() && !proj.IsNewbieProject() && !proj.li_repayment_tasks.Any(
+                ta =>
+                    ta.id != repaymentId &&
+                    (ta.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                     ta.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime));
+            MessageBus.Main.PublishAsync(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息
+
+            return repaymentTask;
+        }
+
+        private static void CompleteProject(int repaymentTaskId)
+        {
             // 如果所有还款计划均已执行，将项目标记为完成
             var newContext = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
-            var pro = newContext.li_projects.Single(p => p.id == repaymentTask.project);
-            if (pro.dt_article_category.call_index != "newbie"
-                && !pro.li_repayment_tasks.Any(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime))
+            var repaymentTask = newContext.li_repayment_tasks.Single(ta => ta.id == repaymentTaskId);
+            var pro = repaymentTask.li_projects;
+            if (!pro.li_repayment_tasks.Any(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime))
             {
-                pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
+                pro.status = (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
                 newContext.SubmitChanges();
                 // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
             }
-            return repaymentTask;
         }
 
         public static Dictionary<dt_users, decimal> GetInvestRatio(li_projects proj)
