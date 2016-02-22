@@ -566,6 +566,7 @@
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
     <Content Include="admin\predict\predict-table.jsx" />
+    <Content Include="download\android-v1.0.apk" />
     <None Include="scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="scripts\jquery-2.1.4.js" />
     <Content Include="scripts\jquery-2.1.4.min.js" />
@@ -789,6 +790,10 @@
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
@@ -832,6 +837,8 @@
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />

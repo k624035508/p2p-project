@@ -59,16 +59,23 @@ namespace Agp2p.Web.tools
                 {
                     var urlReferrer = HttpContext.Current.Request.UrlReferrer.ToString();
 
-                    //使充值后正确返回会员中心
-                    if (!urlReferrer.Contains("user/center/index.html"))
+                    //下载链接不跳转
+                    if (!urlReferrer.Contains("download"))
                     {
-                        //var substring = urlReferrer.Substring(urlReferrer.LastIndexOf("/") + 1);
-                        var substring = new Uri(urlReferrer).PathAndQuery;
-                        urlReferrer = string.IsNullOrEmpty(substring) || substring == "/" ? "index.html" : substring;
+                        //使充值后正确返回会员中心
+                        if (!urlReferrer.Contains("user/center/index.html"))
+                        {
+                            //var substring = urlReferrer.Substring(urlReferrer.LastIndexOf("/") + 1);
+                            var substring = new Uri(urlReferrer).PathAndQuery;
+                            urlReferrer = string.IsNullOrEmpty(substring) || substring == "/" ? "index.html" : substring;
+                        }
+                        else
+                            urlReferrer = "user/center/index.html";
+                        str.Append("location.href='" + siteConfig.webpath + "mobile/" + urlReferrer + "';");
                     }
                     else
-                        urlReferrer = "user/center/index.html";
-                    str.Append("location.href='" + siteConfig.webpath + "mobile/" + urlReferrer + "';");
+                        str.Append("location.href='" + siteConfig.webpath + "download/android-v1.0.apk';");
+                    
                 }
                 else
                     str.Append("location.href='" + siteConfig.webpath + "mobile/index.aspx';");
