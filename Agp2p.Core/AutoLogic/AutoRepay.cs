@@ -100,7 +100,7 @@ namespace Agp2p.Core.AutoLogic
                             type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw,
                             status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                             gainFromClaim = c.id,
-                            // remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
+                            remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
                         };
                         context.li_project_transactions.InsertOnSubmit(withdrawTransact);
 
@@ -129,18 +129,25 @@ namespace Agp2p.Core.AutoLogic
                 .Where(p => !p.li_repayment_tasks.Any(ta => ta.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && ta.should_repay_time.Date == DateTime.Today))
                 .Where(p => p.li_claims1.Any(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
 
-            var dailyRepayments = huoqiProjects.Select(p =>
+            var dailyRepayments = huoqiProjects.SelectMany(p =>
             {
                 // 如果是今天才投的活期标，则不返利
-                var shouldRepayTo = p.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.createTime.Date < DateTime.Today);
-                return new li_repayment_tasks
+                var shouldRepayTo = p.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.createTime.Date < DateTime.Today).ToList();
+                if (!shouldRepayTo.Any())
                 {
-                    should_repay_time = nextDay.AddHours(15),
-                    repay_principal = 0,
-                    repay_interest = 1m / 365 * 0.033m * shouldRepayTo.Sum(c => c.principal),
-                    project = p.id,
-                    status = (byte)Agp2pEnums.RepaymentStatusEnum.Unpaid,
-                    term = (short)((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)
+                    return Enumerable.Empty<li_repayment_tasks>();
+                }
+                return new[]
+                {
+                    new li_repayment_tasks
+                    {
+                        should_repay_time = nextDay.AddHours(15),
+                        repay_principal = 0,
+                        repay_interest = 1m/365*0.033m*shouldRepayTo.Sum(c => c.principal),
+                        project = p.id,
+                        status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
+                        term = (short) ((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)
+                    }
                 };
             }).ToList();
             context.li_repayment_tasks.InsertAllOnSubmit(dailyRepayments);
