@@ -502,9 +502,11 @@ namespace Agp2p.Web.admin.project
 
                 txt_project_repayment_type.Items.Clear();
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+                txt_project_repayment_type.SelectedIndex = 0;
 
                 txt_project_repayment_term.Items.Clear();
                 txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 0;
             }
             //活期项目
             else if (category != null && category.call_index.Equals("huoqi"))
@@ -518,9 +520,11 @@ namespace Agp2p.Web.admin.project
 
                 txt_project_repayment_type.Items.Clear();
                 txt_project_repayment_type.Items.Add(new ListItem("每日收益", "40"));
+                txt_project_repayment_type.SelectedIndex = 0;
 
                 txt_project_repayment_term.Items.Clear();
                 txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 0;
             }
             else
             {
