@@ -9,7 +9,7 @@ namespace Agp2p.API.Payment.Ecpss
         //汇潮MD5校验码
         public static string key = "^HFL[g)k";
         //显示支付通知页面
-        public static string return_url = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/ecpss/return_url.aspx";
+        public static string return_url = "https://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/ecpss/return_url.aspx";
 
         //支付完成后的回调处理页面
         public static string notify_url = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/ecpss/notify_url.aspx";
