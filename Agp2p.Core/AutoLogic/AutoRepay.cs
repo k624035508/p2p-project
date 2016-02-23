@@ -76,6 +76,8 @@ namespace Agp2p.Core.AutoLogic
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid).ToList();
+            if (!claims.Any()) return;
+
             claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
             {
                 var huoqiProject = pcs.Key;
@@ -114,6 +116,7 @@ namespace Agp2p.Core.AutoLogic
                     });
                 });
             });
+            context.AppendAdminLog("HuoqiWithdraw", "今日活期项目提现成功: " + claims.Sum(c => c.principal).ToString("c"));
 
             context.SubmitChanges();
         }
@@ -150,12 +153,14 @@ namespace Agp2p.Core.AutoLogic
                     }
                 };
             }).ToList();
-            context.li_repayment_tasks.InsertAllOnSubmit(dailyRepayments);
-            context.SubmitChanges();
+            if (!dailyRepayments.Any()) return;
 
-            context.AppendAdminLogAndSave("Huoqi",
+            context.li_repayment_tasks.InsertAllOnSubmit(dailyRepayments);
+
+            context.AppendAdminLog("Huoqi",
                 "自动生成今天 " + dailyRepayments.Count + " 个活期项目的还款计划，利润总计：" +
                 dailyRepayments.Aggregate(0m, (sum, tasks) => sum + tasks.repay_interest).ToString("c"));
+            context.SubmitChanges();
         }
 
         private static void DoRepay(bool onTime)
