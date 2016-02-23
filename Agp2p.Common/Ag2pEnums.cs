@@ -19,7 +19,9 @@ namespace Agp2p.Common
             [Description("信用保障")]
             CreditGuarantee = 4,
             [Description("火爆")]
-            Hot = 8
+            Hot = 8,
+            [Description("新手体验标")]
+            Trial = 16,
         }
 
         public enum LoanTypeEnum
@@ -29,7 +31,7 @@ namespace Agp2p.Common
             [Description("个人")]
             Personal = 20,
             [Description("债权")]
-            Creditor = 30,
+            Creditor = 30
         }
 
         public enum GuarantorTypeEnum
