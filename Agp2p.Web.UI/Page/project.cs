@@ -64,7 +64,7 @@ namespace Agp2p.Web.UI.Page
             //借款人
             loaner = risk.li_loaners;
             //借款人企业
-            loaner_company = risk.li_loaners.li_loaner_companies;
+            loaner_company = risk.li_loaners?.li_loaner_companies;
             //抵押物
             mortgages = projectModel.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).ToList();
 
@@ -88,7 +88,7 @@ namespace Agp2p.Web.UI.Page
                     a.type == (int) Agp2pEnums.AlbumTypeEnum.PropertyCertificate ||
                     a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate));
 
-            var loanerIdCard = loaner.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard);
+            var loanerIdCard = loaner?.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard) ?? Enumerable.Empty<li_albums>();
 
             var creditorIdCard = Enumerable.Empty<li_albums>();
             if (risk.li_creditors?.dt_users != null)
@@ -100,7 +100,7 @@ namespace Agp2p.Web.UI.Page
             var companyPics = Enumerable.Empty<li_albums>();
             if (projectModel.dt_article_category.call_index != "ypl")
             {
-                if (risk.li_loaners.li_loaner_companies != null)
+                if (risk.li_loaners?.li_loaner_companies != null)
                 {
                     companyPics =
                         risk.li_loaners.li_loaner_companies.li_albums.Where(
