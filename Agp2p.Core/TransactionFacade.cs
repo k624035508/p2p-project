@@ -1353,12 +1353,10 @@ namespace Agp2p.Core
             if (proj.IsHuoqiProject())
             {
                 var claims = proj.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
-                Debug.Assert(claims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
                 return claims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
             }
 
             var allClaims = proj.li_claims.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
-            Debug.Assert(allClaims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
 
             // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
             var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId);
