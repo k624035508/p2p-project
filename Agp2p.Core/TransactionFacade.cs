@@ -456,7 +456,7 @@ namespace Agp2p.Core
             var wallet = user.li_wallets;
 
             if (wallet.idle_money < investingMoney)
-                throw new InvalidOperationException("余额不足，无法投资");
+                throw new InvalidOperationException("余额不足，无法转让债权");
 
             Debug.Assert(pr.IsHuoqiProject());
 
