@@ -92,8 +92,8 @@
                     <ul>
                         <% %>
                         <li><a href="javascript:;" id="a_item_base" onclick="tabs(this);" class="selected">基本信息</a></li>
-                        <li><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
-                        <li><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>
+                        <li id="li_mortgages" runat="server"><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
+                        <li id="li_risk" runat="server"><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>
                         <li><a href="javascript:;" onclick="tabs(this);">SEO选项</a></li>
                     </ul>
                 </div>
@@ -195,6 +195,7 @@
                             <asp:ListItem Value="10" Selected="True">先息后本</asp:ListItem>
                             <asp:ListItem Value="20">等额本息</asp:ListItem>
                             <asp:ListItem Value="30">到期还本付息</asp:ListItem>
+                            <asp:ListItem Value="40">每日收益</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
                     <asp:Label ID="div_project_repayment_type_tip" runat="server" CssClass="Validform_checktip" />
