@@ -126,7 +126,7 @@ namespace Agp2p.Core.AutoLogic
             // TODO test 次日开始返息：如果存在需要回款的活期项目债权，并且今天没有该项目的回款计划，则生成
             var huoqiProjects = context.li_projects
                 .Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing && p.dt_article_category.call_index == "huoqi")
-                .Where(p => !p.li_repayment_tasks.Any(ta => ta.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid && ta.should_repay_time.Date == today))
+                .Where(p => p.li_repayment_tasks.All(ta => ta.should_repay_time.Date != today))
                 .Where(p => p.li_claims1.Any(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
 
             var dailyRepayments = huoqiProjects.SelectMany(p =>
@@ -143,7 +143,7 @@ namespace Agp2p.Core.AutoLogic
                     {
                         should_repay_time = today.AddHours(15),
                         repay_principal = 0,
-                        repay_interest = 1m/365*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal),
+                        repay_interest = Math.Round(1m/365*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal), 2),
                         project = p.id,
                         status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                         term = (short) ((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)

@@ -353,7 +353,7 @@ namespace Agp2p.Test
                             (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
                                 ? Agp2pEnums.ClaimStatusEnum.Completed
                                 : Agp2pEnums.ClaimStatusEnum.Nontransferable),
-                    number = string.Format("{0:d10}{1:d10}{2:d4}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
+                    number = Utils.HiResNowString,
                     statusUpdateTime = ptr.li_projects.complete_time
                 };
 
@@ -375,6 +375,15 @@ namespace Agp2p.Test
             });
             //context.SubmitChanges();
             Debug.WriteLine("创建债权：" + ptrs.Count);
+        }
+
+        [TestMethod]
+        public void TestHiResTimeTickUtil()
+        {
+            Enumerable.Range(0, 10)
+                .Select(i => Utils.HiResNowString)
+                .ToList()
+                .ForEach(time => Debug.WriteLine(time));
         }
 
     }

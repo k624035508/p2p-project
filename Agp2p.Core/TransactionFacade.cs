@@ -436,7 +436,7 @@ namespace Agp2p.Core
                     status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     userId = wallet.user_id,
                     profitingProjectId = projectId,
-                    number = GenerateClaimNumber(pr, wallet.user_id)
+                    number = Utils.HiResNowString
                 };
                 context.li_claims.InsertOnSubmit(liClaims);
             }
@@ -678,19 +678,10 @@ namespace Agp2p.Core
                 userId = tr.dt_users.id,
                 status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 principal = investment,
-                number = GenerateClaimNumber(tr.li_projects, tr.dt_users.id),
+                number = Utils.HiResNowString
             };
             context.li_claims.InsertOnSubmit(liClaims);
             return investment;
-        }
-
-        private static string GenerateClaimNumber(li_projects profitingProject, int userId)
-        {
-            return string.Format("{0:d10}{1:d10}{2:d4}", profitingProject.id, userId,
-                profitingProject.li_project_transactions.Count(
-                    ptr =>
-                        ptr.investor == userId &&
-                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)); // 确保投资撤销后债权编号仍然增加
         }
 
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr, DateTime? investTime = null)
@@ -769,7 +760,7 @@ namespace Agp2p.Core
                 projectId = originalClaim.projectId,
                 profitingProjectId = tr.li_projects.id,
                 li_project_transactions1 = tr,
-                number = GenerateClaimNumber(tr.li_projects, tr.dt_users.id)
+                number = Utils.HiResNowString
             };
             context.li_claims.InsertOnSubmit(liClaims);
 
@@ -1362,12 +1353,10 @@ namespace Agp2p.Core
             if (proj.IsHuoqiProject())
             {
                 var claims = proj.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
-                Debug.Assert(claims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
                 return claims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
             }
 
             var allClaims = proj.li_claims.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
-            Debug.Assert(allClaims.Aggregate(0m, (sum, c) => sum + c.principal) == proj.investment_amount, "项目债权总金额应匹配项目已融资总额");
 
             // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
             var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId);
@@ -1448,8 +1437,8 @@ namespace Agp2p.Core
             if (!rounded.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
 
-            // 因为有自动投标债权的缘故，项目的回款计划必定不能全部回款，所以无需调整四舍五入
-            if (repaymentTask.li_projects.li_claims.Any(c => c.profitingProjectId != c.projectId))
+            // 定期项目如果有自动投标债权，项目的回款计划必定不能全部回款，所以无需调整四舍五入
+            if (!repaymentTask.li_projects.IsHuoqiProject() && repaymentTask.li_projects.li_claims.Any(c => c.profitingProjectId != c.projectId))
                 return rounded;
 
             var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
