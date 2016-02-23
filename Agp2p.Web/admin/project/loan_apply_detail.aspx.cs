@@ -128,6 +128,7 @@ namespace Agp2p.Web.admin.project
         public virtual void ShowInfo(li_projects _project)
         {
             ddlCategoryId.SelectedValue = _project.category_id.ToString();//项目类别
+            BindDDlCategory();
             rbl_project_type.SelectedValue = _project.type.ToString();//借款主体
 
             txtSeoTitle.Text = _project.seo_title;
@@ -470,7 +471,7 @@ namespace Agp2p.Web.admin.project
             }
         }
 
-        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        private void BindDDlCategory()
         {
             var category =
                 LqContext.dt_article_category.Single(c => c.id == Utils.StrToInt(ddlCategoryId.SelectedValue, 0));
@@ -493,23 +494,33 @@ namespace Agp2p.Web.admin.project
             {
                 div_risks_info.Visible = false;
                 div_mortgages_info.Visible = false;
-                div_project_profit_rate.Visible = false;
-                div_project_repayment_number.Visible = false;
                 div_loan_fee_rate.Visible = false;
                 div_bond_fee_rate.Visible = false;
+                div_project_profit_rate.Visible = false;
+                li_mortgages.Visible = false;
+                li_risk.Visible = false;
 
                 txt_project_repayment_type.Items.Clear();
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
             }
             //活期项目
             else if (category != null && category.call_index.Equals("huoqi"))
             {
                 div_risks_info.Visible = false;
                 div_mortgages_info.Visible = false;
-                div_project_repayment_number.Visible = false;
-                div_project_repayment_type.Visible = false;
                 div_loan_fee_rate.Visible = false;
                 div_bond_fee_rate.Visible = false;
+                li_mortgages.Visible = false;
+                li_risk.Visible = false;
+
+                txt_project_repayment_type.Items.Clear();
+                txt_project_repayment_type.Items.Add(new ListItem("每日收益", "40"));
+
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
             }
             else
             {
@@ -527,6 +538,21 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.SelectedIndex = 0;
                 txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N0");
+            }
+        }
+
+        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ddlCategoryId.SelectedValue))
+            {
+                div_risks_info.Visible = true;
+                div_mortgages_info.Visible = true;
+                div_loan_fee_rate.Visible = true;
+                div_bond_fee_rate.Visible = true;
+                div_project_profit_rate.Visible = true;
+                li_mortgages.Visible = true;
+                li_risk.Visible = true;
+                BindDDlCategory();
             }
         }
     }
