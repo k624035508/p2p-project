@@ -88,9 +88,13 @@ namespace Agp2p.Core.AutoLogic
 
                     ucs.ForEach(c =>
                     {
-                        c.status = (byte) (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid
-                            ? Agp2pEnums.ClaimStatusEnum.Completed
-                            : Agp2pEnums.ClaimStatusEnum.Transferred);
+                        if (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
+                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                        else if (c.status == (int)Agp2pEnums.ClaimStatusEnum.TransferredUnpaid)
+                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
+                        else
+                            throw new InvalidOperationException("活期项目 T+1 提款出错：未知的债权状态");
+
                         c.statusUpdateTime = repayTime;
 
                         var withdrawTransact = new li_project_transactions
