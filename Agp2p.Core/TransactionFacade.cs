@@ -600,7 +600,7 @@ namespace Agp2p.Core
         /// <param name="apportionAmount"></param>
         /// <param name="tr"></param>
         /// <param name="exceedCallback"></param>
-        /// <returns>剩余可投</returns>
+        /// <returns>剩余可投金额</returns>
         private static decimal AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr, DateTime? investTime = null)
         {
             // 接手债权或找出可投资项目并投资（创建债权），如果项目可投金额不足，则抛异常
@@ -628,6 +628,15 @@ namespace Agp2p.Core
             return ApportionToProjects(context, investableProjects, apportionAmount, tr, investTime);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="investableProjects"></param>
+        /// <param name="investingMoney"></param>
+        /// <param name="tr"></param>
+        /// <param name="investTime"></param>
+        /// <returns>剩余可投金额</returns>
         private static decimal ApportionToProjects(Agp2pDataContext context, List<li_projects> investableProjects, decimal investingMoney, li_project_transactions tr, DateTime? investTime = null)
         {
             if (!investableProjects.Any() || investingMoney == 0)
@@ -654,11 +663,23 @@ namespace Agp2p.Core
             }
             else
             {
+                // 如果用户投资金额低于 1000，则优先匹配单个项目
+                if (investingMoney <= 1000 && investableProjects.Any(p => investingMoney <= p.financing_amount - p.investment_amount))
+                {
+                    var suitProject = investableProjects.OrderBy(p => p.financing_amount - p.investment_amount).First(p => investingMoney <= p.financing_amount - p.investment_amount);
+                    ClaimCreate(context, suitProject, investingMoney, tr, investTime);
+                    return 0;
+                }
                 // 部分投资
                 var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(investableProjects.Count).ToList(), investingMoney, 0);
-                return investingMoney -
-                       investableProjects.Zip(perfectRounding,
-                           (p, investAmount) => 0 < investAmount ? ClaimCreate(context, p, investAmount, tr, investTime) : 0).Sum();
+                investableProjects.ZipEach(perfectRounding, (p, investAmount) =>
+                {
+                    if (0 < investAmount)
+                    {
+                        ClaimCreate(context, p, investAmount, tr, investTime);
+                    }
+                });
+                return 0;
             }
         }
 
@@ -682,6 +703,15 @@ namespace Agp2p.Core
             return investment;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="needTransferClaims"></param>
+        /// <param name="investingMoney"></param>
+        /// <param name="tr"></param>
+        /// <param name="investTime"></param>
+        /// <returns>返回没有匹配到债权的金额</returns>
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr, DateTime? investTime = null)
         {
             if (!needTransferClaims.Any() || investingMoney == 0)
@@ -706,8 +736,14 @@ namespace Agp2p.Core
             }
             else
             {
-                // 全部拆分
-                // 注意：债权的本金不能为小数
+                // 如果用户投资金额低于 1000，则优先匹配单个项目
+                if (investingMoney <= 1000 && needTransferClaims.Any(c => investingMoney <= c.principal))
+                {
+                    var suitClaim = needTransferClaims.OrderBy(c => c.principal).First(c => investingMoney <= c.principal);
+                    ClaimTransfer(context, suitClaim, investingMoney, tr, investTime);
+                    return 0;
+                }
+                // 全部债权的金额都高于平均转让金额，全部进行转让。注意：债权的本金不能为小数
                 var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(needTransferClaims.Count).ToList(), investingMoney, 0);
                 needTransferClaims.ZipEach(perfectRounding, (c, transferAmount) =>
                 {
@@ -716,7 +752,7 @@ namespace Agp2p.Core
                         ClaimTransfer(context, c, transferAmount, tr, investTime);
                     }
                 });
-                return investingMoney - perfectRounding.Sum();
+                return 0;
             }
         }
 
