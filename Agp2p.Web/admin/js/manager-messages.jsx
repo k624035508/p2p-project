@@ -20,6 +20,7 @@ class ManagerMessage extends React.Component {
 	}
 	componentDidMount() {
 		this.fetchMessages(this.state.type, this.state.pageIndex);
+		window.refreshDlg = () => this.fetchMessages(this.state.type, this.state.pageIndex);
 	}
 	fetchMessages(type, pageIndex) {
 		this.setState({type, pageIndex});
@@ -29,7 +30,7 @@ class ManagerMessage extends React.Component {
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
-			data: {type, pageIndex, pageSize},
+			data: {type, pageIndex, pageSize, idOnly: false},
 			success: function(result) {
 				let {totalCount, msgs} = JSON.parse(result.d);
 				if (msgs.length == 0 && 0 < pageIndex) { // deleted all messages in final page
@@ -122,7 +123,7 @@ class ManagerMessage extends React.Component {
 			dataType: "json",
 			contentType: "application/json",
 			url: url,
-			data: {type: this.state.type, pageIndex: 0, pageSize: 9999},
+			data: {type: this.state.type, pageIndex: 0, pageSize: 9999, idOnly: true},
 			success: function(result) {
 				let {totalCount, msgs} = JSON.parse(result.d);
 				this.deleteMessages(msgs.map(m => m.id));
@@ -186,6 +187,7 @@ class ManagerMessage extends React.Component {
 				</div>
                 <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                     onPageSelected={pageIndex => {
+                    	if (this.state.pageIndex == pageIndex) return;
                     	this.fetchMessages(this.state.type, pageIndex);
                     	this.setState({readingMsgIndex: -1})
                     }}/>

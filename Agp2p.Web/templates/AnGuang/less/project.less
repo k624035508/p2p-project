@@ -357,8 +357,7 @@ div.project-content-wrap {
 	.project-content-left {
 		width: 87%;
 		font-size: @font15;
-        width: 87%;
-		font-size: @font15;
+		border-right: @border;
 		& > div > ul {
 			margin: @content-margin;
 			li {
@@ -470,9 +469,8 @@ div.project-content-wrap {
 	}
 	.project-content-right {
 		width: 13%;
-		height: 1565px;
-		*height: auto;
-		border-left: @border;
+		min-height: 1000px;
+		//*height: auto;
         .notScroll {
 			position: relative;
 			left: -5px;

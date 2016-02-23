@@ -1,5 +1,5 @@
 ﻿import "bootstrap-webpack";
-import "../less/myinvest.css";
+import "../less/myinvest.less";
 import "../less/footer.less";
 import template from "lodash/string/template";
 import footerInit from "./footer.js";

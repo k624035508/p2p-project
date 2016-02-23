@@ -25,7 +25,7 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public new static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
         {
-            var userInfo = GetUserInfo();
+            var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
@@ -48,18 +48,24 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行所在地格式不正确";
             }
-            if (!new Regex(@"^[^<>]*$").IsMatch(openingBank))
+            if (!new Regex(@"^[^<>\s]+$").IsMatch(openingBank))
             {
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "开户行名称格式不正确";
             }
             
             var context = new Agp2pDataContext();
-            var alreadyHave = context.li_bank_accounts.Any(c => c.owner == userInfo.id && c.account == cardNumber);
+            var alreadyHave = userInfo.li_bank_accounts.Any(c => c.account == cardNumber);
             if (alreadyHave)
             {
                 HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Conflict;
                 return "你已经添加了卡号为 " + cardNumber + " 的银行卡，不能重复添加";
+            }
+
+            if (userInfo.li_bank_accounts.Any())
+            {
+                HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Conflict;
+                return "最多只能添加一张银行卡";
             }
 
             var user = context.dt_users.Single(u => u.id == userInfo.id);
@@ -113,7 +119,7 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行所在地格式不正确";
             }
-            if (!new Regex(@"^[^<>]*$").IsMatch(openingBank))
+            if (!new Regex(@"^[^<>\s]+$").IsMatch(openingBank))
             {
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "开户行名称格式不正确";

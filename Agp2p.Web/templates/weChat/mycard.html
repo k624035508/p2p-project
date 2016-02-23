@@ -28,58 +28,64 @@
 </head>
 <body>
 <div id="fullpage">
-    <div class="section">
-        <div class="slide">
-            <div class="mycards-page inner-scrollable">
-                <%set var bank_accounts=get_bank_accounts(userModel.id)%>
-                <%foreach(var bank_account in bank_accounts)%>
-                <div class="card-cell flex flex--align-items--center flex--flex-grow-second" data-cardId="{bank_account.id}">
-                    <i class="sprite"></i>
-                    <div class="card-info">
-                        <p>{bank_account.bank}</p>
-                        <span class="last-num">尾号： <span><%=bank_account.account.Substring(bank_account.account.Length - 4)%></span></span>
-                    </div>
-                    <span class="glyphicon glyphicon-menu-right"></span>
-                </div>
-                <%/foreach%>
-                <div class="add-cards">添加银行卡</div>
-                <div class="tips">绑定的银行卡开户人姓名必须与实名认证保持一致，否则无法提现。</div>
-            </div>
-        </div>
-        <div class="slide">
-            <div class="binding-cards-page inner-scrollable">
-                <form>
-                    <div class="name-wrap">
-                        <input id="realName" type="text" class="input-l" readonly="readonly" value="{userModel.real_name}">
-                    </div>
-                    <div class="card-num-wrap">
-                        <input type="text" id="cardNumber" class="input-l" placeholder="请输入银行卡号">
-                    </div>
-                    <div class="bank-select-wrap" data-toggle="modal" data-target="#bank-select-dialog">
-                        <input type="text" id="bankName" class="input-l" placeholder="请选择银行" readonly="readonly">
-                    </div>
-                    <div class="city-select-wrap" data-toggle="modal" data-target="#dlgSelectArea">
-                        <input type="text" id="bankLocation" class="input-l" placeholder="请选择开户行城市" readonly="readonly">
-                    </div>
-                    <div class="bank-name-wrap">
-                        <input type="text" id="openingBank" class="input-l" placeholder="请输入开户行名称">
-                    </div>
-                    <div class="submit-btn-wrap">
-                        <button type="button" id="submitBtn" class="button-l" >提 交</button>
-                        <div class="modify-btns-box">
-                            <button type="button" id="delete-btn">删 除</button>
-                            <button type="button" id="modify-btn" class="pull-right">修 改</button>
+    <div class="height-100 flex flex--column flex--flex-grow-first">
+        <div class="scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
+        <div class="section fp-auto-height">
+            <div class="slide">
+                <div class="mycards-page inner-scrollable">
+                    <%set var bank_accounts=get_bank_accounts(userModel.id)%>
+                    <%foreach(var bank_account in bank_accounts)%>
+                    <div class="card-cell flex flex--align-items--center flex--flex-grow-second" data-cardId="{bank_account.id}">
+                        <i class="sprite"></i>
+                        <div class="card-info">
+                            <p>{bank_account.bank}</p>
+                            <span class="last-num">尾号： <span><%=bank_account.account.Substring(bank_account.account.Length - 4)%></span></span>
                         </div>
+                        <span class="glyphicon glyphicon-menu-right"></span>
                     </div>
-                </form>
-                <span class="glyphicon glyphicon-triangle-bottom" id="for-bank"></span>
-                <span class="glyphicon glyphicon-triangle-bottom" id="for-city"></span>
+                    <%/foreach%>
+                    <%if(!bank_accounts.Any())%>
+                    <div class="add-cards">添加银行卡</div>
+                    <%/if%>
+                    <div class="tips">绑定的银行卡开户人姓名必须与实名认证保持一致，否则无法提现。</div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="binding-cards-page inner-scrollable">
+                    <form>
+                        <div class="name-wrap">
+                            <input id="realName" type="text" class="input-l" readonly="readonly" value="{userModel.real_name}">
+                        </div>
+                        <div class="card-num-wrap">
+                            <input type="text" id="cardNumber" class="input-l" placeholder="请输入银行卡号">
+                        </div>
+                        <div class="bank-select-wrap" data-toggle="modal" data-target="#bank-select-dialog">
+                            <input type="text" id="bankName" class="input-l" placeholder="请选择银行" readonly="readonly">
+                        </div>
+                        <div class="city-select-wrap" data-toggle="modal" data-target="#dlgSelectArea">
+                            <input type="text" id="bankLocation" class="input-l" placeholder="请选择开户行城市" readonly="readonly">
+                        </div>
+                        <div class="bank-name-wrap">
+                            <input type="text" id="openingBank" class="input-l" placeholder="请输入开户行名称">
+                        </div>
+                        <div class="submit-btn-wrap">
+                            <button type="button" id="submitBtn" class="button-l" >提 交</button>
+                            <div class="modify-btns-box">
+                                <button type="button" id="delete-btn">删 除</button>
+                                <button type="button" id="modify-btn" class="pull-right">修 改</button>
+                            </div>
+                        </div>
+                    </form>
+                    <span class="glyphicon glyphicon-triangle-bottom" id="for-bank"></span>
+                    <span class="glyphicon glyphicon-triangle-bottom" id="for-city"></span>
+                </div>
             </div>
         </div>
+        </div>
+        <%template src="_footer.html"%>
     </div>
 </div>
 <script>var forceFooterKey = "settings";</script>
-<%template src="_footer.html"%>
 
 <!-- Modal -->
 <div class="modal fade" id="bank-select-dialog" tabindex="-1" role="dialog" aria-labelledby="bankSelectTitleLabel" aria-hidden="true">

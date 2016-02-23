@@ -96,7 +96,7 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("操作失败：用户 " + user.user_name + " 的账户余额小于需要提现的金额");
 
             // 判断提现次数，每日每张卡的提现次数不能超过 3 次
-            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today))
+            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today) && !Utils.IsDebugging())
             {
                 throw new InvalidOperationException("每日每张卡的提现次数不能超过 3 次");
             }
@@ -282,7 +282,7 @@ namespace Agp2p.Core
                 if (tr.handling_fee_type ==
                     (int) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee)
                 {
-                    wallet.unused_money += tr.handling_fee/StandGuardFeeRate; // 恢复防套现手续费的部分
+                    wallet.unused_money += StandGuardFeeRate == 0 ? 0 : tr.handling_fee/StandGuardFeeRate; // 恢复防套现手续费的部分
                 }
                 wallet.last_update_time = tr.transact_time.Value;
 
@@ -411,20 +411,25 @@ namespace Agp2p.Core
 
             if (pr.IsHuoqiProject())
             {
-                AutoInvestment(context, investingMoney, tr);
+                var exceed = AutoInvestment(context, investingMoney, tr);
+                if (exceed != 0)
+                {
+                    throw new Exception("没有足够的项目可投，超出：" + exceed);
+                }
             }
             else
             {
                 // 创建债权
                 var liClaims = new li_claims
                 {
-                    li_project_transactions = tr,
+                    li_project_transactions1 = tr,
                     createTime = wallet.last_update_time,
                     projectId = projectId,
                     principal = investingMoney,
                     status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     userId = wallet.user_id,
-                    profitingProjectId = projectId
+                    profitingProjectId = projectId,
+                    number = GenerateClaimNumber(pr, wallet.user_id)
                 };
                 context.li_claims.InsertOnSubmit(liClaims);
             }
@@ -432,6 +437,145 @@ namespace Agp2p.Core
             context.SubmitChanges();
 
             MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+        }
+
+        public static void TakeOverHuoqiProject(this Agp2pDataContext context, dt_users user, li_projects pr, decimal investingMoney)
+        {
+            if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status && (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
+                throw new InvalidOperationException("项目不可投资！");
+            // 判断投资金额的数额是否合理
+
+            // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
+            var wallet = user.li_wallets;
+
+            if (wallet.idle_money < investingMoney)
+                throw new InvalidOperationException("余额不足，无法投资");
+
+            Debug.Assert(pr.IsHuoqiProject());
+
+            // 项目已投资金额不变
+            // pr.investment_amount += investingMoney;
+
+            // 修改钱包金额
+            wallet.idle_money -= investingMoney;
+            wallet.unused_money -= Math.Min(investingMoney, wallet.unused_money); // 投资的话优先使用未投资金额，再使用回款金额
+            wallet.investing_money += investingMoney;
+            wallet.total_investment += investingMoney;
+            wallet.last_update_time = DateTime.Now;
+
+            // 创建投资记录
+            var tr = new li_project_transactions
+            {
+                dt_users = wallet.dt_users,
+                li_projects = pr,
+                type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.Invest,
+                principal = investingMoney,
+                status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                create_time = wallet.last_update_time // 时间应该一致
+            };
+            context.li_project_transactions.InsertOnSubmit(tr);
+
+            // 修改钱包历史
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+            his.li_project_transactions = tr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+
+            var exceed = AutoInvestment(context, investingMoney, tr);
+            if (exceed != 0)
+            {
+                throw new Exception("没有足够的项目可投，超出：" + exceed);
+            }
+
+            // MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+        }
+
+        public static void HuoqiProjectWithdraw(Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
+        {
+            // 将活期项目的债权设置为 需要转让
+            var user = context.dt_users.Single(u => u.id == userId);
+            var huoqiClaims =
+                user.li_claims.Where(
+                    c =>
+                        c.profitingProjectId == huoqiProjectId &&
+                        c.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable).ToList();
+            if (!huoqiClaims.Any())
+                throw new InvalidOperationException("您目前没有投资此活期项目，无法提现");
+
+            var withdrawTime = DateTime.Now;
+            var sumOfPrincipal = huoqiClaims.Sum(c => c.principal);
+            if (sumOfPrincipal < withdrawMoney)
+            {
+                throw new InvalidOperationException("您提现的金额不能超出您投资的本金：" + sumOfPrincipal.ToString("c"));
+            }
+            else if (sumOfPrincipal == withdrawMoney)
+            {
+                // 全部提现
+                huoqiClaims.ForEach(c =>
+                {
+                    c.status = (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                    c.statusUpdateTime = withdrawTime;
+                });
+            }
+            else
+            {
+                // 部分提现，优先提现接近完成的项目
+                var sortedClaims = huoqiClaims.OrderBy(
+                    c => c.li_projects.li_repayment_tasks.Last(t =>
+                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime).should_repay_time)
+                    .ThenBy(c => c.principal)
+                    .ToList();
+                HuoqiClaimsPartialWithdraw(context, sortedClaims, withdrawMoney, withdrawTime);
+            }
+            context.SubmitChanges();
+        }
+
+        private static void HuoqiClaimsPartialWithdraw(Agp2pDataContext context, IEnumerable<li_claims> claims, decimal withdrawMoney, DateTime withdrawTime)
+        {
+            if (!claims.Any() || withdrawMoney == 0) return;
+            Debug.Assert(0 < withdrawMoney, "提现的金额不能是负数");
+
+            var headClaim = claims.First();
+            if (headClaim.principal <= withdrawMoney)
+            {
+                headClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                headClaim.statusUpdateTime = withdrawTime;
+                HuoqiClaimsPartialWithdraw(context, claims.Skip(1), withdrawMoney - headClaim.principal, withdrawTime);
+            }
+            else
+            {
+                // 提现了某个债权的一部分，需要进行拆分
+                var remain = new li_claims
+                {
+                    parentClaimId = headClaim.id,
+                    createTime = withdrawTime,
+                    principal = headClaim.principal - withdrawMoney,
+                    userId = headClaim.userId,
+                    status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                    projectId = headClaim.projectId,
+                    profitingProjectId = headClaim.profitingProjectId,
+                    li_project_transactions = headClaim.li_project_transactions,
+                    number = headClaim.number
+                };
+                context.li_claims.InsertOnSubmit(remain);
+
+                var splited = new li_claims
+                {
+                    parentClaimId = headClaim.id,
+                    createTime = withdrawTime,
+                    principal = withdrawMoney,
+                    userId = headClaim.userId,
+                    status = (byte)Agp2pEnums.ClaimStatusEnum.NeedTransfer,
+                    projectId = headClaim.projectId,
+                    profitingProjectId = headClaim.profitingProjectId,
+                    li_project_transactions = headClaim.li_project_transactions,
+                    number = headClaim.number
+                };
+                context.li_claims.InsertOnSubmit(splited);
+
+                headClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.Invalid;
+                headClaim.statusUpdateTime = withdrawTime;
+            }
         }
 
         /*TODO 活期项目：
@@ -444,131 +588,139 @@ namespace Agp2p.Core
             4、提现T+1，申请提现即转变为“活期项目的债权转让”项目，等待接手（下一个买入活期项目的客户），
                 次日15:00回款前仍未有人接手，则使用公司内部账号自动购买此债权，15:00点返回客户提现资金到平台账户。*/
 
-        private static void AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="apportionAmount"></param>
+        /// <param name="tr"></param>
+        /// <param name="exceedCallback"></param>
+        /// <returns>剩余可投</returns>
+        private static decimal AutoInvestment(Agp2pDataContext context, decimal apportionAmount, li_project_transactions tr)
         {
             // 接手债权或找出可投资项目并投资（创建债权），如果项目可投金额不足，则抛异常
 
             // 优先匹配需要转让的债权
             var needTransferClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList();
-            if (needTransferClaims.Any())
-            {
-                apportionAmount = ApportionToClaims(context, needTransferClaims, apportionAmount, tr);
-            }
+            apportionAmount = ApportionToClaims(context, needTransferClaims, apportionAmount, tr);
 
             if (0 < apportionAmount)
             {
                 // 匹配可转让债权（公司内部的）
                 var transferableClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList();
-                if (transferableClaims.Any())
-                {
-                    apportionAmount = ApportionToClaims(context, transferableClaims, apportionAmount, tr);
-                }
+                apportionAmount = ApportionToClaims(context, transferableClaims, apportionAmount, tr);
             }
 
-            if (0 < apportionAmount)
-            {
-                // 匹配项目
-                var investableProjects =
-                    context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                        .AsEnumerable()
-                        .Where(p => !p.IsNewbieProject() && !p.IsHuoqiProject())
-                        .ToList();
-                if (investableProjects.Any())
-                {
-                    var investableAmount = investableProjects.Sum(p => p.financing_amount - p.investment_amount);
-                    if (investableAmount < apportionAmount)
-                    {
-                        throw new Exception("没有足够的项目可投，超出：" + (apportionAmount - investableAmount));
-                    }
-                    ApportionToProjects(context, investableProjects, apportionAmount, tr);
-                }
-                else
-                {
-                    throw new Exception("没有足够的项目可投，超出：" + apportionAmount);
-                }
-            }
-            else if (apportionAmount < 0)
-            {
-                throw new Exception("投资失败：自动投资计算出错");
-            }
+            if (apportionAmount == 0) return apportionAmount;
+
+            // 匹配项目
+            var investableProjects =
+                context.li_projects.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing)
+                    .AsEnumerable()
+                    .Where(p => !p.IsNewbieProject() && !p.IsHuoqiProject())
+                    .ToList();
+
+            return ApportionToProjects(context, investableProjects, apportionAmount, tr);
         }
 
-        private static void ApportionToProjects(Agp2pDataContext context, List<li_projects> investableProjects, decimal investingMoney, li_project_transactions tr)
+        private static decimal ApportionToProjects(Agp2pDataContext context, List<li_projects> investableProjects, decimal investingMoney, li_project_transactions tr)
         {
+            if (!investableProjects.Any() || investingMoney == 0)
+                return investingMoney;
+            Debug.Assert(0 < investingMoney);
+
+            if (investableProjects.Sum(p => p.financing_amount - p.investment_amount) < investingMoney)
+            {
+                // 全部投资
+                return investingMoney -
+                       investableProjects.Select(
+                           p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr)).Sum();
+            }
+
             var averageInvestment = investingMoney / investableProjects.Count;
             var priorityProjects = investableProjects.Where(p => p.financing_amount - p.investment_amount <= averageInvestment).ToList();
             if (priorityProjects.Any())
             {
                 // 可投资金额低于平均值的项目，全部投资，其余的递归处理
                 var notPriorityProjects = investableProjects.Where(p => averageInvestment < p.financing_amount - p.investment_amount).ToList();
-                var preinvestAmount = priorityProjects.Sum(p => p.financing_amount - p.investment_amount);
 
-                priorityProjects.ForEach(p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr));
-                ApportionToProjects(context, notPriorityProjects, investingMoney - preinvestAmount, tr);
+                var consumed = priorityProjects.Select(p => ClaimCreate(context, p, p.financing_amount - p.investment_amount, tr)).Sum();
+                return ApportionToProjects(context, notPriorityProjects, investingMoney - consumed, tr);
             }
             else
             {
                 // 部分投资
                 var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(investableProjects.Count).ToList(), investingMoney, 0);
-                investableProjects.ZipEach(perfectRounding, (p, investAmount) =>
-                {
-                    if (0 < investAmount)
-                    {
-                        ClaimCreate(context, p, investAmount, tr);
-                    }
-                });
+                return investingMoney -
+                       investableProjects.Zip(perfectRounding,
+                           (p, investAmount) => 0 < investAmount ? ClaimCreate(context, p, investAmount, tr) : 0).Sum();
             }
         }
 
-        private static void ClaimCreate(Agp2pDataContext context, li_projects project, decimal investment, li_project_transactions tr)
+        private static decimal ClaimCreate(Agp2pDataContext context, li_projects project, decimal investment, li_project_transactions tr)
         {
+            Debug.Assert(investment != 0);
+
             project.investment_amount += investment;
             var liClaims = new li_claims
             {
-                li_project_transactions = tr,
+                li_project_transactions1 = tr,
                 createTime = tr.create_time,
                 projectId = project.id,
                 profitingProjectId = tr.li_projects.id,
                 userId = tr.dt_users.id,
                 status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 principal = investment,
+                number = GenerateClaimNumber(tr.li_projects, tr.dt_users.id),
             };
             context.li_claims.InsertOnSubmit(liClaims);
+            return investment;
+        }
+
+        private static string GenerateClaimNumber(li_projects profitingProject, int userId)
+        {
+            return string.Format("{0:d10}{1:d10}{2:d4}", profitingProject.id, userId,
+                profitingProject.li_project_transactions.Count(
+                    ptr =>
+                        ptr.investor == userId &&
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)); // 确保投资撤销后债权编号仍然增加
         }
 
         private static decimal ApportionToClaims(Agp2pDataContext context, List<li_claims> needTransferClaims, decimal investingMoney, li_project_transactions tr)
         {
-            if (investingMoney < needTransferClaims.Sum(c => c.principal))
-            {
-                var averageTransfer = investingMoney/needTransferClaims.Count;
-                var priorityClaimses = needTransferClaims.Where(c => c.principal <= averageTransfer).ToList();
-                if (priorityClaimses.Any())
-                {
-                    // 本金低于平均值的债权，全部接手，其余的递归处理
-                    var notPriorityClaimses = needTransferClaims.Where(c => averageTransfer < c.principal).ToList();
-                    priorityClaimses.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
-                    return ApportionToClaims(context, notPriorityClaimses, investingMoney - priorityClaimses.Sum(c => c.principal), tr);
-                }
-                else
-                {
-                    // 全部拆分
-                    // 注意：债权的本金不能为小数
-                    var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(needTransferClaims.Count).ToList(), investingMoney, 0);
-                    needTransferClaims.ZipEach(perfectRounding, (c, transferAmount) =>
-                    {
-                        if (0 < transferAmount)
-                        {
-                            ClaimTransfer(context, c, transferAmount, tr);
-                        }
-                    });
-                    return investingMoney - perfectRounding.Sum();
-                }
-            }
-            else
+            if (!needTransferClaims.Any() || investingMoney == 0)
+                return investingMoney;
+            Debug.Assert(0 < investingMoney);
+
+            if (needTransferClaims.Sum(c => c.principal) <= investingMoney)
             {
                 // 全部接手
                 needTransferClaims.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
                 return investingMoney - needTransferClaims.Sum(c => c.principal);
+            }
+
+            var averageTransfer = investingMoney/needTransferClaims.Count;
+            var priorityClaimses = needTransferClaims.Where(c => c.principal <= averageTransfer).ToList();
+            if (priorityClaimses.Any())
+            {
+                // 本金低于平均值的债权，全部接手，其余的递归处理
+                var notPriorityClaimses = needTransferClaims.Where(c => averageTransfer < c.principal).ToList();
+                priorityClaimses.ForEach(c => ClaimTransfer(context, c, c.principal, tr));
+                return ApportionToClaims(context, notPriorityClaimses, investingMoney - priorityClaimses.Sum(c => c.principal), tr);
+            }
+            else
+            {
+                // 全部拆分
+                // 注意：债权的本金不能为小数
+                var perfectRounding = Utils.GetPerfectRounding(investingMoney.GetPerfectSplitStream(needTransferClaims.Count).ToList(), investingMoney, 0);
+                needTransferClaims.ZipEach(perfectRounding, (c, transferAmount) =>
+                {
+                    if (0 < transferAmount)
+                    {
+                        ClaimTransfer(context, c, transferAmount, tr);
+                    }
+                });
+                return investingMoney - perfectRounding.Sum();
             }
         }
 
@@ -580,8 +732,6 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("债权转让金额不能小于0");
             if (originalClaim.principal < amount)
                 throw new InvalidOperationException("债权转让金额不能超出债权的本金");
-
-            originalClaim.status = (byte)Agp2pEnums.ClaimStatusEnum.Transferred;
 
             if (amount < originalClaim.principal)
             {
@@ -595,7 +745,8 @@ namespace Agp2p.Core
                     principal = originalClaim.principal - amount,
                     status = originalClaim.status,
                     createTime = tr.create_time,
-                    createFromInvestment = originalClaim.createFromInvestment
+                    createFromInvestment = originalClaim.createFromInvestment,
+                    number = originalClaim.number
                 };
                 context.li_claims.InsertOnSubmit(remainClaim);
             }
@@ -608,33 +759,46 @@ namespace Agp2p.Core
                 status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 projectId = originalClaim.projectId,
                 profitingProjectId = tr.li_projects.id,
-                li_project_transactions = tr
+                li_project_transactions1 = tr,
+                number = GenerateClaimNumber(tr.li_projects, tr.dt_users.id)
             };
             context.li_claims.InsertOnSubmit(liClaims);
 
-            // TODO test 处理债权转让的本金交易
-            var claimTransferPtr = new li_project_transactions
+            if (originalClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
             {
-                principal = amount,
-                project = originalClaim.projectId,
-                create_time = tr.create_time,
-                investor = originalClaim.userId,
-                type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer,
-                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                gainFromClaim = originalClaim.id,
-                remark = $"项目【{originalClaim.li_projects.title}】的 {originalClaim.principal} 债权转让成功，转让金额 {amount}，剩余债权金额 {originalClaim.principal - amount}"
-            };
-            context.li_project_transactions.InsertOnSubmit(claimTransferPtr);
+                // 提现 T + 1
+                originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid;
+                originalClaim.statusUpdateTime = tr.create_time;
+            }
+            else
+            {
+                originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
+                originalClaim.statusUpdateTime = tr.create_time;
 
-            var wallet = originalClaim.dt_users.li_wallets;
-            wallet.idle_money += amount;
-            wallet.investing_money -= amount;
-            wallet.last_update_time = tr.create_time;
+                // TODO test 处理债权转让的本金交易
+                var claimTransferPtr = new li_project_transactions
+                {
+                    principal = amount,
+                    project = originalClaim.projectId,
+                    create_time = tr.create_time,
+                    investor = originalClaim.userId,
+                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer,
+                    status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    gainFromClaim = originalClaim.id,
+                    remark = $"项目【{originalClaim.li_projects.title}】的 {originalClaim.principal} 债权转让成功，转让金额 {amount}，剩余债权金额 {originalClaim.principal - amount}"
+                };
+                context.li_project_transactions.InsertOnSubmit(claimTransferPtr);
 
-            // 修改钱包历史
-            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
-            his.li_project_transactions = tr;
-            context.li_wallet_histories.InsertOnSubmit(his);
+                var wallet = originalClaim.dt_users.li_wallets;
+                wallet.idle_money += amount;
+                wallet.investing_money -= amount;
+                wallet.last_update_time = tr.create_time;
+
+                // 修改钱包历史
+                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+                his.li_project_transactions = tr;
+                context.li_wallet_histories.InsertOnSubmit(his);
+            }
 
             return liClaims;
         }
@@ -650,7 +814,7 @@ namespace Agp2p.Core
             var project = ptr.li_projects;
             if (project.IsHuoqiProject()) {
                 // TODO test 判断自动投标的项目是否满标
-                var financingCompletedProject = ptr.li_claims.Where(
+                var financingCompletedProject = ptr.li_claims1.Where(
                     c =>
                         c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
                         c.li_projects.financing_amount == c.li_projects.investment_amount)
@@ -662,6 +826,7 @@ namespace Agp2p.Core
 
             var canBeInvest = project.financing_amount - project.investment_amount;
             if (0 < canBeInvest) return; // 未满标
+            if (project.IsNewbieProject()) return; // 新手标项目不会满标
             FinishInvestment(context, project.id);
         }
 
@@ -799,7 +964,7 @@ namespace Agp2p.Core
             {
                 if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
                 {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome()
+                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                     {
                         user_id = project.li_risks.li_loaners.dt_users.id,
                         income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
@@ -888,7 +1053,7 @@ namespace Agp2p.Core
             var histories = wallets.Select(w =>
             {
                 var his = CloneFromWallet(w, Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess);
-                his.li_project_transactions = userClaims[w.dt_users].Last().li_project_transactions;
+                his.li_project_transactions = userClaims[w.dt_users].Last().li_project_transactions1;
                 return his;
             });
             context.li_wallet_histories.InsertAllOnSubmit(histories);
@@ -1019,7 +1184,19 @@ namespace Agp2p.Core
             {
                 return Agp2pEnums.WalletHistoryTypeEnum.RepaidOverdueFine;
             }
-            throw new Exception("还款状态异常");
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.ClaimTransfer;
+            }
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvestFailRepay)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess;
+            }
+            else if (ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw)
+            {
+                return Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess;
+            }
+            throw new Exception("项目交易状态异常");
         }
 
         /// <summary>
@@ -1079,11 +1256,78 @@ namespace Agp2p.Core
             {
                 pro.status = (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
+
+                AutoInvestAfterProjectCompleted(newContext, pro);
                 newContext.SubmitChanges();
+
                 // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
             }
             return repaymentTask;
+        }
+
+        private static void AutoInvestAfterProjectCompleted(Agp2pDataContext newContext, li_projects pro)
+        {
+            // 将债权设置为完成，活期收益的债权需要继续自动投标，如果自动投标失败，则部分退款
+            var needComplete = pro.li_claims.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed).ToList();
+
+            // 自动投标的债权
+            var huoqiProfitingClaims = needComplete.Where(c => c.profitingProjectId != c.projectId).ToList(); // 自动投标的项目
+            var nonTransferableClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable).ToList(); // 不可转让
+            var transferableClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList(); // 可转让
+            var needTransferClaims = huoqiProfitingClaims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList(); // 需要转让
+
+            Debug.Assert(!transferableClaims.Any(), "自动投标不应该产生可转让的债权");
+
+            needComplete.ForEach(c =>
+            {
+                // 先全部完成，以免自动投标投了这些项目
+                c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                c.statusUpdateTime = pro.complete_time.Value;
+            }); 
+
+            // 提现中的活期债权状态设为完成，未回款
+            needTransferClaims.ForEach(c =>
+            {
+                c.status = (byte) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid;
+                c.statusUpdateTime = pro.complete_time.Value;
+            });
+
+            var noMoreInvestable = false;
+            // 不可转让的活期债权继续自动投标
+            nonTransferableClaims.ToLookup(c => c.li_project_transactions1).ForEach(ptrcs =>
+            {
+                var needTransfer = ptrcs.Sum(c => c.principal);
+                var srcPtr = ptrcs.Key;
+                var exceed = noMoreInvestable ? needTransfer : AutoInvestment(newContext, needTransfer, srcPtr);
+                if (0 < exceed)
+                {
+                    noMoreInvestable = true; // 优化：没有项目可以投资的时候，直接跳过这个步骤
+
+                    // 超出的部分退款
+                    var autoInvestFailRepay = new li_project_transactions
+                    {
+                        type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvestFailRepay,
+                        status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                        project = srcPtr.project,
+                        create_time = pro.complete_time.Value,
+                        investor = srcPtr.investor,
+                        principal = exceed,
+                        remark = $"自动续投失败回款，总续投：{needTransfer}，成功续投：{(needTransfer - exceed)}",
+                    };
+                    newContext.li_project_transactions.InsertOnSubmit(autoInvestFailRepay);
+
+                    var wallet = srcPtr.dt_users.li_wallets;
+                    wallet.idle_money += autoInvestFailRepay.principal;
+                    wallet.investing_money -= autoInvestFailRepay.principal;
+                    wallet.last_update_time = autoInvestFailRepay.create_time;
+
+                    // 添加钱包历史
+                    var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(autoInvestFailRepay));
+                    his.li_project_transactions = srcPtr;
+                    newContext.li_wallet_histories.InsertOnSubmit(his);
+                }
+            });
         }
 
         private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
@@ -1124,13 +1368,16 @@ namespace Agp2p.Core
         {
             var moneyRepayRatio = GetClaimRatio(repaymentTask.li_projects);
 
+            if (!moneyRepayRatio.Any())
+                return Enumerable.Empty<li_project_transactions>().ToList();
+
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio
                 .Where(c => c.Key.status < (int) Agp2pEnums.ClaimStatusEnum.Completed) // 只为未完成/有效的债权回款
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
                 .Select(c =>
             {
-                var realityInterest = c.Value*repaymentTask.repay_interest; // perfect round later
+                var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);
                 string remark = null;
                 if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                 {
@@ -1159,7 +1406,7 @@ namespace Agp2p.Core
                     project = repaymentTask.project,
                     investor = c.Key.dt_users.id,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    principal = c.Value*repaymentTask.repay_principal,  // perfect round later
+                    principal = Math.Round(c.Value*repaymentTask.repay_principal, 2),
                     interest = realityInterest,
                     remark = remark,
                     gainFromClaim = c.Key.id
@@ -1170,6 +1417,13 @@ namespace Agp2p.Core
                 }
                 return ptr;
             }).ToList();
+
+            if (!rounded.Any())
+                return Enumerable.Empty<li_project_transactions>().ToList();
+
+            // 因为有自动投标债权的缘故，项目的回款计划必定不能全部回款，所以无需调整四舍五入
+            if (repaymentTask.li_projects.li_claims.Any(c => c.profitingProjectId != c.projectId))
+                return rounded;
 
             var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
             var forceSum = applyCostIntoInterest
@@ -1299,8 +1553,10 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectTransactionId"></param>
+        /// <param name="refundTime"></param>
+        /// <param name="save"></param>
         /// <returns></returns>
-        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, bool save = true)
+        public static li_project_transactions Refund(this Agp2pDataContext context, int projectTransactionId, DateTime refundTime, bool save = true)
         {
             // 判断项目状态
             var tr = context.li_project_transactions.Single(t => t.id == projectTransactionId);
@@ -1309,6 +1565,13 @@ namespace Agp2p.Core
 
             // 更改交易状态
             tr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
+
+            // 债权失效
+            tr.li_claims1.ForEach(c =>
+            {
+                c.status = (byte) Agp2pEnums.ClaimStatusEnum.Invalid;
+                c.statusUpdateTime = refundTime;
+            });
 
             // 修改项目已投资金额
             tr.li_projects.investment_amount -= tr.principal;
@@ -1321,7 +1584,7 @@ namespace Agp2p.Core
             wallet.idle_money += investedMoney;
             wallet.investing_money -= investedMoney;
             wallet.total_investment -= investedMoney;
-            wallet.last_update_time = DateTime.Now;
+            wallet.last_update_time = refundTime;
 
             // 添加钱包历史
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund);
@@ -1349,12 +1612,13 @@ namespace Agp2p.Core
             if ((int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= proj.status)
                 throw new InvalidOperationException("项目所在的状态不能退款");
 
+            var refundTime = DateTime.Now;
             proj.li_project_transactions.Where(
                 tr =>
                     tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                     tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .Select(tr => tr.id)
-                .ForEach(trId => context.Refund(trId, false));
+                .ForEach(trId => context.Refund(trId, refundTime, false));
 
             proj.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingFail;
             context.SubmitChanges();

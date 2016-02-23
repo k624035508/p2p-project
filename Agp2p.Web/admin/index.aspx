@@ -19,16 +19,21 @@
 <script type="text/javascript">
 
 var showMyMessages = function() {
+    var prevDlg = $("iframe.msg-dlg");
+    if (prevDlg.length !== 0) {
+        prevDlg[0].contentWindow.refreshDlg();
+        return;
+    }
     var dialogMountPoint = $(".manager-msg")[0];
     dialog({
         width: '680px',
         height: '650px',
-        content: '<iframe width="100%" height="100%" src="/admin/manager-messages.html"></iframe>',
+        content: '<iframe class="msg-dlg" width="100%" height="100%" src="/admin/manager-messages.html"></iframe>',
         quickClose: true
     }).show(dialogMountPoint);
 }
 
-var checkMyMessage = function () {
+var checkMyMessage = function (silence) {
     var url = '<%=Request.FilePath%>' + "/AjaxQueryUnreadMessagesCount";
     $.ajax({
         type: "get",
@@ -38,7 +43,7 @@ var checkMyMessage = function () {
         success: function(result) {
             var originalHint = $(".manager-msg")[0].innerText;
             var newHint = "未读消息：" + result.d;
-            if (parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d)) {
+            if (!silence && parseInt(originalHint.match(/\d+/)[0]) < parseInt(result.d) && localStorage.getItem("newMsgAutoPopup") !== "false") {
                 showMyMessages();
             }
             $(".manager-msg")[0].innerText = newHint;
@@ -48,7 +53,6 @@ var checkMyMessage = function () {
         }.bind(this)
     });
 }
-
 
 //页面加载完成时
 $(function () {
@@ -72,18 +76,28 @@ $(function () {
         console.log("有消息设置为已读了");
     };
 
+    hub.client.onMsgDelete = function () {
+        checkMyMessage(true);
+        console.log("有消息被删除了");
+    };
+
     $.connection.hub.start().done(function () {
         console.log("服务器已连接……");
         checkMyMessage();
     });
+
+    document.getElementById("cbxAutoPopup").checked = localStorage.getItem("newMsgAutoPopup") !== "false";
 });
 </script>
 <style>
-.manager-msg {
+.manager-msg, .info:hover > .manager-msg-auto-pop {
     display: inline-block;
     float: left;
     margin: 0 15px;
     cursor: pointer;
+}
+.manager-msg-auto-pop {
+    display: none;
 }
 </style>
 </head>
@@ -107,6 +121,7 @@ $(function () {
     <div id="main-nav" class="main-nav"></div>
     <div class="nav-right">
       <div class="info">
+        <div class="manager-msg-auto-pop">自动弹出：<input id="cbxAutoPopup" type="checkbox" onclick='localStorage.setItem("newMsgAutoPopup", this.checked)' /> </div>
         <div class="manager-msg">未读消息：0</div>
         <i></i>
         <span>

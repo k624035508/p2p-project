@@ -4,6 +4,7 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using Agp2p.Core;
 
 namespace Agp2p.Web.UI
@@ -37,6 +38,8 @@ namespace Agp2p.Web.UI
 
     public partial class BasePage : System.Web.UI.Page
     {
+        static int specialProjectCategoryId = (new Agp2pDataContext().dt_article_category.SingleOrDefault(c => c.call_index == "teshuxiangmu")?.id).GetValueOrDefault(67);
+
         protected DataTable get_project_list(int top, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
             int total = 0;
@@ -82,25 +85,27 @@ namespace Agp2p.Web.UI
             return dt ?? new DataTable();
         }
 
-        public static li_projects GetFinancingNewbieProject()
+        public static li_projects GetFirstNewbieProject()
         {
             var context = new Agp2pDataContext();
             return context.li_projects.OrderByDescending(p => p.id)
                 .FirstOrDefault(
                     p =>
-                        p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                        (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
                         p.dt_article_category.call_index == "newbie");
         }
 
         public static IEnumerable<li_projects> QueryProjects(int pageSize, int pageIndex, out int total, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
         {
             var context = new Agp2pDataContext();
+
             //查出所以项目类别
             //var categoryList = get_category_list(channel_name, 0);
-            var query =
-                context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status)
-                    .Where(p => p.dt_article_category.call_index != "newbie");
-            if (0 < categoryId)
+
+            var query = context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status);
+            if (categoryId == specialProjectCategoryId) //  特殊项目
+                query = query.Where(p => p.dt_article_category.parent_id == specialProjectCategoryId);
+            else if (0 < categoryId)
                 query = query.Where(p => p.category_id == categoryId);
 
             //项目筛选暂写死逻辑在此

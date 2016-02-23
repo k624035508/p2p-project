@@ -545,15 +545,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
-    <Content Include="install\css\styles.css" />
-    <Content Include="install\db.sql" />
-    <Content Include="install\images\error.gif" />
-    <Content Include="install\images\logo.jpg" />
-    <Content Include="install\images\ok.gif" />
-    <Content Include="install\images\succeed.jpg" />
-    <Content Include="install\index.aspx" />
-    <Content Include="install\step1.aspx" />
-    <Content Include="install\step2.aspx" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -575,6 +566,7 @@
     <Content Include="scripts\fullpage\jquery.fullPage.min.js" />
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
     <Content Include="admin\predict\predict-table.jsx" />
+    <Content Include="download\android-v1.0.apk" />
     <None Include="scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="scripts\jquery-2.1.4.js" />
     <Content Include="scripts\jquery-2.1.4.min.js" />
@@ -711,8 +703,10 @@
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
+    <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
+    <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
@@ -796,13 +790,19 @@
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-android-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity-ios-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\android-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\apps-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
-    <Content Include="templates\AnGuang\imgs\index\banner-01.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
@@ -821,12 +821,15 @@
     <Content Include="templates\AnGuang\imgs\index\guarantee-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\guarantee.png" />
     <Content Include="templates\AnGuang\imgs\index\head-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\news-ring.png" />
+    <Content Include="templates\AnGuang\imgs\index\over-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
@@ -834,6 +837,8 @@
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
@@ -1072,14 +1077,11 @@
     <Content Include="templates\weChat\js\settings.js" />
     <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\js\withdraw.js" />
+    <Content Include="templates\weChat\less\aboutus.less" />
     <Content Include="templates\weChat\less\bootstrap.min.css" />
     <Content Include="templates\weChat\less\card-select.css" />
     <Content Include="templates\weChat\less\cards-list.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
-    <Content Include="templates\weChat\less\myinvest.css" />
-    <Content Include="templates\weChat\less\mylottery.css" />
-    <Content Include="templates\weChat\less\receive-plan.css" />
-    <Content Include="templates\weChat\less\trade-record.css" />
     <Content Include="templates\weChat\less\verified.css" />
     <Content Include="templates\weChat\project.html" />
     <Content Include="templates\weChat\projects.html" />
@@ -1210,7 +1212,6 @@
     <Content Include="templates\AnGuang\less\about_more.less" />
     <Content Include="templates\weChat\less\mynews.less" />
     <Content Include="templates\weChat\less\safe.less" />
-    <Content Include="templates\weChat\less\aboutus.less" />
     <Content Include="templates\weChat\less\settings.less" />
     <Content Include="templates\weChat\less\recharge.less" />
     <Content Include="templates\weChat\less\withdraw.less" />
@@ -1222,6 +1223,10 @@
     <Content Include="templates\AnGuang\components\share.jsx" />
     <Content Include="templates\AnGuang\less\share.less" />
     <Content Include="templates\weChat\less\article_show.less" />
+    <Content Include="templates\weChat\less\mytrade.less" />
+    <Content Include="templates\weChat\less\mylottery.less" />
+    <Content Include="templates\weChat\less\myinvest.less" />
+    <Content Include="templates\weChat\less\receive-plan.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -2324,20 +2329,6 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="install\step1.aspx.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step1.aspx.designer.cs">
-      <DependentUpon>step1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="install\step2.aspx.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="install\step2.aspx.designer.cs">
-      <DependentUpon>step2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup1.cs" />

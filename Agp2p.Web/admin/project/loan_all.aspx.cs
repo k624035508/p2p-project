@@ -29,7 +29,7 @@ namespace Agp2p.Web.admin.project
         {
             this.ChannelId = DTRequest.GetQueryInt("channel_id");
             this.CategoryId = DTRequest.GetQueryInt("category_id");
-            this.ProjectStatus = DTRequest.GetQueryInt("project_status");
+            this.ProjectStatus = DTRequest.GetQueryInt("project_status", -1);
             this.Keywords = DTRequest.GetQueryString("keywords");
 
             if (ChannelId == 0)
@@ -75,7 +75,7 @@ namespace Agp2p.Web.admin.project
             {
                 this.ddlCategoryId.SelectedValue = this.CategoryId.ToString();
             }
-            if (this.ProjectStatus > 0)
+            if (this.ProjectStatus >= 0)
             {
                 this.ddlStatus.SelectedValue = this.ProjectStatus.ToString();
             }
@@ -103,15 +103,13 @@ namespace Agp2p.Web.admin.project
         {
             PageSize = GetPageSize(GetType().Name + "_page_size");
             var query = (from p in context.li_projects
-                from m in context.li_risk_mortgage
-                where p.risk_id == m.risk && (string.IsNullOrEmpty(this.Keywords) || p.title.Contains(this.Keywords) ||
-                                              p.no.Contains(this.Keywords) ||
-                                              m.li_mortgages.name.Contains(this.Keywords))
+                where string.IsNullOrEmpty(this.Keywords) || p.title.Contains(this.Keywords) ||
+                                              p.no.Contains(this.Keywords)
                 select p).AsQueryable();
 
             if (this.CategoryId > 0)
                 query = query.Where(q => q.category_id == this.CategoryId);
-            if (this.ProjectStatus > 0)
+            if (this.ProjectStatus >= 0)
                 query = query.Where(q => q.status == this.ProjectStatus);
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
                 query = query.Where(h => Convert.ToDateTime(txtStartTime.Text) <= h.add_time.Date);

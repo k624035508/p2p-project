@@ -34,7 +34,7 @@ function loadData(pageIndex, callback) {
             var ls = JSON.parse(msg.d);
             $("#pending").append(render({ items: ls }));
             if (ls.length < pageSize) {
-                $(window).unbind('scroll');
+                $(".scroll").unbind('scroll');
             }
             loadingHint.hide();
             if (pageIndex === 0 && ls.length === 0) {
@@ -71,10 +71,11 @@ $(function (){
         });
     });
     //拖动滚动条加载数据
-    $(window).scroll(function() {
+    var $scrollable = $(".scroll");
+    $scrollable.scroll(function() {
         if (processing) return;
 
-        if (($(document).height() - $(window).height())*0.7 <= $(window).scrollTop()) {
+        if (($scrollable[0].scrollHeight - $scrollable.height())*0.9 <= $scrollable.scrollTop()) {
             processing = true; //sets a processing AJAX request flag
 
             loadData(loadedPage, function() {

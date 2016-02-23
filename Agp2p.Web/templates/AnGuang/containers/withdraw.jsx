@@ -116,7 +116,10 @@ class WithdrawPage extends React.Component {
 					                }
 					            </li>
 				        	)}
+				                {/* 限制不能添加多于一张银行卡 */}
+				        		{this.props.cards.length !== 0 ? null :
 					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
+				        		}
 					        </ul>
 							<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
 								onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />

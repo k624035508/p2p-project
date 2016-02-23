@@ -1,6 +1,6 @@
 ﻿import "bootstrap-webpack";
 import "../less/footer.less";
-import "../less/trade-record.css";
+import "../less/mytrade.less";
 import template from "lodash/string/template";
 import footerInit from "./footer.js";
 
@@ -32,7 +32,7 @@ function loadData(pageIndex, callback) {
             var ls = JSON.parse(msg.d).data;
             $("#pending").append(render({ items: ls }));
             if (ls.length < pageSize) {
-                $(window).unbind('scroll');
+                $(".scroll").unbind('scroll');
             }
             loadingHint.hide();
             if (pageIndex === 0 && ls.length === 0) {
@@ -59,10 +59,11 @@ $(function() {
         if (succ) loadedPage += 1;
     });
 
-    $(window).scroll(function() {
+    var $scrollable = $(".scroll");
+    $scrollable.scroll(function() {
         if (processing) return;
 
-        if (($(document).height() - $(window).height())*0.7 <= $(window).scrollTop()) {
+        if (($scrollable[0].scrollHeight - $scrollable.height())*0.8 <= $scrollable.scrollTop()) {
             processing = true; //sets a processing AJAX request flag
 
             loadData(loadedPage, function(succ) {

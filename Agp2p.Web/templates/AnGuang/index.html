@@ -52,30 +52,20 @@
             <ol class="carousel-indicators">
                 <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#bannerCarousel" data-slide-to="1"></li>
-                <li data-target="#bannerCarousel" data-slide-to="2"></li>
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href='<%linkurl("activity_new")%>' class="banner1" target="_blank"></a>
-                </div>
-                <div class="item">
                     <a href='<%linkurl("activity_rewards")%>' target="_blank" class="banner2"></a>
                 </div>
                 <div class="item">
-                    <a href='<%linkurl("article_show",195)%>' target="_blank" class="banner3"></a>
+                    <a href='<%linkurl("activity_apps")%>' target="_blank" class="banner3"></a>
+                    <div class="apps-btns">
+                        <a href="/download/android-v1.0.apk" class="android-btn" target="_blank"></a>
+                        <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
+                    </div>
                 </div>
-                <!--Left and right controls -->
-                <!--<a class="left carousel-control" href="#bannerCarousel" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#bannerCarousel" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>-->
-
             </div>
         </div>
     </div>
@@ -139,7 +129,7 @@
         </ul>
     </div>
 
-    <%set var np = GetFinancingNewbieProject()%>
+    <%set var np = GetFirstNewbieProject()%>
     <%if(np!=null)%>
     <div class="content-wrap new-hand">
         <div class="newHand-left">
@@ -169,11 +159,16 @@
                         </div>
                         <div class="right-part pull-right">
                             <p class="grey13px">项目期限<span class="dark-grey25px margin-left30">1</span><span class="dark-grey15px"> 天</span></p>
+                            <%if(np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                             <a href='<%linkurl("project",np.id)%>' class="invest-btn invest-btn-red">立即投资</a>
+                            <%else%>
+                            <a href='<%linkurl("project",np.id)%>' class="invest-btn invest-btn-grey">已投满</a>
+                            <%/if%>
                         </div>
                     </div>
+                    <div class="status-icon"></div>
                 </div>
-                <div class="rules" onclick="window.open('/article/195.html', '_blank')">
+                <div class="rules" onclick="window.open('/activity_apps.html', '_blank')">
                     <p>安广融合移动端</p>
                     <p><span>稳健收益</span><span>门槛低</span><span>期限短</span></p>
                 </div>

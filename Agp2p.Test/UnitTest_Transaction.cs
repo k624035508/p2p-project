@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using Agp2p.Common;
 using Agp2p.Core;
+using Agp2p.Core.ActivityLogic;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -79,7 +80,7 @@ namespace Agp2p.Test
         {
             return string.IsNullOrWhiteSpace(user.real_name)
                 ? user.user_name
-                : string.Format("{0}({1})", user.user_name, user.real_name);
+                : $"{user.user_name}({user.real_name})";
         }
 
         private static string GetUserPassword(dt_users user)
@@ -281,5 +282,100 @@ namespace Agp2p.Test
 
             //context.SubmitChanges();
         }
+
+        [TestMethod]
+        public void FixNewbieProjectMissGenerateRepaymentTask()
+        {
+            var context = new Agp2pDataContext(str);
+            context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
+            {
+                var investments = p.li_project_transactions.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                    .ToDictionary(ptr => ptr.investor);
+                var repayments = p.li_repayment_tasks.Where(r => r.only_repay_to != null).ToDictionary(r => r.only_repay_to.GetValueOrDefault());
+                if (repayments.Count < investments.Count)
+                {
+                    investments.Keys.Except(repayments.Keys).ForEach(userId =>
+                    {
+                        try
+                        {
+                            TrialActivity.CheckNewbieInvest(investments[userId].id);
+                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                        }
+                    });
+                }
+            });
+        }
+
+
+        [TestMethod]
+        public void GenerateClaimFromOldData()
+        {
+            // 补充旧的债权
+            var context = new Agp2pDataContext(str);
+
+            // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
+            var ptrs =
+                context.li_project_transactions.Where(
+                    ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                    .ToList();
+
+            var proUserMap = ptrs.GroupBy(ptr => ptr.project)
+                .ToDictionary(pptr => pptr.Key,
+                    pptr =>
+                        pptr.GroupBy(ptr => ptr.investor)
+                            .ToDictionary(uptr => uptr.Key,
+                                uptr =>
+                                    uptr.Zip(Utils.Infinite(1), (ptr, index) => new {ptr, index})
+                                        .ToDictionary(pair => pair.ptr, pair => pair.index)));
+                            
+            ptrs.ForEach(ptr =>
+            {
+                if (ptr.li_claims1.Any()) return;
+
+                
+                var claimFromInvestment = new li_claims
+                {
+                    principal = ptr.principal,
+                    projectId = ptr.project,
+                    profitingProjectId = ptr.project,
+                    createFromInvestment = ptr.id,
+                    createTime = ptr.create_time,
+                    userId = ptr.investor,
+                    status =
+                        (byte)
+                            (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                                ? Agp2pEnums.ClaimStatusEnum.Completed
+                                : Agp2pEnums.ClaimStatusEnum.Nontransferable),
+                    number = string.Format("{0:d10}{1:d10}{2:d4}", ptr.project, ptr.investor, proUserMap[ptr.project][ptr.investor][ptr]),
+                    statusUpdateTime = ptr.li_projects.complete_time
+                };
+
+                if (ptr.li_projects.IsNewbieProject())
+                {
+                    var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
+                    if (task.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    {
+                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable;
+                        claimFromInvestment.statusUpdateTime = null;
+                    }
+                    else
+                    {
+                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                        claimFromInvestment.statusUpdateTime = task.repay_at;
+                    }
+                }
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
+            });
+            //context.SubmitChanges();
+            Debug.WriteLine("创建债权：" + ptrs.Count);
+        }
+
     }
 }

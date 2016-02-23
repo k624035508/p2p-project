@@ -22,7 +22,8 @@
     </style>
 </head>
 <body>
-    <div class="mylottery-page">
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="mylottery-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div class="nav-bar">
             <a id="receiving" class="type" href="<%linkurl("mylottery","mylottery",1)%>">未使用<span class="float-right hr-style">|</span></a>
             <a id="investing" class="type" href="<%linkurl("mylottery","mylottery",2)%>">已使用<span class="float-right hr-style">|</span></a>
@@ -31,42 +32,43 @@
         <div class="lottery-list">
             <%set var trs=QueryLottery()%>
             <%for(int i=0;i<trs.Count;i++)%>
-                <%set var t=trs[i]%>
-                <div class="<%=t["lottery-face-class"]%>">
-                    <div class="left-face flex flex--align-items--center flex--flex-grow-all">
-                        <div class="lottery-info">
-                            <p class="lottery-title"><%=t["lottery-spec"]%></p>
-                            <p class="txt-pink"><%=t["lottery-valid-time"]%></p>
-                            <p class="txt-pink"><%=t["lottery-condition"]%></p>
-                            <div class="lottery-amount"><%=t["lottery-value"]%></div>
-                        </div>
+            <%set var t=trs[i]%>
+            <div class="<%=t["lottery-face-class"]%>">
+                <div class="left-face flex flex--align-items--center flex--flex-grow-all">
+                    <div class="lottery-info">
+                        <p class="lottery-title"><%=t["lottery-spec"]%></p>
+                        <p class="txt-pink"><%=t["lottery-valid-time"]%></p>
+                        <p class="txt-pink"><%=t["lottery-condition"]%></p>
+                        <div class="lottery-amount"><%=t["lottery-value"]%></div>
                     </div>
-                    <div class="right-face flex-center-wrapper">
-                        <div class="">
-                            <%if(t["lottery-source"].Contains("天标"))%>
-                            天<br />标<br />券
-                            <%else if(t["lottery-source"].Contains("体验"))%>
-                            体<br />验<br />券
-                            <%else%>
-                            现<br />金<br />券
-                            <%/if%>
-                        </div>
+                </div>
+                <div class="right-face flex-center-wrapper">
+                    <div class="">
+                        <%if(t["lottery-source"].Contains("天标"))%>
+                        天<br />标<br />券
+                        <%else if(t["lottery-source"].Contains("体验"))%>
+                        体<br />验<br />券
+                        <%else%>
+                        现<br />金<br />券
+                        <%/if%>
                     </div>
-                    <div class="circle-s-top"></div>
-                    <div class="circle-s-bottom"></div>
-                    <div class="circle-l-left"></div>
-                    <div class="circle-l-right"></div>
                 </div>
-                <%/for%>
-                <%if(trs.Count()==0)%>
-                <div class="loading-hint">
-                    <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-                    <p style="color:#ccc">您当前没有奖券记录</p>
-                </div>
-                <%/if%>
+                <div class="circle-s-top"></div>
+                <div class="circle-s-bottom"></div>
+                <div class="circle-l-left"></div>
+                <div class="circle-l-right"></div>
+            </div>
+            <%/for%>
+            <%if(trs.Count()==0)%>
+            <div class="loading-hint">
+                <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
+                <p style="color:#ccc">您当前没有奖券记录</p>
+            </div>
+            <%/if%>
         </div>
-        <script>var forceFooterKey = "settings";</script>
-        <%template src="_footer.html"%>
+    <script>var forceFooterKey = "settings";</script>
     </div>
+    <%template src="_footer.html"%>
+</div>
 </body>
 </html>

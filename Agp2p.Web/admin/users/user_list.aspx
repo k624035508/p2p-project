@@ -160,10 +160,11 @@
     <th width="8%">手机</th>
     <th width="12%">身份证号</th>
     <th align="right" width="8%">邮箱</th>
+      <th width="8%">地区</th>
     <th align="right" width="10%">当天投资金额</th>    
     <th align="right" width="10%">在投金额</th>
     <th align="right" width="10%">余额</th>
-    <th width="8%">状态</th>
+    
   </tr>
 </thead>
 </HeaderTemplate>
@@ -195,11 +196,12 @@
     <td align="center"><%#Eval("mobile")%></td>
     <td align="center"><%#Eval("id_card_number")%></td>
     <td align="right"><%#Eval("email")%></td>
+      <td align="center"><%#Eval("address")%></td>
     <td align="right"><%# QueryInvestmentToday((dt_users)Container.DataItem).ToString("c") %></td>
     <td align="right"><%# Convert.ToDecimal(Eval("li_wallets.investing_money")).ToString("c") %></td>
     <td align="right"><%# Convert.ToDecimal(Eval("li_wallets.idle_money")).ToString("c")%></td>
 <%--    <td align="center"><%#Eval("point")%></td>--%>
-    <td align="center"><%#GetUserStatus(Convert.ToInt32(Eval("status")))%></td>
+    
 <%--    <td align="center"><a href="user_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>">修改</a></td>--%>
   </tr>
 </ItemTemplate>

@@ -174,7 +174,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryUserMessages(short readStatus = 0, short pageIndex = 0, int pageSize = 8)
+        public static string AjaxQueryUserMessages(short readStatus, short pageIndex, int pageSize, bool idOnly)
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);
@@ -187,15 +187,17 @@ namespace Agp2p.Web.UI.Page
 
             var queryable = userInfo.dt_user_message.Where(m => m.is_read.GetValueOrDefault() == readStatus);
             var totalCount = queryable.Count();
-            var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
-                .Select(m => new
-                {
-                    m.id,
-                    isRead = m.is_read == 1,
-                    m.title,
-                    m.content,
-                    receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
-                });
+            var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable()
+                .Select(idOnly
+                    ? (Func<dt_user_message, object>) (m => new {m.id})
+                    : m => new
+                    {
+                        m.id,
+                        isRead = m.is_read == 1,
+                        m.title,
+                        m.content,
+                        receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
+                    });
             return JsonConvert.SerializeObject(new {totalCount, msgs});
         }
 

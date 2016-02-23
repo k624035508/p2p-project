@@ -2,6 +2,7 @@
 import "../less/common.less";
 import "../less/withdraw.less";
 import "../less/card-select.css";
+import footerInit from "./footer.js";
 import { classMappingPingYing as classMapping } from "../../AnGuang/js/bank-list.jsx";
 
 /*rem的相对单位定义*/

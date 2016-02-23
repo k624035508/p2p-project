@@ -8,7 +8,8 @@
     <script src="<%templateskin%>/build/login.bundle.js"></script>
 </head>
 <body>
-    <div class="login-page">
+<div class="height-100 flex flex--column flex--flex-grow-first">
+    <div class="login-page scroll">
         <form id="loginform" name="loginform" data-turl="{turl}">
             <!-- hack autofill -->
             <input type="text" id="txtUserName0" class="input-l hidden" name="txtUserName0" placeholder="请输入手机号码">
@@ -36,5 +37,7 @@
         </form>
         <div class="register-now-wrap">还没有账号? <a href="<%linkurl("register")%>">立即注册</a></div>
     </div>
+    <%template src="_footer.html"%>
+</div>
 </body>
 </html>
