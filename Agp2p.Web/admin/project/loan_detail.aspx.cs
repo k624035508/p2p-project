@@ -209,6 +209,7 @@ namespace Agp2p.Web.admin.project
         /// <param name="riskId"></param>
         private void ShowLoanerInfo(li_loaners loaner, int riskId)
         {
+            if (loaner == null) return;
             //借款人信息
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner.dt_users.sex;
