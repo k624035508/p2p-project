@@ -3,6 +3,12 @@
 <head>
     <title>安广融合手机APP下载页面</title>
     <meta charset="utf-8"/>
+
+</head>
+<body>
+<div>
+    <p style="font-size: xx-large">请点击右上角菜单，选择“在Safari/浏览器中打开”就可以顺利下载了。</p>
+</div>
     <script type="text/javascript">
         // 获取终端的相关信息
         var Terminal = {
@@ -22,15 +28,12 @@
 
         // 根据不同的终端，跳转到不同的地址
         var theUrl = '';
-        if(Terminal.platform.android){
+        if (Terminal.platform.android) {
             theUrl = '/download/android-v1.0.apk';
-        }else if(Terminal.platform.iPhone){
+        } else if (Terminal.platform.iPhone) {
             theUrl = 'https://itunes.apple.com/us/app/guang-rong-he-p2p-wang-dai/id1080838161?l=zh&ls=1&mt=8';
         }
         location.href = theUrl;
     </script>
-</head>
-<body>
-
 </body>
 </html>
