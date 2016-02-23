@@ -32,7 +32,7 @@
         <div class="invest-list">
             <!-- 新手标 -->
             <%set var np = GetFirstNewbieProject()%>
-            <%if(np!=null)%>
+            <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
             <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>#project'">
                 <p class="invest-title new-hand">
                 <span class="project-type">{np.dt_article_category.title}</span>
