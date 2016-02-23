@@ -492,8 +492,6 @@ namespace Agp2p.Core
             {
                 throw new Exception("没有足够的项目可投，超出：" + exceed);
             }
-
-            // MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
         }
 
         public static void HuoqiProjectWithdraw(Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
@@ -1341,8 +1339,8 @@ namespace Agp2p.Core
                     wallet.last_update_time = autoInvestFailRepay.create_time;
 
                     // 添加钱包历史
-                    var his = CloneFromWallet(wallet, GetWalletHistoryTypeByProjectTransaction(autoInvestFailRepay));
-                    his.li_project_transactions = srcPtr;
+                    var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess);
+                    his.li_project_transactions = autoInvestFailRepay;
                     newContext.li_wallet_histories.InsertOnSubmit(his);
                 }
             });
