@@ -377,5 +377,14 @@ namespace Agp2p.Test
             Debug.WriteLine("创建债权：" + ptrs.Count);
         }
 
+        [TestMethod]
+        public void TestHiResTimeTickUtil()
+        {
+            Enumerable.Range(0, 10)
+                .Select(i => Utils.HiResNowString)
+                .ToList()
+                .ForEach(time => Debug.WriteLine(time));
+        }
+
     }
 }
