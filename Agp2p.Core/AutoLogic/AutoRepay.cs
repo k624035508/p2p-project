@@ -19,7 +19,7 @@ namespace Agp2p.Core.AutoLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
 
             MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，没有人接手的，由公司接手
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime)); // 活期项目的提现
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime)); // 活期项目提现的执行
         }
 
         private static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
@@ -88,9 +88,13 @@ namespace Agp2p.Core.AutoLogic
 
                     ucs.ForEach(c =>
                     {
-                        c.status = (byte) (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid
-                            ? Agp2pEnums.ClaimStatusEnum.Completed
-                            : Agp2pEnums.ClaimStatusEnum.Transferred);
+                        if (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
+                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                        else if (c.status == (int)Agp2pEnums.ClaimStatusEnum.TransferredUnpaid)
+                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
+                        else
+                            throw new InvalidOperationException("活期项目 T+1 提款出错：未知的债权状态");
+
                         c.statusUpdateTime = repayTime;
 
                         var withdrawTransact = new li_project_transactions

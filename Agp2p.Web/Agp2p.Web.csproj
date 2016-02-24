@@ -247,6 +247,7 @@
     <Content Include="admin\transact\bank_transaction_charge.aspx" />
     <Content Include="admin\transact\bank_transaction_list_account.aspx" />
     <Content Include="admin\transact\bank_transaction_withdraw.aspx" />
+    <Content Include="admin\transact\huoqi_withdraw.aspx" />
     <Content Include="admin\transact\project_investment_list.aspx" />
     <Content Include="admin\transact\project_list.aspx" />
     <Content Include="admin\transact\project_recently_repay_list.aspx" />
@@ -1827,6 +1828,12 @@
     </Compile>
     <Compile Include="admin\transact\bank_transaction_withdraw.aspx.designer.cs">
       <DependentUpon>bank_transaction_withdraw.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\huoqi_withdraw.aspx.cs">
+      <DependentUpon>huoqi_withdraw.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\huoqi_withdraw.aspx.designer.cs">
+      <DependentUpon>huoqi_withdraw.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\transact\project_investment_list.aspx.cs">
       <DependentUpon>project_investment_list.aspx</DependentUpon>

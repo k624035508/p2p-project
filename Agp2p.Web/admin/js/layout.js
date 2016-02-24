@@ -206,6 +206,13 @@ function CheckAndPromptPostBack(objId, objmsg, defVal) {
     __doPostBack(objId, prompt(objmsg, defVal));
     return false;
 }
+//显示弹框决定是否回传
+function PromptPostBack(objId, objmsg, defVal) {
+    var result = prompt(objmsg, defVal);
+    if (result)
+        __doPostBack(objId.replace(/_/g, '$'), result);
+    return false;
+}
 //执行回传无复选框确认函数
 function ExeNoCheckPostBack(objId, objmsg) {
    
