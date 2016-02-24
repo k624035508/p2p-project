@@ -1317,7 +1317,7 @@ namespace Agp2p.Core
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
 
                 // 自动投标完成，检测是否有项目被投满
-                ptrMayReinvested.ForEach(ptr => CheckFinancingComplete(ptr.id)));
+                ptrMayReinvested.ForEach(ptr => CheckFinancingComplete(ptr.id));
             }
         }
 
