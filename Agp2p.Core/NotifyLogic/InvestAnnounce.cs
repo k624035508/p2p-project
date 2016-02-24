@@ -73,7 +73,7 @@ namespace Agp2p.Core.NotifyLogic
                 catch (Exception ex)
                 {
                     context.AppendAdminLogAndSave("ProjectFinancingFailSms",
-                        string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", ex.Message, investor.user_name, project.title));
+                        string.Format("发送项目流标提醒失败：{0}（客户ID：{1}，项目名称：{2}）", ex.GetSimpleCrashInfo(), investor.user_name, project.title));
                 }
             });
         }
@@ -142,7 +142,7 @@ namespace Agp2p.Core.NotifyLogic
             }
             catch (Exception ex)
             {
-                context.AppendAdminLog("Invest", "发送投资成功消息时错误：" + ex.Message);
+                context.AppendAdminLog("Invest", "发送投资成功消息时错误：" + ex.GetSimpleCrashInfo());
                 context.SubmitChanges();
             }
         }
@@ -193,7 +193,7 @@ namespace Agp2p.Core.NotifyLogic
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.Message + "（客户ID：" + user.user_name + "）");
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送放款/截标通知失败：" + ex.GetSimpleCrashInfo() + "（客户ID：" + user.user_name + "）");
                 }
             });
         }

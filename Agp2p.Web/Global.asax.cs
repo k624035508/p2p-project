@@ -34,7 +34,9 @@ namespace Agp2p.Web
                 }
             }, ex =>
             {
-                new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.Message);
+                new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.GetSimpleCrashInfo());
+                if (Utils.IsDebugging())
+                    throw ex;
             });
         }
 
@@ -75,7 +77,7 @@ namespace Agp2p.Web
         {
             MessageBus.Main.exceptionCallback = ex =>
             {
-                new Agp2pDataContext().AppendAdminLogAndSave("MessageBusError", ex.Message);
+                new Agp2pDataContext().AppendAdminLogAndSave("MessageBusError", ex.GetSimpleCrashInfo());
             };
             InitDailyTimer();
             DelayedRelease();

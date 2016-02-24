@@ -1791,5 +1791,10 @@ namespace Agp2p.Common
         public static DateTime HiResNow => new DateTime(UtcNowTicks, DateTimeKind.Utc).ToLocalTime();
 
         public static string HiResNowString => HiResNow.ToString("yyyyMMddHHmmssfffffff");
+
+        public static string GetSimpleCrashInfo(this Exception ex)
+        {
+            return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault();
+        }
     }
 }

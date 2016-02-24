@@ -69,7 +69,7 @@ namespace Agp2p.Core.NotifyLogic
                 catch (Exception ex)
                 {
                     context.AppendAdminLogAndSave("LoanerRepayHint",
-                        string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", ex.Message, loaner.user_name, task.li_projects.title));
+                        string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", ex.GetSimpleCrashInfo(), loaner.user_name, task.li_projects.title));
                 }
             });
         }
@@ -134,7 +134,7 @@ namespace Agp2p.Core.NotifyLogic
                 catch (Exception e)
                 {
                     context.AppendAdminLogAndSave("RepaymentSms",
-                        string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", e.Message, t.dt_users.user_name, t.li_projects.title));
+                        string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", e.GetSimpleCrashInfo(), t.dt_users.user_name, t.li_projects.title));
                 }
             });
         }
