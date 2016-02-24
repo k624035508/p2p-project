@@ -50,7 +50,7 @@ module.exports = {
             { test: /\.jsx?$/, exclude: /node_modules|build/, loader: 'babel?cacheDirectory' },
             { test: /\.css$/, loader: "style!css!autoprefixer" },
             { test: /\.png$/, loader: "url?limit=100000" },
-            { test: /\.jpg$/, loader: "url?limit=100000" },
+            { test: /\.jpg$/, loader: "file" },
             { test: /\.less$/, loader: "style!css!autoprefixer!less" },
 
             // **IMPORTANT** This is needed so that each bootstrap js file required by
