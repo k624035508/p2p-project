@@ -494,7 +494,7 @@ namespace Agp2p.Core
             }
         }
 
-        public static void HuoqiProjectWithdraw(Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
+        public static void HuoqiProjectWithdraw(this Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
         {
             // 将活期项目的债权设置为 需要转让
             var user = context.dt_users.Single(u => u.id == userId);
