@@ -725,7 +725,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\emptyPic.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\events-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
@@ -749,7 +749,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office05.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02.png" />
@@ -759,7 +759,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff04.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07.png" />
