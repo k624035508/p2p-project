@@ -12,6 +12,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading;
 using ClosedXML.Excel;
 
 namespace Agp2p.Common
@@ -1766,6 +1767,34 @@ namespace Agp2p.Common
                 .ForEach(index => rounded[index] += deltaUnit);
 
             return rounded;
+        }
+
+        // http://stackoverflow.com/questions/5608980/how-to-ensure-a-timestamp-is-always-unique
+        private static long lastTimeStamp = DateTime.UtcNow.Ticks;
+        public static long UtcNowTicks
+        {
+            get
+            {
+                long original, newValue;
+                do
+                {
+                    original = lastTimeStamp;
+                    long now = DateTime.UtcNow.Ticks;
+                    newValue = Math.Max(now, original + 1);
+                } while (Interlocked.CompareExchange
+                             (ref lastTimeStamp, newValue, original) != original);
+
+                return newValue;
+            }
+        }
+
+        public static DateTime HiResNow => new DateTime(UtcNowTicks, DateTimeKind.Utc).ToLocalTime();
+
+        public static string HiResNowString => HiResNow.ToString("yyyyMMddHHmmssfffffff");
+
+        public static string GetSimpleCrashInfo(this Exception ex)
+        {
+            return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault();
         }
     }
 }

@@ -405,7 +405,7 @@ namespace Agp2p.Web.admin.project
                                 catch (Exception ex)
                                 {
                                     LqContext.AppendAdminLogAndSave("WithdrawSms",
-                                        "发送借款募集顺延通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                                        "发送借款募集顺延通知失败：" + ex.GetSimpleCrashInfo() + "（客户ID：" + i.dt_users.user_name + "）");
                                 }
                             });
                     }
