@@ -1310,15 +1310,18 @@ namespace Agp2p.Core
                 pro.status = (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
                 pro.complete_time = repaymentTask.repay_at;
 
-                AutoInvestAfterProjectCompleted(context, pro);
+                var ptrMayReinvested = AutoInvestAfterProjectCompleted(context, pro);
                 context.SubmitChanges();
 
                 // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
+
+                // 自动投标完成，检测是否有项目被投满
+                ptrMayReinvested.ForEach(ptr => CheckFinancingComplete(ptr.id)));
             }
         }
 
-        private static void AutoInvestAfterProjectCompleted(Agp2pDataContext newContext, li_projects pro)
+        private static List<li_project_transactions> AutoInvestAfterProjectCompleted(Agp2pDataContext newContext, li_projects pro)
         {
             // 将债权设置为完成，活期收益的债权需要继续自动投标，如果自动投标失败，则部分退款
             var needComplete = pro.li_claims.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed).ToList();
@@ -1338,7 +1341,7 @@ namespace Agp2p.Core
                 c.statusUpdateTime = pro.complete_time.Value;
             }); 
 
-            // 提现中的活期债权状态设为完成，未回款
+            // 提现中的活期债权状态设为“完成，未回款”
             needTransferClaims.ForEach(c =>
             {
                 c.status = (byte) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid;
@@ -1347,7 +1350,8 @@ namespace Agp2p.Core
 
             var noMoreInvestable = false;
             // 不可转让的活期债权继续自动投标
-            nonTransferableClaims.ToLookup(c => c.li_project_transactions1).ForEach(ptrcs =>
+            var lookup = nonTransferableClaims.ToLookup(c => c.li_project_transactions1);
+            lookup.ForEach(ptrcs =>
             {
                 var needTransfer = ptrcs.Sum(c => c.principal);
                 var srcPtr = ptrcs.Key;
@@ -1380,6 +1384,7 @@ namespace Agp2p.Core
                     newContext.li_wallet_histories.InsertOnSubmit(his);
                 }
             });
+            return lookup.Select(g => g.Key).ToList();
         }
 
         private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
