@@ -65,7 +65,7 @@ namespace Agp2p.Web.admin.transact
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             ddlHuoqiProjects.SelectedValue = huoqiProject.ToString();
-            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject).ToLookup(c => c.dt_users).Select(
+            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject && c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed).ToLookup(c => c.dt_users).Select(
                 g =>
                 {
                     return new HuoqiProjectInvestor
