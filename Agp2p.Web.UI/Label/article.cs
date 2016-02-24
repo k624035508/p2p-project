@@ -236,6 +236,17 @@ namespace Agp2p.Web.UI
                 .AsEnumerable();
         }
 
+        /// <summary>
+        /// 获取最新动态（包括置顶的公告）
+        /// </summary>
+        /// <returns></returns>
+        protected dt_article GetNewestAnnounce()
+        {
+            var context = new Agp2pDataContext();
+            var queryable = context.dt_article.Where(a => a.category_id == 42 || (a.category_id == 43 && a.is_top == 1));
+            return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time).FirstOrDefault();
+        }
+
         #region 购物标签======================================
         /// <summary>
         /// 返回相应的图片

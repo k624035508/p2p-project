@@ -726,7 +726,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\emptyPic.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\events-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
@@ -750,7 +750,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office05.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02.png" />
@@ -760,7 +760,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff04.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06-bg.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07.png" />
@@ -849,7 +849,7 @@
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
-    <Content Include="templates\AnGuang\imgs\register\login-bg.png" />
+    <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />
     <Content Include="templates\AnGuang\imgs\register\piccodeTest.png" />
@@ -857,7 +857,7 @@
     <Content Include="templates\AnGuang\imgs\register\recommended.png" />
     <Content Include="templates\AnGuang\imgs\register\red-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
-    <Content Include="templates\AnGuang\imgs\register\register-bg.png" />
+    <Content Include="templates\AnGuang\imgs\register\register-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-01.png" />
