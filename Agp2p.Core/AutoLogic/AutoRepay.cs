@@ -95,6 +95,8 @@ namespace Agp2p.Core.AutoLogic
                         else
                             throw new InvalidOperationException("活期项目 T+1 提款出错：未知的债权状态");
 
+                        // 恢复活期项目的可投资金额
+                        c.li_projects1.investment_amount -= c.principal;
                         c.statusUpdateTime = repayTime;
 
                         var withdrawTransact = new li_project_transactions

@@ -1360,6 +1360,9 @@ namespace Agp2p.Core
                 {
                     noMoreInvestable = true; // 优化：没有项目可以投资的时候，直接跳过这个步骤
 
+                    // 恢复活期项目的可投资金额
+                    srcPtr.li_projects.investment_amount -= exceed;
+
                     // 超出的部分退款
                     var autoInvestFailRepay = new li_project_transactions
                     {
