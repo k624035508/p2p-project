@@ -87,7 +87,7 @@
                 <%/if%>
             </span>
             <span class="announce-board-icon news-icon"></span>
-            <%set var newestAnnounce=GetArticles(42, 1).FirstOrDefault()%>
+            <%set var newestAnnounce=GetNewestAnnounce()%>
             <span class="web-announce">
                 最新动态：
                 <%if(newestAnnounce!=null)%>
