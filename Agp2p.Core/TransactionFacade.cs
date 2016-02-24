@@ -758,7 +758,7 @@ namespace Agp2p.Core
 
         private static li_claims ClaimTransfer(Agp2pDataContext context, li_claims originalClaim, decimal amount, li_project_transactions tr, DateTime? investTime = null)
         {
-            if (originalClaim.status != (int) Agp2pEnums.ClaimStatusEnum.Transferable || originalClaim.status != (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+            if (originalClaim.status != (int) Agp2pEnums.ClaimStatusEnum.Transferable && originalClaim.status != (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
                 throw new InvalidOperationException("该债权不可转让");
             if (amount <= 0)
                 throw new InvalidOperationException("债权转让金额不能小于0");
