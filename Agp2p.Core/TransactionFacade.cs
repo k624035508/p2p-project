@@ -381,7 +381,7 @@ namespace Agp2p.Core
             }
             else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 5 w
             {
-                var alreadyInvest = wallet.dt_users.li_claims.Where(c => c.profitingProjectId == projectId)
+                var alreadyInvest = wallet.dt_users.li_claims.Where(c => c.profitingProjectId == projectId && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed)
                     .Aggregate(0m, (sum, c) => sum + c.principal);
                 if (50000 < alreadyInvest + investingMoney)
                 {
