@@ -35,8 +35,6 @@ namespace Agp2p.Web
             }, ex =>
             {
                 new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.GetSimpleCrashInfo());
-                if (Utils.IsDebugging())
-                    throw ex;
             });
         }
 
