@@ -26,10 +26,7 @@ namespace Agp2p.Core.AutoLogic
         {
             // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
             var context = new Agp2pDataContext();
-            var group = context.dt_user_groups.SingleOrDefault(g => g.title == ClaimTakeOverGroupName);
-            if (group == null)
-                throw new InvalidOperationException("请先创建“公司账号”的会员组，并且往其添加会员");
-            var companyUsers = group.dt_users.ToList();
+            var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == ClaimTakeOverGroupName).ToList();
             if (!companyUsers.Any())
                 throw new InvalidOperationException("请先往“公司账号”的会员组添加会员");
 
