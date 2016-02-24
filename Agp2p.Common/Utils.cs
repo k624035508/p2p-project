@@ -1794,7 +1794,7 @@ namespace Agp2p.Common
 
         public static string GetSimpleCrashInfo(this Exception ex)
         {
-            return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault();
+            return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
         }
     }
 }
