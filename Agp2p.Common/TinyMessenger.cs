@@ -782,10 +782,9 @@ namespace TinyMessenger
                     // Ignore any errors and carry on
                     // TODO - add to a list of erroring subs and remove them?
 
-                    exceptionCallback?.BeginInvoke(ex, null, null);
-
                     if (Utils.IsDebugging())
-                        throw;
+                        throw new Exception(ex.Message, ex);
+                    exceptionCallback?.BeginInvoke(ex, null, null);
                 }
             });
         }
