@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Agp2p.Common;
+using Agp2p.Core.AutoLogic;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
@@ -583,7 +584,7 @@ namespace Agp2p.Core
             }
         }
 
-        /*TODO 活期项目：
+        /* 活期项目：
             1、固定资金100万，100元起投，每个客户最大投资5万
             2、收益T+0，固定利率3.3%，次日开始返息
             3、购买活期项目后即设置为自动投标：
@@ -605,14 +606,20 @@ namespace Agp2p.Core
         {
             // 接手债权或找出可投资项目并投资（创建债权），如果项目可投金额不足，则抛异常
 
-            // 优先匹配需要转让的债权
-            var needTransferClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).ToList();
+            // 优先匹配需要转让的债权，不能自己转让给自己
+            var needTransferClaims =
+                context.li_claims.Where(
+                    c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.userId != tr.dt_users.id)
+                    .ToList();
             apportionAmount = ApportionToClaims(context, needTransferClaims, apportionAmount, tr, investTime);
 
             if (0 < apportionAmount)
             {
                 // 匹配可转让债权（公司内部的）
-                var transferableClaims = context.li_claims.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable).ToList();
+                var transferableClaims =
+                    context.li_claims.Where(
+                        c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable && c.userId != tr.dt_users.id)
+                        .ToList();
                 apportionAmount = ApportionToClaims(context, transferableClaims, apportionAmount, tr, investTime);
             }
 
@@ -764,6 +771,8 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("债权转让金额不能小于0");
             if (originalClaim.principal < amount)
                 throw new InvalidOperationException("债权转让金额不能超出债权的本金");
+            if (originalClaim.userId == tr.dt_users.id)
+                throw new InvalidOperationException("不能将债权转让给自己");
 
             var transactTime = investTime.GetValueOrDefault(tr.create_time);
 
@@ -790,7 +799,11 @@ namespace Agp2p.Core
                 createTime = transactTime,
                 principal = amount,
                 userId = tr.dt_users.id,
-                status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                // 如果是给公司账号接手，则设为可转让债权
+                status =
+                    tr.dt_users.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName
+                        ? (byte) Agp2pEnums.ClaimStatusEnum.Transferable
+                        : (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                 projectId = originalClaim.projectId,
                 profitingProjectId = tr.li_projects.id,
                 li_project_transactions1 = tr,
@@ -798,13 +811,14 @@ namespace Agp2p.Core
             };
             context.li_claims.InsertOnSubmit(liClaims);
 
+            // 转让了提现中的债权
             if (originalClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
             {
                 // 提现 T + 1
                 originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid;
                 originalClaim.statusUpdateTime = transactTime;
             }
-            else
+            else if (originalClaim.status == (int)Agp2pEnums.ClaimStatusEnum.Transferable)
             {
                 originalClaim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
                 originalClaim.statusUpdateTime = transactTime;
@@ -833,6 +847,10 @@ namespace Agp2p.Core
                 his.li_project_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
+            else
+            {
+                throw new InvalidOperationException("异常的原始债权状态");
+            }
 
             return liClaims;
         }
@@ -847,7 +865,7 @@ namespace Agp2p.Core
             var ptr = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
             var project = ptr.li_projects;
             if (project.IsHuoqiProject()) {
-                // TODO test 判断自动投标的项目是否满标
+                // 判断自动投标的项目是否满标
                 var financingCompletedProject = ptr.li_claims1.Where(
                     c =>
                         c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
