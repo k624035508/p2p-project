@@ -1432,7 +1432,8 @@ namespace Agp2p.Core
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio
                 .Where(c => c.Key.status < (int) Agp2pEnums.ClaimStatusEnum.Completed) // 只为未完成/有效的债权回款
-                .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to)
+                .Where(c => !repaymentTask.li_projects.IsHuoqiProject() || c.Key.createTime.Date < DateTime.Today) // 如果是今天才投的活期标，则不返利
+                .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款
                 .Select(c =>
             {
                 var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);

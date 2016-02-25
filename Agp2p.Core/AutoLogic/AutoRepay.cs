@@ -105,7 +105,7 @@ namespace Agp2p.Core.AutoLogic
                             type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw,
                             status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                             gainFromClaim = c.id,
-                            remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
+                            // remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
                         };
                         context.li_project_transactions.InsertOnSubmit(withdrawTransact);
 

@@ -296,7 +296,7 @@ namespace Agp2p.Common
             RepayOverdueFine = 3,
             [Description("债权转让")]
             ClaimTransfer = 4,
-            [Description("活期项目续投失败回款")]
+            [Description("续投活期失败回款")]
             AutoInvestFailRepay = 5,
             [Description("活期项目提现")]
             HuoqiProjectWithdraw = 6,
@@ -371,7 +371,7 @@ namespace Agp2p.Common
             RepaidOverdueFine = 23,
             [Description("债权转让")]
             ClaimTransfer = 24,
-            [Description("活期项目续投失败回款")]
+            [Description("续投活期失败回款")]
             AutoInvestFailRepaySuccess = 25,
             [Description("活期项目提现")]
             HuoqiProjectWithdrawSuccess = 26,
