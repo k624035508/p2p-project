@@ -55,7 +55,7 @@ namespace Agp2p.Web.admin.transact
         {
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
-            var query = context.dt_users.Where(b => b.user_name.Contains(txtKeywords.Text));
+            var query = context.dt_users.Where(b => b.user_name.Contains(txtKeywords.Text) || b.real_name.Contains(txtKeywords.Text));
             //用户分组查询
             if (0 < UserGroud) // 选择了某一组
             {
