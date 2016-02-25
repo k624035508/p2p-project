@@ -559,7 +559,7 @@ namespace Agp2p.Core
                     status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     projectId = headClaim.projectId,
                     profitingProjectId = headClaim.profitingProjectId,
-                    li_project_transactions = headClaim.li_project_transactions,
+                    li_project_transactions1 = headClaim.li_project_transactions1,
                     number = headClaim.number
                 };
                 context.li_claims.InsertOnSubmit(remain);
@@ -573,7 +573,7 @@ namespace Agp2p.Core
                     status = (byte)Agp2pEnums.ClaimStatusEnum.NeedTransfer,
                     projectId = headClaim.projectId,
                     profitingProjectId = headClaim.profitingProjectId,
-                    li_project_transactions = headClaim.li_project_transactions,
+                    li_project_transactions1 = headClaim.li_project_transactions1,
                     number = headClaim.number
                 };
                 context.li_claims.InsertOnSubmit(splited);
