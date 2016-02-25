@@ -887,7 +887,7 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectFinancingCompletedMsg(projectId)); // 广播项目满标的消息
+            MessageBus.Main.Publish(new ProjectFinancingCompletedMsg(projectId)); // 广播项目满标的消息
             return project;
         }
 
@@ -909,7 +909,7 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectFinancingCompleteEvenTimeoutMsg(projectId)); // 广播项目截标的消息
+            MessageBus.Main.Publish(new ProjectFinancingCompleteEvenTimeoutMsg(projectId)); // 广播项目截标的消息
             return project;
         }
 
@@ -1234,7 +1234,7 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 马上执行还款计划
+        /// 马上执行还款计划（不能异步执行）
         /// </summary>
         /// <param name="context"></param>
         /// <param name="repaymentId"></param>
@@ -1293,7 +1293,7 @@ namespace Agp2p.Core
                     ta.id != repaymentId &&
                     (ta.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
                      ta.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime));
-            MessageBus.Main.PublishAsync(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息
+            MessageBus.Main.Publish(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息，不能使用异步消息，否则续投活期债权会出现多线程竞争冒险
 
             return repaymentTask;
         }
@@ -1603,7 +1603,6 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
             context.ExecuteRepaymentTask(repayTaskId, Agp2pEnums.RepaymentStatusEnum.OverTimePaid);
-
         }
 
         /// <summary>
