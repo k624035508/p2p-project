@@ -28,7 +28,7 @@ namespace Agp2p.Common
                 }
                 catch (Exception ex)
                 {
-                    crashAction(ex);
+                    crashAction(new Exception(ex.Message, ex));
                 }
             };
 
