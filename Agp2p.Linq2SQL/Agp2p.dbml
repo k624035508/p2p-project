@@ -531,47 +531,6 @@
       <Association Name="dt_users_dt_user_message" Member="dt_users" ThisKey="receiver" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
-  <Table Name="dbo.li_projects" Member="li_projects">
-    <Type Name="li_projects">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="no" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="user_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="audit_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="publish_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="invest_complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="make_loan_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="tag" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="profit_rate_year" Type="System.Decimal" DbType="Decimal(5,3) NOT NULL" CanBeNull="false" />
-      <Column Name="profit_rate" Type="System.Decimal" DbType="Decimal(9,9) NOT NULL" CanBeNull="false" />
-      <Column Name="repayment_term_span" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="repayment_term_span_count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="repayment_type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="financing_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
-      <Column Name="investment_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
-      <Column Name="financing_day" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="risk_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="img_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="click" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="loan_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="li_projects_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="project_id" Type="li_company_inoutcome" />
-      <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
-      <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
-      <Association Name="dt_article_category_li_projects" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />
-      <Association Name="li_risks_li_projects" Member="li_risks" ThisKey="risk_id" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.dt_channel" Member="dt_channel">
     <Type Name="dt_channel">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -632,8 +591,8 @@
       <Column Name="prepay" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
       <Column Name="cost" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
       <Column Name="only_repay_to" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="li_projects_li_repayment_tasks" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
       <Association Name="dt_users_li_repayment_tasks" Member="dt_users" ThisKey="only_repay_to" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_projects_li_repayment_tasks" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_manager_messages" Member="li_manager_messages">
@@ -673,6 +632,47 @@
       <Association Name="li_projects_li_project_transactions" Member="li_projects" ThisKey="project" OtherKey="id" Type="li_projects" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.li_projects" Member="li_projects">
+    <Type Name="li_projects">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="no" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="audit_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="publish_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="invest_complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="make_loan_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="tag" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="profit_rate_year" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
+      <Column Name="profit_rate" Type="System.Decimal" DbType="Decimal(9,9) NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_term_span" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_term_span_count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="repayment_type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="financing_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="investment_amount" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
+      <Column Name="financing_day" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="risk_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="img_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="click" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="loan_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="li_projects_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="project_id" Type="li_company_inoutcome" />
+      <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
+      <Association Name="li_projects_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="project" Type="li_project_transactions" />
+      <Association Name="dt_article_category_li_projects" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />
+      <Association Name="li_risks_li_projects" Member="li_risks" ThisKey="risk_id" OtherKey="id" Type="li_risks" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.li_loaners" Member="li_loaners">
     <Type Name="li_loaners">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -689,7 +689,7 @@
       <Column Name="working_company" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
       <Column Name="lawsuit" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="quota" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="li_loaners_li_mortgages" Member="li_mortgages" ThisKey="id" OtherKey="owner" Type="li_mortgages" />
       <Association Name="li_loaners_li_risks" Member="li_risks" ThisKey="id" OtherKey="loaner" Type="li_risks" />
       <Association Name="li_loaners_li_albums" Member="li_albums" ThisKey="id" OtherKey="loaner" Type="li_albums" />

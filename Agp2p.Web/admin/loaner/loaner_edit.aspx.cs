@@ -58,7 +58,7 @@ namespace Agp2p.Web.admin.loaner
                             .ToArray());
             
             var model = context.li_loaners.First(q => q.id == id);
-            this.rblStatus.SelectedValue = model.status?.ToString();
+            this.rblStatus.SelectedValue = model.status.ToString();
             txtName.Text = model.dt_users.real_name;
             txtTel.Text = model.dt_users.mobile;
             txtAge.Text = model.age.ToString();
