@@ -13,13 +13,71 @@ namespace Agp2p.Web.UI.Page
     public partial class loan : Web.UI.BasePage
     {
         protected dt_users user;
-        protected int step = 0;
+        protected int step = 2;
+        protected int userId = 0;
+        protected int loanerId = 0;
+        protected int pendingProjectId = 0;
+        protected int quota_use = 0;
 
-        protected void Page_Load(object sender, EventArgs e)
+        /// <summary>
+        /// 重写父类的虚方法,此方法将在Init事件前执行
+        /// </summary>
+        protected override void ShowPage()
+        {
+            Init += Page_Init; 
+        }
+
+        void Page_Init(object sender, EventArgs e)
         {
             user = GetUserInfoByLinq();
             if (user == null)
-                step = 1;//显示登录
+                step = 1;//显示登录步骤
+            else
+            {
+                userId = user.id;
+                //查看是否已为借款人
+                Agp2pDataContext context = new Agp2pDataContext();
+                var loaner = context.li_loaners.SingleOrDefault(l => l.user_id == user.id);
+                if (loaner == null)
+                {
+                    step = 2; //显示申请借款人步骤
+                }
+                else
+                {
+                    //查看借款人状态
+                    switch (loaner.status)
+                    {
+                        case (int)Agp2pEnums.LoanerStatusEnum.Pending:
+                            step = 21;//显示申请借款人审核中
+                            return;
+                        case (int)Agp2pEnums.LoanerStatusEnum.PendingFail:
+                            step = 22;//显示申请借款人失败，重新申请
+                            return;
+                        case (int)Agp2pEnums.LoanerStatusEnum.Disable:
+                            step = 23;//显示禁止再申请借款人
+                            return;
+                    }
+
+                    //查看是否有在审批中的借款申请
+                    var project = context.li_projects.Where(p => p.user_name == user.user_name && p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted).ToList();
+                    if (project.Any())
+                        step = 4;//显示正在审批步骤
+                    else
+                    {
+                        //查询已审核通过的借款
+                        var projectAll =
+                            context.li_projects.Where(
+                                p =>
+                                    p.user_name == user.user_name &&
+                                    p.status > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted &&
+                                    p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail);
+                        //查询可用额度
+                        quota_use = loaner.quota - (int)projectAll.Sum(p => p.financing_amount);
+
+                        step = 5;//显示已发布借款步骤
+                    }
+                }
+            }
 
         }
 

@@ -13,6 +13,8 @@ $(function () {
     //data-toggle ≥ı ºªØ
     $('[data-toggle="popover"]').popover();
 
+    var { step,userId,loanerId } = $("#app").data();
+
     var $step1 = $("ul.application-nav li.step1");
     var $step2 = $("ul.application-nav li.step2");
     var $step3 = $("ul.application-nav li.step3");
