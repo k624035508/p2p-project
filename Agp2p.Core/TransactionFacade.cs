@@ -1369,6 +1369,10 @@ namespace Agp2p.Core
             var huoqiInvestment = nonTransferableClaims.ToLookup(c => c.li_project_transactions1);
             huoqiInvestment.ForEach(ptrcs =>
             {
+                // 项目完成了，全部债权的状态都要设为完成
+                var completedClaims = ptrcs.Select(c => c.NewStatusChild(pro.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
+                newContext.li_claims.InsertAllOnSubmit(completedClaims);
+
                 var needTransfer = ptrcs.Sum(c => c.principal);
                 var srcPtr = ptrcs.Key;
                 var exceed = noMoreInvestable ? needTransfer : AutoInvestment(newContext, needTransfer, srcPtr, pro.complete_time.Value);
