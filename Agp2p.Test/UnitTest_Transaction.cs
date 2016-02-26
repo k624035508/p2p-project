@@ -339,7 +339,6 @@ namespace Agp2p.Test
             {
                 if (ptr.li_claims1.Any()) return;
 
-                
                 var claimFromInvestment = new li_claims
                 {
                     principal = ptr.principal,
@@ -348,30 +347,28 @@ namespace Agp2p.Test
                     createFromInvestment = ptr.id,
                     createTime = ptr.create_time,
                     userId = ptr.investor,
-                    status =
-                        (byte)
-                            (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                                ? Agp2pEnums.ClaimStatusEnum.Completed
-                                : Agp2pEnums.ClaimStatusEnum.Nontransferable),
+                    status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     number = Utils.HiResNowString,
-                    statusUpdateTime = ptr.li_projects.complete_time
                 };
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
 
                 if (ptr.li_projects.IsNewbieProject())
                 {
                     var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
-                    if (task.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    if (task.status != (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
                     {
-                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable;
-                        claimFromInvestment.statusUpdateTime = null;
-                    }
-                    else
-                    {
-                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
-                        claimFromInvestment.statusUpdateTime = task.repay_at;
+                        var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
                     }
                 }
-                context.li_claims.InsertOnSubmit(claimFromInvestment);
+                else
+                {
+                    if (ptr.li_projects.complete_time.HasValue)
+                    {
+                        var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
+                    }
+                }
             });
             //context.SubmitChanges();
             Debug.WriteLine("创建债权：" + ptrs.Count);

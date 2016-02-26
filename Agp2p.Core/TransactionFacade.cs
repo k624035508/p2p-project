@@ -2040,5 +2040,53 @@ namespace Agp2p.Core
         {
             return p.dt_article_category.call_index == "huoqi";
         }
+
+        public static li_claims MakeChild(this li_claims parent, DateTime createTime)
+        {
+            return new li_claims
+            {
+                li_claims1 = parent,
+                createFromInvestment = parent.createFromInvestment,
+                createTime = createTime,
+                userId = parent.userId,
+                principal = parent.principal,
+                projectId = parent.projectId,
+                profitingProjectId = parent.profitingProjectId,
+                number = parent.number,
+                status = parent.status,
+            };
+        }
+
+        public static li_claims NewStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus)
+        {
+            var child = parent.MakeChild(createTime);
+            child.status = (byte) newStatus;
+            return child;
+        }
+
+        public static li_claims NewPrincipalChild(this li_claims parent, DateTime createTime, decimal childPrincipal)
+        {
+            var child = parent.MakeChild(createTime);
+            child.principal = childPrincipal;
+            return child;
+        }
+
+        public static li_claims NewPrincipalAndStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal)
+        {
+            var child = parent.NewStatusChild(createTime, newStatus);
+            child.principal = childPrincipal;
+            return child;
+        }
+
+        public static li_claims TransferedChild(this li_claims parent, DateTime createTime,
+            Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal, li_project_transactions byPtr)
+        {
+            var child = parent.NewPrincipalAndStatusChild(createTime, newStatus, childPrincipal);
+            child.number = Utils.HiResNowString;
+            child.profitingProjectId = byPtr.project;
+            child.userId = byPtr.investor;
+            child.li_project_transactions1 = byPtr;
+            return child;
+        }
     }
 }
