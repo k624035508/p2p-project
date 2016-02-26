@@ -952,11 +952,13 @@
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
+    <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
+    <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -1227,6 +1229,7 @@
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
+    <Content Include="templates\AnGuang\less\loan.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

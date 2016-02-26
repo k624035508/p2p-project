@@ -1,0 +1,31 @@
+@import "common-style";
+
+body { background: @body-color; }
+
+.application-form {
+	height: 720px;
+	margin-top: 25px !important;
+	border: @border;
+	background: @white;
+
+	.application-nav {
+		margin-left: 0;
+		margin-top: 40px;
+		text-align: center;
+
+		li { cursor: pointer; }
+	}
+
+	.form-wrapper {
+		width: 705px;
+		height: 550px;
+		padding: 30px;
+		margin: 50px auto auto auto;
+		border: 1px solid @grey;
+
+		#id-card {
+			padding-top: 5px;
+			height: 30px;
+		}
+	}
+}

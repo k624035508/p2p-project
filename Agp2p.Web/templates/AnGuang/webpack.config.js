@@ -22,6 +22,7 @@ module.exports = {
         // including bootstrap, react
         usercenter: "./js/usercenter.jsx",
         forgot_password: "./js/forgot_password.js",
+        loan: "./js/loan.js"
     },
     output: {
         path: path.join(__dirname, './build'),
