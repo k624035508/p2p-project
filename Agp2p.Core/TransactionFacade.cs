@@ -866,11 +866,10 @@ namespace Agp2p.Core
             var project = ptr.li_projects;
             if (project.IsHuoqiProject()) {
                 // 判断自动投标的项目是否满标
-                var financingCompletedProject = ptr.li_claims1.Where(
-                    c =>
-                        c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
-                        c.li_projects.financing_amount == c.li_projects.investment_amount)
-                    .Select(c => c.li_projects)
+                var financingCompletedProject = ptr.li_claims1.Select(c => c.li_projects).Distinct().Where(
+                    p =>
+                        p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                        p.financing_amount == p.investment_amount)
                     .ToList();
                 financingCompletedProject.ForEach(p => FinishInvestment(context, p.id));
                 return; // 活期项目不会满标
@@ -893,7 +892,7 @@ namespace Agp2p.Core
         {
             var project = context.li_projects.Single(p => p.id == projectId);
             if (project.status != (int) Agp2pEnums.ProjectStatusEnum.Financing)
-                throw new InvalidOperationException("项目不是发标状态，不能设置为满标");
+                throw new InvalidOperationException("项目 " + project.title + " 不是发标状态，不能设置为满标");
             if (project.IsHuoqiProject())
                 throw new InvalidOperationException("活期项目不会满标");
 
@@ -1335,7 +1334,7 @@ namespace Agp2p.Core
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
 
                 // 自动投标完成，检测是否有项目被投满
-                ptrMayReinvested.ForEach(ptr => CheckFinancingComplete(ptr.id));
+                ptrMayReinvested.GroupBy(ptr => ptr.li_projects).ForEach(ptrs => CheckFinancingComplete(ptrs.First().id));
             }
         }
 
@@ -1368,8 +1367,8 @@ namespace Agp2p.Core
 
             var noMoreInvestable = false;
             // 不可转让的活期债权继续自动投标
-            var lookup = nonTransferableClaims.ToLookup(c => c.li_project_transactions1);
-            lookup.ForEach(ptrcs =>
+            var huoqiInvestment = nonTransferableClaims.ToLookup(c => c.li_project_transactions1);
+            huoqiInvestment.ForEach(ptrcs =>
             {
                 var needTransfer = ptrcs.Sum(c => c.principal);
                 var srcPtr = ptrcs.Key;
@@ -1405,7 +1404,7 @@ namespace Agp2p.Core
                     newContext.li_wallet_histories.InsertOnSubmit(his);
                 }
             });
-            return lookup.Select(g => g.Key).ToList();
+            return huoqiInvestment.Select(g => g.Key).ToList();
         }
 
         private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
