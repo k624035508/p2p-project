@@ -326,15 +326,7 @@ namespace Agp2p.Test
                     ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                     .ToList();
 
-            var proUserMap = ptrs.GroupBy(ptr => ptr.project)
-                .ToDictionary(pptr => pptr.Key,
-                    pptr =>
-                        pptr.GroupBy(ptr => ptr.investor)
-                            .ToDictionary(uptr => uptr.Key,
-                                uptr =>
-                                    uptr.Zip(Utils.Infinite(1), (ptr, index) => new {ptr, index})
-                                        .ToDictionary(pair => pair.ptr, pair => pair.index)));
-                            
+            int count = 0;
             ptrs.ForEach(ptr =>
             {
                 if (ptr.li_claims1.Any()) return;
@@ -351,6 +343,7 @@ namespace Agp2p.Test
                     number = Utils.HiResNowString,
                 };
                 context.li_claims.InsertOnSubmit(claimFromInvestment);
+                count += 1;
 
                 if (ptr.li_projects.IsNewbieProject())
                 {
@@ -359,6 +352,7 @@ namespace Agp2p.Test
                     {
                         var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value, Agp2pEnums.ClaimStatusEnum.Completed);
                         context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
                     }
                 }
                 else
@@ -367,11 +361,12 @@ namespace Agp2p.Test
                     {
                         var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed);
                         context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
                     }
                 }
             });
             //context.SubmitChanges();
-            Debug.WriteLine("创建债权：" + ptrs.Count);
+            Debug.WriteLine("创建债权：" + count);
         }
 
         [TestMethod]

@@ -32,7 +32,7 @@ namespace Agp2p.Core.AutoLogic
 
             // 接手昨日/更早的提现
             var needTransferClaims = context.li_claims.Where(
-                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.statusUpdateTime.GetValueOrDefault(c.createTime).Date < DateTime.Today)
+                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
                 .ToList();
 
             if (!needTransferClaims.Any()) return;
@@ -73,7 +73,7 @@ namespace Agp2p.Core.AutoLogic
                 c =>
                     c.createTime.Date < DateTime.Today && // 无需判断 statusUpdateTime，拿的是债权 NeedTransfer 的创建时间
                     (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid)).ToList();
+                     c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid) && !c.li_claims2.Any()).ToList();
             if (!claims.Any()) return;
 
             claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
@@ -86,16 +86,19 @@ namespace Agp2p.Core.AutoLogic
 
                     ucs.ForEach(c =>
                     {
+                        Agp2pEnums.ClaimStatusEnum newStatus;
                         if (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
-                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
+                            newStatus = Agp2pEnums.ClaimStatusEnum.Completed;
                         else if (c.status == (int)Agp2pEnums.ClaimStatusEnum.TransferredUnpaid)
-                            c.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferred;
+                            newStatus = Agp2pEnums.ClaimStatusEnum.Transferred;
                         else
                             throw new InvalidOperationException("活期项目 T+1 提款出错：未知的债权状态");
 
+                        var newStatusChild = c.NewStatusChild(repayTime, newStatus);
+                        context.li_claims.InsertOnSubmit(newStatusChild);
+
                         // 恢复活期项目的可投资金额
                         c.li_projects1.investment_amount -= c.principal;
-                        c.statusUpdateTime = repayTime;
 
                         var withdrawTransact = new li_project_transactions
                         {
@@ -133,13 +136,16 @@ namespace Agp2p.Core.AutoLogic
             // TODO test 次日开始返息：如果存在需要回款的活期项目债权，并且今天没有该项目的回款计划，则生成
             var huoqiProjects = context.li_projects
                 .Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing && p.dt_article_category.call_index == "huoqi")
-                .Where(p => p.li_repayment_tasks.All(ta => ta.should_repay_time.Date != today))
-                .Where(p => p.li_claims1.Any(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
+                .Where(p => p.li_repayment_tasks.All(ta => ta.should_repay_time.Date != today)).ToList();
 
             var dailyRepayments = huoqiProjects.SelectMany(p =>
             {
                 // 如果是今天才投的活期标，则不返利
-                var shouldRepayTo = p.li_claims1.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.createTime.Date < DateTime.Today).ToList();
+                var shouldRepayTo =
+                    p.li_claims1.Where(
+                        c =>
+                            c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.createTime.Date < DateTime.Today &&
+                            !c.li_claims2.Any()).ToList();
                 if (!shouldRepayTo.Any())
                 {
                     return Enumerable.Empty<li_repayment_tasks>();

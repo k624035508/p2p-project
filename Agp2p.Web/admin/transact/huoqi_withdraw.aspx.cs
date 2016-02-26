@@ -55,7 +55,14 @@ namespace Agp2p.Web.admin.transact
                     .AsEnumerable()
                     .Select(p => new ListItem(p.title, p.id.ToString()))
                     .ToArray());
-            huoqiProject = Convert.ToInt32(ddlHuoqiProjects.Items[0].Value);
+            if (ddlHuoqiProjects.Items.Count != 0)
+            {
+                huoqiProject = Convert.ToInt32(ddlHuoqiProjects.Items[0].Value);
+            }
+            else
+            {
+                ddlHuoqiProjects.Items.Add(new ListItem("暂无活期项目"));
+            }
         }
         #endregion
 
@@ -65,13 +72,13 @@ namespace Agp2p.Web.admin.transact
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             ddlHuoqiProjects.SelectedValue = huoqiProject.ToString();
-            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject).ToLookup(c => c.dt_users).Select(
+            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject && !c.li_claims2.Any()).ToLookup(c => c.dt_users).Select(
                 g =>
                 {
                     return new HuoqiProjectInvestor
                     {
                         UserId = g.Key.id,
-                        NonWithdrawingMoney = g.Where(c => c.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).Sum(c => c.principal),
+                        NonWithdrawingMoney = g.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).Sum(c => c.principal),
                         UserName =
                             string.IsNullOrWhiteSpace(g.Key.real_name)
                                 ? g.Key.user_name
