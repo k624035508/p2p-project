@@ -874,7 +874,7 @@ namespace Agp2p.Core
                     type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransfer,
                     status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     gainFromClaim = originalClaim.id,
-                    remark = $"项目【{originalClaim.li_projects.title}】的 {originalClaim.principal} 债权转让成功，转让金额 {amount}，剩余债权金额 {originalClaim.principal - amount}"
+                    //remark = $"项目 {originalClaim.li_projects.title} 的可转让债权转让成功： {amount}/{originalClaim.principal}"
                 };
                 context.li_project_transactions.InsertOnSubmit(claimTransferPtr);
 
@@ -884,7 +884,7 @@ namespace Agp2p.Core
                 wallet.last_update_time = transactTime;
 
                 // 修改钱包历史
-                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransfer);
                 his.li_project_transactions = byPtr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
