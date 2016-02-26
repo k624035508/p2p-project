@@ -178,7 +178,9 @@ namespace Agp2p.Core.AutoLogic
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
 
-            shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
+            // 优先进行特殊项目的放款
+            shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id)
+                .ForEach(ta => context.ExecuteRepaymentTask(ta.id));
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
             SendRepayNotice(shouldRepayTask, context);
         }
