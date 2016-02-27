@@ -56,6 +56,7 @@
     <th align="left" width="10%">用户名</th>
     <th align="left" width="10%">已投资金额</th>
     <th align="left" width="10%">提现中金额</th>
+    <th align="left" width="10%">提现成功待回款金额</th>
     <th align="left" width="10%">提现债权比重</th>
     <th align="left" width="10%">操作</th>
   </tr>
@@ -66,6 +67,7 @@
     <td><%# Eval("UserName") %></td>
     <td><%# Eval("InvestedMoney") %></td>
     <td><%# Eval("WithdrawingMoney") %></td>
+    <td><%# Eval("WithdrawSuccessMoney") %></td>
     <td><%# Eval("WithdrawingClaimRatio") %></td>
       <td><asp:LinkButton ID="btnWithdraw" runat="server" OnClick="btnWithdraw_OnClick"
               CommandArgument="<%# ((HuoqiProjectInvestor) Container.DataItem).UserId %>"

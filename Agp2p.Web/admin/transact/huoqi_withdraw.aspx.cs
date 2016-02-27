@@ -13,6 +13,7 @@ namespace Agp2p.Web.admin.transact
         public string UserName { get; set; }
         public decimal InvestedMoney { get; set; }
         public decimal WithdrawingMoney { get; set; }
+        public decimal WithdrawSuccessMoney { get; set; }
         public string WithdrawingClaimRatio { get; set; }
     }
 
@@ -72,9 +73,21 @@ namespace Agp2p.Web.admin.transact
                     {
                         UserId = g.Key.id,
                         InvestedMoney = g.Sum(c => c.principal),
-                        UserName = string.IsNullOrWhiteSpace(g.Key.real_name) ? g.Key.user_name : string.Format("{0}({1})", g.Key.user_name, g.Key.real_name),
-                        WithdrawingMoney = g.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).Aggregate(0m, (sum, c) => sum + c.principal),
-                        WithdrawingClaimRatio = g.Count(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer) + "/" + g.Count()
+                        UserName =
+                            string.IsNullOrWhiteSpace(g.Key.real_name)
+                                ? g.Key.user_name
+                                : string.Format("{0}({1})", g.Key.user_name, g.Key.real_name),
+                        WithdrawingMoney =
+                            g.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                                .Aggregate(0m, (sum, c) => sum + c.principal),
+                        WithdrawSuccessMoney =
+                            g.Where(
+                                c =>
+                                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid ||
+                                    c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
+                                .Aggregate(0m, (sum, c) => sum + c.principal),
+                        WithdrawingClaimRatio =
+                            g.Count(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer) + "/" + g.Count()
                     };
                 }).ToList();
 
