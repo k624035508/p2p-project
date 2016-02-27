@@ -21,6 +21,11 @@
 
         });
     </script>
+    <style>
+        tr.isActiveLeaf td {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="mainbody">
     <form id="form1" runat="server">
@@ -516,7 +521,7 @@
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
-                <tr>
+                <tr class="<%# (((li_claims) Container.DataItem).status < (int) Agp2pEnums.ClaimStatusEnum.Completed || ((li_claims) Container.DataItem).status % 10 == 1) && ((li_claims) Container.DataItem).IsLeafClaim() ? "isActiveLeaf" : ""%>">
                     <td align="center"><%# Eval("id") %></td>
                     <td><%# GetFriendlyUserName(((li_claims) Container.DataItem).dt_users) %></td>
                     <td><%# ((li_claims) Container.DataItem).principal.ToString("c") %></td>             

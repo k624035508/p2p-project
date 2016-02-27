@@ -68,10 +68,9 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var repayTime = DateTime.Now;
 
-            // 执行昨天活期提现，减少项目的在投金额
+            // 执行未回款债权的回款，减少项目的在投金额
             var claims = context.li_claims.Where(
                 c =>
-                    c.createTime.Date < DateTime.Today &&
                     (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
                      c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid) && !c.li_claims2.Any()).ToList();
             if (!claims.Any()) return;
