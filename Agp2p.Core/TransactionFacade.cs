@@ -846,7 +846,8 @@ namespace Agp2p.Core
                         profitingProjectId = originalClaim.profitingProjectId,
                         principal = amount,
                         status = (byte) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid,
-                        createTime = transactTime,
+                        createTime = originalClaim.createTime, // T + 1 提现到账的时间从债权变为 NeedTransfer 的时间开始算
+                        statusUpdateTime = transactTime,
                         createFromInvestment = originalClaim.createFromInvestment,
                         number = originalClaim.number
                     };
