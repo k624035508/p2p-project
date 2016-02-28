@@ -327,15 +327,9 @@ namespace Agp2p.Web.admin.statistic
                         projectNameMapper(his), claim == null ? "" : "债权: " + claim.principal.ToString("c"));
                 }
                 // 查出 还款期数/总期数
-                var term = context.li_wallet_histories.Count(
-                    h => h.user_id == his.user_id && h.create_time <= his.create_time &&
-                         (h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest ||
-                          h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
-                          h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
-                         h.li_project_transactions.project == his.li_project_transactions.project);
+                var term = proj.li_repayment_tasks.SingleOrDefault(t => t.repay_at == his.li_project_transactions.create_time)?.term.ToString() ?? "?";
                 var repaytaskInfo = string.Format("{0}/{1}", term,
-                    proj.li_repayment_tasks.Count(
-                        t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid));
+                    proj.li_repayment_tasks.Count(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid));
                 return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
             }
             if (his.li_bank_transactions != null)
