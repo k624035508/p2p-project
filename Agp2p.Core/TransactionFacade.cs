@@ -2045,5 +2045,10 @@ namespace Agp2p.Core
             child.li_project_transactions1 = byPtr;
             return child;
         }
+
+        public static bool IsLeafClaim(this li_claims claim)
+        {
+            return !claim.li_claims2.Any();
+        }
     }
 }
