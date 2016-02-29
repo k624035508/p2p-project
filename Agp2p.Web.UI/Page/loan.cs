@@ -12,7 +12,7 @@ namespace Agp2p.Web.UI.Page
     /// </summary>
     public partial class loan : Web.UI.BasePage
     {
-        protected int step = 0;
+        protected string step = "0";
         protected int user_id = 0;
         protected string user_name = "";
         protected int loaner_id = 0;
@@ -42,7 +42,7 @@ namespace Agp2p.Web.UI.Page
         {
             var user = GetUserInfoByLinq();
             if (user == null)
-                step = 1;//显示登录步骤
+                step = "1";//显示登录步骤
             else
             {
                 user_id = user.id;
@@ -52,7 +52,7 @@ namespace Agp2p.Web.UI.Page
                 var loaner = context.li_loaners.SingleOrDefault(l => l.user_id == user.id);
                 if (loaner == null)
                 {
-                    step = 2; //显示申请借款人步骤
+                    step = "2"; //显示申请借款人步骤
                     loaner_name = user.real_name;
                     loaner_mobile = user.mobile;
                 }
@@ -63,7 +63,7 @@ namespace Agp2p.Web.UI.Page
                     loaner_educational_background = loaner.educational_background;
                     loaner_income = loaner.income;
                     loaner_job = loaner.job;
-                    loaner_marital_status = Utils.GetAgp2pEnumDes((Agp2pEnums.MaritalStatusEnum) loaner.marital_status);
+                    loaner_marital_status = loaner.marital_status.ToString();
                     loaner_mobile = loaner.dt_users.mobile;
                     loaner_name = loaner.dt_users.real_name;
                     loaner_native_place = loaner.native_place;
@@ -74,20 +74,20 @@ namespace Agp2p.Web.UI.Page
                     switch (loaner.status)
                     {
                         case (int)Agp2pEnums.LoanerStatusEnum.Pending:
-                            step = 21;//显示申请借款人审核中
+                            step = "21";//显示申请借款人审核中
                             return;
                         case (int)Agp2pEnums.LoanerStatusEnum.PendingFail:
-                            step = 22;//显示申请借款人失败，重新申请
+                            step = "22";//显示申请借款人失败，重新申请
                             return;
                         case (int)Agp2pEnums.LoanerStatusEnum.Disable:
-                            step = 23;//显示禁止再申请借款人
+                            step = "23";//显示禁止再申请借款人
                             return;
                     }
 
                     //查看是否有在审批中的借款申请
                     var project = context.li_projects.Where(p => p.user_name == user.user_name && p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted).ToList();
                     if (project.Any())
-                        step = 4;//显示正在审批步骤
+                        step = "4";//显示正在审批步骤
                     else
                     {
                         //查询已审核通过的借款
@@ -98,8 +98,9 @@ namespace Agp2p.Web.UI.Page
                                     p.status > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted &&
                                     p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail);
                         //查询可用额度
-                        quota_use = loaner.quota - (int)projectAll.Sum(p => p.financing_amount);
-                        step = quota_use > 0 ? 3 : 5;
+                        quota_use = projectAll.Any() ? loaner.quota - (int)projectAll.Sum(p => p.financing_amount) : 0;
+                        //借款人额度为0表示不限额，或者大于0则可继续申请借款
+                        step = loaner.quota == 0 || quota_use > 0 ? "3" : "5";
                     }
                 }
             }
@@ -134,7 +135,8 @@ namespace Agp2p.Web.UI.Page
                     educational_background = educational_background,
                     marital_status = (byte)marital_status,
                     income = income,
-                    status = (int)Agp2pEnums.LoanerStatusEnum.Pending
+                    status = (int)Agp2pEnums.LoanerStatusEnum.Pending,
+                    last_update_time = DateTime.Now
                 };
                 Agp2pDataContext context = new Agp2pDataContext();
                 context.li_loaners.InsertOnSubmit(loaner);
@@ -145,7 +147,7 @@ namespace Agp2p.Web.UI.Page
                 throw ex;
             }
 
-            return JsonConvert.SerializeObject("ok");
+            return JsonConvert.SerializeObject(new { message = "ok" });
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace Agp2p.Web.UI.Page
                 project.title += new BLL.article_category().GetModel(project.category_id).call_index.ToUpper() + (prjectCount + 1).ToString("00000");
                 context.li_risks.InsertOnSubmit(risk);
                 context.li_projects.InsertOnSubmit(project);
-                context.SubmitChanges();
+                //context.SubmitChanges();
             }
             catch (Exception ex)
             {

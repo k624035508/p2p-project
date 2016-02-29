@@ -24,32 +24,49 @@ $(function () {
     var $loanDetail = $(".form-wrapper form.loan-detail-form");
 
     $forms.hide();
-    if (step == 1) {
+    if (step == "1") {
+        //显示登录步骤
         $login.show();
-    } else if(step == 2) {
-        var { loanerName,loanerMobile } = $("#loaner").data();
+    } else if(step.toString().indexOf("2")!=-1) {
+        //显示申请成为借款人步骤
+        var { loanerName,loanerMobile,loanerAge,loanerEducationalBackground,loanerIncome
+            ,loanerJob,loanerMaritalStatus,loanerNativePlace,loanerWorkingAt,loanerWorkingCompany } = $("#loaner").data();
         $("#name").val(loanerName);
         $("#phone").val(loanerMobile);
+        $("#birthplace").val(loanerNativePlace);
+        $("#job").val(loanerJob);
+        $("#work-place").val(loanerWorkingAt);
+        $("#employer").val(loanerWorkingCompany);
+        $("#education").val(loanerEducationalBackground);
+        $("#marital-status").val(loanerMaritalStatus);
+        $("#income").val(loanerIncome);
+        $('#loanerApplyStatus').hide();
+
+
+        if(step != "2"){            
+            $(".form-wrapper form.personal-info-form input").attr("readonly","readonly");
+            $("#marital-status").attr("disabled","disabled");
+            $('#loanerApplyBtn').hide();
+
+            if(step == "21"){
+                //显示借款人审核中步骤
+                $("#loanerApplyStatus").show();
+                $("#loanerApplyStatus").html("申请成为借款人审批中...");
+            }else if(step == "22"){
+                //显示借款人审核失败，重新提交步骤
+                $("#loanerApplyStatus").show();
+                $("#loanerApplyStatus").html("申请成为借款人失败！请重新根据风控要求填写资料。");
+            }else if(step == "23"){
+                //显示禁止再申请借款人步骤
+                $("#loanerApplyStatus").show();
+                $("#loanerApplyStatus").html("抱歉！您已经被禁止申请成为借款人。");
+            }  
+        }                
 
         $personalInfo.show();
-    } else if(step == 3) {
+    } else if(step == "3") {
         $loanDetail.show();
     } 
-
-    $step1.click(function(){
-        $forms.hide();
-        $login.show();
-    });
-
-    $step2.click(function(){
-        $forms.hide();
-        $personalInfo.show();
-    });
-
-    $step3.click(function(){
-        $forms.hide();
-        $loanDetail.show();
-    });
 
     //登陆
     $("#loginBtn").click(function(){
@@ -72,14 +89,35 @@ $(function () {
             error: function(data){
                 alert("操作超时，请重试");
             }
-        });
-        /*if (document.addEventListener) { //  >=ie9
-            // 记住帐号
-            if ($("input[type=checkbox]").is(":checked")) {
-                localStorage.setItem("webLogin_UserName", $("#account").val());
-            } else {
-                localStorage.removeItem("webLogin_UserName");
-            }
-        }*/
+        });        
     });
+
+    //提交借款人申请
+    $("#loanerApplyBtn").click(function(){
+        $.ajax({
+            type: "post",
+            url: "/aspx/main/loan.aspx/ApplyLoaner",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                userId:userId,
+                age:0,
+                native_place:$("#birthplace").val(),
+                job:$("#job").val(),
+                working_at:$("#work-place").val(),
+                working_company:$("#employer").val(),
+                educational_background:$("#education").val(),
+                marital_status:$("#marital-status").val(),
+                income:$("#income").val(),
+            }),
+            success: function(data){
+                var m = JSON.parse(err.d);
+                alert("ok");
+            },
+            error: function(xhr, status, err){                
+                alert(xhr.responseJSON.Message);
+            }
+        });          
+    });
+
 });
