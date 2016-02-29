@@ -72,8 +72,8 @@ namespace Agp2p.Core.AutoLogic
             var claims = context.li_claims.Where(
                 c =>
                     c.createTime.Date < DateTime.Today && // 无需判断 statusUpdateTime，拿的是债权 NeedTransfer 的创建时间
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid).ToList();
+                    (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid)).ToList();
             if (!claims.Any()) return;
 
             claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
