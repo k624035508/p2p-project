@@ -12,12 +12,23 @@ namespace Agp2p.Web.UI.Page
     /// </summary>
     public partial class loan : Web.UI.BasePage
     {
-        protected dt_users user;
-        protected int step = 2;
-        protected int userId = 0;
-        protected int loanerId = 0;
-        protected int pendingProjectId = 0;
+        protected int step = 0;
+        protected int user_id = 0;
+        protected string user_name = "";
+        protected int loaner_id = 0;
+        protected int pending_project_id = 0;
         protected int quota_use = 0;
+
+        protected string loaner_name = "";
+        protected string loaner_mobile = "";
+        protected string loaner_age = "";
+        protected string loaner_native_place = "";
+        protected string loaner_job = "";
+        protected string loaner_working_at = "";
+        protected string loaner_working_company = "";
+        protected string loaner_educational_background = "";
+        protected string loaner_marital_status = "";
+        protected string loaner_income = "";
 
         /// <summary>
         /// 重写父类的虚方法,此方法将在Init事件前执行
@@ -29,21 +40,36 @@ namespace Agp2p.Web.UI.Page
 
         void Page_Init(object sender, EventArgs e)
         {
-            user = GetUserInfoByLinq();
+            var user = GetUserInfoByLinq();
             if (user == null)
                 step = 1;//显示登录步骤
             else
             {
-                userId = user.id;
+                user_id = user.id;
+                user_name = user.user_name;
                 //查看是否已为借款人
                 Agp2pDataContext context = new Agp2pDataContext();
                 var loaner = context.li_loaners.SingleOrDefault(l => l.user_id == user.id);
                 if (loaner == null)
                 {
                     step = 2; //显示申请借款人步骤
+                    loaner_name = user.real_name;
+                    loaner_mobile = user.mobile;
                 }
                 else
                 {
+                    //借款人信息
+                    loaner_age = loaner.age.ToString();
+                    loaner_educational_background = loaner.educational_background;
+                    loaner_income = loaner.income;
+                    loaner_job = loaner.job;
+                    loaner_marital_status = Utils.GetAgp2pEnumDes((Agp2pEnums.MaritalStatusEnum) loaner.marital_status);
+                    loaner_mobile = loaner.dt_users.mobile;
+                    loaner_name = loaner.dt_users.real_name;
+                    loaner_native_place = loaner.native_place;
+                    loaner_working_at = loaner.working_at;
+                    loaner_working_company = loaner.working_company;
+
                     //查看借款人状态
                     switch (loaner.status)
                     {
@@ -73,8 +99,7 @@ namespace Agp2p.Web.UI.Page
                                     p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail);
                         //查询可用额度
                         quota_use = loaner.quota - (int)projectAll.Sum(p => p.financing_amount);
-
-                        step = 5;//显示已发布借款步骤
+                        step = quota_use > 0 ? 3 : 5;
                     }
                 }
             }
