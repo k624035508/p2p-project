@@ -1519,7 +1519,7 @@ namespace Agp2p.Core
                         ptr.dt_users = c.Key.dt_users;
                     }
                     return ptr;
-                }).ToList();
+                }).OrderBy(ptr => ptr.investor).ToList();
 
             if (!rounded.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
