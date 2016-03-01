@@ -5,6 +5,10 @@ import "../less/footerSmall.less";
 
 import header from "./header.js";
 
+import React from "react";
+import ReactDom from "react-dom";
+import DropdownPicker from "../components/dropdown-picker.jsx";
+
 window['$'] = $;
 
 $(function () {
@@ -22,6 +26,7 @@ $(function () {
     var $login = $(".form-wrapper form.login-form");
     var $personalInfo = $(".form-wrapper form.personal-info-form");
     var $loanDetail = $(".form-wrapper form.loan-detail-form");
+    var ddlSelectIndex = 0;
 
     $forms.hide();
     if (step == "1") {
@@ -64,9 +69,40 @@ $(function () {
         }                
 
         $personalInfo.show();
-    } else if(step == "3") {
+    } else if(step == "5") {           
+        //显示借款完成步骤
+
+        
+    } else {
+        //显示申请借款步骤
         $loanDetail.show();
-    } 
+        var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent } = $("#project").data();
+
+
+        if(step == "3") {            
+            $("#loan-amount").val(quotaUse);
+            $('#loanApplyStatus').hide();
+
+            
+        } else if(step == "4") {
+            //显示借款审核中步骤
+            $loanDetail.show();
+            $('#loanApplyStatus').show();         
+            $("#loanApplyStatus").html("借款申请审核中...");
+
+            $(".form-wrapper form.loan-detail-form textarea").attr("readonly","readonly");
+            $("#loan-amount").attr("readonly","readonly");            
+            $("#ddl_project_type").attr("disabled","disabled");
+            
+            $("#loan-amount").val(projectAmount);
+            $("#ddl_project_type").val(projectCategoryId);
+            $("#loan-description").val(projectLoanerContent);
+            $("#loan-usage").val(projectLoanUsage);
+            $("#repayment-source").val(projectSourceOfRepayment);
+
+            $("#loanApplyBtn").hide();
+        } 
+    }
 
     //登陆
     $("#loginBtn").click(function(){
@@ -86,8 +122,8 @@ $(function () {
                     alert(data.msg);
                 }
             },
-            error: function(data){
-                alert("操作超时，请重试");
+            error: function(xhr, status, err){
+                alert("操作超时，请重试。");
             }
         });        
     });
@@ -111,13 +147,38 @@ $(function () {
                 income:$("#income").val(),
             }),
             success: function(data){
-                var m = JSON.parse(err.d);
-                alert("ok");
+                location.reload();
             },
             error: function(xhr, status, err){                
                 alert(xhr.responseJSON.Message);
             }
         });          
     });
+
+    //提交借款申请
+    $("#loanApplyBtn").click(function(){
+        $.ajax({
+            type: "post",
+            url: "/aspx/main/loan.aspx/ApplyLoan",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                loaner_id:loanerId,
+                user_name:userName,
+                loaner_content:$("#loan-description").val(),
+                loan_usage:$("#loan-usage").val(),
+                source_of_repayment:$("#repayment-source").val(),
+                category_id:$("#ddl_project_type").val(),
+                amount:$("#loan-amount").val()
+            }),
+            success: function(data){
+                location.reload();
+            },
+            error: function(xhr, status, err){                
+                alert(xhr.responseJSON.Message);
+            }
+        });          
+    });
+    
 
 });

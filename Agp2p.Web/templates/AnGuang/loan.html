@@ -129,14 +129,16 @@
 
             <form class="form-horizontal loan-detail-form" style="display: none">
                 <div class="form-group">
-                    <label for="loan-category" class="col-sm-2 control-label">借款类别</label>
-                    <div class="col-sm-8">
-                        <select id="loan-category" class="form-control">
+                    <label id="loanApplyStatus" class="control-label"></label>
+                </div>
+                <div class="form-group">
+                    <label for="loan-category" class="col-sm-2 control-label">借款类别</label>      
+                    <div class="col-sm-8">              
+                        <select id="ddl_project_type" class="form-control">
                             <option style="display: none"></option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                            <option value="61">小贷宝</option>
+                            <option value="58">房盈宝</option>
+                            <option value="57">融通宝</option>
                         </select>
                     </div>
                 </div>
@@ -166,7 +168,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
-                        <button type="submit" class="btn btn-default">提 交</button>                        
+                        <button type="submit" class="btn btn-default" id="loanApplyBtn">提 交</button>                        
                     </div>
                 </div>
 
@@ -180,7 +182,8 @@
          data-user-name="<%=user_name%>"
          data-loaner-id="<%=loaner_id%>"
          data-pending-project-id="<%=pending_project_id%>"
-         data-quota-use="<%=quota_use%>">
+         data-quota-use="<%=quota_use%>"
+         >
     </div>
 
     <div id="loaner"
@@ -193,8 +196,19 @@
          data-loaner-working-company="<%=loaner_working_company%>"
          data-loaner-educational-background="<%=loaner_educational_background%>"
          data-loaner-marital-status="<%=loaner_marital_status%>"
-         data-loaner-income="<%=loaner_income%>">
+         data-loaner-income="<%=loaner_income%>"
+         >
     </div>
+
+    <div id="project"
+         data-project-category-id="<%=project_category_id%>"
+         data-project-amount="<%=project_amount%>"
+         data-project-loan-usage="<%=project_loan_usage%>"
+         data-project-source-of-repayment="<%=project_source_of_repayment%>"
+         data-project-loaner-content="<%=project_loaner_content%>"
+         >
+    </div>
+
 
     <!--footer-->
     <%template src="_footerSmall.html"%>
