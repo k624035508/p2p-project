@@ -160,7 +160,7 @@
                 <%set var pics=QueryAlbums()%>
                 <%foreach(var picture in pics)%>
                 <div class="photo-cell">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}">
+                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog">
                 </div>
                 <%/foreach%>
                 <%if(!pics.Any())%>
@@ -246,7 +246,9 @@
             <div class="modal-dialog vertical-align-center" role="document">
                 <div class="modal-content">
                     <div class="photo-enlarge-body">
-                        <img src="" data-dismiss="modal">
+                        <img src=""  data-dismiss="modal">
+                        <span class="leftBtn"></span>
+                        <span class="rightBtn"></span>
                     </div>
                 </div>
             </div>
