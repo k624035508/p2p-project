@@ -844,6 +844,14 @@
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-finish-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-finish.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan.png" />
+    <Content Include="templates\AnGuang\imgs\loan\login.png" />
+    <Content Include="templates\AnGuang\imgs\loan\next-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\personal-info-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\personal-info.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />

@@ -1,29 +1,113 @@
 @import "common-style";
+@loan: "../imgs/loan";
 
 body { background: @body-color; }
 
 .application-form {
-	height: 720px;
-	margin-top: 25px !important;
+	min-height: 715px;
+	padding: 0 30px 30px 30px;
+	margin-top: 30px !important;
 	border: @border;
 	background: @white;
 
-	.application-nav {
-		margin-left: 0;
-		margin-top: 40px;
-		text-align: center;
+	.nav-wrap {
+		.title {
+			font-size: @font40;
+			color: @darker-grey;
+			text-align: center;
+			margin-top: 40px;
+		}
+
+		.application-ul {
+			margin-top: 42px;
+			margin-left: 0;
+			text-align: center;
+
+			li {
+				vertical-align: top;
+				width: 150px;
+				height: 150px;
+				margin-left: 35px;
+				padding-top: 168px;
+				font-size: @font20;
+				color: @dark-grey;
+			}
+
+			li:first-child { margin-left: 0; }
+
+			.step1 { background: url("@{loan}/login.png") no-repeat; }
+			.step2 {
+				background: url("@{loan}/personal-info-grey.png");
+				background-repeat: no-repeat;
+			}
+			.step3 { background: url("@{loan}/loan-grey.png") no-repeat; }
+			.step4 { background: url("@{loan}/loan-finish-grey.png") no-repeat; }
+			.next-icon {
+				width: 25px !important;
+				background: url("@{loan}/next-icon.png") no-repeat center;
+			}
+		}
 	}
 
 	.form-wrapper {
-		width: 705px;
-		height: 550px;
-		padding: 30px;
 		margin: 50px auto auto auto;
-		border: 1px solid @grey;
 
-		#id-card {
-			padding-top: 5px;
-			height: 30px;
+		form { text-align: center; }
+
+		.form-title {
+			line-height: 30px;
+			margin-top: 96px;
+			margin-bottom: 30px;
+			border-bottom: 2px solid @light-grey;
+
+			.title-style {
+				font-size: @font18;
+				color: @dark-grey;
+				padding-bottom: 5px;
+				border-bottom: 2px solid @red;
+			}
+
+			.register-btn {
+				font-size: @font14;
+				color: @grey;
+				a {
+					color: @blue;
+					text-decoration: none;
+				}
+			}
+		}
+
+		.form-group{
+			margin-bottom: 0;
+			& > * { display: inline-block; }
+		}
+
+		.login-form {
+			label {
+				width: 50px;
+				font-size: @font15;
+				color: @dark-grey;
+				font-weight: normal;
+				margin-right: 18px;
+			}
+			input {
+				width: 300px;
+				height: 45px;
+				margin-bottom: 35px;
+				border-radius: 3px;
+				border-color: @light-grey;
+				background: #fdfdfd;
+				box-shadow: none;
+			}
+			button {
+				width: 300px;
+				height: 45px;
+				color: @white;
+				font-size: @font20;
+				border: none;
+				background: @red;
+				margin-left: 72px;
+			}
 		}
 	}
 }

@@ -19,13 +19,13 @@ $(function () {
 
     var { step,userId,userName,loanerId,pendingProjectId,quotaUse } = $("#main").data();
 
-    var $step1 = $("ul.application-nav li.step1");
-    var $step2 = $("ul.application-nav li.step2");
-    var $step3 = $("ul.application-nav li.step3");
-    var $forms = $(".form-wrapper form");
-    var $login = $(".form-wrapper form.login-form");
-    var $personalInfo = $(".form-wrapper form.personal-info-form");
-    var $loanDetail = $(".form-wrapper form.loan-detail-form");
+    var $step1 = $("ul.application-ul li.step1");
+    var $step2 = $("ul.application-ul li.step2");
+    var $step3 = $("ul.application-ul li.step3");
+    var $forms = $(".form-wrapper > div");
+    var $login = $(".form-wrapper div.login-form-wrap");
+    var $personalInfo = $(".form-wrapper div.personal-info-form-wrap");
+    var $loanDetail = $(".form-wrapper div.loan-detail-form-wrap");
     var ddlSelectIndex = 0;
 
     $forms.hide();
@@ -48,7 +48,7 @@ $(function () {
         $('#loanerApplyStatus').hide();
 
 
-        if(step != "2"){            
+        if(step != "2"){
             $(".form-wrapper form.personal-info-form input").attr("readonly","readonly");
             $("#marital-status").attr("disabled","disabled");
             $('#loanerApplyBtn').hide();
@@ -69,7 +69,7 @@ $(function () {
         }                
 
         $personalInfo.show();
-    } else if(step == "5") {           
+    } else if(step == "5") {
         //显示借款完成步骤
 
         
