@@ -114,16 +114,29 @@ function initPics() {
     var $left = $("#photo-enlarge-dialog .photo-enlarge-body span.leftBtn");
     var $right = $("#photo-enlarge-dialog .photo-enlarge-body span.rightBtn");
 
+    function slideIconHidden(){
+        if($thumbnail.length <= 1){
+            $left.hide();
+            $right.hide();
+        } else {
+            if(currentImgIndex <= 0){
+                $left.hide();
+                $right.show();
+            }
+            if(currentImgIndex >= $thumbnail.length-1){
+                $right.hide();
+                $left.show();
+            }
+        }
+    }
+
     $thumbnail.click(function() {
         var currentSrc = $(this).data("origin-src");
         zoomingImg.attr("src", currentSrc);
         currentImgIndex = $.inArray(this,$thumbnail);
-
-        if($thumbnail.length == 1){
-            $left.hide();
-            $right.hide();
-        }
+        slideIconHidden();
     });
+
     $left.click(function(){
         if(currentImgIndex <= 0){
             $left.hide();
@@ -132,6 +145,7 @@ function initPics() {
             var prevSrc = $thumbnail.eq(currentImgIndex).data("origin-src");
             zoomingImg.attr("src",prevSrc);
         }
+        slideIconHidden();
     });
 
     $right.click(function(){
@@ -142,6 +156,7 @@ function initPics() {
             var nextSrc = $thumbnail.eq(currentImgIndex).data("origin-src");
             zoomingImg.attr("src",nextSrc);
         }
+        slideIconHidden();
     });
 }
 function fixAndroid2xOverflowCannotScroll($affectedElem) {
