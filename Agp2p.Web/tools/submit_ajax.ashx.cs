@@ -2128,33 +2128,39 @@ namespace Agp2p.Web.tools
         /// <param name="context"></param>
         private void invest_project(HttpContext context)
         {
-            var user = BasePage.GetUserInfoByLinq();
-            if (!string.IsNullOrEmpty(user.pay_password))
+            var linqContext = new Agp2pDataContext();
+            var user = BasePage.GetUserInfoByLinq(linqContext);
+            if (string.IsNullOrEmpty(user.pay_password))
             {
-                try
+                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心设置交易密码", status = 0}));
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(user.real_name) || string.IsNullOrWhiteSpace(user.id_card_number))
+            {
+                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心进行实名认证", status = 0}));
+                return;
+            }
+            try
+            {
+                var investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
+                var projectId = DTRequest.GetFormInt("projectId", 0);
+                var pw = DTRequest.GetFormString("transactPassword");
+                if (Utils.MD5(pw).Equals(user.pay_password))
                 {
-                    var investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
-                    var projectId = DTRequest.GetFormInt("projectId", 0);
-                    var pw = DTRequest.GetFormString("transactPassword");
-                    if (Utils.MD5(pw).Equals(user.pay_password))
-                    {
-                        TransactionFacade.Invest(user.id, projectId, investingMoney);
+                    TransactionFacade.Invest(user.id, projectId, investingMoney);
 
-                        /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
+                    /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
                             context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");
                         else*/
-                        context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
-                    }
-                    else
-                        context.Response.Write(JsonConvert.SerializeObject(new { msg = "交易密码错误！", status = 0 }));
+                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "投资成功！", status = 1}));
                 }
-                catch (Exception e)
-                {
-                    context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资失败：" + e.Message, status = 0 }));
-                }
+                else
+                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "交易密码错误！", status = 0}));
             }
-            else
-                context.Response.Write(JsonConvert.SerializeObject(new { msg = "请先到安全中心设置交易密码", status = 0 }));
+            catch (Exception e)
+            {
+                context.Response.Write(JsonConvert.SerializeObject(new {msg = "投资失败：" + e.Message, status = 0}));
+            }
         }
 
         /// <summary>

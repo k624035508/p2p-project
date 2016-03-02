@@ -741,5 +741,16 @@ namespace Agp2p.Common
             Invalid = 30,
         }
 
+        public enum LoanerStatusEnum
+        {
+            [Description("正常")]
+            Normal = 1,
+            [Description("待审核")]
+            Pending = 10,
+            [Description("审核不通过")]
+            PendingFail = 11,
+            [Description("禁用")]
+            Disable = 20
+        }
     }
 }

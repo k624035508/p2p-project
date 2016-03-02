@@ -1027,6 +1027,8 @@
     <Content Include="templates\weChat\imgs\footer\usercenter-active.png" />
     <Content Include="templates\weChat\imgs\footer\usercenter.png" />
     <Content Include="templates\weChat\imgs\headshot.png" />
+    <Content Include="templates\weChat\imgs\icon-left.png" />
+    <Content Include="templates\weChat\imgs\icon-right.png" />
     <Content Include="templates\weChat\imgs\input-icon\amount.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank-card.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank.png" />

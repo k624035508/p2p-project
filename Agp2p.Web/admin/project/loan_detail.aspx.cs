@@ -211,14 +211,14 @@ namespace Agp2p.Web.admin.project
         {
             if (loaner == null) return;
             //借款人信息
-            sp_loaner_name.InnerText = loaner.dt_users.real_name;
-            sp_loaner_gender.InnerText = loaner.dt_users.sex;
-            sp_loaner_job.InnerText = loaner.job;
-            sp_loaner_working_at.InnerText = loaner.working_at;
-            sp_loaner_tel.InnerText = loaner.dt_users.telphone;
-            sp_loaner_id_card_number.InnerText = loaner.dt_users.id_card_number;
+            sp_loaner_name.InnerText = loaner?.dt_users.real_name;
+            sp_loaner_gender.InnerText = loaner?.dt_users.sex;
+            sp_loaner_job.InnerText = loaner?.job;
+            sp_loaner_working_at.InnerText = loaner?.working_at;
+            sp_loaner_tel.InnerText = loaner?.dt_users.telphone;
+            sp_loaner_id_card_number.InnerText = loaner?.dt_users.id_card_number;
             //企业信息
-            if (loaner.li_loaner_companies != null)
+            if (loaner?.li_loaner_companies != null)
             {
                 sp_company_name.InnerText = loaner.li_loaner_companies.name;
                 sp_company_business_scope.InnerText = loaner.li_loaner_companies.business_scope;
@@ -227,8 +227,11 @@ namespace Agp2p.Web.admin.project
                 sp_company_setup_time.InnerText = loaner.li_loaner_companies.setup_time.ToString("yyyy年MM月dd日");
             }
 
-            rptList.DataSource = Loan.LoadMortgageList(loaner.id, riskId, false);
-            rptList.DataBind();
+            if (loaner != null)
+            {
+                rptList.DataSource = Loan.LoadMortgageList(loaner.id, riskId, false);
+                rptList.DataBind();
+            }
         }
 
         protected void btnAudit_OnClick(object sender, EventArgs e)

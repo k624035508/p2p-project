@@ -2131,5 +2131,20 @@ namespace Agp2p.Core
         {
             return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
         }
+
+        /// <summary>
+        /// 查询借款人可用额度
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="loaner"></param>
+        /// <returns></returns>
+        public static int QueryLoanerQuota(this Agp2pDataContext context, li_loaners loaner)
+        {
+            return loaner.quota -
+                   (int)
+                       context.li_projects.Where(
+                           l => l.li_risks.li_loaners != null && l.li_risks.li_loaners.id == loaner.id)
+                           .Sum(l => l.financing_amount);
+        }
     }
 }

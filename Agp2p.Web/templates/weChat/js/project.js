@@ -108,11 +108,55 @@ function initFullpage() {
 }
 function initPics() {
     //照片大图弹出
-    var zoomingImg = $("#photo-enlarge-dialog img");
-    var dlgZooming = $('#photo-enlarge-dialog');
-    $("div.photo-cell img").click(function() {
-        zoomingImg.attr("src", $(this).attr("data-origin-src"));
-        dlgZooming.modal();
+    var $thumbnail = $("div.photo-cell img");
+    var zoomingImg = $("#photo-enlarge-dialog .photo-enlarge-body img");
+    var currentImgIndex = -1;
+    var $left = $("#photo-enlarge-dialog .photo-enlarge-body span.leftBtn");
+    var $right = $("#photo-enlarge-dialog .photo-enlarge-body span.rightBtn");
+
+    function slideIconHidden(){
+        if($thumbnail.length <= 1){
+            $left.hide();
+            $right.hide();
+        } else {
+            if(currentImgIndex <= 0){
+                $left.hide();
+                $right.show();
+            }
+            if(currentImgIndex >= $thumbnail.length-1){
+                $right.hide();
+                $left.show();
+            }
+        }
+    }
+
+    $thumbnail.click(function() {
+        var currentSrc = $(this).data("origin-src");
+        zoomingImg.attr("src", currentSrc);
+        currentImgIndex = $.inArray(this,$thumbnail);
+        slideIconHidden();
+    });
+
+    $left.click(function(){
+        if(currentImgIndex <= 0){
+            $left.hide();
+        } else {
+            currentImgIndex = currentImgIndex - 1;
+            var prevSrc = $thumbnail.eq(currentImgIndex).data("origin-src");
+            zoomingImg.attr("src",prevSrc);
+        }
+        slideIconHidden();
+    });
+
+    $right.click(function(){
+        if(currentImgIndex >= $thumbnail.length-1 ){
+            $right.hide();
+        } else {
+            currentImgIndex = currentImgIndex + 1;
+            var nextSrc = $thumbnail.eq(currentImgIndex).data("origin-src");
+            zoomingImg.attr("src",nextSrc);
+        }
+        slideIconHidden();
     });
 }
 function fixAndroid2xOverflowCannotScroll($affectedElem) {

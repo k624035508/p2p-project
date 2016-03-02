@@ -155,6 +155,12 @@ namespace Agp2p.Web.UI.Page
             return user != null && !string.IsNullOrWhiteSpace(user.pay_password);
         }
 
+        protected bool HasIdentification()
+        {
+            var user = GetUserInfoByLinq();
+            return user != null && !string.IsNullOrWhiteSpace(user.real_name) && !string.IsNullOrWhiteSpace(user.id_card_number);
+        }
+
         protected bool HasBindedEmail()
         {
             var user = GetUserInfoByLinq();

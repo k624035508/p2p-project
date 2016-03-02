@@ -52,7 +52,13 @@ namespace Agp2p.Web.admin.loaner
         #region 赋值操作=================================
         private void ShowInfo(int id)
         {
+            this.rblStatus.Items.Clear();
+            this.rblStatus.Items.AddRange(Utils.GetEnumValues<Agp2pEnums.LoanerStatusEnum>()
+                            .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
+                            .ToArray());
+            
             var model = context.li_loaners.First(q => q.id == id);
+            this.rblStatus.SelectedValue = model.status.ToString();
             txtName.Text = model.dt_users.real_name;
             txtTel.Text = model.dt_users.mobile;
             txtAge.Text = model.age.ToString();
@@ -61,12 +67,11 @@ namespace Agp2p.Web.admin.loaner
             txtJob.Text = model.job;
             txtWorkingAt.Text = model.working_at;
             txtWorkingUnit.Text = model.working_company;
-            txtIdCardNumber.Text = model.dt_users.id_card_number;
-            txtEmail.Text = model.dt_users.email;
             txtEducationalBackground.Text = model.educational_background;
             rblMaritalStatus.SelectedValue = model.marital_status.ToString();
             txtIncome.Text = model.income;
             txtLawsuit.Text = model.lawsuit;
+            txtQuota.Text = model.quota.ToString();
 
             rptIdCardPics.DataSource = model.li_albums.Where(a => a.loaner == id && a.type == (int) Agp2pEnums.AlbumTypeEnum.IdCard);
             rptIdCardPics.DataBind();
@@ -130,7 +135,9 @@ namespace Agp2p.Web.admin.loaner
                 marital_status = Convert.ToByte(rblMaritalStatus.SelectedValue),
                 income = txtIncome.Text.Trim(),
                 last_update_time = DateTime.Now,
-                lawsuit = txtLawsuit.Text.Trim()
+                lawsuit = txtLawsuit.Text.Trim(),
+                quota = Utils.StrToInt(txtQuota.Text.Trim(), 0),
+                status = Utils.StrToInt(rblStatus.SelectedValue, 0)
             };
             context.li_loaners.InsertOnSubmit(model);
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.IdCard);
@@ -168,6 +175,8 @@ namespace Agp2p.Web.admin.loaner
             model.income = txtIncome.Text.Trim();
             model.last_update_time = DateTime.Now;
             model.lawsuit = txtLawsuit.Text.Trim();
+            model.quota = Utils.StrToInt(txtQuota.Text.Trim(), 0);
+            model.status = Utils.StrToInt(rblStatus.SelectedValue, 0);
 
             LoadAlbum(model, Agp2pEnums.AlbumTypeEnum.IdCard);
             try
