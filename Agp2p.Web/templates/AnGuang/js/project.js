@@ -48,9 +48,18 @@ $(function () {
         var $investBtn = $("button.investing-btn");
         var projectId = $investBtn.data()["projectId"];
         $investBtn.click(function () {
-            var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
+            var investBtnData = $investBtn.data();
+            var hasPayPassword = investBtnData["hasPayPassword"] == "True";
+            var hasIdentification = investBtnData["hasIdentification"] == "True";
             if (!hasPayPassword) {
                 confirm("您需要先设置交易密码，是否现在转到‘安全中心’？", () => {
+                    var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
+                    location.href = link;
+                });
+                return;
+            }
+            if (!hasIdentification) {
+                confirm("您需要先进行身份认证，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 });

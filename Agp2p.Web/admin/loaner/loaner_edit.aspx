@@ -65,6 +65,16 @@
 
         <div class="tab-content">
             <dl>
+                <dt>用户状态</dt>
+                <dd>
+                    <div class="rule-multi-radio">
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        </asp:RadioButtonList>
+                    </div>
+                    <span class="Validform_checktip">*禁用账户无法再发起申请为借款人</span>
+                </dd>
+            </dl>
+            <dl>
                 <dt>姓名</dt>
                 <dd>
                     <asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="False" /><span class="Validform_checktip">用户姓名或账号</span></dd>
@@ -148,6 +158,11 @@
                 <dt>涉诉情况</dt>
                 <dd>
                     <asp:TextBox ID="txtLawsuit" runat="server" CssClass="input normal" datatype="/^\S+$/" /><span class="Validform_checktip">* </span></dd>
+            </dl>
+            <dl>
+                <dt>借款额度</dt>
+                <dd>
+                    <asp:TextBox ID="txtQuota" runat="server" CssClass="input normal" datatype="/^\d+$/" /><span class="Validform_checktip">(0表示无限制)</span></dd>
             </dl>
             <dl>
                 <dt>身份证照片</dt>

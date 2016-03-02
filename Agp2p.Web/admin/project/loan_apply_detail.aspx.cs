@@ -102,7 +102,7 @@ namespace Agp2p.Web.admin.project
             //初始化借款人
             ddlLoaner.Items.Clear();
             ddlLoaner.Items.Add(new ListItem("请选择借款人...", ""));
-            ddlLoaner.Items.AddRange(LqContext.li_loaners.OrderByDescending(l => l.last_update_time)
+            ddlLoaner.Items.AddRange(LqContext.li_loaners.Where(l => l.status == (int)Agp2pEnums.LoanerStatusEnum.Normal).OrderByDescending(l => l.last_update_time)
                     .Select(l => new ListItem(l.dt_users.real_name, l.id.ToString())).ToArray());
 
             //初始化债权人
