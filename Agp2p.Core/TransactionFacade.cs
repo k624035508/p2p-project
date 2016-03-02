@@ -509,7 +509,7 @@ namespace Agp2p.Core
             // 最少提现 100 （尽量避免公司账号续投时续投金额低于 100）
             if (withdrawMoney < 100)
                 throw new InvalidOperationException("每次提现不能少于 100 元");
-            // TODO 最多提现 50000、提现大于 3 次后每次提现都扣除手续费 0.25%
+            // 最多提现 50000
             var todayWithdrawClaims = user.li_claims.Where(c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                     c.li_claims1.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable &&
@@ -545,9 +545,9 @@ namespace Agp2p.Core
             {
                 // 部分提现，优先提现接近完成的项目
                 var sortedClaims = huoqiClaims.OrderBy(
-                    c => c.li_projects.li_repayment_tasks.Last(t =>
-                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
-                                t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime).should_repay_time)
+                    c => c.li_projects.li_repayment_tasks.LastOrDefault(t =>
+                        t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                        t.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime)?.should_repay_time)
                     .ThenBy(c => c.principal)
                     .ToList();
                 HuoqiClaimsPartialWithdraw(context, sortedClaims, withdrawMoney, withdrawTime);
@@ -2139,9 +2139,9 @@ namespace Agp2p.Core
             return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
         }
 
-        private static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
+        public static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
         {
-            if (parentClaim.createTime < childClaim.createTime)
+            if (parentClaim.createTime <= childClaim.createTime)
             {
                 if (childClaim.li_claims1 != null)
                 {
@@ -2151,7 +2151,7 @@ namespace Agp2p.Core
             return false;
         }
 
-        private static bool IsParentOf(this li_claims parentClaim, li_claims childClaim)
+        public static bool IsParentOf(this li_claims parentClaim, li_claims childClaim)
         {
             return childClaim.IsChildOf(parentClaim);
         }

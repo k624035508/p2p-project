@@ -136,9 +136,16 @@ namespace Agp2p.Web.admin.transact
             int userId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             huoqiProject = Convert.ToInt32(ddlHuoqiProjects.SelectedValue);
 
-            context.HuoqiProjectWithdraw(userId, huoqiProject, Convert.ToDecimal(withdrawAmount));
-            RptBind();
-            JscriptMsg("提现成功", "", "Success");
+            try
+            {
+                context.HuoqiProjectWithdraw(userId, huoqiProject, Convert.ToDecimal(withdrawAmount));
+                RptBind();
+                JscriptMsg("提现成功", "", "Success");
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("提现失败：" + ex.Message, "", "Success");
+            }
         }
     }
 }

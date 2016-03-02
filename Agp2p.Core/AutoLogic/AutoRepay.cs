@@ -19,7 +19,7 @@ namespace Agp2p.Core.AutoLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
 
             MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，没有人接手的，由公司接手
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime)); // 活期项目提现的执行
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime, DateTime.Now)); // 活期项目提现的执行
         }
 
         private static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
@@ -66,18 +66,31 @@ namespace Agp2p.Core.AutoLogic
             }
         }
 
-        private static void DoHuoqiProjectWithdraw(bool onTime)
+        private static void DoHuoqiProjectWithdraw(bool onTime, DateTime withdrawAt)
         {
             var context = new Agp2pDataContext();
             var repayTime = DateTime.Now;
+
+            // 对 withdrawDay 的前一天的 Unpaid 债权进行回款（方便在脚本中使用）
+            var checkDay = withdrawAt.Date.AddDays(-1);
 
             // 执行未回款债权的回款，减少项目的在投金额（必须要是今日之前的提现）
             var claims = context.li_claims.Where(
                 c =>
                     (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
                      c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid) &&
-                    c.li_claims1.createTime.Date < DateTime.Today && !c.li_claims2.Any()).ToList();
+                    c.li_claims1.createTime.Date == checkDay && !c.li_claims2.Any()).ToList();
             if (!claims.Any()) return;
+
+            // 查询出昨日的全部提现及其是第几次的提现
+            var yesterdayWithdraws = context.li_claims.Where(c =>
+                c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                c.li_claims1.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable &&
+                c.createTime.Date == checkDay)
+                .GroupBy(c => c.dt_users)
+                .ToDictionary(g => g.Key, g =>
+                        g.Zip(Utils.Infinite(), (claim, index) => new {claim, index})
+                            .ToDictionary(e => e.claim, e => e.index));
 
             claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
             {
@@ -100,20 +113,26 @@ namespace Agp2p.Core.AutoLogic
                         var newStatusChild = c.NewStatusChild(repayTime, newStatus);
                         context.li_claims.InsertOnSubmit(newStatusChild);
 
+                        // 提现大于 3 次后每次提现都扣除手续费 0.25%
+                        var userYesterdayWithdraws = yesterdayWithdraws[c.dt_users];
+                        var parentClaim = userYesterdayWithdraws.Keys.Single(c.IsChildOf);
+                        var withdrawIndex = userYesterdayWithdraws[parentClaim];
+                        var handlingFee = withdrawIndex <= 2 ? 0 : c.principal*0.25m/100;
+
                         var withdrawTransact = new li_project_transactions
                         {
-                            principal = c.principal,
+                            principal = c.principal - handlingFee,
                             project = huoqiProject.id,
                             create_time = repayTime,
                             investor = investor.id,
                             type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.HuoqiProjectWithdraw,
                             status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                             gainFromClaim = c.id,
-                            // remark = $"活期项目【{huoqiProject.title}】的债权提现成功，提现金额 {c.principal}"
+                            remark = $"活期项目【{huoqiProject.title}】债权赎回成功：债权金额 {c.principal.ToString("c")}，赎回费 {handlingFee.ToString("c")}"
                         };
                         context.li_project_transactions.InsertOnSubmit(withdrawTransact);
 
-                        wallet.idle_money += c.principal;
+                        wallet.idle_money += withdrawTransact.principal;
                         wallet.investing_money -= c.principal;
                         wallet.last_update_time = repayTime;
 
