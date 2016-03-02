@@ -510,7 +510,14 @@ namespace Agp2p.Core
             if (withdrawMoney < 100)
                 throw new InvalidOperationException("每次提现不能少于 100 元");
             // TODO 最多提现 50000、提现大于 3 次后每次提现都扣除手续费 0.25%
-
+            var todayWithdrawClaims = user.li_claims.Where(c =>
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.li_claims1.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable &&
+                    c.createTime.Date == DateTime.Today)
+                .ToList();
+            var todayWithdraw = todayWithdrawClaims.Aggregate(0m, (sum, c) => sum + c.principal);
+            if (50000 < todayWithdraw + withdrawMoney)
+                throw new InvalidOperationException("每日最多提现 50000 元，你已提现：" + todayWithdraw);
 
             var huoqiClaims =
                 user.li_claims.Where(
@@ -2130,6 +2137,23 @@ namespace Agp2p.Core
         public static bool IsCompanyAccount(this dt_users user)
         {
             return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
+        }
+
+        private static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
+        {
+            if (parentClaim.createTime < childClaim.createTime)
+            {
+                if (childClaim.li_claims1 != null)
+                {
+                    return childClaim.li_claims1 == parentClaim || childClaim.li_claims1.IsChildOf(parentClaim);
+                }
+            }
+            return false;
+        }
+
+        private static bool IsParentOf(this li_claims parentClaim, li_claims childClaim)
+        {
+            return childClaim.IsChildOf(parentClaim);
         }
 
         /// <summary>
