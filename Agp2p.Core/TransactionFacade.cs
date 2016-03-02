@@ -1349,6 +1349,9 @@ namespace Agp2p.Core
                     newContext.li_claims.InsertOnSubmit(completedClaim);
 
                     var srcPtr = c.li_project_transactions1;
+                    // 恢复活期项目的可投资金额
+                    c.li_projects1.investment_amount -= c.principal;
+
                     var repay = new li_project_transactions
                     {
                         type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
