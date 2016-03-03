@@ -162,7 +162,7 @@
     <th align="right" width="8%">邮箱</th>
       <th width="8%">地区</th>
     <th align="right" width="10%">当天投资金额</th>    
-    <th align="right" width="10%">在投金额</th>
+    <th align="right" width="10%">累计投资金额</th>
     <th align="right" width="10%">余额</th>
     
   </tr>
@@ -198,7 +198,7 @@
     <td align="right"><%#Eval("email")%></td>
       <td align="center"><%#Eval("address")%></td>
     <td align="right"><%# QueryInvestmentToday((dt_users)Container.DataItem).ToString("c") %></td>
-    <td align="right"><%# Convert.ToDecimal(Eval("li_wallets.investing_money")).ToString("c") %></td>
+    <td align="right"><%# Convert.ToDecimal(Eval("li_wallets.total_investment")).ToString("c") %></td>
     <td align="right"><%# Convert.ToDecimal(Eval("li_wallets.idle_money")).ToString("c")%></td>
 <%--    <td align="center"><%#Eval("point")%></td>--%>
     

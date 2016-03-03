@@ -122,10 +122,12 @@ function initPics() {
             if(currentImgIndex <= 0){
                 $left.hide();
                 $right.show();
-            }
-            if(currentImgIndex >= $thumbnail.length-1){
+            } else if($thumbnail.length-1 <= currentImgIndex){
                 $right.hide();
                 $left.show();
+            } else {
+                $left.show();
+                $right.show();
             }
         }
     }
