@@ -448,7 +448,7 @@ namespace Agp2p.Core
                 context.SubmitChanges();
                 ts.Complete();
 
-                MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+                MessageBus.Main.PublishDelay(new UserInvestedMsg(tr.id, wallet.last_update_time), 5000); // 广播用户的投资消息（事务未完成，需要延迟发送）
             }
         }
 
@@ -498,7 +498,7 @@ namespace Agp2p.Core
             {
                 throw new Exception("没有足够的项目可投，超出：" + exceed);
             }
-            MessageBus.Main.PublishAsync(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+            MessageBus.Main.PublishDelay(new UserInvestedMsg(tr.id, wallet.last_update_time), 5000); // 广播用户的投资消息（位于事务中，需要延迟发送消息）
         }
 
         public static void HuoqiProjectWithdraw(this Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
