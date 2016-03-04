@@ -2073,7 +2073,14 @@ namespace Agp2p.Core
             {
                 return (Agp2pEnums.ClaimStatusEnum) childClaim.status;
             }
-            return childClaim.li_claims1?.GetStatusByTime(time);
+            else if (childClaim.li_claims1 != null && childClaim.li_claims1.userId == childClaim.userId)
+            {
+                return childClaim.li_claims1.GetStatusByTime(time);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
