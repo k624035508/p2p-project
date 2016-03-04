@@ -45,7 +45,7 @@ $(function () {
         $("#education").val(loanerEducationalBackground);
         $("#marital-status").val(loanerMaritalStatus);
         $("#income").val(loanerIncome);
-        $('#loanerApplyStatus').hide();
+        $('div.personal-info-form-wrap div.status').hide();
 
 
         if(step != "2"){
@@ -55,19 +55,16 @@ $(function () {
 
             if(step == "21"){
                 //显示借款人审核中步骤
-                $("#loanerApplyStatus").show();
-                $("#loanerApplyStatus").html("申请成为借款人审批中...");
+                $('#loanerApplyChecking').show();
             }else if(step == "22"){
                 //显示借款人审核失败，重新提交步骤
-                $("#loanerApplyStatus").show();
-                $("#loanerApplyStatus").html("申请成为借款人失败！请重新根据风控要求填写资料。");
+                $('#loanerApplyFailed').show();
             }else if(step == "23"){
                 //显示禁止再申请借款人步骤
-                $("#loanerApplyStatus").show();
-                $("#loanerApplyStatus").html("抱歉！您已经被禁止申请成为借款人。");
-            }  
+                $('#loanerApplyForbid').show();
+            }
         }                
-
+        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
         $personalInfo.show();
     } else if(step == "5") {
         //显示借款完成步骤
@@ -75,20 +72,19 @@ $(function () {
         
     } else {
         //显示申请借款步骤
+        $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
         $loanDetail.show();
         var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent } = $("#project").data();
 
 
         if(step == "3") {            
             $("#loan-amount").val(quotaUse);
-            $('#loanApplyStatus').hide();
+            $('div.loan-detail-form-wrap div.status').hide();
 
-            
         } else if(step == "4") {
             //显示借款审核中步骤
             $loanDetail.show();
-            $('#loanApplyStatus').show();         
-            $("#loanApplyStatus").html("借款申请审核中...");
+            $('#loanApplyChecking').show();
 
             $(".form-wrapper form.loan-detail-form textarea").attr("readonly","readonly");
             $("#loan-amount").attr("readonly","readonly");            

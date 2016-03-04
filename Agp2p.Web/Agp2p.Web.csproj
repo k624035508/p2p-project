@@ -844,6 +844,9 @@
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
+    <Content Include="templates\AnGuang\imgs\loan\checking-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\failed-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\forbid-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\loan-finish-grey.png" />
     <Content Include="templates\AnGuang\imgs\loan\loan-finish.png" />
     <Content Include="templates\AnGuang\imgs\loan\loan-grey.png" />
