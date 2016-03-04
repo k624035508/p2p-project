@@ -5,10 +5,6 @@ import "../less/footerSmall.less";
 
 import header from "./header.js";
 
-import React from "react";
-import ReactDom from "react-dom";
-import DropdownPicker from "../components/dropdown-picker.jsx";
-
 window['$'] = $;
 
 $(function () {
