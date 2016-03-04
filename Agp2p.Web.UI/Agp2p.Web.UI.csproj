@@ -131,9 +131,7 @@
     <Compile Include="Page\myinformation.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\myreceiveplan.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Page\myreceiveplan.cs" />
     <Compile Include="Page\oauth_login.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -173,9 +171,7 @@
     <Compile Include="Page\userpoint.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\projects.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Page\projects.cs" />
     <Compile Include="Page\project.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
