@@ -2,6 +2,7 @@ import "bootstrap-webpack!./bootstrap.config.js";
 import "../less/head.less";
 import "../less/loan.less";
 import "../less/footerSmall.less";
+import alert from "../components/tips_alert.js";
 
 import header from "./header.js";
 
@@ -55,6 +56,9 @@ $(function () {
             }else if(step == "22"){
                 //显示借款人审核失败，重新提交步骤
                 $('#loanerApplyFailed').show();
+                $(".form-wrapper form.personal-info-form input").removeAttr("readonly");
+                $("#marital-status").removeAttr("disabled");
+                $('#loanerApplyBtn').show();
             }else if(step == "23"){
                 //显示禁止再申请借款人步骤
                 $('#loanerApplyForbid').show();
