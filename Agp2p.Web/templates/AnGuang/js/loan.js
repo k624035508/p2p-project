@@ -74,12 +74,12 @@ $(function () {
         //显示申请借款步骤
         $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
         $loanDetail.show();
+        $('div.loan-detail-form-wrap div.status').hide();
         var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent } = $("#project").data();
 
 
         if(step == "3") {            
             $("#loan-amount").val(quotaUse);
-            $('div.loan-detail-form-wrap div.status').hide();
 
         } else if(step == "4") {
             //显示借款审核中步骤
