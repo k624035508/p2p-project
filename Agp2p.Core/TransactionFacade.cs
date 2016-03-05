@@ -1361,7 +1361,13 @@ namespace Agp2p.Core
             });
 
             // 提现中的活期债权状态设为“完成，未回款”
-            var results = needTransferClaims.Select(c => c.NewStatusChild(pro.complete_time.Value, Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)).ToList();
+            var results = needTransferClaims.Select(c =>
+            {
+                // 恢复活期项目的可投资金额
+                c.li_projects1.investment_amount -= c.principal;
+
+                return c.NewStatusChild(pro.complete_time.Value, Agp2pEnums.ClaimStatusEnum.CompletedUnpaid);
+            }).ToList();
             newContext.li_claims.InsertAllOnSubmit(results);
 
             var noMoreInvestable = false;
@@ -1414,8 +1420,9 @@ namespace Agp2p.Core
         {
             if (proj.IsHuoqiProject())
             {
-                var claims = proj.li_claims1.Where(c => !c.li_claims2.Any()).ToList();
-                return claims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
+                var claims = proj.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(IsProfiting).ToList();
+                var huoqiProjectInvestmentAmount = claims.Aggregate(0m, (sum, c) => sum + c.principal);
+                return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
             var allClaims = proj.li_claims.Where(c => !c.li_claims2.Any()).ToList();
@@ -1449,23 +1456,10 @@ namespace Agp2p.Core
             if (!moneyRepayRatio.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
 
-            var yesterdayCheckPoint = DateTime.Today.AddTicks(-1);
-
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款（新手标）
-                .Where(pair =>
-                {
-                    var claim = pair.Key;
-                    if (repaymentTask.li_projects.IsHuoqiProject())
-                    {
-                        // 如果昨日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                        return
-                            claim.GetStatusByTime(yesterdayCheckPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) <
-                            Agp2pEnums.ClaimStatusEnum.NeedTransfer;
-                    }
-                    return claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer;
-                })
+                .Where(pair => pair.Key.IsProfiting())
                 .Select(c =>
                 {
                     var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);
@@ -2067,20 +2061,36 @@ namespace Agp2p.Core
             return !claim.li_claims2.Any();
         }
 
-        public static Agp2pEnums.ClaimStatusEnum? GetStatusByTime(this li_claims childClaim, DateTime time)
+        public static li_claims GetHistoryClaimByTime(this li_claims childClaim, DateTime time)
         {
             if (childClaim.createTime <= time)
             {
-                return (Agp2pEnums.ClaimStatusEnum) childClaim.status;
+                return childClaim;
             }
             else if (childClaim.li_claims1 != null && childClaim.li_claims1.userId == childClaim.userId)
             {
-                return childClaim.li_claims1.GetStatusByTime(time);
+                return childClaim.li_claims1.GetHistoryClaimByTime(time);
             }
             else
             {
                 return null;
             }
+        }
+
+        public static Agp2pEnums.ClaimStatusEnum? GetStatusByTime(this li_claims childClaim, DateTime time)
+        {
+            return (Agp2pEnums.ClaimStatusEnum?) childClaim.GetHistoryClaimByTime(time)?.status;
+        }
+
+        public static bool IsProfiting(this li_claims claim)
+        {
+            if (claim.li_projects1.IsHuoqiProject())
+            {
+                // 如果昨日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
+                var yesterdayCheckPoint = DateTime.Today.AddTicks(-1);
+                return claim.GetStatusByTime(yesterdayCheckPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+            }
+            return claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer;
         }
     }
 }

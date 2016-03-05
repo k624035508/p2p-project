@@ -97,9 +97,6 @@ namespace Agp2p.Core.AutoLogic
                         var newStatusChild = c.NewStatusChild(repayTime, newStatus);
                         context.li_claims.InsertOnSubmit(newStatusChild);
 
-                        // 恢复活期项目的可投资金额
-                        c.li_projects1.investment_amount -= c.principal;
-
                         var withdrawTransact = new li_project_transactions
                         {
                             principal = c.principal,
@@ -132,7 +129,6 @@ namespace Agp2p.Core.AutoLogic
         {
             var context = new Agp2pDataContext();
             var today = DateTime.Today;
-            var yesterdayCheckPoint = DateTime.Today.AddTicks(-1);
 
             // TODO test 次日开始返息：如果存在需要回款的活期项目债权，并且今天没有该项目的回款计划，则生成
             var huoqiProjects = context.li_projects
@@ -143,9 +139,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 // 如果是今天才投的活期标，则不返利
                 // 如果昨日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                var shouldRepayTo = p.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable()
-                        .Where(c => c.GetStatusByTime(yesterdayCheckPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer)
-                                .ToList();
+                var shouldRepayTo = p.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(TransactionFacade.IsProfiting).ToList();
                 if (!shouldRepayTo.Any())
                 {
                     return Enumerable.Empty<li_repayment_tasks>();
