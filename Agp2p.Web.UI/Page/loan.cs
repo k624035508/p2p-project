@@ -144,22 +144,39 @@ namespace Agp2p.Web.UI.Page
         {
             try
             {
-                li_loaners loaner = new li_loaners()
-                {
-                    user_id = userId,
-                    age = age,
-                    native_place = native_place,
-                    job = job,
-                    working_at = working_at,
-                    working_company = working_company,
-                    educational_background = educational_background,
-                    marital_status = (byte)marital_status,
-                    income = income,
-                    status = (int)Agp2pEnums.LoanerStatusEnum.Pending,
-                    last_update_time = DateTime.Now
-                };
                 Agp2pDataContext context = new Agp2pDataContext();
-                context.li_loaners.InsertOnSubmit(loaner);
+                var loaner = context.li_loaners.FirstOrDefault(l => l.dt_users.id == userId);
+                if (loaner != null)
+                {
+                    loaner.age = age;
+                    loaner.native_place = native_place;
+                    loaner.job = job;
+                    loaner.working_at = working_at;
+                    loaner.working_company = working_company;
+                    loaner.educational_background = educational_background;
+                    loaner.marital_status = (byte)marital_status;
+                    loaner.income = income;
+                    loaner.status = (int)Agp2pEnums.LoanerStatusEnum.Pending;
+                    loaner.last_update_time = DateTime.Now;
+                }
+                else
+                {
+                    loaner = new li_loaners()
+                    {
+                        user_id = userId,
+                        age = age,
+                        native_place = native_place,
+                        job = job,
+                        working_at = working_at,
+                        working_company = working_company,
+                        educational_background = educational_background,
+                        marital_status = (byte)marital_status,
+                        income = income,
+                        status = (int)Agp2pEnums.LoanerStatusEnum.Pending,
+                        last_update_time = DateTime.Now
+                    };
+                    context.li_loaners.InsertOnSubmit(loaner);
+                }
                 context.SubmitChanges();
             }
             catch (Exception ex)
