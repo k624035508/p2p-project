@@ -734,5 +734,11 @@ namespace Agp2p.Common
             [Description("禁用")]
             Disable = 20
         }
+
+        public enum SumapayApiEnum
+        {
+            [Description("实名开户")]
+            UserRegister = 1
+        }
     }
 }

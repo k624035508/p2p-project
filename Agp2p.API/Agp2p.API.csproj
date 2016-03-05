@@ -85,6 +85,10 @@
     <Compile Include="Payment\Lianlianpay\ServerURLConfig.cs" />
     <Compile Include="Payment\Lianlianpay\SignTypeEnum.cs" />
     <Compile Include="Payment\Lianlianpay\YinTongUtil.cs" />
+    <Compile Include="Payment\Sumapay\SumapayConfig.cs" />
+    <Compile Include="Payment\Sumapay\SumapayCore.cs" />
+    <Compile Include="Payment\Sumapay\SumapayService.cs" />
+    <Compile Include="Payment\Sumapay\SumapaySubmit.cs" />
     <Compile Include="Payment\Tenpay\ClientResponseHandler.cs" />
     <Compile Include="Payment\Tenpay\MD5Util.cs" />
     <Compile Include="Payment\Tenpay\RequestHandler.cs" />
@@ -122,6 +126,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
