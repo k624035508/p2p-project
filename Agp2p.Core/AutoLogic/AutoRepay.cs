@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
+using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using System.Web.UI.WebControls;
+using System.Web.Util;
 using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
@@ -24,23 +27,26 @@ namespace Agp2p.Core.AutoLogic
 
         private static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
         {
-            // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
-            var context = new Agp2pDataContext();
-            var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == ClaimTakeOverGroupName).ToList();
-            if (!companyUsers.Any())
-                throw new InvalidOperationException("请先往“公司账号”的会员组添加会员");
+            using (var ts = new TransactionScope())
+            {
+                // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
+                var context = new Agp2pDataContext();
+                var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == ClaimTakeOverGroupName).ToList();
+                if (!companyUsers.Any())
+                    throw new InvalidOperationException("请先往“公司账号”的会员组添加会员");
 
-            // 接手昨日/更早的提现
-            var needTransferClaims = context.li_claims.Where(
-                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
-                .ToList();
+                // 接手昨日/更早的提现
+                var needTransferClaims = context.li_claims.Where(
+                    c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
+                    .ToList();
 
-            if (!needTransferClaims.Any()) return;
-            if (companyUsers.Sum(u => u.li_wallets.idle_money) < needTransferClaims.Sum(c => c.principal))
-                throw new InvalidOperationException("警告：公司账号的金额不足以接手需要转让的债权");
+                if (!needTransferClaims.Any()) return;
+                if (companyUsers.Sum(u => u.li_wallets.idle_money) < needTransferClaims.Sum(c => c.principal))
+                    throw new InvalidOperationException("警告：公司账号的金额不足以接手需要转让的债权");
 
-            ClaimTakeOver(context, companyUsers, needTransferClaims.GroupBy(c => c.li_projects1).ToList());
-            context.SubmitChanges();
+                ClaimTakeOver(context, companyUsers, needTransferClaims.GroupBy(c => c.li_projects1).ToList());
+                ts.Complete();
+            }
         }
 
         private static void ClaimTakeOver(Agp2pDataContext context, List<dt_users> companyUsers, List<IGrouping<li_projects, li_claims>> claimsByHuoqiProject, decimal groupAlreadyInvest = 0)
