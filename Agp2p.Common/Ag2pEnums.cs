@@ -735,6 +735,26 @@ namespace Agp2p.Common
             Disable = 20
         }
 
+        public enum SumapayRequestEnum
+        {
+            [Description("等待响应")]
+            Waiting = 1,
+            [Description("已响应")]
+            Response = 2,
+            [Description("已完成")]
+            Complete = 3
+        }
+
+        public enum SumapayResponseEnum
+        {
+            [Description("已返回")]
+            Return = 1,
+            [Description("无效")]
+            Invalid = 2,
+            [Description("已完成")]
+            Complete = 3
+        }
+
         public enum SumapayApiEnum
         {
             [Description("实名开户")]
