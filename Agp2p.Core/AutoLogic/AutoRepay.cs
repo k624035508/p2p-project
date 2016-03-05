@@ -6,9 +6,6 @@ using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
-using System.Web.UI.WebControls;
-using System.Web.Util;
-using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
 {
