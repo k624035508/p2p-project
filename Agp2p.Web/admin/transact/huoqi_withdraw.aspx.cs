@@ -93,7 +93,7 @@ namespace Agp2p.Web.admin.transact
                                     c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
                                 .Aggregate(0m, (sum, c) => sum + c.principal),
                     };
-                }).ToList();
+                }).Where(e => e.NonWithdrawingMoney != 0 || e.WithdrawingMoney != 0 || e.WithdrawSuccessMoney != 0).ToList();
 
             totalCount = query.Count;
             rptList.DataSource = query.OrderBy(q => q.UserName).Skip(pageSize * (page - 1)).Take(pageSize).ToList();

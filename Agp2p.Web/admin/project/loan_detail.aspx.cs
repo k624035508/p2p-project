@@ -77,14 +77,14 @@ namespace Agp2p.Web.admin.project
         private void ShowProfitingClaimInfo(li_projects project)
         {
             isHuoqiProject = true;
-            rptClaimList.DataSource = project.li_claims1.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims1.AsEnumerable();
             rptClaimList.DataBind();
         }
 
         private void ShowClaimsInfo(li_projects project)
         {
             isHuoqiProject = false;
-            rptClaimList.DataSource = project.li_claims.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims.AsEnumerable();
             rptClaimList.DataBind();
         }
 
