@@ -1256,6 +1256,12 @@ namespace Agp2p.Core
             throw new Exception("项目交易状态异常");
         }
 
+        public static bool IsUnpaid(this li_repayment_tasks task)
+        {
+            return task.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
+                   task.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime;
+        }
+
         /// <summary>
         /// 马上执行还款计划（不能异步执行）
         /// </summary>
