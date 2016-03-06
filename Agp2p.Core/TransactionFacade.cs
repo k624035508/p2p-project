@@ -888,7 +888,6 @@ namespace Agp2p.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="projectId"></param>
-        /// <param name="investCompleteTime"></param>
         /// <returns></returns>
         public static li_projects FinishInvestment(this Agp2pDataContext context, int projectId)
         {
@@ -1461,7 +1460,7 @@ namespace Agp2p.Core
         {
             if (proj.IsHuoqiProject())
             {
-                var claims = proj.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(IsProfiting).ToList();
+                var claims = proj.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(IsProfitingNow).ToList();
                 var huoqiProjectInvestmentAmount = claims.Aggregate(0m, (sum, c) => sum + c.principal);
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
@@ -1500,7 +1499,7 @@ namespace Agp2p.Core
             // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
             var rounded = moneyRepayRatio
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款（新手标）
-                .Where(pair => pair.Key.IsProfiting())
+                .Where(pair => pair.Key.IsProfitingNow())
                 .Select(c =>
                 {
                     var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);
@@ -2123,13 +2122,20 @@ namespace Agp2p.Core
             return (Agp2pEnums.ClaimStatusEnum?) childClaim.GetHistoryClaimByTime(time)?.status;
         }
 
-        public static bool IsProfiting(this li_claims claim)
+        public static bool IsProfitingNow(this li_claims claim)
         {
+            // 必须是叶子债权才能收益
+            if (claim.li_claims2.Any()) return false;
+
             if (claim.li_projects1.IsHuoqiProject())
             {
-                // 如果昨日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                var yesterdayCheckPoint = DateTime.Today.AddTicks(-1);
-                return claim.GetStatusByTime(yesterdayCheckPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                if (claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                {
+                    // 如果昨日整日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
+                    var checkPoint = DateTime.Today.AddDays(-1);
+                    return claim.GetStatusByTime(checkPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                }
+                return false;
             }
             return claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer;
         }
