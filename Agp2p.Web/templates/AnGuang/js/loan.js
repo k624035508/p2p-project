@@ -19,6 +19,7 @@ $(function () {
     var $step1 = $("ul.application-ul li.step1");
     var $step2 = $("ul.application-ul li.step2");
     var $step3 = $("ul.application-ul li.step3");
+    var $step4 = $("ul.application-ul li.step4");
     var $forms = $(".form-wrapper > div");
     var $login = $(".form-wrapper div.login-form-wrap");
     var $personalInfo = $(".form-wrapper div.personal-info-form-wrap");
@@ -66,21 +67,31 @@ $(function () {
         }                
         $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
         $personalInfo.show();
+        if(!loanerName){
+            alert("请先前往会员中心进行实名认证", function(){
+                location.href = '/user/center/index.html#/safe';
+            });
+        }
     } else if(step == "5") {
         //显示借款完成步骤
-
+       // $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish.png') no-repeat");
         
     } else {
         //显示申请借款步骤
+        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
         $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
         $loanDetail.show();
         $('div.loan-detail-form-wrap div.status').hide();
         var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent } = $("#project").data();
-
+        //可用额度
+        $("#largest-amount span").html(quotaUse);
 
         if(step == "3") {            
-            $("#loan-amount").val(quotaUse);
-
+            $("#loan-amount").blur(function(){
+                if ($("#loan-amount").val() > quotaUse){
+                    alert("借款额度不能大于可用额度！")
+                }
+            });
         } else if(step == "4") {
             //显示借款审核中步骤
             $loanDetail.show();

@@ -99,7 +99,17 @@
                     </div>
                     <div class="form-group">
                         <label for="education" class="control-label">学历：</label>
-                        <input type="text" id="education" class="form-control" />
+                        <select id="education" class="form-control">
+                            <option value="" style="display: none"></option>
+                            <option value="">小学及以下</option>
+                            <option value="">初中</option>
+                            <option value="">高中</option>
+                            <option value="">中专</option>
+                            <option value="">大专</option>
+                            <option value="">本科</option>
+                            <option value="">研究生</option>
+                            <option value="">博士及以上</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="marital-status" class="control-label">婚姻状况：</label>
@@ -145,9 +155,10 @@
                             <option value="57">融通宝</option>
                         </select>
                     </div>
-                    <div class="form-group margin-left">
+                    <div class="form-group">
                         <label for="loan-amount" class="control-label">借款金额：</label>
                         <input type="text" id="loan-amount" class="form-control" />
+                        <span id="largest-amount">（可用额度 <span></span>）</span>
                     </div>
                     <div class="form-group">
                         <label for="loan-description" class="control-label">借款描述：</label>
