@@ -22,7 +22,7 @@ namespace Agp2p.Core.AutoLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime, DateTime.Now)); // 活期项目提现的执行
         }
 
-        private static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
+        public static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
         {
             using (var ts = new TransactionScope())
             {
@@ -66,7 +66,7 @@ namespace Agp2p.Core.AutoLogic
             }
         }
 
-        private static void DoHuoqiProjectWithdraw(bool onTime, DateTime withdrawAt)
+        public static void DoHuoqiProjectWithdraw(bool onTime, DateTime withdrawAt)
         {
             var context = new Agp2pDataContext();
             var repayTime = DateTime.Now;
@@ -147,7 +147,7 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        private static void GenerateHuoqiRepaymentTask(bool onTime)
+        public static void GenerateHuoqiRepaymentTask(bool onTime)
         {
             var context = new Agp2pDataContext();
             var today = DateTime.Today;
@@ -189,7 +189,7 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        private static void DoRepay(bool onTime)
+        public static void DoRepay(bool onTime)
         {
             if (ConfigLoader.loadSiteConfig().enableAutoRepay == 0) return;
 
