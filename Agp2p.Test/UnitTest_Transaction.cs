@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
@@ -64,17 +65,10 @@ namespace Agp2p.Test
         #endregion
 
         // 在运行每个测试之前，使用 TestInitialize 来运行代码
-        [TestInitialize]
-        public void MyTestInitialize()
+        [ClassInitialize]
+        public static void MyTestInitialize(TestContext testContext)
         {
-            // 创建测试用户
-            // 为其充值
-            // 充值确认
-            // 创建测试项目，设置期限、期数和还款类型
-
         }
-
-        private static readonly string str = "server=192.168.5.98;uid=sa;pwd=Zxcvbnm,;database=agrh;";
 
         private static string GetFriendlyUserName(dt_users user)
         {
@@ -91,7 +85,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void CleanAllProjectAndTransactionRecord()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var now = DateTime.Now;
 
             context.li_projects.ForEach(p =>
@@ -150,7 +144,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void RemoveTransactPassword()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var dtUsers = context.dt_users.Single(u => u.user_name == "13535656867");
             dtUsers.pay_password = null;
             context.SubmitChanges();
@@ -159,7 +153,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void TestRepayNotice()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
@@ -197,7 +191,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixRepaymentTaskByRepaidSum()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             int count = 0;
             context.li_repayment_tasks.Where(t => t.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                 .AsEnumerable()
@@ -274,7 +268,7 @@ namespace Agp2p.Test
                 修正 13612512742（陈茂强） 用户从 2016/1/26 16:25:53 开始出现待收益偏差：-0.01，影响历史记录 51 条
                 修正 13612512742（陈茂强） 用户从 2016/1/28 15:11:21 开始出现待收益偏差：0.01，影响历史记录 39 条
             */
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var biasSources = context.li_wallet_histories.Where(h => new DateTime(2016, 1, 18) < h.create_time)
                 .Where(h => h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess).ToList();
 
@@ -286,7 +280,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixNewbieProjectMissGenerateRepaymentTask()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
             {
                 var investments = p.li_project_transactions.Where(
@@ -318,7 +312,7 @@ namespace Agp2p.Test
         public void GenerateClaimFromOldData()
         {
             // 补充旧的债权
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
 
             // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
             var ptrs =

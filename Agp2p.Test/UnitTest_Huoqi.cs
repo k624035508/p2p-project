@@ -16,38 +16,6 @@ namespace Agp2p.Test
     [TestClass]
     public class UnitTest_Huoqi
     {
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SYSTEMTIME
-        {
-            public short wYear;
-            public short wMonth;
-            public short wDayOfWeek;
-            public short wDay;
-            public short wHour;
-            public short wMinute;
-            public short wSecond;
-            public short wMilliseconds;
-        }
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool SetSystemTime(ref SYSTEMTIME st);
-
-        private static void SetSystemTime(DateTime cSharpTime)
-        {
-            var st = new SYSTEMTIME
-            {
-                wYear = (short) cSharpTime.Year,
-                wMonth = (short) cSharpTime.Month,
-                wDay = (short) cSharpTime.Day,
-                wHour = (short) cSharpTime.Hour,
-                wMinute = (short) cSharpTime.Minute,
-                wSecond = (short) cSharpTime.Second,
-                wMilliseconds = (short) cSharpTime.Millisecond
-            };
-
-            SetSystemTime(ref st); // invoke this method.
-        }
-
         /**
          测试计划：
             现有架构需要进行的迁移步骤
@@ -56,11 +24,10 @@ namespace Agp2p.Test
             2. 设置“公司账号”
             3. 设置后台导航，添加活期项目提现功能
 
-            大纲：
-            1. 测试以前的投资/还款逻辑是否正常
-            2. 测试自动投标、活期项目放款
-            3. 测试定期项目完成后自动续投的情况
-            4. 测试自动投标的提现，（测试提现后如果项目完成/提现后转让）
+            需要测试的功能需求：
+            1. 定期项目的投资、回款、债权转让
+            2. 活期项目的投资、回款、自动续投、提现
+            3. 手动接手定期债权
         */
 
         /* 注意：此测试需要手动备份和还原数据库，请在执行测试前先进行备份，测试完后进行还原 */
@@ -68,11 +35,9 @@ namespace Agp2p.Test
         private DateTime testStartTime;
         private int investorA, investorB, huoqiProjectId, projectAId, projectBId;
 
-        [TestInitialize]
+        [ClassInitialize]
         public void Setup()
         {
-            ConfigurationManager.ConnectionStrings.Add(new ConnectionStringSettings("ConnectionString", "server=192.168.5.98;uid=sa;pwd=Zxcvbnm,;database=agrh;"));
-
             var context = new Agp2pDataContext();
 
             // 记录当前日期
@@ -134,14 +99,6 @@ namespace Agp2p.Test
             huoqiProjectId = huoqiProject.id;
         }
 
-        private static void AutoRepaySimulate(DateTime runAt)
-        {
-            AutoRepay.GenerateHuoqiRepaymentTask(false);
-            AutoRepay.DoRepay(false);
-            AutoRepay.HuoqiClaimTransferToCompanyWhenNeeded(false);
-            AutoRepay.DoHuoqiProjectWithdraw(false, runAt);
-        }
-
         /*
         测试流程：
         Day 1
@@ -151,7 +108,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void Day1()
         {
-            AutoRepaySimulate(DateTime.Today.AddHours(8));
+            Common.AutoRepaySimulate(DateTime.Today.AddHours(8));
 
             var now = DateTime.Now;
             var context = new Agp2pDataContext();
@@ -218,7 +175,7 @@ namespace Agp2p.Test
 
             TransactionFacade.Invest(investorA, projectBId, 10000);
 
-            AutoRepaySimulate(DateTime.Today.AddHours(18));
+            Common.AutoRepaySimulate(DateTime.Today.AddHours(18));
         }
 
         /*
@@ -259,7 +216,7 @@ namespace Agp2p.Test
         */
 
 
-        [TestCleanup]
+        [ClassCleanup]
         public void TearDown()
         {
         }
