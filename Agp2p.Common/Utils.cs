@@ -1798,7 +1798,7 @@ namespace Agp2p.Common
             {
                 return ex.InnerException.GetSimpleCrashInfo();
             }
-            return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
+            return ex.Message + "\n" + ex.StackTrace?.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
         }
     }
 }
