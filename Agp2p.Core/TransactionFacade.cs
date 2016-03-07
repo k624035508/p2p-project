@@ -422,7 +422,8 @@ namespace Agp2p.Core
 
                 if (pr.IsHuoqiProject())
                 {
-                    var exceed = AutoInvestment(context, investingMoney, tr);
+                    // 从中间人手上接手债权
+                    var exceed = HuoqiInvest(context, investingMoney, tr);
                     if (exceed != 0)
                     {
                         throw new Exception("没有足够的项目可投，超出：" + exceed);
@@ -450,6 +451,14 @@ namespace Agp2p.Core
 
                 MessageBus.Main.PublishDelay(new UserInvestedMsg(tr.id, wallet.last_update_time), 5000); // 广播用户的投资消息（事务未完成，需要延迟发送）
             }
+        }
+
+        private static decimal HuoqiInvest(Agp2pDataContext context, decimal investingMoney, li_project_transactions tr)
+        {
+            // 从中间人手上接手债权
+            var agents = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName).ToList();
+            var claimsOfAgents = agents.SelectMany(u => u.li_claims1.AsEnumerable().Where(c => c.IsProfitingNow())).ToList();
+            return ApportionToClaims(context, claimsOfAgents, investingMoney, tr);
         }
 
         public static void TakeOverHuoqiProject(this Agp2pDataContext context, dt_users user, li_projects pr, decimal investingMoney)
@@ -499,6 +508,28 @@ namespace Agp2p.Core
                 throw new Exception("没有足够的项目可投，超出：" + exceed);
             }
             MessageBus.Main.PublishDelay(new UserInvestedMsg(tr.id, wallet.last_update_time), 5000); // 广播用户的投资消息（位于事务中，需要延迟发送消息）
+        }
+
+        public static void StaticProjectWithdraw(Agp2pDataContext context, int claimId)
+        {
+            // 定期债权转让申请：将债权设置为 NeedTransfer，48 小时后再还原为 Nontransferable
+            /*  1）逾期债权均不得转让；TODO 托管实现之后再判断
+                2）持有（指投资项目成功或购买转让项目）超过15天；
+                3）债权在转让过程中变为逾期状态，剩余未转让债权将停止转让；
+                4）转让申请日至少在下一个还款日/结息日的1天之前。*/
+
+            var claim = context.li_claims.Single(c => c.id == claimId);
+
+            var timeSpan = DateTime.Now - claim.li_project_transactions1.create_time;
+            if (timeSpan.TotalDays < 15)
+                throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
+
+            var nextRepayTime = claim.li_projects.li_repayment_tasks.AsEnumerable().FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time;
+            if (nextRepayTime != null && nextRepayTime.Value.Date <= DateTime.Today.AddDays(1))
+                throw new InvalidOperationException("不能在项目还款日的1天前申请债权转让");
+
+            var needTransferClaim = claim.NewStatusChild(DateTime.Now, Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+            context.li_claims.InsertOnSubmit(needTransferClaim);
         }
 
         public static void HuoqiProjectWithdraw(this Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
@@ -2067,6 +2098,7 @@ namespace Agp2p.Core
                 profitingProjectId = parent.profitingProjectId,
                 number = parent.number,
                 status = parent.status,
+                agent = parent.agent,
             };
         }
 
