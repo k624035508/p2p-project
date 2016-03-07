@@ -1,0 +1,79 @@
+/*claimstransfer.less*/
+@import "common-style";
+@usercenter: "../imgs/usercenter";
+
+.claimsTransferPage {
+	width: 855px;
+
+	& > div {
+		width: 100%;
+		border: @border;
+		background: @white;
+	}
+
+	.top-wrapper {
+		height: 360px;
+		margin-bottom: 27px;
+		padding: 15px 20px 30px 20px;
+
+		.topic-icon {
+			position: absolute;
+			width: 50px;
+			height: 120px;
+			margin-top: -10px;
+			margin-left: 25px;
+			background: url("@{usercenter}/current-icon-bg.png");
+
+			span {
+				display: inline-block;
+				width: 20px;
+				margin-top: 13px;
+				margin-left: 10px;
+				color: @white;
+				font-size: @font18;
+				line-height: 20px;
+				text-align: center;
+			}
+		}
+
+		.profit-container {
+			height: 225px;
+			padding: 30px 40px 30px 115px;
+			background: #38aaf0;
+			text-align: center;
+			& * { color: @white; }
+
+			& > p { padding-right: 65px; }
+
+			.expected-profit-title {
+				font-size: @font20;
+				margin-bottom: 0;
+
+				.current-protocol {
+					position: absolute;
+					display: inline-block;
+					width: 120px;
+					height: 30px;
+					margin-left: 180px;
+					line-height: 29px;
+					font-size: @font15;
+					background: url("@{usercenter}/current-icon-border.png");
+				}
+			}
+
+			.expected-profit {
+				font-size: @font35;
+				padding-bottom: 19px;
+				border-bottom: 1px solid @white;
+
+				.profit-unit {
+					font-size: @font15;
+				}
+			}
+		}
+	}
+
+	.bottom-wrapper {
+		height: 560px;
+	}
+}
