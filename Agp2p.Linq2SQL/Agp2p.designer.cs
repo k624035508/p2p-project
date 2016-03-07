@@ -9443,6 +9443,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_claims> _li_claims;
 		
+		private EntitySet<li_claims> _li_claims1;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -9524,6 +9526,7 @@ namespace Agp2p.Linq2SQL
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_claims = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims), new Action<li_claims>(this.detach_li_claims));
+			this._li_claims1 = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims1), new Action<li_claims>(this.detach_li_claims1));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -10363,6 +10366,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_claims1", Storage="_li_claims1", ThisKey="id", OtherKey="agent")]
+		public EntitySet<li_claims> li_claims1
+		{
+			get
+			{
+				return this._li_claims1;
+			}
+			set
+			{
+				this._li_claims1.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -10595,6 +10611,18 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
+		}
+		
+		private void attach_li_claims1(li_claims entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users1 = this;
+		}
+		
+		private void detach_li_claims1(li_claims entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users1 = null;
 		}
 	}
 	
@@ -16099,6 +16127,8 @@ namespace Agp2p.Linq2SQL
 		
 		private int _profitingProjectId;
 		
+		private System.Nullable<int> _agent;
+		
 		private decimal _principal;
 		
 		private byte _status;
@@ -16116,6 +16146,8 @@ namespace Agp2p.Linq2SQL
 		private EntitySet<li_claims> _li_claims2;
 		
 		private EntityRef<dt_users> _dt_users;
+		
+		private EntityRef<dt_users> _dt_users1;
 		
 		private EntityRef<li_claims> _li_claims1;
 		
@@ -16137,6 +16169,8 @@ namespace Agp2p.Linq2SQL
     partial void OnuserIdChanged();
     partial void OnprofitingProjectIdChanging(int value);
     partial void OnprofitingProjectIdChanged();
+    partial void OnagentChanging(System.Nullable<int> value);
+    partial void OnagentChanged();
     partial void OnprincipalChanging(decimal value);
     partial void OnprincipalChanged();
     partial void OnstatusChanging(byte value);
@@ -16156,6 +16190,7 @@ namespace Agp2p.Linq2SQL
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_claims2 = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims2), new Action<li_claims>(this.detach_li_claims2));
 			this._dt_users = default(EntityRef<dt_users>);
+			this._dt_users1 = default(EntityRef<dt_users>);
 			this._li_claims1 = default(EntityRef<li_claims>);
 			this._li_project_transactions1 = default(EntityRef<li_project_transactions>);
 			this._li_projects = default(EntityRef<li_projects>);
@@ -16251,6 +16286,30 @@ namespace Agp2p.Linq2SQL
 					this._profitingProjectId = value;
 					this.SendPropertyChanged("profitingProjectId");
 					this.OnprofitingProjectIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_agent", DbType="Int")]
+		public System.Nullable<int> agent
+		{
+			get
+			{
+				return this._agent;
+			}
+			set
+			{
+				if ((this._agent != value))
+				{
+					if (this._dt_users1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnagentChanging(value);
+					this.SendPropertyChanging();
+					this._agent = value;
+					this.SendPropertyChanged("agent");
+					this.OnagentChanged();
 				}
 			}
 		}
@@ -16439,6 +16498,40 @@ namespace Agp2p.Linq2SQL
 						this._userId = default(int);
 					}
 					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_claims1", Storage="_dt_users1", ThisKey="agent", OtherKey="id", IsForeignKey=true)]
+		public dt_users dt_users1
+		{
+			get
+			{
+				return this._dt_users1.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users1.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users1.Entity = null;
+						previousValue.li_claims1.Remove(this);
+					}
+					this._dt_users1.Entity = value;
+					if ((value != null))
+					{
+						value.li_claims1.Add(this);
+						this._agent = value.id;
+					}
+					else
+					{
+						this._agent = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("dt_users1");
 				}
 			}
 		}

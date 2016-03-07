@@ -454,6 +454,7 @@
       <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_users_li_claims" Member="li_claims" ThisKey="id" OtherKey="userId" Type="li_claims" />
+      <Association Name="dt_users_li_claims1" Member="li_claims1" ThisKey="id" OtherKey="agent" Type="li_claims" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -709,6 +710,7 @@
       <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="userId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="profitingProjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="agent" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="principal" Type="System.Decimal" DbType="Decimal(19,2) NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="createTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -718,6 +720,7 @@
       <Association Name="li_claims_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="gainFromClaim" Type="li_project_transactions" />
       <Association Name="li_claims_li_claims" Member="li_claims2" ThisKey="id" OtherKey="parentClaimId" Type="li_claims" />
       <Association Name="dt_users_li_claims" Member="dt_users" ThisKey="userId" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="dt_users_li_claims1" Member="dt_users1" ThisKey="agent" OtherKey="id" Type="dt_users" IsForeignKey="true" />
       <Association Name="li_claims_li_claims" Member="li_claims1" ThisKey="parentClaimId" OtherKey="id" Type="li_claims" IsForeignKey="true" />
       <Association Name="li_project_transactions_li_claims" Member="li_project_transactions1" ThisKey="createFromInvestment" OtherKey="id" Type="li_project_transactions" IsForeignKey="true" />
       <Association Name="li_projects_li_claims" Member="li_projects" ThisKey="projectId" OtherKey="id" Type="li_projects" IsForeignKey="true" />
