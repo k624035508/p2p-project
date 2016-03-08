@@ -294,12 +294,14 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
-            [Description("债权转让")]
-            ClaimTransfer = 4,
+            [Description("债权转出")]
+            ClaimTransferredOut = 4,
+            [Description("债权买入")]
+            ClaimTransferredIn = 5,
             [Description("续投活期失败回款")]
-            AutoInvestFailRepay = 5,
+            AutoInvestFailRepay = 6,
             [Description("活期项目提现")]
-            HuoqiProjectWithdraw = 6,
+            HuoqiProjectWithdraw = 7,
         }
 
         /// <summary>
@@ -369,12 +371,16 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
-            [Description("债权转让")]
-            ClaimTransfer = 24,
+            [Description("债权转出")]
+            ClaimTransferredOut = 24,
+            [Description("债权买入")]
+            ClaimTransferredIn = 25,
             [Description("续投活期失败回款")]
-            AutoInvestFailRepaySuccess = 25,
+            AutoInvestFailRepaySuccess = 26,
             [Description("活期项目提现")]
-            HuoqiProjectWithdrawSuccess = 26,
+            HuoqiProjectWithdrawSuccess = 27,
+            [Description("债权买入成功")]
+            ClaimTransferredInSuccess = 28,
 
             [Description("获得金钱待确认")]
             Gaining = 40,

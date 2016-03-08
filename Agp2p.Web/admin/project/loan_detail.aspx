@@ -535,14 +535,15 @@
                     <% } %>
                     <td><%# Eval("parentClaimId")%></td>
                     <td>
-                        <asp:Button runat="server"
+                        <asp:LinkButton runat="server"
                             ID="btnBecomeTransferable"
-                            Text="转为可转让债权"
+                            Text="申请转让"
                             UseSubmitBehavior="False"
                             CommandArgument='<%# Eval("id") %>'
-                            OnClientClick="return ExeNoCheckPostBack(this.name, '确认将此债权转为可转让债权？');"
+                            OnClientClick="return ExeNoCheckPostBack(this.name, '是否为该债权申请转让？');"
                             OnClick="btnBecomeTransferable_OnClick"
                             Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable && ((li_claims) Container.DataItem).IsLeafClaim() %>" />
+                        <!--TODO 提现撤销-->
                     </td>            
                 </tr>
             </ItemTemplate>

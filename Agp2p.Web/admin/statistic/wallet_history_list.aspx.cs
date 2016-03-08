@@ -296,7 +296,9 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 回款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransfer, "{0} 债权转让 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut, "{0} 债权转出 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn, "{0} 债权买入 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess, "{0} 债权买入成功 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess, "{0} 续投活期失败回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess, "{0} 活期项目提现 {1}"},
         };
