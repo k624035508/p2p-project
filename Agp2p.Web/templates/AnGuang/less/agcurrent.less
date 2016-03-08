@@ -1,4 +1,4 @@
-/*agcurrent.less*/
+/*agcurrent.less（会员中心安广活期）*/
 @import "common-style";
 @usercenter: "../imgs/usercenter";
 
@@ -124,16 +124,17 @@
 				text-align: center;
 				text-decoration: none;
 				background: @body-color;
+			}
 
-				&:hover, &:active {
-					color: @white;
-					background: @blue;
-				}
+			a:hover, a.active {
+				color: @white;
+				background: @blue;
 			}
 		}
 
 		.tb-container {
 			margin-top: 28px;
+			margin-bottom: 30px;
 			height: 325px;
 
 			.current-tb {
@@ -155,11 +156,6 @@
 					}
 				}
 			}
-		}
-
-		.pages {
-			margin-top: 50px;
-			text-align: center;
 		}
 	}
 }

@@ -6,7 +6,7 @@ import "../less/agcurrent.less";
 class AgCurrent extends React.Component{
     constructor(props){
         super(props);
-        this.state = {};
+        this.state = { pageIndex: 0, pageCount: 3};
     }
 
     render(){
@@ -45,7 +45,7 @@ class AgCurrent extends React.Component{
                             <option value="转入">转 入</option>
                             <option value="转出">转 出</option>
                         </select>
-                        <a href="javascript:" className="tradeRecordBtn">交易记录</a>
+                        <a href="javascript:" className="tradeRecordBtn active">交易记录</a>
                         <a href="javascript:" className="assetsDetailBtn">资产明细</a>
                     </div>
                     <div className="tb-container">
@@ -58,36 +58,7 @@ class AgCurrent extends React.Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>2016/3/8 17:28</td>
-                                    <td>转出</td>
-                                    <td>2200.00</td>
-                                </tr>
+                                {/*每页显示7行数据*/}
                                 <tr>
                                     <td>2016/3/8 17:28</td>
                                     <td>转出</td>
@@ -96,9 +67,8 @@ class AgCurrent extends React.Component{
                             </tbody>
                         </table>
                     </div>
-                    <div className="pages">
-                        <Pagination />
-                    </div>
+                    <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+                                    onPageSelected={pageIndex => this.setState({pageIndex: pageIndex})}/>
                 </div>
             </div>
         );

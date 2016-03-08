@@ -1,4 +1,5 @@
-﻿@import "common-style";
+﻿/*usercenter.less(会员中心)*/
+@import "common-style";
 @usercenter: "../imgs/usercenter";
 
 body { background: @body-color; }
@@ -145,28 +146,27 @@ div.usercenter {
 		.content-body {
 			padding: 30px 25px;
 			min-height: 699px;
-			div.nav {
-				text-align: center;
-				.pagination {
-					& > li > a, & > li > span {
-						width: 25px;
-						height: 25px;
-						padding: 0;
-						margin: 0 2px;
-						line-height: 24px;
-						font-size: @font13;
-						color: @dark-grey;
-						border: @border;
-						border-radius: 0;
-					}
-					.active a, .active span {
-						color: @white;
-						background: @red;
-					}
-				}
+		}
+	}
+	//会员中心翻页页码样式
+	div.nav {
+		text-align: center;
+		.pagination {
+			& > li > a, & > li > span {
+				width: 25px;
+				height: 25px;
+				padding: 0;
+				margin: 0 2px;
+				line-height: 24px;
+				font-size: @font13;
+				color: @dark-grey;
+				border: @border;
+				border-radius: 0;
+			}
+			.active a, .active span {
+				color: @white;
+				background: @red;
 			}
 		}
-
-		//回款计划内容
 	}
 }

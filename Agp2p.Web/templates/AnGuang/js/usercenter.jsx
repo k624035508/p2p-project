@@ -48,7 +48,7 @@ $(function(){
 			<Router>
 				<Route path="/" component={UserCenterPage}>
 					<Route path="/status" component={StatusContainer}>
-						<Route path="/mytrade" component={MyTransaction}/>
+						<Route path="/mytransaction" component={MyTransaction}/>
 						<Route path="/recharge" component={RechargePage}/>
 						<Route path="/withdraw" component={WithdrawPage}/>
 						<Route path="/invest-record" component={InvestRecordPage}/>

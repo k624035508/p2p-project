@@ -60,7 +60,7 @@ class UserCenterPage extends React.Component {
 			            <li><Link to="/myaccount" className={"account-link " + (!!this.props.children ? "" : "active")} activeClassName="active">账户总览</Link></li>
 			            <li><a className="funds">资金管理</a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><Link to="/mytrade" activeClassName="active-link">交易明细</Link></li>
+			                    <li><Link to="/mytransaction" activeClassName="active-link">交易明细</Link></li>
 			                    <li><Link to="/recharge" activeClassName="active-link">我要充值</Link></li>
 			                    <li><Link to="/withdraw" activeClassName="active-link">我要提现</Link></li>
 			                </ul>
