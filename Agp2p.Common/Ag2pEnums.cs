@@ -739,8 +739,8 @@ namespace Agp2p.Common
         {
             [Description("等待响应")]
             Waiting = 1,
-            [Description("已响应")]
-            Response = 2,
+            [Description("已失败")]
+            Fail = 2,
             [Description("已完成")]
             Complete = 3
         }
@@ -758,7 +758,7 @@ namespace Agp2p.Common
         public enum SumapayApiEnum
         {
             [Description("实名开户")]
-            UserRegister = 1
+            UserReg = 1
         }
     }
 }

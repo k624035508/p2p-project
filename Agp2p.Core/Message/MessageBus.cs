@@ -2,6 +2,7 @@
 using Agp2p.Core.AutoLogic;
 using Agp2p.Core.InitLogic;
 using Agp2p.Core.NotifyLogic;
+using Agp2p.Core.PayApiLogic;
 using Lip2p.Core.ActivityLogic;
 using TinyMessenger;
 
@@ -33,6 +34,9 @@ namespace Agp2p.Core.Message
             // Activity
             TrialActivity.DoSubscribe();
             InviterBonus.DoSubscribe();
+
+            // PayApi
+            PayApiLogic.PayApiLogic.DoSubscribe();
         }
     }
 }

@@ -9,6 +9,8 @@ using System.Threading;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -42,6 +44,7 @@ namespace Agp2p.Test
         }
 
         #region 附加测试特性
+
         //
         // 编写测试时，可以使用以下附加特性:
         //
@@ -61,6 +64,7 @@ namespace Agp2p.Test
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
         #endregion
 
         // 在运行每个测试之前，使用 TestInitialize 来运行代码
@@ -160,7 +164,7 @@ namespace Agp2p.Test
         public void TestRepayNotice()
         {
             var context = new Agp2pDataContext(str);
-            var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
+            var rt = context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
 
@@ -181,17 +185,17 @@ namespace Agp2p.Test
 
 
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 13.626332m, 47.989636m, 9.596008m, 28.788024m }, 100, 0),
+                new List<decimal> {13.626332m, 47.989636m, 9.596008m, 28.788024m}, 100, 0),
                 new List<decimal> {14, 48, 9, 29});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 16.666m, 16.666m, 16.666m, 16.666m, 16.666m, 16.666m }, 100, 0),
-                new List<decimal> { 17, 17, 17, 17, 16, 16 });
+                new List<decimal> {16.666m, 16.666m, 16.666m, 16.666m, 16.666m, 16.666m}, 100, 0),
+                new List<decimal> {17, 17, 17, 17, 16, 16});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 33.333m, 33.333m, 33.333m }, 100, 0),
-                new List<decimal> { 34, 33, 33 });
+                new List<decimal> {33.333m, 33.333m, 33.333m}, 100, 0),
+                new List<decimal> {34, 33, 33});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 33.3m, 33.3m, 33.3m, 0.1m }, 100, 0),
-                new List<decimal> { 34, 33, 33, 0 });
+                new List<decimal> {33.3m, 33.3m, 33.3m, 0.1m}, 100, 0),
+                new List<decimal> {34, 33, 33, 0});
         }
 
         [TestMethod]
@@ -210,7 +214,8 @@ namespace Agp2p.Test
                         if (task.repay_interest != sumOfRepaidInterest)
                         {
                             count++;
-                            Debug.WriteLine($"Fix project（{task.li_projects.title}） repayment task（{task.term}）, from {task.repay_interest} to {sumOfRepaidInterest}");
+                            Debug.WriteLine(
+                                $"Fix project（{task.li_projects.title}） repayment task（{task.term}）, from {task.repay_interest} to {sumOfRepaidInterest}");
                             task.repay_interest = sumOfRepaidInterest;
                         }
                     });
@@ -255,9 +260,9 @@ namespace Agp2p.Test
                 Debug.WriteLine(string.Format("修正 {0} 用户从 {1} 开始出现待收益偏差：{2}，影响历史记录 {3} 条",
                     his.dt_users.GetFriendlyUserName(), his.create_time, deltaProfiting, prefixHis.Count));
                 prefixHis.ForEach(h =>
-                    {
-                        h.profiting_money += deltaProfiting;
-                    });
+                {
+                    h.profiting_money += deltaProfiting;
+                });
             }
         }
 
@@ -294,7 +299,9 @@ namespace Agp2p.Test
                         ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                     .ToDictionary(ptr => ptr.investor);
-                var repayments = p.li_repayment_tasks.Where(r => r.only_repay_to != null).ToDictionary(r => r.only_repay_to.GetValueOrDefault());
+                var repayments =
+                    p.li_repayment_tasks.Where(r => r.only_repay_to != null)
+                        .ToDictionary(r => r.only_repay_to.GetValueOrDefault());
                 if (repayments.Count < investments.Count)
                 {
                     investments.Keys.Except(repayments.Keys).ForEach(userId =>
@@ -311,6 +318,16 @@ namespace Agp2p.Test
                     });
                 }
             });
+        }
+
+        [TestMethod]
+        public void TestSumapayApi()
+        {
+            MessageBus.Main.Publish(new UserRegisterReqMsg(1030,"18681406981","罗明星","440233198602010019","","0", s =>
+            {
+                Assert.AreNotEqual("",s);
+            }));
+
         }
     }
 }

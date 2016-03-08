@@ -1420,7 +1420,7 @@ namespace Agp2p.Core
                 switch (project.type)
                 {
                     case (int)Agp2pEnums.LoanTypeEnum.Company:
-                        return project.li_risks.li_loaners.li_loaner_companies.name;
+                        return project.li_risks.li_loaners?.li_loaner_companies.name;
                     default:
                         var user = project.li_risks.li_loaners.dt_users;
                         return $"{user.real_name}({user.user_name})";

@@ -85,10 +85,6 @@
     <Compile Include="Payment\Lianlianpay\ServerURLConfig.cs" />
     <Compile Include="Payment\Lianlianpay\SignTypeEnum.cs" />
     <Compile Include="Payment\Lianlianpay\YinTongUtil.cs" />
-    <Compile Include="Payment\Sumapay\SumapayConfig.cs" />
-    <Compile Include="Payment\Sumapay\SumapayCore.cs" />
-    <Compile Include="Payment\Sumapay\SumapayService.cs" />
-    <Compile Include="Payment\Sumapay\SumapaySubmit.cs" />
     <Compile Include="Payment\Tenpay\ClientResponseHandler.cs" />
     <Compile Include="Payment\Tenpay\MD5Util.cs" />
     <Compile Include="Payment\Tenpay\RequestHandler.cs" />

@@ -1800,5 +1800,21 @@ namespace Agp2p.Common
             }
             return ex.Message + "\n" + ex.StackTrace.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
         }
+
+        public static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway, string strMethod, string inputCharset)
+        {
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + " encoding=" + inputCharset + "' method='" + strMethod.ToLower().Trim() + "'>");
+
+            foreach (KeyValuePair<string, string> temp in sParaTemp)
+            {
+                sbHtml.Append("<input type='hidden' name='" + temp.Key + "' value='" + temp.Value + "'/>");
+            }
+
+            sbHtml.Append("<input type='submit' value='ok' style='display:none;'></form>");
+            sbHtml.Append("<script>document.forms['submit'].submit();</script>");
+
+            return sbHtml.ToString();
+        }
     }
 }
