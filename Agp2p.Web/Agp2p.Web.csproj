@@ -1231,7 +1231,6 @@
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
-    <Content Include="templates\AnGuang\less\loan.less" />
     <Content Include="templates\AnGuang\containers\agcurrent.jsx" />
     <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
     <Content Include="templates\AnGuang\less\agcurrent.less" />
@@ -1522,6 +1521,7 @@
     </Compile>
     <Compile Include="admin\manager\role_edit.aspx.cs">
       <DependentUpon>role_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\manager\role_edit.aspx.designer.cs">
       <DependentUpon>role_edit.aspx</DependentUpon>
@@ -1602,6 +1602,7 @@
     </Compile>
     <Compile Include="admin\repayment\pay_manage.aspx.cs">
       <DependentUpon>pay_manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\repayment\pay_manage.aspx.designer.cs">
       <DependentUpon>pay_manage.aspx</DependentUpon>
@@ -1636,6 +1637,7 @@
     </Compile>
     <Compile Include="admin\project\loan_apply.aspx.cs">
       <DependentUpon>loan_apply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\project\loan_apply.aspx.designer.cs">
       <DependentUpon>loan_apply.aspx</DependentUpon>
@@ -2025,6 +2027,7 @@
     </Compile>
     <Compile Include="admin\users\sms_template_list.aspx.cs">
       <DependentUpon>sms_template_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\users\sms_template_list.aspx.designer.cs">
       <DependentUpon>sms_template_list.aspx</DependentUpon>
@@ -2080,6 +2083,7 @@
     </Compile>
     <Compile Include="admin\weixin\account_list.aspx.cs">
       <DependentUpon>account_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="admin\weixin\account_list.aspx.designer.cs">
       <DependentUpon>account_list.aspx</DependentUpon>
