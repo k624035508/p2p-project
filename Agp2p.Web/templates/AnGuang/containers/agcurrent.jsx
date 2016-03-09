@@ -6,7 +6,7 @@ import "../less/agcurrent.less";
 class AgCurrent extends React.Component{
     constructor(props){
         super(props);
-        this.state = {pageIndex: 0, pageCount: 3};
+        this.state = {pageIndex: 0, pageCount: 3, tableType:0};
     }
 
     render(){
@@ -45,10 +45,13 @@ class AgCurrent extends React.Component{
                             <option value="转入">转 入</option>
                             <option value="转出">转 出</option>
                         </select>
-                        <a href="javascript:" className="tradeRecordBtn active">交易记录</a>
-                        <a href="javascript:" className="assetsDetailBtn">资产明细</a>
+                        <a href="javascript:" className={`tradeRecordBtn ${this.state.tableType == 0 ? 'active' : ''}`}
+                           onClick={()=> this.setState({tableType: 0})}>交易记录</a>
+                        <a href="javascript:" className={`assetsDetailBtn ${this.state.tableType == 1 ? 'active' : ''}`}
+                           onClick={() => this.setState({tableType: 1})}>资产明细</a>
                     </div>
                     <div className="tb-container">
+                        {this.state.tableType != 0 ? null :
                         <table className="table tradeRecord-tb">
                             <thead>
                                 <tr>
@@ -65,7 +68,8 @@ class AgCurrent extends React.Component{
                                     <td>2200.00</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>}
+                        {this.state.tableType != 1 ? null :
                         <table className="table assetsDetail-tb">
                             <thead>
                                 <tr>
@@ -85,7 +89,7 @@ class AgCurrent extends React.Component{
                                     <td>2016/3/29</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>}
                     </div>
                     <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                                     onPageSelected={pageIndex => this.setState({pageIndex: pageIndex})}/>
