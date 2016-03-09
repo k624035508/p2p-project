@@ -6,7 +6,7 @@ import "../less/agcurrent.less";
 class AgCurrent extends React.Component{
     constructor(props){
         super(props);
-        this.state = { pageIndex: 0, pageCount: 3};
+        this.state = {pageIndex: 0, pageCount: 3};
     }
 
     render(){
@@ -49,7 +49,7 @@ class AgCurrent extends React.Component{
                         <a href="javascript:" className="assetsDetailBtn">资产明细</a>
                     </div>
                     <div className="tb-container">
-                        <table className="table current-tb">
+                        <table className="table tradeRecord-tb">
                             <thead>
                                 <tr>
                                     <th>时间</th>
@@ -63,6 +63,26 @@ class AgCurrent extends React.Component{
                                     <td>2016/3/8 17:28</td>
                                     <td>转出</td>
                                     <td>2200.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table className="table assetsDetail-tb">
+                            <thead>
+                                <tr>
+                                    <th>债权编号</th>
+                                    <th>买入本金（元）</th>
+                                    <th>剩余本金（元）</th>
+                                    <th>下一个还款日</th>
+                                    <th>到期日</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>3000.00</td>
+                                    <td>1200.00</td>
+                                    <td>2016/3/9</td>
+                                    <td>2016/3/29</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -137,14 +137,7 @@
 			margin-bottom: 30px;
 			height: 325px;
 
-			.current-tb {
-				text-align: left;
-
-				thead > tr > th, tbody > tr > td {
-					width: 33.33%;
-					padding-left: 70px !important;
-				}
-
+			table {
 				thead > tr > th { border-bottom: 2px solid @blue !important; }
 
 				tbody > tr {
@@ -156,6 +149,18 @@
 					}
 				}
 			}
+
+			.tradeRecord-tb {
+				display: none;
+				text-align: left;
+
+				thead > tr > th, tbody > tr > td {
+					width: 33.33%;
+					padding-left: 70px !important;
+				}
+			}
+
+			.assetsDetail-tb  thead > tr > th { text-align: center; }
 		}
 	}
 }

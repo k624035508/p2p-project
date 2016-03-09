@@ -1,1 +1,78 @@
 /*claimstransfer.less（会员中心债权转让）*/
+@import "common-style";
+
+.claimsTransferPage {
+	width: 855px;
+
+	& > div {
+		width: 100%;
+		border: @border;
+		background: @white;
+	}
+
+	.top-wrapper {
+		height: 220px;
+		margin-bottom: 25px;
+		padding: 25px 20px;
+
+		.blue-container {
+			height: 100%;
+			padding: 21px 35px 30px 35px;
+			background: @blue;
+
+			* {
+				color: @white;
+				font-size: @font15;
+			}
+
+			.whatFor {
+				padding-bottom: 22px;
+				border-bottom: 1px solid;
+
+				& > a { text-decoration: none; }
+			}
+
+			.claims-db {
+				margin-top: 25px;
+
+				li { width: 25%; }
+			}
+		}
+	}
+
+	.bottom-wrapper {
+		height: 702px;
+		padding: 25px;
+
+		ul {
+			float: none !important;
+			margin-top: 30px;
+			margin-left: 0;
+		}
+
+		.tb-container {
+			margin-top: 28px;
+			height: 407px;
+
+			table {
+				text-align: center;
+
+				thead > tr > th {
+					text-align: center;
+					border-bottom: 2px solid @blue !important;
+				}
+
+				tbody > tr {
+					&:hover { background: #f1f5ff; }
+
+					& > td {
+						padding: 10px 0;
+						border-bottom: 1px solid @blue !important;
+					}
+				}
+			}
+		}
+
+		.nav { margin-top: 27px; }
+	}
+}
