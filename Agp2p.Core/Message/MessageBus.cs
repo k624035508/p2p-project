@@ -36,7 +36,8 @@ namespace Agp2p.Core.Message
             InviterBonus.DoSubscribe();
 
             // PayApi
-            PayApiLogic.PayApiLogic.DoSubscribe();
+            PayApiHandle.DoSubscribe();
+            UserRegisterResp.DoSubscribe();
         }
     }
 }

@@ -21,12 +21,17 @@ namespace Agp2p.Core.Message.PayApiMsg
             Name = name;
             Telephone = telephone;
             PayType = payType;
-            Result = result;
+        }
+
+        public UserRegisterRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
+        {
+            //根据报文的json数据构造
+            UserId = 1030;//测试
         }
 
         public override bool CheckSignature()
         {
-            return false;
+            return true;
         }
 
         public override bool CheckResult()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Agp2p.Linq2SQL;
 using TinyMessenger;
 
 namespace Agp2p.Core.Message.PayApiMsg

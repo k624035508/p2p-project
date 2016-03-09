@@ -5,6 +5,8 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using System.Linq;
 using System.Text;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Newtonsoft.Json;
 
 namespace Agp2p.Web.api.payment.sumapay
@@ -28,32 +30,28 @@ namespace Agp2p.Web.api.payment.sumapay
                     response_content = reqStr
                 };
                 context.li_pay_response_log.InsertOnSubmit(responseLog);
+                context.SubmitChanges();
+                //发送响应消息
+                MessageBus.Main.PublishAsync(new BaseRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content));
             }
-
-            //检查签名
-            //if (msg.CheckSignature())
-            //{
-            //    if (msg.CheckResult())
-            //    {
-            //        //找出对应的请求日志
-            //        var requestLog = context.li_pay_request_log.SingleOrDefault(l => l.id == msg.RequestId);
-            //        if (requestLog != null)
-            //        {
-            //            requestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
-            //        }
-            //    }
-            //}
+            else
+            {
+                //TODO 记录错误信息
+            }
         }
 
-        //从request中读取流，组成字符串返回
-        public String ReadReqStr()
+        /// <summary>
+        /// 从request中读取流，组成字符串返回
+        /// </summary>
+        /// <returns></returns>
+        public string ReadReqStr()
         {
             StringBuilder sb = new StringBuilder();
             //Stream inputStream = Request.GetBufferlessInputStream();
             Stream inputStream = Request.InputStream;
             StreamReader reader = new StreamReader(inputStream, System.Text.Encoding.UTF8);
 
-            String line = null;
+            string line = null;
             while ((line = reader.ReadLine()) != null)
             {
                 sb.Append(line);

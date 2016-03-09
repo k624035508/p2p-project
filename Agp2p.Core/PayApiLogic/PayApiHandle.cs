@@ -8,14 +8,14 @@ using Agp2p.Linq2SQL;
 namespace Agp2p.Core.PayApiLogic
 {
     /// <summary>
-    /// 第三方托管请求消息处理
+    /// 第三方托管请求/响应消息处理
     /// </summary>
-    internal class PayApiLogic
+    internal class PayApiHandle
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserRegisterReqMsg>(DoRequest);
-            MessageBus.Main.Subscribe<UserRegisterRespMsg>(DoResponse);
+            MessageBus.Main.Subscribe<BaseReqMsg>(DoRequest);
+            MessageBus.Main.Subscribe<StartRespMsg>(DoResponse);
         }
 
         /// <summary>
@@ -55,35 +55,27 @@ namespace Agp2p.Core.PayApiLogic
         /// 接口响应
         /// </summary>
         /// <param name="msg"></param>
-        private static void DoResponse(BaseRespMsg msg)
+        private static void DoResponse(StartRespMsg msg)
         {
             Agp2pDataContext context = new Agp2pDataContext();
-            //保存响应日志
-            var responseLog = new li_pay_response_log()
+            //根据响应的requestId报文生成处理消息，对应各种消息处理逻辑
+            var requestLog =
+                context.li_pay_request_log.OrderByDescending(r => r.request_time)
+                    .FirstOrDefault(r => r.id == msg.RequestId);
+            if (requestLog != null)
             {
-                request_id = msg.RequestId,
-                result = msg.Result,
-                user_id = msg.UserId,
-                project_id = msg.ProjectCode,
-                status = (int)Agp2pEnums.SumapayResponseEnum.Return,
-                response_time = DateTime.Now,
-                response_content = msg.ResponseContent
-            };
-            context.li_pay_response_log.InsertOnSubmit(responseLog);
-
-            //检查签名
-            if (msg.CheckSignature())
-            {
-                if (msg.CheckResult())
+                switch (requestLog.api)
                 {
-                    //找出对应的请求日志
-                    var requestLog = context.li_pay_request_log.SingleOrDefault(l => l.id == msg.RequestId);
-                    if (requestLog != null)
-                    {
-                        requestLog.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
-                    }
+                    //用户开户
+                    case (int)Agp2pEnums.SumapayApiEnum.UserReg:
+                        //TODO 正式环境改为异步
+                        MessageBus.Main.Publish(new UserRegisterRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
+                        break;
+
                 }
             }
+
+
         }
     }
 }
