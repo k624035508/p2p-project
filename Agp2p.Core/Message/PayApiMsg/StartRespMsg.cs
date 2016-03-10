@@ -8,8 +8,6 @@ namespace Agp2p.Core.Message.PayApiMsg
 {
     public class StartRespMsg : BaseRespMsg
     {
-
-
         public StartRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
         {
         }

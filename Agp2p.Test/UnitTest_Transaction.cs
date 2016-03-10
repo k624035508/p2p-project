@@ -323,7 +323,8 @@ namespace Agp2p.Test
         [TestMethod]
         public void TestSumapayApi()
         {
-            //发送请求
+            //1.请求前台接口
+            //1.1发送请求
             var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "", "0",
                 s =>
                 {
@@ -331,7 +332,7 @@ namespace Agp2p.Test
                 });
             MessageBus.Main.Publish(msgReq);
 
-            //模拟响应返回
+            //1.2模拟响应返回
             Agp2pDataContext context = new Agp2pDataContext();
             var responseLog = new li_pay_response_log()
             {
@@ -343,7 +344,7 @@ namespace Agp2p.Test
             };
             context.li_pay_response_log.InsertOnSubmit(responseLog);
             context.SubmitChanges();
-            //发送响应消息
+            //1.3发送响应消息
             MessageBus.Main.Publish(new StartRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content));
         }
     }

@@ -758,7 +758,10 @@ namespace Agp2p.Common
         public enum SumapayApiEnum
         {
             [Description("实名开户")]
-            UserReg = 1
+            UserReg = 1,
+            [Description("实名认证")]
+            UserAuth = 2
+
         }
     }
 }

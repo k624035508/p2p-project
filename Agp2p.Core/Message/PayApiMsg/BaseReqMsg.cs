@@ -6,23 +6,17 @@ namespace Agp2p.Core.Message.PayApiMsg
 {
     public class BaseReqMsg : ITinyMessage
     {
-        public int? UserIdIdentity { get; set; }
-        public int? ProjectCode { get; set; }
-        public string MerchantCode { get; set; }
-        public string SuccessReturnUrl { get; set; }
-        public string FailReturnUrl { get; set; }
-        public string NoticeUrl { get; set; }
+        public const string MerchantCode = "";
+        public const string Key = "";
+        public const string TestApiUrl = "";
+        public const string ApiUrl = "";
+
         public int Api { get; set; }
-        public string ApiUrl { get; set; }
+        public string ApiInterface { get; set; }
         public string RequestId { get; set; }
-        public Action<string> CallBack { get; set; }
 
         public BaseReqMsg()
         {
-            MerchantCode = "";
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
-            NoticeUrl = "";
         }
 
         public object Sender
@@ -31,11 +25,6 @@ namespace Agp2p.Core.Message.PayApiMsg
         }
 
         public virtual string GetSignature()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual SortedDictionary<string, string> GetSubmitPara()
         {
             throw new NotImplementedException();
         }
