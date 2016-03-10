@@ -94,10 +94,14 @@
     <Compile Include="InitLogic\NewUserInit.cs" />
     <Compile Include="ManagerMessageHub.cs" />
     <Compile Include="ManagerMessageHubFacade.cs" />
+    <Compile Include="Message\PayApiMsg\BackEndReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\StartRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\UserToAccountReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserRealNameAuthReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\UserActivateReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserRegisterRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserRegisterReqMsg.cs" />
     <Compile Include="Message\ProjectFinancingTimeoutMsg.cs" />

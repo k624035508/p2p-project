@@ -1,29 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
-using TinyMessenger;
 using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
-    public class UserRegisterReqMsg : FrontEndReqMsg
+    public class UserActivateReqMsg : FrontEndReqMsg
     {
-        public string Telephone { get; set; }
-        public string Name { get; set; }
-        public string IdNumber { get; set; }
-        public string Token { get; set; }
         public string PayType { get; set; }
 
-        public UserRegisterReqMsg(int userId, string telephone, string name, string idNumber, string token, string payType, Action<string> callback)
+        public UserActivateReqMsg(int userId, string payType, Action<string> callback)
         {
             UserId = userId;
-            Telephone = telephone;
-            Name = name;
-            IdNumber = idNumber;
-            Token = token;
             PayType = payType;
-            Api = (int) Agp2pEnums.SumapayApiEnum.UReg;
-            ApiInterface = TestApiUrl + "user/register_toRegister";
+            Api = (int) Agp2pEnums.SumapayApiEnum.Acti;
+            ApiInterface = TestApiUrl + "user/activate_toActivate";
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
         }
@@ -42,14 +33,10 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"telephone", Telephone},
-                {"name", Name},
-                {"idNumber", IdNumber.ToUpper()},
+                {"payType", PayType},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", NoticeUrl},
-                {"token", Token},
-                {"payType", PayType},
                 {"signature", GetSignature()}
             };
         }

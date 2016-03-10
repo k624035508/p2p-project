@@ -100,8 +100,9 @@ namespace Agp2p.Core.PayApiLogic
             {
                 switch (requestLog.api)
                 {
-                    //用户开户
-                    case (int)Agp2pEnums.SumapayApiEnum.UserReg:
+                    //用户开户/用户激活
+                    case (int)Agp2pEnums.SumapayApiEnum.URegi:
+                    case (int)Agp2pEnums.SumapayApiEnum.Activ:
                         //TODO 正式环境改为异步
                         MessageBus.Main.Publish(new UserRegisterRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
                         break;

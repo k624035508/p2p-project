@@ -16,7 +16,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserName = userName;
             IdNumber = idNumber;
             PayType = payType;
-            Api = (int)Agp2pEnums.SumapayApiEnum.UserReg;
+            Api = (int)Agp2pEnums.SumapayApiEnum.UReg;
             ApiInterface = TestApiUrl + "main/UserForFT_realNameAuth";
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
