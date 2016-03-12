@@ -5,6 +5,9 @@ using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 个人用户激活
+    /// </summary>
     public class UserActivateReqMsg : FrontEndReqMsg
     {
         public string PayType { get; set; }
@@ -13,9 +16,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         {
             UserId = userId;
             PayType = payType;
-            Api = (int) Agp2pEnums.SumapayApiEnum.Acti;
+            Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
             ApiInterface = TestApiUrl + "user/activate_toActivate";
-            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
         }
 

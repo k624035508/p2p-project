@@ -5,13 +5,16 @@ using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 跳转个人账户管理
+    /// </summary>
     public class UserToAccountReqMsg : FrontEndReqMsg
     {
         public UserToAccountReqMsg(Action<string> callback)
         {
-            Api = (int) Agp2pEnums.SumapayApiEnum.Acti;
+            Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
             ApiInterface = TestApiUrl + "user/accountManage_toAccountManage";
-            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
         }
 

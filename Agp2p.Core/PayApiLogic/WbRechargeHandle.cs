@@ -8,16 +8,16 @@ using Agp2p.Linq2SQL;
 namespace Agp2p.Core.PayApiLogic
 {
     /// <summary>
-    /// 用户开户处理
+    /// 个人网银充值
     /// </summary>
-    internal class UserRegisterResp
+    internal class WbRechargeHandle
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserRegisterRespMsg>(UserRegisterHandle);
+            MessageBus.Main.Subscribe<WbRechargeRespMsg>(WbRecharge);
         }
 
-        private static void UserRegisterHandle(UserRegisterRespMsg msg)
+        private static void WbRecharge(WbRechargeRespMsg msg)
         {
             try
             {
@@ -33,11 +33,16 @@ namespace Agp2p.Core.PayApiLogic
                         //检查请求处理结果
                         if (msg.CheckResult())
                         {
-                            //查找对应的平台账户，更新用户信息
-                            var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
-                            if (user != null)
+                            //查找对应的交易流水
+                            var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                            if (trans != null)
                             {
-                                user.identity_id = msg.IdentityId;
+                                //更新流水信息
+
+                                
+                                //检查用户资金信息
+
+
                                 //更新响应日志
                                 respLog.result = msg.Result;
                                 respLog.user_id = msg.UserId;

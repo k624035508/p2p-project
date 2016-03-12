@@ -4,10 +4,13 @@ using TinyMessenger;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 请求前台接口
+    /// </summary>
     public class FrontEndReqMsg : BaseReqMsg
     {
         public int? UserId { get; set; }
-        public int? ProjectCode { get; set; }
+        public string ProjectCode { get; set; }
         public string SuccessReturnUrl { get; set; }
         public string FailReturnUrl { get; set; }
         public string NoticeUrl { get; set; }

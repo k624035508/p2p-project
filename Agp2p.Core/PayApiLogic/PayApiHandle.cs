@@ -100,13 +100,37 @@ namespace Agp2p.Core.PayApiLogic
             {
                 switch (requestLog.api)
                 {
-                    //用户开户/用户激活
+                    //个人开户/激活
                     case (int)Agp2pEnums.SumapayApiEnum.URegi:
                     case (int)Agp2pEnums.SumapayApiEnum.Activ:
                         //TODO 正式环境改为异步
                         MessageBus.Main.Publish(new UserRegisterRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
                         break;
-
+                    //个人自动投标续约
+                    case (int)Agp2pEnums.SumapayApiEnum.AtBid:
+                        MessageBus.Main.Publish(new AutoBidSignRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
+                        break;
+                    //个人自动投标取消
+                    case (int)Agp2pEnums.SumapayApiEnum.ClBid:
+                        MessageBus.Main.Publish(new AutoBidSignRespMsg(msg.RequestId, msg.Result, msg.ResponseContent, true));
+                        break;
+                    //个人自动账户/银行还款开通
+                    case (int)Agp2pEnums.SumapayApiEnum.AcReO:
+                    case (int)Agp2pEnums.SumapayApiEnum.AbReO:
+                        MessageBus.Main.Publish(new AutoRepaySignRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
+                        break;
+                    //个人自动还款取消
+                    case (int)Agp2pEnums.SumapayApiEnum.ClRep:
+                        MessageBus.Main.Publish(new AutoRepaySignRespMsg(msg.RequestId, msg.Result, msg.ResponseContent, true));
+                        break;
+                    //个人网银充值
+                    case (int)Agp2pEnums.SumapayApiEnum.WeRec:
+                        MessageBus.Main.Publish(new WbRechargeRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
+                        break;
+                    //个人一键充值
+                    case (int)Agp2pEnums.SumapayApiEnum.WhRec:
+                        MessageBus.Main.Publish(new WbRechargeRespMsg(msg.RequestId, msg.Result, msg.ResponseContent, true));
+                        break;
                 }
             }
         }

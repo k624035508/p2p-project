@@ -5,33 +5,34 @@ using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 实名认证（同步返回响应）
+    /// </summary>
     public class UserRealNameAuthReqMsg : BackEndReqMsg
     {
         public string UserName { get; set; }
         public string IdNumber { get; set; }
-        public string PayType { get; set; }
 
-        public UserRealNameAuthReqMsg(string userName, string idNumber, string payType, Action<string, string> callback)
+        public UserRealNameAuthReqMsg(string userName, string idNumber, Action<string, string> callback)
         {
             UserName = userName;
             IdNumber = idNumber;
-            PayType = payType;
-            Api = (int)Agp2pEnums.SumapayApiEnum.UReg;
+            Api = (int)Agp2pEnums.SumapayApiEnum.URegi;
             ApiInterface = TestApiUrl + "main/UserForFT_realNameAuth";
-            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
         }
 
         public override string GetSignature()
         {
             HMACMD5 hmac = new HMACMD5(Key);
-            return hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserName + IdNumber + PayType);
+            return hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserName + IdNumber);
         }
 
         public override string GetPostPara()
         {
             return
-                $"requestId={RequestId}&merchantCode={MerchantCode}&userName={UserName}&idNumber={IdNumber.ToUpper()}&payType={PayType}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={MerchantCode}&userName={UserName}&idNumber={IdNumber.ToUpper()}&signature={GetSignature()}";
         }
     }
 }

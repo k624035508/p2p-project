@@ -6,6 +6,9 @@ using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 个人开户请求
+    /// </summary>
     public class UserRegisterReqMsg : FrontEndReqMsg
     {
         public string Telephone { get; set; }
@@ -22,9 +25,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             IdNumber = idNumber;
             Token = token;
             PayType = payType;
-            Api = (int) Agp2pEnums.SumapayApiEnum.UReg;
+            Api = (int) Agp2pEnums.SumapayApiEnum.URegi;
             ApiInterface = TestApiUrl + "user/register_toRegister";
-            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
             CallBack = callback;
         }
 

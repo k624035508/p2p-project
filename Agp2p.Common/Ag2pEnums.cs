@@ -774,53 +774,53 @@ namespace Agp2p.Common
             [Description("开通银行账户自动还款")]
             AbReO = 8,
             [Description("关闭用户自动还款")]
-            ClRep = 8,
+            ClRep = 9,
             [Description("网银充值")]
-            WeRec = 9,
+            WeRec = 10,
             [Description("一键充值")]
-            WhRec = 10,
+            WhRec = 11,
             [Description("投标普通项目")]
-            MaBid = 11,
+            MaBid = 12,
             [Description("投标集合项目")]
-            CoBid = 12,
+            CoBid = 13,
             [Description("自动投标普通项目")]
-            AmBid = 13,
+            AmBid = 14,
             [Description("自动投标集合项目")]
-            AcBid = 14,
+            AcBid = 15,
             [Description("撤标集合项目")]
-            CoPro = 15,
+            CoPro = 16,
             [Description("流标普通项目")]
-            RePro = 16,
+            RePro = 17,
             [Description("普通项目放款")]
-            ALoan = 17,
+            ALoan = 18,
             [Description("集合项目放款")]
-            CLoan = 18,
+            CLoan = 19,
             [Description("用户提现")]
-            Wdraw = 19,
+            Wdraw = 20,
             [Description("存管账户还款(普通项目)")]
-            MaRep = 20,
+            MaRep = 21,
             [Description("存管账户还款(集合项目)")]
-            McRep = 21,
+            McRep = 22,
             [Description("银行账户还款(普通项目)")]
-            BaRep = 22,
+            BaRep = 23,
             [Description("银行账户还款(集合项目)")]
-            BcRep = 23,
+            BcRep = 24,
             [Description("存管账户自动还款")]
-            AcRep = 24,
+            AcRep = 25,
             [Description("银行账户自动还款")]
-            AbRep = 25,
+            AbRep = 26,
             [Description("普通项目本息到账")]
-            RetPt = 26,
+            RetPt = 27,
             [Description("集合项目本息到账")]
-            RetCo = 27,
+            RetCo = 28,
             [Description("债权转让")]
-            CreAs = 28,
+            CreAs = 29,
             [Description("单笔付款至个人")]
-            TranU = 29,
+            TranU = 30,
             [Description("同商户账户间转账")]
-            Trans = 30,
+            Trans = 31,
             [Description("用户签约银行卡查询")]
-            QuBan = 31,
+            QuBan = 32,
         }
     }
 }

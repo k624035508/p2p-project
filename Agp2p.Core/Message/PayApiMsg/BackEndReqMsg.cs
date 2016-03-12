@@ -10,7 +10,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     public class BackEndReqMsg : BaseReqMsg
     {
         public int? UserId { get; set; }
-        public int? ProjectCode { get; set; }
+        public string ProjectCode { get; set; }
         public Action<string, string> CallBack { get; set; }
 
         public BackEndReqMsg()
