@@ -298,10 +298,12 @@ namespace Agp2p.Common
             ClaimTransferredOut = 4,
             [Description("债权买入")]
             ClaimTransferredIn = 5,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 6,
             [Description("续投活期失败回款")]
-            AutoInvestFailRepay = 6,
+            AutoInvestFailRepay = 7,
             [Description("活期项目提现")]
-            HuoqiProjectWithdraw = 7,
+            HuoqiProjectWithdraw = 8,
         }
 
         /// <summary>
@@ -375,12 +377,14 @@ namespace Agp2p.Common
             ClaimTransferredOut = 24,
             [Description("债权买入")]
             ClaimTransferredIn = 25,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 26,
             [Description("续投活期失败回款")]
-            AutoInvestFailRepaySuccess = 26,
+            AutoInvestFailRepaySuccess = 27,
             [Description("活期项目提现")]
-            HuoqiProjectWithdrawSuccess = 27,
+            HuoqiProjectWithdrawSuccess = 28,
             [Description("债权买入成功")]
-            ClaimTransferredInSuccess = 28,
+            ClaimTransferredInSuccess = 29,
 
             [Description("获得金钱待确认")]
             Gaining = 40,

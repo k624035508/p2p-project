@@ -158,6 +158,7 @@ namespace Agp2p.Core
                 claim = claim.GetHistoryClaimByTime(moment.Value);
                 if (claim == null)
                     return false;
+                // TODO 可能这里有 bug，试试多次申请债权转让
             }
 
             if (claim.li_projects1.IsHuoqiProject())
@@ -245,10 +246,12 @@ namespace Agp2p.Core
             Debug.Assert(task.project == claim.projectId);
             Debug.Assert(claim.status < (int)Agp2pEnums.ClaimStatusEnum.Completed);
 
-
-            var startProfitingPoint = new[] {claim.GetSourceClaim().createTime.Date, task.GetStartProfitingTime().Date}.Max();
-            var endProfitingPoint =
-                new[]
+            var startProfitingPoint = new[]
+                {
+                    claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? claim.li_claims1.createTime.Date : claim.createTime.Date,
+                    task.GetStartProfitingTime().Date
+                }.Max();
+            var endProfitingPoint = new[]
                 {
                     // 利润从开始提现的那天开始算
                     claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? claim.createTime.Date : moment.GetValueOrDefault(DateTime.Now).Date,
