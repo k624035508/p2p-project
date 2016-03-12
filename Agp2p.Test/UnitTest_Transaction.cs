@@ -70,13 +70,6 @@ namespace Agp2p.Test
         {
         }
 
-        private static string GetFriendlyUserName(dt_users user)
-        {
-            return string.IsNullOrWhiteSpace(user.real_name)
-                ? user.user_name
-                : $"{user.user_name}({user.real_name})";
-        }
-
         private static string GetUserPassword(dt_users user)
         {
             return DESEncrypt.Decrypt(user.password, user.salt);
@@ -296,7 +289,7 @@ namespace Agp2p.Test
                         try
                         {
                             TrialActivity.CheckNewbieInvest(investments[userId].id);
-                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
+                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + investments[userId].dt_users.GetFriendlyUserName());
                         }
                         catch (Exception ex)
                         {

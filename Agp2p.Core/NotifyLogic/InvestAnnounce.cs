@@ -142,7 +142,7 @@ namespace Agp2p.Core.NotifyLogic
             }
             catch (Exception ex)
             {
-                context.AppendAdminLog("Invest", "发送投资成功消息时错误：" + ex.GetSimpleCrashInfo());
+                context.AppendAdminLog("Invest", "发送投资成功消息时错误：" + ex.Message);
                 context.SubmitChanges();
             }
         }

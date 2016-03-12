@@ -338,6 +338,8 @@ namespace Agp2p.Core
         /// <param name="investingMoney"></param>
         public static void Invest(int userId, int projectId, decimal investingMoney)
         {
+            li_project_transactions tr;
+            li_wallets wallet;
             using (var ts = new TransactionScope())
             {
                 var context = new Agp2pDataContext();
@@ -357,7 +359,7 @@ namespace Agp2p.Core
                     throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
 
                 // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
-                var wallet = context.li_wallets.Single(w => w.user_id == userId);
+                wallet = context.li_wallets.Single(w => w.user_id == userId);
 
                 // TODO 解除投资限制
                 if (wallet.dt_users.dt_user_groups.title != "普通会员" && wallet.dt_users.dt_user_groups.title != "借款人")
@@ -404,7 +406,7 @@ namespace Agp2p.Core
                 wallet.last_update_time = DateTime.Now;
 
                 // 创建投资记录
-                var tr = new li_project_transactions
+                tr = new li_project_transactions
                 {
                     dt_users = wallet.dt_users,
                     li_projects = pr,
@@ -448,9 +450,8 @@ namespace Agp2p.Core
 
                 context.SubmitChanges();
                 ts.Complete();
-
-                MessageBus.Main.PublishDelay(new UserInvestedMsg(tr.id, wallet.last_update_time), 5000); // 广播用户的投资消息（事务未完成，需要延迟发送）
             }
+            MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
         }
 
         public static void TakeOverHuoqiProject(this Agp2pDataContext context, dt_users user, li_projects pr, decimal investingMoney)
