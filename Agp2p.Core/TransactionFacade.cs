@@ -610,9 +610,9 @@ namespace Agp2p.Core
             }).ToList();
 
             // 根据债权计息时长来取得应收利息，这部分利息是中间人垫付的
-            var agentPaidInterest = needTransferClaim.GetProfitingDays(unpaidTasks.First(),
-                (claimProfitingDay, taskProfitingDay) =>
-                    Math.Round(claimProfitingDay*profitings.First()/taskProfitingDay, 2));
+            var agentPaidInterest = needTransferClaim.GetWithdrawClaimProfitingDays(unpaidTasks.First(),
+                (claimProfitedDay, originalProfitingDay, taskProfitingDays) =>
+                    Math.Round(claimProfitedDay*profitings.First()/originalProfitingDay, 2));
 
             // 选择一个中间人来预先支付利息
             var selectedAgent = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName)
@@ -657,8 +657,8 @@ namespace Agp2p.Core
                 li_claims = transferredClaim,
                 project = needTransferClaim.projectId,
                 remark = "债权转让成功，" +
-                    needTransferClaim.GetProfitingDays(unpaidTasks.First(),
-                        (claimProfitingDay, taskProfitingDay) => $"原收益天数：{taskProfitingDay}，实际收益天数：{claimProfitingDay}")
+                    needTransferClaim.GetWithdrawClaimProfitingDays(unpaidTasks.First(),
+                        (claimProfitedDay, parentClaimProfitingDay, taskProfitingDays) => $"原收益天数：{parentClaimProfitingDay}，实际收益天数：{claimProfitedDay}")
             };
             context.li_project_transactions.InsertOnSubmit(claimTransferredOutPtr);
 
@@ -1571,7 +1571,7 @@ namespace Agp2p.Core
                     investor = ptr.investor,
                     principal = 0,
                     interest = ptr.interest.GetValueOrDefault(),
-                    type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor,
+                    type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.AgentGainPaidInterest,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     create_time = repaymentTask.repay_at.Value,
                     li_claims = ptr.li_claims,
@@ -1584,7 +1584,7 @@ namespace Agp2p.Core
                 agentWallet.profiting_money -= ptr.interest.GetValueOrDefault();
                 agentWallet.last_update_time = repaymentTask.repay_at.Value;
 
-                var agentPaidHis = CloneFromWallet(agentWallet, Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest);
+                var agentPaidHis = CloneFromWallet(agentWallet, Agp2pEnums.WalletHistoryTypeEnum.AgentGainPaidInterest);
                 agentPaidHis.li_project_transactions = agentRepayPtr;
                 context.li_wallet_histories.InsertOnSubmit(agentPaidHis);
             });
@@ -1797,11 +1797,10 @@ namespace Agp2p.Core
 
             var interestPaidEarlier = 0m;
 
-            var claimRepayRatio = claimRatio.Where(pair => pair.Key.IsProfiting(transactTime)).ToList();
             if (!repaymentTask.li_projects.IsNewbieProject())
-                Debug.Assert(claimRepayRatio.Aggregate(0m, (sum, pair) => sum + pair.Value) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
+                Debug.Assert(claimRatio.Aggregate(0m, (sum, pair) => sum + pair.Value) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
 
-            var rounded = claimRepayRatio
+            var rounded = claimRatio
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款（新手标）
                 .Select(c =>
                 {
@@ -1810,10 +1809,10 @@ namespace Agp2p.Core
                     // 根据买入时间计算利息
                     var realityInterest = c.Key.GetProfitingDays(repaymentTask,
                         (claimProfitingDay, taskProfitingDay) =>
-                            claimProfitingDay*totalInterest/taskProfitingDay, transactTime);
+                            Math.Round(claimProfitingDay*totalInterest/taskProfitingDay, 2), transactTime);
 
                     // 由于有些债权是中途买入的，放款时的四舍五入前需要排除掉
-                    interestPaidEarlier += totalInterest - realityInterest;
+                    interestPaidEarlier += Math.Round(totalInterest, 2) - realityInterest;
 
                     string remark = null;
                     if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)

@@ -1,27 +1,30 @@
 ﻿using System;
-using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Agp2p.Test
 {
     [TestClass]
-    public class UnitTest_P2
+    public class UnitTest_P3
     {
         private const string UserA = "13535656867";
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P2 测试流程：
+        P3 测试流程：
         Day 1
-            发 4 日标，金额 60000，A 投 25000
+            发 5 日标，金额 50000，A 投 10000
         Day 2
-            B 投 35000，放款
+            B 投 40000，放款
         Day 3
-            B 提现 35000
+            B 提现 40000
+            A 接手 20000
+            公司账号接手 20000
         Day 4
-            公司账号接手 B 的提现
+            A 提现 20000
+            公司账号接手 20000
         Day 5
         Day 6
+        Day 7
             回款
         */
 
@@ -31,7 +34,7 @@ namespace Agp2p.Test
         public static void Setup(TestContext context)
         {
             // 准备好之后注释这行
-            throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");    
+            // throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
         }
 
         [TestMethod]
@@ -41,9 +44,9 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // 发 5 日标，金额 60000，A 投 25000
-            Common.PublishProject("P2", 5, 60000, 5);
-            Common.InvestProject(UserA, "P2", 25000);
+            // 发 5 日标，金额 50000，A 投 10000
+            Common.PublishProject("P3", 5, 50000, 5);
+            Common.InvestProject(UserA, "P3", 10000);
 
             Common.AutoRepaySimulate();
         }
@@ -55,9 +58,9 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // B 投 35000，放款
-            Common.InvestProject(UserB, "P2", 35000);
-            Common.ProjectStartRepay("P2");
+            // B 投 40000，放款
+            Common.InvestProject(UserB, "P3", 40000);
+            Common.ProjectStartRepay("P3");
 
             Common.AutoRepaySimulate();
         }
@@ -69,8 +72,12 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // B 提现 35000
-            Common.StaticProjectWithdraw("P2", UserB, 35000);
+            /* B 提现 40000
+               A 接手 20000
+               公司账号接手 20000 */
+            Common.StaticProjectWithdraw("P3", UserB, 40000);
+            Common.BuyClaim("P3", UserA, 20000);
+            Common.BuyClaim("P3", CompanyAccount, 20000);
 
             Common.AutoRepaySimulate();
         }
@@ -82,8 +89,10 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // 公司账号接手 B 的提现
-            Common.BuyClaim("P2", CompanyAccount, 35000);
+            /* A 提现 20000
+               公司账号接手 20000 */
+            Common.StaticProjectWithdraw("P3", UserA, 20000);
+            Common.BuyClaim("P3", CompanyAccount, 20000);
 
             Common.AutoRepaySimulate();
         }
@@ -109,12 +118,12 @@ namespace Agp2p.Test
         {
             Common.DeltaDay(realDate, 6);
 
-            // 回款，总数应为 41.67
+            // 回款，总数应为 34.72
             Common.AutoRepaySimulate();
 
-            Common.AssertWalletDelta(UserA, 17.36m, 0, 0, 0, 0, 0, 25000, 17.36m, realDate);
-            Common.AssertWalletDelta(UserB, 4.86m, 0, 0, 0, 0, 0, 35000, 4.86m, realDate);
-            Common.AssertWalletDelta(CompanyAccount, 19.45m, 0, 0, 0, 0, 0, 35000, 19.45m, realDate);
+            Common.AssertWalletDelta(UserA, 9.72m, 0, 0, 0, 0, 0, 30000, 9.72m, realDate);
+            Common.AssertWalletDelta(UserB, 5.56m, 0, 0, 0, 0, 0, 40000, 5.56m, realDate);
+            Common.AssertWalletDelta(CompanyAccount, 19.44m, 0, 0, 0, 0, 0, 40000, 19.44m, realDate);
         }
 
         [TestMethod]

@@ -120,11 +120,6 @@ namespace Agp2p.Core
             return child;
         }
 
-        public static bool IsLeafClaim(this li_claims claim)
-        {
-            return !claim.li_claims2.Any();
-        }
-
         public static li_claims GetHistoryClaimByTime(this li_claims childClaim, DateTime time)
         {
             if (childClaim.createTime <= time)
@@ -146,20 +141,23 @@ namespace Agp2p.Core
             return (Agp2pEnums.ClaimStatusEnum?)childClaim.GetHistoryClaimByTime(time)?.status;
         }
 
-        public static bool IsProfiting(this li_claims claim, DateTime? moment = null)
+        public static bool IsLeafClaim(this li_claims claim, DateTime? moment = null)
         {
             if (moment == null)
             {
-                // 必须是叶子债权才能收益
-                if (!claim.IsLeafClaim()) return false;
+                return !claim.li_claims2.Any();
             }
-            else
-            {
-                claim = claim.GetHistoryClaimByTime(moment.Value);
-                if (claim == null)
-                    return false;
-                // TODO 可能这里有 bug，试试多次申请债权转让
-            }
+            var historyClaimByTime = claim.GetHistoryClaimByTime(moment.Value);
+            if (historyClaimByTime == null)
+                return false;
+            return !historyClaimByTime.li_claims2.Any(c => c.createTime <= moment.Value);
+        }
+
+        public static bool IsProfiting(this li_claims claim, DateTime? moment = null)
+        {
+            // 必须是叶子债权才能收益
+            if (!claim.IsLeafClaim(moment))
+                return false;
 
             if (claim.li_projects1.IsHuoqiProject())
             {
@@ -244,17 +242,16 @@ namespace Agp2p.Core
             /* 1、债权转让人的收益从提交转让申请当天停止计息，若转让失败则恢复转让期间利息并继续计息；
                2、购买债权转让项目从债权转让人提交债权转让申请当天开始计息；*/
             Debug.Assert(task.project == claim.projectId);
-            Debug.Assert(claim.status < (int)Agp2pEnums.ClaimStatusEnum.Completed);
+            Debug.Assert(claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
 
             var startProfitingPoint = new[]
                 {
-                    claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? claim.li_claims1.createTime.Date : claim.createTime.Date,
+                    claim.createTime.Date,
                     task.GetStartProfitingTime().Date
                 }.Max();
             var endProfitingPoint = new[]
                 {
-                    // 利润从开始提现的那天开始算
-                    claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? claim.createTime.Date : moment.GetValueOrDefault(DateTime.Now).Date,
+                    moment.GetValueOrDefault(DateTime.Now).Date,
                     task.should_repay_time.Date
                 }.Min();
 
@@ -263,6 +260,26 @@ namespace Agp2p.Core
             var taskTotalProfitingDay = task.GetTotalProfitingDays();
             Debug.Assert(claimPrifitingDays <= taskTotalProfitingDay);
             return callback(claimPrifitingDays, taskTotalProfitingDay);
+        }
+
+        public static T GetWithdrawClaimProfitingDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, int, T> callback)
+        {
+            Debug.Assert(task.project == claim.projectId);
+            Debug.Assert(claim.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+
+            var ct = claim.li_claims1.GetProfitingDays(task, (claimProfitingDays, taskProfitingDays) => new { claimProfitingDays, taskProfitingDays}, task.should_repay_time);
+
+            var withdrawClaimStartProfitingPoint = new[]
+            {
+                claim.li_claims1.createTime.Date, task.GetStartProfitingTime().Date
+            }.Max();
+            var withdrawClaimEndProfitingPoint = new[]
+            {
+                // 利润从开始提现的那天开始算
+                claim.createTime.Date, task.should_repay_time.Date
+            }.Min();
+            var withdrawClaimPrifitedDays = (int)(withdrawClaimEndProfitingPoint - withdrawClaimStartProfitingPoint).TotalDays;
+            return callback(withdrawClaimPrifitedDays, ct.claimProfitingDays, ct.taskProfitingDays);
         }
     }
 }

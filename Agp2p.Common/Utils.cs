@@ -10,6 +10,7 @@ using System.Web;
 using System.Security.Cryptography;
 using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -1740,6 +1741,7 @@ namespace Agp2p.Common
         public static List<decimal> GetPerfectRounding(List<decimal> original, decimal forceSum, int decimals)
         {
             var rounded = original.Select(x => Math.Round(x, decimals)).ToList();
+            Debug.Assert(Math.Round(forceSum, decimals) == forceSum);
             var delta = forceSum - rounded.Sum();
             if (delta == 0) return rounded;
             var deltaUnit = Convert.ToDecimal(Math.Pow(0.1, decimals)) * Math.Sign(delta);
