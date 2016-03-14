@@ -16,6 +16,7 @@ namespace Agp2p.Core.PayApiLogic
         {
             MessageBus.Main.Subscribe<BidRespMsg>(Bid);
             MessageBus.Main.Subscribe<WithDrawalRespMsg>(Withdrawal);
+            MessageBus.Main.Subscribe<RepealProjectRespMsg>(RepealProject);
         }
 
         /// <summary>
@@ -78,7 +79,39 @@ namespace Agp2p.Core.PayApiLogic
                             //撤销投资
 
 
-                            //检查用户资金信息
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO 返回错误信息
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 流标普通项目
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void RepealProject(RepealProjectRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的项目
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (pro != null)
+                        {
+                            //流标
 
 
                             context.SubmitChanges();
@@ -93,6 +126,5 @@ namespace Agp2p.Core.PayApiLogic
                 throw ex;
             }
         }
-
     }
 }
