@@ -28,7 +28,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectDescription = projectDescription;
             GiftFlag = giftFlag;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CoBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
-            ApiInterface = TestApiUrl + (collective ? "collectiveBid_toCollectiveBid" : "user/manualBid_toManualBid");
+            ApiInterface = TestApiUrl + (collective ? "user/collectiveBid_toCollectiveBid" : "user/manualBid_toManualBid");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }

@@ -787,40 +787,42 @@ namespace Agp2p.Common
             AmBid = 14,
             [Description("自动投标集合项目")]
             AcBid = 15,
+            [Description("撤标普通项目")]
+            CaPro = 16,
             [Description("撤标集合项目")]
-            CoPro = 16,
+            CoPro = 17,
             [Description("流标普通项目")]
-            RePro = 17,
+            RePro = 18,
             [Description("普通项目放款")]
-            ALoan = 18,
+            ALoan = 19,
             [Description("集合项目放款")]
-            CLoan = 19,
+            CLoan = 20,
             [Description("用户提现")]
-            Wdraw = 20,
+            Wdraw = 21,
             [Description("存管账户还款(普通项目)")]
-            MaRep = 21,
+            MaRep = 22,
             [Description("存管账户还款(集合项目)")]
-            McRep = 22,
+            McRep = 23,
             [Description("银行账户还款(普通项目)")]
-            BaRep = 23,
+            BaRep = 24,
             [Description("银行账户还款(集合项目)")]
-            BcRep = 24,
+            BcRep = 25,
             [Description("存管账户自动还款")]
-            AcRep = 25,
+            AcRep = 26,
             [Description("银行账户自动还款")]
-            AbRep = 26,
+            AbRep = 27,
             [Description("普通项目本息到账")]
-            RetPt = 27,
+            RetPt = 28,
             [Description("集合项目本息到账")]
-            RetCo = 28,
+            RetCo = 29,
             [Description("债权转让")]
-            CreAs = 29,
+            CreAs = 30,
             [Description("单笔付款至个人")]
-            TranU = 30,
+            TranU = 31,
             [Description("同商户账户间转账")]
-            Trans = 31,
+            Trans = 32,
             [Description("用户签约银行卡查询")]
-            QuBan = 32,
+            QuBan = 33,
         }
     }
 }

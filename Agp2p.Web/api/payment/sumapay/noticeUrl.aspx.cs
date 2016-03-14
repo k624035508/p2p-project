@@ -68,10 +68,17 @@ namespace Agp2p.Web.api.payment.sumapay
                         case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                             respMsg = new RechargeRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content, true);
                             break;
-                        //个人投标普通/集合项目
+                        //个人投标/自动投标 普通/集合项目
                         case (int)Agp2pEnums.SumapayApiEnum.MaBid:
                         case (int)Agp2pEnums.SumapayApiEnum.CoBid:
-                            respMsg = new ManualBidRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                        case (int)Agp2pEnums.SumapayApiEnum.AmBid:
+                        case (int)Agp2pEnums.SumapayApiEnum.AcBid:
+                            respMsg = new BidRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
+                        //个人撤标 普通/集合项目
+                        case (int)Agp2pEnums.SumapayApiEnum.CaPro:
+                        case (int)Agp2pEnums.SumapayApiEnum.CoPro:
+                            respMsg = new WithDrawalRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;
                         default:
                             respMsg = new BaseRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
