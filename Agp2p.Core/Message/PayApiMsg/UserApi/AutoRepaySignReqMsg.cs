@@ -14,7 +14,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Cycle { get; set; }//还款周期
         public string RepayLimit { get; set; }//还款上限金额
 
-        public AccountRepaySignReqMsg(int userId, string projectCode, string repayLimit, bool useBank, Action<string> callback, string cycle = "")
+        public AccountRepaySignReqMsg(int userId, string projectCode, string repayLimit, bool useBank, string cycle = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -23,7 +23,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = useBank ? (int)Agp2pEnums.SumapayApiEnum.AbReO : (int) Agp2pEnums.SumapayApiEnum.AcReO;
             ApiInterface = TestApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

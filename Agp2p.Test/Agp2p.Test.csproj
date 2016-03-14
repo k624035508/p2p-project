@@ -66,7 +66,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Core\Agp2p.Core.csproj">
       <Project>{d13bc3ec-928c-4086-ab16-ec62a86feb85}</Project>
-      <Name>Agp2p.Core</Name>
+      <Name>Agp2p.Core.csproj1</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Linq2SQL\Agp2p.Linq2SQL.csproj">
       <Project>{D02BF08D-240F-4233-9B83-B22429E5F3A0}</Project>

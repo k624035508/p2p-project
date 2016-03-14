@@ -36,11 +36,11 @@ namespace Agp2p.Core.Message
             InviterBonus.DoSubscribe();
 
             // PayApi
-            PayApiHandle.DoSubscribe();
+            RequestApiHandle.DoSubscribe();
             UserRegisterHandle.DoSubscribe();//个人开户
             AutoBidSignHandle.DoSubscribe();//自动投标开通
             AutoRepaySignHandle.DoSubscribe();//自动还款开通
-            WbRechargeHandle.DoSubscribe();//个人网银充值
+            RechargeHandle.DoSubscribe();//个人网银充值
         }
     }
 }

@@ -13,14 +13,13 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string UserName { get; set; }
         public string IdNumber { get; set; }
 
-        public UserRealNameAuthReqMsg(string userName, string idNumber, Action<string, string> callback)
+        public UserRealNameAuthReqMsg(string userName, string idNumber)
         {
             UserName = userName;
             IdNumber = idNumber;
             Api = (int)Agp2pEnums.SumapayApiEnum.URegi;
             ApiInterface = TestApiUrl + "main/UserForFT_realNameAuth";
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

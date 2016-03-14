@@ -9,7 +9,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// <summary>
     /// 个人网银充值
     /// </summary>
-    public class WbRechargeReqMsg : FrontEndReqMsg
+    public class WebRechargeReqMsg : FrontEndReqMsg
     {
         public string Sum { get; set; }//充值金额
         public string BankCode { get; set; }//银行编码
@@ -21,9 +21,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
 
-        public WbRechargeReqMsg(int userId, string sum, string bankCode, string bankType,
+        public WebRechargeReqMsg(int userId, string sum, string bankCode, string bankType,
             string payType, string subledgerList, string mainAccountType, string mainAccountCode,
-            Action<string> callback, string bankCardTypeFlag = "0", string passThrough = "")
+            string bankCardTypeFlag = "0", string passThrough = "")
         {
             UserId = userId;
             Sum = sum;
@@ -38,7 +38,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
             ApiInterface = TestApiUrl + "user/webBankRecharge_toRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

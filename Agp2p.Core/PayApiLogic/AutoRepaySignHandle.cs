@@ -21,56 +21,43 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
-                var respLog =
-                    context.li_pay_response_log.OrderBy(r => r.response_time)
-                        .FirstOrDefault(r => r.request_id == msg.RequestId);
-                if (respLog != null)
+                //检查签名
+                if (msg.CheckSignature())
                 {
-                    //检查签名
-                    if (msg.CheckSignature())
+                    //检查请求处理结果
+                    if (msg.CheckResult())
                     {
-                        //检查请求处理结果
-                        if (msg.CheckResult())
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的平台账户，更新用户信息
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        if (user != null)
                         {
-                            //查找对应的平台账户，更新用户信息
-                            var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
-                            if (user != null)
+                            if (msg.Cancel)
                             {
-                                if (msg.Cancel)
+                                user.autoRepay = null;
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(msg.BankAccount))
                                 {
-                                    user.autoRepay = null;
+                                    user.autoRepay = JsonHelper.ObjectToJSON(new
+                                    {
+                                        type = "Bank",
+                                        msg.BankAccount,
+                                        msg.BankName,
+                                        msg.Name
+                                    });
                                 }
                                 else
                                 {
-                                    if (!string.IsNullOrEmpty(msg.BankAccount))
+                                    user.autoRepay = JsonHelper.ObjectToJSON(new
                                     {
-                                        user.autoRepay = JsonHelper.ObjectToJSON(new
-                                        {
-                                            type = "Bank",
-                                            msg.BankAccount,
-                                            msg.BankName,
-                                            msg.Name
-                                        });
-                                    }
-                                    else
-                                    {
-                                        user.autoRepay = JsonHelper.ObjectToJSON(new
-                                        {
-                                            type = "Account"
-                                        });
-                                    }
+                                        type = "Account"
+                                    });
                                 }
-                                
-                                //更新响应日志
-                                respLog.result = msg.Result;
-                                respLog.user_id = msg.UserId;
-                                respLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
-                                //更新请求日志
-                                respLog.li_pay_request_log.complete_time = DateTime.Now;
-                                respLog.li_pay_request_log.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
-                                context.SubmitChanges();
                             }
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
                         }
                     }
                 }

@@ -98,9 +98,11 @@
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
-    <Compile Include="Message\PayApiMsg\StartRespMsg.cs" />
-    <Compile Include="Message\PayApiMsg\Transaction\WbRechargeRespMsg.cs" />
-    <Compile Include="Message\PayApiMsg\Transaction\WbRechargeReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\ManualBidReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\ManualBidRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\WebRechargeReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\RechargeRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\WhRechargeReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserApi\AutoRepayCancelReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserApi\AutoRepaySignRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\UserApi\AutoRepaySignReqMsg.cs" />
@@ -134,9 +136,10 @@
     <Compile Include="AutoLogic\ScheduleAnnounce.cs" />
     <Compile Include="PayApiLogic\AutoRepaySignHandle.cs" />
     <Compile Include="PayApiLogic\AutoBidSignHandle.cs" />
-    <Compile Include="PayApiLogic\WbRechargeHandle.cs" />
+    <Compile Include="PayApiLogic\ManualBidHandle.cs" />
+    <Compile Include="PayApiLogic\RechargeHandle.cs" />
     <Compile Include="PayApiLogic\UserRegisterHandle.cs" />
-    <Compile Include="PayApiLogic\PayApiHandle.cs" />
+    <Compile Include="PayApiLogic\RequestApiHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="SMSHelper.cs" />

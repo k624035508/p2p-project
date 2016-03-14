@@ -17,7 +17,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Token { get; set; }
         public string PayType { get; set; }
 
-        public UserRegisterReqMsg(int userId, string telephone, string name, string idNumber, string token, string payType, Action<string> callback)
+        public UserRegisterReqMsg(int userId, string telephone, string name, string idNumber, string token, string payType)
         {
             UserId = userId;
             Telephone = telephone;
@@ -28,7 +28,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int) Agp2pEnums.SumapayApiEnum.URegi;
             ApiInterface = TestApiUrl + "user/register_toRegister";
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

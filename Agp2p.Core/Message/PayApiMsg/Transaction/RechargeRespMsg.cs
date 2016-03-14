@@ -3,7 +3,7 @@
     /// <summary>
     /// 个人网银充值响应
     /// </summary>
-    public class WbRechargeRespMsg : BaseRespMsg
+    public class RechargeRespMsg : BaseRespMsg
     {
         public string Sum { get; set; }//充值金额
         public string UserBalance { get; set; }//账户总额
@@ -18,10 +18,10 @@
         public string Name { get; set; }//用户姓名
         public bool Quick { get; set; }
 
-        public WbRechargeRespMsg(string requestId, string result, string responseContent, bool quick = false) : base(requestId, result, responseContent)
+        public RechargeRespMsg(string requestId, string result, string responseContent, bool quick = false) : base(requestId, result, responseContent)
         {
             //根据报文的json数据构造
-            
+            Quick = quick;
         }
 
         public override bool CheckSignature()

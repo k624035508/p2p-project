@@ -9,12 +9,9 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class FrontEndReqMsg : BaseReqMsg
     {
-        public int? UserId { get; set; }
-        public string ProjectCode { get; set; }
         public string SuccessReturnUrl { get; set; }
         public string FailReturnUrl { get; set; }
         public string NoticeUrl { get; set; }
-        public Action<string> CallBack { get; set; }
 
         public FrontEndReqMsg()
         {

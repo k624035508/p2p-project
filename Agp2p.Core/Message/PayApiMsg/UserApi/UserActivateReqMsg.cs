@@ -12,14 +12,13 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string PayType { get; set; }
 
-        public UserActivateReqMsg(int userId, string payType, Action<string> callback)
+        public UserActivateReqMsg(int userId, string payType)
         {
             UserId = userId;
             PayType = payType;
             Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
             ApiInterface = TestApiUrl + "user/activate_toActivate";
             RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

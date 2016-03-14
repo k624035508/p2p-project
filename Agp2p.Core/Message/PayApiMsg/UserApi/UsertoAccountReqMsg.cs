@@ -10,12 +10,11 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class UserToAccountReqMsg : FrontEndReqMsg
     {
-        public UserToAccountReqMsg(Action<string> callback)
+        public UserToAccountReqMsg()
         {
             Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
             ApiInterface = TestApiUrl + "user/accountManage_toAccountManage";
             RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
         }
 
         public override string GetSignature()

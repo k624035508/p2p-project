@@ -8,16 +8,16 @@ using Agp2p.Linq2SQL;
 namespace Agp2p.Core.PayApiLogic
 {
     /// <summary>
-    /// 用户开户处理
+    /// 个人投标普通/集合项目
     /// </summary>
-    internal class UserRegisterHandle
+    internal class ManualBidHandle
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<UserRegisterRespMsg>(UserRegister);
+            MessageBus.Main.Subscribe<ManualBidRespMsg>(ManualBid);
         }
 
-        private static void UserRegister(UserRegisterRespMsg msg)
+        private static void ManualBid(ManualBidRespMsg msg)
         {
             try
             {
@@ -28,11 +28,16 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckResult())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
-                        if (user != null)
+                        //查找对应的交易流水
+                        var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        if (trans != null)
                         {
-                            user.identity_id = msg.IdentityId;
+                            //更新流水信息
+
+                                
+                            //检查用户资金信息
+
+
                             context.SubmitChanges();
                             msg.HasHandle = true;
                         }

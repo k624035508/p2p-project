@@ -14,6 +14,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public int Api { get; set; }
         public string ApiInterface { get; set; }
         public string RequestId { get; set; }
+        public int? UserId { get; set; }
+        public string ProjectCode { get; set; }
+        public string RequestContent { get; set; }
 
         public BaseReqMsg()
         {

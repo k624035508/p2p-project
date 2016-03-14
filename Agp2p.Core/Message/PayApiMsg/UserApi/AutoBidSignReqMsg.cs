@@ -17,7 +17,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Remarks { get; set; }
         public bool Cancel { get; set; }
 
-        public AutoBidSignReqMsg(int userId, Action<string> callback, string contractFund = null, string projectType = null, bool cancel = false, string remarks = "")
+        public AutoBidSignReqMsg(int userId, string contractFund = null, string projectType = null, bool cancel = false, string remarks = "")
         {
             Cancel = cancel;
             UserId = userId;
@@ -35,7 +35,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             }
             
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            CallBack = callback;
             Remarks = remarks;
         }
 
