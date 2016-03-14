@@ -34,7 +34,7 @@ namespace Agp2p.Core.AutoLogic
 
                 // 接手昨日/更早的提现
                 var needTransferClaims = context.li_claims.Where(
-                    c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
+                    c => c.projectId != c.profitingProjectId && c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
                     .ToList();
 
                 if (!needTransferClaims.Any()) return;

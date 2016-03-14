@@ -514,7 +514,7 @@ namespace Agp2p.Core
             var claim = context.li_claims.Single(c => c.id == claimId);
 
             var timeSpan = DateTime.Today - claim.GetSourceClaim().createTime.Date;
-            if (timeSpan.TotalDays < 15)
+            if (timeSpan.TotalDays < 15 && !Utils.IsDebugging())
                 throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
 
             var nextRepayTime = claim.li_projects.li_repayment_tasks.AsEnumerable().FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time;
@@ -571,6 +571,7 @@ namespace Agp2p.Core
 
             wallet.idle_money -= amount;
             wallet.investing_money += amount;
+            wallet.total_investment += amount;
             wallet.last_update_time = buyInPtr.create_time;
 
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn);
@@ -620,7 +621,7 @@ namespace Agp2p.Core
             if (selectedAgent == null)
                 throw new InvalidOperationException("请先设置中间人账号到“公司账号”组");
 
-            // 创建中间人支付记录
+            // 创建中间人垫付记录
             var agentPaidPtr = new li_project_transactions
             {
                 investor = selectedAgent.id,
@@ -637,7 +638,7 @@ namespace Agp2p.Core
             var agentWallet = selectedAgent.li_wallets;
             agentWallet.idle_money -= agentPaidPtr.interest.GetValueOrDefault();
             agentWallet.profiting_money += agentPaidPtr.interest.GetValueOrDefault();
-            agentWallet.last_update_time = now;
+            agentWallet.last_update_time = agentPaidPtr.create_time;
 
             var agentPaidHis = CloneFromWallet(agentWallet, Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest);
             agentPaidHis.li_project_transactions = agentPaidPtr;
@@ -666,7 +667,8 @@ namespace Agp2p.Core
             ownerWallet.idle_money += claimTransferredOutPtr.principal + claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.investing_money -= claimTransferredOutPtr.principal;
             ownerWallet.profiting_money -= profitings.Sum();
-            ownerWallet.last_update_time = now;
+            ownerWallet.total_profit += claimTransferredOutPtr.interest.GetValueOrDefault();
+            ownerWallet.last_update_time = claimTransferredOutPtr.create_time;
 
             var transferSuccessHistory = CloneFromWallet(ownerWallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut);
             transferSuccessHistory.li_project_transactions = claimTransferredOutPtr;
@@ -681,7 +683,8 @@ namespace Agp2p.Core
             buyedTrs.ZipEach(buyerProfitings, (buyTr, profiting) =>
             {
                 // 由中间户（公司账号）买入的债权为可转让债权，可以用作活期债权
-                var transferedChild = needTransferClaim.TransferedChild(now,
+                // 按提现时候开始计息，所以债权的创建时间为提现的时间
+                var transferedChild = needTransferClaim.TransferedChild(needTransferClaim.createTime,
                     buyTr.dt_users.IsCompanyAccount()
                         ? Agp2pEnums.ClaimStatusEnum.Transferable
                         : Agp2pEnums.ClaimStatusEnum.Nontransferable,

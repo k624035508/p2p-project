@@ -241,5 +241,31 @@ namespace Agp2p.Test
                 .Aggregate(0m, (sum, btr) => sum + btr.value);
             Assert.AreEqual(withdrawDelta, totalWithdraw);
         }
+
+        public static void StaticProjectWithdraw(string projectName, string userName, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.Single(p => p.title == projectName);
+            var user = context.dt_users.Single(u => u.user_name == userName);
+            var preWithdrawClaim = project.li_claims.Where(c => c.userId == user.id && c.principal == amount).AsEnumerable().Single(c => c.IsProfiting());
+            TransactionFacade.StaticProjectWithdraw(context, preWithdrawClaim.id);
+            context.SubmitChanges();
+        }
+
+        public static void BuyClaim(string projectName, string userName, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.Single(p => p.title == projectName);
+            var user = context.dt_users.Single(u => u.user_name == userName);
+
+            var preBuyClaim = project.li_claims.First(
+                c =>
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && amount <= c.principal &&
+                    !c.li_claims2.Any());
+
+            TransactionFacade.BuyClaim(context, preBuyClaim.id, user.id, amount);
+
+            context.SubmitChanges();
+        }
     }
 }

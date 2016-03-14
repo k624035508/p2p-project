@@ -296,11 +296,12 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 回款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut, "{0} 债权转出 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn, "{0} 债权买入 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess, "{0} 债权买入成功 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut, "{0} 债权转出"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn, "{0} 债权买入"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess, "{0} 债权买入成功"},
             {Agp2pEnums.WalletHistoryTypeEnum.AutoInvestFailRepaySuccess, "{0} 续投活期失败回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess, "{0} 活期项目提现 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest, "{0} 中间人垫付利息"},
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)
