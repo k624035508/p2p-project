@@ -249,6 +249,7 @@ div.announcement-wrap {
 }
 .progress-custom {
     height: 15px;
+    width:188px;
     margin-bottom: 10px;
     background: #cdcdcd;
     .progress-bar {
@@ -304,6 +305,7 @@ a.invest-btn-grey {
                 height: 100%;
                 padding: 0 15px;
                 border-right: @border;
+                overflow:hidden;
                 .title-wrap {
                     margin-top: 13px;
                     & > * {
@@ -333,7 +335,7 @@ a.invest-btn-grey {
                         height: 81px;
                     }
                     .left-part {
-                        .progress-custom { width: 185px; }
+                        .progress-custom { width: 188px; }
                     }
                     .invest-btn {
                         width: 155px;
@@ -343,12 +345,13 @@ a.invest-btn-grey {
                 }
                  .status-icon {
                      position: absolute;
-                     margin-left: 350px;
+                     margin-left: 345px;
                      margin-top: -30px;
                      width: 73px;
                      height: 65px;
                      background: url("@{images}/over-icon.png") bottom right;
                  }
+              
              }
             .rules {
                 width: 433px;
@@ -366,6 +369,10 @@ a.invest-btn-grey {
                         font-size: @font13;
                         margin: 0 5px;
                     }
+                }
+                &:hover{
+                    padding-left:220px;
+                    transition:padding-left .3s
                 }
             }
         }
@@ -478,7 +485,9 @@ a.invest-btn-grey {
     }
     .tender-right {
         .tender-cell {
+            transition: padding .3s;
             .data-box {  margin-top: 40px; }
+            &:hover{padding-top:20px;}
         }
     }
 }
@@ -493,8 +502,10 @@ a.invest-btn-grey {
     }
     .tender-right {
         .tender-cell {
+            transition: padding .3s;
             .cash-bank { text-align: center; }
             .data-box {  margin-top: 16px; }
+            &:hover{padding-top:20px;}
         }
     }
 }
