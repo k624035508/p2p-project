@@ -9,13 +9,11 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class BackEndReqMsg : BaseReqMsg
     {
-        public int? UserId { get; set; }
-        public int? ProjectCode { get; set; }
-        public Action<string, string> CallBack { get; set; }
+        public string NoticeUrl { get; set; }
 
         public BackEndReqMsg()
         {
-            
+            NoticeUrl = "";
         }
 
         public override string GetSignature()

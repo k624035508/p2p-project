@@ -8,15 +8,14 @@ using Agp2p.Linq2SQL;
 namespace Agp2p.Core.PayApiLogic
 {
     /// <summary>
-    /// 第三方托管请求/响应消息处理
+    /// 第三方托管请求消息处理
     /// </summary>
-    internal class PayApiHandle
+    internal class RequestApiHandle
     {
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<FrontEndReqMsg>(DoFrontEndRequest);
             MessageBus.Main.Subscribe<BackEndReqMsg>(DoBackEndRequest);
-            MessageBus.Main.Subscribe<StartRespMsg>(DoResponse);
         }
 
         /// <summary>
@@ -42,8 +41,7 @@ namespace Agp2p.Core.PayApiLogic
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
-                //执行回调请求接口
-                msg.CallBack(requestLog.request_content);
+                msg.RequestContent = requestLog.request_content;
             }
             catch (Exception ex)
             {
@@ -75,38 +73,12 @@ namespace Agp2p.Core.PayApiLogic
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
-                //执行回调请求接口
-                msg.CallBack(requestLog.request_content, msg.ApiInterface);
+                msg.RequestContent = requestLog.request_content;
             }
             catch (Exception ex)
             {
                 //TODO 返回错误信息
                 throw ex;
-            }
-        }
-
-        /// <summary>
-        /// 接口响应
-        /// </summary>
-        /// <param name="msg"></param>
-        private static void DoResponse(StartRespMsg msg)
-        {
-            Agp2pDataContext context = new Agp2pDataContext();
-            //根据响应的requestId报文生成处理消息，对应各种消息处理逻辑
-            var requestLog =
-                context.li_pay_request_log.OrderByDescending(r => r.request_time)
-                    .FirstOrDefault(r => r.id == msg.RequestId);
-            if (requestLog != null)
-            {
-                switch (requestLog.api)
-                {
-                    //用户开户
-                    case (int)Agp2pEnums.SumapayApiEnum.UserReg:
-                        //TODO 正式环境改为异步
-                        MessageBus.Main.Publish(new UserRegisterRespMsg(msg.RequestId, msg.Result, msg.ResponseContent));
-                        break;
-
-                }
             }
         }
     }

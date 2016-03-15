@@ -758,10 +758,71 @@ namespace Agp2p.Common
         public enum SumapayApiEnum
         {
             [Description("实名开户")]
-            UserReg = 1,
+            URegi = 1,
             [Description("实名认证")]
-            UserAuth = 2
-
+            UAuth = 2,
+            [Description("用户激活")]
+            Activ = 3,
+            [Description("账户管理")]
+            Accou = 4,
+            [Description("自动投标续约")]
+            AtBid = 5,
+            [Description("取消自动投标")]
+            ClBid = 6,
+            [Description("开通存管账户自动还款")]
+            AcReO = 7,
+            [Description("开通银行账户自动还款")]
+            AbReO = 8,
+            [Description("关闭用户自动还款")]
+            ClRep = 9,
+            [Description("网银充值")]
+            WeRec = 10,
+            [Description("一键充值")]
+            WhRec = 11,
+            [Description("投标普通项目")]
+            MaBid = 12,
+            [Description("投标集合项目")]
+            CoBid = 13,
+            [Description("自动投标普通项目")]
+            AmBid = 14,
+            [Description("自动投标集合项目")]
+            AcBid = 15,
+            [Description("撤标普通项目")]
+            CaPro = 16,
+            [Description("撤标集合项目")]
+            CoPro = 17,
+            [Description("流标普通项目")]
+            RePro = 18,
+            [Description("普通项目放款")]
+            ALoan = 19,
+            [Description("集合项目放款")]
+            CLoan = 20,
+            [Description("用户提现")]
+            Wdraw = 21,
+            [Description("存管账户还款(普通项目)")]
+            MaRep = 22,
+            [Description("存管账户还款(集合项目)")]
+            McRep = 23,
+            [Description("银行账户还款(普通项目)")]
+            BaRep = 24,
+            [Description("银行账户还款(集合项目)")]
+            BcRep = 25,
+            [Description("存管账户自动还款")]
+            AcRep = 26,
+            [Description("银行账户自动还款")]
+            AbRep = 27,
+            [Description("普通项目本息到账")]
+            RetPt = 28,
+            [Description("集合项目本息到账")]
+            RetCo = 29,
+            [Description("债权转让")]
+            CreAs = 30,
+            [Description("单笔付款至个人")]
+            TranU = 31,
+            [Description("同商户账户间转账")]
+            Trans = 32,
+            [Description("用户签约银行卡查询")]
+            QuBan = 33,
         }
     }
 }

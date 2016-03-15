@@ -6,6 +6,9 @@ using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
+    /// <summary>
+    /// 个人开户响应
+    /// </summary>
     public class UserRegisterRespMsg : BaseRespMsg
     {
         public string IdentityId { get; set; }

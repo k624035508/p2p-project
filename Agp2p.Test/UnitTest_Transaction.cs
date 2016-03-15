@@ -325,12 +325,13 @@ namespace Agp2p.Test
         {
             //1.请求前台接口
             //1.1发送请求
-            var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "", "0",
-                s =>
-                {
-                    Assert.AreNotEqual("", s);
-                });
+            var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "", "0");
             MessageBus.Main.Publish(msgReq);
+            //正式请求时，进行如下异步调用
+            //MessageBus.Main.PublishAsync(msgReq, s =>
+            //{
+            //    Utils.HttpPost(msgReq.ApiInterface, msgReq.RequestContent);
+            //});
 
             //1.2模拟响应返回
             Agp2pDataContext context = new Agp2pDataContext();
@@ -343,9 +344,24 @@ namespace Agp2p.Test
                 response_content = "content"
             };
             context.li_pay_response_log.InsertOnSubmit(responseLog);
-            context.SubmitChanges();
             //1.3发送响应消息
-            MessageBus.Main.Publish(new StartRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content));
+            var respMsg = new UserRegisterRespMsg(responseLog.request_id, responseLog.result,
+                responseLog.response_content);
+            MessageBus.Main.PublishAsync(respMsg,
+                s =>
+                {
+                    if (respMsg.HasHandle)
+                    {
+                        var req = context.li_pay_request_log.SingleOrDefault(r => r.id == responseLog.request_id);
+                        req.complete_time = DateTime.Now;
+                        req.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+
+                        responseLog.user_id = respMsg.UserId;
+                        responseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
+                    }
+                    context.SubmitChanges();
+                    Assert.IsTrue(s.IsCompleted);
+                });
         }
     }
 }
