@@ -96,7 +96,26 @@ namespace Agp2p.Web.api.payment.sumapay
                         case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                             respMsg = new WithdrawRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;
-                        
+                        //个人存管账户还款普通/集合项目
+                        case (int)Agp2pEnums.SumapayApiEnum.MaRep:
+                        case (int)Agp2pEnums.SumapayApiEnum.McRep:
+                            respMsg = new RepayRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
+                        //个人协议还款普通/集合项目
+                        case (int)Agp2pEnums.SumapayApiEnum.BaRep:
+                        case (int)Agp2pEnums.SumapayApiEnum.BcRep:
+                            respMsg = new RepayRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content, true);
+                            break;
+                        //个人自动还款普通/集合项目
+                        case (int)Agp2pEnums.SumapayApiEnum.AcRep:
+                        case (int)Agp2pEnums.SumapayApiEnum.AbRep:
+                            respMsg = new RepayRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content, false, true);
+                            break;
+                        //普通/集合项目本息到账
+                        case (int)Agp2pEnums.SumapayApiEnum.RetPt:
+                        case (int)Agp2pEnums.SumapayApiEnum.RetCo:
+                            respMsg = new ReturnPrinInteRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
                         default:
                             respMsg = new BaseRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;

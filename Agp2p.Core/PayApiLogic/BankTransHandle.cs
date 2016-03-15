@@ -10,11 +10,12 @@ namespace Agp2p.Core.PayApiLogic
     /// <summary>
     /// 个人资金账户接口响应
     /// </summary>
-    internal class AccountTransHandle
+    internal class BankTransHandle
     {
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<RechargeRespMsg>(Recharge);
+            MessageBus.Main.Subscribe<WithdrawRespMsg>(WithDraw);
         }
 
         /// <summary>
@@ -41,6 +42,43 @@ namespace Agp2p.Core.PayApiLogic
                                 
                             //检查用户资金信息
                                
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO 返回错误信息
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 提现响应处理
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void WithDraw(WithdrawRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的交易流水
+                        var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        if (trans != null)
+                        {
+                            //更新流水信息
+
+
+                            //检查用户资金信息
+
                             context.SubmitChanges();
                             msg.HasHandle = true;
                         }

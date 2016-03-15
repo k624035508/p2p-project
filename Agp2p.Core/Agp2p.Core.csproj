@@ -107,6 +107,9 @@
     <Compile Include="Message\PayApiMsg\Project\AutoBidReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\ManualBidReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\BidRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\AutoRepayReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\BankRepayReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\RepayRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\AccountRepayReqMsg.cs" />
@@ -147,7 +150,7 @@
     <Compile Include="NotifyLogic\RepayAnnounce.cs" />
     <Compile Include="AutoLogic\ScheduleAnnounce.cs" />
     <Compile Include="PayApiLogic\ProjectTransHandle.cs" />
-    <Compile Include="PayApiLogic\AccountTransHandle.cs" />
+    <Compile Include="PayApiLogic\BankTransHandle.cs" />
     <Compile Include="PayApiLogic\UserHandle.cs" />
     <Compile Include="PayApiLogic\RequestApiHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

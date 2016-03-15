@@ -807,13 +807,13 @@ namespace Agp2p.Common
             BaRep = 24,
             [Description("银行账户还款(集合项目)")]
             BcRep = 25,
-            [Description("存管账户自动还款")]
+            [Description("自动还款(普通项目)")]
             AcRep = 26,
-            [Description("银行账户自动还款")]
+            [Description("自动还款(集合项目)")]
             AbRep = 27,
-            [Description("普通项目本息到账")]
+            [Description("本息到账(普通项目)")]
             RetPt = 28,
-            [Description("集合项目本息到账")]
+            [Description("本息到账(集合项目)")]
             RetCo = 29,
             [Description("债权转让")]
             CreAs = 30,
