@@ -80,6 +80,23 @@ namespace Agp2p.Web.api.payment.sumapay
                         case (int)Agp2pEnums.SumapayApiEnum.CoPro:
                             respMsg = new WithDrawalRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;
+                        //个人流标普通项目
+                        case (int)Agp2pEnums.SumapayApiEnum.RePro:
+                            respMsg = new RepealProjectRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
+                        //普通项目放款
+                        case (int)Agp2pEnums.SumapayApiEnum.ALoan:
+                            respMsg = new MakeLoanRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
+                        //集合项目放款
+                        case (int)Agp2pEnums.SumapayApiEnum.CLoan:
+                            respMsg = new MakeLoanRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content, true);
+                            break;
+                        //个人提现
+                        case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                            respMsg = new WithdrawRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
+                        
                         default:
                             respMsg = new BaseRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;
@@ -87,6 +104,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     //发送响应消息异步处理
                     MessageBus.Main.PublishAsync(respMsg, s =>
                     {
+                        Response.Write("success");
                         //响应处理完后更新日志信息
                         if (respMsg.HasHandle)
                         {
