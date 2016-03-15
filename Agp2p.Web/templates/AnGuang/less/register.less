@@ -8,7 +8,7 @@ body { background: @body-color; }
 div.register-box {
 	margin-top: 25px;
 	padding: 25px 10px 22px 30px;
-	height: 620px;
+	height: 690px;
 	border: @border;
 	background: @white;
 	& > div {
@@ -17,10 +17,13 @@ div.register-box {
 	}
 	.register-left {
 		width: 615px;
+    
 		.title-tips {
+            span.register-msg{
 			font-size: @font25;
 			color: @red;
-			margin-bottom: 30px;
+            }
+			margin-bottom: 10px;
 			padding-bottom: 12px;
 			border-bottom: @border;
 			span {
@@ -31,10 +34,51 @@ div.register-box {
 					line-height: 35px;
 				}
 			}
+            a.skip{margin-top:15px; cursor:pointer;}
 		}
+        .ul-wrap{
+            text-align:center;
+            .steps-list{
+                li{
+                   .inline-block;
+                   margin:0 5px;
+                }
+                .hr {
+				height: 2px;
+				background: @light-grey;
+			}
+            .step1-hr, .step4-hr { width: 50px; }
+			.step2-hr, .step3-hr { width: 100px; }
+            .step1, .step2, .step3 {
+				width: 45px;
+				height: 45px;
+				line-height: 45px;
+				text-align: center;
+				color: @white;
+				font-size: @font25;
+			}
+            .red-hr { background: @red; }
+			.step1{ background: url("@{images}/red-circle.png"); }
+            .step2,.step3{ background: url("@{images}/grey-circle.png");}
+            
+            }
+        }
+        .step-tips {
+             padding:20px 20px 10px 20px;
+		span {
+			.inline-block;
+			color: @dark-grey;
+			font-size: @font18;
+		}
+        .red-tips { color:@red;}
+		.tips1 { margin-left:76px;}
+		.tips2 { margin-left:96px;}
+        .tips3 {margin-left:73px;}
+	}
 		.form-box {
-			margin-top: 20px;
+			margin-top: 10px;
 			*margin-top: 0px;
+           
 			label {
 				margin-right: 15px;
 				width: 95px;
@@ -104,6 +148,7 @@ div.register-box {
                 }
 			.error-tips { background: url("@{images}/error.png") no-repeat; }
 			.right-tips { background: url("@{images}/blue-tick.png") no-repeat; }
+            
 		}
 		.agreement {
 			color: @grey;
@@ -134,6 +179,8 @@ div.register-box {
 				border: none;
 			}
 		}
+        .invited {font-size:@font15; cursor:pointer; width:90px; margin-left:100px; color:#10ca36;}
+       .hide {display:none;}
 	}
 	.dividing-hr {
 		margin-left: 30px;
@@ -141,7 +188,12 @@ div.register-box {
 		background: @light-grey;
 	}
 	.register-right {
-		width: 400px;
+		width: 400px; height:600px;
 		background: url("@{images}/register-bg.jpg") no-repeat center;
 	}
+    .successRegister{
+        margin:100px 160px;
+        color:@red;
+        font-size:@font40;
+    }
 }

@@ -16,6 +16,7 @@
     <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
+
 </head>
 <body>
     <!--head-->
@@ -151,7 +152,7 @@
                             <p class="grey13px">项目收益<span class="dark-grey25px margin-left30">10</span><span class="dark-grey15px"> 元</span></p>
                             <div class="progress progress-custom">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="<%=(np.GetInvestmentProgressPercent()*100)%>"
-                                     aria-valuemin="0" aria-valuemax="100" style='width: <%=np.GetInvestmentProgressPercent().ToString("p1")%>;'>
+                                     aria-valuemin="0" aria-valuemax="100" style='width:0 ;'>
                                     <%=np.GetInvestmentProgressPercent().ToString("p1")%>
                                 </div>
                             </div>
@@ -215,11 +216,11 @@
                     </div>
                     <p class="grey13px back-way">{p.GetProjectRepaymentTypeDesc()}</p>
                     <div class="progress progress-custom">
-                        <div class="progress-bar progress-bar-info" role="progressbar"
+                      <div class="progress-bar progress-bar-info" role="progressbar"
                              aria-valuenow='<%=(p.GetInvestmentProgressPercent()*100)%>' aria-valuemin="0" aria-valuemax="100"
-                             style='width: <%=p.GetInvestmentProgressPercent().ToString("p1")%>'>
-                            <%=p.GetInvestmentProgressPercent().ToString("p1")%>
-                        </div>
+                              style='width:0'>
+                          <%=p.GetInvestmentProgressPercent().ToString("p1")%>
+                        </div> 
                     </div>
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
