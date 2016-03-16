@@ -126,16 +126,14 @@ div#bannerCarousel {
     }
 }
 .m-banner{ min-width: @min-width;position:relative;height:350px;z-index:0; padding:0;margin:0; overflow:hidden;
-  /**  .prev{display:none;position:absolute;top:50%;height:76px;width:36px;margin-top:-37px;z-index:1000;cursor:pointer;left:20%;margin-left:-150px;background-position:0 0;
-    img{left:20%;margin-left:-150px;background-position:0 0;}
-        .prev:hover{background-position:-46px 0;}
-    }
-    .next{
-   img{
-
-   }
-    }**/
-    
+     .prev{
+         position:absolute; height:76px; width:53px; background: url("@{images}/slider-arrow.png") no-repeat 10px 0; top:40%; left:8%; z-index:100;cursor:pointer;
+         &:hover{background-position:-36px 0;}
+     }
+     .next{
+         position:absolute; height:76px; width:55px; background: url("@{images}/slider-arrow.png") no-repeat -82px 0; top:40%; right:10%; z-index:100;cursor:pointer;
+         &:hover{background-position:-128px 0;}
+     }
     .bd{position:relative; bottom:0;
        
     ul{width:100% !important; z-index:10; height:350px; padding:0;
