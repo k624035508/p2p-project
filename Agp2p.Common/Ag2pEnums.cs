@@ -819,10 +819,8 @@ namespace Agp2p.Common
             CreAs = 30,
             [Description("单笔付款至个人")]
             TranU = 31,
-            [Description("同商户账户间转账")]
-            Trans = 32,
             [Description("用户签约银行卡查询")]
-            QuBan = 33,
+            QuBan = 32,
         }
     }
 }

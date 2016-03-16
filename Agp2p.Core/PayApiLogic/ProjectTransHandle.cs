@@ -20,6 +20,7 @@ namespace Agp2p.Core.PayApiLogic
             MessageBus.Main.Subscribe<MakeLoanRespMsg>(MakeLoan);//放款
             MessageBus.Main.Subscribe<RepayRespMsg>(Repay);//还款
             MessageBus.Main.Subscribe<ReturnPrinInteRespMsg>(ReturnPrinInte);//本息到账
+            MessageBus.Main.Subscribe<CreditAssignmentRespMsg>(CreditAssignment);//债权转让
         }
 
         /// <summary>
@@ -221,6 +222,39 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             //回款
 
+
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO 返回错误信息
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 债权转让
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void CreditAssignment(CreditAssignmentRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的债权
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (pro != null)
+                        {
 
                             context.SubmitChanges();
                             msg.HasHandle = true;

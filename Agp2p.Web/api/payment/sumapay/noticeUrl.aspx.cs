@@ -116,6 +116,10 @@ namespace Agp2p.Web.api.payment.sumapay
                         case (int)Agp2pEnums.SumapayApiEnum.RetCo:
                             respMsg = new ReturnPrinInteRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;
+                        //债权转让
+                        case (int)Agp2pEnums.SumapayApiEnum.CreAs:
+                            respMsg = new CreditAssignmentRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
+                            break;
                         default:
                             respMsg = new BaseRespMsg(responseLog.request_id, responseLog.result, responseLog.response_content);
                             break;

@@ -17,6 +17,7 @@ namespace Agp2p.Core.PayApiLogic
             MessageBus.Main.Subscribe<UserRegisterRespMsg>(UserRegister);
             MessageBus.Main.Subscribe<AutoBidSignRespMsg>(AutoBidSign);
             MessageBus.Main.Subscribe<AutoRepaySignRespMsg>(AutoRepaySign);
+            MessageBus.Main.Subscribe<Transfer2UserRespMsg>(Transfer2User);
         }
 
         /// <summary>
@@ -135,6 +136,39 @@ namespace Agp2p.Core.PayApiLogic
                     }
                 }
 
+            }
+            catch (Exception ex)
+            {
+                //TODO 返回错误信息
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 单笔转账到个人账户
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void Transfer2User(Transfer2UserRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的平台账户，更新用户信息
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        if (user != null)
+                        {
+                            
+                            
+                            msg.HasHandle = true;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
