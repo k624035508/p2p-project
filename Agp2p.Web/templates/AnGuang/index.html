@@ -14,9 +14,10 @@
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
     <![endif]-->
     <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
-
+    <script src="<%templateskin%>/js/jquery.superslide.2.1.1.js"></script>
 </head>
 <body>
     <!--head-->
@@ -47,16 +48,16 @@
 
 
     <!--banner-->
-    <div class="container-fluid">
+   <!-- <div class="container-fluid">
         <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
-            <ol class="carousel-indicators">
+           <!-- <ol class="carousel-indicators">
                 <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#bannerCarousel" data-slide-to="1"></li>
             </ol>
 
             <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
+           <!-- <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <a href='<%linkurl("activity_rewards")%>' target="_blank" class="banner2"></a>
                 </div>
@@ -68,6 +69,33 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    -->
+    <div class="m-banner">
+       <!-- <div class="prev"><img src="<%templateskin%>/imgs/index/slider-arrow.png" /></div>
+        <div class="next"><img src="<%templateskin%>/imgs/index/slider-arrow.png" /></div>-->
+        <ul class="hd">
+            <li>新手福利</li>
+            <li>全民赏金接力</li>
+            <li>消费者权益保护</li>
+            <li>买不到的典藏酒</li>
+        </ul>
+        <div class="bd">
+            <ul id="bannerList">
+                <li title="'新手福利'"><img src="<%templateskin%>/imgs/index/banner-02.jpg" />
+                    <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>
+                </li>
+                <li title="'新手福利'"><img src="<%templateskin%>/imgs/index/banner-03.jpg" />
+                    <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>
+                </li>
+                <li title="'新手福利'"><img src="<%templateskin%>/imgs/index/banner-02.jpg" />
+                    <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>
+                </li>
+                <li title="'新手福利'"><img src="<%templateskin%>/imgs/index/banner-02.jpg" />
+                    <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>
+                </li>
+            </ul>
         </div>
     </div>
     <!--banner end-->

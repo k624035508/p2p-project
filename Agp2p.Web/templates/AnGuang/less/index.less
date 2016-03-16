@@ -125,6 +125,32 @@ div#bannerCarousel {
         }
     }
 }
+.m-banner{position:relative;min-width:1080px;height:360px;overflow:hidden;z-index:0;
+  /**  .prev{display:none;position:absolute;top:50%;height:76px;width:36px;margin-top:-37px;z-index:1000;cursor:pointer;left:20%;margin-left:-150px;background-position:0 0;
+    img{left:20%;margin-left:-150px;background-position:0 0;}
+        .prev:hover{background-position:-46px 0;}
+    }
+    .next{
+   img{
+
+   }
+    }**/
+    
+    .bd{position:relative;
+        margin-top: -20px;
+    ul{width:100% !important;
+        li{width:100% !important;height:360px;
+            a{height:360px;display:block;box-shadow: 0 0 8px 0 rgba(100,100,100,.2) inset;}
+        }
+    }
+    }
+    .hd{width:100%;position:absolute;z-index:2;bottom:10px;*bottom:10px;left:0;height:40px;text-align:center;clear:both;
+        li{margin-right:-5px;*margin-right:-1px;cursor:pointer;display:inline-block;*display:inline;*zoom:1;width:140px;height:40px;line-height:40px;font-size:14px;color:#fff;
+            background: url("@{images}/bgbanner.png") no-repeat center; background-size:140px;border:1px solid #ddd;border:1px solid rgba(255,255,255,.5);border-bottom:none;border-radius:5px 5px 0 0;overflow:hidden;
+            .on{padding:3px 0;}
+        }
+    }
+}
 
 /*公告板*/
 div.announcement-wrap {
