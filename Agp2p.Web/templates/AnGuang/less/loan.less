@@ -2,6 +2,98 @@
 @loan: "../imgs/loan";
 
 body { background: @body-color; }
+.about-nav-bar {
+  height:80px;
+  background: #1478d2;
+  .content-wrap {
+	ul{
+	  p{ margin-left: -60px;
+		width: 200px;
+		a {
+		  color: @white;
+		  font-size: @font17;
+		  line-height: 80px;
+		  text-decoration: none;
+		  margin-left: 52px;
+		  height: 80px;
+		  display: block;
+		img{padding: 0px 10px;}
+		}
+	  }
+	  li {
+		margin-left: 60px;
+		padding: 0px 72px;
+
+		a {
+		  color: @white;
+		  font-size: @font17;
+		  line-height: 80px;
+		  text-decoration: none;
+		  margin-left: 52px;
+		  height: 80px;
+		  display: block;
+		  position: absolute;
+		  margin-top: -105px;
+		  padding: 0px 20px;
+
+		  img{
+			position: absolute;
+			margin: 18px -59px;
+			width: 47px;
+		  }
+		}
+		a:hover {background:#1e94fe; color:#000;}
+		a:active { background-color:yellow; }
+	  }
+	  li:first-child { margin-left:4px; }
+	}
+  }
+}
+.scroll-style {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+}
+.current{
+  background:#1e94fe;
+}
+#container ul {
+  list-style-type: none;
+  background: #1477d2;
+  width: 1903px;
+  height: 80px;
+  p{ margin-left:300px;
+	width: 200px;
+	position: absolute;
+	margin-top: 12px;
+	a {
+	  color: @white;
+	  font-size: @font17;
+	  line-height:50px;
+	  text-decoration: none;
+	  margin-left: 52px;
+	  height: 80px;
+
+	  img{padding: 0px 10px;}
+	}
+  }
+  li {
+	float: left;
+	width: 120px;
+	margin-left: 37px;
+	a {
+	  text-decoration: none;
+	  color: #ffffff;
+	  line-height: 80px;
+	  display: block;
+	  padding: 0px 20px;
+	  margin-left:563px;
+	  width: 100px;
+	}
+	a:hover {background:#1e94fe; color:#000;}
+  }
+}
 
 .application-form {
 	min-height: 715px;
@@ -108,6 +200,13 @@ body { background: @body-color; }
 			color: @dark-grey;
 			font-weight: normal;
 			margin-right: 18px;
+
+			input{width:200px;
+			  height:30px;
+			  background:red;
+			  border-style:none;
+			  color:#fff;
+			  border-radius: 6px;}
 		  }
 		  button {
 			color: @white;
@@ -115,6 +214,7 @@ body { background: @body-color; }
 			border: none;
 			background: @red;
 		  }
+
 		}
 
 		.login-form {

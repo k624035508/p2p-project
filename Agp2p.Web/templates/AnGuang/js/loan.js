@@ -24,6 +24,7 @@ $(function () {
     var $login = $(".form-wrapper div.login-form-wrap");
     var $personalInfo = $(".form-wrapper div.personal-info-form-wrap");
     var $loanDetail = $(".form-wrapper div.loan-detail-form-wrap");
+    var $wancheng = $(".form-wrapper div.Completion-loan-form-wrap");
     var ddlSelectIndex = 0;
 
     $forms.hide();
@@ -74,7 +75,10 @@ $(function () {
         }
     } else if(step == "5") {
         //显示借款完成步骤
-       // $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish.png') no-repeat");
+        alert("asdkja");
+        $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish.png') no-repeat");
+        $wancheng.show();
+
         
     } else {
         //显示申请借款步骤
@@ -95,6 +99,7 @@ $(function () {
         } else if(step == "4") {
             //显示借款审核中步骤
             $loanDetail.show();
+
             $('#loanApplyChecking').show();
 
             $(".form-wrapper form.loan-detail-form textarea").attr("readonly","readonly");
@@ -179,13 +184,14 @@ $(function () {
                 amount:$("#loan-amount").val()
             }),
             success: function(data){
-                location.reload();
+               location.reload();
+
             },
             error: function(xhr, status, err){                
                 alert(xhr.responseJSON.Message);
             }
         });          
     });
-    
+ 
 
 });

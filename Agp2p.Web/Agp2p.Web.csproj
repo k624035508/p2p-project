@@ -962,6 +962,7 @@
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\help.js" />
+    <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
