@@ -125,7 +125,7 @@ div#bannerCarousel {
         }
     }
 }
-.m-banner{position:relative;min-width:1080px;height:360px;overflow:hidden;z-index:0;
+.m-banner{ min-width: @min-width;position:relative;height:350px;z-index:0; padding:0;margin:0; overflow:hidden;
   /**  .prev{display:none;position:absolute;top:50%;height:76px;width:36px;margin-top:-37px;z-index:1000;cursor:pointer;left:20%;margin-left:-150px;background-position:0 0;
     img{left:20%;margin-left:-150px;background-position:0 0;}
         .prev:hover{background-position:-46px 0;}
@@ -136,22 +136,34 @@ div#bannerCarousel {
    }
     }**/
     
-    .bd{position:relative;
-        margin-top: -20px;
-    ul{width:100% !important;
-        li{width:100% !important;height:360px;
-            a{height:360px;display:block;box-shadow: 0 0 8px 0 rgba(100,100,100,.2) inset;}
-        }
+    .bd{position:relative; bottom:0;
+       
+    ul{width:100% !important; z-index:10; height:350px; padding:0;
+        li{
+            width:100% !important; height:350px;
+            a{margin:0; padding:0;
+                display: block;
+                width: 100%;
+                height: 350px;
+            }
+            }
+         .banner2 { background: url("@{images}/banner-02.jpg") no-repeat center; }
+         .banner3 { background: url("@{images}/banner-03.jpg") no-repeat center; }
+    
     }
     }
-    .hd{width:100%;position:absolute;z-index:2;bottom:10px;*bottom:10px;left:0;height:40px;text-align:center;clear:both;
-        li{margin-right:-5px;*margin-right:-1px;cursor:pointer;display:inline-block;*display:inline;*zoom:1;width:140px;height:40px;line-height:40px;font-size:14px;color:#fff;
-            background: url("@{images}/bgbanner.png") no-repeat center; background-size:140px;border:1px solid #ddd;border:1px solid rgba(255,255,255,.5);border-bottom:none;border-radius:5px 5px 0 0;overflow:hidden;
-            .on{padding:3px 0;}
-        }
-    }
+   .hd{width:100%;position:absolute;height:40px;text-align:center;z-index:15; bottom:0;
+        padding:0;
+        li{margin-right:-5px;*margin-right:-1px; 
+           cursor:pointer;display:inline-block;*display:inline;width:140px;height:45px;line-height:40px;font-size:15px;color:#fff;
+           background: url("@{images}/bgbanner.png"); 
+           border:1px solid #ddd;border:1px solid rgba(255,255,255,.5);border-bottom:none;border-radius:5px 5px 0 0;
+        
 }
-
+       .on{position:relative; bottom:5px;}
+      }
+   
+   }
 /*公告板*/
 div.announcement-wrap {
     background: #f7f4ed;
