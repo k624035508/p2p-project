@@ -21,20 +21,14 @@
         public string FailReason { get; set; }//失败原因描述
         public bool Sync { get; set; }
 
-        public WithdrawRespMsg(string requestId, string result, string responseContent, bool sync = false) : base(requestId, result, responseContent)
+        public WithdrawRespMsg(bool sync = false)
         {
-            //根据报文的json数据构造
             Sync = sync;
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity + UserBalance);
         }
     }
 }

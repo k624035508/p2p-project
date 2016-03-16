@@ -13,14 +13,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public UserToAccountReqMsg()
         {
             Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
-            ApiInterface = TestApiUrl + "user/accountManage_toAccountManage";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/accountManage_toAccountManage";
             RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
-            return hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
+            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -28,7 +28,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             return new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"signature", GetSignature()}
             };

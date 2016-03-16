@@ -20,16 +20,19 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectCode = projectCode;
             RepayLimit = repayLimit;
             Cycle = cycle;
+
             Api = useBank ? (int)Agp2pEnums.SumapayApiEnum.AbReO : (int) Agp2pEnums.SumapayApiEnum.AcReO;
-            ApiInterface = TestApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
+            ApiInterface = SumapayConfig.TestApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProjectCode + Cycle + RepayLimit +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Cycle + RepayLimit +
                                                SuccessReturnUrl + FailReturnUrl);
         }
 
@@ -38,13 +41,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"projectCode", ProjectCode},
                 {"repayLimit", RepayLimit},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(Cycle)) sd.Add("cycle", Cycle);

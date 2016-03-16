@@ -23,26 +23,28 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserId = userId;
             ContractFund = contractFund;
             ProjectType = projectType;
+
             if (!cancel)
             {
                 Api = (int)Agp2pEnums.SumapayApiEnum.AtBid;
-                ApiInterface = TestApiUrl + "user/autoBid_toAutoSign";
+                ApiInterface = SumapayConfig.TestApiUrl + "user/autoBid_toAutoSign";
             }
             else
             {
                 Api = (int)Agp2pEnums.SumapayApiEnum.ClBid;
-                ApiInterface = TestApiUrl + "user/cancelAutoBid_toCancelAutoBid";
+                ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoBid_toCancelAutoBid";
             }
-            
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Remarks = remarks;
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProtocolCode + SuccessReturnUrl +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProtocolCode + SuccessReturnUrl +
                                                FailReturnUrl);
         }
 
@@ -51,12 +53,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"protocolCode", ProtocolCode},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(ContractFund)) sd.Add("contractFund", ContractFund);

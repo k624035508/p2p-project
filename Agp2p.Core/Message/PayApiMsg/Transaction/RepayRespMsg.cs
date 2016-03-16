@@ -17,24 +17,30 @@
         public string Sum { get; set; }//还款金额
         public string PayType { get; set; }//手续费收取方式
 
+        //自动还款参数
+        public string AccountBalance { get; set; }//账户总额
+        public string FeeType { get; set; }//手续费收取方式
+
         public bool BankRepay { get; set; }//是否协议还款
         public bool AutoRepay { get; set; }//是否自动还款
 
-        public RepayRespMsg(string requestId, string result, string responseContent, bool bankRepay = false, bool autoRepay = false) : base(requestId, result, responseContent)
+        public RepayRespMsg(bool bankRepay = false, bool autoRepay = false)
         {
-            //根据报文的json数据构造
             BankRepay = bankRepay;
             AutoRepay = autoRepay;
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            if (BankRepay)
+            {
+                return base.CheckSignature(RequestId + Result + UserIdIdentity);
+            }
+            else if (AutoRepay)
+            {
+                return base.CheckSignature(RequestId + UserIdIdentity + Result + AccountBalance);
+            }
+            return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity + UserBalance);
         }
     }
 }

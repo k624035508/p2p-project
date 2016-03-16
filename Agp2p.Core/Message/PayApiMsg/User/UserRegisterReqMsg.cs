@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Agp2p.Common;
-using TinyMessenger;
 using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
@@ -17,23 +15,26 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Token { get; set; }
         public string PayType { get; set; }
 
-        public UserRegisterReqMsg(int userId, string telephone, string name, string idNumber, string token, string payType)
+        public UserRegisterReqMsg(int userId, string telephone, string name, string idNumber, string token)
         {
             UserId = userId;
             Telephone = telephone;
             Name = name;
             IdNumber = idNumber;
             Token = token;
-            PayType = payType;
+
+            PayType = "0";
             Api = (int) Agp2pEnums.SumapayApiEnum.URegi;
-            ApiInterface = TestApiUrl + "user/register_toRegister";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/register_toRegister";
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
-            return hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
+            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
                                            PayType);
         }
 
@@ -42,14 +43,14 @@ namespace Agp2p.Core.Message.PayApiMsg
             return new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"telephone", Telephone},
                 {"name", Name},
                 {"idNumber", IdNumber.ToUpper()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"token", Token},
                 {"payType", PayType},
                 {"signature", GetSignature()}

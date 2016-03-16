@@ -24,17 +24,20 @@ namespace Agp2p.Core.Message.PayApiMsg
             SubledgerList = subledgerList;
             RechargeUrl = rechargeUrl;
             GiftFlag = giftFlag;
+
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.McRep : (int) Agp2pEnums.SumapayApiEnum.MaRep;
-            ApiInterface = TestApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
+            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProjectCode + Sum  +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  +
                 RechargeUrl + SuccessReturnUrl + FailReturnUrl);
         }
 
@@ -43,13 +46,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"projectCode ", ProjectCode},
                 {"sum", Sum},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(RechargeUrl)) sd.Add("rechargeUrl ", RechargeUrl);

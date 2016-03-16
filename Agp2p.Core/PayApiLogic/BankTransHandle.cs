@@ -37,21 +37,20 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //更新流水信息
+                            //TODO 更新流水信息 平台账户充值 检查用户资金信息
 
-                                
-                            //检查用户资金信息
-                               
-                            context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -74,21 +73,25 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //更新流水信息
-
-
-                            //检查用户资金信息
+                            //TODO 更新流水信息 提现 检查用户资金信息
+                            if (!msg.Sync)
+                            {
+                                
+                            }
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
     }

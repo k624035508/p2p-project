@@ -11,13 +11,9 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string SuccessReturnUrl { get; set; }
         public string FailReturnUrl { get; set; }
-        public string NoticeUrl { get; set; }
 
         public FrontEndReqMsg()
         {
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
-            NoticeUrl = "";
         }
 
         public override string GetSignature()

@@ -6,11 +6,6 @@ namespace Agp2p.Core.Message.PayApiMsg
 {
     public class BaseReqMsg : ITinyMessage
     {
-        public const string MerchantCode = "";
-        public const string Key = "";
-        public const string TestApiUrl = "";
-        public const string ApiUrl = "";
-
         public int Api { get; set; }
         public string ApiInterface { get; set; }
         public string RequestId { get; set; }

@@ -28,16 +28,19 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
             PassThrough = passThrough;
+
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
-            ApiInterface = TestApiUrl + "user/webBankRecharge_toRecharge";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/webBankRecharge_toRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + Sum  +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum  +
                 SuccessReturnUrl + FailReturnUrl  + PayType + SubledgerList);
         }
 
@@ -46,14 +49,14 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
                 {"payType", PayType},
                 {"subledgerList", SubledgerList},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);

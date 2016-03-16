@@ -22,23 +22,23 @@ namespace Agp2p.Core.Message.PayApiMsg
             BidRequestId = bidRequestId;
             WithdrawalFund = withdrawalFund;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CoPro : (int) Agp2pEnums.SumapayApiEnum.CaPro;
-            ApiInterface = TestApiUrl + (collective ? "main/CollectiveFinance_withdrawal" : "main/TransactionForFT_withdrawal");
+            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_withdrawal" : "main/TransactionForFT_withdrawal");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + ProjectCode + BidRequestId + Sum +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode + BidRequestId + Sum +
                                                WithdrawalFund + NoticeUrl);
         }
 
         public override string GetPostPara()
         {
             var postStr =
-                $"requestId={RequestId}&merchantCode={MerchantCode}&projectCode={ProjectCode}&sum={Sum}&bidRequestId={BidRequestId}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&projectCode={ProjectCode}&sum={Sum}&bidRequestId={BidRequestId}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
             if (!string.IsNullOrEmpty(WithdrawalFund)) postStr += $"&withdrawalFund={WithdrawalFund}";
             return postStr;
         }

@@ -1,4 +1,5 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 个人网银充值响应
@@ -16,22 +17,15 @@
         public string BankAccount { get; set; }//银行账号
         public string BankName { get; set; }//银行名称
         public string Name { get; set; }//用户姓名
-        public bool Quick { get; set; }
 
-        public RechargeRespMsg(string requestId, string result, string responseContent, bool quick = false) : base(requestId, result, responseContent)
+        public RechargeRespMsg()
         {
-            //根据报文的json数据构造
-            Quick = quick;
+
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity + UserBalance);
         }
     }
 }

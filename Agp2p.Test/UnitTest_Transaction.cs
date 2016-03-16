@@ -325,7 +325,7 @@ namespace Agp2p.Test
         {
             //1.请求前台接口
             //1.1发送请求
-            var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "", "0");
+            var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "0");
             MessageBus.Main.Publish(msgReq);
             //正式请求时，进行如下异步调用
             //MessageBus.Main.PublishAsync(msgReq, s =>
@@ -341,12 +341,11 @@ namespace Agp2p.Test
                 result = "00000",
                 status = (int)Agp2pEnums.SumapayResponseEnum.Return,
                 response_time = DateTime.Now,
-                response_content = "content"
+                response_content = "{request:'" + msgReq.RequestId + "',result:'00000'}"
             };
             context.li_pay_response_log.InsertOnSubmit(responseLog);
             //1.3发送响应消息
-            var respMsg = new UserRegisterRespMsg(responseLog.request_id, responseLog.result,
-                responseLog.response_content);
+            var respMsg = BaseRespMsg.NewInstance<UserRegisterRespMsg>(responseLog.response_content);
             MessageBus.Main.PublishAsync(respMsg,
                 s =>
                 {
@@ -356,12 +355,19 @@ namespace Agp2p.Test
                         req.complete_time = DateTime.Now;
                         req.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
 
-                        responseLog.user_id = respMsg.UserId;
+                        responseLog.user_id = respMsg.UserIdIdentity;
                         responseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
                     }
                     context.SubmitChanges();
                     Assert.IsTrue(s.IsCompleted);
                 });
+        }
+
+        [TestMethod]
+        public void TestSumapay()
+        {
+            var userResp = BaseRespMsg.NewInstance<UserRegisterRespMsg>("{requestId:'aaa',result:'000000',userIdIdentity:'1030',userId:'111',name:'罗明星'}");
+            Assert.IsNotNull(userResp);
         }
     }
 }

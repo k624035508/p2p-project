@@ -27,18 +27,21 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectSum = projectSum;
             ProjectDescription = projectDescription;
             GiftFlag = giftFlag;
-            Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CoBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
-            ApiInterface = TestApiUrl + (collective ? "user/collectiveBid_toCollectiveBid" : "user/manualBid_toManualBid");
+            Api = collective ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
+            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveBid_toCollectiveBid" : "user/manualBid_toManualBid");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
+
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
-                SuccessReturnUrl + FailReturnUrl + NoticeUrl);
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
+                SuccessReturnUrl + FailReturnUrl + SumapayConfig.NoticeUrl);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -46,13 +49,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
                 {"projectCode", ProjectCode},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription", ProjectDescription);

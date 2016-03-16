@@ -15,16 +15,19 @@ namespace Agp2p.Core.Message.PayApiMsg
         {
             UserId = userId;
             ProjectCode = projectCode;
+
             Api = (int)Agp2pEnums.SumapayApiEnum.ClRep;
-            ApiInterface = TestApiUrl + "user/cancelAutoRepay_toCancelAutoRepay";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoRepay_toCancelAutoRepay";
             RequestId = Agp2pEnums.SumapayApiEnum.ClRep.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProjectCode + SuccessReturnUrl + FailReturnUrl);
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + SuccessReturnUrl + FailReturnUrl);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -32,12 +35,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             return new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"projectCode", ProjectCode},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
         }

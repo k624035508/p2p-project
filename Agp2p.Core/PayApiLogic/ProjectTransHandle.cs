@@ -42,22 +42,22 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //更新流水信息
-
-                            
-                            //检查用户资金信息
+                            //TODO 更新流水信息 投标 检查用户资金信息
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -80,19 +80,22 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.BidRequestId);
                         if (trans != null)
                         {
-                            //撤销投资
+                            //TODO 撤销投资
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -115,19 +118,22 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //流标
+                            //TODO 流标
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -150,19 +156,26 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //放款
+                            //TODO　放款
+                            if (!msg.Sync)
+                            {
+                                
+                            }
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -185,19 +198,22 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //还款
+                            //TODO 还款
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -220,19 +236,22 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //回款
+                            //TODO 回款
 
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -255,17 +274,21 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
+                            //TODO 债权转让
 
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
     }

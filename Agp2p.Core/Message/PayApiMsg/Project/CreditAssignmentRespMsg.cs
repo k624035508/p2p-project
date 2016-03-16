@@ -12,20 +12,14 @@
         public string MainAccountCode { get; set; }//主账户编        
 
 
-        public CreditAssignmentRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
+        public CreditAssignmentRespMsg()
         {
-            //根据报文的json数据构造
 
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId  + Result + AssignmentSum + UserIdIdentity);
         }
     }
 }

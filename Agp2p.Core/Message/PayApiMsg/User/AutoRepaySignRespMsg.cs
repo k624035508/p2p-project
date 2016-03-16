@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Agp2p.Common;
-using TinyMessenger;
-using xBrainLab.Security.Cryptography;
-
+﻿
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
@@ -16,20 +11,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Name { get; set; }//姓名
         public bool Cancel { get; set; }
 
-        public AutoRepaySignRespMsg(string requestId, string result, string responseContent, bool cancel = false) : base(requestId, result, responseContent)
+        public AutoRepaySignRespMsg(bool cancel = false)
         {
-            //根据报文的json数据构造
             Cancel = cancel;
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + Result + UserIdIdentity);
         }
     }
 }

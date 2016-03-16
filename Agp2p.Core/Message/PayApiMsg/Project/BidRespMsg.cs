@@ -1,4 +1,5 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 个人投标/自动投标项目响应
@@ -11,23 +12,20 @@
         public string RemainInvestmentSum { get; set; }//剩余可投金额
         public string ProtocolCode { get; set; }//自动投标授权协议号
 
-        public BidRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
-        {
-            //根据报文的json数据构造
-            
+        public BidRespMsg()
+        { 
         }
 
         public override bool CheckSignature()
         {
-            //TODO 根据协议号ProtocolCode分开自动投标与手动投标验证
-
-
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            if (string.IsNullOrEmpty(ProtocolCode))
+            {
+                return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity);
+            }
+            else
+            {
+                return base.CheckSignature(RequestId + Result + Sum + ProtocolCode);
+            }
         }
     }
 }

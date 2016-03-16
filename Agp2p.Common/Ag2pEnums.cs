@@ -782,7 +782,7 @@ namespace Agp2p.Common
             [Description("投标普通项目")]
             MaBid = 12,
             [Description("投标集合项目")]
-            CoBid = 13,
+            McBid = 13,
             [Description("自动投标普通项目")]
             AmBid = 14,
             [Description("自动投标集合项目")]

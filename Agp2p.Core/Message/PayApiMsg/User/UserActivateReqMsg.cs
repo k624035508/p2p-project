@@ -17,14 +17,14 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserId = userId;
             PayType = payType;
             Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
-            ApiInterface = TestApiUrl + "user/activate_toActivate";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/activate_toActivate";
             RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
-            return hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
+            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
                                            PayType);
         }
 
@@ -33,12 +33,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             return new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"payType", PayType},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
         }

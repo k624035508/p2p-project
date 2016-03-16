@@ -27,16 +27,16 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectDescription = projectDescription;
             GiftFlag = giftFlag;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.BcRep : (int) Agp2pEnums.SumapayApiEnum.BaRep;
-            ApiInterface = TestApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
+            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProjectCode + Sum  + PayType +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  + PayType +
                 SuccessReturnUrl + FailReturnUrl);
         }
 
@@ -45,14 +45,14 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"projectCode ", ProjectCode},
                 {"sum", Sum},
                 {"payType ", PayType},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription ", ProjectDescription);

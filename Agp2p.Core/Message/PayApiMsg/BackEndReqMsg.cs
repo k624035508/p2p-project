@@ -13,7 +13,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public BackEndReqMsg()
         {
-            NoticeUrl = "";
+            NoticeUrl = SumapayConfig.NoticeUrl;
         }
 
         public override string GetSignature()

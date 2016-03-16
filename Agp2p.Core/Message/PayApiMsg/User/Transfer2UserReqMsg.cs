@@ -19,21 +19,21 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserAccountType = userAccountType;
             Sum = sum;
             Api = (int) Agp2pEnums.SumapayApiEnum.TranU;
-            ApiInterface = TestApiUrl + "main/TransferFundForFT_transferToUser";
+            ApiInterface = SumapayConfig.NoticeUrl + "main/TransferFundForFT_transferToUser";
             RequestId = Agp2pEnums.SumapayApiEnum.TranU.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + UserAccountType + Sum + NoticeUrl);
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + UserAccountType + Sum + NoticeUrl);
         }
 
         public override string GetPostPara()
         {
             var postStr =
-                $"requestId={RequestId}&merchantCode={MerchantCode}&userIdIdentity={UserId}&sum={Sum}&userAccountType={UserAccountType}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userIdIdentity={UserId}&sum={Sum}&userAccountType={UserAccountType}&signature={GetSignature()}";
             if (!string.IsNullOrEmpty(NoticeUrl)) postStr += $"&noticeUrl={NoticeUrl}";
             return postStr;
         }

@@ -14,10 +14,52 @@ namespace Agp2p.Core.PayApiLogic
     {
         internal static void DoSubscribe()
         {
+            MessageBus.Main.Subscribe<UserRealNameAuthRespMsg>(UserRealNameAuth);
             MessageBus.Main.Subscribe<UserRegisterRespMsg>(UserRegister);
             MessageBus.Main.Subscribe<AutoBidSignRespMsg>(AutoBidSign);
             MessageBus.Main.Subscribe<AutoRepaySignRespMsg>(AutoRepaySign);
             MessageBus.Main.Subscribe<Transfer2UserRespMsg>(Transfer2User);
+        }
+
+        /// <summary>
+        /// 实名验证处理
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void UserRealNameAuth(UserRealNameAuthRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的平台账户，更新用户信息
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
+                        if (user != null)
+                        {
+                            if (msg.Status.Equals("0"))
+                            {
+                                user.token = msg.Token;
+                                user.real_name = msg.UserName;
+                                user.id_card_number = msg.IdNumber;
+                                context.SubmitChanges();
+                            }
+                            else
+                            {
+                                msg.Remarks = "身份证与姓名不一致";
+                            }
+                            msg.HasHandle = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
         }
 
         /// <summary>
@@ -36,20 +78,23 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
                         if (user != null)
                         {
-                            user.identity_id = msg.IdentityId;
+                            user.identity_id = msg.UserId;
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -69,12 +114,16 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
                         if (user != null)
                         {
                             user.protocolCode = !msg.Cancel ? msg.ProtocolCode : null;
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
                         }
                     }
                 }
@@ -82,8 +131,7 @@ namespace Agp2p.Core.PayApiLogic
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -103,35 +151,16 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
                         if (user != null)
                         {
-                            if (msg.Cancel)
-                            {
-                                user.autoRepay = null;
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrEmpty(msg.BankAccount))
-                                {
-                                    user.autoRepay = JsonHelper.ObjectToJSON(new
-                                    {
-                                        type = "Bank",
-                                        msg.BankAccount,
-                                        msg.BankName,
-                                        msg.Name
-                                    });
-                                }
-                                else
-                                {
-                                    user.autoRepay = JsonHelper.ObjectToJSON(new
-                                    {
-                                        type = "Account"
-                                    });
-                                }
-                            }
+                            user.autoRepay = msg.Cancel ? null : "true";
                             context.SubmitChanges();
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
                         }
                     }
                 }
@@ -139,8 +168,7 @@ namespace Agp2p.Core.PayApiLogic
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -160,20 +188,23 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserId);
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
                         if (user != null)
                         {
-                            
+                            //TODO 付款
                             
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
     }

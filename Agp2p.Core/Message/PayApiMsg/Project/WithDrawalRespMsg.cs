@@ -1,4 +1,6 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿using Agp2p.Core.PayApiLogic;
+
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 个人撤标项目响应
@@ -12,20 +14,14 @@
         public string RemainInvestmentSum { get; set; }//剩余可投金额
         
 
-        public WithDrawalRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
+        public WithDrawalRespMsg()
         {
-            //根据报文的json数据构造
-            
+
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + ProjectCode + BidRequestId + WithdrawalFund + Result);
         }
     }
 }

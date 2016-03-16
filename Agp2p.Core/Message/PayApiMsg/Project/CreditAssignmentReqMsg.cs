@@ -41,15 +41,17 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountCode = mainAccountCode;
 
             Api =  (int) Agp2pEnums.SumapayApiEnum.CreAs;
-            ApiInterface = TestApiUrl + "user/creditAssignment_toCreditAssignment";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/creditAssignment_toCreditAssignment";
             RequestId = Agp2pEnums.SumapayApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + ProjectCode + OriginalRequestId +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
                                                OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
                                                SuccessReturnUrl + FailReturnUrl);
         }
@@ -59,7 +61,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"projectCode", ProjectCode},
                 {"originalRequestId", ProjectCode},
@@ -70,7 +72,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"subledgerList", ProjectCode},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription", ProjectDescription);

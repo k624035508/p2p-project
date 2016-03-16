@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Agp2p.Common;
-using TinyMessenger;
-using xBrainLab.Security.Cryptography;
-
-namespace Agp2p.Core.Message.PayApiMsg
+﻿namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 单笔付款至个人用户账户响应
@@ -18,19 +12,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool InAccountFrozenBalance { get; set; }//转入账户冻结余额
         public bool InAccountUnsettledBalance { get; set; }//未结金额
 
-        public Transfer2UserRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
+        public Transfer2UserRespMsg()
         {
-            //根据报文的json数据构造
+        
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + Result + Sum + OutAccountBalance + InAccountBalance);
         }
     }
 }

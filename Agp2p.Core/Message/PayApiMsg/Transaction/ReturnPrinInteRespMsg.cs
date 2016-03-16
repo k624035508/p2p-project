@@ -14,20 +14,22 @@
         public string DealTime { get; set; }//处理时间   
         public bool Sync { get; set; }//同步标识
 
-        public ReturnPrinInteRespMsg(string requestId, string result, string responseContent, bool sync = false) : base(requestId, result, responseContent)
+        public ReturnPrinInteRespMsg(bool sync = false)
         {
-            //根据报文的json数据构造
             Sync = sync;
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            if (Sync)
+            {
+                return base.CheckSignature(RequestId + ProjectCode + Result );
+            }
+            else
+            {
+                return base.CheckSignature(RequestId + ProjectCode + Result + AccountBalance);
+            }
+            
         }
     }
 }
