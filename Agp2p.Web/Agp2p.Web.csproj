@@ -98,8 +98,8 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -569,9 +569,8 @@
     <Content Include="scripts\fullpage\vendors\jquery.slimscroll.min.js" />
     <Content Include="admin\predict\predict-table.jsx" />
     <Content Include="download\android-v1.0.apk" />
-    <None Include="scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="scripts\jquery-2.1.4.js" />
-    <Content Include="scripts\jquery-2.1.4.min.js" />
+    <Content Include="scripts\jquery-2.2.1.js" />
+    <Content Include="scripts\jquery-2.2.1.min.js" />
     <Content Include="scripts\jquery.signalR-2.2.0.js" />
     <Content Include="scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="scripts\jquery\jquery-1.10.2.min.js" />
@@ -1222,7 +1221,6 @@
     <Content Include="templates\weChat\less\mycard.less" />
     <Content Include="templates\weChat\less\forgot_password.less" />
     <Content Include="templates\weChat\less\invest-record.less" />
-    <Content Include="scripts\jquery-2.1.4.min.map" />
     <Content Include="templates\weChat\pwatch.bat" />
     <Content Include="templates\AnGuang\components\share.jsx" />
     <Content Include="templates\AnGuang\less\share.less" />
@@ -1231,6 +1229,7 @@
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
+    <Content Include="scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

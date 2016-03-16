@@ -163,9 +163,9 @@ namespace Agp2p.Core
             {
                 if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
                 {
-                    // 如果昨日整日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
+                    // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
                     var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
-                    return claim.GetStatusByTime(checkPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                    return claim.createTime < checkPoint;
                 }
                 return false;
             }

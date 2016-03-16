@@ -12,8 +12,6 @@ using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Test
 {

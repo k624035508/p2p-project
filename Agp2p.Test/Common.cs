@@ -152,6 +152,41 @@ namespace Agp2p.Test
             SetSystemTime(realNow);
         }
 
+        public static void PublishHuoqiProject(string projectName, decimal financingAmount = 1000000, decimal profitingYearly = 3.3m)
+        {
+            var context = new Agp2pDataContext();
+            var now = DateTime.Now;
+
+            var loaner = context.li_loaners.Single(l => l.dt_users.real_name == "杨长岭");
+            var huoqiCategory = context.dt_article_category.Single(c => c.call_index == "huoqi");
+            var project = new li_projects
+            {
+                li_risks = new li_risks
+                {
+                    last_update_time = now,
+                    li_loaners = loaner
+                },
+                category_id = huoqiCategory.id,
+                type = (int)Agp2pEnums.LoanTypeEnum.Company,
+                sort_id = 99,
+                add_time = now,
+                publish_time = now,
+                make_loan_time = now,
+                user_name = "unitTest",
+                title = projectName,
+                no = projectName,
+                financing_amount = financingAmount,
+                repayment_term_span_count = 1,
+                repayment_term_span = (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day,
+                repayment_type = (int?)Agp2pEnums.ProjectRepaymentTypeEnum.HuoQi,
+                profit_rate_year = profitingYearly,
+                status = (int)Agp2pEnums.ProjectStatusEnum.Financing,
+            };
+            context.li_projects.InsertOnSubmit(project);
+
+            context.SubmitChanges();
+        }
+
         public static void PublishProject(string projectName, int repayDays, decimal financingAmount, decimal profitingYearly)
         {
             var context = new Agp2pDataContext();
@@ -159,7 +194,7 @@ namespace Agp2p.Test
 
             var loaner = context.li_loaners.Single(l => l.dt_users.real_name == "杨长岭");
             var ypbCategory = context.dt_article_category.Single(c => c.call_index == "ypb");
-            var projectA = new li_projects
+            var project = new li_projects
             {
                 li_risks = new li_risks
                 {
@@ -182,7 +217,7 @@ namespace Agp2p.Test
                 profit_rate_year = profitingYearly,
                 status = (int)Agp2pEnums.ProjectStatusEnum.Financing,
             };
-            context.li_projects.InsertOnSubmit(projectA);
+            context.li_projects.InsertOnSubmit(project);
 
             context.SubmitChanges();
         }

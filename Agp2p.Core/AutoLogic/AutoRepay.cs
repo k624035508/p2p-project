@@ -18,7 +18,7 @@ namespace Agp2p.Core.AutoLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
 
-            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，没有人接手的，由公司接手
+            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，由公司账号接手
             MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime, DateTime.Now)); // 活期项目提现的执行
         }
 
@@ -41,28 +41,8 @@ namespace Agp2p.Core.AutoLogic
                 if (companyUsers.Sum(u => u.li_wallets.idle_money) < needTransferClaims.Sum(c => c.principal))
                     throw new InvalidOperationException("警告：公司账号的金额不足以接手需要转让的债权");
 
-                ClaimTakeOver(context, companyUsers, needTransferClaims.GroupBy(c => c.li_projects1).ToList());
+                context.RecaptureHuoqiClaim(needTransferClaims, DateTime.Now);
                 ts.Complete();
-            }
-        }
-
-        private static void ClaimTakeOver(Agp2pDataContext context, List<dt_users> companyUsers, List<IGrouping<li_projects, li_claims>> claimsByHuoqiProject, decimal groupAlreadyInvest = 0)
-        {
-            if (!claimsByHuoqiProject.Any()) return;
-            var investor = companyUsers.First();
-            var headClaimsGroup = claimsByHuoqiProject.First();
-
-            var needTransferAmount = headClaimsGroup.Sum(c => c.principal) - groupAlreadyInvest;
-            var willInvestAmount = investor.li_wallets.idle_money;
-            if (needTransferAmount <= willInvestAmount)
-            {
-                context.TakeOverHuoqiProject(investor, headClaimsGroup.Key, needTransferAmount);
-                ClaimTakeOver(context, companyUsers, claimsByHuoqiProject.Skip(1).ToList());
-            }
-            else
-            {
-                context.TakeOverHuoqiProject(investor, headClaimsGroup.Key, willInvestAmount);
-                ClaimTakeOver(context, companyUsers.Skip(1).ToList(), claimsByHuoqiProject, groupAlreadyInvest + willInvestAmount);
             }
         }
 
