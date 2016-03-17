@@ -845,6 +845,17 @@
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
+    <Content Include="templates\AnGuang\imgs\loan\checking-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\failed-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\forbid-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-finish-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-finish.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\loan.png" />
+    <Content Include="templates\AnGuang\imgs\loan\login.png" />
+    <Content Include="templates\AnGuang\imgs\loan\next-icon.png" />
+    <Content Include="templates\AnGuang\imgs\loan\personal-info-grey.png" />
+    <Content Include="templates\AnGuang\imgs\loan\personal-info.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
@@ -952,12 +963,15 @@
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\help.js" />
+    <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
+    <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
+    <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -1230,6 +1244,7 @@
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
+    <Content Include="templates\AnGuang\less\loan.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
