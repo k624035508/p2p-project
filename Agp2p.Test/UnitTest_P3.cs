@@ -28,7 +28,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 14); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 17); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -129,7 +129,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void DoCleanUp()
         {
-            Common.DoSimpleCleanUp(new DateTime(2016, 03, 14, 8, 30, 00));
+            Common.DoSimpleCleanUp(new DateTime(2016, 03, 17, 8, 30, 00));
             Common.RestoreDate(realDate);
         }
     }

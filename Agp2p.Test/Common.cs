@@ -302,5 +302,13 @@ namespace Agp2p.Test
 
             context.SubmitChanges();
         }
+
+        public static void HuoqiProjectWithdraw(string projectName, string userName, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.Single(p => p.title == projectName);
+            var user = context.dt_users.Single(u => u.user_name == userName);
+            context.HuoqiProjectWithdraw(user.id, project.id, amount);
+        }
     }
 }
