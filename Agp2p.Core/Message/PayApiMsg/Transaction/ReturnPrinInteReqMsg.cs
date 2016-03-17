@@ -18,7 +18,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编码
         public bool Collective { get; set; }//集合项目标识
 
-        public ReturnPrinInteReqMsg(int userId, string sum, string payType, string subledgerList, string mainAccountType, string mainAccountCode, bool collective = false)
+        public ReturnPrinInteReqMsg(int userId, string sum, string subledgerList, string payType = "0", string mainAccountType = "", string mainAccountCode = "",  bool collective = false)
         {
             UserId = userId;
             Sum = sum;

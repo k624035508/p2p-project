@@ -30,6 +30,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
+
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()

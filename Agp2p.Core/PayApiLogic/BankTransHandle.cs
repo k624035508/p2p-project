@@ -37,9 +37,13 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //TODO 更新流水信息 平台账户充值 检查用户资金信息
+                            if (trans.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                            {
+                                context.ConfirmBankTransaction(trans.id, null);
+                                //TODO 检查用户资金信息
 
-                            msg.HasHandle = true;
+                                msg.HasHandle = true;
+                            }
                         }
                         else
                         {
@@ -73,14 +77,14 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //TODO 更新流水信息 提现 检查用户资金信息
+                            //异步返回的结果才是充值已到账
                             if (!msg.Sync)
                             {
-                                
-                            }
+                                context.ConfirmBankTransaction(trans.id, null);
+                                //TODO 检查用户资金信息
 
-                            context.SubmitChanges();
-                            msg.HasHandle = true;
+                                msg.HasHandle = true;
+                            }
                         }
                         else
                         {

@@ -210,6 +210,7 @@ namespace Agp2p.Core
 
                 //添加充值手续费
                 //汇潮支付
+                //TODO 丰付支付手续费 按收费配置收取手续费 
                 if (tr.pay_api != null && (tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ || tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.Ecpss))
                 {
                     var rechangerFee = new li_company_inoutcome()
@@ -1437,20 +1438,6 @@ namespace Agp2p.Core
         public static bool IsHuoqiProject(this li_projects p)
         {
             return p.dt_article_category.call_index == "huoqi";
-        }
-
-        /// <summary>
-        /// 查询借款人可用额度
-        /// </summary>
-        /// <param name="loanerId"></param>
-        /// <returns></returns>
-        public static int QueryLoanerQuota(this Agp2pDataContext context,  li_loaners loaner)
-        {
-            return loaner.quota -
-                   (int)
-                       context.li_projects.Where(
-                           l => l.li_risks.li_loaners != null && l.li_risks.li_loaners.id == loaner.id)
-                           .Sum(l => l.financing_amount);
         }
     }
 }

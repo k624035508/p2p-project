@@ -5,6 +5,7 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using System.Web.UI.WebControls;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
@@ -28,7 +29,13 @@ namespace Agp2p.Core.AutoLogic
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
 
-            shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
+            //shouldRepayTask.ForEach(ta => context.ExecuteRepaymentTask(ta.id));
+            shouldRepayTask.ForEach(ta =>
+            {
+                //调用托管本息到账接口,在本息到账异步响应中执行还款计划 TODO 个人本息明细写在分账列表字段中
+                MessageBus.Main.PublishAsync(new ReturnPrinInteReqMsg(ta.li_projects.li_risks.li_loaners.user_id, (ta.repay_principal + ta.repay_interest).ToString("N"), "分账列表"));
+            });
+
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
             SendRepayNotice(shouldRepayTask, context);
         }

@@ -18,7 +18,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool Collective { get; set; }//集合项目标识
 
         public ManualBidReqMsg(int userId, string projectCode, string sum, string projectSum, string projectDescription,
-            string subledgerList, string giftFlag = "0", bool collective = false)
+            string subledgerList = "", string giftFlag = "0", bool collective = false)
         {
             UserId = userId;
             ProjectCode = projectCode;

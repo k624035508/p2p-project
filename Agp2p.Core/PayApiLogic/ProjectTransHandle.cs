@@ -42,10 +42,8 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //TODO 更新流水信息 投标 检查用户资金信息
-
-
-                            context.SubmitChanges();
+                            //TODO 检查用户资金信息
+                            context.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
                             msg.HasHandle = true;
                         }
                         else
@@ -80,10 +78,7 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.BidRequestId);
                         if (trans != null)
                         {
-                            //TODO 撤销投资
-
-
-                            context.SubmitChanges();
+                            context.Refund(trans.id);
                             msg.HasHandle = true;
                         }
                         else
@@ -118,10 +113,7 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //TODO 流标
-
-
-                            context.SubmitChanges();
+                            context.ProjectFinancingFail(pro.id);
                             msg.HasHandle = true;
                         }
                         else
@@ -156,15 +148,11 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //TODO　放款
                             if (!msg.Sync)
                             {
-                                
+                                context.StartRepayment(pro.id);
+                                msg.HasHandle = true;
                             }
-
-
-                            context.SubmitChanges();
-                            msg.HasHandle = true;
                         }
                         else
                         {
@@ -236,10 +224,9 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //TODO 回款
+                            //找出项目对应的当日还款计划
 
-
-                            context.SubmitChanges();
+                            //context.ExecuteRepaymentTask()
                             msg.HasHandle = true;
                         }
                         else
