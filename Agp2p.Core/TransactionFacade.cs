@@ -1727,7 +1727,7 @@ namespace Agp2p.Core
                         accept_user_name = user.user_name,
                         title = "续投活期项目失败",
                         content =
-                            $"由于活期债权不足，只能帮您进行了本金为 {maxInvestingAmount.ToString("c")} 的活期项目续投，其余未能续投的部分本金 {investingMoney.ToString("c")} 已经退回到您的账号，请查收。",
+                            $"由于活期债权不足，只能帮您进行了本金为 {maxInvestingAmount.ToString("c")} 的活期项目续投，其余未能续投的部分本金 {(investingMoney - maxInvestingAmount).ToString("c")} 已经退回到您的账号，请查收。",
                         post_user_name = "",
                         post_time = moment,
                         receiver = user.id
@@ -1755,7 +1755,7 @@ namespace Agp2p.Core
                 {
                     dt_users = wallet.dt_users,
                     li_projects = huoqiProject,
-                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.Invest,
+                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest,
                     principal = maxInvestingAmount,
                     status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     create_time = wallet.last_update_time, // 时间应该一致
@@ -1767,9 +1767,11 @@ namespace Agp2p.Core
                 context.li_project_transactions.InsertOnSubmit(tr);
 
                 // 修改钱包历史
-                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims);
+                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.AutoInvest);
                 his.li_project_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
+
+                ApportionToClaims(context, investableClaims, maxInvestingAmount, tr, wallet.last_update_time);
             }
             else
             {

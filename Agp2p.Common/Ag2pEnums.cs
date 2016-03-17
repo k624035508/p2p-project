@@ -306,6 +306,8 @@ namespace Agp2p.Common
             AgentGainPaidInterest = 8,
             [Description("中间人收回活期债权")]
             AgentRecaptureHuoqiClaims = 9,
+            [Description("自动续投")]
+            AutoInvest = 10,
         }
 
         /// <summary>
@@ -389,6 +391,8 @@ namespace Agp2p.Common
             AgentGainPaidInterest = 28,
             [Description("中间人收回活期债权")]
             AgentRecaptureHuoqiClaims = 29,
+            [Description("自动续投")]
+            AutoInvest = 30,
 
             [Description("获得金钱待确认")]
             Gaining = 40,

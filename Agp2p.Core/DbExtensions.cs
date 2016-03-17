@@ -166,7 +166,8 @@ namespace Agp2p.Core
                 {
                     // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
                     var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
-                    return claim.createTime < checkPoint;
+                    return claim.createTime < checkPoint ||
+                           claim.li_project_transactions1.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest; // 自动续投的话会产生收益
                 }
                 return false;
             }

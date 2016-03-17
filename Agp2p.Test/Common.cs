@@ -82,6 +82,8 @@ namespace Agp2p.Test
 
                 var preDelClaims = p.li_claims.Where(c => deleteAfter < c.createTime).ToList();
                 context.li_claims.DeleteAllOnSubmit(preDelClaims);
+
+                context.li_risks.DeleteOnSubmit(p.li_risks);
             });
             context.li_projects.DeleteAllOnSubmit(preDelProj);
 
