@@ -289,6 +289,7 @@ div.announcement-wrap {
     margin-bottom: 10px;
     background: #cdcdcd;
     .progress-bar {
+        transition:width 1.5s;
         line-height: 14px;
         background-color: #38aaf0 !important;
     }
@@ -305,11 +306,13 @@ a.invest-btn-red {
     color: @white;
     background: @red;
     text-decoration: none;
+    &:hover{background:#f0323c;}
 }
 a.invest-btn-grey {
     color: @dark-grey;
     background: @light-grey;
     text-decoration: none;
+    &:hover{background:#cdcdcd;}
 }
 /*新手标*/
 .new-hand {
@@ -381,6 +384,7 @@ a.invest-btn-grey {
                 }
                  .status-icon {
                      position: absolute;
+                   
                      margin-left: 345px;
                      margin-top: -30px;
                      width: 73px;
@@ -395,6 +399,7 @@ a.invest-btn-grey {
                 padding: 45px 50px 0 230px;
                 cursor: pointer;
                 background: url("@{images}/apps-bg.png") no-repeat center;
+                transition:padding-left .3s;
                 p {
                     width: 165px;
                     color: @white;
@@ -407,8 +412,8 @@ a.invest-btn-grey {
                     }
                 }
                 &:hover{
-                    padding-left:220px;
-                    transition:padding-left .3s
+                    padding-left:225px;
+                    
                 }
             }
         }
@@ -518,6 +523,9 @@ a.invest-btn-grey {
         .geometry-icon {
             background: url("@{images}/tianyingbao-geo.png") no-repeat center;
         }
+        a{transition:margin-top .3s; height:30px; text-align:center;
+        &:hover{background-color:#46b4eb; border:none; margin-top:15px;}
+        }
     }
     .tender-right {
         .tender-cell {
@@ -535,6 +543,9 @@ a.invest-btn-grey {
         .geometry-icon {
             background: url("@{images}/yinpiaobao-geo.png") no-repeat center;
         }
+        a{transition:margin-top .3s; height:30px; text-align:center;
+         &:hover{background-color:#3796e6; border:none; margin-top:15px;}
+         }
     }
     .tender-right {
         .tender-cell {
