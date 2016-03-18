@@ -286,7 +286,6 @@ namespace Agp2p.Test
             var user = context.dt_users.Single(u => u.user_name == userName);
             var preWithdrawClaim = project.li_claims.Where(c => c.userId == user.id && c.principal == amount).AsEnumerable().Single(c => c.IsProfiting());
             TransactionFacade.StaticProjectWithdraw(context, preWithdrawClaim.id);
-            context.SubmitChanges();
         }
 
         public static void BuyClaim(string projectName, string userName, decimal amount)

@@ -1661,14 +1661,14 @@ namespace Agp2p.Core
                 pro.complete_time = repaymentTask.repay_at;
                 context.SubmitChanges();
 
-                AutoInvestAfterProjectCompleted(pro.id);
+                ContinueInvestAfterProjectCompleted(pro.id);
 
                 // 广播项目完成的消息
                 MessageBus.Main.PublishAsync(new ProjectRepayCompletedMsg(pro.id, repaymentTask.repay_at.Value));
             }
         }
 
-        private static void AutoInvestAfterProjectCompleted(int projectId)
+        private static void ContinueInvestAfterProjectCompleted(int projectId)
         {
             using (var ts = new TransactionScope())
             {

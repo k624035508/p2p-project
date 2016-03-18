@@ -770,5 +770,17 @@ namespace Agp2p.Common
             [Description("禁用")]
             Disable = 20
         }
+
+        public enum ClaimQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益中")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已结束")]
+            Completed = 3,
+        }
     }
 }
