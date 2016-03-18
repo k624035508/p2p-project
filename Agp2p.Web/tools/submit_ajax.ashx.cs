@@ -2153,6 +2153,7 @@ namespace Agp2p.Web.tools
                             context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");
                         else*/
                     //context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
+
                     //投标前调用托管接口确认投标，在投标异步响应中执行投标行为 TODO 项目总额、项目描述
                     ManualBidReqMsg msg = new ManualBidReqMsg(user.id, projectId.ToString(), investingMoney.ToString("n"), "projectSum", "projectDes");
                     MessageBus.Main.PublishAsync(msg, result =>

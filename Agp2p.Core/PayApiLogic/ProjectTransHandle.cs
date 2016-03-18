@@ -225,9 +225,20 @@ namespace Agp2p.Core.PayApiLogic
                         if (pro != null)
                         {
                             //找出项目对应的当日还款计划
-
-                            //context.ExecuteRepaymentTask()
-                            msg.HasHandle = true;
+                            var shouldRepayTask = context.li_repayment_tasks.SingleOrDefault(t =>
+                                                        t.project == pro.id &&
+                                                        t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                                                        t.should_repay_time.Date == DateTime.Today);
+                            if (shouldRepayTask != null)
+                            {
+                                context.ExecuteRepaymentTask(shouldRepayTask.id);
+                                msg.HasHandle = true;
+                            }
+                            else
+                            {
+                                msg.Remarks = "没有找到项目当天的还款计划，项目编号为：" + msg.ProjectCode;
+                            }
+                            
                         }
                         else
                         {
@@ -263,7 +274,6 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             //TODO 债权转让
 
-                            context.SubmitChanges();
                             msg.HasHandle = true;
                         }
                         else

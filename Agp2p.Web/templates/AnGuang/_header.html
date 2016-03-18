@@ -43,7 +43,10 @@
                 <li role="presentation" id="myAccount" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" onclick="location.href = this.getAttribute('href');" href='<%linkurl("usercenter","index")%>'
                         role="button" aria-haspopup="true" aria-expanded="false">
-                        我的账户 <span class="caret"></span></a>
+                        我的账户
+                    <!--<span class="caret"></span>-->
+                        <i class="iconfont">&#xe695;</i>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-custom">
                         <li><a href='<%linkurl("usercenter","index")%>#'>账户总览</a></li>
                         <li><a href='<%linkurl("usercenter","index")%>#/invest-record'>投资记录</a></li>
@@ -54,6 +57,7 @@
                 </li>
                 <li><a href='<%linkurl("safe_defence")%>'>安全保障</a></li>
                 <li><a href='<%linkurl("about")%>'>关于我们</a></li>
+               <!-- <li><a href='<%linkurl("loan")%>'>我要借款</a></li> -->
             </ul>
         </nav>
         <a href='<%linkurl("index")%>'><img src="<%templateskin%>/imgs/index/logo.png" /></a>

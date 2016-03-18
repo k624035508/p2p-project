@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="advert_js.ashx" />
+    <None Include="app.config" />
     <None Include="plugin.config" />
   </ItemGroup>
   <ItemGroup>
