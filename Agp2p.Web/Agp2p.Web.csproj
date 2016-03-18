@@ -1251,6 +1251,7 @@
     <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
     <Content Include="templates\AnGuang\less\agcurrent.less" />
     <Content Include="templates\AnGuang\less\claimstransfer.less" />
+    <Content Include="scripts\jquery-2.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
