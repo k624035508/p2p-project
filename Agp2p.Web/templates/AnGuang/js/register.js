@@ -164,27 +164,6 @@ $(function() {
             });
         }
     });
-  
-    //下一步
-    $("#registerBtn2").click(function(){
-        if (!$("input[type=checkbox]")[0].checked) {
-            alert("请先同意注册协议");
-            return;
-        }
-        $(".steps-list li").eq(1).removeClass("step1").addClass("step2");
-        $(".steps-list li").eq(3).removeClass("step2").addClass("step1");
-        $(".step2-hr").addClass("red-hr").siblings().removeClass("red-hr");
-        $(".tips2").addClass("red-tips").siblings().removeClass("red-tips");
-        $(".form-box").hide();
-        $(".realname2").show();
-        $(".identity2").show();
-        $(".register-btn").hide().eq(1).show();
-        $(".agreement").hide();
-        $(".register-msg").text("实名认证");
-        $("span.pull-right").hide();
-        $("a.skip").show();
-       
-    });
        
     //跳过此步
     $("a.skip").click(function(){
@@ -199,20 +178,36 @@ $(function() {
         $("span.pull-right").hide();
         $(this).hide();
     });
+
     //实名认证
-    $("#registerBtn3").click(function(){
+    $("#realNameAuth").click(function(){
         
-       
-        $(".steps-list li").eq(3).removeClass("step1").addClass("step2");
-        $(".steps-list li").eq(5).removeClass("step3").addClass("step1");
-        $(".step3-hr").addClass("red-hr").siblings().removeClass("red-hr");
-        $(".tips3").addClass("red-tips").siblings().removeClass("red-tips");
-        $(".form-box").hide();
-        $(".register-btn").hide();
-        $(".successRegister").show();
-        $(".register-msg").text("注册账户");
-        $("span.pull-right").hide();
-        $("a.skip").hide();
+        $.ajax({
+            url: "/tools/submit_ajax.ashx?action=bind_idcard",
+            type: "post",
+            dataType: "json",
+            data: {
+                idCardNumber: $("#identity").val(),
+                truename: $("#realname").val()
+            },
+            success: function(data) {
+                //实名验证成功，进入开户步骤
+                $(".steps-list li").eq(3).removeClass("step1").addClass("step2");
+                $(".steps-list li").eq(5).removeClass("step3").addClass("step1");
+                $(".step3-hr").addClass("red-hr").siblings().removeClass("red-hr");
+                $(".tips3").addClass("red-tips").siblings().removeClass("red-tips");
+                $(".form-box").hide();
+                $(".register-btn").hide();
+                $(".successRegister").show();
+                $(".register-msg").text("托管开户");
+                $("span.pull-right").hide();
+                $("a.skip").hide();
+            },
+            error: function(data) {
+                alert("操作超时，请重试");
+            }
+        });
+        
     });
 
     // 注册
@@ -245,7 +240,20 @@ $(function() {
             success: function(data) {
                 alert(data.msg);
                 if (data.status == 1) {
-                    location.href="/";
+                    //注册成功到实名验证步骤
+
+                    $(".steps-list li").eq(1).removeClass("step1").addClass("step2");
+                    $(".steps-list li").eq(3).removeClass("step2").addClass("step1");
+                    $(".step2-hr").addClass("red-hr").siblings().removeClass("red-hr");
+                    $(".tips2").addClass("red-tips").siblings().removeClass("red-tips");
+                    $(".form-box").hide();
+                    $(".realname2").show();
+                    $(".identity2").show();
+                    $(".register-btn").hide().eq(1).show();
+                    $(".agreement").hide();
+                    $(".register-msg").text("实名认证");
+                    $("span.pull-right").hide();
+                    $("a.skip").show();
                 } else {
                 	refreshPicVerifyCode();
                 }

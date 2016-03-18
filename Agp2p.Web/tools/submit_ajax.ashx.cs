@@ -2557,24 +2557,39 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
-                var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
-                if (resultModel != null)
-                {
-                    if (resultModel.Resultcode == "200")
-                    {
-                        var user = licontext.dt_users.Single(u => u.id == model.id);
-                        user.real_name = truename;
-                        user.id_card_number = idcard;
-                        user.address = resultModel.Result.Area;
-                        user.sex = resultModel.Result.Sex;
-                        user.birthday = DateTime.Parse(resultModel.Result.Birthday);                        
-                        licontext.SubmitChanges();
+                //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
+                //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
+                //if (resultModel != null)
+                //{
+                //    if (resultModel.Resultcode == "200")
+                //    {
+                //        var user = licontext.dt_users.Single(u => u.id == model.id);
+                //        user.real_name = truename;
+                //        user.id_card_number = idcard;
+                //        user.address = resultModel.Result.Area;
+                //        user.sex = resultModel.Result.Sex;
+                //        user.birthday = DateTime.Parse(resultModel.Result.Birthday);                        
+                //        licontext.SubmitChanges();
 
-                        context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
-                    }
-                    else
-                        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //        context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
+                //    }
+                //    else
+                //        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //}
+
+                //调用托管平台实名验证接口
+                var msg = new UserRealNameAuthReqMsg(truename, idcard);
+                MessageBus.Main.Publish(msg);
+                //处理实名验证返回结果
+                var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
+                {
+                    context.Response.Write("{\"status\":1,\"token\":" + msgResp.Token + ", \"msg\":\"身份证认证成功！\"}");
+                }
+                else
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                 }
             }
             catch (Exception)

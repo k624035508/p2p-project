@@ -10,6 +10,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     public class BackEndReqMsg : BaseReqMsg
     {
         public string NoticeUrl { get; set; }
+        public string SynResult { get; set; }
 
         public BackEndReqMsg()
         {

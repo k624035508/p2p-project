@@ -29,32 +29,65 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                Agp2pDataContext context = new Agp2pDataContext();
+                //实名验证只有同步返回故需要在这里保存响应日志
+                var respLog = new li_pay_response_log()
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    request_id = msg.RequestId,
+                    result = msg.Result,
+                    status = (int)Agp2pEnums.SumapayResponseEnum.Return,
+                    response_time = DateTime.Now,
+                    response_content = msg.ResponseContent
+                };
+                context.li_pay_response_log.InsertOnSubmit(respLog);
+
+                var requestLog = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
+                if (requestLog != null)
+                {
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
-                        Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
-                        if (user != null)
+                        //检查请求处理结果
+                        if (msg.CheckResult())
                         {
-                            if (msg.Status.Equals("0"))
+                            //查找对应的平台账户，更新用户信息
+                            var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
+                            if (user != null)
                             {
-                                user.token = msg.Token;
-                                user.real_name = msg.UserName;
-                                user.id_card_number = msg.IdNumber;
-                                context.SubmitChanges();
+                                if (msg.Status.Equals("0"))
+                                {
+                                    //更新客户信息
+                                    user.token = msg.Token;
+                                    user.real_name = msg.UserName;
+                                    user.id_card_number = msg.IdNumber;
+                                    //更新响应日志
+                                    respLog.user_id = msg.UserIdIdentity;
+                                    respLog.status = (int) Agp2pEnums.SumapayResponseEnum.Complete;
+                                    //更新请求日志
+                                    requestLog.complete_time = DateTime.Now;
+                                    requestLog.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
+                                    
+                                    msg.HasHandle = true;
+                                }
+                                else
+                                {
+                                    msg.Remarks = "身份证与姓名不一致";
+                                }
                             }
                             else
                             {
-                                msg.Remarks = "身份证与姓名不一致";
+                                msg.Remarks = "无法找到平台账户，用户ID：" + msg.UserIdIdentity;
                             }
-                            msg.HasHandle = true;
                         }
                     }
                 }
+                else
+                {
+                    msg.Remarks = "无法找到对应的请求日志，日志id：" + msg.RequestId;
+                }
+
+                respLog.remarks = msg.Remarks;
+                context.SubmitChanges();
             }
             catch (Exception ex)
             {
