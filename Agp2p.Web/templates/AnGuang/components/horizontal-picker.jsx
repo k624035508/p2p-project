@@ -23,6 +23,7 @@ class HorizontalPicker extends React.Component {
         });
     }
     changeType(type) {
+        if (type == this.state.type) return;
         this.setState({type: type});
         this.props.onTypeChange(type);
     }

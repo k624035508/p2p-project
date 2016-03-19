@@ -25,7 +25,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 14); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 18); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -41,9 +41,9 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // 发 5 日标，金额 60000，A 投 25000
+            // 发 5 日标，金额 60000，B 投 25000
             Common.PublishProject("P2", 5, 60000, 5);
-            Common.InvestProject(UserA, "P2", 25000);
+            Common.InvestProject(UserB, "P2", 25000);
 
             Common.AutoRepaySimulate();
         }
@@ -55,8 +55,8 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // B 投 35000，放款
-            Common.InvestProject(UserB, "P2", 35000);
+            // A 投 35000，放款
+            Common.InvestProject(UserA, "P2", 35000);
             Common.ProjectStartRepay("P2");
 
             Common.AutoRepaySimulate();
@@ -69,8 +69,8 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // B 提现 35000
-            Common.StaticProjectWithdraw("P2", UserB, 35000);
+            // A 提现 35000
+            Common.StaticProjectWithdraw("P2", UserA, 35000);
 
             Common.AutoRepaySimulate();
         }
@@ -112,15 +112,15 @@ namespace Agp2p.Test
             // 回款，总数应为 41.67
             Common.AutoRepaySimulate();
 
-            Common.AssertWalletDelta(UserA, 17.36m, 0, 0, 0, 0, 0, 25000, 17.36m, realDate);
-            Common.AssertWalletDelta(UserB, 4.86m, 0, 0, 0, 0, 0, 35000, 4.86m, realDate);
+            Common.AssertWalletDelta(UserA, 4.86m, 0, 0, 0, 0, 0, 35000, 4.86m, realDate);
+            Common.AssertWalletDelta(UserB, 17.36m, 0, 0, 0, 0, 0, 25000, 17.36m, realDate);
             Common.AssertWalletDelta(CompanyAccount, 19.45m, 0, 0, 0, 0, 0, 35000, 19.45m, realDate);
         }
 
         [TestMethod]
         public void DoCleanUp()
         {
-            Common.DoSimpleCleanUp(new DateTime(2016, 03, 14, 8, 30, 00));
+            Common.DoSimpleCleanUp(new DateTime(2016, 03, 18, 8, 30, 00));
             Common.RestoreDate(realDate);
         }
     }

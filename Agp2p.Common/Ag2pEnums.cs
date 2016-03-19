@@ -298,14 +298,16 @@ namespace Agp2p.Common
             ClaimTransferredOut = 4,
             [Description("债权买入")]
             ClaimTransferredIn = 5,
-            [Description("续投活期失败回款")]
-            AutoInvestFailRepay = 6,
             [Description("活期项目提现")]
-            HuoqiProjectWithdraw = 7,
+            HuoqiProjectWithdraw = 6,
             [Description("中间人垫付利息")]
-            AgentPaidInterest = 8,
+            AgentPaidInterest = 7,
             [Description("中间人收回垫付利息")]
-            AgentGainPaidInterest = 9,
+            AgentGainPaidInterest = 8,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 9,
+            [Description("自动续投")]
+            AutoInvest = 10,
         }
 
         /// <summary>
@@ -381,14 +383,16 @@ namespace Agp2p.Common
             ClaimTransferredIn = 25,
             [Description("债权买入成功")]
             ClaimTransferredInSuccess = 125,
-            [Description("续投活期失败回款")]
-            AutoInvestFailRepaySuccess = 26,
             [Description("活期项目提现")]
-            HuoqiProjectWithdrawSuccess = 27,
+            HuoqiProjectWithdrawSuccess = 26,
             [Description("中间人垫付利息")]
-            AgentPaidInterest = 28,
+            AgentPaidInterest = 27,
             [Description("中间人收回垫付利息")]
-            AgentGainPaidInterest = 29,
+            AgentGainPaidInterest = 28,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 29,
+            [Description("自动续投")]
+            AutoInvest = 30,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -765,6 +769,18 @@ namespace Agp2p.Common
             PendingFail = 11,
             [Description("禁用")]
             Disable = 20
+        }
+
+        public enum ClaimQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益中")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已结束")]
+            Completed = 3,
         }
     }
 }

@@ -153,7 +153,7 @@ namespace Agp2p.Core
             return !historyClaimByTime.li_claims2.Any(c => c.createTime <= moment.Value);
         }
 
-        public static bool IsProfiting(this li_claims claim, DateTime? moment = null)
+        public static bool IsProfiting(this li_claims claim, DateTime? moment = null, bool includeWithdrawing = false)
         {
             // 必须是叶子债权才能收益
             if (!claim.IsLeafClaim(moment))
@@ -161,15 +161,18 @@ namespace Agp2p.Core
 
             if (claim.li_projects1.IsHuoqiProject())
             {
-                if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer
+                    || (includeWithdrawing && claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer))
                 {
-                    // 如果昨日整日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
+                    // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
                     var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
-                    return claim.GetStatusByTime(checkPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+                    return claim.createTime < checkPoint ||
+                           claim.li_project_transactions1.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest; // 自动续投的话会产生收益
                 }
                 return false;
             }
-            return claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+            return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ||
+                   (includeWithdrawing && claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer);
         }
 
         public static bool IsCompanyAccount(this dt_users user)
@@ -219,6 +222,29 @@ namespace Agp2p.Core
             {
                 return claim.li_claims1.GetSourceClaim();
             }
+        }
+
+        public static li_claims GetHistoryClaimByOwner(this li_claims claim, int userId)
+        {
+            if (claim.userId == userId)
+            {
+                return claim;
+            }
+            else
+            {
+                return claim.li_claims1?.GetHistoryClaimByOwner(userId);
+            }
+        }
+
+        public static li_claims GetFirstHistoryClaimByOwner(this li_claims claim, int userId)
+        {
+            var hisClaim = claim.GetHistoryClaimByOwner(userId);
+            var olderClaim = hisClaim.li_claims1?.GetHistoryClaimByOwner(userId);
+            if (olderClaim != null)
+            {
+                return hisClaim != olderClaim ? olderClaim.GetFirstHistoryClaimByOwner(userId) : olderClaim;
+            }
+            return hisClaim;
         }
 
         public static int GetTotalProfitingDays(this li_repayment_tasks task)

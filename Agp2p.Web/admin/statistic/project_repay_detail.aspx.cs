@@ -150,7 +150,7 @@ namespace Agp2p.Web.admin.statistic
                         }
                         else
                         {
-                            profiting = TransactionFacade.GenerateRepayTransactions(r, r.should_repay_time, null, true); // 临时预计收益
+                            profiting = TransactionFacade.GenerateRepayTransactions(r, r.should_repay_time, true); // 临时预计收益
                         }
                         //根据组权限查询数据
                         profiting = profiting.Where(ptr => !canAccessGroups.Any() || canAccessGroups.Contains(ptr.dt_users.group_id)).ToList();
