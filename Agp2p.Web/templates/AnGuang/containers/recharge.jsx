@@ -36,6 +36,23 @@ class RechargePage extends React.Component {
 			return;
 		}
 		$("#waitforPaymentDialog").modal('show');
+
+		$.ajax({
+            type: "post",
+            url: "/tools/submit_ajax.ashx?action=recharge",
+            dataType: "json",
+            data: {
+                rechargeSum: this.state.chargingAmount,
+                bankCode: this.state.selectedBankId,
+                quickPayment: quickPayment
+            },
+            success: function(data){
+                
+            },
+            error: function(xhr, status, err){
+                alert("操作超时，请重试。");
+            }
+        }); 
 	}
 	render() { //我要充值 内容
 		let quickPayment = this.state.selectedBankId == "NOCARD";
@@ -64,9 +81,7 @@ class RechargePage extends React.Component {
 				    <input type="text" value={this.state.chargingAmount} onChange={ev => this.setState({chargingAmount: ev.target.value})}/>
 				</div>
 				<div className="rechargeBtn">
-                <a target="_blank"
-                	href={`/api/payment/ecpss/index.aspx?bankcode=${this.state.selectedBankId}&amount=${this.state.chargingAmount}`}
-                	onClick={ev => this.doCharge(ev)}>确认充值</a></div>
+                <a onClick={ev => this.doCharge(ev)}>确认充值</a></div>
 				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
 				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>

@@ -13,7 +13,6 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string Sum { get; set; }//充值金额
         public string BankCode { get; set; }//银行编码
-        public string BankType { get; set; }//银行类型
         public string BankCardTypeFlag { get; set; }//借贷分离标识
         public string PayType { get; set; }
         public string SubledgerList { get; set; }//分账列表
@@ -21,14 +20,13 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
 
-        public WebRechargeReqMsg(int userId, string sum, string bankCode, string bankType,
-            string payType, string subledgerList, string mainAccountType, string mainAccountCode,
+        public WebRechargeReqMsg(int userId, string sum, string bankCode, string subledgerList, 
+            string payType = "2", string mainAccountType = "", string mainAccountCode = "",
             string bankCardTypeFlag = "0", string passThrough = "")
         {
             UserId = userId;
             Sum = sum;
             BankCode = bankCode;
-            BankType = bankType;
             BankCardTypeFlag = bankCardTypeFlag;
             PayType = payType;
             SubledgerList = subledgerList;

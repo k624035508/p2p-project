@@ -18,8 +18,8 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
 
-        public WhRechargeReqMsg(int userId, string sum, string payType, string subledgerList, 
-            string mainAccountType, string mainAccountCode, string passThrough = "")
+        public WhRechargeReqMsg(int userId, string sum, string subledgerList, string payType = "2",
+            string mainAccountType = "", string mainAccountCode = "", string passThrough = "")
         {
             UserId = userId;
             Sum = sum;

@@ -141,6 +141,9 @@ namespace Agp2p.Web.tools
                 case "add_bank_card":   //新增银行卡
                     add_bank_card(context);
                     break;
+                case "recharge":   //客户充值
+                    recharge(context);
+                    break;
                 case "withdraw":   //客户提现
                     withdraw(context);
                     break;
@@ -2288,6 +2291,64 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
+        /// 充值
+        /// </summary>
+        /// <param name="context"></param>
+        private void recharge(HttpContext context)
+        {
+            var user = BasePage.GetUserInfoByLinq();
+            if (string.IsNullOrEmpty(user.pay_password))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.mobile))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.id_card_number))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                return;
+            }
+
+            try
+            {
+                var bankCode = DTRequest.GetFormString("bankCode");
+                var rechargeSum = DTRequest.GetFormString("rechargeSum");
+                var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
+                if (string.IsNullOrWhiteSpace(bankCode))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(rechargeSum))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                    return;
+                }
+                //发送充值请求 TODO 分账列表
+                BaseReqMsg reqMsg;
+                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum, "subledgerlist");
+                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode, "subledgerlist");
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    context.Response.Write(reqMsg.RequestContent);
+                });
+            }
+            catch (Exception e)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"提交充值请求失败：" + e.Message + "\"}");
+            }
+        }
+
+        /// <summary>
         /// 客户提现
         /// </summary>
         /// <param name="context"></param>
@@ -2309,7 +2370,12 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
                 return;
             }
-            
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                return;
+            }
+
             try
             {
                 var cardId = DTRequest.GetFormInt("cardId", 0);
@@ -2338,32 +2404,6 @@ namespace Agp2p.Web.tools
                 }
                     
                 new Agp2pDataContext().Withdraw(cardId, howmany);
-
-                //发送提现短信
-                //var smsModel = new sms_template().GetModel("user_withdraw_info");
-                //if (smsModel != null)
-                //{
-                //    try
-                //    {
-                //        //替换模板内容
-                //        //var siteConfig = new BLL.siteconfig().loadConfig();
-                //        var msgContent = smsModel.content;
-                //        msgContent = msgContent.Replace("{user_name}", user.user_name);
-                //        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
-                //        msgContent = msgContent.Replace("{amount}", howmany.ToString());
-
-                //        string errorMsg = string.Empty;
-                //        if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
-                //        {
-                //            new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
-                //        }
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
-                //    }
-                //}
-
                 context.Response.Write("{\"status\":1, \"msg\":\"提现申请提交成功！\"}");                       
             }
             catch (Exception e)
