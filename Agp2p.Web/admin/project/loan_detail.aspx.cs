@@ -90,15 +90,15 @@ namespace Agp2p.Web.admin.project
 
         protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
         {
-            int claimId = Convert.ToInt32(((Button)sender).CommandArgument);
+            int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             var claim = LqContext.li_claims.Single(c => c.id == claimId);
 
-            var newStatusChild = claim.NewStatusChild(DateTime.Now, Agp2pEnums.ClaimStatusEnum.Transferable);
-            LqContext.li_claims.InsertOnSubmit(newStatusChild);
-            LqContext.SubmitChanges();
-
             var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
-            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
+            LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId);
+
+            ShowClaimsInfo(claim.li_projects);
+
             JscriptMsg(remark, "");
         }
 

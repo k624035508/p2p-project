@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
+    <Content Include="admin\claims\agent_buying_claims.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
     <Content Include="admin\js\bootstrap.config.js" />
     <Content Include="admin\js\common.js" />
@@ -1238,6 +1239,12 @@
     </Compile>
     <Compile Include="admin\audit\make_loan_audit.aspx.designer.cs">
       <DependentUpon>make_loan_audit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buying_claims.aspx.cs">
+      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buying_claims.aspx.designer.cs">
+      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">
       <DependentUpon>dialog_picture.aspx</DependentUpon>

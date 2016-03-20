@@ -119,12 +119,6 @@ namespace Agp2p.Web.admin.transact
             Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, huoqiProject.ToString()));
         }
 
-        //筛选类别
-        protected void ddlUserGroud_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, ddlHuoqiProjects.SelectedValue));
-        }
-
         protected void ddlHuoqiProjects_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, ddlHuoqiProjects.SelectedValue));

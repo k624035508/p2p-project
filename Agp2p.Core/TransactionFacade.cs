@@ -457,7 +457,7 @@ namespace Agp2p.Core
         {
             // 从中间人手上接手债权
             var agents = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName).ToList();
-            var claimsOfAgents = agents.SelectMany(u => u.li_claims1.AsEnumerable().Where(c => c.IsProfitingNow())).ToList();
+            var claimsOfAgents = agents.SelectMany(u => u.li_claims1.AsEnumerable().Where(c => c.IsProfiting())).ToList();
             return ApportionToClaims(context, claimsOfAgents, investingMoney, tr);
         }
 
@@ -520,16 +520,19 @@ namespace Agp2p.Core
 
             var claim = context.li_claims.Single(c => c.id == claimId);
 
-            var timeSpan = DateTime.Now - claim.li_project_transactions1.create_time;
+            var timeSpan = DateTime.Today - claim.GetSourceClaim().createTime.Date;
             if (timeSpan.TotalDays < 15)
                 throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
 
             var nextRepayTime = claim.li_projects.li_repayment_tasks.AsEnumerable().FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time;
-            if (nextRepayTime != null && nextRepayTime.Value.Date <= DateTime.Today.AddDays(1))
-                throw new InvalidOperationException("不能在项目还款日的1天前申请债权转让");
+            if (nextRepayTime == null)
+                throw new InvalidOperationException("项目已经完成还款，不能进行债权转让申请");
+            if (nextRepayTime.Value.Date <= DateTime.Today.AddDays(2))
+                throw new InvalidOperationException("不能在项目还款日的 2 天前申请债权转让");
 
             var needTransferClaim = claim.NewStatusChild(DateTime.Now, Agp2pEnums.ClaimStatusEnum.NeedTransfer);
             context.li_claims.InsertOnSubmit(needTransferClaim);
+            context.SubmitChanges();
         }
 
         public static void BuyClaim(Agp2pDataContext context, int claimId, int buyerId, decimal amount)
@@ -548,6 +551,12 @@ namespace Agp2p.Core
             var remainBuyable = needTransferClaim.principal - buyedTrs.Aggregate(0m, (sum, tr) => sum + tr.principal);
             if (remainBuyable < amount)
                 throw new InvalidOperationException("买入的金额大于债权剩余可买入的金额");
+            if (100 <= remainBuyable && amount < 100)
+                throw new InvalidOperationException("买入债权的金额最低为 100 元");
+            if (remainBuyable < 100 && amount != remainBuyable)
+                throw new InvalidOperationException("由于购买债权的最低金额为 100 元，但鉴于债权的可买入金额已低于 100 元，所以您必须全额买入该债权");
+            if (remainBuyable != amount && remainBuyable - amount < 100)
+                throw new InvalidOperationException("您买入债权后债权的可投金额将低于 100 元，这样下一个人就不能买啦，所以请调整你的投标金额");
 
             var buyer = context.dt_users.Single(u => u.id == buyerId);
             var buyInPtr = new li_project_transactions
@@ -593,10 +602,16 @@ namespace Agp2p.Core
 
             // 原债权人减少原本债权产生的代收利息，并发放部分利息
             var unpaidTasks = needTransferClaim.li_projects.li_repayment_tasks.AsEnumerable().Where(t => t.IsUnpaid()).ToList();
-            var profitings = unpaidTasks.Select(task =>
+            var profitings = unpaidTasks.Zip(Utils.Infinite(), (task, i) =>
             {
-                return GenerateRepayTransactions(task, task.should_repay_time)
-                    .Single(ptr => ptr.gainFromClaim == needTransferClaim.id).interest.GetValueOrDefault();
+                var queryTime = i == 0 ? new [] { needTransferClaim.GetSourceClaim().createTime, task.GetStartProfitingTime() }.Max(): (DateTime?) null;
+                return GenerateRepayTransactions(task, task.should_repay_time, queryTime)
+                    .Single(ptr =>
+                    {
+                        if (ptr.gainFromClaim == needTransferClaim.id)
+                            return true;
+                        return context.li_claims.Single(c => c.id == ptr.gainFromClaim.Value).IsParentOf(needTransferClaim);
+                    }).interest.GetValueOrDefault();
             }).ToList();
 
             var claimTransferredOutPtr = new li_project_transactions
@@ -605,11 +620,15 @@ namespace Agp2p.Core
                 principal = needTransferClaim.principal,
                 type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredOut,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                interest = unpaidTasks.First().GetProfitingDays(needTransferClaim,
-                    (claimProfitingDay, taskProfitingDay) => Math.Round(claimProfitingDay*profitings.First()/taskProfitingDay, 2)),
+                interest = needTransferClaim.GetProfitingDays(unpaidTasks.First(),
+                    (claimProfitingDay, taskProfitingDay) =>
+                        Math.Round(claimProfitingDay*profitings.First()/taskProfitingDay, 2)),
                 create_time = now,
                 li_claims = transferredClaim,
                 project = needTransferClaim.projectId,
+                remark = "债权转让成功，" +
+                    needTransferClaim.GetProfitingDays(unpaidTasks.First(),
+                        (claimProfitingDay, taskProfitingDay) => $"原收益天数：{taskProfitingDay}，实际收益天数：{claimProfitingDay}")
             };
             context.li_project_transactions.InsertOnSubmit(claimTransferredOutPtr);
 
@@ -620,7 +639,7 @@ namespace Agp2p.Core
             ownerWallet.profiting_money -= profitings.Sum();
             ownerWallet.last_update_time = now;
 
-            var transferSuccessHistory = CloneFromWallet(ownerWallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess);
+            var transferSuccessHistory = CloneFromWallet(ownerWallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut);
             transferSuccessHistory.li_project_transactions = claimTransferredOutPtr;
             context.li_wallet_histories.InsertOnSubmit(transferSuccessHistory);
 
@@ -1434,13 +1453,13 @@ namespace Agp2p.Core
             repaymentTask.status = (byte) statusAfterPay;
             repaymentTask.repay_at = DateTime.Now;
 
-            var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, true); //变更时间应该等于还款计划的还款时间
+            var ptrs = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, null, true); //变更时间应该等于还款计划的还款时间
             context.li_project_transactions.InsertAllOnSubmit(ptrs);
 
             Dictionary<int, li_project_transactions> ptrAddedCost = null;
             if (repaymentTask.cost.GetValueOrDefault() != 0)
             {
-                ptrAddedCost = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, false, true).ToDictionary(tr => tr.investor);
+                ptrAddedCost = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, null, false, true).ToDictionary(tr => tr.investor);
             }
 
             foreach (var ptr in ptrs)
@@ -1613,16 +1632,16 @@ namespace Agp2p.Core
             }
         }
 
-        private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj)
+        private static Dictionary<li_claims, decimal> GetClaimRatio(li_projects proj, DateTime? moment = null)
         {
             if (proj.IsHuoqiProject())
             {
-                var claims = proj.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(IsProfitingNow).ToList();
+                var claims = proj.li_claims1.AsEnumerable().Where(c => c.IsProfiting(moment)).ToList();
                 var huoqiProjectInvestmentAmount = claims.Aggregate(0m, (sum, c) => sum + c.principal);
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var allClaims = proj.li_claims.Where(c => !c.li_claims2.Any()).ToList();
+            var allClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(moment)).ToList();
 
             // 只回款：claim.profitingProjectId 为当前还款计划所属项目，因为活期项目跟进自身的还款计划独立计息
             var profitingClaims = allClaims.Where(c => c.profitingProjectId == c.projectId);
@@ -1641,29 +1660,46 @@ namespace Agp2p.Core
         /// 生成还款交易记录（未保存）
         /// </summary>
         /// <param name="repaymentTask"></param>
-        /// <param name="transactTime"></param>
+        /// <param name="transactTime">交易时间，一般传 task.shouldRepayTime </param>
+        /// <param name="queryTime">查询时间，会根据它查询出不同的债权状态，默认是当前时间。区间应该位于还款计划进行期间</param>
         /// <param name="unsafeCreateEntities"></param>
         /// <param name="applyCostIntoInterest">如果为 true ，则 interest 实际上为计算了 cost 的收益</param>
         /// <returns></returns>
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask, DateTime transactTime,
-            bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
+            DateTime? queryTime = null, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
         {
-            var moneyRepayRatio = GetClaimRatio(repaymentTask.li_projects);
+            var claimRatio = GetClaimRatio(repaymentTask.li_projects, queryTime);
 
-            if (!moneyRepayRatio.Any())
+            if (!claimRatio.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
 
-            // 如果是针对单个用户的还款计划，则只生成对应用户的交易记录
-            var rounded = moneyRepayRatio
+            //var shouldRepayInterest = Math.Round(repaymentTask.repay_interest*repaymentTask.GetProfitingDaysByTime(transactTime)/repaymentTask.GetTotalProfitingDays(), 2);
+            var shouldRepayInterest = repaymentTask.repay_interest;
+
+            var interestPaidEarlier = 0m;
+
+            var claimRepayRatio = claimRatio.Where(pair => pair.Key.IsProfiting(transactTime)).ToList();
+            if (!repaymentTask.li_projects.IsNewbieProject())
+                Debug.Assert(claimRepayRatio.Aggregate(0m, (sum, pair) => sum + pair.Value) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
+
+            var rounded = claimRepayRatio
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款（新手标）
-                .Where(pair => pair.Key.IsProfitingNow())
                 .Select(c =>
                 {
-                    var realityInterest = Math.Round(c.Value*repaymentTask.repay_interest, 2);
+                    var totalInterest = c.Value*shouldRepayInterest;
+
+                    // 根据买入时间计算利息
+                    var realityInterest = c.Key.GetProfitingDays(repaymentTask,
+                        (claimProfitingDay, taskProfitingDay) =>
+                            claimProfitingDay*totalInterest/taskProfitingDay, transactTime);
+
+                    // 由于有些债权是中途买入的，放款时的四舍五入前需要排除掉
+                    interestPaidEarlier += totalInterest - realityInterest;
+
                     string remark = null;
                     if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
                     {
-                        var originalInterest = c.Value* (repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                        var originalInterest = realityInterest + c.Value * repaymentTask.cost.GetValueOrDefault();
                         remark = $"提前还款：此债权本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
                         if (applyCostIntoInterest)
                         {
@@ -1672,7 +1708,7 @@ namespace Agp2p.Core
                     }
                     else if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTimePaid)
                     {
-                        var originalInterest = c.Value* (repaymentTask.repay_interest + repaymentTask.cost.GetValueOrDefault());
+                        var originalInterest = realityInterest + c.Value * repaymentTask.cost.GetValueOrDefault();
                         remark = $"逾期还款：此债权本期原来的待收益 {originalInterest:f2}，实际收益 {realityInterest:f2}";
                         if (applyCostIntoInterest)
                         {
@@ -1709,9 +1745,9 @@ namespace Agp2p.Core
 
             var notPerfectRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
             var forceSum = applyCostIntoInterest
-                ? repaymentTask.cost.GetValueOrDefault() + repaymentTask.repay_interest
-                : repaymentTask.repay_interest;
-            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, forceSum, 2);
+                ? repaymentTask.cost.GetValueOrDefault() + shouldRepayInterest
+                : shouldRepayInterest;
+            var perfectRoundedInterest = Utils.GetPerfectRounding(notPerfectRoundedInterest, forceSum - interestPaidEarlier, 2);
             rounded.ZipEach(perfectRoundedInterest, (ptr, newInterest) => ptr.interest = newInterest);
 
             var notPerfectRoundedPrincipal = rounded.Select(ptr => ptr.principal).ToList();
@@ -2193,174 +2229,6 @@ namespace Agp2p.Core
                 }
             }
             return "";
-        }
-
-        public static bool IsNewbieProject(this li_projects p)
-        {
-            return p.dt_article_category.call_index == "newbie";
-        }
-
-        public static bool IsHuoqiProject(this li_projects p)
-        {
-            return p.dt_article_category.call_index == "huoqi";
-        }
-
-        public static li_claims MakeChild(this li_claims parent, DateTime createTime)
-        {
-            return new li_claims
-            {
-                li_claims1 = parent,
-                createFromInvestment = parent.createFromInvestment,
-                createTime = createTime,
-                userId = parent.userId,
-                principal = parent.principal,
-                projectId = parent.projectId,
-                profitingProjectId = parent.profitingProjectId,
-                number = parent.number,
-                status = parent.status,
-                agent = parent.agent,
-            };
-        }
-
-        public static li_claims NewStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus)
-        {
-            var child = parent.MakeChild(createTime);
-            child.status = (byte) newStatus;
-            return child;
-        }
-
-        public static li_claims NewPrincipalChild(this li_claims parent, DateTime createTime, decimal childPrincipal)
-        {
-            var child = parent.MakeChild(createTime);
-            child.principal = childPrincipal;
-            return child;
-        }
-
-        public static li_claims NewPrincipalAndStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal)
-        {
-            var child = parent.NewStatusChild(createTime, newStatus);
-            child.principal = childPrincipal;
-            return child;
-        }
-
-        public static li_claims TransferedChild(this li_claims parent, DateTime createTime,
-            Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal, li_project_transactions byPtr)
-        {
-            var child = parent.NewPrincipalAndStatusChild(createTime, newStatus, childPrincipal);
-            child.number = Utils.HiResNowString;
-            child.profitingProjectId = byPtr.project;
-            child.userId = byPtr.investor;
-            child.li_project_transactions1 = byPtr;
-            return child;
-        }
-
-        public static bool IsLeafClaim(this li_claims claim)
-        {
-            return !claim.li_claims2.Any();
-        }
-
-        public static li_claims GetHistoryClaimByTime(this li_claims childClaim, DateTime time)
-        {
-            if (childClaim.createTime <= time)
-            {
-                return childClaim;
-            }
-            else if (childClaim.li_claims1 != null && childClaim.li_claims1.userId == childClaim.userId)
-            {
-                return childClaim.li_claims1.GetHistoryClaimByTime(time);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static Agp2pEnums.ClaimStatusEnum? GetStatusByTime(this li_claims childClaim, DateTime time)
-        {
-            return (Agp2pEnums.ClaimStatusEnum?) childClaim.GetHistoryClaimByTime(time)?.status;
-        }
-
-        public static bool IsProfitingNow(this li_claims claim)
-        {
-            // 必须是叶子债权才能收益
-            if (claim.li_claims2.Any()) return false;
-
-            if (claim.li_projects1.IsHuoqiProject())
-            {
-                if (claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
-                {
-                    // 如果昨日整日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                    var checkPoint = DateTime.Today.AddDays(-1);
-                    return claim.GetStatusByTime(checkPoint).GetValueOrDefault(Agp2pEnums.ClaimStatusEnum.Invalid) < Agp2pEnums.ClaimStatusEnum.NeedTransfer;
-                }
-                return false;
-            }
-            return claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer;
-        }
-
-        public static bool IsCompanyAccount(this dt_users user)
-        {
-            return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
-        }
-
-        public static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
-        {
-            if (parentClaim.createTime <= childClaim.createTime)
-            {
-                if (childClaim.li_claims1 != null)
-                {
-                    return childClaim.li_claims1 == parentClaim || childClaim.li_claims1.IsChildOf(parentClaim);
-                }
-            }
-            return false;
-        }
-
-        public static bool IsParentOf(this li_claims parentClaim, li_claims childClaim)
-        {
-            return childClaim.IsChildOf(parentClaim);
-        }
-
-        public static DateTime GetStartProfitingTime(this li_repayment_tasks task)
-        {
-            if (task.term == 1)
-            {
-                return task.li_projects.make_loan_time.Value;
-            }
-            var prevTask = task.li_projects.li_repayment_tasks.OrderByDescending(ta => ta.should_repay_time)
-                .First(ta => ta.should_repay_time < task.should_repay_time);
-            return prevTask.should_repay_time;
-        }
-
-        public static T GetProfitingDays<T>(this li_repayment_tasks task, li_claims claim, Func<int, int, T> callback)
-        {
-            /* 1、债权转让人的收益从提交转让申请当天停止计息，若转让失败则恢复转让期间利息并继续计息；
-               2、购买债权转让项目从债权转让人提交债权转让申请当天开始计息；*/
-            Debug.Assert(task.project == claim.projectId);
-            Debug.Assert(task.IsUnpaid());
-            Debug.Assert(claim.status < (int) Agp2pEnums.ClaimStatusEnum.Completed);
-
-            var startProfitingTime = task.GetStartProfitingTime();
-
-            var taskProfitingDay = (int) (task.should_repay_time.Date - startProfitingTime.Date).TotalDays;
-
-            DateTime startProfitingPoint, endProfitingPoint;
-
-            if (claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
-            {
-                var parentClaim = claim.li_claims1;
-                Debug.Assert(parentClaim.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable);
-
-                // 利润从开始提现的那天开始算
-                startProfitingPoint = new[] { parentClaim.createTime.Date, startProfitingTime.Date }.Max();
-                endProfitingPoint = new[] { claim.createTime.Date, task.should_repay_time.Date }.Min();
-
-                return callback((int)(endProfitingPoint - startProfitingPoint).TotalDays, taskProfitingDay);
-            }
-
-            startProfitingPoint = new[] {claim.createTime.Date, startProfitingTime.Date}.Max();
-            endProfitingPoint = new[] {DateTime.Today, task.should_repay_time.Date}.Min();
-
-            return callback((int) (endProfitingPoint - startProfitingPoint).TotalDays, taskProfitingDay);
         }
 
         /// <summary>
