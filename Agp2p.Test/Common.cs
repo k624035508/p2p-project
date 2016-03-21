@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -174,7 +175,7 @@ namespace Agp2p.Test
                 add_time = now,
                 publish_time = now,
                 make_loan_time = now,
-                user_name = "unitTest",
+                user_name = "admin",
                 title = projectName,
                 no = projectName,
                 financing_amount = financingAmount,
@@ -209,7 +210,7 @@ namespace Agp2p.Test
                 add_time = now,
                 publish_time = now,
                 make_loan_time = now,
-                user_name = "unitTest",
+                user_name = "admin",
                 title = projectName,
                 no = projectName,
                 financing_amount = financingAmount,
@@ -310,6 +311,18 @@ namespace Agp2p.Test
             var project = context.li_projects.Single(p => p.title == projectName);
             var user = context.dt_users.Single(u => u.user_name == userName);
             context.HuoqiProjectWithdraw(user.id, project.id, amount);
+        }
+
+        public static void MakeSureHaveIdleMoney(string userName, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var wallet = context.li_wallets.Single(w => w.dt_users.user_name == userName);
+            if (wallet.idle_money < amount)
+            {
+                Debug.WriteLine($"为用户 {wallet.dt_users.GetFriendlyUserName()} 充值 {amount - wallet.idle_money}");
+                var btr = context.Charge(wallet.user_id, amount - wallet.idle_money, Agp2pEnums.PayApiTypeEnum.ManualAppend);
+                context.ConfirmBankTransaction(btr.id, null);
+            }
         }
     }
 }

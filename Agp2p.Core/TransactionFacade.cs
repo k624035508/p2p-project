@@ -1716,7 +1716,26 @@ namespace Agp2p.Core
             var investableClaims = GetHuoqiInvestableClaims(context, user.id);
             var maxInvestingAmount = Math.Min(investableClaims.Aggregate(0m, (sum, c) => sum + c.principal), investingMoney);
 
-            if (0 < maxInvestingAmount)
+            var huoqiProject = context.li_projects.SingleOrDefault(p =>
+                        p.dt_article_category.call_index == "huoqi" &&
+                        p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
+            if (huoqiProject == null)
+            {
+                // 完全没有续投，告诉用户
+                var dtUserMessage = new dt_user_message
+                {
+                    type = 1,
+                    accept_user_name = user.user_name,
+                    title = "续投活期项目失败",
+                    content = $"由于活期项目已结束，没能帮您进行活期投资续投，本金 {investingMoney.ToString("c")} 已经退回到您的账号，请查收。",
+                    post_user_name = "",
+                    post_time = moment,
+                    receiver = user.id
+                };
+                context.dt_user_message.InsertOnSubmit(dtUserMessage);
+                context.AppendAdminLog("Huoqi", "没有发布活期项目，无法进行自动续投：" + maxInvestingAmount.ToString("c"));
+            }
+            else if (0 < maxInvestingAmount)
             {
                 if (maxInvestingAmount != investingMoney)
                 {
@@ -1734,8 +1753,6 @@ namespace Agp2p.Core
                     };
                     context.dt_user_message.InsertOnSubmit(dtUserMessage);
                 }
-
-                var huoqiProject = context.li_projects.Single(p => p.dt_article_category.call_index == "huoqi" && p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
 
                 // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
                 var wallet = user.li_wallets;
@@ -1759,8 +1776,7 @@ namespace Agp2p.Core
                     principal = maxInvestingAmount,
                     status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Success,
                     create_time = wallet.last_update_time, // 时间应该一致
-                    remark =
-                        maxInvestingAmount == investingMoney
+                    remark = maxInvestingAmount == investingMoney
                             ? "完全自动续投"
                             : $"部分自动续投，退回部分：{(investingMoney - maxInvestingAmount).ToString("c")}"
                 };

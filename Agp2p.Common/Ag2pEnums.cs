@@ -381,7 +381,7 @@ namespace Agp2p.Common
             ClaimTransferredOut = 24,
             [Description("债权买入")]
             ClaimTransferredIn = 25,
-            [Description("债权买入成功")]
+            [Description("债权买入成功")] /* 指的是定期债权 */
             ClaimTransferredInSuccess = 125,
             [Description("活期项目提现")]
             HuoqiProjectWithdrawSuccess = 26,
@@ -781,6 +781,18 @@ namespace Agp2p.Common
             Transfering = 2,
             [Description("已结束")]
             Completed = 3,
+        }
+
+        public enum HuoqiQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益")]
+            Profiting = 1,
+            [Description("买入")]
+            BuyIn = 2,
+            [Description("转出")]
+            TransferOut = 3,
         }
     }
 }

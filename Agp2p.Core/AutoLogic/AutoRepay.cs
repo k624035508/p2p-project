@@ -141,7 +141,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 // 如果是今天/昨日才投的活期标，则不返利
                 // 如果前日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                var shouldRepayTo = p.li_claims1.Where(c => !c.li_claims2.Any()).AsEnumerable().Where(c => c.IsProfiting()).ToList();
+                var shouldRepayTo = p.li_claims1.Where(c => c.IsProfiting()).ToList();
                 if (!shouldRepayTo.Any())
                 {
                     return Enumerable.Empty<li_repayment_tasks>();

@@ -44,6 +44,11 @@ class WithdrawPage extends React.Component {
 	onWithdrawAmountSetted(ev) {
 		var toWithdraw = parseFloat(this.state.toWithdraw) || 0;
 
+		if (toWithdraw == 0) {
+			this.setState({realityWithdraw: 0});
+			return;
+		}
+
 		var url = "/tools/calc_stand_guard_fee.ashx?withdraw_value=" + toWithdraw;
         ajax({
             type: "GET",

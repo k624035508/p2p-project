@@ -46,7 +46,7 @@ export default class ClaimsTransfer extends React.Component {
         });
     }
     fetchClaims(type, pageIndex) {
-        this.setState({claimQueryType: type, pageIndex: 0});
+        this.setState({claimQueryType: type, pageIndex: pageIndex});
 
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryStaticClaim", pageSize = 9;
         ajax({
@@ -127,11 +127,13 @@ export default class ClaimsTransfer extends React.Component {
                                     <th>本金</th>
                                     <th>状态</th>
                                     <th>创建时间</th>
+                                    <th>下个收益日</th>
+                                    <th>完成时间</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {this.state.claims.length == 0 ? <tr><td colSpan="7">暂无内容</td></tr> :
+                            {this.state.claims.length == 0 ? <tr><td colSpan="9">暂无内容</td></tr> :
                                 this.state.claims.map(c => 
                                     <tr key={c.id}>
                                         <td>{c.number}</td>
@@ -140,6 +142,8 @@ export default class ClaimsTransfer extends React.Component {
                                         <td>{c.principal}</td>
                                         <td>{c.queryType}</td>
                                         <td>{c.createTime}</td>
+                                        <td>{c.nextProfitDay}</td>
+                                        <td>{c.completeDay}</td>
                                         <td>{c.status == ClaimStatusEnum.Nontransferable ? <a href="javascript:"
                                             onClick={ev => this.applyForClaimTransfer(c.id)}>申请转让</a> : ""}</td>
                                     </tr>)
@@ -148,7 +152,7 @@ export default class ClaimsTransfer extends React.Component {
                         </table>
                     </div>
                     <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
-                                onPageSelected={pageIndex => this.setState({pageIndex: pageIndex})}/>
+                                onPageSelected={pageIndex => this.fetchClaims(this.state.claimQueryType, pageIndex)}/>
                 </div>
             </div>
         );
