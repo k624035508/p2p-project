@@ -841,7 +841,9 @@ namespace Agp2p.Core
             else
             {
                 // 提现了某个债权的一部分，需要进行拆分
-                var remain = headClaim.NewPrincipalChild(withdrawTime, headClaim.principal - withdrawMoney);
+
+                // 债权未完全转让，注意：创建时间与父债权相等
+                var remain = headClaim.NewPrincipalChild(headClaim.createTime, headClaim.principal - withdrawMoney);
                 context.li_claims.InsertOnSubmit(remain);
 
                 var splited = headClaim.NewPrincipalAndStatusChild(withdrawTime, Agp2pEnums.ClaimStatusEnum.NeedTransfer, withdrawMoney);
