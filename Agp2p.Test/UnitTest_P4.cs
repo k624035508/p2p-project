@@ -22,7 +22,7 @@ namespace Agp2p.Test
                 回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 18); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 21, 10, 00, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -41,7 +41,7 @@ namespace Agp2p.Test
             // 发活期标
             Common.PublishHuoqiProject("HP1");
 
-            // 发 4 日标，金额 50000，A 投 50000 放款；A 提现 50000；公司账号接手 50000
+            // 发 4 日标，金额 50000，B 投 50000 放款；B 提现 50000；公司账号接手 50000
             Common.PublishProject("P4", 4, 50000, 5);
             Common.InvestProject(UserB, "P4", 50000);
             Common.ProjectStartRepay("P4");
@@ -59,7 +59,7 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // B 投资活期 30000
+            // A 投资活期 30000
             Common.InvestProject(UserA, "HP1", 30000);
 
             Common.AutoRepaySimulate();
@@ -97,7 +97,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void DoCleanUp()
         {
-            Common.DoSimpleCleanUp(new DateTime(2016, 03, 18, 10, 00, 00));
+            Common.DoSimpleCleanUp(realDate);
             Common.RestoreDate(realDate);
         }
     }

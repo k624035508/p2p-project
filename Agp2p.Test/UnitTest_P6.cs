@@ -27,13 +27,13 @@ namespace Agp2p.Test
                 P6-1 回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 17); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 21, 9, 00, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
         {
             // 准备好之后注释这行
-            // throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
+            throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
         }
 
         [TestMethod]
@@ -139,7 +139,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void DoCleanUp()
         {
-            Common.DoSimpleCleanUp(new DateTime(2016, 03, 17, 9, 00, 00));
+            Common.DoSimpleCleanUp(realDate);
             Common.RestoreDate(realDate);
         }
     }
