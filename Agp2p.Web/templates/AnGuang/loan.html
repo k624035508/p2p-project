@@ -27,30 +27,83 @@
     <!--head-->
     <%template src="_header.html"%>
     <!--head end-->
-    <!--<div class="about-nav-bar">
+    <div class="about-nav-bar">
         <div class="content-wrap">
-            <ul class="list-unstyled list-inline">
-                <p><a href="#company" style="font-weight: bold;"><img src="<%templateskin%>/imgs/loan/011.png" />融资合作</a></p>
-                <li><a href="#culture" onclick="change_bg(this)" style="background-color:#1e94fe;">我要借款</a></li>
-                <li><a href="#events" onclick="change_bg(this)">公司融资</a></li>
-                <li><a href="#manager" onclick="change_bg(this)">公司融资</a></li>
-                <li><a href="#agency" onclick="change_bg(this)">公司融资</a></li>
-                <li><a href="#agency" onclick="change_bg(this)">公司融资</a></li>
-            </ul>
+                <span><a href="#company" >融资合作</a></span>               
+                <a href="#events" class="teamwork">项目合作</a>
+                <a href="#culture" class="rongzi">银票融资</a>      
         </div>
-    </div>-->
-    <div id="container">
-        <ul id="Menu">
-            <p><a href="#company" style="font-weight: bold;"><img src="<%templateskin%>/imgs/loan/011.png" />融资合作</a></p>
-            <li><a href="javascript:" onclick="change_bg(this)" class="current">公司融资</a></li>
-            <li><a href="javascript:" onclick="change_bg(this)">公司融资</a></li>
-            <li><a href="javascript:" onclick="change_bg(this)">公司融资</a></li>
-            <li><a href="javascript:" onclick="change_bg(this)">公司融资</a></li>
-            <li><a href="javascript:" onclick="change_bg(this)">公司融资</a></li>
-            <li><a href="javascript:" onclick="change_bg(this)">公司融资</a></li>
-        </ul>
     </div>
 
+    <div class="jiameng">
+    <div class="content-wrap">
+        <div class="tijiao">
+            <p>我们的专属热线<span>400-8878-200</span>24小时为你等候，</p>
+            <p>或给我们留下您的联系方式，我们会在最短时间内联系您</p>
+            <input id="accountname" class="input-l" type="text" placeholder="输入您的名字"/>
+            <input id="phone" class="input-l" type="text" placeholder="输入您的手机号码/固话"/>
+            <button id="giving" type="button">提 交</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="procedure">合作流程</div>
+    <div class="procedure2 ">
+        <div class="content-wrap">
+            <ul class="list-unstyled list-inline list-step">
+                <li class="step1"></li>
+                <li class="stephr"></li>
+                <li class="step2"></li>
+                <li class="stephr"></li>
+                <li class="step3"></li>
+                <li class="stephr"></li>
+                <li class="step4"></li>
+            </ul>   
+        </div>
+        <div class="step-tips content-wrap">
+            <span class="tip1">客户提交联系方式</span>
+            <span class="tip2">客户经理电话联系</span>
+            <span class="tip3">取得合作途径</span>
+            <span class="tip4">合作成功</span>
+        </div>
+    </div>
+    <div class="loan-hr"></div>
+    <div class="procedure">产品介绍</div>
+    <div class="content-wrap introduction">
+        <p>生活消费金融</p>
+        <div>通过平台发售充值消费卡，满足商家资金需求，实现各行各业客户资源的共享，同时也是客户把计划消费金进行理财的一种创新理财模式。</div>          
+    </div>
+    <div class="content-wrap introduction introduction1" >
+        <p>企业供应链融资</p>
+        <div>以核心客户为依托，在真实贸易背景为前提，通过对货权质押控制、应收账款保理等方式，对供应链上下游企业提供的综合性金融产品和服务。</div>
+    </div>
+    <div class="content-wrap introduction introduction4">
+        <p>进出口贸易融资</p>
+        <div style="margin-left:-4px;">（一）进口贸易融资</div>
+        <div>1、授信开证</div>
+        <div>企业办理进口业务采用信用证方式结算时，按照进口合同金额最高80%比例借款给企业作为开立信用证的保证金。</div>
+        <div>2、提单质押</div>
+        <div>企业以海运提单（物权单据）作为该笔融资的质押保证的一种融资方式。</div>
+    </div>
+    <div class="content-wrap introduction introduction5">
+        <div style="margin-left:-4px;">（二）出口贸易融资</div>
+        <div>1、打包放款</div>
+        <div>平台根据企业的申请，将境外银行开具的以出口申请人为受益人的信用证正本留存作保证，对出口申请人发放的用于生产或采购该信用证项下出口货物的专项贷款。</div>
+        <div>2、出口退税质押融资</div>
+        <div>针对享有符合国家政策规定的出口退税应收款的出口贸易企业，以其享受的符合国家政策规定的出口退税应收款作为质押，加快企业退税资金回笼的一种融资方式。</div>
+    </div>
+    <div class="content-wrap introduction introduction2">
+        <p>小额贷款公司债权资产转让融资</p>
+        <div>平台联合专业性较强的小额贷款公司共同开发。小额贷款公司将已有的债权项目通过我平台合法流转，投资者通过平台受让小额贷款公司出让的债权获得收益。小额贷款公司承诺对公司债权转让项目按期回购。</div>
+    </div>
+    <div class="content-wrap introduction introduction3">
+        <p>融资租赁公司资产抵押融资</p>
+        <div>融资租赁公司与平台建立合作关系，通过平台寻求经营资金来源；融资租赁公司可通过将存量租赁项目的应收账款进行转让，并提供项目项下的租赁物抵押担保，以承租人定期支付的租金作为还款来源，通过分期还款的方式归还投资者投资资金；该模式使融资租赁公司获得经营资金，盘活资产，增加现金流。</div>
+    </div>
+
+
+
+    <!--
     <div class="content-wrap application-form">
         <div class="nav-wrap">
             <p class="title">借款流程</p>
@@ -263,7 +316,7 @@
          data-project-loaner-content="<%=project_loaner_content%>"
          >
     </div>
-
+-->
 
     <!--footer-->
     <%template src="_footerSmall.html"%>
