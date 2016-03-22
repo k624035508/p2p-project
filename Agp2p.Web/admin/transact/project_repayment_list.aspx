@@ -51,8 +51,11 @@
     <td><%# Convert.ToDecimal(Eval("repay_principal")).ToString("c")%></td>
     <td><%# Eval("should_repay_time")%></td>
     <td><%# Eval("repay_at")%></td>
-    <td><asp:Button ID="btnRepayNow" runat="server" Text="马上还款" UseSubmitBehavior="False" CommandArgument='<%# Eval("id") %>' OnClientClick="return ExeNoCheckPostBack(this.name, '确认进行还款？');"
-        OnClick="btnRepayNow_OnClick" Visible='<%# (Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid || Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.RepaymentStatusEnum.OverTime) && (Utils.IsDebugging() || Convert.ToDateTime(Eval("should_repay_time")).Date <= DateTime.Today)%>'/></td>
+    <td><asp:Button ID="btnRepayNow" runat="server" Text="马上还款" UseSubmitBehavior="False"
+        CommandArgument='<%# Eval("id") %>'
+        OnClientClick="return ExeNoCheckPostBack(this.name, '确认进行还款？');"
+        OnClick="btnRepayNow_OnClick"
+        Visible='<%# (Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid || Convert.ToByte(Eval("status")) == (byte) Agp2pEnums.RepaymentStatusEnum.OverTime) && (Utils.IsDebugging() || Convert.ToDateTime(Eval("should_repay_time")).Date <= DateTime.Today)%>'/></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>

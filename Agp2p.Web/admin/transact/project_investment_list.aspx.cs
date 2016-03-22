@@ -73,7 +73,7 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 int projectTransactionId = Convert.ToInt32(((Button)sender).CommandArgument);
-                var bt = context.Refund(projectTransactionId);
+                var bt = context.Refund(projectTransactionId, DateTime.Now);
                 var remark = "撤销投资成功, 涉及金额: " + bt.principal;
                 AddAdminLog(DTEnums.ActionEnum.Cancel.ToString(), remark); //记录日志
                 JscriptMsg(remark, Utils.CombUrlTxt("project_investment_list.aspx", "project_id={0}", project_id), "Success");

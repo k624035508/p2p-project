@@ -294,6 +294,12 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
+            [Description("债权转让")]
+            ClaimTransfer = 4,
+            [Description("活期项目续投失败回款")]
+            AutoInvestFailRepay = 5,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdraw = 6,
         }
 
         /// <summary>
@@ -363,6 +369,12 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
+            [Description("债权转让")]
+            ClaimTransfer = 24,
+            [Description("活期项目续投失败回款")]
+            AutoInvestFailRepaySuccess = 25,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdrawSuccess = 26,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -711,16 +723,22 @@ namespace Agp2p.Common
 
         public enum ClaimStatusEnum
         {
-            [Description("失效")]
-            Invalid = 1,
             [Description("不可转让")]
-            Nontransferable = 10,
+            Nontransferable = 1,
             [Description("可转让")]
-            Transferable = 11,
-            [Description("需要转让")]
-            NeedTransfer = 20,
+            Transferable = 2,
+            [Description("需要转让")] // 标记为提现中的活期债权
+            NeedTransfer = 3,
+            [Description("完成")]
+            Completed = 10,
+            [Description("已完成未回款")] // 提现 T + 1，债权在提现后被完成，则设置为这个状态
+            CompletedUnpaid = 11,
             [Description("已转让")]
-            Transferred = 30,
+            Transferred = 20,
+            [Description("已转让未回款")] // 提现 T + 1，债权在提现后被转让，则设置为这个状态
+            TransferredUnpaid = 21,
+            [Description("失效")] // 项目流标 / 投资退款 / 债权拆分（提现时发生，旧债权的本金不变，标记为失效，创建一个新的债权，债权编号不变）
+            Invalid = 30,
         }
 
         public enum LoanerStatusEnum
