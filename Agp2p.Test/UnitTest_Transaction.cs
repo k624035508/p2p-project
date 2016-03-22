@@ -411,5 +411,16 @@ namespace Agp2p.Test
                 .ToList()
                 .ForEach(time => Debug.WriteLine(time));
         }
+
+        [TestMethod]
+        public void DoChargeTestAccount()
+        {
+            var now = DateTime.Now;
+            Common.DeltaDay(now, -1);
+            Common.MakeSureHaveIdleMoney("13535656867", 10 * 10000);
+            Common.MakeSureHaveIdleMoney("13590609455", 10 * 10000);
+            Common.MakeSureHaveIdleMoney("CompanyAccount", 10 * 10000);
+            Common.DeltaDay(now, 0);
+        }
     }
 }

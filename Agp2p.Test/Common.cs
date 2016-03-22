@@ -88,7 +88,7 @@ namespace Agp2p.Test
             });
             context.li_projects.DeleteAllOnSubmit(preDelProj);
 
-            context.dt_users.ForEach(u =>
+            context.dt_users.Where(u => deleteAfter < u.li_wallets.last_update_time).ForEach(u =>
             {
                 // 还原钱包数值至 deleteAfter 的时候
                 var hisAtThatTime = u.li_wallet_histories.OrderByDescending(h => h.create_time)
