@@ -15,7 +15,9 @@ class MyTransaction extends React.Component {
         return (
             <div>
                 <div className="controls">
-                    <HorizontalPicker onTypeChange={newType => this.setState({type: newType}) } enumFullName="Agp2p.Common.Agp2pEnums+MyInvestRadioBtnTypeEnum" />
+                    <HorizontalPicker onTypeChange={newType => this.setState({type: newType}) }
+                        enumFullName="Agp2p.Common.Agp2pEnums+MyInvestRadioBtnTypeEnum"
+                        value={this.state.type} />
                     <DateSpanPicker onStartTimeChange={newStartTime => this.setState({startTime: newStartTime})} onEndTimeChange={newEndTime => this.setState({endTime: newEndTime})}/>
                     <div style={{clear: "both"}}></div>
                 </div>

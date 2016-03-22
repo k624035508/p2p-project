@@ -15,16 +15,35 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string AssignmentSum { get; set; }//转让价格
         public string UndertakeSum { get; set; }//购买价格
         public string PayType { get; set; }//手续费收取方式
-        public string SubledgerList { get; set; }//分账列表
         public string CreditValue { get; set; }//转让债权价值
         public string UndertakePercentage { get; set; }//承接系数
         public string ProjectDescription { get; set; }//项目描述
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码 
+        //分账列表
+        private string subledgerList;
+        public string SubledgerList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(subledgerList))
+                {
+                    subledgerList = JsonHelper.ObjectToJSON(new
+                    {
+                        roleType = "0",
+                        roleCode = UserId,
+                        inOrOut = "0",
+                        sum = AssignmentSum
+                    });
+                }
+                return subledgerList;
+            }
+            set { subledgerList = value; }
+        }
 
         public CreditAssignmentReqMsg(int userId, string projectCode, string originalRequestId, string originalOrderSum,
-            string assignmentSum, string undertakeSum, string payType, string subledgerList, string projectDescription, string creditValue,
-            string undertakePercentage, string mainAccountType, string mainAccountCode)
+            string assignmentSum, string undertakeSum, string payType = "2", string mainAccountType = "", string mainAccountCode = "", 
+            string projectDescription = "", string creditValue = "", string undertakePercentage = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -33,7 +52,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             AssignmentSum = assignmentSum;
             UndertakeSum = undertakeSum;
             PayType = payType;
-            SubledgerList = subledgerList;
             ProjectDescription = projectDescription;
             CreditValue = creditValue;
             UndertakePercentage = undertakePercentage;
@@ -77,7 +95,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             };
             if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription", ProjectDescription);
             if (!string.IsNullOrEmpty(CreditValue)) sd.Add("creditValue", CreditValue);
-            if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("undertakePercentage", SubledgerList);
+            if (!string.IsNullOrEmpty(UndertakePercentage)) sd.Add("undertakePercentage", UndertakePercentage);
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);
             if (!string.IsNullOrEmpty(MainAccountCode)) sd.Add("mainAccountCode", MainAccountCode);
 

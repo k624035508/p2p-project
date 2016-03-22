@@ -647,6 +647,46 @@ namespace Agp2p.Core
             context.SubmitChanges();
         }
 
+        /// <summary>
+        /// 定期项目债权转让取消
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="claimId"></param>
+        public static void StaticClaimWithdrawCancel(Agp2pDataContext context, int claimId, bool save = true)
+        {
+            // 还原债权状态、归还买入者的买入金额
+            var withdrawingClaim = context.li_claims.Single(c => c.id == claimId);
+            Debug.Assert(withdrawingClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && withdrawingClaim.projectId == withdrawingClaim.profitingProjectId);
+
+            var now = DateTime.Now;
+
+            // 注意：创建时间是提现前的债权创建时间
+            var newStatusChild = withdrawingClaim.NewStatusChild(withdrawingClaim.li_claims1.createTime, Agp2pEnums.ClaimStatusEnum.Nontransferable);
+            context.li_claims.InsertOnSubmit(newStatusChild);
+
+            withdrawingClaim.li_project_transactions1.Where(
+                ptr =>
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending).ForEach(buyInPtr =>
+                    {
+                        buyInPtr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Rollback;
+
+                        var buyerWallet = buyInPtr.dt_users.li_wallets;
+                        buyerWallet.idle_money += buyInPtr.principal;
+                        buyerWallet.investing_money -= buyInPtr.principal;
+                        buyerWallet.last_update_time = now;
+
+                        var his = CloneFromWallet(buyerWallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInFail);
+                        his.li_project_transactions = buyInPtr;
+                        context.li_wallet_histories.InsertOnSubmit(his);
+                    });
+
+            if (save)
+            {
+                context.SubmitChanges();
+            }
+        }
+
         private static void StaticClaimTransferComplete(Agp2pDataContext context, li_claims needTransferClaim, List<li_project_transactions> buyedTrs)
         {
             var now = DateTime.Now;

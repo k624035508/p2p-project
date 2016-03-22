@@ -22,6 +22,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             get { throw new NotImplementedException(); }
         }
 
+        /// <summary>
+        /// 获取签名
+        /// </summary>
+        /// <returns></returns>
         public virtual string GetSignature()
         {
             throw new NotImplementedException();

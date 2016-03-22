@@ -12,17 +12,47 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string Sum { get; set; }//放款金额
         public string PayType { get; set; }//手续费收取方式
-        public string SubledgerList { get; set; }//分账列表
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public bool Collective { get; set; }//集合项目标识
+        //分账列表
+        private string subledgerList;
+        public string SubledgerList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(subledgerList))
+                {
+                    subledgerList = JsonHelper.ObjectToJSON(new List<object>
+                    {
+                        //借款人收到的款
+                        new
+                        {
+                            roleType = "0",
+                            roleCode = UserId,
+                            inOrOut = "0",
+                            sum = Sum
+                        },
+                        //TODO 公司收到的手续费
+                        new
+                        {
+                            roleType = "1",
+                            roleCode = SumapayConfig.MerchantCode,
+                            inOrOut = "1",
+                            sum = Utils.StrToDecimal(Sum, 0)*0.1m
+                        }
+                    });
+                }
+                return subledgerList;
+            }
+            set { subledgerList = value; }
+        }
 
-        public MakeLoanReqMsg(string projectCode, string sum, string payType, string subledgerList, string mainAccountType, string mainAccountCode, bool collective = false)
+        public MakeLoanReqMsg(string projectCode, string sum, bool collective = false, string payType = "2", string mainAccountType = "", string mainAccountCode = "")
         {
             ProjectCode = projectCode;
             Sum = sum;
             PayType = payType;
-            SubledgerList = subledgerList;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CLoan : (int) Agp2pEnums.SumapayApiEnum.ALoan;

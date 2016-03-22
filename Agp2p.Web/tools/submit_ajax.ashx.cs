@@ -2334,10 +2334,10 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                     return;
                 }
-                //发送充值请求 TODO 分账列表
+                //发送充值请求
                 BaseReqMsg reqMsg;
-                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum, "subledgerlist");
-                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode, "subledgerlist");
+                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum);
+                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode);
                 MessageBus.Main.PublishAsync(reqMsg, ar =>
                 {
                     context.Response.Write(reqMsg.RequestContent);
@@ -2404,8 +2404,7 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                //TODO 参数，提现同步返回
-                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"), "bankCode", "bankAccount", "subledgerlist");
+                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"));
                 MessageBus.Main.PublishAsync(reqMsg, ar =>
                 {
                     context.Response.Write(reqMsg.RequestContent);
