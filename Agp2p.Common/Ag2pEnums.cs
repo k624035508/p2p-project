@@ -294,20 +294,20 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
-            [Description("债权转出")]
-            ClaimTransferredOut = 4,
-            [Description("债权买入")]
-            ClaimTransferredIn = 5,
             [Description("活期项目提现")]
-            HuoqiProjectWithdraw = 6,
+            HuoqiProjectWithdraw = 4,
             [Description("中间人垫付利息")]
-            AgentPaidInterest = 7,
+            AgentPaidInterest = 5,
             [Description("中间人收回垫付利息")]
-            AgentGainPaidInterest = 8,
+            AgentGainPaidInterest = 6,
             [Description("中间人收回活期债权")]
-            AgentRecaptureHuoqiClaims = 9,
+            AgentRecaptureHuoqiClaims = 7,
             [Description("自动续投")]
-            AutoInvest = 10,
+            AutoInvest = 8,
+            [Description("债权转出")]
+            ClaimTransferredOut = 9,
+            [Description("债权买入")]
+            ClaimTransferredIn = 10,
         }
 
         /// <summary>
@@ -377,22 +377,24 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
-            [Description("债权转出")]
-            ClaimTransferredOut = 24,
-            [Description("债权买入")]
-            ClaimTransferredIn = 25,
-            [Description("债权买入成功")] /* 指的是定期债权 */
-            ClaimTransferredInSuccess = 125,
             [Description("活期项目提现")]
-            HuoqiProjectWithdrawSuccess = 26,
+            HuoqiProjectWithdrawSuccess = 24,
             [Description("中间人垫付利息")]
-            AgentPaidInterest = 27,
+            AgentPaidInterest = 25,
             [Description("中间人收回垫付利息")]
-            AgentGainPaidInterest = 28,
+            AgentGainPaidInterest = 26,
             [Description("中间人收回活期债权")]
-            AgentRecaptureHuoqiClaims = 29,
+            AgentRecaptureHuoqiClaims = 27,
             [Description("自动续投")]
-            AutoInvest = 30,
+            AutoInvest = 28,
+            [Description("债权转出")]
+            ClaimTransferredOut = 29,
+            [Description("债权买入")]
+            ClaimTransferredIn = 30,
+            [Description("债权买入成功")] /* 指的是定期债权 */
+            ClaimTransferredInSuccess = 31,
+            [Description("债权买入失败")] /* 指的是定期债权 */
+            ClaimTransferredInFail = 32,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -771,7 +773,17 @@ namespace Agp2p.Common
             Disable = 20
         }
 
-        public enum ClaimQueryEnum
+        public enum StaticClaimQueryEnum
+        {
+            [Description("可转让")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已结束")]
+            Completed = 3,
+        }
+
+        public enum HuoqiClaimQueryEnum
         {
             [Description("全部")]
             All = 0,
@@ -783,7 +795,7 @@ namespace Agp2p.Common
             Completed = 3,
         }
 
-        public enum HuoqiQueryEnum
+        public enum HuoqiTransactionQueryEnum
         {
             [Description("全部")]
             All = 0,

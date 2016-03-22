@@ -12,12 +12,12 @@ namespace Agp2p.Test
         /*
         P1 测试流程：
         Day 1
-            发 1 日标，金额 50000，A 投 30000，B 投 20000，放款
+            发 1 日标，金额 50000，A 投 15000 * 2，B 投 20000，放款
         Day 2
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 21, 8, 50, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 22, 8, 50, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -34,7 +34,8 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             Common.PublishProject("P1", 1, 50000, 5);
-            Common.InvestProject(UserA, "P1", 30000);
+            Common.InvestProject(UserA, "P1", 15000);
+            Common.InvestProject(UserA, "P1", 15000);
             Common.InvestProject(UserB, "P1", 20000);
             Common.ProjectStartRepay("P1");
 

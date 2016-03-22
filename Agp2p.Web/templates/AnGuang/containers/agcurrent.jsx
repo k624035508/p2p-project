@@ -181,10 +181,10 @@ export default class AgCurrent extends React.Component {
                 <div className="bottom-wrapper">
                     <div className="select-bar">
                         {this.state.tableType == 0
-                            ? <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+HuoqiQueryEnum"
+                            ? <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+HuoqiTransactionQueryEnum"
                                     onTypeChange={newType => this.fetchHuoqiTransaction(newType, this.state.pageIndex)}
                                     value={this.state.queryType} />
-                            : <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+ClaimQueryEnum"
+                            : <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+HuoqiClaimQueryEnum"
                                     onTypeChange={newType => this.fetchHuoqiClaims(newType, this.state.pageIndex)}
                                     value={this.state.queryType} />}
                         <a href="javascript:" className={`tradeRecordBtn ${this.state.tableType == 0 ? 'active' : ''}`}
