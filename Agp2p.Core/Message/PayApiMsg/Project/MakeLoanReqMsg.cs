@@ -15,6 +15,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public bool Collective { get; set; }//集合项目标识
+        public decimal FeeRate { get; set; }//手续费率
         //分账列表
         private string subledgerList;
         public string SubledgerList
@@ -33,13 +34,12 @@ namespace Agp2p.Core.Message.PayApiMsg
                             inOrOut = "0",
                             sum = Sum
                         },
-                        //TODO 公司收到的手续费
                         new
                         {
                             roleType = "1",
                             roleCode = SumapayConfig.MerchantCode,
                             inOrOut = "1",
-                            sum = Utils.StrToDecimal(Sum, 0)*0.1m
+                            sum = Utils.StrToDecimal(Sum, 0) * FeeRate
                         }
                     });
                 }
@@ -48,17 +48,19 @@ namespace Agp2p.Core.Message.PayApiMsg
             set { subledgerList = value; }
         }
 
-        public MakeLoanReqMsg(string projectCode, string sum, bool collective = false, string payType = "2", string mainAccountType = "", string mainAccountCode = "")
+        public MakeLoanReqMsg(string projectCode, string sum, decimal feeRate, bool collective = false, string payType = "2", string mainAccountType = "", string mainAccountCode = "")
         {
             ProjectCode = projectCode;
             Sum = sum;
             PayType = payType;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
+            FeeRate = feeRate;
+            Collective = collective;
+
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CLoan : (int) Agp2pEnums.SumapayApiEnum.ALoan;
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_loan" : "main/TransactionForFT_loan");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            Collective = collective;
         }
 
         public override string GetSignature()
