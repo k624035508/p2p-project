@@ -5,12 +5,61 @@ body { background: @body-color; }
 
 .top-bar #register { color: @red !important; }
 
+.register-icon{
+    background:@white;
+    height:180px;
+	.ul-wrap {
+		margin-top:30px;
+		text-align: center;
+        padding-top:30px;
+		.steps-list {
+			li {
+				.inline-block;
+				margin: 0 5px;
+			}
+			.hr {
+				height: 2px;
+				background: @light-grey;
+			}
+			.step1-hr, .step4-hr { width: 110px; }
+			.step2-hr, .step3-hr { width: 230px; }
+			.step1, .step2, .step3 {
+				width: 45px;
+				*width: 35px;
+				height: 45px;
+				line-height: 45px;
+				text-align: center;
+				color: @white;
+				font-size: @font25;
+			}
+			.step-red { background: @red; }
+			
+			 .step1,.step2, .step3 { background: url("@{images}/grey-circle.png"); }
+                            .redstep{ background: url("@{images}/red-circle.png"); }
+		}
+	}
+	.steps-tips {
+		margin: 20px 50px;
+		*margin: 20px 213px;
+        padding:0 100px 30px 113px;
+        border-bottom:@border;
+		span {
+			.inline-block;
+			color: @dark-grey;
+			font-size: @font18;
+		}
+		.tips1 { margin-left: 43px;}
+		.tips2 { margin: 0 228px 0 210px; width: 108px; text-align: center; }
+        .tips-red{color:@red;}
+	}
+    }
+
+
 div.register-box {
-	margin-top: 25px;
-	padding: 25px 10px 22px 30px;
-	height: 690px;
-	border: @border;
+	padding: 5px 20px 22px 50px;
+	height: 850px;	
 	background: @white;
+
 	& > div {
 		.inline-block;
 		height: 575px;
@@ -23,9 +72,9 @@ div.register-box {
 			font-size: @font25;
 			color: @red;
             }
-			margin-bottom: 10px;
+			margin-bottom: 15px;
 			padding-bottom: 12px;
-			border-bottom: @border;
+			
 			span {
 				font-size: @font14;
 				color: @grey;
@@ -36,45 +85,7 @@ div.register-box {
 			}
             a.skip{margin-top:15px; cursor:pointer;}
 		}
-        .ul-wrap{
-            text-align:center;
-            .steps-list{
-                li{
-                   .inline-block;
-                   margin:0 5px;
-                }
-                .hr {
-				height: 2px;
-				background: @light-grey;
-			}
-            .step1-hr, .step4-hr { width: 50px; }
-			.step2-hr, .step3-hr { width: 100px; }
-            .step1, .step2, .step3 {
-				width: 45px;
-				height: 45px;
-				line-height: 45px;
-				text-align: center;
-				color: @white;
-				font-size: @font25;
-			}
-            .red-hr { background: @red; }
-			.step1{ background: url("@{images}/red-circle.png"); }
-            .step2,.step3{ background: url("@{images}/grey-circle.png");}
-            
-            }
-        }
-        .step-tips {
-             padding:20px 20px 10px 20px;
-		span {
-			.inline-block;
-			color: @dark-grey;
-			font-size: @font18;
-		}
-        .red-tips { color:@red;}
-		.tips1 { margin-left:76px;}
-		.tips2 { margin-left:96px;}
-        .tips3 {margin-left:73px;}
-	}
+       
 		.form-box {
 			margin-top: 10px;
 			*margin-top: 0px;
@@ -182,13 +193,9 @@ div.register-box {
         .invited {font-size:@font15; cursor:pointer; width:90px; margin-left:100px; color:#10ca36;}
        .hide {display:none;}
 	}
-	.dividing-hr {
-		margin-left: 30px;
-		width: 1px;
-		background: @light-grey;
-	}
+
 	.register-right {
-		width: 400px; height:600px;
+		width: 360px; height:520px;
 		background: url("@{images}/register-bg.jpg") no-repeat center;
 	}
     .successRegister{
