@@ -91,6 +91,12 @@
                     <span class="Validform_checktip">% * 提现金额</span></dd>
             </dl>
             <dl>
+                <dt>定期项目转让管理费</dt>
+                <dd>
+                    <asp:TextBox ID="txt_static_withdraw" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">% * 转让金额</span></dd>
+            </dl>
+            <dl>
                 <dt>最低充值</dt>
                 <dd>
                     <asp:TextBox ID="txt_recharge_lowest" runat="server" CssClass="input small" datatype="n" sucmsg=" "></asp:TextBox>

@@ -712,26 +712,30 @@ namespace Agp2p.Core
 
 
             // 创建提现人收益记录
+            var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
+            var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,
-                principal = needTransferClaim.principal,
+                principal = needTransferClaim.principal - finalCost,
                 type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredOut,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
                 interest = agentPaidInterest,
                 create_time = now,
                 li_claims = transferredClaim,
                 project = needTransferClaim.projectId,
-                remark = "债权转让成功，" +
-                    needTransferClaim.GetWithdrawClaimProfitingDays(currentRepaymentTask,
-                        (claimProfitedDay, parentClaimProfitingDay, taskProfitingDays) => $"原收益天数：{parentClaimProfitingDay}，实际收益天数：{claimProfitedDay}")
+                remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，" +
+                         needTransferClaim.GetWithdrawClaimProfitingDays(currentRepaymentTask,
+                             (claimProfitedDay, parentClaimProfitingDay, taskProfitingDays) =>
+                                 $"原收益天数：{parentClaimProfitingDay}，实际收益天数：{claimProfitedDay}") + "，手续费：" +
+                         finalCost.ToString("n")
             };
             context.li_project_transactions.InsertOnSubmit(claimTransferredOutPtr);
 
             // 修改钱包以及创建钱包历史
             var ownerWallet = needTransferClaim.dt_users.li_wallets;
             ownerWallet.idle_money += claimTransferredOutPtr.principal + claimTransferredOutPtr.interest.GetValueOrDefault();
-            ownerWallet.investing_money -= claimTransferredOutPtr.principal;
+            ownerWallet.investing_money -= needTransferClaim.principal;
             ownerWallet.profiting_money -= profitings.Sum();
             ownerWallet.total_profit += claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.last_update_time = claimTransferredOutPtr.create_time;

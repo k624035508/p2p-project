@@ -1,4 +1,5 @@
 ﻿using System;
+using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,9 +18,9 @@ namespace Agp2p.Test
         Day 2
             B 投 35000，放款
         Day 3
-            B 提现 35000
+            A 提现 35000
         Day 4
-            公司账号接手 B 的提现
+            公司账号接手 A 的提现
         Day 5
         Day 6
             回款
@@ -112,7 +113,9 @@ namespace Agp2p.Test
             // 回款，总数应为 41.67
             Common.AutoRepaySimulate();
 
-            Common.AssertWalletDelta(UserA, 4.86m, 0, 0, 0, 0, 0, 35000, 4.86m, realDate);
+            var staticClaimWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
+
+            Common.AssertWalletDelta(UserA, 4.86m - 35000 * staticClaimWithdrawCostPercent, 0, 0, 0, 0, 0, 35000, 4.86m, realDate);
             Common.AssertWalletDelta(UserB, 17.36m, 0, 0, 0, 0, 0, 25000, 17.36m, realDate);
             Common.AssertWalletDelta(CompanyAccount, 19.45m, 0, 0, 0, 0, 0, 35000, 19.45m, realDate);
         }

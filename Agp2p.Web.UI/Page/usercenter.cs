@@ -880,7 +880,7 @@ namespace Agp2p.Web.UI.Page
                 TodayProfitPredict = Math.Round(1m/365* totalProfitingPrincipal * (currentHuoqiProject?.profit_rate_year).GetValueOrDefault()/100, 2).ToString("n"),
                 TotalHuoqiClaimPrincipal = totalPrincipal.ToString("n"),
                 TotalHuoqiProfit = totalProfit.ToString("n"),
-                CurrentHuoqiProjectProfitRateYearly = currentHuoqiProject == null ? "没有活期项目" : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
+                CurrentHuoqiProjectProfitRateYearly = currentHuoqiProject == null ? "(目前没有活期项目)" : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
                 CurrentHuoqiProjectId = currentHuoqiProject?.id
             });
         }
