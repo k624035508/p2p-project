@@ -2402,9 +2402,13 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
                     return;
                 }
-                    
-                new Agp2pDataContext().Withdraw(cardId, howmany);
-                context.Response.Write("{\"status\":1, \"msg\":\"提现申请提交成功！\"}");                       
+
+                //TODO 参数，提现同步返回
+                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"), "bankCode", "bankAccount", "subledgerlist");
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    context.Response.Write(reqMsg.RequestContent);
+                });
             }
             catch (Exception e)
             {

@@ -19,8 +19,8 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
 
-        public WithdrawReqMsg(int userId, string sum, string bankCode, string bankAccount,
-            string payType, string subledgerList, string mainAccountType, string mainAccountCode)
+        public WithdrawReqMsg(int userId, string sum, string bankCode, string bankAccount, string subledgerList,
+            string payType = "2", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             Sum = sum;
