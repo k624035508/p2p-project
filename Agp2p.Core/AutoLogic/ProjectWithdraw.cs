@@ -30,7 +30,9 @@ namespace Agp2p.Core.AutoLogic
 
                 // 接手昨日/更早的提现
                 var needTransferClaims = context.li_claims.Where(
-                    c => c.projectId != c.profitingProjectId && c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any() && c.createTime.Date < DateTime.Today)
+                    c =>
+                        c.projectId != c.profitingProjectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                        !c.Children.Any() && c.createTime.Date < DateTime.Today)
                     .ToList();
 
                 if (!needTransferClaims.Any()) return;
@@ -55,20 +57,20 @@ namespace Agp2p.Core.AutoLogic
                 c =>
                     (c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid ||
                      c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid) &&
-                    c.li_claims1.createTime.Date == checkDay && !c.li_claims2.Any()).ToList();
+                    c.Parent.createTime.Date == checkDay && !c.Children.Any()).ToList();
             if (!claims.Any()) return;
 
             // 查询出昨日的全部提现及其是第几次的提现
             var yesterdayWithdraws = context.li_claims.Where(c =>
                 c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
-                c.li_claims1.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable &&
+                c.Parent.status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable &&
                 c.createTime.Date == checkDay)
                 .GroupBy(c => c.dt_users)
                 .ToDictionary(g => g.Key, g =>
                         g.Zip(Utils.Infinite(), (claim, index) => new {claim, index})
                             .ToDictionary(e => e.claim, e => e.index));
 
-            claims.ToLookup(c => c.li_projects1).ForEach(pcs =>
+            claims.ToLookup(c => c.li_projects_profiting).ForEach(pcs =>
             {
                 var huoqiProject = pcs.Key;
                 pcs.ToLookup(c => c.dt_users).ForEach(ucs =>

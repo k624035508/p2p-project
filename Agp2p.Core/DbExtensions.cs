@@ -75,7 +75,7 @@ namespace Agp2p.Core
         {
             return new li_claims
             {
-                li_claims1 = parent,
+                Parent = parent,
                 createFromInvestment = parent.createFromInvestment,
                 createTime = createTime,
                 userId = parent.userId,
@@ -116,7 +116,7 @@ namespace Agp2p.Core
             child.number = Utils.HiResNowString;
             child.profitingProjectId = byPtr.project;
             child.userId = byPtr.investor;
-            child.li_project_transactions1 = byPtr;
+            child.li_project_transactions_invest = byPtr;
             return child;
         }
 
@@ -126,9 +126,9 @@ namespace Agp2p.Core
             {
                 return childClaim;
             }
-            else if (childClaim.li_claims1 != null && childClaim.li_claims1.userId == childClaim.userId)
+            else if (childClaim.Parent!= null && childClaim.Parent.userId == childClaim.userId)
             {
-                return childClaim.li_claims1.GetHistoryClaimByTime(time);
+                return childClaim.Parent.GetHistoryClaimByTime(time);
             }
             else
             {
@@ -145,12 +145,12 @@ namespace Agp2p.Core
         {
             if (moment == null)
             {
-                return !claim.li_claims2.Any();
+                return !claim.Children.Any();
             }
             var historyClaimByTime = claim.GetHistoryClaimByTime(moment.Value);
             if (historyClaimByTime == null)
                 return false;
-            return !historyClaimByTime.li_claims2.Any(c => c.createTime <= moment.Value);
+            return !historyClaimByTime.Children.Any(c => c.createTime <= moment.Value);
         }
 
         public static bool IsProfiting(this li_claims claim, DateTime? moment = null, bool includeWithdrawing = false)
@@ -159,7 +159,7 @@ namespace Agp2p.Core
             if (!claim.IsLeafClaim(moment))
                 return false;
 
-            if (claim.li_projects1.IsHuoqiProject())
+            if (claim.li_projects_profiting.IsHuoqiProject())
             {
                 if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer
                     || (includeWithdrawing && claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer))
@@ -167,7 +167,7 @@ namespace Agp2p.Core
                     // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
                     var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
                     return claim.createTime < checkPoint ||
-                           claim.li_project_transactions1.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest; // 自动续投的话会产生收益
+                           claim.li_project_transactions_invest.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest; // 自动续投的话会产生收益
                 }
                 return false;
             }
@@ -184,9 +184,9 @@ namespace Agp2p.Core
         {
             if (parentClaim.createTime <= childClaim.createTime)
             {
-                if (childClaim.li_claims1 != null)
+                if (childClaim.Parent != null)
                 {
-                    return childClaim.li_claims1 == parentClaim || childClaim.li_claims1.IsChildOf(parentClaim);
+                    return childClaim.Parent == parentClaim || childClaim.Parent.IsChildOf(parentClaim);
                 }
             }
             return false;
@@ -210,17 +210,17 @@ namespace Agp2p.Core
 
         public static li_claims GetSourceClaim(this li_claims claim)
         {
-            if (claim.li_claims1 == null)
+            if (claim.Parent == null)
             {
                 return claim;
             }
-            else if (claim.li_claims1.userId != claim.userId)
+            else if (claim.Parent.userId != claim.userId)
             {
                 return claim;
             }
             else
             {
-                return claim.li_claims1.GetSourceClaim();
+                return claim.Parent.GetSourceClaim();
             }
         }
 
@@ -232,14 +232,14 @@ namespace Agp2p.Core
             }
             else
             {
-                return claim.li_claims1?.GetHistoryClaimByOwner(userId);
+                return claim.Parent?.GetHistoryClaimByOwner(userId);
             }
         }
 
         public static li_claims GetFirstHistoryClaimByOwner(this li_claims claim, int userId)
         {
             var hisClaim = claim.GetHistoryClaimByOwner(userId);
-            var olderClaim = hisClaim.li_claims1?.GetHistoryClaimByOwner(userId);
+            var olderClaim = hisClaim.Parent?.GetHistoryClaimByOwner(userId);
             if (olderClaim != null)
             {
                 return hisClaim != olderClaim ? olderClaim.GetFirstHistoryClaimByOwner(userId) : olderClaim;
@@ -293,11 +293,11 @@ namespace Agp2p.Core
             Debug.Assert(task.project == claim.projectId);
             Debug.Assert(claim.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
 
-            var ct = claim.li_claims1.GetProfitingDays(task, (claimProfitingDays, taskProfitingDays) => new { claimProfitingDays, taskProfitingDays}, task.should_repay_time);
+            var ct = claim.Parent.GetProfitingDays(task, (claimProfitingDays, taskProfitingDays) => new { claimProfitingDays, taskProfitingDays}, task.should_repay_time);
 
             var withdrawClaimStartProfitingPoint = new[]
             {
-                claim.li_claims1.createTime.Date, task.GetStartProfitingTime().Date
+                claim.Parent.createTime.Date, task.GetStartProfitingTime().Date
             }.Max();
             var withdrawClaimEndProfitingPoint = new[]
             {

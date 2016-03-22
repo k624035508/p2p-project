@@ -299,7 +299,7 @@ namespace Agp2p.Test
             var preBuyClaim = project.li_claims.First(
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && amount <= c.principal &&
-                    !c.li_claims2.Any());
+                    c.IsLeafClaim());
 
             TransactionFacade.BuyClaim(context, preBuyClaim.id, user.id, amount);
 
