@@ -138,10 +138,25 @@ div.nav-bar-wrap {
                  }
                 li:first-child { padding-left: 0;
                 }
+                li:nth-child(3){
+                    
+                                         &:hover{
+                                             i{
+             transform:rotate(180deg);
+-ms-transform:rotate(180deg); /* Internet Explorer */
+-moz-transform:rotate(180deg); /* Firefox */
+-webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+-o-transform:rotate(180deg); /* Opera */
+                             }
+                                         }
+                }
                  & > li > a:hover, & > li > a:focus { .nav-active;}
+                 
                  #myAccount{
+                                
                      a{
                          i{margin-left:-3px;}
+
                          i.iconfont{
                               font-family:"iconfont" !important;
                                  font-size:16px;font-style:normal;
@@ -149,6 +164,7 @@ div.nav-bar-wrap {
                               -webkit-text-stroke-width: 0.2px;
                              -moz-osx-font-smoothing: grayscale;
                          }
+                                              
                      }
                  }
                  .dropdown-menu-custom {
