@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
@@ -13,8 +14,6 @@ using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Test
 {
@@ -68,23 +67,9 @@ namespace Agp2p.Test
         #endregion
 
         // 在运行每个测试之前，使用 TestInitialize 来运行代码
-        [TestInitialize]
-        public void MyTestInitialize()
+        [ClassInitialize]
+        public static void MyTestInitialize(TestContext testContext)
         {
-            // 创建测试用户
-            // 为其充值
-            // 充值确认
-            // 创建测试项目，设置期限、期数和还款类型
-
-        }
-
-        private static readonly string str = "server=192.168.5.98;uid=sa;pwd=Zxcvbnm,;database=agrh;";
-
-        private static string GetFriendlyUserName(dt_users user)
-        {
-            return string.IsNullOrWhiteSpace(user.real_name)
-                ? user.user_name
-                : $"{user.user_name}({user.real_name})";
         }
 
         private static string GetUserPassword(dt_users user)
@@ -95,7 +80,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void CleanAllProjectAndTransactionRecord()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var now = DateTime.Now;
 
             context.li_projects.ForEach(p =>
@@ -154,7 +139,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void RemoveTransactPassword()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var dtUsers = context.dt_users.Single(u => u.user_name == "13535656867");
             dtUsers.pay_password = null;
             context.SubmitChanges();
@@ -163,8 +148,8 @@ namespace Agp2p.Test
         [TestMethod]
         public void TestRepayNotice()
         {
-            var context = new Agp2pDataContext(str);
-            var rt = context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
+            var context = new Agp2pDataContext();
+            var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
 
@@ -201,7 +186,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixRepaymentTaskByRepaidSum()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             int count = 0;
             context.li_repayment_tasks.Where(t => t.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                 .AsEnumerable()
@@ -279,7 +264,7 @@ namespace Agp2p.Test
                 修正 13612512742（陈茂强） 用户从 2016/1/26 16:25:53 开始出现待收益偏差：-0.01，影响历史记录 51 条
                 修正 13612512742（陈茂强） 用户从 2016/1/28 15:11:21 开始出现待收益偏差：0.01，影响历史记录 39 条
             */
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var biasSources = context.li_wallet_histories.Where(h => new DateTime(2016, 1, 18) < h.create_time)
                 .Where(h => h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess).ToList();
 
@@ -291,7 +276,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixNewbieProjectMissGenerateRepaymentTask()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
             {
                 var investments = p.li_project_transactions.Where(
@@ -309,7 +294,7 @@ namespace Agp2p.Test
                         try
                         {
                             TrialActivity.CheckNewbieInvest(investments[userId].id);
-                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
+                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + investments[userId].dt_users.GetFriendlyUserName());
                         }
                         catch (Exception ex)
                         {
@@ -367,7 +352,7 @@ namespace Agp2p.Test
         public void GenerateClaimFromOldData()
         {
             // 补充旧的债权
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
 
             // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
             var ptrs =
@@ -375,20 +360,11 @@ namespace Agp2p.Test
                     ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                     .ToList();
 
-            var proUserMap = ptrs.GroupBy(ptr => ptr.project)
-                .ToDictionary(pptr => pptr.Key,
-                    pptr =>
-                        pptr.GroupBy(ptr => ptr.investor)
-                            .ToDictionary(uptr => uptr.Key,
-                                uptr =>
-                                    uptr.Zip(Utils.Infinite(1), (ptr, index) => new {ptr, index})
-                                        .ToDictionary(pair => pair.ptr, pair => pair.index)));
-                            
+            int count = 0;
             ptrs.ForEach(ptr =>
             {
-                if (ptr.li_claims1.Any()) return;
+                if (ptr.li_claims.Any()) return;
 
-                
                 var claimFromInvestment = new li_claims
                 {
                     principal = ptr.principal,
@@ -397,33 +373,34 @@ namespace Agp2p.Test
                     createFromInvestment = ptr.id,
                     createTime = ptr.create_time,
                     userId = ptr.investor,
-                    status =
-                        (byte)
-                            (ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                                ? Agp2pEnums.ClaimStatusEnum.Completed
-                                : Agp2pEnums.ClaimStatusEnum.Nontransferable),
+                    status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     number = Utils.HiResNowString,
-                    statusUpdateTime = ptr.li_projects.complete_time
                 };
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
+                count += 1;
 
                 if (ptr.li_projects.IsNewbieProject())
                 {
                     var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
-                    if (task.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    if (task.status != (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
                     {
-                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable;
-                        claimFromInvestment.statusUpdateTime = null;
-                    }
-                    else
-                    {
-                        claimFromInvestment.status = (byte) Agp2pEnums.ClaimStatusEnum.Completed;
-                        claimFromInvestment.statusUpdateTime = task.repay_at;
+                        var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
                     }
                 }
-                context.li_claims.InsertOnSubmit(claimFromInvestment);
+                else
+                {
+                    if (ptr.li_projects.complete_time.HasValue)
+                    {
+                        var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
+                    }
+                }
             });
             //context.SubmitChanges();
-            Debug.WriteLine("创建债权：" + ptrs.Count);
+            Debug.WriteLine("创建债权：" + count);
         }
 
         [TestMethod]

@@ -43,7 +43,7 @@ namespace Agp2p.Core.PayApiLogic
                         if (trans != null)
                         {
                             //TODO 检查用户资金信息
-                            context.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
+                            TransactionFacade.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
                             msg.HasHandle = true;
                         }
                         else
@@ -78,7 +78,7 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.BidRequestId);
                         if (trans != null)
                         {
-                            context.Refund(trans.id);
+                            context.Refund(trans.id, DateTime.Now);
                             msg.HasHandle = true;
                         }
                         else

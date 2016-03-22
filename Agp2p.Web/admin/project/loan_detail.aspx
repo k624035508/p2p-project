@@ -2,6 +2,7 @@
 
 <%@ Import Namespace="Agp2p.Common" %>
 <%@ Import Namespace="Agp2p.Linq2SQL" %>
+<%@ Import Namespace="Agp2p.Core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,6 +21,11 @@
 
         });
     </script>
+    <style>
+        tr.isActiveLeaf td {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="mainbody">
     <form id="form1" runat="server">
@@ -505,7 +511,6 @@
                         <th align="left" width="4%">状态</th>
                         <th align="left" width="12%">债权编号</th>
                         <th align="left" width="10%">创建时间</th>
-                        <th align="left" width="10%">状态更新时间</th>
                         <% if (isHuoqiProject) { %>
                         <th align="left" width="10%">关联定期项目</th>
                         <% } else { %>
@@ -516,14 +521,13 @@
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
-                <tr>
+                <tr class="<%# (((li_claims) Container.DataItem).status < (int) Agp2pEnums.ClaimStatusEnum.Completed || ((li_claims) Container.DataItem).status % 10 == 1) && ((li_claims) Container.DataItem).IsLeafClaim() ? "isActiveLeaf" : ""%>">
                     <td align="center"><%# Eval("id") %></td>
                     <td><%# GetFriendlyUserName(((li_claims) Container.DataItem).dt_users) %></td>
                     <td><%# ((li_claims) Container.DataItem).principal.ToString("c") %></td>             
                     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ClaimStatusEnum)((li_claims)Container.DataItem).status) %></td>
                     <td><%#Eval("number")%></td>
                     <td><%#Eval("createTime")%></td>
-                    <td><%#Eval("statusUpdateTime")%></td>
                     <% if (isHuoqiProject) { %>
                     <td><%# ((li_claims) Container.DataItem).li_projects.title %></td>
                     <% } else { %>
@@ -531,19 +535,20 @@
                     <% } %>
                     <td><%# Eval("parentClaimId")%></td>
                     <td>
-                        <asp:Button runat="server"
+                        <asp:LinkButton runat="server"
                             ID="btnBecomeTransferable"
-                            Text="转为可转让债权"
+                            Text="申请转让"
                             UseSubmitBehavior="False"
                             CommandArgument='<%# Eval("id") %>'
-                            OnClientClick="return ExeNoCheckPostBack(this.name, '确认将此债权转为可转让债权？');"
+                            OnClientClick="return ExeNoCheckPostBack(this.id.replace(/_/g, '$'), '是否为该债权申请转让？');"
                             OnClick="btnBecomeTransferable_OnClick"
-                            Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable %>" />
+                            Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable && ((li_claims) Container.DataItem).IsLeafClaim() %>" />
+                        <!--TODO 提现撤销-->
                     </td>            
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
-                <%#rptClaimList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"10\">暂无记录</td></tr>" : ""%>
+                <%#rptClaimList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"9\">暂无记录</td></tr>" : ""%>
                 </table>
             </FooterTemplate>
         </asp:Repeater>

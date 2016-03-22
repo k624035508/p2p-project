@@ -1,5 +1,5 @@
 import React from "react";
-import range from "lodash/utility/range"
+import range from "lodash/utility/range";
 
 
 class Pagination extends React.Component {

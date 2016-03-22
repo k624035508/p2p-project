@@ -24,6 +24,7 @@ namespace Agp2p.Model
         private decimal _overtime_cost2 = 0;
         private decimal _overtime_cost_bank = 0;
         private decimal _withdraw = 0;
+        private decimal _static_withdraw = 0;
         private decimal _recharge_lowest = 0;
 
         public decimal loan_fee_rate
@@ -154,6 +155,12 @@ namespace Agp2p.Model
             {
                 _withdraw = value;
             }
+        }
+
+        public decimal static_withdraw
+        {
+            get { return _static_withdraw; }
+            set { _static_withdraw = value; }
         }
 
         public decimal recharge_lowest

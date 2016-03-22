@@ -294,12 +294,20 @@ namespace Agp2p.Common
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
-            [Description("债权转让")]
-            ClaimTransfer = 4,
-            [Description("活期项目续投失败回款")]
-            AutoInvestFailRepay = 5,
+            [Description("债权转出")]
+            ClaimTransferredOut = 4,
+            [Description("债权买入")]
+            ClaimTransferredIn = 5,
             [Description("活期项目提现")]
             HuoqiProjectWithdraw = 6,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 7,
+            [Description("中间人收回垫付利息")]
+            AgentGainPaidInterest = 8,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 9,
+            [Description("自动续投")]
+            AutoInvest = 10,
         }
 
         /// <summary>
@@ -369,12 +377,22 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
-            [Description("债权转让")]
-            ClaimTransfer = 24,
-            [Description("活期项目续投失败回款")]
-            AutoInvestFailRepaySuccess = 25,
+            [Description("债权转出")]
+            ClaimTransferredOut = 24,
+            [Description("债权买入")]
+            ClaimTransferredIn = 25,
+            [Description("债权买入成功")] /* 指的是定期债权 */
+            ClaimTransferredInSuccess = 125,
             [Description("活期项目提现")]
             HuoqiProjectWithdrawSuccess = 26,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 27,
+            [Description("中间人收回垫付利息")]
+            AgentGainPaidInterest = 28,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 29,
+            [Description("自动续投")]
+            AutoInvest = 30,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -775,70 +793,62 @@ namespace Agp2p.Common
 
         public enum SumapayApiEnum
         {
-            [Description("实名开户")]
-            URegi = 1,
-            [Description("实名认证")]
-            UAuth = 2,
-            [Description("用户激活")]
-            Activ = 3,
-            [Description("账户管理")]
-            Accou = 4,
-            [Description("自动投标续约")]
-            AtBid = 5,
-            [Description("取消自动投标")]
-            ClBid = 6,
-            [Description("开通存管账户自动还款")]
-            AcReO = 7,
-            [Description("开通银行账户自动还款")]
-            AbReO = 8,
-            [Description("关闭用户自动还款")]
-            ClRep = 9,
-            [Description("网银充值")]
-            WeRec = 10,
-            [Description("一键充值")]
-            WhRec = 11,
-            [Description("投标普通项目")]
-            MaBid = 12,
-            [Description("投标集合项目")]
-            McBid = 13,
-            [Description("自动投标普通项目")]
-            AmBid = 14,
-            [Description("自动投标集合项目")]
-            AcBid = 15,
-            [Description("撤标普通项目")]
-            CaPro = 16,
-            [Description("撤标集合项目")]
-            CoPro = 17,
-            [Description("流标普通项目")]
-            RePro = 18,
-            [Description("普通项目放款")]
-            ALoan = 19,
-            [Description("集合项目放款")]
-            CLoan = 20,
-            [Description("用户提现")]
-            Wdraw = 21,
-            [Description("存管账户还款(普通项目)")]
-            MaRep = 22,
-            [Description("存管账户还款(集合项目)")]
-            McRep = 23,
-            [Description("银行账户还款(普通项目)")]
-            BaRep = 24,
-            [Description("银行账户还款(集合项目)")]
-            BcRep = 25,
-            [Description("自动还款(普通项目)")]
-            AcRep = 26,
-            [Description("自动还款(集合项目)")]
-            AbRep = 27,
-            [Description("本息到账(普通项目)")]
-            RetPt = 28,
-            [Description("本息到账(集合项目)")]
-            RetCo = 29,
-            [Description("债权转让")]
-            CreAs = 30,
-            [Description("单笔付款至个人")]
-            TranU = 31,
-            [Description("用户签约银行卡查询")]
-            QuBan = 32,
+            [Description("实名开户")] URegi = 1,
+            [Description("实名认证")] UAuth = 2,
+            [Description("用户激活")] Activ = 3,
+            [Description("账户管理")] Accou = 4,
+            [Description("自动投标续约")] AtBid = 5,
+            [Description("取消自动投标")] ClBid = 6,
+            [Description("开通存管账户自动还款")] AcReO = 7,
+            [Description("开通银行账户自动还款")] AbReO = 8,
+            [Description("关闭用户自动还款")] ClRep = 9,
+            [Description("网银充值")] WeRec = 10,
+            [Description("一键充值")] WhRec = 11,
+            [Description("投标普通项目")] MaBid = 12,
+            [Description("投标集合项目")] McBid = 13,
+            [Description("自动投标普通项目")] AmBid = 14,
+            [Description("自动投标集合项目")] AcBid = 15,
+            [Description("撤标普通项目")] CaPro = 16,
+            [Description("撤标集合项目")] CoPro = 17,
+            [Description("流标普通项目")] RePro = 18,
+            [Description("普通项目放款")] ALoan = 19,
+            [Description("集合项目放款")] CLoan = 20,
+            [Description("用户提现")] Wdraw = 21,
+            [Description("存管账户还款(普通项目)")] MaRep = 22,
+            [Description("存管账户还款(集合项目)")] McRep = 23,
+            [Description("银行账户还款(普通项目)")] BaRep = 24,
+            [Description("银行账户还款(集合项目)")] BcRep = 25,
+            [Description("自动还款(普通项目)")] AcRep = 26,
+            [Description("自动还款(集合项目)")] AbRep = 27,
+            [Description("本息到账(普通项目)")] RetPt = 28,
+            [Description("本息到账(集合项目)")] RetCo = 29,
+            [Description("债权转让")] CreAs = 30,
+            [Description("单笔付款至个人")] TranU = 31,
+            [Description("用户签约银行卡查询")] QuBan = 32,
+        }
+
+        public enum ClaimQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益中")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已结束")]
+            Completed = 3,
+        }
+
+        public enum HuoqiQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益")]
+            Profiting = 1,
+            [Description("买入")]
+            BuyIn = 2,
+            [Description("转出")]
+            TransferOut = 3,
         }
     }
 }

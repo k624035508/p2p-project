@@ -11,9 +11,9 @@ namespace Agp2p.Web.admin.transact
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
-        public decimal InvestedMoney { get; set; }
+        public decimal NonWithdrawingMoney { get; set; }
         public decimal WithdrawingMoney { get; set; }
-        public string WithdrawingClaimRatio { get; set; }
+        public decimal WithdrawSuccessMoney { get; set; }
     }
 
     public partial class huoqi_withdraw : UI.ManagePage
@@ -55,7 +55,14 @@ namespace Agp2p.Web.admin.transact
                     .AsEnumerable()
                     .Select(p => new ListItem(p.title, p.id.ToString()))
                     .ToArray());
-            huoqiProject = Convert.ToInt32(ddlHuoqiProjects.Items[0].Value);
+            if (ddlHuoqiProjects.Items.Count != 0)
+            {
+                huoqiProject = Convert.ToInt32(ddlHuoqiProjects.Items[0].Value);
+            }
+            else
+            {
+                ddlHuoqiProjects.Items.Add(new ListItem("暂无活期项目"));
+            }
         }
         #endregion
 
@@ -65,18 +72,28 @@ namespace Agp2p.Web.admin.transact
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             ddlHuoqiProjects.SelectedValue = huoqiProject.ToString();
-            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject).ToLookup(c => c.dt_users).Select(
+            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject && !c.li_claims2.Any()).ToLookup(c => c.dt_users).Select(
                 g =>
                 {
                     return new HuoqiProjectInvestor
                     {
                         UserId = g.Key.id,
-                        InvestedMoney = g.Sum(c => c.principal),
-                        UserName = string.IsNullOrWhiteSpace(g.Key.real_name) ? g.Key.user_name : string.Format("{0}({1})", g.Key.user_name, g.Key.real_name),
-                        WithdrawingMoney = g.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).Aggregate(0m, (sum, c) => sum + c.principal),
-                        WithdrawingClaimRatio = g.Count(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer) + "/" + g.Count()
+                        NonWithdrawingMoney = g.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer).Sum(c => c.principal),
+                        UserName =
+                            string.IsNullOrWhiteSpace(g.Key.real_name)
+                                ? g.Key.user_name
+                                : string.Format("{0}({1})", g.Key.user_name, g.Key.real_name),
+                        WithdrawingMoney =
+                            g.Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                                .Aggregate(0m, (sum, c) => sum + c.principal),
+                        WithdrawSuccessMoney =
+                            g.Where(
+                                c =>
+                                    c.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid ||
+                                    c.status == (int) Agp2pEnums.ClaimStatusEnum.CompletedUnpaid)
+                                .Aggregate(0m, (sum, c) => sum + c.principal),
                     };
-                }).ToList();
+                }).Where(e => e.NonWithdrawingMoney != 0 || e.WithdrawingMoney != 0 || e.WithdrawSuccessMoney != 0).ToList();
 
             totalCount = query.Count;
             rptList.DataSource = query.OrderBy(q => q.UserName).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
@@ -102,12 +119,6 @@ namespace Agp2p.Web.admin.transact
             Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, huoqiProject.ToString()));
         }
 
-        //筛选类别
-        protected void ddlUserGroud_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, ddlHuoqiProjects.SelectedValue));
-        }
-
         protected void ddlHuoqiProjects_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect(Utils.CombUrlTxt("huoqi_withdraw.aspx", "keywords={0}&huoqiProject={1}", txtKeywords.Text, ddlHuoqiProjects.SelectedValue));
@@ -118,14 +129,16 @@ namespace Agp2p.Web.admin.transact
             var withdrawAmount = Request["__EVENTARGUMENT"];
             int userId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             huoqiProject = Convert.ToInt32(ddlHuoqiProjects.SelectedValue);
+
             try
             {
                 context.HuoqiProjectWithdraw(userId, huoqiProject, Convert.ToDecimal(withdrawAmount));
-                JscriptMsg("提现成功", "", "Error");
+                RptBind();
+                JscriptMsg("提现成功", "", "Success");
             }
             catch (Exception ex)
             {
-                JscriptMsg("提现失败：" + ex.Message, "");
+                JscriptMsg("提现失败：" + ex.Message, "", "Success");
             }
         }
     }

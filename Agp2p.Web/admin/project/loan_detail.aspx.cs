@@ -77,28 +77,28 @@ namespace Agp2p.Web.admin.project
         private void ShowProfitingClaimInfo(li_projects project)
         {
             isHuoqiProject = true;
-            rptClaimList.DataSource = project.li_claims1.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims1.AsEnumerable();
             rptClaimList.DataBind();
         }
 
         private void ShowClaimsInfo(li_projects project)
         {
             isHuoqiProject = false;
-            rptClaimList.DataSource = project.li_claims.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims.AsEnumerable();
             rptClaimList.DataBind();
         }
 
         protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
         {
-            int claimId = Convert.ToInt32(((Button)sender).CommandArgument);
+            int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             var claim = LqContext.li_claims.Single(c => c.id == claimId);
 
-            claim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferable;
-            claim.statusUpdateTime = DateTime.Now;
-            LqContext.SubmitChanges();
-
             var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
-            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
+            LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId);
+
+            ShowClaimsInfo(claim.li_projects);
+
             JscriptMsg(remark, "");
         }
 

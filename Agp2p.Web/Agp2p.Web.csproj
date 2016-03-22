@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
+    <Content Include="admin\claims\agent_buying_claims.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
     <Content Include="admin\js\bootstrap.config.js" />
     <Content Include="admin\js\common.js" />
@@ -903,6 +904,8 @@
     <Content Include="templates\AnGuang\imgs\sitemap\safe.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\current-icon-border.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\read.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\gonghang.png" />
@@ -1250,7 +1253,12 @@
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
+    <Content Include="scripts\jquery-2.2.1.min.map" />
     <Content Include="templates\AnGuang\less\loan.less" />
+    <Content Include="templates\AnGuang\containers\agcurrent.jsx" />
+    <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
+    <Content Include="templates\AnGuang\less\agcurrent.less" />
+    <Content Include="templates\AnGuang\less\claimstransfer.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
     <Content Include="templates\AnGuang\imgs\index\iconfont.eot" />
     <Content Include="templates\AnGuang\imgs\index\iconfont.svg" />
@@ -1264,6 +1272,12 @@
     </Compile>
     <Compile Include="admin\audit\make_loan_audit.aspx.designer.cs">
       <DependentUpon>make_loan_audit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buying_claims.aspx.cs">
+      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buying_claims.aspx.designer.cs">
+      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">
       <DependentUpon>dialog_picture.aspx</DependentUpon>

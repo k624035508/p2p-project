@@ -187,7 +187,7 @@ namespace Agp2p.Core.PayApiLogic
                         var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
                         if (user != null)
                         {
-                            user.autoRepay = msg.Cancel ? null : "true";
+                            user.autoRepay = msg.Cancel;
                             context.SubmitChanges();
                             msg.HasHandle = true;
                         }
