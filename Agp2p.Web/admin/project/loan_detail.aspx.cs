@@ -77,7 +77,7 @@ namespace Agp2p.Web.admin.project
         private void ShowProfitingClaimInfo(li_projects project)
         {
             isHuoqiProject = true;
-            rptClaimList.DataSource = project.li_claims1.AsEnumerable();
+            rptClaimList.DataSource = project.li_claims_profiting.AsEnumerable();
             rptClaimList.DataBind();
         }
 

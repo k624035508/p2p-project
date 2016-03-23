@@ -531,7 +531,7 @@
                     <% if (isHuoqiProject) { %>
                     <td><%# ((li_claims) Container.DataItem).li_projects.title %></td>
                     <% } else { %>
-                    <td><%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId ? "" : ((li_claims) Container.DataItem).li_projects1.title %></td>
+                    <td><%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId ? "" : ((li_claims) Container.DataItem).li_projects_profiting.title %></td>
                     <% } %>
                     <td><%# Eval("parentClaimId")%></td>
                     <td>

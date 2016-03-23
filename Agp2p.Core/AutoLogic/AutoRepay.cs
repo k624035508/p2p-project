@@ -29,7 +29,7 @@ namespace Agp2p.Core.AutoLogic
             var withdrawOvertimeClaims = context.li_claims.Where(
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.projectId == c.profitingProjectId &&
-                    c.createTime < DateTime.Now.AddDays(-2) && !c.li_claims2.Any()).ToList();
+                    c.createTime < DateTime.Now.AddDays(-2) && !c.Children.Any()).ToList();
             if (!withdrawOvertimeClaims.Any()) return;
 
             withdrawOvertimeClaims.ForEach(c => TransactionFacade.StaticClaimWithdrawCancel(context, c.id, false));
@@ -51,7 +51,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 // 如果是今天/昨日才投的活期标，则不返利
                 // 如果前日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
-                var shouldRepayTo = p.li_claims1.Where(c => c.IsProfiting()).ToList();
+                var shouldRepayTo = p.li_claims_profiting.Where(c => c.IsProfiting()).ToList();
                 if (!shouldRepayTo.Any())
                 {
                     return Enumerable.Empty<li_repayment_tasks>();

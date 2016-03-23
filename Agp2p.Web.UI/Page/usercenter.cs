@@ -636,7 +636,7 @@ namespace Agp2p.Web.UI.Page
             var query = context.li_claims.Where(c =>
                         c.userId == userInfo.id &&
                         StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
-                        !c.li_claims2.Any());
+                        !c.Children.Any());
 
             var count = query.Count();
             var data =
@@ -648,14 +648,14 @@ namespace Agp2p.Web.UI.Page
                     {
                         c.id,
                         c.number,
-                        profitingProject = c.li_projects1.title,
-                        profitingYearly = c.li_projects1.profit_rate_year,
+                        profitingProject = c.li_projects.title,
+                        profitingYearly = c.li_projects.profit_rate_year,
                         principal = c.principal.ToString("n"),
                         queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum) c.status]),
                         createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
-                        nextProfitDay = c.li_projects1.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
+                        nextProfitDay = c.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
                         c.status,
-                        buyerCount = c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions1.Count(
+                        buyerCount = c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions_profiting.Count(
                             ptr =>
                                 ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                                 ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0
@@ -700,7 +700,7 @@ namespace Agp2p.Web.UI.Page
             var withdrawingClaim = userInfo.li_claims.SingleOrDefault(c => c.id == withdrawClaimId);
             if (withdrawingClaim != null)
             {
-                if (withdrawingClaim.li_project_transactions1.Any(
+                if (withdrawingClaim.li_project_transactions_profiting.Any(
                 ptr =>
                     ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                     ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Pending))
@@ -737,9 +737,9 @@ namespace Agp2p.Web.UI.Page
 
             var buyedClaims = userInfo.li_claims.Where(
                 c =>
-                    c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.li_claims1 != null &&
-                    c.li_claims1.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
-                    c.li_claims1.userId != c.userId).ToList();
+                    c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.Parent != null &&
+                    c.Parent.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.Parent.userId != c.userId).ToList();
             return
                 JsonConvert.SerializeObject(
                     new
@@ -871,7 +871,7 @@ namespace Agp2p.Web.UI.Page
                 c =>
                     c.userId == userInfo.id &&
                     c.projectId != c.profitingProjectId &&
-                    HuoqiClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().Contains(c.status) && !c.li_claims2.Any());
+                    HuoqiClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().Contains(c.status) && !c.Children.Any());
 
             var reverseMap =
                 HuoqiClaimQueryTypeStatusMap.Where(pair => pair.Key != Agp2pEnums.HuoqiClaimQueryEnum.All)
@@ -913,7 +913,7 @@ namespace Agp2p.Web.UI.Page
                     p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
 
             var myHuoqiClaims =
-                currentHuoqiProject?.li_claims1.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
+                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
                 Enumerable.Empty<li_claims>().ToList();
 
             var totalPrincipal = myHuoqiClaims.Aggregate(0m, (sum, c) => sum + c.principal);

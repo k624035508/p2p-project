@@ -364,7 +364,7 @@ namespace Agp2p.Test
             int count = 0;
             ptrs.ForEach(ptr =>
             {
-                if (ptr.li_claims.Any()) return;
+                if (ptr.li_claims_invested.Any()) return;
 
                 var claimFromInvestment = new li_claims
                 {

@@ -74,22 +74,26 @@ namespace Agp2p.Web.admin.claims
         {
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
-            var query = context.li_claims.Where(c => c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && !c.li_claims2.Any())
-                .AsEnumerable()
-                .Select(cl =>
-                    new BuyableClaim
-                    {
-                        ClaimId = cl.id,
-                        Principal = cl.principal,
-                        BuyableAmount =
-                            cl.principal - cl.li_project_transactions1.Where( ptr =>
+            var query =
+                context.li_claims.Where(
+                    c =>
+                        c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                        !c.Children.Any())
+                    .AsEnumerable()
+                    .Select(cl =>
+                        new BuyableClaim
+                        {
+                            ClaimId = cl.id,
+                            Principal = cl.principal,
+                            BuyableAmount =
+                                cl.principal - cl.li_project_transactions_profiting.Where(ptr =>
                                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
-                                .Aggregate(0m, (sum, tr) => sum + tr.principal),
-                        WithdrawTime = cl.createTime,
-                        Owner = cl.dt_users.GetFriendlyUserName(),
-                        ProjectName = cl.li_projects.title,
-                    }).ToList();
+                                    .Aggregate(0m, (sum, tr) => sum + tr.principal),
+                            WithdrawTime = cl.createTime,
+                            Owner = cl.dt_users.GetFriendlyUserName(),
+                            ProjectName = cl.li_projects.title,
+                        }).ToList();
 
             totalCount = query.Count;
             rptList.DataSource = query.OrderBy(q => q.Owner).Skip(pageSize * (page - 1)).Take(pageSize).ToList();

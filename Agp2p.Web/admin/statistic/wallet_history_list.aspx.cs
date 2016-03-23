@@ -327,7 +327,7 @@ namespace Agp2p.Web.admin.statistic
                 }
                 if (proj.IsHuoqiProject())
                 {
-                    var claim = his.li_project_transactions.li_claims1;
+                    var claim = his.li_project_transactions.li_claims_from;
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
                         projectNameMapper(his), claim == null ? "" : "债权: " + claim.principal.ToString("c"));
                 }

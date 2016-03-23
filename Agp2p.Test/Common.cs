@@ -191,6 +191,41 @@ namespace Agp2p.Test
             context.SubmitChanges();
         }
 
+        public static void PublishMonthlyProject(string projectName, int repayMonth, decimal financingAmount, decimal profitingYearly)
+        {
+            var context = new Agp2pDataContext();
+            var now = DateTime.Now;
+
+            var loaner = context.li_loaners.Single(l => l.dt_users.real_name == "杨长岭");
+            var ypbCategory = context.dt_article_category.Single(c => c.call_index == "rtb");
+            var project = new li_projects
+            {
+                li_risks = new li_risks
+                {
+                    last_update_time = now,
+                    li_loaners = loaner
+                },
+                category_id = ypbCategory.id,
+                type = (int)Agp2pEnums.LoanTypeEnum.Company,
+                sort_id = 99,
+                add_time = now,
+                publish_time = now,
+                make_loan_time = now,
+                user_name = "admin",
+                title = projectName,
+                no = projectName,
+                financing_amount = financingAmount,
+                repayment_term_span_count = repayMonth,
+                repayment_term_span = (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month,
+                repayment_type = (int?)Agp2pEnums.ProjectRepaymentTypeEnum.XianXi,
+                profit_rate_year = profitingYearly,
+                status = (int)Agp2pEnums.ProjectStatusEnum.Financing,
+            };
+            context.li_projects.InsertOnSubmit(project);
+
+            context.SubmitChanges();
+        }
+
         public static void PublishProject(string projectName, int repayDays, decimal financingAmount, decimal profitingYearly)
         {
             var context = new Agp2pDataContext();
@@ -299,7 +334,7 @@ namespace Agp2p.Test
             var preBuyClaim = project.li_claims.First(
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && amount <= c.principal &&
-                    !c.li_claims2.Any());
+                    c.IsLeafClaim());
 
             TransactionFacade.BuyClaim(context, preBuyClaim.id, user.id, amount);
 
