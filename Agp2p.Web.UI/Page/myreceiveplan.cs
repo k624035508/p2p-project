@@ -58,7 +58,7 @@ namespace Agp2p.Web.UI.Page
         /// <returns></returns>
         public static List<MyRepayment> QueryProjectRepayments(dt_users user, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
-            var myRepayingProjects = user.li_claims.Where(c => c.projectId == c.profitingProjectId).ToLookup(cg => cg.li_projects);
+            var myRepayingProjects = user.li_claims.Where(c => c.projectId == c.profitingProjectId && c.IsLeafClaim()).ToLookup(cg => cg.li_projects);
 
             Model.siteconfig config = new siteconfig().loadConfig();
 

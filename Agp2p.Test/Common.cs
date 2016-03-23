@@ -54,10 +54,11 @@ namespace Agp2p.Test
 
         public static void AutoRepaySimulate(DateTime? runAt = null)
         {
+            AutoRepay.CheckStaticProjectWithdrawOvertime(false);
             AutoRepay.GenerateHuoqiRepaymentTask(false);
             AutoRepay.DoRepay(false);
-            AutoRepay.HuoqiClaimTransferToCompanyWhenNeeded(false);
-            AutoRepay.DoHuoqiProjectWithdraw(false, runAt.GetValueOrDefault(DateTime.Now));
+            ProjectWithdraw.HuoqiClaimTransferToCompanyWhenNeeded(false);
+            ProjectWithdraw.DoHuoqiProjectWithdraw(false, runAt.GetValueOrDefault(DateTime.Now));
         }
 
         public static void DoSimpleCleanUp(DateTime deleteAfter)
@@ -65,15 +66,15 @@ namespace Agp2p.Test
             var context = new Agp2pDataContext();
 
             // 在 deleteAfter 之后产生的数据都删除
-            var preDelProj = context.li_projects.Where(p => deleteAfter < p.add_time).ToList();
+            var preDelProj = context.li_projects.Where(p => deleteAfter <= p.add_time).ToList();
             preDelProj.ForEach(p =>
             {
-                if (deleteAfter < p.make_loan_time)
+                if (deleteAfter <= p.make_loan_time)
                 {
                     context.li_repayment_tasks.DeleteAllOnSubmit(p.li_repayment_tasks);
                 }
 
-                var ptrs = p.li_project_transactions.Where(ptr => deleteAfter < ptr.create_time).ToList();
+                var ptrs = p.li_project_transactions.Where(ptr => deleteAfter <= ptr.create_time).ToList();
                 ptrs.ForEach(ptr =>
                 {
                     context.li_invitations.DeleteAllOnSubmit(ptr.li_invitations);
@@ -81,14 +82,14 @@ namespace Agp2p.Test
                 });
                 context.li_project_transactions.DeleteAllOnSubmit(ptrs);
 
-                var preDelClaims = p.li_claims.Where(c => deleteAfter < c.createTime).ToList();
+                var preDelClaims = p.li_claims.Where(c => deleteAfter <= c.createTime).ToList();
                 context.li_claims.DeleteAllOnSubmit(preDelClaims);
 
                 context.li_risks.DeleteOnSubmit(p.li_risks);
             });
             context.li_projects.DeleteAllOnSubmit(preDelProj);
 
-            context.dt_users.Where(u => deleteAfter < u.li_wallets.last_update_time).ForEach(u =>
+            context.dt_users.Where(u => deleteAfter <= u.li_wallets.last_update_time).ForEach(u =>
             {
                 // 还原钱包数值至 deleteAfter 的时候
                 var hisAtThatTime = u.li_wallet_histories.OrderByDescending(h => h.create_time)
@@ -118,7 +119,7 @@ namespace Agp2p.Test
                     wallet.total_profit = hisAtThatTime.total_profit;
                 }
 
-                var preDelBtr = u.li_bank_transactions.Where(btr => deleteAfter < btr.create_time).ToList();
+                var preDelBtr = u.li_bank_transactions.Where(btr => deleteAfter <= btr.create_time).ToList();
                 preDelBtr.ForEach(chargeRecord =>
                 {
                     context.li_wallet_histories.DeleteAllOnSubmit(chargeRecord.li_wallet_histories);
@@ -127,7 +128,7 @@ namespace Agp2p.Test
 
                 u.li_bank_accounts.ForEach(account =>
                 {
-                    var preDelWithdrawBtr = account.li_bank_transactions.Where(btr => deleteAfter < btr.create_time).ToList();
+                    var preDelWithdrawBtr = account.li_bank_transactions.Where(btr => deleteAfter <= btr.create_time).ToList();
                     preDelWithdrawBtr.ForEach(withdrawRecord =>
                     {
                         context.li_wallet_histories.DeleteAllOnSubmit(withdrawRecord.li_wallet_histories);
@@ -135,7 +136,7 @@ namespace Agp2p.Test
                     context.li_bank_transactions.DeleteAllOnSubmit(preDelWithdrawBtr);
                 });
 
-                var preDelAtr = u.li_activity_transactions.Where(atr => deleteAfter < atr.create_time).ToList();
+                var preDelAtr = u.li_activity_transactions.Where(atr => deleteAfter <= atr.create_time).ToList();
                 preDelAtr.ForEach(atr =>
                 {
                     context.li_wallet_histories.DeleteAllOnSubmit(atr.li_wallet_histories);
@@ -182,6 +183,41 @@ namespace Agp2p.Test
                 repayment_term_span_count = 1,
                 repayment_term_span = (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day,
                 repayment_type = (int)Agp2pEnums.ProjectRepaymentTypeEnum.HuoQi,
+                profit_rate_year = profitingYearly,
+                status = (int)Agp2pEnums.ProjectStatusEnum.Financing,
+            };
+            context.li_projects.InsertOnSubmit(project);
+
+            context.SubmitChanges();
+        }
+
+        public static void PublishMonthlyProject(string projectName, int repayMonth, decimal financingAmount, decimal profitingYearly)
+        {
+            var context = new Agp2pDataContext();
+            var now = DateTime.Now;
+
+            var loaner = context.li_loaners.Single(l => l.dt_users.real_name == "杨长岭");
+            var ypbCategory = context.dt_article_category.Single(c => c.call_index == "rtb");
+            var project = new li_projects
+            {
+                li_risks = new li_risks
+                {
+                    last_update_time = now,
+                    li_loaners = loaner
+                },
+                category_id = ypbCategory.id,
+                type = (int)Agp2pEnums.LoanTypeEnum.Company,
+                sort_id = 99,
+                add_time = now,
+                publish_time = now,
+                make_loan_time = now,
+                user_name = "admin",
+                title = projectName,
+                no = projectName,
+                financing_amount = financingAmount,
+                repayment_term_span_count = repayMonth,
+                repayment_term_span = (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month,
+                repayment_type = (int?)Agp2pEnums.ProjectRepaymentTypeEnum.XianXi,
                 profit_rate_year = profitingYearly,
                 status = (int)Agp2pEnums.ProjectStatusEnum.Financing,
             };
@@ -298,7 +334,7 @@ namespace Agp2p.Test
             var preBuyClaim = project.li_claims.First(
                 c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && amount <= c.principal &&
-                    !c.li_claims2.Any());
+                    c.IsLeafClaim());
 
             TransactionFacade.BuyClaim(context, preBuyClaim.id, user.id, amount);
 

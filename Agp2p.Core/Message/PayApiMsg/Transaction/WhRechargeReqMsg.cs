@@ -13,18 +13,37 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string Sum { get; set; }//充值金额
         public string PayType { get; set; }
-        public string SubledgerList { get; set; }//分账列表
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
+        //分账列表
+        private string subledgerList;
+        public string SubledgerList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(subledgerList))
+                {
+                    subledgerList = JsonHelper.ObjectToJSON(new
+                    {
+                        roleType = "0",
+                        roleCode = UserId,
+                        inOrOut = "0",
+                        sum = Sum
+                    });
+                }
+                return subledgerList;
+            }
+            set { subledgerList = value; }
+        }
 
-        public WhRechargeReqMsg(int userId, string sum, string subledgerList, string payType = "2",
-            string mainAccountType = "", string mainAccountCode = "", string passThrough = "")
+
+        public WhRechargeReqMsg(int userId, string sum, string passThrough = "", string payType = "2",
+            string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             Sum = sum;
             PayType = payType;
-            SubledgerList = subledgerList;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
             PassThrough = passThrough;

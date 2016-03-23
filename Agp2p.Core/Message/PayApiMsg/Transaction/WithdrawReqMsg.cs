@@ -15,11 +15,30 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BankCode { get; set; }//银行编码
         public string BankAccount { get; set; }//银行账号
         public string PayType { get; set; }
-        public string SubledgerList { get; set; }//分账列表
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
+        //分账列表
+        private string subledgerList;
+        public string SubledgerList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(subledgerList))
+                {
+                    subledgerList = JsonHelper.ObjectToJSON(new
+                    {
+                        roleType = "0",
+                        roleCode = UserId,
+                        inOrOut = "1",
+                        sum = Sum
+                    });
+                }
+                return subledgerList;
+            }
+            set { subledgerList = value; }
+        }
 
-        public WithdrawReqMsg(int userId, string sum, string bankCode, string bankAccount, string subledgerList,
+        public WithdrawReqMsg(int userId, string sum, string bankCode = "", string bankAccount = "",
             string payType = "2", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
@@ -27,7 +46,6 @@ namespace Agp2p.Core.Message.PayApiMsg
             BankCode = bankCode;
             BankAccount = bankAccount;
             PayType = payType;
-            SubledgerList = subledgerList;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
 
