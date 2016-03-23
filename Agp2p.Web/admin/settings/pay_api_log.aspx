@@ -26,16 +26,6 @@
         <!--工具栏-->
         <div class="toolbar-wrap">
             <div id="floatHead" class="toolbar">
-                <div class="l-list">
-                    <div class="rule-multi-radio" style="display: inline-block; float: left; margin-right: 10px;">
-                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="True"
-                             OnSelectedIndexChanged="rblStatus_OnSelectedIndexChanged">
-                            <asp:ListItem Value="0" Selected="True">全部</asp:ListItem>
-                            <asp:ListItem Value="1">请求</asp:ListItem>
-                            <asp:ListItem Value="2">响应</asp:ListItem>
-                        </asp:RadioButtonList>
-                    </div>
-                </div>
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
@@ -62,25 +52,23 @@
                         <th align="left" width="8%">请求时间</th>
                         <th align="left" width="8%">响应时间</th>
                         <th align="left" width="6%">响应结果</th>
-                        <th align="left" width="10%">响应备注</th>
+                        <th align="center" width="10%">响应备注</th>
                         <th width="5%">操作</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="left"></td>
-                    <td align="center">
-                        
-                    </td>
+                    <td align="left"><%#Eval("RequestId") %></td>
+                    <td align="left"><%#Eval("RequestLog.Type")%></td>
+                    <td align="left"><%#Eval("RequestLog.Status") %></td>
+                    <td align="left"><%#Eval("RequestLog.UserName") %></td>
+                    <td align="left"><%#Eval("RequestLog.ProjectTitle") %></td>
+                    <td align="left"><%#Eval("RequestLog.RequestTime") %></td>
+                    <td align="left"><%#Eval("ResponseTime") %></td>
+                    <td align="left"><%#Eval("ResponseResult") %></td>
+                    <td align="left"><%#Eval("ResponseRemark") %></td>
+                    <td align="center"></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

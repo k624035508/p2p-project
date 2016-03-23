@@ -15,29 +15,30 @@ namespace Agp2p.Web.admin.repayment
         protected int TotalCount;
         protected int PageIndex;
         protected int PageSize;
-        protected int ProjectStatus;
+        protected int Tpye;
         protected string Keywords = string.Empty;
 
         private readonly Agp2pDataContext context = new Agp2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.ProjectStatus = DTRequest.GetQueryInt("status");
-
+            Tpye = DTRequest.GetQueryInt("type");
+            Keywords = DTRequest.GetQueryString("keywords");
+            PageIndex = DTRequest.GetQueryInt("page", 1);
 
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel("pay_api_log", DTEnums.ActionEnum.View.ToString()); //检查权限
-                TreeBind(); //绑定类别
+                TreeBind();
                 RptBind();
             }
         }
 
         protected void TreeBind()
         {
-            this.ddlCategoryId.Items.Clear();
-            this.ddlCategoryId.Items.Add(new ListItem("所有类型", ""));
-            this.ddlCategoryId.Items.AddRange(Utils.GetEnumValues<Agp2pEnums.SumapayApiEnum>()
+            ddlCategoryId.Items.Clear();
+            ddlCategoryId.Items.Add(new ListItem("所有类型", ""));
+            ddlCategoryId.Items.AddRange(Utils.GetEnumValues<Agp2pEnums.SumapayApiEnum>()
                             .Select(te => new ListItem(Utils.GetAgp2pEnumDes(te), ((int)te).ToString()))
                             .ToArray());
         }
@@ -45,98 +46,100 @@ namespace Agp2p.Web.admin.repayment
         #region 数据绑定=================================
         protected void RptBind()
         {
-            this.PageIndex = DTRequest.GetQueryInt("page", 1);
-
             //绑定列表
-            this.rptList1.DataSource = GetList();
-            this.rptList1.DataBind();
+            rptList1.DataSource = GetList();
+            rptList1.DataBind();
             //绑定页码
-            txtPageNum.Text = this.PageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("pay_api_log.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&page={4}",
-                txtKeywords.Text, this.ProjectStatus.ToString(), "__id__");
-            PageContent.InnerHtml = Utils.OutPageList(this.PageSize, this.PageIndex, this.TotalCount, pageUrl, 8);
+            txtPageNum.Text = PageSize.ToString();
+            string pageUrl = Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}&type={1}&page={2}",
+                txtKeywords.Text, Tpye.ToString(), "__id__");
+            PageContent.InnerHtml = Utils.OutPageList(PageSize, PageIndex, TotalCount, pageUrl, 8);
         }
 
-        private List<RequestLog> GetList()
+        private List<ResponseLog> GetList()
         {
             PageSize = GetPageSize(GetType().Name + "_page_size");
             var query =
-                context.li_pay_request_log.Where(r => r.id.Contains(Keywords))
+                context.li_pay_request_log.Where(r => (Tpye == 0 || r.api == Tpye) && r.id.Contains(Keywords))
                     .OrderByDescending(r => r.request_time)
                     .AsQueryable();
 
-
-            var requestList = query.AsEnumerable().Select(r =>
+            var responseList = query.AsEnumerable().SelectMany(r =>
             {
+                var respList = new List<ResponseLog>();
+                //请求日志
                 var requestLog = new RequestLog
                 {
                     RequestId = r.id,
                     ProjectId = string.IsNullOrEmpty(r.project_id)? 0 : Convert.ToInt32(r.project_id),
                     UserId = r.user_id,
-                    Type = r.api,
-                    Status = r.status,
+                    Type = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayApiEnum)r.api),
+                    Status = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayRequestEnum)r.status),
                     RequestTime = r.request_time.ToString("yyyy-M-d hh:mm:ss")
                 };
-                requestLog.ResponseLogs.AddRange(r.li_pay_response_log.Select(rs => new ResponseLog()
-                {
-                    Id = rs.id,
-                    RequestId = rs.request_id,
-                    ResponseTime = rs.response_time.ToString("yyyy-M-d hh:mm:ss"),
-                    ResponseResult = rs.result,
-                    ResponseRemark = rs.remarks
-                }));
                 if (requestLog.ProjectId > 0)
                 {
                     requestLog.ProjectTitle =
-                        context.li_projects.SingleOrDefault(p => p.id == requestLog.ProjectId).title;
+                        context.li_projects.SingleOrDefault(p => p.id == requestLog.ProjectId)?.title;
                 }
                 if (requestLog.UserId > 0)
                 {
-                    requestLog.UserName =
-                        context.dt_users.SingleOrDefault(u => u.id == requestLog.UserId).user_name;
+                    var user = context.dt_users.SingleOrDefault(u => u.id == requestLog.UserId);
+                    requestLog.UserName = $"{user?.user_name}({user?.real_name})";
                 }
-
-                return requestLog;
+                //请求日志的所有响应
+                if (r.li_pay_response_log.Any())
+                {
+                    respList = r.li_pay_response_log.OrderByDescending(resp => resp.response_time).Select(rs => new ResponseLog()
+                    {
+                        Id = rs.id,
+                        RequestId = rs.request_id,
+                        ResponseTime = rs.response_time.ToString("yyyy-M-d hh:mm:ss"),
+                        ResponseResult = rs.result,
+                        ResponseRemark = rs.remarks
+                    }).ToList();
+                    respList.First().RequestLog = requestLog;
+                }
+                return respList;
             }).AsQueryable();
             
-            this.TotalCount = requestList.Count();
-            return requestList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            TotalCount = responseList.Count();
+            return responseList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
         }       
         #endregion
 
         //关健字查询
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                txtKeywords.Text, this.ProjectStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}&type={1}",
+                txtKeywords.Text, Tpye.ToString()));
         }
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
         {            
-            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}&type={1}",
+                txtKeywords.Text, Tpye.ToString()));
         }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
-            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}",
-                txtKeywords.Text, this.ProjectStatus.ToString()));
+            Response.Redirect(Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}&type={1}",
+                txtKeywords.Text, Tpye.ToString()));
         }
 
-        class RequestLog
+        public class RequestLog
         {
             public string RequestId { get; set; }
             public int? ProjectId { get; set; }
             public string ProjectTitle { get; set; }
             public int? UserId { get; set; }
             public string UserName { get; set; }
-            public int Type { get; set; }
-            public int Status { get; set; }
+            public string Type { get; set; }
+            public string Status { get; set; }
             public string RequestTime { get; set; }
-            public List<ResponseLog> ResponseLogs { get; set; }
         }
 
         public class ResponseLog
@@ -146,6 +149,7 @@ namespace Agp2p.Web.admin.repayment
             public string ResponseTime { get; set; }
             public string ResponseResult { get; set; }
             public string ResponseRemark { get; set; }
+            public RequestLog RequestLog { get; set; }
         }
 
         protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)

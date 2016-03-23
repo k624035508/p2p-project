@@ -52,6 +52,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="xBrainLab.Security.Cryptography, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\xBrainLab.Security.Cryptography.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">

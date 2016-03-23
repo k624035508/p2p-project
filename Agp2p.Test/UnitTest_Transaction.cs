@@ -343,6 +343,7 @@ namespace Agp2p.Test
                         responseLog.user_id = respMsg.UserIdIdentity;
                         responseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
                     }
+                    responseLog.remarks = respMsg.Remarks;
                     context.SubmitChanges();
                     Assert.IsTrue(s.IsCompleted);
                 });
