@@ -58,8 +58,8 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td align="center"><%# Container.ItemIndex + PageSize * (PageIndex - 1) + 1 %></td>
-                    <td align="left"><%#Eval("RequestId") %></td>
+                    <td align="center"><%#Eval("RequestLog.Index") %></td>
+                    <td align="left"><%#Eval("RequestLog.RequestId") %></td>
                     <td align="left"><%#Eval("RequestLog.Type")%></td>
                     <td align="left"><%#Eval("RequestLog.Status") %></td>
                     <td align="left"><%#Eval("RequestLog.UserName") %></td>

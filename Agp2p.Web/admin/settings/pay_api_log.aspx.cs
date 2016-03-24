@@ -64,18 +64,21 @@ namespace Agp2p.Web.admin.repayment
                     .OrderByDescending(r => r.request_time)
                     .AsQueryable();
 
-            var responseList = query.AsEnumerable().SelectMany(r =>
+            var responseList = query.AsEnumerable().
+                Zip(Utils.Infinite(1), (req, index) => new { req, index })
+                .SelectMany(r =>
             {
                 var respList = new List<ResponseLog>();
                 //请求日志
                 var requestLog = new RequestLog
                 {
-                    RequestId = r.id,
-                    ProjectId = string.IsNullOrEmpty(r.project_id)? 0 : Convert.ToInt32(r.project_id),
-                    UserId = r.user_id,
-                    Type = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayApiEnum)r.api),
-                    Status = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayRequestEnum)r.status),
-                    RequestTime = r.request_time.ToString("yyyy-M-d hh:mm:ss")
+                    Index = r.index,
+                    RequestId = r.req.id,
+                    ProjectId = string.IsNullOrEmpty(r.req.project_id)? 0 : Convert.ToInt32(r.req.project_id),
+                    UserId = r.req.user_id,
+                    Type = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayApiEnum)r.req.api),
+                    Status = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayRequestEnum)r.req.status),
+                    RequestTime = r.req.request_time.ToString("yyyy-M-d hh:mm:ss")
                 };
                 if (requestLog.ProjectId > 0)
                 {
@@ -88,17 +91,24 @@ namespace Agp2p.Web.admin.repayment
                     requestLog.UserName = $"{user?.user_name}({user?.real_name})";
                 }
                 //请求日志的所有响应
-                if (r.li_pay_response_log.Any())
+                if (r.req.li_pay_response_log.Any())
                 {
-                    respList = r.li_pay_response_log.OrderByDescending(resp => resp.response_time).Select(rs => new ResponseLog()
+                    respList = r.req.li_pay_response_log.OrderByDescending(resp => resp.response_time)
+                    .Select(rs => new ResponseLog()
                     {
                         Id = rs.id,
-                        RequestId = rs.request_id,
                         ResponseTime = rs.response_time.ToString("yyyy-M-d hh:mm:ss"),
                         ResponseResult = rs.result,
                         ResponseRemark = rs.remarks
                     }).ToList();
                     respList.First().RequestLog = requestLog;
+                }
+                else
+                {
+                    respList.Add(new ResponseLog()
+                    {
+                        RequestLog = requestLog
+                    });
                 }
                 return respList;
             }).AsQueryable();
@@ -132,6 +142,7 @@ namespace Agp2p.Web.admin.repayment
 
         public class RequestLog
         {
+            public int Index { get; set; }
             public string RequestId { get; set; }
             public int? ProjectId { get; set; }
             public string ProjectTitle { get; set; }

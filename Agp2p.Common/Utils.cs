@@ -1806,7 +1806,7 @@ namespace Agp2p.Common
         public static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway, string strMethod, string inputCharset)
         {
             StringBuilder sbHtml = new StringBuilder();
-            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + " encoding=" + inputCharset + "' method='" + strMethod.ToLower().Trim() + "'>");
+            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + "' encoding='" + inputCharset + "' method='" + strMethod.ToLower().Trim() + "'>");
 
             foreach (KeyValuePair<string, string> temp in sParaTemp)
             {

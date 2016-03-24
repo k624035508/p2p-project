@@ -2159,11 +2159,11 @@ namespace Agp2p.Web.tools
                     //context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
 
                     //投标前调用托管接口确认投标，在投标异步响应中执行投标行为 TODO 项目总额、项目描述
-                    ManualBidReqMsg msg = new ManualBidReqMsg(user.id, projectId.ToString(), investingMoney.ToString("n"), "projectSum", "projectDes");
-                    MessageBus.Main.PublishAsync(msg, result =>
-                    {
-                        context.Response.Redirect(msg.RequestContent);
-                    });
+                    //ManualBidReqMsg msg = new ManualBidReqMsg(user.id, projectId.ToString(), investingMoney.ToString("n"), "projectSum", "projectDes");
+                    //MessageBus.Main.PublishAsync(msg, result =>
+                    //{
+                    //    context.Response.Redirect(msg.RequestContent);
+                    //});
                 }
                 else
                     context.Response.Write(JsonConvert.SerializeObject(new {msg = "交易密码错误！", status = 0}));

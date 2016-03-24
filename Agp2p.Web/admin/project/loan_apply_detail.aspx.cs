@@ -300,8 +300,7 @@ namespace Agp2p.Web.admin.project
             }
             catch (Exception ex)
             {
-                //JscriptMsg(ex.Message, "back", "Error");
-                return false;
+                throw ex;
             }
 
             return true;
