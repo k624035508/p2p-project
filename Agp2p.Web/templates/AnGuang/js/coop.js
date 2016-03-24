@@ -13,10 +13,14 @@ $(function () {
 
     //data-toggle 初始化
     $('[data-toggle="popover"]').popover();
-
-    $("a.rongzi").hover(function(){
-        $("a.teamwork").css("background","#1478d2");
-    },function(){
-        $("a.teamwork").css("background","#1e94ff");
+    $("a.rongzi").click(function(){
+        $(this).addClass("blue-bg").siblings().removeClass("blue-bg");
+        $(".cooperation2").slideDown();
+        $(".cooperation").slideUp();
     });
+    $("a.teamwork").click(function(){
+        $(this).addClass("blue-bg").siblings().removeClass("blue-bg");
+        $(".cooperation").slideDown();
+        $(".cooperation2").slideUp();
+    }).trigger("click");
 });
