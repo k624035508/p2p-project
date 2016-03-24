@@ -743,15 +743,15 @@ namespace Agp2p.Common
 
         public enum ClaimStatusEnum
         {
-            [Description("不可转让")]
+            [Description("未转让")]
             Nontransferable = 1,
-            [Description("可转让")]
+            [Description("可转让")] /* 被中间人持有，可以被活期买入 */
             Transferable = 2,
-            [Description("需要转让")] // 标记为提现中的活期债权
+            [Description("需要转让")] // 标记为提现中的债权
             NeedTransfer = 3,
             [Description("完成")]
             Completed = 10,
-            [Description("已完成未回款")] // 提现 T + 1，债权在提现后被完成，则设置为这个状态
+            [Description("已完成未回款")] // 提现 T + 1，债权在提现后被完成，则设置为这个状态（现在没有使用）
             CompletedUnpaid = 11,
             [Description("已转让")]
             Transferred = 20,
