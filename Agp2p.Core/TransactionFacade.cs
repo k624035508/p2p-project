@@ -383,15 +383,15 @@ namespace Agp2p.Core
                         throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
                     }
                 }
-                else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 5 w
+                else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 10 w
                 {
                     var alreadyInvest = wallet.dt_users.li_claims.Where(c =>
                             c.profitingProjectId == projectId && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed &&
                             c.IsLeafClaim())
                         .Aggregate(0m, (sum, c) => sum + c.principal);
-                    if (50000 < alreadyInvest + investingMoney)
+                    if (100000 < alreadyInvest + investingMoney)
                     {
-                        throw new InvalidOperationException("对活期项目最多可投 ¥50,000，你目前已投 " + alreadyInvest.ToString("c"));
+                        throw new InvalidOperationException("对活期项目最多可投 ¥100,000，你目前已投 " + alreadyInvest.ToString("c"));
                     }
                 }
 
