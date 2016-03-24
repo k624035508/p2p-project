@@ -709,6 +709,7 @@
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
+    <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\help.html" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
@@ -975,6 +976,7 @@
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
+    <Content Include="templates\AnGuang\js\coop.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
@@ -1263,6 +1265,7 @@
     <Content Include="templates\AnGuang\imgs\index\iconfont.svg" />
     <Content Include="templates\AnGuang\imgs\index\iconfont.ttf" />
     <Content Include="templates\AnGuang\imgs\index\iconfont.woff" />
+    <Content Include="templates\AnGuang\less\coop.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

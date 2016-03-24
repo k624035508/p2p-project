@@ -14,13 +14,9 @@ $(function () {
     //data-toggle 初始化
     $('[data-toggle="popover"]').popover();
 
-    $("a.rongzi").hover(function(){
-        $("a.teamwork").css("background","#1478d2");
-    },function(){
-        $("a.teamwork").css("background","#1e94ff");
-    });
 
-    /*
+
+    
     var { step,userId,userName,loanerId,pendingProjectId,quotaUse } = $("#main").data();
 
 
@@ -202,6 +198,6 @@ $(function () {
         });          
     });
  
- */
+ 
 });
 
