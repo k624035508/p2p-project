@@ -5,50 +5,142 @@ body { background: @body-color; }
 .about-nav-bar {
   height:80px;
   background: #1478d2;
-  .content-wrap {
-	ul{
-	  p{ margin-left: -60px;
-		width: 200px;
-		a {
-		  color: @white;
-		  font-size: @font17;
-		  line-height: 80px;
-		  text-decoration: none;
-		  margin-left: 52px;
-		  height: 80px;
-		  display: block;
-		img{padding: 0px 10px;}
-		}
-	  }
-	  li {
-		margin-left: 60px;
-		padding: 0px 72px;
-
-		a {
-		  color: @white;
-		  font-size: @font17;
-		  line-height: 80px;
-		  text-decoration: none;
-		  margin-left: 52px;
-		  height: 80px;
-		  display: block;
-		  position: absolute;
-		  margin-top: -105px;
-		  padding: 0px 20px;
-
-		  img{
-			position: absolute;
-			margin: 18px -59px;
-			width: 47px;
-		  }
-		}
-		a:hover {background:#1e94fe; color:#000;}
-		a:active { background-color:yellow; }
-	  }
-	  li:first-child { margin-left:4px; }
-	}
+  .content-wrap{
+                a{
+          color:@white;
+          font-size:25px;
+          text-align:center;
+          text-decoration:none;
+          }
+      span{
+          display:inline-block; height:80px; padding:24px 73px;
+          background:url("@{loan}/011.png")  no-repeat 0 center; font-weight:bold;
+      }
+      a.teamwork{
+          display:inline-block;
+          float:right;
+          width:425px;
+          height:80px;
+          padding:24px 160px;
+          background:#1e94ff;
+      }
+            a.rongzi{
+          display:inline-block;
+          float:right;
+          width:425px;
+          height:80px;
+          padding:24px 160px;
+          &:hover{background:#1e94ff;}
+      }
   }
 }
+
+.jiameng{
+    height:350px;  
+    background:url("@{loan}/0011.png")  -18px 0;
+    .tijiao{
+        margin-top:20px;
+        float:right;
+        width:400px;
+        height:310px;
+        background:@white;
+        padding:30px 2px 35px 2px;
+        p{width:auto;
+          text-align:center;
+          font-size:@font15;
+          line-height:15px;
+          color:#646464;         
+          span{color:#1478d2; margin-right:3px;}
+        }
+        input{
+                margin-left:50px;
+                padding-left: 50px;
+                width:300px;
+                height: 45px;
+                line-height: 45px;
+                 border: 1px solid #e6e6e6;
+                 border-radius: 5px;
+        }
+        #accountname{
+            margin:20px 50px 20px 50px;
+            background:url("@{loan}/002.png") no-repeat;
+        }
+        #phone{background:url("@{loan}/003.png") no-repeat;}
+        #giving{
+            width:300px; height:45px; color:@white; font-size:22px;
+            background:#ff414b; margin-top:20px; border:none; border-radius:4px; margin-left:50px;
+        }
+    }
+}
+
+.procedure{padding-top:80px; padding-bottom:50px;font-size:40px; color:#464646; text-align:center; background:@white;}
+
+.procedure2{
+    background:@white;
+    ul.list-step{
+        padding-left:50px;
+        li{
+        height:150px;
+        width:150px;
+        margin-left:40px;
+        }
+        li.stephr{
+            width:25px;
+            background:url("@{loan}/next-icon.png") no-repeat 0 center;
+        }
+        li.step1{background:url("@{loan}/login.png") no-repeat;}
+        li.step2{background:url("@{loan}/005.png") no-repeat;}
+        li.step3{background:url("@{loan}/006.png") no-repeat;}
+        li.step4{background:url("@{loan}/loan-finish.png") no-repeat;}
+    }
+    .step-tips{
+        margin-top:25px;
+        font-size:20px;
+        color:#464646;
+        span{display:inline-block;}
+        .tip1{margin-left:81px;}
+        .tip2{margin-left:95px;}
+         .tip3{margin-left:117px;}
+          .tip4{margin-left:160px;}
+    }
+}
+.loan-hr{
+    height:1px; width:1180px; margin:85px auto 0 auto;
+    background:url("@{loan}/014.png") no-repeat;
+}
+.introduction{
+    height:175px; 
+    margin-bottom:50px;
+    padding:10px 82px 10px 275px;
+    background:url("@{loan}/008.png") no-repeat 40px 0;
+    font-size:15px;
+    line-height:25px;
+    p{
+        color:#464646;  font-weight:bold;
+    }
+    div{
+        color:#646464;
+    }
+}
+.introduction1{
+     background:url("@{loan}/009.png") no-repeat 40px 0;
+}
+.introduction2{
+     background:url("@{loan}/021.png") no-repeat 40px 0;
+}
+.introduction3{
+     background:url("@{loan}/012.png") no-repeat 40px 0;
+}
+.introduction4{
+    padding:10px 72px 10px 275px;
+     background:url("@{loan}/010.png") no-repeat 40px 0;
+}
+.introduction5{
+    height:235px;
+     background:none;
+
+}
+
 .scroll-style {
   position: fixed;
   width: 100%;
