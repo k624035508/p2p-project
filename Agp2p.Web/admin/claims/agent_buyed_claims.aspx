@@ -13,6 +13,10 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+
+<style>
+tr.sum td { color: red; }
+</style>
 </head>
 
 <body class="mainbody">
@@ -61,7 +65,7 @@
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr>
+  <tr <%# ((BuyedClaim)Container.DataItem).ClaimId == 0 ? "class='sum'" : ""%>>
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
     <td><%# Eval("OriginalOwner") %></td>
     <td><%# Eval("Principal") %></td>

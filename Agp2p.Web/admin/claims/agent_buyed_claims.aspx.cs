@@ -14,8 +14,8 @@ namespace Agp2p.Web.admin.claims
         public string OriginalOwner { get; set; }
         public decimal Principal { get; set; }
         public string ProjectName  { get; set; }
-        public DateTime WithdrawTime  { get; set; }
-        public DateTime BuyTime  { get; set; }
+        public DateTime? WithdrawTime  { get; set; }
+        public DateTime? BuyTime  { get; set; }
     }
 
     public partial class agent_buyed_claims : UI.ManagePage
@@ -83,16 +83,22 @@ namespace Agp2p.Web.admin.claims
                         !c.Children.Any());
 
             totalCount = query.Count();
-            rptList.DataSource = query.OrderByDescending(c => c.createTime).Skip(pageSize * (page - 1)).Take(pageSize).Select(cl =>
-                        new BuyedClaim
-                        {
-                            ClaimId = cl.id,
-                            Principal = cl.principal,
-                            WithdrawTime = cl.Parent.createTime,
-                            OriginalOwner = cl.Parent.dt_users.GetFriendlyUserName(),
-                            BuyTime = cl.createTime,
-                            ProjectName = cl.li_projects.title,
-                        }).ToList();
+            var thisPageClaims = query.OrderByDescending(c => c.createTime).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            rptList.DataSource = thisPageClaims.Select(cl =>
+                new BuyedClaim
+                {
+                    ClaimId = cl.id,
+                    Principal = cl.principal,
+                    WithdrawTime = cl.Parent.createTime, /* 实际上等于 cl.createTime */
+                    OriginalOwner = cl.Parent.dt_users.GetFriendlyUserName(),
+                    BuyTime = cl.li_project_transactions_invest.create_time,
+                    ProjectName = cl.li_projects.title,
+                }).Concat(Enumerable.Repeat(new BuyedClaim
+                {
+                    ClaimId = 0,
+                    OriginalOwner = "总计",
+                    Principal = thisPageClaims.Aggregate(0m, (sum, c) => sum + c.principal)
+                }, 1)).ToList();
             rptList.DataBind();
 
             //绑定页码
