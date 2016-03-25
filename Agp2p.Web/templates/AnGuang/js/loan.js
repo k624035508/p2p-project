@@ -14,7 +14,12 @@ $(function () {
     //data-toggle 初始化
     $('[data-toggle="popover"]').popover();
 
+
+
+    
     var { step,userId,userName,loanerId,pendingProjectId,quotaUse } = $("#main").data();
+
+
 
     var $step1 = $("ul.application-ul li.step1");
     var $step2 = $("ul.application-ul li.step2");
@@ -193,5 +198,6 @@ $(function () {
         });          
     });
  
-
+ 
 });
+

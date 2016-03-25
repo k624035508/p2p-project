@@ -1738,6 +1738,24 @@ namespace Agp2p.Common
             return null;
         }
 
+        /// <summary>
+        /// 完整分割 10 / 3 => 3.33 + 3.33 + 3.34
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="splitCount"></param>
+        /// <param name="toFixed"></param>
+        /// <returns></returns>
+        public static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
+        {
+            if (splitCount <= 0)
+            {
+                throw new Exception("无法分割为 0 份");
+            }
+            var part = Math.Round(amount/splitCount, toFixed);
+            var finalPart = Math.Round(amount - part*(splitCount - 1), toFixed);
+            return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
+        }
+
         public static List<decimal> GetPerfectRounding(List<decimal> original, decimal forceSum, int decimals)
         {
             var rounded = original.Select(x => Math.Round(x, decimals)).ToList();

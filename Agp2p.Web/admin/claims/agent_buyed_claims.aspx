@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="agent_buying_claims.aspx.cs" Inherits="Agp2p.Web.admin.claims.agent_buying_claims" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="agent_buyed_claims.aspx.cs" Inherits="Agp2p.Web.admin.claims.agent_buyed_claims" EnableEventValidation="false" %>
 <%@ Import namespace="Agp2p.Common" %>
 <%@ Import Namespace="Agp2p.Linq2SQL" %>
 <%@ Import Namespace="Agp2p.Web.admin.claims" %>
@@ -13,6 +13,10 @@
 <script type="text/javascript" src="../js/layout.js"></script>
 <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
 <link  href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+
+<style>
+tr.sum td { color: red; }
+</style>
 </head>
 
 <body class="mainbody">
@@ -22,7 +26,7 @@
   <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
   <a href="../center.aspx" class="home"><i></i><span>首页</span></a>
   <i class="arrow"></i>
-  <span>中间人可投债权列表</span>
+  <span>中间人已买入债权列表</span>
 </div>
 <!--/导航栏-->
 
@@ -53,31 +57,25 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th align="left" width="3%" style="padding-left: 1em;">序号</th>
-    <th align="left" width="10%">债权所有者</th>
+    <th align="left" width="10%">原债权所有者</th>
     <th align="left" width="10%">本金</th>
-    <th align="left" width="10%">剩余可投</th>
     <th align="left" width="10%">项目</th>
-    <th align="left" width="10%">申请转让时间</th>
-    <th align="left" width="10%">操作</th>
+    <th align="left" width="10%">原债权所有者申请转让时间</th>
+    <th align="left" width="10%">买入时间</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
-  <tr>
+  <tr <%# ((BuyedClaim)Container.DataItem).ClaimId == 0 ? "class='sum'" : ""%>>
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
-    <td><%# Eval("Owner") %></td>
+    <td><%# Eval("OriginalOwner") %></td>
     <td><%# Eval("Principal") %></td>
-    <td><%# Eval("BuyableAmount") %></td>
     <td><%# Eval("ProjectName") %></td>
     <td><%# Eval("WithdrawTime") %></td>
-      <td><asp:LinkButton ID="btnBuy" runat="server" OnClick="btnBuy_OnClick"
-              CommandArgument="<%# ((BuyableClaim) Container.DataItem).ClaimId %>"
-              principal="<%# ((BuyableClaim) Container.DataItem).Principal%>"
-              OnClientClick="return PromptPostBack(this.id, '请输入买入金额：', this.getAttribute('principal'));"
-              Text="买入" /></td>
+    <td><%# Eval("BuyTime") %></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"7\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"6\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>
