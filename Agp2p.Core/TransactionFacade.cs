@@ -751,8 +751,8 @@ namespace Agp2p.Core
             context.li_wallet_histories.InsertOnSubmit(agentPaidHis);
 
 
-            // 创建提现人收益记录
-            var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
+            // 创建提现人收益记录，如果是中间人则不收取
+            var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
             var claimTransferredOutPtr = new li_project_transactions
             {
