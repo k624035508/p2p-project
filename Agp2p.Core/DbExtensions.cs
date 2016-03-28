@@ -153,7 +153,7 @@ namespace Agp2p.Core
             return !historyClaimByTime.Children.Any(c => c.createTime <= moment.Value);
         }
 
-        public static bool IsProfiting(this li_claims claim, DateTime? moment = null, bool includeWithdrawing = false)
+        public static bool IsProfiting(this li_claims claim, DateTime? moment = null)
         {
             // 必须是叶子债权才能收益
             if (!claim.IsLeafClaim(moment))
@@ -161,8 +161,7 @@ namespace Agp2p.Core
 
             if (claim.li_projects_profiting.IsHuoqiProject())
             {
-                if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer
-                    || (includeWithdrawing && claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer))
+                if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
                 {
                     // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
                     var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
@@ -171,8 +170,7 @@ namespace Agp2p.Core
                 }
                 return false;
             }
-            return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ||
-                   (includeWithdrawing && claim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+            return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
         }
 
         public static bool IsCompanyAccount(this dt_users user)

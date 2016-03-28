@@ -1821,10 +1821,12 @@ namespace Agp2p.Common
             return ex.Message + "\n" + ex.StackTrace?.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
         }
 
-        public static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway, string strMethod, string inputCharset)
+        public static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway, string strMethod,
+            string inputCharset)
         {
             StringBuilder sbHtml = new StringBuilder();
-            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + "' encoding='" + inputCharset + "' method='" + strMethod.ToLower().Trim() + "'>");
+            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + "' encoding='" + inputCharset +
+                          "' method='" + strMethod.ToLower().Trim() + "'>");
 
             foreach (KeyValuePair<string, string> temp in sParaTemp)
             {
@@ -1835,6 +1837,14 @@ namespace Agp2p.Common
             sbHtml.Append("<script>document.forms['submit'].submit();</script>");
 
             return sbHtml.ToString();
+        }
+
+        public static Dictionary<TKey, TVal> ReplaceKey<TKey, TVal>(this Dictionary<TKey, TVal> src, TKey originalKey, TKey replacement)
+        {
+            return src.Concat(Enumerable.Repeat(new KeyValuePair<TKey, TVal>(replacement, src[originalKey]), 1))
+                .Where(p => !EqualityComparer<TKey>.Default.Equals(p.Key, originalKey))
+                .ToDictionary(p => p.Key, p => p.Value);
+
         }
     }
 }
