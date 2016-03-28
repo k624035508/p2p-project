@@ -33,7 +33,7 @@ namespace Agp2p.Test
         public static void Setup(TestContext context)
         {
             // 准备好之后注释这行
-            // throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
+            throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
         }
 
         [TestMethod]

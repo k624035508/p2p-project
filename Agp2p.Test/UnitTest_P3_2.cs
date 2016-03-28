@@ -33,7 +33,7 @@ namespace Agp2p.Test
         public static void Setup(TestContext context)
         {
             // 准备好之后注释这行
-            // throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
+            throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");
         }
 
         [TestMethod]
@@ -75,8 +75,9 @@ namespace Agp2p.Test
 
             /* 公司账号接手 30000
                公司账号接手 20000 */
-            Common.BuyClaim("P3-2", CompanyAccount, 30000);
+            // 两次买入的时间可交换再进行测试
             Common.BuyClaim("P3-2", CompanyAccount, 20000);
+            Common.BuyClaim("P3-2", CompanyAccount, 30000);
 
             Common.AutoRepaySimulate();
         }
