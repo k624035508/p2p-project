@@ -173,9 +173,14 @@ namespace Agp2p.Core
             return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
         }
 
+        public static bool IsAgent(this dt_users user)
+        {
+            return user.dt_user_groups.title == AutoRepay.AgentGroup;
+        }
+
         public static bool IsCompanyAccount(this dt_users user)
         {
-            return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
+            return user.dt_user_groups.title == AutoRepay.CompanyAccount;
         }
 
         public static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)

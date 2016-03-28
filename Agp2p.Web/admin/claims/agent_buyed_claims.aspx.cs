@@ -49,9 +49,9 @@ namespace Agp2p.Web.admin.claims
         protected void TreeBind()
         {
             ddlAgent.Items.Clear();
-            var agentGroup = context.dt_user_groups.SingleOrDefault(g => g.title == AutoRepay.ClaimTakeOverGroupName);
+            var agentGroup = context.dt_user_groups.SingleOrDefault(g => g.title == AutoRepay.AgentGroup);
             if (agentGroup == null)
-                throw new InvalidOperationException("请先设置中间人到“公司账号”会员组");
+                throw new InvalidOperationException("请先设置中间人到“中间户”会员组");
 
             ddlAgent.Items.AddRange(
                 agentGroup.dt_users
@@ -64,7 +64,7 @@ namespace Agp2p.Web.admin.claims
             }
             else
             {
-                ddlAgent.Items.Add(new ListItem("请先设置中间人到“公司账号”会员组"));
+                ddlAgent.Items.Add(new ListItem("请先设置中间人到“中间户”会员组"));
             }
         }
         #endregion
