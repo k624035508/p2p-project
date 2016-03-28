@@ -712,7 +712,8 @@ namespace Agp2p.Core
 
             // 根据债权计息时长来取得应收利息，这部分利息是中间人垫付的
             var agentPaidInterest = currentRepaymentTask
-                    .li_projects.GetClaimRatio(new[] {needTransferClaim.createTime, currentRepaymentTask.GetStartProfitingTime()}.Max(), true)
+                    .li_projects.GetClaimRatio(new[] {needTransferClaim.createTime, currentRepaymentTask.GetStartProfitingTime()}.Max())
+                    .ReplaceKey(needTransferClaim.Parent, needTransferClaim)
                     .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time, false, false, false).Single(ptr =>
                     {
                         if (ptr.gainFromClaim == needTransferClaim.id)
@@ -1844,7 +1845,7 @@ namespace Agp2p.Core
         /// <param name="proj"></param>
         /// <param name="queryTime">查询时间，会根据它查询出不同的债权状态，默认是当前时间。区间应该位于还款计划进行期间</param>
         /// <returns></returns>
-        private static Dictionary<li_claims, decimal> GetClaimRatio(this li_projects proj, DateTime? queryTime = null, bool includeWithdrawing = false)
+        private static Dictionary<li_claims, decimal> GetClaimRatio(this li_projects proj, DateTime? queryTime = null)
         {
             if (proj.IsHuoqiProject())
             {
@@ -1853,7 +1854,7 @@ namespace Agp2p.Core
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var allClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(queryTime, includeWithdrawing)).ToList();
+            var allClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(queryTime)).ToList();
 
             // 仅针对单个用户的还款
             if (proj.IsNewbieProject())
