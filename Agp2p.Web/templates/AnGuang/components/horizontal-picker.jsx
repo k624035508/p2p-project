@@ -3,7 +3,7 @@
 class HorizontalPicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {options: [], type: -1};
+        this.state = {options: [] };
     }
     componentDidMount() {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryEnumInfo";
@@ -15,7 +15,7 @@ class HorizontalPicker extends React.Component {
             data: JSON.stringify({enumFullName: this.props.enumFullName}),
             success: function (data) {
                 var options = JSON.parse(data.d);
-                this.setState({options: options, type: options[0].value});
+                this.setState({options: options});
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(url, status, err.toString());
@@ -23,14 +23,14 @@ class HorizontalPicker extends React.Component {
         });
     }
     changeType(type) {
-        this.setState({type: type});
+        if (type == this.props.value) return;
         this.props.onTypeChange(type);
     }
     render() {
         return (
             <ul className="list-unstyled list-inline" id="typePicker" >
                 {this.state.options.map(op => {
-                    return <li key={op.value} className={op.value == this.state.type ? "active" : ""}
+                    return <li key={op.value} className={op.value == this.props.value ? "active" : ""}
                                onClick={() => this.changeType(op.value)}>{op.key}</li>
                 })}
             </ul>

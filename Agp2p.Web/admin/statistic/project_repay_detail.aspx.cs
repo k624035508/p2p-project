@@ -157,25 +157,28 @@ namespace Agp2p.Web.admin.statistic
 
                         if (profiting.Count == 0) return Enumerable.Empty<RepaymentDetail>();
                         var repaymentDetails = profiting.Select(tr => new RepaymentDetail
-                        {
-                            RepaymentTask = new RepaymentTaskDetail(),
-                            InvestorRealName = tr.dt_users.real_name,
-                            InvestorUserName = tr.dt_users.user_name,
-                            InvestValue = pro.li_project_transactions.Where(
+                            {
+                                RepaymentTask = new RepaymentTaskDetail(),
+                                InvestorRealName = tr.dt_users.real_name,
+                                InvestorUserName = tr.dt_users.user_name,
+                                // 用最后一次的投资时间作为呈现的时间
+                                InvestTime =
+                                    pro.li_project_transactions.Last(t => t.investor == tr.investor &&
+                                                                          (t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest 
+                                                                          || t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn) &&
+                                                                          t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).create_time.ToString(),
+                                // 反查总投资金额
+                                InvestValue = pro.li_project_transactions.Where(
                                 t =>
                                     t.investor == tr.investor &&
-                                    t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                                    t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                                .Select(t => t.principal).AsEnumerable().Sum(), // 反查总投资金额
-                            InvestTime =
-                                pro.li_project_transactions.Last(t => t.investor == tr.investor &&
-                                                                      t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                                                                      t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                                    .create_time.ToString(), // 用最后一次的投资时间作为呈现的时间
+                                    (t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
+                                    || t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn) &&
+                                    t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
+                                .Select(t => t.principal).AsEnumerable().Sum(),
                             RepayPrincipal = tr.principal,
-                            RepayInterest = tr.interest.GetValueOrDefault(0),
-                            RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0))
-                        }).ToList();
+                                RepayInterest = tr.interest.GetValueOrDefault(0),
+                                RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0))
+                            }).ToList();
 
                         repaymentDetails.First().RepaymentTask = new RepaymentTaskDetail
                         {

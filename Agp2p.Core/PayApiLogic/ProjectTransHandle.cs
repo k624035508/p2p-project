@@ -14,10 +14,13 @@ namespace Agp2p.Core.PayApiLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<BidRespMsg>(Bid);
-            MessageBus.Main.Subscribe<WithDrawalRespMsg>(Withdrawal);
-            MessageBus.Main.Subscribe<RepealProjectRespMsg>(RepealProject);
-            MessageBus.Main.Subscribe<MakeLoanRespMsg>(MakeLoan);
+            MessageBus.Main.Subscribe<BidRespMsg>(Bid);//投资
+            MessageBus.Main.Subscribe<WithDrawalRespMsg>(Withdrawal);//撤销投标
+            MessageBus.Main.Subscribe<RepealProjectRespMsg>(RepealProject);//流标
+            MessageBus.Main.Subscribe<MakeLoanRespMsg>(MakeLoan);//放款
+            MessageBus.Main.Subscribe<RepayRespMsg>(Repay);//还款
+            MessageBus.Main.Subscribe<ReturnPrinInteRespMsg>(ReturnPrinInte);//本息到账
+            MessageBus.Main.Subscribe<CreditAssignmentRespMsg>(CreditAssignment);//债权转让
         }
 
         /// <summary>
@@ -39,22 +42,20 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //更新流水信息
-
-                                
-                            //检查用户资金信息
-
-
-                            context.SubmitChanges();
+                            //TODO 检查用户资金信息
+                            TransactionFacade.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -77,19 +78,19 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.BidRequestId);
                         if (trans != null)
                         {
-                            //撤销投资
-
-
-                            context.SubmitChanges();
+                            context.Refund(trans.id, DateTime.Now);
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -112,19 +113,19 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //流标
-
-
-                            context.SubmitChanges();
+                            context.ProjectFinancingFail(pro.id);
                             msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
 
@@ -147,19 +148,144 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //放款
-
-
-                            context.SubmitChanges();
-                            msg.HasHandle = true;
+                            if (!msg.Sync)
+                            {
+                                context.StartRepayment(pro.id);
+                                msg.HasHandle = true;
+                            }
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 还款
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void Repay(RepayRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的项目
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (pro != null)
+                        {
+                            //TODO 还款
+
+
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 本息到账
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void ReturnPrinInte(ReturnPrinInteRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的项目
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (pro != null)
+                        {
+                            //找出项目对应的当日还款计划
+                            var shouldRepayTask = context.li_repayment_tasks.SingleOrDefault(t =>
+                                                        t.project == pro.id &&
+                                                        t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                                                        t.should_repay_time.Date == DateTime.Today);
+                            if (shouldRepayTask != null)
+                            {
+                                context.ExecuteRepaymentTask(shouldRepayTask.id);
+                                msg.HasHandle = true;
+                            }
+                            else
+                            {
+                                msg.Remarks = "没有找到项目当天的还款计划，项目编号为：" + msg.ProjectCode;
+                            }
+                            
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 债权转让
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void CreditAssignment(CreditAssignmentRespMsg msg)
+        {
+            try
+            {
+                //检查签名
+                if (msg.CheckSignature())
+                {
+                    //检查请求处理结果
+                    if (msg.CheckResult())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的债权
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (pro != null)
+                        {
+                            //TODO 债权转让
+
+                            msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
             }
         }
     }

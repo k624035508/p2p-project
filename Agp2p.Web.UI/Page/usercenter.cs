@@ -607,5 +607,332 @@ namespace Agp2p.Web.UI.Page
             return JsonConvert.SerializeObject(timeSpans.Zip(currencyVals, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
         }
 
+        private static readonly Dictionary<Agp2pEnums.StaticClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]> StaticClaimQueryTypeStatusMap = new Dictionary
+            <Agp2pEnums.StaticClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]>
+        {
+            { Agp2pEnums.StaticClaimQueryEnum.Profiting, new[] {Agp2pEnums.ClaimStatusEnum.Nontransferable, Agp2pEnums.ClaimStatusEnum.Transferable} },
+            { Agp2pEnums.StaticClaimQueryEnum.Transfering, new[] { Agp2pEnums.ClaimStatusEnum.NeedTransfer, Agp2pEnums.ClaimStatusEnum.CompletedUnpaid, Agp2pEnums.ClaimStatusEnum.TransferredUnpaid } },
+            { Agp2pEnums.StaticClaimQueryEnum.Completed, new[] { Agp2pEnums.ClaimStatusEnum.Completed, Agp2pEnums.ClaimStatusEnum.Invalid, Agp2pEnums.ClaimStatusEnum.Transferred } },
+        };
+        [WebMethod]
+        public static string AjaxQueryStaticClaim(byte claimQueryType, int pageIndex, int pageSize)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var reverseMap =
+                StaticClaimQueryTypeStatusMap
+                    .SelectMany(pair => pair.Value.Select(st => new {st, pair.Key}))
+                    .ToDictionary(t => t.st, t => t.Key);
+
+            var claimQueryEnum = (Agp2pEnums.StaticClaimQueryEnum)claimQueryType;
+
+            var query = context.li_claims.Where(c =>
+                        c.userId == userInfo.id &&
+                        StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
+                        !c.Children.Any());
+
+            var count = query.Count();
+            var data =
+                query.OrderByDescending(c => c.id)
+                    .Skip(pageIndex*pageSize)
+                    .Take(pageSize)
+                    .AsEnumerable()
+                    .Select(c => new
+                    {
+                        c.id,
+                        c.number,
+                        profitingProject = c.li_projects.title,
+                        profitingYearly = c.li_projects.profit_rate_year,
+                        principal = c.principal.ToString("n"),
+                        queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum) c.status]),
+                        createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
+                        nextProfitDay = c.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
+                        c.status,
+                        buyerCount = c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions_profiting.Count(
+                            ptr =>
+                                ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0
+                    });
+            return JsonConvert.SerializeObject(new { totalCount = count, data});
+        }
+
+        [WebMethod]
+        public static string AjaxApplyForClaimTransfer(int claimId)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            if (userInfo.li_claims.Any(c => c.id == claimId))
+            {
+                TransactionFacade.StaticProjectWithdraw(context, claimId);
+                return "ok";
+            }
+
+            HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return "不存在的债权ID";
+        }
+
+        [WebMethod]
+        public static string AjaxApplyForCancelClaimTransfer(int withdrawClaimId)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var withdrawingClaim = userInfo.li_claims.SingleOrDefault(c => c.id == withdrawClaimId);
+            if (withdrawingClaim != null)
+            {
+                if (withdrawingClaim.li_project_transactions_profiting.Any(
+                ptr =>
+                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Pending))
+                {
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return "已经有人买入此债权，不能取消转让申请";
+                }
+
+                TransactionFacade.StaticClaimWithdrawCancel(context, withdrawClaimId);
+                return "ok";
+            }
+
+            HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return "不存在的债权ID";
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryClaimTransferSummery()
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            /*成功转出金额 已转出债权笔数 成功买入金额 已买入债权笔数*/
+
+            var transferredClaims = userInfo.li_claims.Where(
+                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
+
+            var buyedClaims = userInfo.li_claims.Where(
+                c =>
+                    c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.Parent != null &&
+                    c.Parent.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.Parent.userId != c.userId).ToList();
+            return
+                JsonConvert.SerializeObject(
+                    new
+                    {
+                        StaticClaimWithdrawAmount = transferredClaims.Aggregate(0m, (sum, c) => sum + c.principal).ToString("n"),
+                        StaticClaimWithdrawCount = transferredClaims.Count,
+                        BuyedStaticClaimAmount = buyedClaims.Aggregate(0m, (sum, c) => sum + c.principal).ToString("n"),
+                        BuyedStaticClaimCount = buyedClaims.Count
+                    });
+        }
+
+        /* 暂无使用这个 api */
+        [WebMethod]
+        public static string AjaxInvestHuoqiProject(decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var huoqiProject = context.li_projects.Single(
+                p =>
+                    p.dt_article_category.call_index == "huoqi" &&
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
+            TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
+
+            return "ok";
+        }
+
+        [WebMethod]
+        public static string AjaxWithdrawHuoqiProject(string transactPassword, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            if (Utils.MD5(transactPassword) != userInfo.pay_password)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "交易密码错误";
+            }
+
+            var huoqiProject = context.li_projects.Single(
+                p =>
+                    p.dt_article_category.call_index == "huoqi" &&
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
+            context.HuoqiProjectWithdraw(userInfo.id, huoqiProject.id, amount);
+            return "ok";
+        }
+
+        private static readonly Dictionary<Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]> HuoqiTradeQueryTypeMap = new Dictionary
+            <Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]>
+        {
+            {Agp2pEnums.HuoqiTransactionQueryEnum.All, new []{Agp2pEnums.WalletHistoryTypeEnum.Invest, Agp2pEnums.WalletHistoryTypeEnum.AutoInvest,
+                Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess, Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest }},
+            {Agp2pEnums.HuoqiTransactionQueryEnum.BuyIn, new []{Agp2pEnums.WalletHistoryTypeEnum.Invest, Agp2pEnums.WalletHistoryTypeEnum.AutoInvest }},
+            {Agp2pEnums.HuoqiTransactionQueryEnum.TransferOut, new []{Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess}},
+            {Agp2pEnums.HuoqiTransactionQueryEnum.Profiting, new []{Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest }},
+        };
+        [WebMethod]
+        public static string AjaxQueryHuoqiTransactions(byte huoqiQueryType, short pageIndex, short pageSize)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var huoqiQueryEnum = (Agp2pEnums.HuoqiTransactionQueryEnum) huoqiQueryType;
+            var query =
+                context.li_wallet_histories.Where(
+                    his =>
+                        his.user_id == userInfo.id &&
+                        his.li_project_transactions != null &&
+                        his.li_project_transactions.li_projects.dt_article_category.call_index == "huoqi" &&
+                        HuoqiTradeQueryTypeMap[huoqiQueryEnum].Cast<int>().Contains(his.action_type));
+
+            var count = query.Count();
+            var data = query.OrderByDescending(his => his.id)
+                .Skip(pageIndex*pageSize)
+                .Take(pageSize)
+                .AsEnumerable()
+                .Select(his => new
+                {
+                    his.id,
+                    createTime = his.create_time.ToString("yyyy-MM-dd HH:mm"),
+                    type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)his.action_type),
+                    outcome = his.QueryTransactionOutcome()?.ToString("n"),
+                    income = TransactionFacade.QueryTransactionIncome<string>(his)
+                });
+
+            return JsonConvert.SerializeObject(new {totalCount = count, data});
+        }
+
+        private static readonly Dictionary<Agp2pEnums.HuoqiClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]> HuoqiClaimQueryTypeStatusMap = new Dictionary
+            <Agp2pEnums.HuoqiClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]>
+        {
+            { Agp2pEnums.HuoqiClaimQueryEnum.All, Utils.GetEnumValues<Agp2pEnums.ClaimStatusEnum>().ToArray() },
+            { Agp2pEnums.HuoqiClaimQueryEnum.Profiting, new[] {Agp2pEnums.ClaimStatusEnum.Nontransferable, Agp2pEnums.ClaimStatusEnum.Transferable} },
+            { Agp2pEnums.HuoqiClaimQueryEnum.Transfering, new[] { Agp2pEnums.ClaimStatusEnum.NeedTransfer, Agp2pEnums.ClaimStatusEnum.CompletedUnpaid, Agp2pEnums.ClaimStatusEnum.TransferredUnpaid } },
+            { Agp2pEnums.HuoqiClaimQueryEnum.Completed, new[] { Agp2pEnums.ClaimStatusEnum.Completed, Agp2pEnums.ClaimStatusEnum.Invalid, Agp2pEnums.ClaimStatusEnum.Transferred } },
+        };
+        [WebMethod]
+        public static string AjaxQueryHuoqiClaims(byte claimQueryType, short pageIndex, short pageSize)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var claimQueryEnum = (Agp2pEnums.HuoqiClaimQueryEnum) claimQueryType;
+            var query = context.li_claims.Where(
+                c =>
+                    c.userId == userInfo.id &&
+                    c.projectId != c.profitingProjectId &&
+                    HuoqiClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().Contains(c.status) && !c.Children.Any());
+
+            var reverseMap =
+                HuoqiClaimQueryTypeStatusMap.Where(pair => pair.Key != Agp2pEnums.HuoqiClaimQueryEnum.All)
+                    .SelectMany(pair => pair.Value.Select(st => new { st, pair.Key }))
+                    .ToDictionary(t => t.st, t => t.Key);
+
+            var count = query.Count();
+            var data = query.OrderByDescending(c => c.id).Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable().Select(c => new
+            {
+                c.id,
+                c.number,
+                principal = c.principal.ToString("n"),
+                queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum)c.status]),
+                createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
+                completeDay = c.li_projects.li_repayment_tasks.LastOrDefault()?.should_repay_time.ToString("yyyy-MM-dd"),
+                c.status,
+            });
+
+            return JsonConvert.SerializeObject(new {totalCount = count, data});
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryHuoqiSummary()
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            // 今日预期收益 本金总额 累计收益 当前年化收益率
+            var currentHuoqiProject = context.li_projects.FirstOrDefault(
+                p =>
+                    p.dt_article_category.call_index == "huoqi" &&
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
+
+            var myHuoqiClaims =
+                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
+                Enumerable.Empty<li_claims>().ToList();
+
+            var totalPrincipal = myHuoqiClaims.Aggregate(0m, (sum, c) => sum + c.principal);
+            var totalProfitingPrincipal = myHuoqiClaims.Where(c => c.IsProfiting()).Aggregate(0m, (sum, c) => sum + c.principal);
+
+            var totalProfit = context.li_project_transactions.Where(
+                ptr =>
+                    ptr.li_projects.dt_article_category.call_index == "huoqi" &&
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor).AsEnumerable()
+                .Aggregate(0m, (sum, ptr) => sum + ptr.principal + ptr.interest.GetValueOrDefault());
+
+            return JsonConvert.SerializeObject(new
+            {
+                TodayProfitPredict = Math.Round(1m/365* totalProfitingPrincipal * (currentHuoqiProject?.profit_rate_year).GetValueOrDefault()/100, 2).ToString("n"),
+                TotalHuoqiClaimPrincipal = totalPrincipal.ToString("n"),
+                TotalHuoqiProfit = totalProfit.ToString("n"),
+                CurrentHuoqiProjectProfitRateYearly = currentHuoqiProject == null ? "(目前没有活期项目)" : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
+                CurrentHuoqiProjectId = currentHuoqiProject?.id
+            });
+        }
     }
 }

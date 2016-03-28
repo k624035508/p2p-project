@@ -34,7 +34,7 @@ namespace Agp2p.Core.AutoLogic
 
             timeoutProjects.ForEach(p =>
             {
-                MessageBus.Main.PublishAsync(new ProjectFinancingTimeoutMsg(p.id)); // 广播项目融资超时的消息
+                MessageBus.Main.Publish(new ProjectFinancingTimeoutMsg(p.id)); // 广播项目融资超时的消息
             });
         }
     }

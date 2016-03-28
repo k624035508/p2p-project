@@ -9,20 +9,14 @@
         public string ProjectSum { get; set; }//项目总额
         
 
-        public RepealProjectRespMsg(string requestId, string result, string responseContent) : base(requestId, result, responseContent)
+        public RepealProjectRespMsg()
         {
-            //根据报文的json数据构造
-            
+
         }
 
         public override bool CheckSignature()
         {
-            return true;
-        }
-
-        public override bool CheckResult()
-        {
-            return Result.Equals("00000");
+            return base.CheckSignature(RequestId + ProjectCode  + Result);
         }
     }
 }

@@ -58,18 +58,13 @@ namespace Agp2p.Web.UI.Page
         /// <returns></returns>
         public static List<MyRepayment> QueryProjectRepayments(dt_users user, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
-            var investedProjectValueMap = user.li_project_transactions.Where(
-                tr =>
-                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .GroupBy(inv => inv.li_projects)
-                .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
+            var myRepayingProjects = user.li_claims.Where(c => c.projectId == c.profitingProjectId && c.IsLeafClaim()).ToLookup(cg => cg.li_projects);
 
             Model.siteconfig config = new siteconfig().loadConfig();
 
-            var unsorted = investedProjectValueMap.Select(p =>
+            var unsorted = myRepayingProjects.Select(p =>
             {
-                var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
+                var ratio = p.Sum(c => c.principal)/p.Key.investment_amount;
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
                     .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
 
@@ -108,7 +103,7 @@ namespace Agp2p.Web.UI.Page
                     Id = p.Key.id,
                     Name = p.Key.title,
                     Link = linkurl(config, "project", p.Key.id),
-                    InvestValue = investedProjectValueMap[p.Key],
+                    InvestValue = p.Sum(c => c.principal),
                     ProfitRateYear = p.Key.GetProfitRateYearly(),
                     InvestCompleteTime = p.Key.invest_complete_time
                 };
@@ -212,7 +207,10 @@ namespace Agp2p.Web.UI.Page
             {
                 var project = context.li_projects.Single(p => p.id == projectId);
                 var investAmount = QueryInvestAmount(project, userInfo.id);
-                var investRatio = TransactionFacade.GetInvestRatio(project)[userInfo];
+
+                var claims = userInfo.li_claims.Where(c => c.profitingProjectId == projectId).ToList();
+                var investRatio = claims.Sum(c => c.principal)/project.investment_amount;
+
                 var profitAmount = project.dt_article_category.call_index == "newbie"
                     ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
                     : (int) Agp2pEnums.ProjectStatusEnum.Financing < project.status

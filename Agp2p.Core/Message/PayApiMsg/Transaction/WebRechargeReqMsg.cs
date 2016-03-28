@@ -13,38 +13,57 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string Sum { get; set; }//充值金额
         public string BankCode { get; set; }//银行编码
-        public string BankType { get; set; }//银行类型
         public string BankCardTypeFlag { get; set; }//借贷分离标识
         public string PayType { get; set; }
-        public string SubledgerList { get; set; }//分账列表
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
+        //分账列表
+        private string subledgerList;
+        public string SubledgerList
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(subledgerList))
+                {
+                    subledgerList = JsonHelper.ObjectToJSON(new
+                    {
+                        roleType = "0",
+                        roleCode = UserId,
+                        inOrOut = "0",
+                        sum = Sum
+                    });
+                }
+                return subledgerList;
+            }
+            set { subledgerList = value; }
+        }
 
-        public WebRechargeReqMsg(int userId, string sum, string bankCode, string bankType,
-            string payType, string subledgerList, string mainAccountType, string mainAccountCode,
-            string bankCardTypeFlag = "0", string passThrough = "")
+        public WebRechargeReqMsg(int userId, string sum, string bankCode, string passThrough = "",
+            string payType = "2", string mainAccountType = "", string mainAccountCode = "",
+            string bankCardTypeFlag = "0")
         {
             UserId = userId;
             Sum = sum;
             BankCode = bankCode;
-            BankType = bankType;
             BankCardTypeFlag = bankCardTypeFlag;
             PayType = payType;
-            SubledgerList = subledgerList;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
             PassThrough = passThrough;
+
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
-            ApiInterface = TestApiUrl + "user/webBankRecharge_toRecharge";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/webBankRecharge_toRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            SuccessReturnUrl = "";
+            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + UserId + Sum + BankCode +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum + BankCode +
                 SuccessReturnUrl + FailReturnUrl + BankCardTypeFlag + PayType + SubledgerList);
         }
 
@@ -53,7 +72,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
-                {"merchantCode", MerchantCode},
+                {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
                 {"bankCode", BankCode},
@@ -62,7 +81,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"subledgerList", SubledgerList},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
-                {"noticeUrl", NoticeUrl},
+                {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);

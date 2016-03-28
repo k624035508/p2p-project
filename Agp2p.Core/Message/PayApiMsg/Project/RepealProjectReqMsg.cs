@@ -17,21 +17,21 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectCode = projectCode;
             Sum = sum;
             Api = (int) Agp2pEnums.SumapayApiEnum.RePro;
-            ApiInterface = TestApiUrl + "main/TransactionForFT_repealProject";
+            ApiInterface = SumapayConfig.TestApiUrl + "main/TransactionForFT_repealProject";
             RequestId = Agp2pEnums.SumapayApiEnum.RePro.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + ProjectCode  + Sum + NoticeUrl);
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode  + Sum + NoticeUrl);
         }
 
         public override string GetPostPara()
         {
             return
-                $"requestId={RequestId}&merchantCode={MerchantCode}&projectCode={ProjectCode}&sum={Sum}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&projectCode={ProjectCode}&sum={Sum}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
         }
     }
 }

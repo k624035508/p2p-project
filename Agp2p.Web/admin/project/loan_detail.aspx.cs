@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using ClosedXML.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -59,9 +60,54 @@ namespace Agp2p.Web.admin.project
                 }
                 Loan = new BLL.loan(LqContext);
                 ShowByStatus();
-                ShowInfo(project);
+                ShowProjectInfo(project);
+                if (project.IsHuoqiProject())
+                {
+                    ShowProfitingClaimInfo(project);
+                }
+                else
+                {
+                    ShowClaimsInfo(project);
+                }
                 LoanType = project.type;
             }
+        }
+
+        protected bool isHuoqiProject;
+
+        private void ShowProfitingClaimInfo(li_projects project)
+        {
+            isHuoqiProject = true;
+            rptClaimList.DataSource = project.li_claims_profiting.AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
+        private void ShowClaimsInfo(li_projects project)
+        {
+            isHuoqiProject = false;
+            rptClaimList.DataSource = project.li_claims.AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
+        protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
+        {
+            int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
+            var claim = LqContext.li_claims.Single(c => c.id == claimId);
+
+            var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
+            LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId);
+
+            ShowClaimsInfo(claim.li_projects);
+
+            JscriptMsg(remark, "");
+        }
+
+        protected static string GetFriendlyUserName(dt_users user)
+        {
+            return string.IsNullOrWhiteSpace(user.real_name)
+                ? user.user_name
+                : $"{user.user_name}({user.real_name})";
         }
 
         private void ShowByStatus()
@@ -95,6 +141,9 @@ namespace Agp2p.Web.admin.project
                     btnFail.Visible = true;
                     btnMakeLoan.Visible = true;
                     break;
+                case (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying:
+                    btnAutoRepaySign.Visible = true;
+                    break;
             }
         }
 
@@ -102,7 +151,7 @@ namespace Agp2p.Web.admin.project
         /// 显示项目信息
         /// </summary>
         /// <param name="_project"></param>
-        public virtual void ShowInfo(li_projects _project)
+        public virtual void ShowProjectInfo(li_projects _project)
         {
             spa_category.InnerText = new article_category().GetTitle(_project.category_id);//项目类别
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
@@ -164,6 +213,7 @@ namespace Agp2p.Web.admin.project
         /// <param name="riskId"></param>
         private void ShowLoanerInfo(li_loaners loaner, int riskId)
         {
+            if (loaner == null) return;
             //借款人信息
             sp_loaner_name.InnerText = loaner?.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner?.dt_users.sex;
@@ -690,6 +740,26 @@ namespace Agp2p.Web.admin.project
             }, Response);
         }
 
+        /// <summary>
+        /// 自动还款签约
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAutoRepaySign_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            var loaner = project.li_risks.li_loaners;
+            if (loaner != null)
+            {
+                var reqMsg = new AutoRepaySignReqMsg(project.li_risks.li_loaners.dt_users.id, ProjectId.ToString(), project.investment_amount.ToString("N"), true);
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    Context.Response.Redirect(reqMsg.RequestContent);
+                });
+
+            }
+            
+        }
     }
 
 }

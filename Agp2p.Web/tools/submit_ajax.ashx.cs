@@ -16,6 +16,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Newtonsoft.Json;
 using Agp2p.Model.DTO;
 
@@ -139,6 +140,9 @@ namespace Agp2p.Web.tools
                     break;
                 case "add_bank_card":   //新增银行卡
                     add_bank_card(context);
+                    break;
+                case "recharge":   //客户充值
+                    recharge(context);
                     break;
                 case "withdraw":   //客户提现
                     withdraw(context);
@@ -2147,12 +2151,19 @@ namespace Agp2p.Web.tools
                 var pw = DTRequest.GetFormString("transactPassword");
                 if (Utils.MD5(pw).Equals(user.pay_password))
                 {
-                    linqContext.Invest(user.id, projectId, investingMoney);
+                    TransactionFacade.Invest(user.id, projectId, investingMoney);
 
                     /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
                             context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");
                         else*/
-                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "投资成功！", status = 1}));
+                    context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
+
+                    //投标前调用托管接口确认投标，在投标异步响应中执行投标行为 TODO 项目总额、项目描述
+                    //ManualBidReqMsg msg = new ManualBidReqMsg(user.id, projectId.ToString(), investingMoney.ToString("n"), "projectSum", "projectDes");
+                    //MessageBus.Main.PublishAsync(msg, result =>
+                    //{
+                    //    context.Response.Redirect(msg.RequestContent);
+                    //});
                 }
                 else
                     context.Response.Write(JsonConvert.SerializeObject(new {msg = "交易密码错误！", status = 0}));
@@ -2281,6 +2292,64 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
+        /// 充值
+        /// </summary>
+        /// <param name="context"></param>
+        private void recharge(HttpContext context)
+        {
+            var user = BasePage.GetUserInfoByLinq();
+            if (string.IsNullOrEmpty(user.pay_password))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.mobile))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.id_card_number))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                return;
+            }
+
+            try
+            {
+                var bankCode = DTRequest.GetFormString("bankCode");
+                var rechargeSum = DTRequest.GetFormString("rechargeSum");
+                var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
+                if (string.IsNullOrWhiteSpace(bankCode))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(rechargeSum))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                    return;
+                }
+                //发送充值请求
+                BaseReqMsg reqMsg;
+                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum);
+                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode);
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    context.Response.Write(reqMsg.RequestContent);
+                });
+            }
+            catch (Exception e)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"提交充值请求失败：" + e.Message + "\"}");
+            }
+        }
+
+        /// <summary>
         /// 客户提现
         /// </summary>
         /// <param name="context"></param>
@@ -2302,7 +2371,12 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
                 return;
             }
-            
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                return;
+            }
+
             try
             {
                 var cardId = DTRequest.GetFormInt("cardId", 0);
@@ -2329,35 +2403,12 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
                     return;
                 }
-                    
-                new Agp2pDataContext().Withdraw(cardId, howmany);
 
-                //发送提现短信
-                //var smsModel = new sms_template().GetModel("user_withdraw_info");
-                //if (smsModel != null)
-                //{
-                //    try
-                //    {
-                //        //替换模板内容
-                //        //var siteConfig = new BLL.siteconfig().loadConfig();
-                //        var msgContent = smsModel.content;
-                //        msgContent = msgContent.Replace("{user_name}", user.user_name);
-                //        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
-                //        msgContent = msgContent.Replace("{amount}", howmany.ToString());
-
-                //        string errorMsg = string.Empty;
-                //        if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
-                //        {
-                //            new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
-                //        }
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
-                //    }
-                //}
-
-                context.Response.Write("{\"status\":1, \"msg\":\"提现申请提交成功！\"}");                       
+                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"));
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    context.Response.Write(reqMsg.RequestContent);
+                });
             }
             catch (Exception e)
             {
@@ -2550,24 +2601,39 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
-                var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
-                if (resultModel != null)
-                {
-                    if (resultModel.Resultcode == "200")
-                    {
-                        var user = licontext.dt_users.Single(u => u.id == model.id);
-                        user.real_name = truename;
-                        user.id_card_number = idcard;
-                        user.address = resultModel.Result.Area;
-                        user.sex = resultModel.Result.Sex;
-                        user.birthday = DateTime.Parse(resultModel.Result.Birthday);                        
-                        licontext.SubmitChanges();
+                //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
+                //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
+                //if (resultModel != null)
+                //{
+                //    if (resultModel.Resultcode == "200")
+                //    {
+                //        var user = licontext.dt_users.Single(u => u.id == model.id);
+                //        user.real_name = truename;
+                //        user.id_card_number = idcard;
+                //        user.address = resultModel.Result.Area;
+                //        user.sex = resultModel.Result.Sex;
+                //        user.birthday = DateTime.Parse(resultModel.Result.Birthday);                        
+                //        licontext.SubmitChanges();
 
-                        context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
-                    }
-                    else
-                        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //        context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
+                //    }
+                //    else
+                //        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //}
+
+                //调用托管平台实名验证接口
+                var msg = new UserRealNameAuthReqMsg(truename, idcard);
+                MessageBus.Main.Publish(msg);
+                //处理实名验证返回结果
+                var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
+                {
+                    context.Response.Write("{\"status\":1,\"token\":" + msgResp.Token + ", \"msg\":\"身份证认证成功！\"}");
+                }
+                else
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                 }
             }
             catch (Exception)

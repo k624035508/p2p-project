@@ -293,33 +293,49 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.Invest, "投资 {0} {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestorRefund, "投资撤回 {0}"},
             {Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess, "项目满标 {0}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 还款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 还款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 还款 {1}"}
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 回款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 回款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 回款 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut, "{0} 债权转出"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn, "{0} 债权买入"},
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess, "{0} 债权买入成功"},
+            {Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess, "{0} 活期项目提现 {1}"},
+            {Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest, "{0} 中间人垫付利息" },
+            {Agp2pEnums.WalletHistoryTypeEnum.AgentGainPaidInterest, "{0} 中间人收回垫付利息" },
+            {Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims, "{0} 中间人收回债权" },
+            {Agp2pEnums.WalletHistoryTypeEnum.AutoInvest, "{0} 自动续投" },
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)
         {
             if (his.li_project_transactions != null)
             {
-                if (his.li_project_transactions.type != (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                if (his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                 {
-                    // 查出 还款期数/总期数
-                    var term = context.li_wallet_histories.Count(
-                        h => h.user_id == his.user_id && h.create_time <= his.create_time &&
-                             (h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest ||
-                              h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal ||
-                              h.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest) &&
-                             h.li_project_transactions.project == his.li_project_transactions.project);
-                    var repaytaskInfo = string.Format("{0}/{1}", term, his.li_project_transactions.li_projects.li_repayment_tasks.Count(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid));
-                    return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
+
+                    return
+                        string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
+                            projectNameMapper(his),
+                            his.li_project_transactions.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success
+                                ? ""
+                                : "已撤销");
                 }
-                return
-                    string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
-                        projectNameMapper(his),
-                        his.li_project_transactions.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success
-                            ? ""
-                            : "已撤销");
+                var proj = his.li_project_transactions.li_projects;
+                if (proj.IsNewbieProject())
+                {
+                    return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type], projectNameMapper(his), "");
+                }
+                if (proj.IsHuoqiProject())
+                {
+                    var claim = his.li_project_transactions.li_claims_from;
+                    return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
+                        projectNameMapper(his), claim == null ? "" : "债权: " + claim.principal.ToString("c"));
+                }
+                // 查出 还款期数/总期数
+                var term = proj.li_repayment_tasks.SingleOrDefault(t => t.repay_at == his.li_project_transactions.create_time)?.term.ToString() ?? "?";
+                var repaytaskInfo = string.Format("{0}/{1}", term,
+                    proj.li_repayment_tasks.Count(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid));
+                return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type], projectNameMapper(his), repaytaskInfo);
             }
             if (his.li_bank_transactions != null)
             {

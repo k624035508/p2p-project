@@ -1,4 +1,4 @@
-﻿/*首页样式*/
+﻿/*index.less*/
 @import "common-style.less";
 @images: "../imgs/index";
 
@@ -125,7 +125,43 @@ div#bannerCarousel {
         }
     }
 }
-
+.m-banner{ min-width: @min-width;position:relative;height:350px;z-index:0; padding:0;margin:0; overflow:hidden;
+     .prev{
+         position:absolute; height:76px; width:53px; background: url("@{images}/slider-arrow.png") no-repeat 10px 0; top:40%; left:8%; z-index:100;cursor:pointer;
+         &:hover{background-position:-36px 0;}
+     }
+     .next{
+         position:absolute; height:76px; width:55px; background: url("@{images}/slider-arrow.png") no-repeat -82px 0; top:40%; right:10%; z-index:100;cursor:pointer;
+         &:hover{background-position:-128px 0;}
+     }
+    .bd{position:relative; bottom:0;
+       
+    ul{width:100% !important; z-index:10; height:350px; padding:0;
+        li{
+            width:100% !important; height:350px;
+            a{margin:0; padding:0;
+                display: block;
+                width: 100%;
+                height: 350px;
+            }
+            }
+         .banner2 { background: url("@{images}/banner-02.jpg") no-repeat center; }
+         .banner3 { background: url("@{images}/banner-03.jpg") no-repeat center; }
+    
+    }
+    }
+   .hd{width:100%;position:absolute;height:40px;text-align:center;z-index:15; bottom:0;
+        padding:0;
+        li{margin-right:-5px;*margin-right:-1px; 
+           cursor:pointer;display:inline-block;*display:inline;width:140px;height:45px;line-height:40px;font-size:15px;color:#fff;
+           background: url("@{images}/bgbanner.png"); 
+           border:1px solid #ddd;border:1px solid rgba(255,255,255,.5);border-bottom:none;border-radius:5px 5px 0 0;
+        
+}
+       .on{position:relative; bottom:5px;}
+      }
+   
+   }
 /*公告板*/
 div.announcement-wrap {
     background: #f7f4ed;
@@ -253,6 +289,7 @@ div.announcement-wrap {
     margin-bottom: 10px;
     background: #cdcdcd;
     .progress-bar {
+        transition:width 1.5s;
         line-height: 14px;
         background-color: #38aaf0 !important;
     }
@@ -269,11 +306,13 @@ a.invest-btn-red {
     color: @white;
     background: @red;
     text-decoration: none;
+    &:hover{background:#f0323c;}
 }
 a.invest-btn-grey {
     color: @dark-grey;
     background: @light-grey;
     text-decoration: none;
+    &:hover{background:#cdcdcd;}
 }
 /*新手标*/
 .new-hand {
@@ -345,6 +384,7 @@ a.invest-btn-grey {
                 }
                  .status-icon {
                      position: absolute;
+                   
                      margin-left: 345px;
                      margin-top: -30px;
                      width: 73px;
@@ -359,6 +399,7 @@ a.invest-btn-grey {
                 padding: 45px 50px 0 230px;
                 cursor: pointer;
                 background: url("@{images}/apps-bg.png") no-repeat center;
+                transition:padding-left .3s;
                 p {
                     width: 165px;
                     color: @white;
@@ -371,8 +412,8 @@ a.invest-btn-grey {
                     }
                 }
                 &:hover{
-                    padding-left:220px;
-                    transition:padding-left .3s
+                    padding-left:225px;
+                    
                 }
             }
         }
@@ -482,6 +523,9 @@ a.invest-btn-grey {
         .geometry-icon {
             background: url("@{images}/tianyingbao-geo.png") no-repeat center;
         }
+        a{ height:30px; line-height:28px;
+        &:hover{background-color:#46b4eb; border-color:#46b4eb; }
+        }
     }
     .tender-right {
         .tender-cell {
@@ -499,6 +543,9 @@ a.invest-btn-grey {
         .geometry-icon {
             background: url("@{images}/yinpiaobao-geo.png") no-repeat center;
         }
+        a{height:30px; line-height:28px;
+         &:hover{background-color:#3796e6; border-color:#3796e6;}
+         }
     }
     .tender-right {
         .tender-cell {

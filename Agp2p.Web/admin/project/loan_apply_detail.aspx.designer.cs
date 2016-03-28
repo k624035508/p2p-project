@@ -22,6 +22,24 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// li_mortgages 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_mortgages;
+        
+        /// <summary>
+        /// li_risk 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_risk;
+        
+        /// <summary>
         /// ddlCategoryId 控件。
         /// </summary>
         /// <remarks>
@@ -112,6 +130,15 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Label div_project_amount_tip;
         
         /// <summary>
+        /// div_project_profit_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_project_profit_rate;
+        
+        /// <summary>
         /// div_project_profit_rate_title 控件。
         /// </summary>
         /// <remarks>
@@ -137,6 +164,15 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label div_project_profit_rate_tip;
+        
+        /// <summary>
+        /// div_project_repayment_number 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_project_repayment_number;
         
         /// <summary>
         /// div_project_repayment_number_title 控件。
@@ -175,6 +211,15 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Label div_project_repayment_number_tip;
         
         /// <summary>
+        /// div_project_repayment_type 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_project_repayment_type;
+        
+        /// <summary>
         /// div_project_repayment_type_title 控件。
         /// </summary>
         /// <remarks>
@@ -202,6 +247,15 @@ namespace Agp2p.Web.admin.project {
         protected global::System.Web.UI.WebControls.Label div_project_repayment_type_tip;
         
         /// <summary>
+        /// div_loan_fee_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_loan_fee_rate;
+        
+        /// <summary>
         /// Label1 控件。
         /// </summary>
         /// <remarks>
@@ -227,6 +281,15 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
+        /// div_bond_fee_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_bond_fee_rate;
         
         /// <summary>
         /// Label3 控件。
@@ -290,6 +353,15 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAddTime;
+        
+        /// <summary>
+        /// div_mortgages_info 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_mortgages_info;
         
         /// <summary>
         /// ddlLoaner 控件。
@@ -425,6 +497,15 @@ namespace Agp2p.Web.admin.project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptList;
+        
+        /// <summary>
+        /// div_risks_info 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_risks_info;
         
         /// <summary>
         /// dl_creditor 控件。

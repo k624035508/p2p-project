@@ -26,43 +26,20 @@ namespace Agp2p.Linq2SQL.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.1.71;Initial Catalog=DTcmsdb3;Persist Security Info=True;User" +
-            " ID=sa")]
-        public string DTcmsdb3ConnectionString {
-            get {
-                return ((string)(this["DTcmsdb3ConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.1.71;Initial Catalog=DTcmsdb3;Persist Security Info=True;User" +
-            " ID=sa;Password=123456")]
-        public string DTcmsdb3ConnectionString1 {
-            get {
-                return ((string)(this["DTcmsdb3ConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=server-pc;Initial Catalog=DTcmsdb3;Persist Security Info=True;User ID" +
-            "=sa")]
-        public string DTcmsdb3ConnectionString2 {
-            get {
-                return ((string)(this["DTcmsdb3ConnectionString2"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.5.98;Initial Catalog=agrh;User ID=sa")]
         public string agrhConnectionString {
             get {
                 return ((string)(this["agrhConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.5.98;Initial Catalog=agrh_test;User ID=sa")]
+        public string agrh_testConnectionString {
+            get {
+                return ((string)(this["agrh_testConnectionString"]));
             }
         }
     }

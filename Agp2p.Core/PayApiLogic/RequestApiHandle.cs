@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
@@ -73,7 +74,7 @@ namespace Agp2p.Core.PayApiLogic
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
-                msg.RequestContent = requestLog.request_content;
+                msg.SynResult = Utils.HttpPost(msg.ApiInterface, requestLog.request_content);
             }
             catch (Exception ex)
             {

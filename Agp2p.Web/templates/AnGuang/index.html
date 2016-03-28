@@ -14,8 +14,10 @@
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
     <![endif]-->
     <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
+    <script src="<%templateskin%>/js/jquery.superslide.2.1.1.js"></script>
 
 </head>
 <body>
@@ -45,18 +47,19 @@
         </div>
     </div>
 
-
-    <!--banner-->
-    <div class="container-fluid">
+    
+    <!--banner start -->
+   
+  <!-- <div class="container-fluid">
         <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
+            <!-- Indicators  --> 
+    <!--      <ol class="carousel-indicators">
                 <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#bannerCarousel" data-slide-to="1"></li>
             </ol>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
+             Wrapper for slides -->
+    <!--     <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <a href='<%linkurl("activity_rewards")%>' target="_blank" class="banner2"></a>
                 </div>
@@ -67,10 +70,36 @@
                         <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
                     </div>
                 </div>
+             
             </div>
         </div>
-    </div>
+    </div>  
+    -->
     <!--banner end-->
+    <div class="m-banner">
+        
+         <div class="prev"></div>
+          <div class="next"></div>
+       
+            <ul class="hd">
+            <li>推荐奖励</li>
+            <li>安广融合移动端</li>
+         
+            </ul>
+        
+                <div class="bd">
+                      <ul >                
+                <li title="'新手福利'" class="banner2">
+                                     <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>                    
+                </li>               
+              <li title="'全民赏金接力'" class="banner3">                                    
+                                        <a target="_blank" href='<%linkurl("activity_apps")%>'></a>                    
+                </li>              
+              
+            </ul>            
+        </div>
+        
+    </div>
     <!--announcement-->
     <div class="container-fluid announcement-wrap">
         <div class="announcement">

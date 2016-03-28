@@ -1,6 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_detail" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
+<%@ Import Namespace="Agp2p.Linq2SQL" %>
+<%@ Import Namespace="Agp2p.Core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,6 +21,11 @@
 
         });
     </script>
+    <style>
+        tr.isActiveLeaf td {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="mainbody">
     <form id="form1" runat="server">
@@ -35,8 +42,12 @@
             <div id="floatHead" class="content-tab">
                 <div class="content-tab-ul-wrap">
                     <ul>
-                        <% %>
                         <li><a href="javascript:;" onclick="tabs(this);" class="selected">借款详细</a></li>
+                        <% if (isHuoqiProject) { %>
+                        <li runat="server" id="btnShowProfitingClaim"><a href="javascript:;" onclick="tabs(this);" >自动投标明细</a></li>
+                        <% } else { %>
+                        <li runat="server" id="btnShowProjectClaim"><a href="javascript:;" onclick="tabs(this);" >债权详细</a></li>
+                        <% } %>
                     </ul>
                 </div>
             </div>
@@ -488,6 +499,60 @@
                 </dl>
             </div>
         </div>
+        
+        <div class="tab-content" style="display: none">
+            <asp:Repeater ID="rptClaimList" runat="server">
+            <HeaderTemplate>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                    <tr>
+                        <th width="6%">序号</th>
+                        <th align="left" width="8%">所属用户</th>
+                        <th align="left" width="6%">本金</th>
+                        <th align="left" width="4%">状态</th>
+                        <th align="left" width="12%">债权编号</th>
+                        <th align="left" width="10%">创建时间</th>
+                        <% if (isHuoqiProject) { %>
+                        <th align="left" width="10%">关联定期项目</th>
+                        <% } else { %>
+                        <th align="left" width="10%">关联活期项目</th>
+                        <% } %>
+                        <th align="left" width="6%">父债权</th>
+                        <th align="left" width="10%">操作</th>
+                    </tr>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr class="<%# (((li_claims) Container.DataItem).status < (int) Agp2pEnums.ClaimStatusEnum.Completed || ((li_claims) Container.DataItem).status % 10 == 1) && ((li_claims) Container.DataItem).IsLeafClaim() ? "isActiveLeaf" : ""%>">
+                    <td align="center"><%# Eval("id") %></td>
+                    <td><%# GetFriendlyUserName(((li_claims) Container.DataItem).dt_users) %></td>
+                    <td><%# ((li_claims) Container.DataItem).principal.ToString("c") %></td>             
+                    <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.ClaimStatusEnum)((li_claims)Container.DataItem).status) %></td>
+                    <td><%#Eval("number")%></td>
+                    <td><%#Eval("createTime")%></td>
+                    <% if (isHuoqiProject) { %>
+                    <td><%# ((li_claims) Container.DataItem).li_projects.title %></td>
+                    <% } else { %>
+                    <td><%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId ? "" : ((li_claims) Container.DataItem).li_projects_profiting.title %></td>
+                    <% } %>
+                    <td><%# Eval("parentClaimId")%></td>
+                    <td>
+                        <asp:LinkButton runat="server"
+                            ID="btnBecomeTransferable"
+                            Text="申请转让"
+                            UseSubmitBehavior="False"
+                            CommandArgument='<%# Eval("id") %>'
+                            OnClientClick="return ExeNoCheckPostBack(this.id.replace(/_/g, '$'), '是否为该债权申请转让？');"
+                            OnClick="btnBecomeTransferable_OnClick"
+                            Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable && ((li_claims) Container.DataItem).IsLeafClaim() %>" />
+                        <!--TODO 提现撤销-->
+                    </td>            
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                <%#rptClaimList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"9\">暂无记录</td></tr>" : ""%>
+                </table>
+            </FooterTemplate>
+        </asp:Repeater>
+        </div>
         <!--/内容-->
 
         <!--工具栏-->
@@ -503,6 +568,7 @@
                 <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
                 <asp:Button ID="btnActivate" runat="server" Text="激活" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnActivate','是否确定重新激活该项目？');" OnClick="btnActivate_OnClick" Visible="False" />
                 <asp:Button ID="btnCut" runat="server" Text="截标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnCut','是否确定对改项目进行截标？');" OnClick="btnCut_OnClick" Visible="False" />
+                <asp:Button ID="btnAutoRepaySign" runat="server" Text="开通自动还款" CssClass="btn" OnClick="btnAutoRepaySign_OnClick" Visible="False"/>
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
                     onclick="location.href = 'javascript:history.back(-1);'" />
                 <asp:Button runat="server" CssClass="btn" ID="btnExport" OnClick="btnExport_OnClick" Text="导出 Excel" />

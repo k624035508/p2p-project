@@ -23,24 +23,25 @@ namespace Agp2p.Core.Message.PayApiMsg
             Sum = sum;
             ProjectSum = projectSum;
             ProjectDescription = projectDescription;
-            Api = collective ? (int)Agp2pEnums.SumapayApiEnum.AcBid : (int) Agp2pEnums.SumapayApiEnum.AmBid;
-            ApiInterface = TestApiUrl + (collective ? "main/CollectiveFinance_autoBidding" : "main/TransactionForFT_autoBidding");
-            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
+
+            Api = collective ? (int)Agp2pEnums.SumapayApiEnum.AcBid : (int) Agp2pEnums.SumapayApiEnum.AmBid;
+            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_autoBidding" : "main/TransactionForFT_autoBidding");
+            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(Key);
+            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + MerchantCode + ProjectCode + ProjectDescription + Sum +
+                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode + ProjectDescription + Sum +
                                                ProtocolCode + NoticeUrl);
         }
 
         public override string GetPostPara()
         {
             var postStr =
-                $"requestId={RequestId}&merchantCode={MerchantCode}&projectCode={ProjectCode}&sum={Sum}&protocolCode={ProtocolCode}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&projectCode={ProjectCode}&sum={Sum}&protocolCode={ProtocolCode}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
             if (!string.IsNullOrEmpty(ProjectDescription)) postStr += $"&projectDescription={ProjectDescription}";
             if (!string.IsNullOrEmpty(ProjectSum)) postStr += $"&projectSum={ProjectSum}";
             return postStr;

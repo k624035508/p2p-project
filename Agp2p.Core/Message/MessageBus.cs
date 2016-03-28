@@ -21,6 +21,7 @@ namespace Agp2p.Core.Message
             // Business
             TransactionFacade.DoSubscribe();
             AutoRepay.DoSubscribe();
+            ProjectWithdraw.DoSubscribe();
             CheckOverTimePaid.DoSubscribe();
             FinancingTimeout.DoSubscribe();
             ScheduleAnnounce.DoSubscribe();
@@ -36,9 +37,9 @@ namespace Agp2p.Core.Message
             InviterBonus.DoSubscribe();
 
             // PayApi
-            RequestApiHandle.DoSubscribe();//所有支付请求
+            RequestApiHandle.DoSubscribe();//所有托管接口请求
             UserHandle.DoSubscribe();//用户接口响应处理
-            AccountTransHandle.DoSubscribe();//资金账户接口响应
+            BankTransHandle.DoSubscribe();//资金账户接口响应
             ProjectTransHandle.DoSubscribe();//项目接口响应
         }
     }

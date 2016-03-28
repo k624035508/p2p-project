@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.loaner

@@ -9,8 +9,6 @@ $(function() {
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
-   
-
     //邀请码选填 
     $("div.invite2").hide();
     $("div.invited").click(function(){      
@@ -179,6 +177,39 @@ $(function() {
         if(index==leng) {index=0;}
         showImg(index);
     });
+       
+
+    /*
+    //实名认证
+    $("#realNameAuth").click(function(){  
+        $.ajax({
+            url: "/tools/submit_ajax.ashx?action=bind_idcard",
+            type: "post",
+            dataType: "json",
+            data: {
+                idCardNumber: $("#identity").val(),
+                truename: $("#realname").val()
+            },
+            success: function(data) {
+                //实名验证成功，进入开户步骤
+                $(".steps-list li").eq(3).removeClass("step1").addClass("step2");
+                $(".steps-list li").eq(5).removeClass("step3").addClass("step1");
+                $(".step3-hr").addClass("red-hr").siblings().removeClass("red-hr");
+                $(".tips3").addClass("red-tips").siblings().removeClass("red-tips");
+                $(".form-box").hide();
+                $(".register-btn").hide();
+                $(".successRegister").show();
+                $(".register-msg").text("托管开户");
+                $("span.pull-right").hide();
+                $("a.skip").hide();
+            },
+            error: function(data) {
+                alert("操作超时，请重试");
+            }
+        });
+    });
+    */
+
     $('.register-right').hover(function(){
         clearInterval(adTimer);
     },function(){
@@ -188,7 +219,6 @@ $(function() {
             if(index==leng){index=0;}
         } , 3000);
     }).trigger("mouseleave");
-
     function showImg(index){
         $(".register-img").eq(index).fadeIn(200).siblings().fadeOut(200);
     }
@@ -226,7 +256,20 @@ $(function() {
             success: function(data) {
                 alert(data.msg);
                 if (data.status == 1) {
-                    location.href="/";
+                    //注册成功到实名验证步骤
+
+                    $(".steps-list li").eq(1).removeClass("step1").addClass("step2");
+                    $(".steps-list li").eq(3).removeClass("step2").addClass("step1");
+                    $(".step2-hr").addClass("red-hr").siblings().removeClass("red-hr");
+                    $(".tips2").addClass("red-tips").siblings().removeClass("red-tips");
+                    $(".form-box").hide();
+                    $(".realname2").show();
+                    $(".identity2").show();
+                    $(".register-btn").hide().eq(1).show();
+                    $(".agreement").hide();
+                    $(".register-msg").text("实名认证");
+                    $("span.pull-right").hide();
+                    $("a.skip").show();
                 } else {
                 	refreshPicVerifyCode();
                 }

@@ -46,6 +46,8 @@
   </div>
 </div>
 
+    <input type="text" style="display: none;"/>
+    <input type="password" style="display: none;"/>
 <div class="tab-content" style="height: 80vh">
   <dl>
     <dt>项目</dt>
@@ -73,7 +75,7 @@
   </dl>
   <dl>
     <dt>交易密码</dt>
-    <dd><asp:TextBox ID="txtTransactPassword" runat="server" CssClass="input normal" datatype="/^\S+$/"/><span class="Validform_checktip">*</span></dd>
+    <dd><asp:TextBox ID="txtTransactPassword" runat="server" CssClass="input normal" datatype="/^\S+$/" TextMode="Password"/><span class="Validform_checktip">*</span></dd>
   </dl>
 </div>
 <!--/内容-->
