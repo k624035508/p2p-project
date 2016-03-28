@@ -118,10 +118,8 @@ namespace Agp2p.Test
             // 回款，总数应为 34.72
             Common.AutoRepaySimulate();
 
-            var staticClaimWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
-
-            Common.AssertWalletDelta(UserA, 13.89m - 30000 * staticClaimWithdrawCostPercent, 0, 0, 0, 0, 0, 50000, 13.89m, realDate);
-            Common.AssertWalletDelta(UserB, 8.33m - 30000 * staticClaimWithdrawCostPercent, 0, 0, 0, 0, 0, 30000, 8.33m, realDate);
+            Common.AssertWalletDelta(UserA, 13.89m, 0, 0, 0, 0, 0, 50000, 13.89m, realDate);
+            Common.AssertWalletDelta(UserB, 8.33m, 0, 0, 0, 0, 0, 30000, 8.33m, realDate);
             Common.AssertWalletDelta(CompanyAccount, 12.5m, 0, 0, 0, 0, 0, 30000, 12.5m, realDate);
         }
 
