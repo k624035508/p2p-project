@@ -712,7 +712,7 @@ namespace Agp2p.Core
 
             // 根据债权计息时长来取得应收利息，这部分利息是中间人垫付的
             var agentPaidInterest = currentRepaymentTask
-                    .li_projects.GetClaimRatio(new[] {needTransferClaim.createTime, currentRepaymentTask.GetStartProfitingTime()}.Max())
+                    .li_projects.GetClaimRatio(new[] {needTransferClaim.createTime.AddTicks(-1), currentRepaymentTask.GetStartProfitingTime()}.Max())
                     .ReplaceKey(needTransferClaim.Parent, needTransferClaim)
                     .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time, false, false, false).Single(ptr =>
                     {
