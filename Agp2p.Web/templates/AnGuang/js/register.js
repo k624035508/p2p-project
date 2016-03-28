@@ -12,10 +12,16 @@ $(function() {
    
 
     //邀请码选填 
-    $(".invited").click(function(){
-        var $invite=$(".invite2");
-        $invite.toggle();
-    }).trigger("click");
+    $("div.invite2").hide();
+    $("div.invited").click(function(){      
+        if($("div.invite2").is(":visible")) {
+            $("div.invite2").hide();
+            $("div.invited span").css("transform","rotate(360deg)");
+        }else{            
+            $("div.invite2").show();
+            $("div.invited span").css("transform","rotate(90deg)");
+        }
+    });
 
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);
@@ -158,11 +164,39 @@ $(function() {
         }
     });
   
-       
+    //图片滚动
+    var leng=$(".register-img").length;
+    var index=0;
+    var adTimer;
+
+    $(".left-icon").click(function(){
+        index--;
+        if(index<0) {index=leng-1;}
+        showImg(index);
+    });
+    $(".right-icon").click(function(){
+        index++;
+        if(index==leng) {index=0;}
+        showImg(index);
+    });
+    $('.register-right').hover(function(){
+        clearInterval(adTimer);
+    },function(){
+        adTimer = setInterval(function(){
+            showImg(index)
+            index++;
+            if(index==leng){index=0;}
+        } , 3000);
+    }).trigger("mouseleave");
+
+    function showImg(index){
+        $(".register-img").eq(index).fadeIn(200).siblings().fadeOut(200);
+    }
 
 
     // 注册
     $("#registerBtn").click(function() {
+        /*
         if (!$("input[type=checkbox]")[0].checked) {
             alert("请先同意注册协议");
             return;
@@ -176,6 +210,7 @@ $(function() {
         	alert("请先填写好表单");
         	return;
         }
+        */
      /*   
         var verifyCode = $(".register-box").data("needSmsVerify") ? $("#sms-code").val() : $("#pic-code").val();
         $.ajax({

@@ -847,6 +847,17 @@
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
+    <Content Include="templates\AnGuang\imgs\register\001.png" />
+    <Content Include="templates\AnGuang\imgs\register\002.png" />
+    <Content Include="templates\AnGuang\imgs\register\003.png" />
+    <Content Include="templates\AnGuang\imgs\register\004.png" />
+    <Content Include="templates\AnGuang\imgs\register\005.png" />
+    <Content Include="templates\AnGuang\imgs\register\006.png" />
+    <Content Include="templates\AnGuang\imgs\register\007.png" />
+    <Content Include="templates\AnGuang\imgs\register\008.png" />
+    <Content Include="templates\AnGuang\imgs\register\009.png" />
+    <Content Include="templates\AnGuang\imgs\register\010.png" />
+    <Content Include="templates\AnGuang\imgs\register\11.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />

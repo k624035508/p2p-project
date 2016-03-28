@@ -7,74 +7,60 @@ body { background: @body-color; }
 
 .register-icon{
     background:@white;
-    height:180px;
 	.ul-wrap {
 		margin-top:30px;
 		text-align: center;
         padding-top:30px;
 		.steps-list {
 			li {
-				.inline-block;
-				margin: 0 5px;
+                height:80px;
+                width:80px;
+				margin: 0 35px;
 			}
-			.hr {
-				height: 2px;
-				background: @light-grey;
-			}
-			.step1-hr, .step4-hr { width: 110px; }
-			.step2-hr, .step3-hr { width: 230px; }
-			.step1, .step2, .step3 {
-				width: 45px;
-				*width: 35px;
-				height: 45px;
-				line-height: 45px;
-				text-align: center;
-				color: @white;
-				font-size: @font25;
-			}
-			.step-red { background: @red; }
-			
-			 .step1,.step2, .step3 { background: url("@{images}/grey-circle.png"); }
-                            .redstep{ background: url("@{images}/red-circle.png"); }
+			  .hr { background: url("@{images}/004.png") no-repeat center}				
+			  .step1{ background: url("@{images}/001.png"); }
+              .step2{ background: url("@{images}/002.png"); }
+              .step3{ background: url("@{images}/003.png"); }           
 		}
 	}
 	.steps-tips {
-		margin: 20px 50px;
-		*margin: 20px 213px;
-        padding:0 100px 30px 113px;
+		margin: 13px 60px 0 80px;
+        padding:0 100px 32px 113px;
         border-bottom:@border;
 		span {
 			.inline-block;
 			color: @dark-grey;
-			font-size: @font18;
+			font-size: @font15;
 		}
-		.tips1 { margin-left: 43px;}
-		.tips2 { margin: 0 228px 0 210px; width: 108px; text-align: center; }
+		.tips1 { margin-left: 17px;}
+		.tips2 { margin: 0 237px 0 220px; width: 108px; text-align: center; }
         .tips-red{color:@red;}
 	}
     }
 
 
 div.register-box {
-	padding: 5px 20px 22px 50px;
-	height: 850px;	
+    min-height:500px;
+	padding: 30px 60px 30px 80px;
+    margin-bottom:45px;
 	background: @white;
-
 	& > div {
 		.inline-block;
-		height: 575px;
 	}
 	.register-left {
 		width: 615px;
-    
+            height:auto;
 		.title-tips {
+            width:400px;
+            border-bottom:1px solid #e6e6e6;
+            margin-bottom:35px;
             span.register-msg{
 			font-size: @font25;
 			color: @red;
+            padding-bottom:16px;
+            border-bottom:2px solid @red;
             }
-			margin-bottom: 15px;
-			padding-bottom: 12px;
-			
+			padding-bottom: 16px;			
 			span {
 				font-size: @font14;
 				color: @grey;
@@ -83,32 +69,25 @@ div.register-box {
 					line-height: 35px;
 				}
 			}
+            span.pull-right{ margin-top:10px;}
             a.skip{margin-top:15px; cursor:pointer;}
 		}
        
 		.form-box {
-			margin-top: 10px;
-			*margin-top: 0px;
+			margin-top: 20px;
+			*margin-top: 18px;
            
-			label {
-				margin-right: 15px;
-				width: 95px;
-				font-size: @font15;
-				font-weight: normal;
-				color: @dark-grey;
-				text-align: right;
-			}
 			input {
-				padding-left: 50px;
+				padding-left: 65px;
 				height: 45px;
 				line-height: 45px;
 				border: @border;
 				border-radius: 5px;
 				&:focus { outline-color: @red; }
 			}
-			.input-l { width: 300px; }
+			.input-l { width: 400px; }
 			.input-s {
-				width: 200px;
+				width: 300px;
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
 			}
@@ -117,6 +96,8 @@ div.register-box {
 			#pic-code { background: url("@{images}/pic-code.png") no-repeat; }
 			#sms-code { background: url("@{images}/sms-code.png") no-repeat; }
 			#recommended { background: url("@{images}/recommended.png") no-repeat; }
+            #realname{background: url("@{images}/account.png") no-repeat;}
+            #identify{background: url("@{images}/008.png") no-repeat;}
 			span { .inline-block; }
 			.pic-code-wrap {
 				width: 100px;
@@ -163,8 +144,7 @@ div.register-box {
 		}
 		.agreement {
 			color: @grey;
-			margin-top: 30px;
-			padding-left: 110px;
+			margin-top: 25px;			
 			input {
 				-webkit-appearance: none;
 				width: 15px;
@@ -178,10 +158,9 @@ div.register-box {
 			a { color: @red; }
 		}
 		.register-btn {
-			margin-top: 15px;
-			padding-left: 110px;
-			button {
-				width: 300px;
+			margin-top: 11px;
+			button{
+				width: 400px;
 				height: 45px;
 				color: @white;
 				font-size: 22px;
@@ -189,14 +168,65 @@ div.register-box {
 				border-radius: 4px;
 				border: none;
 			}
+            a{
+                padding:6px 0 0  155px;
+                 margin:20px 0 46px 0;
+                display:inline-block;
+				width: 400px;
+				height: 45px;
+				color: @white;
+				font-size: 22px;
+				background: @red;
+				border-radius: 4px;
+				border: none;
+                text-decoration:none;
+			}
 		}
-        .invited {font-size:@font15; cursor:pointer; width:90px; margin-left:100px; color:#10ca36;}
-       .hide {display:none;}
+        .invited {
+            font-size:@font14; cursor:pointer; width:250px; color:#37aaf0; letter-spacing:1px;
+            span{width:20px;height:20px; background: url("@{images}/010.png") no-repeat center; margin-right:8px;
+           
+            }
+        }
+        #registerBtn2{
+            margin:20px 0 46px 0;
+        }
+        .warm-tips{
+            width:400px;
+            border-bottom:1px solid #e6e6e6;
+            font-size:18px;
+            color:#646464;
+            font-weight:bold;
+            padding-bottom:7px;
+            margin-bottom:21px;
+            span{padding-bottom:7px;border-bottom:2px solid #ff414b;}
+        }
+        p{
+            font-size:@font15;
+            color:#646464;
+        }
 	}
 
 	.register-right {
-		width: 360px; height:520px;
-		background: url("@{images}/register-bg.jpg") no-repeat center;
+		width: 320px;
+        margin-top:12%;
+       &>div{
+           display:inline-block;
+        }
+       .img-show{overflow:hidden; height:262px;}
+		.left-icon{ width:25px; height:25px;background: url("@{images}/009-1.png") no-repeat center; cursor:pointer; margin-bottom:120px;
+                    &:hover{background: url("@{images}/012-1.png") no-repeat center;}
+		}
+        .right-icon{ width:25px;height:25px; background: url("@{images}/009.png") no-repeat center; cursor:pointer; margin-bottom:120px;
+                      &:hover{background: url("@{images}/012.png") no-repeat center;}
+        }
+        .register-img{width:260px;
+                .register-bkg{ height:165px; background:url("@{images}/005.png") no-repeat center;}
+                 .register-bkg2{ height:165px; background:url("@{images}/006.png") no-repeat center;}
+                  .register-bkg3{ height:165px; background:url("@{images}/007.png") no-repeat center;}
+                p{font-size:18px; color:#464646; font-weight:bold; margin-top:20px; margin-bottom:10px; text-align:center;}
+                div{font-size:@font15; color:#646464; text-align:center;}
+        }
 	}
     .successRegister{
         margin:100px 160px;
