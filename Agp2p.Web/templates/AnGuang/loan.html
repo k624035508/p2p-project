@@ -28,8 +28,6 @@
     <%template src="_header.html"%>
     <!--head end-->
     
-
-    
     <div class="content-wrap application-form">
         <div class="nav-wrap">
             <p class="title">借款流程</p>
@@ -99,29 +97,29 @@
                         <input type="text" id="birthplace" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="job" class="control-label">工作：</label>
+                        <label for="job" class="control-label">职业：</label>
                         <input type="text" id="job" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="employer" class="control-label">工作单位：</label>
                         <input type="text" id="employer" class="form-control" />
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label for="work-place" class="control-label">工作地点：</label>
                         <input type="text" id="work-place" class="form-control" />
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label for="education" class="control-label">学历：</label>
                         <select id="education" class="form-control">
                             <option value="" style="display: none"></option>
-                            <option value="">小学及以下</option>
-                            <option value="">初中</option>
-                            <option value="">高中</option>
-                            <option value="">中专</option>
-                            <option value="">大专</option>
-                            <option value="">本科</option>
-                            <option value="">研究生</option>
-                            <option value="">博士及以上</option>
+                            <option value="小学及以下">小学及以下</option>
+                            <option value="初中">初中</option>
+                            <option value="高中">高中</option>
+                            <option value="中专">中专</option>
+                            <option value="大专">大专</option>
+                            <option value="本科">本科</option>
+                            <option value="研究生">研究生</option>
+                            <option value="博士及以上">博士及以上</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -159,7 +157,7 @@
                     <span class="tips">您提交的申请资料有误，请重新核对资料后再提交！</span>
                 </div>
                 <form class="form-horizontal loan-detail-form">
-                    <div class="form-group margin-left">
+                    <!--<div class="form-group margin-left">
                         <label for="ddl_project_type" class="control-label">借款类别：</label>
                         <select id="ddl_project_type" class="form-control">
                             <option style="display: none"></option>
@@ -167,7 +165,7 @@
                             <option value="58">房盈宝</option>
                             <option value="57">融通宝</option>
                         </select>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label for="loan-amount" class="control-label">借款金额：</label>
                         <input type="text" id="loan-amount" class="form-control" />
@@ -199,9 +197,9 @@
                 <form class="form-horizontal Completion-loan-form">
                     <div class="form-group">
 
-                        <label for="ddl_project_type" class="control-label"><img src="<%templateskin%>/imgs/loan/001.png" /></label><br /><br />
-                        <label for="ddl_project_type" class="control-label">恭喜您！您申请的借款已审核通过！</label><br /><br /><br />
-                        <label for="ddl_project_type" class="control-label"><input type="submit" value="申请借款"></label>
+                        <label class="control-label"><img src="<%templateskin%>/imgs/loan/001.png" /></label><br /><br />
+                        <label class="control-label">恭喜您！您申请的借款已审核通过！</label><br /><br /><br />
+                        <label class="control-label"><input id="loanApplyAgainBtn" type="button" value="申请借款"></label>
 
                     </div>
                 </form>
