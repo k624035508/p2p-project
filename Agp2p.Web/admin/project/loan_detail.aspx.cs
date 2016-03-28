@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using ClosedXML.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -139,6 +140,9 @@ namespace Agp2p.Web.admin.project
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess:
                     btnFail.Visible = true;
                     btnMakeLoan.Visible = true;
+                    break;
+                case (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying:
+                    btnAutoRepaySign.Visible = true;
                     break;
             }
         }
@@ -734,6 +738,27 @@ namespace Agp2p.Web.admin.project
                 ws.Range("A1", "C1").Style = titlesStyle;
 
             }, Response);
+        }
+
+        /// <summary>
+        /// 自动还款签约
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAutoRepaySign_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            var loaner = project.li_risks.li_loaners;
+            if (loaner != null)
+            {
+                var reqMsg = new AutoRepaySignReqMsg(project.li_risks.li_loaners.dt_users.id, ProjectId.ToString(), project.investment_amount.ToString("N"), true);
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    Context.Response.Redirect(reqMsg.RequestContent);
+                });
+
+            }
+            
         }
     }
 

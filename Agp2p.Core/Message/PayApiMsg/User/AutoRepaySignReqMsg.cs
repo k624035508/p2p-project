@@ -9,12 +9,12 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// <summary>
     /// 个人开通存管/银行账户自动还款请求
     /// </summary>
-    public class AccountRepaySignReqMsg : FrontEndReqMsg
+    public class AutoRepaySignReqMsg : FrontEndReqMsg
     {
         public string Cycle { get; set; }//还款周期
         public string RepayLimit { get; set; }//还款上限金额
 
-        public AccountRepaySignReqMsg(int userId, string projectCode, string repayLimit, bool useBank, string cycle = "")
+        public AutoRepaySignReqMsg(int userId, string projectCode, string repayLimit, bool useBank, string cycle = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
