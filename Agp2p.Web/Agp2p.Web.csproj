@@ -883,6 +883,7 @@
     <Content Include="templates\AnGuang\imgs\loan\next-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info-grey.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info.png" />
+    <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />

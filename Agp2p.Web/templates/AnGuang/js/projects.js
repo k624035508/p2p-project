@@ -30,8 +30,18 @@ $(function(){
                 var changdu2=parseInt(prog.eq(j).html())/100;              
                 prog.eq(j).width(changdu2*changdu1);        
             }
-        }
-         
-            
+        }           
     });
+
+    //头部导航条
+   var $consume=$(".consume li")
+    $consume.click(function(){
+        $(this).addClass("bluecon").siblings().removeClass("bluecon");
+    });
+    $consume.eq(4).click(function(){
+        $(".consumefin").removeClass("hidden").siblings().addClass("hidden");
+    });
+    $consume.eq(0).click(function(){
+        $(".ticket-area").removeClass("hidden").siblings().addClass("hidden");
+    }).trigger("click");
 });
