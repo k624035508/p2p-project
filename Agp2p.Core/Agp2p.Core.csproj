@@ -100,8 +100,6 @@
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
-    <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
-    <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\CreditAssignmentReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\CreditAssignmentRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\RepealProjectReqMsg.cs" />
