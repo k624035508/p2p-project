@@ -31,7 +31,7 @@
                 <div class="content-body">
                     <%if(_userModel==null)%>
                     <p class="title">安广融合年化收益</p>
-                    <p class="rate">最高<span class="num">15</span><span class="unit">%</span></p>
+                    <p class="rate">预期<span class="num"> 4~5.4</span><span class="unit">%</span></p>
                     <p class="invest-amount">100元起投，享稳健收益</p>
                     <a class="register-btn" href='<%linkurl("register")%>'>免费注册</a>
                     <p class="switch">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></p>
@@ -46,12 +46,11 @@
         </div>
     </div>
 
-    
+
     <!--banner start -->
-   
-  <!-- <div class="container-fluid">
-        <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators  --> 
+    <!-- <div class="container-fluid">
+          <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+              <!-- Indicators  -->
     <!--      <ol class="carousel-indicators">
                 <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#bannerCarousel" data-slide-to="1"></li>
@@ -69,35 +68,32 @@
                         <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
                     </div>
                 </div>
-             
+
             </div>
         </div>
-    </div>  
+    </div>
     -->
     <!--banner end-->
     <div class="m-banner">
-        
-         <div class="prev"></div>
-          <div class="next"></div>
-       
-            <ul class="hd">
-            <li>推荐奖励</li>
+
+        <div class="prev"></div>
+        <div class="next"></div>
+
+        <ul class="hd">
+            <!--<li>推荐奖励</li>-->
             <li>安广融合移动端</li>
-         
+        </ul>
+        <div class="bd">
+            <ul>
+                <!--<li title="'推荐奖励'" class="banner2">
+                    <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>
+                </li>-->
+                <li title="'安广融合移动端'" class="banner3">
+                    <a target="_blank" href='<%linkurl("activity_apps")%>'></a>
+                </li>
             </ul>
-        
-                <div class="bd">
-                      <ul >                
-                <li title="'新手福利'" class="banner2">
-                                     <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>                    
-                </li>               
-              <li title="'全民赏金接力'" class="banner3">                                    
-                                        <a target="_blank" href='<%linkurl("activity_apps")%>'></a>                    
-                </li>              
-              
-            </ul>            
         </div>
-        
+
     </div>
     <!--announcement-->
     <div class="container-fluid announcement-wrap">
@@ -151,7 +147,7 @@
             <li>
                 <a href='<%linkurl("safe_defence")%>' class="guarantee-icon"></a>
                 <div>
-                    <p>本息安全</p>
+                    <p>风控措施</p>
                     <p>风险保证金垫付</p>
                 </div>
             </li>
@@ -244,11 +240,11 @@
                     </div>
                     <p class="grey13px back-way">{p.GetProjectRepaymentTypeDesc()}</p>
                     <div class="progress progress-custom">
-                      <div class="progress-bar progress-bar-info" role="progressbar"
+                        <div class="progress-bar progress-bar-info" role="progressbar"
                              aria-valuenow='<%=(p.GetInvestmentProgressPercent()*100)%>' aria-valuemin="0" aria-valuemax="100"
-                              style='width:0'>
-                          <%=p.GetInvestmentProgressPercent().ToString("p1")%>
-                        </div> 
+                             style='width:0'>
+                            <%=p.GetInvestmentProgressPercent().ToString("p1")%>
+                        </div>
                     </div>
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
