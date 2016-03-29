@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Linq;
 using Agp2p.Core;
+using Agp2p.Core.AutoLogic;
 
 namespace Agp2p.Web.UI
 {
@@ -49,24 +50,25 @@ namespace Agp2p.Web.UI
         protected static DataTable get_project_list(int pageSize, int pageNum, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
             Model.siteconfig config = new BLL.siteconfig().loadConfig();
-            var queryToNewObj = QueryProjects(pageSize, pageNum - 1, out total, category_id, profit_rate_index, repayment_index, status_index).Select(p =>
+            var articleCategory = new Agp2pDataContext().dt_article_category.Single(ca => ca.title == "债权转让");
+            var queryToNewObj = QueryInvestables(pageSize, pageNum - 1, out total, category_id, profit_rate_index, repayment_index, status_index).Select(inv =>
             {
-                var pr = GetProjectInvestmentProgress(p);
+                var p = inv.Project;
                 return new ProjectDetail
                 {
                     id = p.id,
                     img_url = GetProjectImageUrl(p.img_url, p.category_id),
                     no = p.no,
-                    title = p.title,
-                    status = p.status,
+                    title = inv.Title,
+                    status = (int) inv.Status,
                     sort_id = p.sort_id,
                     repayment_type = p.GetProjectRepaymentTypeDesc(),
                     repayment_term = p.GetProjectTermSpanEnumDesc(),
                     repayment_number = p.repayment_term_span_count,
                     profit_rate_year = p.profit_rate_year,
-                    category_id = p.category_id,
-                    categoryTitle = p.dt_article_category.title,
-                    categoryCallIndex = p.dt_article_category.call_index,
+                    /*category_id = inv.CategoryId,*/
+                    categoryTitle = inv.CategoryName,
+                    categoryCallIndex = inv.CategoryCallIndex,
                     amount = p.financing_amount,
                     add_time = p.publish_time ?? p.add_time,
                     publish_time = p.publish_time,
@@ -74,10 +76,10 @@ namespace Agp2p.Web.UI
                     //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
                     //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
                     project_amount_str = p.financing_amount.ToString("n0"),//项目金额字符
-                    project_investment_progress = pr.GetInvestmentProgress(),//项目进度
-                    project_investment_balance = pr.GetInvestmentBalance(),//项目投资剩余金额
-                    project_investment_count = p.GetInvestedUserCount(),//项目投资人数
-                    linkurl = linkurl(config, "project", p.id)
+                    project_investment_progress = inv.InvestmentProgress.ToString("p1").Split('%')[0],//项目进度
+                    project_investment_balance = inv.InvestmentBalance.ToString("n0") + "元",//项目投资剩余金额
+                    project_investment_count = inv.InvesterCount,//项目投资人数
+                    linkurl = inv.Linkurl(config)
                 };
             });
 
@@ -95,14 +97,85 @@ namespace Agp2p.Web.UI
                         p.dt_article_category.call_index == "newbie");
         }
 
-        public static IEnumerable<li_projects> QueryProjects(int pageSize, int pageIndex, out int total, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
+        public class Investable
         {
-            var context = new Agp2pDataContext();
+            public li_projects Project { get; set; }
+            public li_claims NeedTransferClaim { get; set; }
 
+            private Agp2pDataContext _context;
+
+            private Agp2pDataContext Context => _context ?? (_context = new Agp2pDataContext());
+
+            public string Title => NeedTransferClaim == null ? Project.title : NeedTransferClaim.number;
+
+            public string CategoryName => NeedTransferClaim == null
+                ? Project.dt_article_category.title
+                : Context.dt_article_category.Single(ca => ca.call_index == "claims").title;
+
+            public string CategoryCallIndex => NeedTransferClaim == null ? "claims" : Project.dt_article_category.call_index;
+
+            public int CategoryId => NeedTransferClaim == null
+                ? Context.dt_article_category.Single(ca => ca.call_index == "claims").id
+                : Project.dt_article_category.id;
+
+            public decimal InvestmentAmount => NeedTransferClaim == null
+                ? Project.investment_amount
+                : NeedTransferClaim.li_project_transactions_profiting.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                        ptr.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
+                    .Aggregate(0m, (sum, tr) => sum + tr.principal);
+
+            public decimal FinancingAmount => NeedTransferClaim == null ? Project.financing_amount : NeedTransferClaim.principal;
+
+            public decimal InvestmentProgress => NeedTransferClaim == null
+                ? Project.GetInvestmentProgress(
+                    (investedAmount, financingAmount) => investedAmount/financingAmount)
+                : (InvestmentAmount/NeedTransferClaim.principal);
+
+            public decimal InvestmentBalance => NeedTransferClaim == null
+                ? Project.financing_amount - Project.investment_amount
+                : NeedTransferClaim.principal - InvestmentAmount;
+
+            public int InvesterCount => NeedTransferClaim == null
+                ? Project.GetInvestedUserCount()
+                : NeedTransferClaim.li_project_transactions_profiting.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
+                    .GroupBy(ptr => ptr.investor)
+                    .Count();
+
+            public Agp2pEnums.ProjectStatusEnum Status => NeedTransferClaim == null || Project.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
+                    ? (Agp2pEnums.ProjectStatusEnum) Project.status
+                    : NeedTransferClaim.li_project_transactions_profiting.Any(
+                        ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                               ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
+                        ? Agp2pEnums.ProjectStatusEnum.FinancingTimeout
+                        : NeedTransferClaim.Children.Any()
+                            ? (Agp2pEnums.ProjectStatusEnum) Project.status
+                            : Agp2pEnums.ProjectStatusEnum.Financing;
+
+            public DateTime StatusChangeTime => NeedTransferClaim == null
+                ? Project.GetStatusChangingTime()
+                : Status == Agp2pEnums.ProjectStatusEnum.Financing
+                    ? NeedTransferClaim.createTime
+                    : Project.GetStatusChangingTime();
+
+            public string Linkurl(Model.siteconfig config)
+            {
+                return NeedTransferClaim == null
+                    ? linkurl(config, "project", Project.id)
+                    : linkurl(config, "project", Project.id, NeedTransferClaim.id);
+            }
+        }
+
+        public static IQueryable<li_projects> QueryingProjects(Agp2pDataContext context, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
+        {
             //查出所以项目类别
             //var categoryList = get_category_list(channel_name, 0);
 
-            var query = context.li_projects.Where(p => (int) Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status);
+            var query = context.li_projects.Where(p => (int)Agp2pEnums.ProjectStatusEnum.FinancingAtTime <= p.status);
             if (categoryId == specialProjectCategoryId) //  特殊项目
                 query = query.Where(p => p.dt_article_category.parent_id == specialProjectCategoryId);
             else if (0 < categoryId)
@@ -130,11 +203,11 @@ namespace Agp2p.Web.UI
                 switch ((Agp2pEnums.RepaymentTermEnum)repaymentIndex)
                 {
                     case Agp2pEnums.RepaymentTermEnum.LessThanOneMonth:
-                        query = query.Where(p => p.repayment_term_span_count < 30 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
+                        query = query.Where(p => p.repayment_term_span_count < 30 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
                         break;
                     case Agp2pEnums.RepaymentTermEnum.OneToThreeMonth:
                         query = query.Where(p => p.repayment_term_span_count <= 1 && p.repayment_term_span_count < 3 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month
-                            || 30 <= p.repayment_term_span_count && p.repayment_term_span_count < 30 * 3 && p.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
+                            || 30 <= p.repayment_term_span_count && p.repayment_term_span_count < 30 * 3 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day);
                         break;
                     case Agp2pEnums.RepaymentTermEnum.ThreeToSixMonth:
                         query = query.Where(p => p.repayment_term_span_count <= 3 && p.repayment_term_span_count <= 6 && p.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Month
@@ -145,29 +218,57 @@ namespace Agp2p.Web.UI
 
             if (0 < statusIndex)// 状态条件
             {
-                switch ((Agp2pEnums.ProjectStatusQueryTypeEnum) statusIndex)
+                switch ((Agp2pEnums.ProjectStatusQueryTypeEnum)statusIndex)
                 {
                     case Agp2pEnums.ProjectStatusQueryTypeEnum.Financing:
-                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
+                        query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.Financing <= p.status && p.status < (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
                         break;
                     case Agp2pEnums.ProjectStatusQueryTypeEnum.FinancingSuccess:
-                        query = query.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
+                        query = query.Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess);
                         break;
                     case Agp2pEnums.ProjectStatusQueryTypeEnum.ProjectRepaying:
-                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= p.status && p.status < (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
+                        query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= p.status && p.status < (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
                         break;
                     case Agp2pEnums.ProjectStatusQueryTypeEnum.ProjectRepayComplete:
-                        query = query.Where(p => (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime <= p.status);
+                        query = query.Where(p => (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime <= p.status);
                         break;
                 }
             }
-            total = query.Count();
-
-            var queryToNewObj = query.OrderBy(q => q.status)
+            return query.OrderBy(q => q.status)
                 .ThenByDescending(q => q.sort_id)
                 .ThenByDescending(q => q.add_time)
-                .ThenByDescending(q => q.id)
-                .Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable();
+                .ThenByDescending(q => q.id);
+        }
+
+        public static IEnumerable<Investable> QueryInvestables(int pageSize, int pageIndex, out int total,
+            int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
+        {
+            var context = new Agp2pDataContext();
+            var projectQuerying = QueryingProjects(context, categoryId, profitRateIndex, repaymentIndex, statusIndex);
+
+            var specialProjectCategory = context.dt_article_category.Single(ca => ca.call_index == "teshuxiangmu");
+
+            // 普通用户不能买公司账号转出的债权
+            var claimQuerying = categoryId != 0 && categoryId != specialProjectCategory.id
+                ? Enumerable.Empty<li_claims>().AsQueryable()
+                : context.li_claims.Where(c =>
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount)
+                    .OrderByDescending(c => c.createTime);
+
+            int projectTotalCount = 0, claimTotalCount = 0;
+            var investables = projectQuerying.AsEnumerableAutoPartialQuery(out projectTotalCount, pageSize).Select(p => new Investable {Project = p})
+                .Concat(
+                    claimQuerying.AsEnumerableAutoPartialQuery(out claimTotalCount, pageSize)
+                        .Select(c => new Investable {NeedTransferClaim = c, Project = c.li_projects}));
+
+            total = projectTotalCount + claimTotalCount;
+
+            var queryToNewObj =
+                investables.OrderBy(inv => inv.Status)
+                    .ThenByDescending(inv => inv.StatusChangeTime)
+                    .Skip(pageSize*pageIndex)
+                    .Take(pageSize);
             return queryToNewObj;
         }
 

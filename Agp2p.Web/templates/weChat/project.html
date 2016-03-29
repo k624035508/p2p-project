@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta content="{projectModel.seo_keywords}" name="keywords" />
     <meta content="{projectModel.seo_description}" name="description" />
-    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? projectModel.title : projectModel.seo_title%></title>
+    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? Investable.Title : projectModel.seo_title%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script>
         var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
         var idleMoney = {idle_money};
-        var investProgress = <%=(projectModel.GetInvestmentProgressPercent()*100)%>;
+        var investProgress = <%=(Investable.InvestmentProgress*100)%>;
         var projectId = {projectModel.id};
-        var projectName = '{projectModel.title}';
+        var projectName = '{Investable.Title}';
+        var buyClaimId = '{buyClaimId}';
     </script>
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/fullpage.bundle.js"></script>
@@ -41,19 +42,19 @@
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
             <div class="top-screen">
-                <div class="project-title"><span class="project-type">{projectModel.dt_article_category.title}</span><span>{projectModel.title}</span></div>
+                <div class="project-title"><span class="project-type">{Investable.CategoryName}</span><span>{Investable.Title}</span></div>
                 <div class="flex flex--align-items--center flex--column flex--justify-content--space-between">
                     <div class="indicatorContainer flex flex-center-wrapper"></div>
-                    <p class="amount-left">剩余金额{investmentBalance}</p>
+                    <p class="amount-left">剩余金额 {Investable.InvestmentBalance}</p>
                 </div>
             </div>
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">项目金额</span>
-                    <p><span class="data-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%></span> 元</p>
+                    <p><span class="data-style"><%=Investable.FinancingAmount.ToString("n0")%></span> 元</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
-                    <%if(projectModel.dt_article_category.call_index=="newbie")%>
+                    <%if(projectModel.IsNewbieProject())%>
                     <span class="title-style">项目收益</span>
                     <p><span class="data-style">10</span>元</p>
                     <%else%>
@@ -80,9 +81,9 @@
                     <a href="<%linkurl("recharge")%>" class="charge-link">[充值]</a>
                 </div>
                 <div class="invest-action">
-                    <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                    <%if(Investable.Status<=Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
+                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>
@@ -95,7 +96,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <%if(projectModel.dt_article_category.call_index!="newbie")%>
+                <%if(!projectModel.IsNewbieProject())%>
                 <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <%/if%>
@@ -105,7 +106,7 @@
     <div class="slide" data-anchor="details">
         <div class="project-detail-page inner-scrollable">
             <%template src="_project_intro.html"%>
-            <%if(projectModel.dt_article_category.call_index!="newbie")%>
+            <%if(!projectModel.IsNewbieProject())%>
             <%template src="_loaner_info.html"%>
             <%template src="_ticket_info.html"%>
             <%template src="_ticket_intro.html"%>

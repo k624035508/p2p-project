@@ -304,6 +304,7 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.AgentGainPaidInterest, "{0} 中间人收回垫付利息" },
             {Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims, "{0} 中间人收回债权" },
             {Agp2pEnums.WalletHistoryTypeEnum.AutoInvest, "{0} 自动续投" },
+            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInFail, "{0} 债权买入失败" },
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)

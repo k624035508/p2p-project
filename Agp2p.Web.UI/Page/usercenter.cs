@@ -310,8 +310,9 @@ namespace Agp2p.Web.UI.Page
         {
             int totalCount;
             Model.siteconfig config = new BLL.siteconfig().loadConfig();
-            var data = QueryProjects(pageSize, pageIndex, out totalCount).Select(p =>
+            var data = QueryInvestables(pageSize, pageIndex, out totalCount).Select(inv =>
             {
+                var p = inv.Project;
                 var pr = GetProjectInvestmentProgress(p);
                 return new ProjectDetail
                 {

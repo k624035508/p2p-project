@@ -59,12 +59,13 @@
             <%/if%>
 
             <%set var totalcount=0%>
-            <%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>
-            <%foreach(var p in projects)%>
-            <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
+            <%set var investables=QueryInvestables(5,0,out totalcount,0,0,0,0)%>
+            <%foreach(var inv in investables)%>
+            <%set var p=inv.Project%>
+            <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
                 <p class="invest-title">
-                <span class="project-type">{p.dt_article_category.title}</span>
-                {p.title}
+                <span class="project-type">{inv.CategoryName}</span>
+                {inv.Title}
                 <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
                 <span class="book-icon">约标</span>
                 <%/if%>
@@ -84,18 +85,18 @@
                 </div>
                 <div class="amount-wrap">
                     <div class="title-style">借款金额</div>
-                    <div><span class="txt-darkgrey-l"><%=p.financing_amount.ToString("n0")%></span> 元</div>
+                    <div><span class="txt-darkgrey-l"><%=inv.FinancingAmount.ToString("n0")%></span> 元</div>
                 </div>
                 <div class="invest-status flex flex-center-wrapper">
-                    <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                    <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <div class="status-wrap"><div class="over-icon">待发标</div></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <div class="indicatorContainer" data-progress="<%=(p.GetInvestmentProgressPercent()*100)%>"></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                    <div class="indicatorContainer" data-progress="<%=(inv.InvestmentProgress*100)%>"></div>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
                     <div class="status-wrap"><div class="over-icon">审核中</div></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
                     <div class="status-wrap"><div class="over-icon">还款中</div></div>
-                    <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                    <%else if(inv.Status>=Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
                     <div class="status-wrap"><div class="over-icon">已结束</div></div>
                     <%/if%>
                 </div>

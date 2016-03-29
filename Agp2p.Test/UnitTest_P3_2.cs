@@ -27,7 +27,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 28, 8, 30, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 29, 8, 30, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -102,14 +102,6 @@ namespace Agp2p.Test
         public void Day06()
         {
             Common.DeltaDay(realDate, 5);
-
-            Common.AutoRepaySimulate();
-        }
-
-        [TestMethod]
-        public void Day07()
-        {
-            Common.DeltaDay(realDate, 6);
 
             // 回款，总数应为 34.72
             Common.AutoRepaySimulate();
