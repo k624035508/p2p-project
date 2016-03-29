@@ -70,7 +70,7 @@ namespace Agp2p.Core.NotifyLogic
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("WithdrawSms", "发送提现通知失败：" + ex.Message + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
+                    context.AppendAdminLogAndSave("WithdrawSms", "发送提现通知失败：" + ex.GetSimpleCrashInfo() + "（客户ID：" + withdrawer.user_name + "，订单号：" + tr.no_order + "）");
                 }
             }
             if (sendUserMsg)
@@ -163,7 +163,7 @@ namespace Agp2p.Core.NotifyLogic
                 }
                 catch (Exception ex)
                 {
-                    context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + ex.Message + "（客户ID：" + charger.user_name + "，订单号：" + tr.no_order + "）");
+                    context.AppendAdminLogAndSave("ReChargeSms", "发送充值提醒失败：" + ex.GetSimpleCrashInfo() + "（客户ID：" + charger.user_name + "，订单号：" + tr.no_order + "）");
                 }
             }
             if (sendUserMsg)

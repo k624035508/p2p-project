@@ -1,3 +1,4 @@
+/*projects.less(我要理财)*/
 @import "common-style";
 
 body { background: @body-color; }
@@ -30,19 +31,23 @@ body { background: @body-color; }
 			& > div {
 				margin: 23px 0;
 				& > * { .inline-block; }
-				& > span:first-child { margin-right: 45px; }
+				& > span:first-child { margin-right: 30px; }
 				ul {
 					li {
-						min-width: 80px;
+						display: inline-block;
+						min-width: 65px;
 						a {
 							text-decoration: none;
 							padding: 2px 8px;
 							color: #000;
+                            &:hover{color:@red;}
 						}
 						.selected {
 							color: white;
 							background-color: @red;
+                            &:hover{color:white;}
 						}
+                        
 					}
 				}
 			}
@@ -67,6 +72,7 @@ body { background: @body-color; }
 			margin: 13px auto auto -10px;
 			li {
 				line-height: 30px;
+                list-style:none;
 				a {
 					.inline-block;
 					max-width: 260px;
@@ -75,7 +81,9 @@ body { background: @body-color; }
 					white-space: nowrap;
 					color: @dark-grey;
 					text-decoration: none;
+                &:hover{color:@red;}
 				}
+               
 			}
 		}
 	}
@@ -141,11 +149,15 @@ body { background: @body-color; }
 		}
 		.back-way { color: @dark-grey; }
 		.progress-wrap {
+
 			.progress-custom {
 				width: 125px;
 				height: 15px;
 				margin-bottom: 0;
 				background: #cdcdcd;
+                .progress-bar{
+                    transition:width 1.5s;
+                }
 				.progress-bar-info {
 					line-height: 14px;
 					background-color: #38aaf0 !important;
@@ -165,10 +177,12 @@ body { background: @body-color; }
 			.btn-red {
 				color: @white;
 				background: #ff414b;
+                &:hover{background:#ff0101;}
 			}
 			.btn-grey {
 				color: @dark-grey;
 				background: @light-grey;
+                &:hover{background:#cdcdcd;}
 			}
 		}
 	}

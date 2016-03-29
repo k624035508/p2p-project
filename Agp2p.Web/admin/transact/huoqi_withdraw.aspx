@@ -54,9 +54,9 @@
   <tr>
     <th align="left" width="3%" style="padding-left: 1em;">序号</th>
     <th align="left" width="10%">用户名</th>
-    <th align="left" width="10%">已投资金额</th>
+    <th align="left" width="10%">未提现金额</th>
     <th align="left" width="10%">提现中金额</th>
-    <th align="left" width="10%">提现债权比重</th>
+    <th align="left" width="10%">提现成功待回款金额</th>
     <th align="left" width="10%">操作</th>
   </tr>
 </HeaderTemplate>
@@ -64,9 +64,9 @@
   <tr>
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
     <td><%# Eval("UserName") %></td>
-    <td><%# Eval("InvestedMoney") %></td>
+    <td><%# Eval("NonWithdrawingMoney") %></td>
     <td><%# Eval("WithdrawingMoney") %></td>
-    <td><%# Eval("WithdrawingClaimRatio") %></td>
+    <td><%# Eval("WithdrawSuccessMoney") %></td>
       <td><asp:LinkButton ID="btnWithdraw" runat="server" OnClick="btnWithdraw_OnClick"
               CommandArgument="<%# ((HuoqiProjectInvestor) Container.DataItem).UserId %>"
               OnClientClick="return PromptPostBack(this.id, '请输入需要提现的金额：', '');"

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Agp2p.Common;
+using Agp2p.Core.AutoLogic;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core
@@ -57,6 +59,298 @@ namespace Agp2p.Core
                 return $"{user.user_name}（{user.real_name}）";
             }
             return !string.IsNullOrWhiteSpace(user.nick_name) ? $"{user.user_name}（{user.nick_name}）" : user.user_name;
+        }
+
+        public static bool IsNewbieProject(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "newbie";
+        }
+
+        public static bool IsHuoqiProject(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "huoqi";
+        }
+
+        public static li_claims MakeChild(this li_claims parent, DateTime createTime)
+        {
+            return new li_claims
+            {
+                Parent = parent,
+                createFromInvestment = parent.createFromInvestment,
+                createTime = createTime,
+                userId = parent.userId,
+                principal = parent.principal,
+                projectId = parent.projectId,
+                profitingProjectId = parent.profitingProjectId,
+                number = parent.number,
+                status = parent.status,
+                agent = parent.agent,
+            };
+        }
+
+        public static li_claims NewStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus)
+        {
+            var child = parent.MakeChild(createTime);
+            child.status = (byte)newStatus;
+            return child;
+        }
+
+        public static li_claims NewPrincipalChild(this li_claims parent, DateTime createTime, decimal childPrincipal)
+        {
+            var child = parent.MakeChild(createTime);
+            child.principal = childPrincipal;
+            return child;
+        }
+
+        public static li_claims NewPrincipalAndStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal)
+        {
+            var child = parent.NewStatusChild(createTime, newStatus);
+            child.principal = childPrincipal;
+            return child;
+        }
+
+        public static li_claims TransferedChild(this li_claims parent, DateTime createTime,
+            Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal, li_project_transactions byPtr)
+        {
+            var child = parent.NewPrincipalAndStatusChild(createTime, newStatus, childPrincipal);
+            child.number = Utils.HiResNowString;
+            child.profitingProjectId = byPtr.project;
+            child.userId = byPtr.investor;
+            child.li_project_transactions_invest = byPtr;
+            return child;
+        }
+
+        public static li_claims GetHistoryClaimByTime(this li_claims childClaim, DateTime time)
+        {
+            if (childClaim.createTime <= time)
+            {
+                return childClaim;
+            }
+            else if (childClaim.Parent!= null && childClaim.Parent.userId == childClaim.userId)
+            {
+                return childClaim.Parent.GetHistoryClaimByTime(time);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Agp2pEnums.ClaimStatusEnum? GetStatusByTime(this li_claims childClaim, DateTime time)
+        {
+            return (Agp2pEnums.ClaimStatusEnum?)childClaim.GetHistoryClaimByTime(time)?.status;
+        }
+
+        public static bool IsLeafClaim(this li_claims claim, DateTime? moment = null)
+        {
+            if (moment == null)
+            {
+                return !claim.Children.Any();
+            }
+            var historyClaimByTime = claim.GetHistoryClaimByTime(moment.Value);
+            if (historyClaimByTime == null)
+                return false;
+            return !historyClaimByTime.Children.Any(c => c.createTime <= moment.Value);
+        }
+
+        public static bool IsProfiting(this li_claims claim, DateTime? moment = null)
+        {
+            // 必须是叶子债权才能收益
+            if (!claim.IsLeafClaim(moment))
+                return false;
+
+            if (claim.li_projects_profiting.IsHuoqiProject())
+            {
+                if (claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                {
+                    // 如果是昨日之前创建的 不可转让/可转让 债权，则会产生收益（提现后不再产生收益）
+                    var checkPoint = moment.GetValueOrDefault(DateTime.Now).Date.AddDays(-1);
+                    return claim.createTime < checkPoint ||
+                           claim.li_project_transactions_invest.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AutoInvest; // 自动续投的话会产生收益
+                }
+                return false;
+            }
+            return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
+        }
+
+        public static bool IsAgent(this dt_users user)
+        {
+            return user.dt_user_groups.title == AutoRepay.AgentGroup;
+        }
+
+        public static bool IsCompanyAccount(this dt_users user)
+        {
+            return user.dt_user_groups.title == AutoRepay.CompanyAccount;
+        }
+
+        public static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
+        {
+            if (parentClaim.createTime <= childClaim.createTime)
+            {
+                if (childClaim.Parent != null)
+                {
+                    return childClaim.Parent == parentClaim || childClaim.Parent.IsChildOf(parentClaim);
+                }
+            }
+            return false;
+        }
+
+        public static bool IsParentOf(this li_claims parentClaim, li_claims childClaim)
+        {
+            return childClaim.IsChildOf(parentClaim);
+        }
+
+        public static DateTime GetStartProfitingTime(this li_repayment_tasks task)
+        {
+            if (task.term == 1)
+            {
+                return task.li_projects.make_loan_time.Value;
+            }
+            var prevTask = task.li_projects.li_repayment_tasks.OrderByDescending(ta => ta.should_repay_time)
+                .First(ta => ta.should_repay_time < task.should_repay_time);
+            return prevTask.should_repay_time;
+        }
+
+        public static li_claims GetSourceClaim(this li_claims claim)
+        {
+            if (claim.Parent == null)
+            {
+                return claim;
+            }
+            else if (claim.Parent.userId != claim.userId)
+            {
+                return claim;
+            }
+            else
+            {
+                return claim.Parent.GetSourceClaim();
+            }
+        }
+
+        public static li_claims GetHistoryClaimByOwner(this li_claims claim, int userId)
+        {
+            if (claim.userId == userId)
+            {
+                return claim;
+            }
+            else
+            {
+                return claim.Parent?.GetHistoryClaimByOwner(userId);
+            }
+        }
+
+        public static li_claims GetFirstHistoryClaimByOwner(this li_claims claim, int userId)
+        {
+            var hisClaim = claim.GetHistoryClaimByOwner(userId);
+            var olderClaim = hisClaim.Parent?.GetHistoryClaimByOwner(userId);
+            if (olderClaim != null)
+            {
+                return hisClaim != olderClaim ? olderClaim.GetFirstHistoryClaimByOwner(userId) : olderClaim;
+            }
+            return hisClaim;
+        }
+
+        public static int GetTotalProfitingDays(this li_repayment_tasks task)
+        {
+            return (int)(task.should_repay_time.Date - task.GetStartProfitingTime().Date).TotalDays;
+        }
+
+        public static int GetProfitingDaysByTime(this li_repayment_tasks task, DateTime? moment = null)
+        {
+            Debug.Assert(task.IsUnpaid());
+            var startTime = moment.GetValueOrDefault(DateTime.Now).Date;
+
+            Debug.Assert(task.GetStartProfitingTime().Date <= startTime);
+            Debug.Assert(startTime <= task.should_repay_time.Date);
+
+            return (int)(startTime - task.GetStartProfitingTime().Date).TotalDays;
+        }
+
+        public static T GetProfitingDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, T> callback, DateTime? moment = null)
+        {
+            /* 1、债权转让人的收益从提交转让申请当天停止计息，若转让失败则恢复转让期间利息并继续计息；
+               2、购买债权转让项目从债权转让人提交债权转让申请当天开始计息；*/
+            Debug.Assert(task.project == claim.projectId);
+            Debug.Assert(claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+
+            var startProfitingPoint = new[]
+                {
+                    claim.createTime.Date,
+                    task.GetStartProfitingTime().Date
+                }.Max();
+            var endProfitingPoint = new[]
+                {
+                    moment.GetValueOrDefault(DateTime.Now).Date,
+                    task.should_repay_time.Date
+                }.Min();
+
+            var claimPrifitingDays = (int)(endProfitingPoint - startProfitingPoint).TotalDays;
+
+            var taskTotalProfitingDay = task.GetTotalProfitingDays();
+            Debug.Assert(claimPrifitingDays <= taskTotalProfitingDay);
+            return callback(claimPrifitingDays, taskTotalProfitingDay);
+        }
+
+        public static T GetWithdrawClaimProfitingDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, int, T> callback)
+        {
+            Debug.Assert(task.project == claim.projectId);
+            Debug.Assert(claim.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+
+            var ct = claim.Parent.GetProfitingDays(task, (claimProfitingDays, taskProfitingDays) => new { claimProfitingDays, taskProfitingDays}, task.should_repay_time);
+
+            var withdrawClaimStartProfitingPoint = new[]
+            {
+                claim.Parent.createTime.Date, task.GetStartProfitingTime().Date
+            }.Max();
+            var withdrawClaimEndProfitingPoint = new[]
+            {
+                // 利润从开始提现的那天开始算
+                claim.createTime.Date, task.should_repay_time.Date
+            }.Min();
+            var withdrawClaimPrifitedDays = (int)(withdrawClaimEndProfitingPoint - withdrawClaimStartProfitingPoint).TotalDays;
+            return callback(withdrawClaimPrifitedDays, ct.claimProfitingDays, ct.taskProfitingDays);
+        }
+
+        public static IEnumerable<T> AsEnumerableAutoPartialQuery<T>(this IQueryable<T> src, out int totalCount, int queryAmountOnce = 32)
+        {
+            totalCount = src.Count();
+            var totalPage = (int) Math.Ceiling((decimal)totalCount / queryAmountOnce);
+
+            return Enumerable.Range(0, totalPage)
+                .SelectMany(partIndex => src.Skip(queryAmountOnce*partIndex).Take(queryAmountOnce).ToList());
+        }
+
+        public static IEnumerable<T> AsEnumerableAutoPartialQuery<T>(this IQueryable<T> src, int queryAmountOnce = 32)
+        {
+            return Utils.Infinite()
+                .Select(partIndex => src.Skip(queryAmountOnce * partIndex).Take(queryAmountOnce).ToList())
+                .TakeWhile(ls => ls.Any())
+                .SelectMany(ls => ls);
+        }
+
+        public static DateTime GetStatusChangingTime(this li_projects project)
+        {
+            var status = (Agp2pEnums.ProjectStatusEnum) project.status;
+            if (status < Agp2pEnums.ProjectStatusEnum.Financing)
+            {
+                return project.add_time;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
+            {
+                return project.publish_time.Value;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
+            {
+                return project.invest_complete_time.Value;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+            {
+                return project.make_loan_time.Value;
+            }
+            else
+            {
+                return project.complete_time.Value;
+            }
         }
     }
 }

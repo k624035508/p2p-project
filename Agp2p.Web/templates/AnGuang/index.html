@@ -14,8 +14,10 @@
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
     <![endif]-->
     <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
+    <script src="<%templateskin%>/js/jquery.superslide.2.1.1.js"></script>
 </head>
 <body>
     <!--head-->
@@ -44,18 +46,19 @@
         </div>
     </div>
 
-
-    <!--banner-->
-    <div class="container-fluid">
+    
+    <!--banner start -->
+   
+  <!-- <div class="container-fluid">
         <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
+            <!-- Indicators  --> 
+    <!--      <ol class="carousel-indicators">
                 <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#bannerCarousel" data-slide-to="1"></li>
             </ol>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
+             Wrapper for slides -->
+    <!--     <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <a href='<%linkurl("activity_rewards")%>' target="_blank" class="banner2"></a>
                 </div>
@@ -66,10 +69,36 @@
                         <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
                     </div>
                 </div>
+             
             </div>
         </div>
-    </div>
+    </div>  
+    -->
     <!--banner end-->
+    <div class="m-banner">
+        
+         <div class="prev"></div>
+          <div class="next"></div>
+       
+            <ul class="hd">
+            <li>推荐奖励</li>
+            <li>安广融合移动端</li>
+         
+            </ul>
+        
+                <div class="bd">
+                      <ul >                
+                <li title="'新手福利'" class="banner2">
+                                     <a target="_blank" href='<%linkurl("activity_rewards")%>'></a>                    
+                </li>               
+              <li title="'全民赏金接力'" class="banner3">                                    
+                                        <a target="_blank" href='<%linkurl("activity_apps")%>'></a>                    
+                </li>              
+              
+            </ul>            
+        </div>
+        
+    </div>
     <!--announcement-->
     <div class="container-fluid announcement-wrap">
         <div class="announcement">
@@ -87,7 +116,7 @@
                 <%/if%>
             </span>
             <span class="announce-board-icon news-icon"></span>
-            <%set var newestAnnounce=GetArticles(42, 1).FirstOrDefault()%>
+            <%set var newestAnnounce=GetNewestAnnounce()%>
             <span class="web-announce">
                 最新动态：
                 <%if(newestAnnounce!=null)%>
@@ -151,7 +180,7 @@
                             <p class="grey13px">项目收益<span class="dark-grey25px margin-left30">10</span><span class="dark-grey15px"> 元</span></p>
                             <div class="progress progress-custom">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="<%=(np.GetInvestmentProgressPercent()*100)%>"
-                                     aria-valuemin="0" aria-valuemax="100" style='width: <%=np.GetInvestmentProgressPercent().ToString("p1")%>;'>
+                                     aria-valuemin="0" aria-valuemax="100" style='width:0 ;'>
                                     <%=np.GetInvestmentProgressPercent().ToString("p1")%>
                                 </div>
                             </div>
@@ -196,8 +225,8 @@
         <div class="tender-right">
             <div class="icon-corner"></div>
             <div class="content-bottom">
-                <%set var projects0=QueryProjects(4,0,out totalcount0,cid,0,0,0)%>
-                <%foreach(var p in projects0)%>
+                <%set var investables=QueryInvestables(4,0,out totalcount0,cid,0,0,0)%>
+                <%foreach(var p in investables.Select(i=>i.Project))%>
                 <div class="tender-cell">
                     <div class="title-wrap">
                         <a href='<%linkurl("project",p.id)%>'>{p.title}</a>
@@ -215,11 +244,11 @@
                     </div>
                     <p class="grey13px back-way">{p.GetProjectRepaymentTypeDesc()}</p>
                     <div class="progress progress-custom">
-                        <div class="progress-bar progress-bar-info" role="progressbar"
+                      <div class="progress-bar progress-bar-info" role="progressbar"
                              aria-valuenow='<%=(p.GetInvestmentProgressPercent()*100)%>' aria-valuemin="0" aria-valuemax="100"
-                             style='width: <%=p.GetInvestmentProgressPercent().ToString("p1")%>'>
-                            <%=p.GetInvestmentProgressPercent().ToString("p1")%>
-                        </div>
+                              style='width:0'>
+                          <%=p.GetInvestmentProgressPercent().ToString("p1")%>
+                        </div> 
                     </div>
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>

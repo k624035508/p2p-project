@@ -77,28 +77,28 @@ namespace Agp2p.Web.admin.project
         private void ShowProfitingClaimInfo(li_projects project)
         {
             isHuoqiProject = true;
-            rptClaimList.DataSource = project.li_claims1.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims_profiting.AsEnumerable();
             rptClaimList.DataBind();
         }
 
         private void ShowClaimsInfo(li_projects project)
         {
             isHuoqiProject = false;
-            rptClaimList.DataSource = project.li_claims.OrderBy(c => c.userId).AsEnumerable();
+            rptClaimList.DataSource = project.li_claims.AsEnumerable();
             rptClaimList.DataBind();
         }
 
         protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
         {
-            int claimId = Convert.ToInt32(((Button)sender).CommandArgument);
+            int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             var claim = LqContext.li_claims.Single(c => c.id == claimId);
 
-            claim.status = (byte) Agp2pEnums.ClaimStatusEnum.Transferable;
-            claim.statusUpdateTime = DateTime.Now;
-            LqContext.SubmitChanges();
-
             var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
-            AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark); //记录日志
+            LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId);
+
+            ShowClaimsInfo(claim.li_projects);
+
             JscriptMsg(remark, "");
         }
 
@@ -211,14 +211,14 @@ namespace Agp2p.Web.admin.project
         {
             if (loaner == null) return;
             //借款人信息
-            sp_loaner_name.InnerText = loaner.dt_users.real_name;
-            sp_loaner_gender.InnerText = loaner.dt_users.sex;
-            sp_loaner_job.InnerText = loaner.job;
-            sp_loaner_working_at.InnerText = loaner.working_at;
-            sp_loaner_tel.InnerText = loaner.dt_users.telphone;
-            sp_loaner_id_card_number.InnerText = loaner.dt_users.id_card_number;
+            sp_loaner_name.InnerText = loaner?.dt_users.real_name;
+            sp_loaner_gender.InnerText = loaner?.dt_users.sex;
+            sp_loaner_job.InnerText = loaner?.job;
+            sp_loaner_working_at.InnerText = loaner?.working_at;
+            sp_loaner_tel.InnerText = loaner?.dt_users.telphone;
+            sp_loaner_id_card_number.InnerText = loaner?.dt_users.id_card_number;
             //企业信息
-            if (loaner.li_loaner_companies != null)
+            if (loaner?.li_loaner_companies != null)
             {
                 sp_company_name.InnerText = loaner.li_loaner_companies.name;
                 sp_company_business_scope.InnerText = loaner.li_loaner_companies.business_scope;
@@ -227,8 +227,11 @@ namespace Agp2p.Web.admin.project
                 sp_company_setup_time.InnerText = loaner.li_loaner_companies.setup_time.ToString("yyyy年MM月dd日");
             }
 
-            rptList.DataSource = Loan.LoadMortgageList(loaner.id, riskId, false);
-            rptList.DataBind();
+            if (loaner != null)
+            {
+                rptList.DataSource = Loan.LoadMortgageList(loaner.id, riskId, false);
+                rptList.DataBind();
+            }
         }
 
         protected void btnAudit_OnClick(object sender, EventArgs e)
@@ -451,7 +454,7 @@ namespace Agp2p.Web.admin.project
                                 catch (Exception ex)
                                 {
                                     LqContext.AppendAdminLogAndSave("WithdrawSms",
-                                        "发送借款募集顺延通知失败：" + ex.Message + "（客户ID：" + i.dt_users.user_name + "）");
+                                        "发送借款募集顺延通知失败：" + ex.GetSimpleCrashInfo() + "（客户ID：" + i.dt_users.user_name + "）");
                                 }
                             });
                     }

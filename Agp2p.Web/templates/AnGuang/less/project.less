@@ -1,4 +1,4 @@
-﻿//标书样式
+﻿/*project.less(标书)*/
 @import "common-style";
 @images: "../imgs/index";
 @content-margin: 35px 38px;
@@ -55,6 +55,17 @@ div.tender-content {
 				font-size: @font20;
 				color: @blue;
 			}
+            span.invest-plus{
+                width:55px;
+                height:30px;
+                margin-left:20px;
+                text-align:center;
+                font-size:@font15;
+                line-height:30px;
+                font-weight:bold;
+                color:#fff;
+                background:@red;
+            }
 		}
 		.invest-rules {
 			height: 120px;
@@ -531,6 +542,78 @@ div.project-content-wrap {
 			height: 1px;
 			background: url("@{images}/newhand-hr.png");
 		}
+
 	}
+
+
+
+    .project-detail-huoqi{
+     
+        .pro{width: 820px;
+			height: 180px;
+			padding: 50px 0 0 190px;
+            margin:35px 70px 0 73px;
+			p {
+				font-size: @font15;
+				color: @dark-grey;
+			}
+			p:first-child {
+				color: @darker-grey;
+				font-weight: bold;
+			}
+            background: url("@{images}/pro-bg.png") no-repeat left center;
+        }
+       .fanwei{
+            margin-left:73px;   
+            width:833px;
+            height:35px;
+            border:1px solid #aaaa9a;  border-bottom:none;       
+            span{
+                margin:0;
+                height:35px;
+                display:inline-block;
+                width:675px;
+                padding:9px 0 9px 35px;
+                line-height:15px;
+                font-size:@font15;
+                color:@dark-grey;
+                
+            }
+            span:first-child{
+                width:150px;
+                color:#aaaaaa;
+                padding-left:30px;
+                border-right:1px solid #aaaa9a;
+            }
+        }
+       .fanwei:last-child{
+           border-bottom:1px solid #aaaa9a;
+           margin-bottom:35px;
+       }
+       
+         .fanwei1{
+            margin-left:73px;   
+            width:833px;
+            height:30px;
+            border:1px solid #aaaa9a;  border-bottom:none;       
+            span{
+                margin:0;
+                height:30px;
+                display:inline-block;
+                width:675px;
+                padding:7px 0 7px 35px;
+                line-height:15px;
+                font-size:@font15;
+                color:@dark-grey;
+                
+            }
+            span:first-child{
+                width:150px;
+                color:#aaaa9a;
+                padding-left:30px;
+                border-right:1px solid #aaaa9a;
+            }
+        }
+    }
 }
 

@@ -34,6 +34,8 @@ $(function () {
 
     header.setHeaderHighlight(1);
 
+   
+
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
@@ -47,10 +49,20 @@ $(function () {
         // 打开投资对话框
         var $investBtn = $("button.investing-btn");
         var projectId = $investBtn.data()["projectId"];
+        var buyClaimId = $investBtn.data()["buyClaimId"];
         $investBtn.click(function () {
-            var hasPayPassword = $(this).data()["hasPayPassword"] == "True";
+            var investBtnData = $investBtn.data();
+            var hasPayPassword = investBtnData["hasPayPassword"] == "True";
+            var hasIdentification = investBtnData["hasIdentification"] == "True";
             if (!hasPayPassword) {
                 confirm("您需要先设置交易密码，是否现在转到‘安全中心’？", () => {
+                    var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
+                    location.href = link;
+                });
+                return;
+            }
+            if (!hasIdentification) {
+                confirm("您需要先进行身份认证，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 });
@@ -66,7 +78,7 @@ $(function () {
                 alert("对不起，请输入整数金额！");
                 return;
             }
-            if (parseFloat($(this).data()["idleMoney"]) < investAmount) {
+            if (parseFloat(investBtnData["idleMoney"]) < investAmount) {
                 alert("余额不足，请先充值！");
                 return;
             }
@@ -105,7 +117,7 @@ $(function () {
         		type: "post",
         		dataType: "json",
         		url: "/tools/submit_ajax.ashx?action=invest_project",
-        		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
+        		data: {investingAmount: investAmount, projectId, buyClaimId, transactPassword: transactPassword},
         		timeout: 10000,
         		success: function(result) {
         			alert(result.msg, () => {

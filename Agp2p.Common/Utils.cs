@@ -10,6 +10,7 @@ using System.Web;
 using System.Security.Cryptography;
 using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -1737,9 +1738,28 @@ namespace Agp2p.Common
             return null;
         }
 
+        /// <summary>
+        /// 完整分割 10 / 3 => 3.33 + 3.33 + 3.34
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="splitCount"></param>
+        /// <param name="toFixed"></param>
+        /// <returns></returns>
+        public static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
+        {
+            if (splitCount <= 0)
+            {
+                throw new Exception("无法分割为 0 份");
+            }
+            var part = Math.Round(amount/splitCount, toFixed);
+            var finalPart = Math.Round(amount - part*(splitCount - 1), toFixed);
+            return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
+        }
+
         public static List<decimal> GetPerfectRounding(List<decimal> original, decimal forceSum, int decimals)
         {
             var rounded = original.Select(x => Math.Round(x, decimals)).ToList();
+            Debug.Assert(Math.Round(forceSum, decimals) == forceSum);
             var delta = forceSum - rounded.Sum();
             if (delta == 0) return rounded;
             var deltaUnit = Convert.ToDecimal(Math.Pow(0.1, decimals)) * Math.Sign(delta);
@@ -1791,5 +1811,21 @@ namespace Agp2p.Common
         public static DateTime HiResNow => new DateTime(UtcNowTicks, DateTimeKind.Utc).ToLocalTime();
 
         public static string HiResNowString => HiResNow.ToString("yyyyMMddHHmmssfffffff");
+
+        public static string GetSimpleCrashInfo(this Exception ex)
+        {
+            if (ex.InnerException != null)
+            {
+                return ex.InnerException.GetSimpleCrashInfo();
+            }
+            return ex.Message + "\n" + ex.StackTrace?.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
+        }
+
+        public static Dictionary<TKey, TVal> ReplaceKey<TKey, TVal>(this Dictionary<TKey, TVal> src, TKey originalKey, TKey replacement)
+        {
+            return src.Concat(Enumerable.Repeat(new KeyValuePair<TKey, TVal>(replacement, src[originalKey]), 1))
+                .Where(p => !EqualityComparer<TKey>.Default.Equals(p.Key, originalKey))
+                .ToDictionary(p => p.Key, p => p.Value);
+        }
     }
 }

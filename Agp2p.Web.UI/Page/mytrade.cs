@@ -98,7 +98,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <returns></returns>
-        protected static List<li_wallet_histories> QueryTransactionHistory(int userId, Agp2pEnums.TransactionDetailsDropDownListEnum type, int pageIndex,
+        protected static List<object> QueryTransactionHistory(int userId, Agp2pEnums.TransactionDetailsDropDownListEnum type, int pageIndex,
             string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
@@ -116,7 +116,33 @@ namespace Agp2p.Web.UI.Page
                 query = query.Where(h => h.create_time <= Convert.ToDateTime(endTime));
 
             count = query.Count();
-            return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+            var history = query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(h => (object) new
+            {
+                h.id,
+                type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)h.action_type),
+                income = QueryTransactionIncome(h),
+                outcome = QueryTransactionOutcome(h),
+                idleMoney = h.idle_money.ToString("n"),
+                createTime = h.create_time.ToString("yy/MM/dd HH:mm"),
+                remark = QueryRemark(h)
+            }).ToList();
+
+            if (count != 0)
+            {
+                count += 1; // 总计
+                if (count <= pageIndex * pageSize + pageSize) // 最后一页
+                {
+                    var allHis = query.ToList();
+                    history.Add(new
+                    {
+                        id = 0,
+                        type = "总计",
+                        income = allHis.Aggregate(0m, (sum, h) => sum + TransactionFacade.QueryTransactionIncome(h, (a, b) => a.GetValueOrDefault() + b.GetValueOrDefault())).ToString("f2"),
+                        outcome = allHis.Aggregate(0m, (sum, h) => sum + h.QueryTransactionOutcome().GetValueOrDefault()).ToString("f2"),
+                    });
+                }
+            }
+            return history;
         }
 
         [WebMethod]
@@ -130,18 +156,8 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             int count;
-            var his = QueryTransactionHistory(userInfo.id, (Agp2pEnums.TransactionDetailsDropDownListEnum)type, pageIndex, startTime, endTime, pageSize, out count);
-            var os = his.Select(h => new
-            {
-                h.id,
-                type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) h.action_type),
-                income = QueryTransactionIncome(h),
-                outcome = QueryTransactionOutcome(h),
-                idleMoney = h.idle_money,
-                createTime = h.create_time.ToString("yy/MM/dd HH:mm"),
-                remark = QueryRemark(h)
-            });
-            return JsonConvert.SerializeObject(new { totalCount = count, data = os });
+            var data = QueryTransactionHistory(userInfo.id, (Agp2pEnums.TransactionDetailsDropDownListEnum) type, pageIndex, startTime, endTime, pageSize, out count);
+            return JsonConvert.SerializeObject(new { totalCount = count, data });
         }
     }
 }
