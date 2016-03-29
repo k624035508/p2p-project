@@ -119,6 +119,9 @@
     <Compile Include="Page\error.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\coop.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\loan.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -1,5 +1,6 @@
 ﻿<%namespace "Agp2p.Core"%>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +25,18 @@
         <span>我要理财</span>
     </div>
     <!--面包屑导航 end-->
+    <div class="content-wrap consume">
+        <ul>
+            <li class="bluecon">票据专区 <p>2</p><span></span> </li>
+            <li>债券转让<span></span></li>
+            <li>活期宝<span></span></li>
+            <li>文体宝<span></span></li>
+            <li>消费金融<span></span></li>
+        </ul>
+    </div>
 
+<div>
+<div class="ticket-area">
     <div class="top-part content-wrap">
         <div class="select-box">
             <div class="project-time">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more",54)%>'>发标公告</a>。</div>
@@ -86,7 +98,7 @@
             </div>
         </div>
         <div class="novice-guide pull-right">
-            <p class="topic-title"><a href="<%linkurl("help")%>" target="_blank">新手指引</a></p>
+        
             <ul class="guide-list">
                 <li><a href="<%linkurl("article_show",78)%>" target="_blank">如何进行充值?</a></li>
                 <li><a href="<%linkurl("article_show",89)%>" target="_blank">如何进行投资?</a></li>
@@ -158,7 +170,20 @@
 
     <!--取得分页页码列表-->
     <div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("projects",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%></div>
+</div>
 
+    <!--消费金融-->
+    <div class="consumefin">
+        <div class="content-wrap">
+           <img src="<%templateskin%>/imgs/projects/001.png" />
+            <div>
+                <div>敬请期待</div>
+                <div>！</div>
+            </div>
+        </div>
+
+    </div>
+</div>
     <%template src="_floating.html"%>
 
     <!--footer-->
