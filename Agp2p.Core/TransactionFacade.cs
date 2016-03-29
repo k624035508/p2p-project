@@ -1898,7 +1898,7 @@ namespace Agp2p.Core
             var interestSkipped = 0m;
 
             if (!repaymentTask.li_projects.IsNewbieProject())
-                Debug.Assert(claimRatio.Aggregate(0m, (sum, pair) => sum + pair.Value) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
+                Debug.Assert(Math.Round(claimRatio.Aggregate(0m, (sum, pair) => sum + pair.Value), 6) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
 
             var rounded = claimRatio
                 .Where(pair => repaymentTask.only_repay_to == null || pair.Key.id == repaymentTask.only_repay_to) // 只对某投资者回款（新手标）
