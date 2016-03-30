@@ -1850,16 +1850,22 @@ namespace Agp2p.Core
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var allClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(queryTime)).ToList();
+            var profitingClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(queryTime)).ToList();
+
+            // 由于存在使用了父债权时间的债权，所以上述查询可能会同时查出子债权和父债权，造成比例异常，需要排除掉父债权
+            if (proj.financing_amount < profitingClaims.Aggregate(0m, (sum, c) => sum + c.principal))
+            {
+                profitingClaims = profitingClaims.Where(me => !profitingClaims.Any(otherClaim => otherClaim.IsChildOf(me))).ToList();
+            }
 
             // 仅针对单个用户的还款
             if (proj.IsNewbieProject())
             {
-                return allClaims.ToDictionary(c => c, c => 1m);
+                return profitingClaims.ToDictionary(c => c, c => 1m);
             }
 
             // 计算出每个债权的本金占比，公式：债权金额 / 项目投资总额
-            return allClaims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
+            return profitingClaims.ToDictionary(c => c, c => c.principal/proj.investment_amount);
         }
 
         public static List<li_project_transactions> GenerateRepayTransactions(li_repayment_tasks repaymentTask,
