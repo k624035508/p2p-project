@@ -1328,6 +1328,58 @@ namespace Agp2p.Common
         #endregion
 
         #region URL请求数据
+        public static string HttpPostGbk(string url, string param)
+        {
+            byte[] data = Encoding.ASCII.GetBytes(param);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded;charset=GBK";
+            request.ContentLength = data.Length;
+            request.Accept = "*/*";
+            request.Timeout = 15000;
+            request.AllowAutoRedirect = false;
+
+            Stream requestStream = null;
+            WebResponse response = null;
+            string responseStr = null;
+
+            try
+            {
+                //如果是发送HTTPS请求,则需要校验证书  
+                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    SumaPayUtils.SetCertificatePolicy();//屏蔽证书问题
+                    //X509Certificate cert = X509Certificate.CreateFromCertFile(@"E:\Project\Payment\p2pmerchant_access.net\p2pmerchant_access.net\bin\zhengshu.crt");
+                    //myRequest.ClientCertificates.Add(cert);
+                }
+
+                requestStream = request.GetRequestStream();
+                requestStream.Write(data, 0, data.Length);
+                requestStream.Close();
+
+                response = request.GetResponse();
+                if (response != null)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GBK"));
+                    responseStr = reader.ReadToEnd();
+                    reader.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                request = null;
+                requestStream = null;
+                response = null;
+            }
+
+            return responseStr;
+        }
+
         /// <summary>
         /// HTTP POST方式请求数据
         /// </summary>

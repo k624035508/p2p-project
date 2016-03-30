@@ -2644,9 +2644,9 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败！请输入正确的身份证号码\"}");
+                throw ex;
             }
         }
 

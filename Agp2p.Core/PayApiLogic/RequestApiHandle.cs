@@ -74,7 +74,7 @@ namespace Agp2p.Core.PayApiLogic
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
-                msg.SynResult = Utils.HttpPost(msg.ApiInterface, requestLog.request_content);
+                msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Web;
 using Agp2p.Common;
 using xBrainLab.Security.Cryptography;
 
@@ -27,14 +29,16 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
-            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserName + IdNumber + PayType);
+            //HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
+            //return hmac.ComputeHash(RequestId + SumapayConfig.MerchantCode + UserName + IdNumber + PayType).ToString();
+            return SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserName + IdNumber + PayType,
+                SumapayConfig.Key);
         }
 
         public override string GetPostPara()
         {
             return
-                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userName={UserName}&idNumber={IdNumber.ToUpper()}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userName={HttpUtility.UrlEncode(UserName, Encoding.GetEncoding("GBK"))}&idNumber={IdNumber.ToUpper()}&signature={GetSignature()}";
         }
     }
 }

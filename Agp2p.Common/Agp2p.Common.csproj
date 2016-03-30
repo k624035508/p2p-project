@@ -79,6 +79,7 @@
     <Compile Include="Regexlib.cs" />
     <Compile Include="RmbUpperConverter.cs" />
     <Compile Include="SerializationHelper.cs" />
+    <Compile Include="SumaPayUtils.cs" />
     <Compile Include="Thumbnail.cs" />
     <Compile Include="TinyMessenger.cs" />
     <Compile Include="Utils.cs" />

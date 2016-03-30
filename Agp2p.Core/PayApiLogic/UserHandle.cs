@@ -27,28 +27,28 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="msg"></param>
         private static void UserRealNameAuth(UserRealNameAuthRespMsg msg)
         {
+            Agp2pDataContext context = new Agp2pDataContext();
+            //实名验证只有同步返回故需要在这里保存响应日志
+            var respLog = new li_pay_response_log()
+            {
+                request_id = msg.RequestId,
+                result = msg.Result,
+                status = (int)Agp2pEnums.SumapayResponseEnum.Return,
+                response_time = DateTime.Now,
+                response_content = msg.ResponseContent
+            };
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
-                //实名验证只有同步返回故需要在这里保存响应日志
-                var respLog = new li_pay_response_log()
-                {
-                    request_id = msg.RequestId,
-                    result = msg.Result,
-                    status = (int)Agp2pEnums.SumapayResponseEnum.Return,
-                    response_time = DateTime.Now,
-                    response_content = msg.ResponseContent
-                };
                 context.li_pay_response_log.InsertOnSubmit(respLog);
 
                 var requestLog = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
                 if (requestLog != null)
                 {
-                    //检查签名
-                    if (msg.CheckSignature())
+                    //检查请求处理结果
+                    if (msg.CheckResult())
                     {
-                        //检查请求处理结果
-                        if (msg.CheckResult())
+                        //检查签名
+                        if (msg.CheckSignature())
                         {
                             //查找对应的平台账户，更新用户信息
                             var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
@@ -85,14 +85,13 @@ namespace Agp2p.Core.PayApiLogic
                 {
                     msg.Remarks = "无法找到对应的请求日志，日志id：" + msg.RequestId;
                 }
-
-                respLog.remarks = msg.Remarks;
-                context.SubmitChanges();
             }
             catch (Exception ex)
             {
                 msg.Remarks = "内部错误：" + ex.Message;
             }
+            respLog.remarks = msg.Remarks;
+            context.SubmitChanges();
         }
 
         /// <summary>
