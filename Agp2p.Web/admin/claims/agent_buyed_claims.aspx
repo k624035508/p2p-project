@@ -58,10 +58,12 @@ tr.sum td { color: red; }
   <tr>
     <th align="left" width="3%" style="padding-left: 1em;">序号</th>
     <th align="left" width="10%">原债权所有者</th>
-    <th align="left" width="10%">本金</th>
-    <th align="left" width="10%">项目</th>
+    <th align="left" width="5%">本金</th>
+    <th align="left" width="5%">项目</th>
     <th align="left" width="10%">原债权所有者申请转让时间</th>
-    <th align="left" width="10%">买入时间</th>
+    <th align="left" width="10%">中间人买入时间</th>
+    <th align="left" width="10%">活期投资者</th>
+    <th align="left" width="10%">活期投资时间</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -72,10 +74,12 @@ tr.sum td { color: red; }
     <td><%# Eval("ProjectName") %></td>
     <td><%# Eval("WithdrawTime") %></td>
     <td><%# Eval("BuyTime") %></td>
+    <td><%# Eval("HuoqiInvestor") %></td>
+    <td><%# Eval("HuoqiInvestTime") %></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"6\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"8\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>
