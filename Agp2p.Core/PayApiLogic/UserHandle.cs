@@ -50,33 +50,33 @@ namespace Agp2p.Core.PayApiLogic
                         //检查签名
                         if (msg.CheckSignature())
                         {
-                            //查找对应的平台账户，更新用户信息
-                            var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
-                            if (user != null)
+                            if (msg.Status.Equals("0"))
                             {
-                                if (msg.Status.Equals("0"))
+                                //查找对应的平台账户，更新用户信息
+                                var user = context.dt_users.SingleOrDefault(u => u.id == requestLog.user_id);
+                                if (user != null)
                                 {
                                     //更新客户信息
                                     user.token = msg.Token;
                                     user.real_name = msg.UserName;
                                     user.id_card_number = msg.IdNumber;
                                     //更新响应日志
-                                    respLog.user_id = msg.UserIdIdentity;
+                                    respLog.user_id = requestLog.user_id;
                                     respLog.status = (int) Agp2pEnums.SumapayResponseEnum.Complete;
                                     //更新请求日志
                                     requestLog.complete_time = DateTime.Now;
                                     requestLog.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
-                                    
+
                                     msg.HasHandle = true;
                                 }
                                 else
                                 {
-                                    msg.Remarks = "身份证与姓名不一致";
+                                    msg.Remarks = "无法找到平台账户，用户ID：" + msg.UserIdIdentity;
                                 }
                             }
                             else
                             {
-                                msg.Remarks = "无法找到平台账户，用户ID：" + msg.UserIdIdentity;
+                                msg.Remarks = "身份证与姓名不一致";
                             }
                         }
                     }

@@ -2630,14 +2630,14 @@ namespace Agp2p.Web.tools
                 //}
 
                 //调用托管平台实名验证接口
-                var msg = new UserRealNameAuthReqMsg(truename, idcard);
+                var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
                 MessageBus.Main.Publish(msg);
                 //处理实名验证返回结果
                 var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
                 MessageBus.Main.Publish(msgResp);
                 if (msgResp.HasHandle)
                 {
-                    context.Response.Write("{\"status\":1,\"token\":" + msgResp.Token + ", \"msg\":\"身份证认证成功！\"}");
+                    context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
                 }
                 else
                 {

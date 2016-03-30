@@ -43,8 +43,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public bool CheckSignature(string paras)
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
-            if (!Signature.Equals(hmac.ComputeHashToBase64String(paras)))
+            if (!Signature.Equals(SumaPayUtils.GenSign(paras, SumapayConfig.Key)))
             {
                 Remarks = "数字签名验证不通过;";
                 return false;

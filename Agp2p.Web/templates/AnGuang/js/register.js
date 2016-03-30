@@ -9,6 +9,25 @@ $(function() {
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
+    //根据步骤显示
+    var { step } = $("#step").data();
+    if (step == "2") {
+        //实名验证
+        $(".register-left").eq(0).addClass("hidden");
+        $(".register-left").eq(1).removeClass("hidden");
+        $(".step2-hr").addClass("step-red");
+        $(".step2").addClass("redstep");
+        $(".tips2").addClass("tips-red");
+    } else if (step == "3"){
+        //托管开户
+        $(".register-left").eq(1).addClass("hidden");
+        $(".register-left").eq(2).removeClass("hidden");
+        $(".step3-hr").addClass("step-red");
+        $(".step3").addClass("redstep");
+        $(".tips3").addClass("tips-red");
+    }
+
+
     //邀请码选填 
     $("div.invite2").hide();
     $("div.invited").click(function(){      
@@ -201,11 +220,9 @@ $(function() {
             success: function(data) {
                 if (data.status == 1) {
                     //实名验证成功，进入开户步骤
-                    $(".register-left").eq(1).addClass("hidden");
-                    $(".register-left").eq(2).removeClass("hidden");
-                    $(".step3-hr").addClass("step-red");
-                    $(".step3").addClass("redstep");
-                    $(".tips3").addClass("tips-red");
+                    location.href="register.html?action=3";
+                } else {
+                    alert(data.msg);
                 }
             },
             error: function(data) {
@@ -216,12 +233,6 @@ $(function() {
 
     // 注册
     $("#registerBtn").click(function() {
-        $(".register-left").eq(0).addClass("hidden");
-        $(".register-left").eq(1).removeClass("hidden");
-        $(".step2-hr").addClass("step-red");
-        $(".step2").addClass("redstep");
-        $(".tips2").addClass("tips-red");
-
         if (!$("input[type=checkbox]")[0].checked) {
             alert("请先同意注册协议");
             return;
@@ -251,11 +262,7 @@ $(function() {
                 alert(data.msg);
                 if (data.status == 1) {
                     //注册成功到实名验证步骤
-                    $(".register-left").eq(0).addClass("hidden");
-                    $(".register-left").eq(1).removeClass("hidden");
-                    $(".step2-hr").addClass("step-red");
-                    $(".step2").addClass("redstep");
-                    $(".tips2").addClass("tips-red");
+                    location.href="register.html?action=2";
                 } else {
                     refreshPicVerifyCode();
                 }
