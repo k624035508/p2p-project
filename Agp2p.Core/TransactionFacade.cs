@@ -568,6 +568,8 @@ namespace Agp2p.Core
                 4）转让申请日至少在下一个还款日/结息日的1天之前。*/
 
             var claim = context.li_claims.Single(c => c.id == claimId);
+            if (claim.dt_users.IsAgent())
+                throw new InvalidOperationException("中间人不能转出债权");
 
             var timeSpan = DateTime.Today - claim.GetSourceClaim().createTime.Date;
             if (timeSpan.TotalDays < 15 && !claim.dt_users.IsCompanyAccount())
@@ -697,7 +699,7 @@ namespace Agp2p.Core
             {
                 // 取得原债权本金对应的应收利润
                 return task.li_projects.GetClaimRatio(new[] { needTransferClaim.Parent.createTime, currentRepaymentTask.GetStartProfitingTime() }.Max())
-                    .GenerateRepayTransactions(task, task.should_repay_time, false, false, false)
+                    .GenerateRepayTransactions(task, task.should_repay_time)
                     .Single(ptr =>
                     {
                         if (ptr.gainFromClaim == needTransferClaim.id)
@@ -710,7 +712,7 @@ namespace Agp2p.Core
             var agentPaidInterest = currentRepaymentTask
                     .li_projects.GetClaimRatio(new[] {needTransferClaim.Parent.createTime, currentRepaymentTask.GetStartProfitingTime()}.Max())
                     .ReplaceKey(needTransferClaim.Parent, needTransferClaim)
-                    .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time, false, false, false).Single(ptr =>
+                    .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time).Single(ptr =>
                     {
                         if (ptr.gainFromClaim == needTransferClaim.id)
                             return true;
@@ -762,9 +764,9 @@ namespace Agp2p.Core
                 li_claims_from = transferredClaim,
                 project = needTransferClaim.projectId,
                 remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，" +
-                         needTransferClaim.GetWithdrawClaimProfitingDays(currentRepaymentTask,
-                             (claimProfitedDay, parentClaimProfitingDay, taskProfitingDays) =>
-                                 $"原收益天数：{parentClaimProfitingDay}，实际收益天数：{claimProfitedDay}") + "，手续费：" +
+                         needTransferClaim.GetProfitingSectionDays(currentRepaymentTask,
+                             (d0, dProfiting, dAfter) =>
+                                 $"原收益天数：{d0 + dProfiting + dAfter}，实际收益天数：{dProfiting}") + "，手续费：" +
                          finalCost.ToString("n")
             };
             context.li_project_transactions.InsertOnSubmit(claimTransferredOutPtr);
@@ -1881,25 +1883,16 @@ namespace Agp2p.Core
         /// <param name="claimRatio"></param>
         /// <param name="repaymentTask"></param>
         /// <param name="transactTime">交易时间，一般传 task.shouldRepayTime </param>
-        /// <param name="unsafeCreateEntities"></param>
+        /// <param name="unsafeCreateEntities">如果设置了实体类到 project_transaction 然后 SubmitChanges 的话，ptr 会被插入到数据库 </param>
         /// <param name="applyCostIntoInterest">如果为 true ，则 interest 实际上为计算了 cost 的收益</param>
         /// <returns></returns>
         private static List<li_project_transactions> GenerateRepayTransactions(this Dictionary<li_claims, decimal> claimRatio,
-            li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false, bool considerInterestPaidEarlier = true)
+            li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
         {
             if (!claimRatio.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
 
             var shouldRepayInterest = repaymentTask.repay_interest;
-
-            // 定期提现后中间人预先垫付了的那一部分利息
-            var interestPaidEarlier = considerInterestPaidEarlier
-                ? repaymentTask.li_projects.li_project_transactions.Where(
-                    ptr =>
-                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest &&
-                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
-                    .Aggregate(0m, (sum, ptr) => sum + ptr.interest.GetValueOrDefault())
-                : 0;
 
             var interestSkipped = 0m;
 
@@ -1919,22 +1912,34 @@ namespace Agp2p.Core
                     var profitingDayLengthBaseClaim = agent != null ? claim.GetFirstHistoryClaimByOwner(agent.id) : claim;
 
                     // 根据买入时间计算利息
-                    var realityInterest = repaymentTask.li_projects.IsHuoqiProject()
-                        ? totalInterest
-                        : profitingDayLengthBaseClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer
-                            ? profitingDayLengthBaseClaim.GetWithdrawClaimProfitingDays(repaymentTask,
-                                (claimProfitingDay, parentProfitingDays, taskProfitingDays) =>
-                                    totalInterest.GetPerfectSplitStream(taskProfitingDays, 3)
-                                        .Take(claimProfitingDay)
-                                        .Aggregate(0m, (sum, num) => sum + num))
-                            : profitingDayLengthBaseClaim.GetProfitingDays(repaymentTask,
-                                (claimProfitingDay, taskProfitingDay) =>
-                                    totalInterest.GetPerfectSplitStream(taskProfitingDay, 3)
-                                        .Take(claimProfitingDay)
-                                        .Aggregate(0m, (sum, num) => sum + num), transactTime);
+                    var realityInterest = Math.Round(totalInterest, 2);
+
+                    if (!repaymentTask.li_projects.IsHuoqiProject())
+                    {
+                        var tmp = profitingDayLengthBaseClaim.GetProfitingSectionDays(repaymentTask,
+                                (claimBeforeProfitingDays, claimProfitingDays, claimInvalidDays) =>
+                                {
+                                    var splitted = totalInterest.GetPerfectSplitStream(claimBeforeProfitingDays + claimProfitingDays + claimInvalidDays, 3).ToList();
+                                    splitted = Utils.GetPerfectRounding(splitted, Math.Round(totalInterest, 2), 2);
+                                    return new
+                                    {
+                                        skippedBefore = splitted.Take(claimBeforeProfitingDays).Aggregate(0m, (sum, p) => sum + p),
+                                        interest = splitted
+                                            .Skip(claimBeforeProfitingDays)
+                                            .Take(claimProfitingDays)
+                                            .Aggregate(0m, (sum, num) => sum + num),
+                                        skippedAfter = splitted
+                                            .Skip(claimBeforeProfitingDays + claimProfitingDays)
+                                            .Take(claimInvalidDays)
+                                            .Aggregate(0m, (sum, p) => sum + p)
+                                    };
+                                });
+                        realityInterest = tmp.interest;
+                        interestSkipped += tmp.skippedBefore + tmp.skippedAfter;
+                    }
 
                     // 可能排除的部分：定期提现预先垫付的利息、不产生收益的债权天数对应的利息
-                    interestSkipped += totalInterest - realityInterest;
+                    // interestSkipped += Math.Round(totalInterest, 2) - realityInterest;
 
                     string remark = null;
                     if (repaymentTask.status == (int) Agp2pEnums.RepaymentStatusEnum.EarlierPaid && 0 < repaymentTask.cost)
@@ -1974,6 +1979,7 @@ namespace Agp2p.Core
                     };
                     if (unsafeCreateEntities)
                     {
+                        // 如果设置了实体类到 project_transaction 然后 SubmitChanges 的话，ptr 会被插入到数据库
                         ptr.dt_users = gainer;
                         ptr.li_claims_from = claim;
                     }
@@ -1983,13 +1989,11 @@ namespace Agp2p.Core
             if (!rounded.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
 
-            interestSkipped = Math.Max(interestPaidEarlier, interestSkipped);
-
             var preRoundedInterest = rounded.Select(ptr => ptr.interest.GetValueOrDefault()).ToList();
             var forceSum = applyCostIntoInterest
                 ? repaymentTask.cost.GetValueOrDefault() + shouldRepayInterest
                 : shouldRepayInterest;
-            var perfectRoundedInterest = Utils.GetPerfectRounding(preRoundedInterest, forceSum - Math.Round(interestSkipped, 2), 2);
+            var perfectRoundedInterest = Utils.GetPerfectRounding(preRoundedInterest, forceSum - interestSkipped, 2);
             rounded.ZipEach(perfectRoundedInterest, (ptr, newInterest) => ptr.interest = newInterest);
 
             var preRoundedPrincipal = rounded.Select(ptr => ptr.principal).ToList();

@@ -97,9 +97,9 @@ namespace Agp2p.Web.UI.Page
                 repayment_tasks = repayment_tasks.Select(src => new li_repayment_tasks
                 {
                     repay_principal = Math.Round(src.repay_principal*ratio, 2),
-                    repay_interest = Investable.NeedTransferClaim.GetWithdrawClaimProfitingDays(src,
-                            (withdrawClaimPrifitedDays, parentClaimProfitingDays, taskProfitingDays) =>
-                                Math.Round(src.repay_interest*ratio*(taskProfitingDays - withdrawClaimPrifitedDays)/taskProfitingDays, 2)),
+                    repay_interest = Investable.NeedTransferClaim.Parent.GetProfitingSectionDays(src,
+                            (claimBeforeProfitingDays, claimProfitingDays, claimInvalidDays) =>
+                                Math.Round(src.repay_interest*ratio*claimInvalidDays/(claimBeforeProfitingDays + claimProfitingDays + claimInvalidDays), 2)),
                 should_repay_time = src.should_repay_time,
                 term = src.term
                 }).ToList();
