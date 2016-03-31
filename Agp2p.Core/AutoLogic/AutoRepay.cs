@@ -92,11 +92,13 @@ namespace Agp2p.Core.AutoLogic
             if (!shouldRepayTask.Any()) return;
 
 
-            // 优先进行特殊项目的放款
+            // 优先进行特殊项目的回款
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
                 //调用托管本息到账接口,在本息到账异步响应中执行还款计划 TODO 个人本息明细写在分账列表字段中
-                MessageBus.Main.PublishAsync(new ReturnPrinInteReqMsg(ta.li_projects.li_risks.li_loaners.user_id, (ta.repay_principal + ta.repay_interest).ToString("N"), "分账列表"));
+                //MessageBus.Main.PublishAsync(new ReturnPrinInteReqMsg(ta.li_projects.li_risks.li_loaners.user_id, (ta.repay_principal + ta.repay_interest).ToString("N"), "分账列表"));
+
+                context.ExecuteRepaymentTask(ta.id);
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
