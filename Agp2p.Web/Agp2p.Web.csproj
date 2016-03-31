@@ -854,6 +854,17 @@
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
     <Content Include="templates\AnGuang\imgs\loan\001-1.png" />
+    <Content Include="templates\AnGuang\imgs\register\001.png" />
+    <Content Include="templates\AnGuang\imgs\register\002.png" />
+    <Content Include="templates\AnGuang\imgs\register\003.png" />
+    <Content Include="templates\AnGuang\imgs\register\004.png" />
+    <Content Include="templates\AnGuang\imgs\register\005.png" />
+    <Content Include="templates\AnGuang\imgs\register\006.png" />
+    <Content Include="templates\AnGuang\imgs\register\007.png" />
+    <Content Include="templates\AnGuang\imgs\register\008.png" />
+    <Content Include="templates\AnGuang\imgs\register\009.png" />
+    <Content Include="templates\AnGuang\imgs\register\010.png" />
+    <Content Include="templates\AnGuang\imgs\register\11.png" />
     <Content Include="templates\AnGuang\imgs\loan\001.png" />
     <Content Include="templates\AnGuang\imgs\loan\0011.png" />
     <Content Include="templates\AnGuang\imgs\loan\002-1.png" />

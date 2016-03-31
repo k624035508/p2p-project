@@ -9,20 +9,17 @@ $(function() {
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
-    //初始化
-        $(".realname2").hide();
-        $(".identity2").hide();
-        $(".register-btn").eq(1).hide();
-        $(".register-btn").eq(2).hide();
-        $(".successRegister").hide();
-        $("a.skip").hide();
-
     //邀请码选填 
-    $(".invited").click(function(){
-        var $invite=$(".invite2");
-        $invite.toggle();
+    $("div.invite2").hide();
+    $("div.invited").click(function(){      
+        if($("div.invite2").is(":visible")) {
+            $("div.invite2").hide();
+            $("div.invited span").css("transform","rotate(360deg)");
+        }else{            
+            $("div.invite2").show();
+            $("div.invited span").css("transform","rotate(90deg)");
+        }
     });
-    $(".invited").trigger("click");
 
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);
@@ -164,24 +161,27 @@ $(function() {
             });
         }
     });
-       
-    //跳过此步
-    $("a.skip").click(function(){
-        $(".steps-list li").eq(3).removeClass("step1").addClass("step2");
-        $(".steps-list li").eq(5).removeClass("step3").addClass("step1");
-        $(".step3-hr").addClass("red-hr").siblings().removeClass("red-hr");
-        $(".tips3").addClass("red-tips").siblings().removeClass("red-tips");
-        $(".form-box").hide();
-        $(".register-btn").hide();
-        $(".successRegister").show();
-        $(".register-msg").text("注册账户");
-        $("span.pull-right").hide();
-        $(this).hide();
-    });
+  
+    //图片滚动
+    var leng=$(".register-img").length;
+    var index=0;
+    var adTimer;
 
+    $(".left-icon").click(function(){
+        index--;
+        if(index<0) {index=leng-1;}
+        showImg(index);
+    });
+    $(".right-icon").click(function(){
+        index++;
+        if(index==leng) {index=0;}
+        showImg(index);
+    });
+       
+
+    /*
     //实名认证
-    $("#realNameAuth").click(function(){
-        
+    $("#realNameAuth").click(function(){  
         $.ajax({
             url: "/tools/submit_ajax.ashx?action=bind_idcard",
             type: "post",
@@ -207,17 +207,32 @@ $(function() {
                 alert("操作超时，请重试");
             }
         });
-        
     });
+    */
+
+    $('.register-right').hover(function(){
+        clearInterval(adTimer);
+    },function(){
+        adTimer = setInterval(function(){
+            showImg(index)
+            index++;
+            if(index==leng){index=0;}
+        } , 3000);
+    }).trigger("mouseleave");
+    function showImg(index){
+        $(".register-img").eq(index).fadeIn(200).siblings().fadeOut(200);
+    }
+
 
     // 注册
     $("#registerBtn").click(function() {
+        /*
         if (!$("input[type=checkbox]")[0].checked) {
             alert("请先同意注册协议");
             return;
         }
         var txtPw1 = $("#psw").val(), txtPw2 = $("#psw2").val();
-       /*
+       
         if (txtPw1 != txtPw2) {
             alert("两次输入的密码不一致");
             return;
@@ -226,6 +241,7 @@ $(function() {
         	return;
         }
         */
+     /*   
         var verifyCode = $(".register-box").data("needSmsVerify") ? $("#sms-code").val() : $("#pic-code").val();
         $.ajax({
             url: "/tools/submit_ajax.ashx?action=user_register",
@@ -262,6 +278,20 @@ $(function() {
                 alert("操作超时，请重试");
             }
         });
+        */
        
+        $(".register-left").eq(0).addClass("hidden");
+        $(".register-left").eq(1).removeClass("hidden");
+        $(".step2-hr").addClass("step-red");
+        $(".step2").addClass("redstep");
+        $(".tips2").addClass("tips-red");
+    });
+
+    $("#registerBtn2").click(function(){
+        $(".register-left").eq(1).addClass("hidden");
+        $(".register-left").eq(2).removeClass("hidden");
+        $(".step3-hr").addClass("step-red");
+        $(".step3").addClass("redstep");
+        $(".tips3").addClass("tips-red");
     });
 });
