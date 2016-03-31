@@ -95,7 +95,9 @@ namespace Agp2p.Core.AutoLogic
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id)
                 .ForEach(ta => context.ExecuteRepaymentTask(ta.id));
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
-            SendRepayNotice(shouldRepayTask, context);
+
+            // 活期项目不发兑付公告
+            SendRepayNotice(shouldRepayTask.Where(t => !t.li_projects.IsHuoqiProject()).ToList(), context);
         }
 
         /// <summary>
