@@ -170,7 +170,7 @@ export default class ClaimsTransfer extends React.Component {
                                         <td>{c.status == ClaimStatusEnum.Nontransferable
                                             ? <a href="javascript:" onClick={ev => this.applyForClaimTransfer(c.id)}>申请转让</a>
                                             : (c.status == ClaimStatusEnum.NeedTransfer && c.buyerCount == 0
-                                                && new Date(c.createTime).toJSON().slice(0,10) != new Date().toJSON().slice(0,10)
+                                                && new Date(c.createTime).valueOf() + 24*60*60*1000 < new Date().valueOf()
                                                 ? <a href="javascript:" onClick={ev => this.applyForCancelClaimTransfer(c.id)}>撤回转让申请</a> : "")}</td>
                                     </tr>)
                             }

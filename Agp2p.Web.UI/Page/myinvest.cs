@@ -31,20 +31,6 @@ namespace Agp2p.Web.UI.Page
             time_span_end = DTRequest.GetQueryLong("time_span_end");
         }
 
-        private static readonly Dictionary<Agp2pEnums.MyInvestRadioBtnTypeEnum, Agp2pEnums.ProjectStatusEnum[]>
-            MyTradeTypeMapHistoryEnum = new Dictionary<Agp2pEnums.MyInvestRadioBtnTypeEnum, Agp2pEnums.ProjectStatusEnum[]>
-            {
-                {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing, new[] { Agp2pEnums.ProjectStatusEnum.Financing, Agp2pEnums.ProjectStatusEnum.FinancingSuccess, Agp2pEnums.ProjectStatusEnum.FinancingTimeout }
-                },
-                {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying, new[] { Agp2pEnums.ProjectStatusEnum.ProjectRepaying}
-                },
-                {
-                    Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete, new[] { Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime, Agp2pEnums.ProjectStatusEnum.BadDebt }
-                },
-            };
-
         /// <summary>
         /// 查询投资列表
         /// </summary>
@@ -53,37 +39,23 @@ namespace Agp2p.Web.UI.Page
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <returns></returns>
-        protected static List<li_project_transactions> QueryInvestment(int userId, Agp2pEnums.MyInvestRadioBtnTypeEnum type,
+        protected static List<li_claims> QueryInvestment(int userId, Agp2pEnums.MyInvestRadioBtnTypeEnum type,
             int pageIndex, string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
 
-            IEnumerable<li_project_transactions> query =
-                context.li_project_transactions.Where(
-                    tr =>
-                        tr.investor == userId && tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success);
+            var query = context.li_claims.Where(c => c.userId == userId && c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any());
             if (!string.IsNullOrWhiteSpace(startTime))
-                query = query.Where(tr => Convert.ToDateTime(startTime) <= tr.create_time);
+                query = query.Where(c => Convert.ToDateTime(startTime) <= c.createTime);
             if (!string.IsNullOrWhiteSpace(endTime))
-                query = query.Where(tr => tr.create_time <= Convert.ToDateTime(endTime));
-            if (MyTradeTypeMapHistoryEnum.Keys.Contains(type))
-                query = query.AsEnumerable().Where(tr =>
-                {
-                    if (tr.li_projects.dt_article_category.call_index != "newbie")
-                        return MyTradeTypeMapHistoryEnum[type].Cast<int>().Contains(tr.li_projects.status);
-                    switch (type)
-                    {
-                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing:
-                            return false;
-                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying:
-                            return tr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userId).repay_at == null;
-                        case Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete:
-                            return tr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userId).repay_at != null;
-                        default:
-                            throw new Exception("未知的查询类型");
-                    }
-                }).ToList();
+                query = query.Where(c => c.createTime <= Convert.ToDateTime(endTime));
+
+            if (type == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+                query = query.Where(c => c.li_projects.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
+            else if (type == Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying)
+                query = query.Where(c => c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
+            else if (type == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete)
+                query = query.Where(c => c.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
 
             count = query.Count();
             return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();
@@ -100,28 +72,32 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             int count;
-            var ptrs = QueryInvestment(userInfo.id, (Agp2pEnums.MyInvestRadioBtnTypeEnum) type, pageIndex, startTime, endTime, pageSize, out count);
+            var claims = QueryInvestment(userInfo.id, (Agp2pEnums.MyInvestRadioBtnTypeEnum) type, pageIndex, startTime, endTime, pageSize, out count);
 
             var now = DateTime.Now;
-            Model.siteconfig config = new BLL.siteconfig().loadConfig();
-            var result = ptrs.Select(ptr =>
+            var config = new BLL.siteconfig().loadConfig();
+
+            var result = claims.Select(c =>
             {
-                var proj = ptr.li_projects;
-                var profit = proj.dt_article_category.call_index == "newbie"
-                    ? 10
-                    : proj.profit_rate == 0
-                        ? Math.Round(ptr.principal*proj.GetFinalProfitRate(now), 2)
-                        : Math.Round(proj.profit_rate*ptr.principal, 2);
+                var proj = c.li_projects;
+                decimal profit;
+                if (proj.dt_article_category.call_index == "newbie") profit = 10;
+                else
+                {
+                    profit = proj.profit_rate == 0
+                        ? Math.Round(c.principal*proj.GetFinalProfitRate(now), 2)
+                        : Math.Round(proj.profit_rate*c.principal, 2);
+                }
                 return new
                 {
-                    ptrId = ptr.id,
+                    ptrId = c.id,
                     projectId = proj.id,
                     projectUrl = linkurl(config, "project", proj.id),
                     projectName = proj.title,
                     projectProfitRateYearly = proj.GetProfitRateYearly(),
                     term = proj.repayment_term_span_count + proj.GetProjectTermSpanEnumDesc(),
-                    investTime = ptr.create_time.ToString("yy/MM/dd HH:mm"),
-                    investValue = ptr.principal,
+                    investTime = c.createTime.ToString("yy/MM/dd HH:mm"),
+                    investValue = c.principal,
                     profit,
                     status = proj.GetProjectStatusDesc(),
                     isNewbieProject = proj.dt_article_category.call_index == "newbie"
