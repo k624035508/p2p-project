@@ -701,7 +701,7 @@ namespace Agp2p.Core
             {
                 // 取得原债权本金对应的应收利润
                 return task.li_projects.GetClaimRatio(new[] { needTransferClaim.Parent.createTime, currentRepaymentTask.GetStartProfitingTime() }.Max())
-                    .GenerateRepayTransactions(task, task.should_repay_time)
+                    .GenerateRepayTransactions(task, task.should_repay_time, false, false, false)
                     .Single(ptr =>
                     {
                         if (ptr.gainFromClaim == needTransferClaim.id)
@@ -713,7 +713,7 @@ namespace Agp2p.Core
             // 根据债权计息时长来取得应收利息，这部分利息是中间人垫付的
             var agentPaidInterest = currentRepaymentTask
                     .li_projects.GetClaimRatio(new[] {needTransferClaim.createTime, currentRepaymentTask.GetStartProfitingTime()}.Max(), true)
-                    .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time).Single(ptr =>
+                    .GenerateRepayTransactions(currentRepaymentTask, currentRepaymentTask.should_repay_time, false, false, false).Single(ptr =>
                     {
                         if (ptr.gainFromClaim == needTransferClaim.id)
                             return true;
@@ -734,7 +734,7 @@ namespace Agp2p.Core
                 principal = 0,
                 interest = agentPaidInterest,
                 type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest,
-                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Pending, /* 还款时设为完成，添加收益记录 */
+                status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Pending, /* 还款给中间人时设为完成，添加收益记录 */
                 create_time = now,
                 li_claims_from = transferredClaim,
                 project = needTransferClaim.projectId
@@ -1900,7 +1900,7 @@ namespace Agp2p.Core
         /// <param name="applyCostIntoInterest">如果为 true ，则 interest 实际上为计算了 cost 的收益</param>
         /// <returns></returns>
         private static List<li_project_transactions> GenerateRepayTransactions(this Dictionary<li_claims, decimal> claimRatio,
-            li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
+            li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false, bool considerInterestPaidEarlier = true)
         {
             if (!claimRatio.Any())
                 return Enumerable.Empty<li_project_transactions>().ToList();
@@ -1908,11 +1908,13 @@ namespace Agp2p.Core
             var shouldRepayInterest = repaymentTask.repay_interest;
 
             // 定期提现后中间人预先垫付了的那一部分利息
-            var interestPaidEarlier = repaymentTask.li_projects.li_project_transactions.Where(
-                ptr =>
-                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
-                .Aggregate(0m, (sum, ptr) => sum + ptr.interest.GetValueOrDefault());
+            var interestPaidEarlier = considerInterestPaidEarlier
+                ? repaymentTask.li_projects.li_project_transactions.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
+                    .Aggregate(0m, (sum, ptr) => sum + ptr.interest.GetValueOrDefault())
+                : 0;
 
             var interestSkipped = 0m;
 
