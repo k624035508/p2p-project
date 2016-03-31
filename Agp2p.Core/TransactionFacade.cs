@@ -1341,24 +1341,6 @@ namespace Agp2p.Core
         }
 
         /// <summary>
-        /// 完整分割 10 / 3 => 3.33 + 3.33 + 3.34
-        /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="splitCount"></param>
-        /// <param name="toFixed"></param>
-        /// <returns></returns>
-        public static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
-        {
-            if (splitCount <= 0)
-            {
-                throw new Exception("无法分割为 0 份");
-            }
-            var part = Math.Round(amount/splitCount, toFixed);
-            var finalPart = Math.Round(amount - part*(splitCount - 1), toFixed);
-            return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
-        }
-
-        /// <summary>
         /// 根据用户从某个项目中能获得的实际收益来计算“待收金额”，完全避免精度问题
         /// </summary>
         /// <param name="context"></param>
@@ -1938,9 +1920,15 @@ namespace Agp2p.Core
                         ? totalInterest
                         : profitingDayLengthBaseClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer
                             ? profitingDayLengthBaseClaim.GetWithdrawClaimProfitingDays(repaymentTask,
-                                (claimProfitingDay, parentProfitingDays, taskProfitingDays) => claimProfitingDay*totalInterest/taskProfitingDays)
+                                (claimProfitingDay, parentProfitingDays, taskProfitingDays) =>
+                                    totalInterest.GetPerfectSplitStream(taskProfitingDays, 3)
+                                        .Take(claimProfitingDay)
+                                        .Aggregate(0m, (sum, num) => sum + num))
                             : profitingDayLengthBaseClaim.GetProfitingDays(repaymentTask,
-                                (claimProfitingDay, taskProfitingDay) => claimProfitingDay*totalInterest/taskProfitingDay, transactTime);
+                                (claimProfitingDay, taskProfitingDay) =>
+                                    totalInterest.GetPerfectSplitStream(taskProfitingDay, 3)
+                                        .Take(claimProfitingDay)
+                                        .Aggregate(0m, (sum, num) => sum + num), transactTime);
 
                     // 可能排除的部分：定期提现预先垫付的利息、不产生收益的债权天数对应的利息
                     interestSkipped += totalInterest - realityInterest;
