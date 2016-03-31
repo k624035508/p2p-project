@@ -33,7 +33,7 @@ namespace Agp2p.Core.AutoLogic
                 .AsEnumerable().Where(c =>
                 {
                     var nextRepayDate = c.li_projects.li_repayment_tasks.FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time.Date;
-                    if (nextRepayDate != null && DateTime.Today <= nextRepayDate.Value)
+                    if (nextRepayDate != null && nextRepayDate.Value <= DateTime.Today)
                     {
                         return true;
                     }
