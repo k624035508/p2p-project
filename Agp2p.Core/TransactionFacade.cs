@@ -362,10 +362,6 @@ namespace Agp2p.Core
                 // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
                 wallet = context.li_wallets.Single(w => w.user_id == userId);
 
-                // TODO 解除投资限制
-                if (wallet.dt_users.dt_user_groups.title != "普通会员" && wallet.dt_users.dt_user_groups.title != "借款人")
-                    throw new InvalidOperationException("安广融合平台正在内部试运行中，具体全面开放请留意官网公告。");
-
                 if (wallet.idle_money < investingMoney)
                     throw new InvalidOperationException("余额不足，无法投资");
 
@@ -575,7 +571,7 @@ namespace Agp2p.Core
             var claim = context.li_claims.Single(c => c.id == claimId);
 
             var timeSpan = DateTime.Today - claim.GetSourceClaim().createTime.Date;
-            if (timeSpan.TotalDays < 15 && !Utils.IsDebugging())
+            if (timeSpan.TotalDays < 15 && !claim.dt_users.IsCompanyAccount())
                 throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
 
             var nextRepayTime = claim.li_projects.li_repayment_tasks.AsEnumerable().FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time;
@@ -723,11 +719,11 @@ namespace Agp2p.Core
                     }).interest.GetValueOrDefault();
 
             // 选择一个中间人来预先支付利息
-            var selectedAgent = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName)
+            var selectedAgent = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.AgentGroup)
                 .OrderByDescending(u => u.li_wallets.idle_money)
                 .First();
             if (selectedAgent == null)
-                throw new InvalidOperationException("请先设置中间人账号到“公司账号”组");
+                throw new InvalidOperationException("请先设置中间人账号到“中间户”组");
 
             // 创建中间人垫付记录
             var agentPaidPtr = new li_project_transactions
@@ -753,7 +749,7 @@ namespace Agp2p.Core
             context.li_wallet_histories.InsertOnSubmit(agentPaidHis);
 
 
-            // 创建提现人收益记录，如果是中间人则不收取
+            // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
             var claimTransferredOutPtr = new li_project_transactions
@@ -794,10 +790,10 @@ namespace Agp2p.Core
 
             buyedTrs.ZipEach(buyerProfitings, (buyTr, profiting) =>
             {
-                // 由中间户（公司账号）买入的债权为可转让债权，可以用作活期债权
+                // 由中间户买入的债权为可转让债权，可以用作活期债权
                 // 按提现时候开始计息，所以债权的创建时间为提现的时间
                 var transferedChild = needTransferClaim.TransferedChild(needTransferClaim.createTime,
-                    buyTr.dt_users.IsCompanyAccount()
+                    buyTr.dt_users.IsAgent()
                         ? Agp2pEnums.ClaimStatusEnum.Transferable
                         : Agp2pEnums.ClaimStatusEnum.Nontransferable,
                     buyTr.principal, buyTr);
@@ -911,7 +907,7 @@ namespace Agp2p.Core
         {
             return context.li_claims.Where(
                 c =>
-                    c.dt_users.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName &&
+                    c.dt_users.dt_user_groups.title == AutoRepay.AgentGroup &&
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable && c.userId != investorId &&
                     !c.Children.Any())
                 .ToList();
@@ -1085,13 +1081,13 @@ namespace Agp2p.Core
                 context.li_claims.InsertOnSubmit(remainClaim);
             }
 
-            // 如果是给公司账号接手，则设为可转让债权
-            var transferedStatus = byPtr.dt_users.IsCompanyAccount()
+            // 如果是给中间户接手，则设为可转让债权
+            var transferedStatus = byPtr.dt_users.IsAgent()
                 ? Agp2pEnums.ClaimStatusEnum.Transferable
                 : Agp2pEnums.ClaimStatusEnum.Nontransferable;
             var takeoverPart = originalClaim.TransferedChild(transactTime, transferedStatus, amount, byPtr);
-            // 如果原始债权的所有者是公司账号（中间人），则转让后的债权需要设置中间人，以便生成垫付交易记录
-            if (originalClaim.dt_users.IsCompanyAccount())
+            // 如果原始债权的所有者是中间人，则转让后的债权需要设置中间人，以便生成垫付交易记录
+            if (originalClaim.dt_users.IsAgent())
             {
                 takeoverPart.agent = originalClaim.userId;
             }

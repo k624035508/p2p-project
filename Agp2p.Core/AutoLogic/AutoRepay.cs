@@ -14,7 +14,10 @@ namespace Agp2p.Core.AutoLogic
 {
     public class AutoRepay
     {
-        public const string ClaimTakeOverGroupName = "公司账号";
+        /* 公司账号，购买后的债权为内部债权，只能被中间户买入、定期债权转出不收取转让手续费，可在持有债权 24 小时后转出 */
+        public const string CompanyAccount = "VIP08";
+        /* 中间户买入后的债权能被用于活期投资 */
+        public const string AgentGroup = "中间户";
 
         internal static void DoSubscribe()
         {

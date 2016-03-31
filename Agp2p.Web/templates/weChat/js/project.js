@@ -63,6 +63,7 @@ function initPage(){
         $.post(investActionUrl, {
             investingAmount: $(".invest-action input").val(),
             projectId: projectId,
+            buyClaimId: buyClaimId,
             transactPassword: $("#transactPwd").val()
         }, function(data) {
             if (data.status === 0) {

@@ -226,8 +226,8 @@
         <div class="tender-right">
             <div class="icon-corner"></div>
             <div class="content-bottom">
-                <%set var projects0=QueryProjects(4,0,out totalcount0,cid,0,0,0)%>
-                <%foreach(var p in projects0)%>
+                <%set var investables=QueryInvestables(4,0,out totalcount0,cid,0,0,0)%>
+                <%foreach(var p in investables.Select(i=>i.Project))%>
                 <div class="tender-cell">
                     <div class="title-wrap">
                         <a href='<%linkurl("project",p.id)%>'>{p.title}</a>

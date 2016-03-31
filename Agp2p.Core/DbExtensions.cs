@@ -173,9 +173,14 @@ namespace Agp2p.Core
             return claim.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer;
         }
 
+        public static bool IsAgent(this dt_users user)
+        {
+            return user.dt_user_groups.title == AutoRepay.AgentGroup;
+        }
+
         public static bool IsCompanyAccount(this dt_users user)
         {
-            return user.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName;
+            return user.dt_user_groups.title == AutoRepay.CompanyAccount;
         }
 
         public static bool IsChildOf(this li_claims childClaim, li_claims parentClaim)
@@ -304,6 +309,48 @@ namespace Agp2p.Core
             }.Min();
             var withdrawClaimPrifitedDays = (int)(withdrawClaimEndProfitingPoint - withdrawClaimStartProfitingPoint).TotalDays;
             return callback(withdrawClaimPrifitedDays, ct.claimProfitingDays, ct.taskProfitingDays);
+        }
+
+        public static IEnumerable<T> AsEnumerableAutoPartialQuery<T>(this IQueryable<T> src, out int totalCount, int queryAmountOnce = 32)
+        {
+            totalCount = src.Count();
+            var totalPage = (int) Math.Ceiling((decimal)totalCount / queryAmountOnce);
+
+            return Enumerable.Range(0, totalPage)
+                .SelectMany(partIndex => src.Skip(queryAmountOnce*partIndex).Take(queryAmountOnce).ToList());
+        }
+
+        public static IEnumerable<T> AsEnumerableAutoPartialQuery<T>(this IQueryable<T> src, int queryAmountOnce = 32)
+        {
+            return Utils.Infinite()
+                .Select(partIndex => src.Skip(queryAmountOnce * partIndex).Take(queryAmountOnce).ToList())
+                .TakeWhile(ls => ls.Any())
+                .SelectMany(ls => ls);
+        }
+
+        public static DateTime GetStatusChangingTime(this li_projects project)
+        {
+            var status = (Agp2pEnums.ProjectStatusEnum) project.status;
+            if (status < Agp2pEnums.ProjectStatusEnum.Financing)
+            {
+                return project.add_time;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.FinancingSuccess)
+            {
+                return project.publish_time.Value;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.ProjectRepaying)
+            {
+                return project.invest_complete_time.Value;
+            }
+            else if (status < Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime)
+            {
+                return project.make_loan_time.Value;
+            }
+            else
+            {
+                return project.complete_time.Value;
+            }
         }
     }
 }

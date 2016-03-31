@@ -12,7 +12,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P2 测试流程：
+        P2-1 测试流程：
         Day 1
             发 4 日标，金额 60000，A 投 25000
         Day 2
@@ -43,8 +43,8 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             // 发 5 日标，金额 60000，B 投 25000
-            Common.PublishProject("P2", 5, 60000, 5);
-            Common.InvestProject(UserB, "P2", 25000);
+            Common.PublishProject("P2-1", 5, 60000, 5);
+            Common.InvestProject(UserB, "P2-1", 25000);
 
             Common.AutoRepaySimulate();
         }
@@ -57,8 +57,8 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             // A 投 35000，放款
-            Common.InvestProject(UserA, "P2", 35000);
-            Common.ProjectStartRepay("P2");
+            Common.InvestProject(UserA, "P2-1", 35000);
+            Common.ProjectStartRepay("P2-1");
 
             Common.AutoRepaySimulate();
         }
@@ -71,7 +71,7 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             // A 提现 35000
-            Common.StaticProjectWithdraw("P2", UserA, 35000);
+            Common.StaticProjectWithdraw("P2-1", UserA, 35000);
 
             Common.AutoRepaySimulate();
         }
@@ -84,7 +84,7 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             // 公司账号接手 A 的提现 25000
-            Common.BuyClaim("P2", CompanyAccount, 25000);
+            Common.BuyClaim("P2-1", CompanyAccount, 25000);
 
             Common.AutoRepaySimulate();
         }

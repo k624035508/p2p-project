@@ -423,5 +423,50 @@ namespace Agp2p.Test
             Common.MakeSureHaveIdleMoney("CompanyAccount", 10 * 10000);
             Common.DeltaDay(now, 0);
         }
+
+        class DebugTextWriter : TextWriter
+        {
+            public int writeCount = 0;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new String(buffer, index, count);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                }
+                // Debug.Write(str);
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            var users = context.dt_users.AsEnumerableAutoPartialQuery().Skip(1000).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery2()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            int totalCount = 0;
+            var users = context.dt_users.AsEnumerableAutoPartialQuery(out totalCount).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
     }
 }

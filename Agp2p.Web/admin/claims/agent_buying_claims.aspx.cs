@@ -49,9 +49,9 @@ namespace Agp2p.Web.admin.claims
         protected void TreeBind()
         {
             ddlAgent.Items.Clear();
-            var agentGroup = context.dt_user_groups.SingleOrDefault(g => g.title == AutoRepay.ClaimTakeOverGroupName);
+            var agentGroup = context.dt_user_groups.SingleOrDefault(g => g.title == AutoRepay.AgentGroup);
             if (agentGroup == null)
-                throw new InvalidOperationException("请先设置中间人到“公司账号”会员组");
+                throw new InvalidOperationException("请先设置中间人到“中间户”会员组");
 
             ddlAgent.Items.AddRange(
                 agentGroup.dt_users
@@ -64,7 +64,7 @@ namespace Agp2p.Web.admin.claims
             }
             else
             {
-                ddlAgent.Items.Add(new ListItem("请先设置中间人到“公司账号”会员组"));
+                ddlAgent.Items.Add(new ListItem("请先设置中间人到“中间户”会员组"));
             }
         }
         #endregion
@@ -74,10 +74,12 @@ namespace Agp2p.Web.admin.claims
         {
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
+            // 中间人在后台只能买公司账号转出的债权
             var query =
                 context.li_claims.Where(
                     c =>
                         c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                        c.Parent.dt_users.dt_user_groups.title == AutoRepay.CompanyAccount &&
                         !c.Children.Any())
                     .AsEnumerable()
                     .Select(cl =>

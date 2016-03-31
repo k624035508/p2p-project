@@ -14,7 +14,7 @@ namespace Agp2p.Core.AutoLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，由公司账号接手
+            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，由中间户接手
             MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime, DateTime.Now)); // 活期项目提现的执行
         }
 
@@ -24,9 +24,9 @@ namespace Agp2p.Core.AutoLogic
             {
                 // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
                 var context = new Agp2pDataContext();
-                var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.ClaimTakeOverGroupName).ToList();
+                var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.AgentGroup).ToList();
                 if (!companyUsers.Any())
-                    throw new InvalidOperationException("请先往“公司账号”的会员组添加会员");
+                    throw new InvalidOperationException("请先往“中间户”的会员组添加会员");
 
                 // 接手昨日/更早的提现
                 var needTransferClaims = context.li_claims.Where(
