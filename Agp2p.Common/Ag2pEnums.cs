@@ -779,8 +779,8 @@ namespace Agp2p.Common
             Profiting = 1,
             [Description("转让中")]
             Transfering = 2,
-            [Description("已结束")]
-            Completed = 3,
+            [Description("已转让")]
+            Transferred = 3,
         }
 
         public enum HuoqiClaimQueryEnum
