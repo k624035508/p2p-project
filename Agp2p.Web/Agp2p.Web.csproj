@@ -807,6 +807,8 @@
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
+    <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\bottomhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
     <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
@@ -835,6 +837,8 @@
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
+    <Content Include="templates\AnGuang\imgs\index\right.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\righthover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\slider-arrow.png" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
@@ -1276,10 +1280,6 @@
     <Content Include="templates\weChat\less\receive-plan.less" />
     <Content Include="templates\AnGuang\less\loan.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
-    <Content Include="templates\AnGuang\imgs\index\iconfont.eot" />
-    <Content Include="templates\AnGuang\imgs\index\iconfont.svg" />
-    <Content Include="templates\AnGuang\imgs\index\iconfont.ttf" />
-    <Content Include="templates\AnGuang\imgs\index\iconfont.woff" />
     <Content Include="templates\AnGuang\less\coop.less" />
   </ItemGroup>
   <ItemGroup>
