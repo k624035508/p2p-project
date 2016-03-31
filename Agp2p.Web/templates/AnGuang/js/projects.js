@@ -41,4 +41,14 @@ $(function(){
         $consume.eq(index).addClass("bluecon").siblings().removeClass("bluecon");   
         $(".fincategory>div").eq(index).removeClass("hidden").siblings().addClass("hidden");
     });
+}); 
+
+$(window).load(function(){
+    var thisurl=document.location.href;
+    var thisnameindex=thisurl.indexOf("#")+1;
+    var thisname=thisurl.substring(thisnameindex);
+    var nameclass="."+thisname;
+    var linameclass="."+thisname+"-li";
+    $(nameclass).removeClass("hidden").siblings().addClass("hidden");
+    $(linameclass).addClass("bluecon").siblings().removeClass("bluecon");  
 });

@@ -15,8 +15,8 @@
     <script src="<%templateskin%>/build/projects.bundle.js"></script>
 </head>
 <body>
-    <a name="ticket-area"></a>
     <!--head-->
+    <a name="ticket-area"></a>
     <%template src="_header.html"%>
     <!--head end-->
     <!--面包屑导航-->
@@ -28,16 +28,17 @@
     <!--面包屑导航 end-->
     <div class="content-wrap consume">
         <ul>
-            <li class="bluecon">票据专区 <p>2</p><span></span> </li>
-            <li>债权转让<span></span></li>
-            <li>活期宝<span></span></li>
-            <li>文体宝<span></span></li>
-            <li>消费金融<span></span></li>
+            <li class="bluecon ticket-area-li">票据专区 <p>2</p><span></span> </li>
+            <li class="zhaiquan-li">债权转让<span></span></li>
+            <li class="huoqiabo-li">活期宝<span></span></li>
+            <li class="wentibao-li">文体宝<span></span></li>
+            <li class="consumefin-li">消费金融<span></span></li>
         </ul>
     </div>
 
 <div class="fincategory">
 <div>   
+   
     <div class="top-part content-wrap">
         <div class="select-box">
             <div class="project-time">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more",54)%>'>发标公告</a>。</div>
@@ -177,6 +178,7 @@
 
     <!--债权转让-->
     <div class="hidden zhaiquan">
+         <a name="zhaiquan"></a>
         <div class="invest-list content-wrap">
             <div class="list-head">
                 <span class="title-th">借款标题</span>
@@ -239,7 +241,8 @@
         </div>
 
     <!--活期宝-->
-    <div class="hidden huoqi">
+    <div class="hidden huoqibao">
+        <a name="huoqibao"></a>
         <div class="content-wrap">
             <img src="<%templateskin%>/imgs/projects/002.jpg" />
                 <div>敬请期待</div>
@@ -247,7 +250,8 @@
     </div>
 
     <!--文体宝-->
-    <div class="hidden wenti">
+    <div class="hidden wentibao">
+        <a name="wentibao"></a>
         <div class="content-wrap">
             <img src="<%templateskin%>/imgs/projects/002.jpg" />
                 <div>敬请期待</div>
@@ -255,6 +259,7 @@
     </div>
     <!--消费金融-->
     <div class="consumefin hidden ">
+        <a name="consumefin"></a>
         <div class="content-wrap">
            <img src="<%templateskin%>/imgs/projects/002.jpg" />
                 <div>敬请期待</div>
