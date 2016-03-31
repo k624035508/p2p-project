@@ -17,13 +17,13 @@ $(function () {
         $(this).addClass("blue-bg").siblings().removeClass("blue-bg");
         $(".cooperation2").slideDown();
         $(".cooperation").slideUp();
-    });
+    }).trigger("click");
 
     $("a.teamwork").click(function(){
         $(this).addClass("blue-bg").siblings().removeClass("blue-bg");
         $(".cooperation").slideDown();
         $(".cooperation2").slideUp();
-    }).trigger("click");
+    });
 
 
     $("#giving").click(function() {
