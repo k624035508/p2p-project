@@ -2144,10 +2144,18 @@ namespace Agp2p.Web.tools
             {
                 var investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
                 var projectId = DTRequest.GetFormInt("projectId", 0);
+                var buyClaimId = DTRequest.GetFormInt("buyClaimId", 0);
                 var pw = DTRequest.GetFormString("transactPassword");
                 if (Utils.MD5(pw).Equals(user.pay_password))
                 {
-                    TransactionFacade.Invest(user.id, projectId, investingMoney);
+                    if (buyClaimId != 0)
+                    {
+                        TransactionFacade.BuyClaim(linqContext, buyClaimId, user.id, investingMoney);
+                    }
+                    else
+                    {
+                        TransactionFacade.Invest(user.id, projectId, investingMoney);
+                    }
 
                     /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
                             context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");

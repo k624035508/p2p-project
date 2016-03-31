@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
+    <Content Include="admin\claims\agent_buyed_claims.aspx" />
     <Content Include="admin\claims\agent_buying_claims.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
     <Content Include="admin\js\bootstrap.config.js" />
@@ -711,6 +712,7 @@
     <Content Include="templates\AnGuang\article_show.html" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
+    <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\help.html" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
@@ -807,6 +809,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
+    <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
     <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
@@ -836,6 +839,7 @@
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\slider-arrow.png" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
@@ -845,6 +849,19 @@
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
+    <Content Include="templates\AnGuang\imgs\loan\001.png" />
+    <Content Include="templates\AnGuang\imgs\loan\0011.png" />
+    <Content Include="templates\AnGuang\imgs\loan\002.png" />
+    <Content Include="templates\AnGuang\imgs\loan\003.png" />
+    <Content Include="templates\AnGuang\imgs\loan\005.png" />
+    <Content Include="templates\AnGuang\imgs\loan\006.png" />
+    <Content Include="templates\AnGuang\imgs\loan\008.png" />
+    <Content Include="templates\AnGuang\imgs\loan\009.png" />
+    <Content Include="templates\AnGuang\imgs\loan\010.png" />
+    <Content Include="templates\AnGuang\imgs\loan\011.png" />
+    <Content Include="templates\AnGuang\imgs\loan\012.png" />
+    <Content Include="templates\AnGuang\imgs\loan\014.png" />
+    <Content Include="templates\AnGuang\imgs\loan\021.png" />
     <Content Include="templates\AnGuang\imgs\loan\checking-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\failed-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\forbid-icon.png" />
@@ -964,6 +981,7 @@
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
+    <Content Include="templates\AnGuang\js\coop.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
@@ -973,6 +991,7 @@
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
+    <Content Include="templates\AnGuang\less\common.css" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
@@ -1252,6 +1271,11 @@
     <Content Include="templates\AnGuang\less\agcurrent.less" />
     <Content Include="templates\AnGuang\less\claimstransfer.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
+    <Content Include="templates\AnGuang\imgs\index\iconfont.eot" />
+    <Content Include="templates\AnGuang\imgs\index\iconfont.svg" />
+    <Content Include="templates\AnGuang\imgs\index\iconfont.ttf" />
+    <Content Include="templates\AnGuang\imgs\index\iconfont.woff" />
+    <Content Include="templates\AnGuang\less\coop.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1260,6 +1284,12 @@
     </Compile>
     <Compile Include="admin\audit\make_loan_audit.aspx.designer.cs">
       <DependentUpon>make_loan_audit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buyed_claims.aspx.cs">
+      <DependentUpon>agent_buyed_claims.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\claims\agent_buyed_claims.aspx.designer.cs">
+      <DependentUpon>agent_buyed_claims.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\claims\agent_buying_claims.aspx.cs">
       <DependentUpon>agent_buying_claims.aspx</DependentUpon>

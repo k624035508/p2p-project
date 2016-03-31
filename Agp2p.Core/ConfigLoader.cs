@@ -16,6 +16,7 @@ namespace Agp2p.Core
         {
             MemoryCache.Default.Remove("site_config");
             MemoryCache.Default.Remove("user_config");
+            MemoryCache.Default.Remove("cost_config");
         }
 
         /// <summary>
@@ -31,6 +32,23 @@ namespace Agp2p.Core
 
                 configCache = SerializationHelper.Load<siteconfig>(Utils.GetXmlMapPath(DTKeys.FILE_SITE_XML_CONFING, loadOutsideProject));
                 MemoryCache.Default.Set("site_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
+                return configCache;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public static costconfig loadCostConfig(bool loadOutsideProject = false)
+        {
+            try
+            {
+                var configCache = (costconfig)MemoryCache.Default.Get("cost_config");
+                if (configCache != null) return configCache;
+
+                configCache = SerializationHelper.Load<costconfig>(Utils.GetXmlMapPath(DTKeys.FILE_COST_XML_CONFING, loadOutsideProject));
+                MemoryCache.Default.Set("cost_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
                 return configCache;
             }
             catch (Exception ex)

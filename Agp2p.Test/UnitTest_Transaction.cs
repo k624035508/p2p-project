@@ -10,6 +10,7 @@ using System.Threading;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -41,6 +42,7 @@ namespace Agp2p.Test
         }
 
         #region 附加测试特性
+
         //
         // 编写测试时，可以使用以下附加特性:
         //
@@ -60,6 +62,7 @@ namespace Agp2p.Test
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
         #endregion
 
         // 在运行每个测试之前，使用 TestInitialize 来运行代码
@@ -314,7 +317,7 @@ namespace Agp2p.Test
             int count = 0;
             ptrs.ForEach(ptr =>
             {
-                if (ptr.li_claims1.Any()) return;
+                if (ptr.li_claims_invested.Any()) return;
 
                 var claimFromInvestment = new li_claims
                 {
@@ -363,5 +366,60 @@ namespace Agp2p.Test
                 .ForEach(time => Debug.WriteLine(time));
         }
 
+        [TestMethod]
+        public void DoChargeTestAccount()
+        {
+            var now = DateTime.Now;
+            Common.DeltaDay(now, -1);
+            Common.MakeSureHaveIdleMoney("13535656867", 10 * 10000);
+            Common.MakeSureHaveIdleMoney("13590609455", 10 * 10000);
+            Common.MakeSureHaveIdleMoney("CompanyAccount", 10 * 10000);
+            Common.DeltaDay(now, 0);
+        }
+
+        class DebugTextWriter : TextWriter
+        {
+            public int writeCount = 0;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new String(buffer, index, count);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                }
+                // Debug.Write(str);
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            var users = context.dt_users.AsEnumerableAutoPartialQuery().Skip(1000).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery2()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            int totalCount = 0;
+            var users = context.dt_users.AsEnumerableAutoPartialQuery(out totalCount).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
     }
 }

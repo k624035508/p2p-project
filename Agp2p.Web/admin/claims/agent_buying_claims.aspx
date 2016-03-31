@@ -71,7 +71,8 @@
     <td><%# Eval("WithdrawTime") %></td>
       <td><asp:LinkButton ID="btnBuy" runat="server" OnClick="btnBuy_OnClick"
               CommandArgument="<%# ((BuyableClaim) Container.DataItem).ClaimId %>"
-              OnClientClick="return PromptPostBack(this.id, '请输入买入金额：', '');"
+              buyableAmount="<%# ((BuyableClaim) Container.DataItem).BuyableAmount%>"
+              OnClientClick="return PromptPostBack(this.id, '请输入买入金额：', this.getAttribute('buyableAmount'));"
               Text="买入" /></td>
   </tr>
 </ItemTemplate>

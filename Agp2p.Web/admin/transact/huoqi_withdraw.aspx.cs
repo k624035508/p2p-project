@@ -72,7 +72,7 @@ namespace Agp2p.Web.admin.transact
             page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = keywords;
             ddlHuoqiProjects.SelectedValue = huoqiProject.ToString();
-            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject && !c.li_claims2.Any()).ToLookup(c => c.dt_users).Select(
+            var query = context.li_claims.Where(c => c.profitingProjectId == huoqiProject && !c.Children.Any()).ToLookup(c => c.dt_users).Select(
                 g =>
                 {
                     return new HuoqiProjectInvestor

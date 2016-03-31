@@ -10367,7 +10367,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_claims1", Storage="_li_claims1", ThisKey="id", OtherKey="agent")]
-		public EntitySet<li_claims> li_claims1
+		public EntitySet<li_claims> li_claims_byAgent
 		{
 			get
 			{
@@ -10616,13 +10616,13 @@ namespace Agp2p.Linq2SQL
 		private void attach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.dt_users1 = this;
+			entity.dt_users_agent = this;
 		}
 		
 		private void detach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.dt_users1 = null;
+			entity.dt_users_agent = null;
 		}
 	}
 	
@@ -14346,7 +14346,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_claims1", Storage="_li_claims1", ThisKey="id", OtherKey="profitingProjectId")]
-		public EntitySet<li_claims> li_claims1
+		public EntitySet<li_claims> li_claims_profiting
 		{
 			get
 			{
@@ -14497,13 +14497,13 @@ namespace Agp2p.Linq2SQL
 		private void attach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_projects1 = this;
+			entity.li_projects_profiting = this;
 		}
 		
 		private void detach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_projects1 = null;
+			entity.li_projects_profiting = null;
 		}
 	}
 	
@@ -15942,7 +15942,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_claims", Storage="_li_claims1", ThisKey="id", OtherKey="createFromInvestment")]
-		public EntitySet<li_claims> li_claims1
+		public EntitySet<li_claims> li_claims_invested
 		{
 			get
 			{
@@ -16023,7 +16023,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_claims_li_project_transactions", Storage="_li_claims", ThisKey="gainFromClaim", OtherKey="id", IsForeignKey=true)]
-		public li_claims li_claims
+		public li_claims li_claims_from
 		{
 			get
 			{
@@ -16039,19 +16039,19 @@ namespace Agp2p.Linq2SQL
 					if ((previousValue != null))
 					{
 						this._li_claims.Entity = null;
-						previousValue.li_project_transactions.Remove(this);
+						previousValue.li_project_transactions_profiting.Remove(this);
 					}
 					this._li_claims.Entity = value;
 					if ((value != null))
 					{
-						value.li_project_transactions.Add(this);
+						value.li_project_transactions_profiting.Add(this);
 						this._gainFromClaim = value.id;
 					}
 					else
 					{
 						this._gainFromClaim = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("li_claims");
+					this.SendPropertyChanged("li_claims_from");
 				}
 			}
 		}
@@ -16103,13 +16103,13 @@ namespace Agp2p.Linq2SQL
 		private void attach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_project_transactions1 = this;
+			entity.li_project_transactions_invest = this;
 		}
 		
 		private void detach_li_claims1(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_project_transactions1 = null;
+			entity.li_project_transactions_invest = null;
 		}
 	}
 	
@@ -16443,7 +16443,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_claims_li_project_transactions", Storage="_li_project_transactions", ThisKey="id", OtherKey="gainFromClaim")]
-		public EntitySet<li_project_transactions> li_project_transactions
+		public EntitySet<li_project_transactions> li_project_transactions_profiting
 		{
 			get
 			{
@@ -16456,7 +16456,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_claims_li_claims", Storage="_li_claims2", ThisKey="id", OtherKey="parentClaimId")]
-		public EntitySet<li_claims> li_claims2
+		public EntitySet<li_claims> Children
 		{
 			get
 			{
@@ -16503,7 +16503,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_claims1", Storage="_dt_users1", ThisKey="agent", OtherKey="id", IsForeignKey=true)]
-		public dt_users dt_users1
+		public dt_users dt_users_agent
 		{
 			get
 			{
@@ -16519,25 +16519,25 @@ namespace Agp2p.Linq2SQL
 					if ((previousValue != null))
 					{
 						this._dt_users1.Entity = null;
-						previousValue.li_claims1.Remove(this);
+						previousValue.li_claims_byAgent.Remove(this);
 					}
 					this._dt_users1.Entity = value;
 					if ((value != null))
 					{
-						value.li_claims1.Add(this);
+						value.li_claims_byAgent.Add(this);
 						this._agent = value.id;
 					}
 					else
 					{
 						this._agent = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("dt_users1");
+					this.SendPropertyChanged("dt_users_agent");
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_claims_li_claims", Storage="_li_claims1", ThisKey="parentClaimId", OtherKey="id", IsForeignKey=true)]
-		public li_claims li_claims1
+		public li_claims Parent
 		{
 			get
 			{
@@ -16553,25 +16553,25 @@ namespace Agp2p.Linq2SQL
 					if ((previousValue != null))
 					{
 						this._li_claims1.Entity = null;
-						previousValue.li_claims2.Remove(this);
+						previousValue.Children.Remove(this);
 					}
 					this._li_claims1.Entity = value;
 					if ((value != null))
 					{
-						value.li_claims2.Add(this);
+						value.Children.Add(this);
 						this._parentClaimId = value.id;
 					}
 					else
 					{
 						this._parentClaimId = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("li_claims1");
+					this.SendPropertyChanged("Parent");
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_project_transactions_li_claims", Storage="_li_project_transactions1", ThisKey="createFromInvestment", OtherKey="id", IsForeignKey=true)]
-		public li_project_transactions li_project_transactions1
+		public li_project_transactions li_project_transactions_invest
 		{
 			get
 			{
@@ -16587,19 +16587,19 @@ namespace Agp2p.Linq2SQL
 					if ((previousValue != null))
 					{
 						this._li_project_transactions1.Entity = null;
-						previousValue.li_claims1.Remove(this);
+						previousValue.li_claims_invested.Remove(this);
 					}
 					this._li_project_transactions1.Entity = value;
 					if ((value != null))
 					{
-						value.li_claims1.Add(this);
+						value.li_claims_invested.Add(this);
 						this._createFromInvestment = value.id;
 					}
 					else
 					{
 						this._createFromInvestment = default(int);
 					}
-					this.SendPropertyChanged("li_project_transactions1");
+					this.SendPropertyChanged("li_project_transactions_invest");
 				}
 			}
 		}
@@ -16639,7 +16639,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_projects_li_claims1", Storage="_li_projects1", ThisKey="profitingProjectId", OtherKey="id", IsForeignKey=true)]
-		public li_projects li_projects1
+		public li_projects li_projects_profiting
 		{
 			get
 			{
@@ -16655,19 +16655,19 @@ namespace Agp2p.Linq2SQL
 					if ((previousValue != null))
 					{
 						this._li_projects1.Entity = null;
-						previousValue.li_claims1.Remove(this);
+						previousValue.li_claims_profiting.Remove(this);
 					}
 					this._li_projects1.Entity = value;
 					if ((value != null))
 					{
-						value.li_claims1.Add(this);
+						value.li_claims_profiting.Add(this);
 						this._profitingProjectId = value.id;
 					}
 					else
 					{
 						this._profitingProjectId = default(int);
 					}
-					this.SendPropertyChanged("li_projects1");
+					this.SendPropertyChanged("li_projects_profiting");
 				}
 			}
 		}
@@ -16695,25 +16695,25 @@ namespace Agp2p.Linq2SQL
 		private void attach_li_project_transactions(li_project_transactions entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_claims = this;
+			entity.li_claims_from = this;
 		}
 		
 		private void detach_li_project_transactions(li_project_transactions entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_claims = null;
+			entity.li_claims_from = null;
 		}
 		
 		private void attach_li_claims2(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_claims1 = this;
+			entity.Parent = this;
 		}
 		
 		private void detach_li_claims2(li_claims entity)
 		{
 			this.SendPropertyChanging();
-			entity.li_claims1 = null;
+			entity.Parent = null;
 		}
 	}
 }

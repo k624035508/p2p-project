@@ -3,3 +3,4 @@
         $("ul.in-header > li:nth(" + index + ") > a:first").addClass("nav-active");
     }
 };
+
