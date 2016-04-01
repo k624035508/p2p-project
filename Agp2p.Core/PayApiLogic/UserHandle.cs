@@ -115,6 +115,7 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             user.identity_id = msg.UserId;
                             msg.HasHandle = true;
+                            context.SubmitChanges();
                         }
                         else
                         {
@@ -150,6 +151,7 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             user.protocolCode = !msg.Cancel ? msg.ProtocolCode : null;
                             msg.HasHandle = true;
+                            context.SubmitChanges();
                         }
                         else
                         {
@@ -186,6 +188,7 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             user.autoRepay = msg.Cancel;
                             msg.HasHandle = true;
+                            context.SubmitChanges();
                         }
                         else
                         {

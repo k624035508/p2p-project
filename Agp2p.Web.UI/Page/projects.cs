@@ -20,6 +20,7 @@ namespace Agp2p.Web.UI.Page
     {
         protected const int PAGE_SIZE = 15;         //当前页码
         protected int page;         //当前页码
+        protected int rootCategoryId;  // 大类别ID
         protected int category_id;  //类别ID
         protected int totalcount;   //OUT数据总数
         protected string pagelist;  //分页页码        
@@ -30,7 +31,7 @@ namespace Agp2p.Web.UI.Page
 
         protected Agp2pDataContext context = new Agp2pDataContext();
 
-        protected Dictionary<int, string> CategoryIdTitleMap;
+        protected Dictionary<int, string> SubCategoryIdTitleMap;
         protected Dictionary<int, int> FinancingProjectMap;
 
         /// <summary>
@@ -46,10 +47,25 @@ namespace Agp2p.Web.UI.Page
 
             category_id = DTRequest.GetQueryInt("category_id");
 
+            if (category_id == 0)
+                category_id = context.dt_article_category.Single(ca => ca.call_index == "piaojuzhuanqu").id;
+
+            var category = context.dt_article_category.Single(ca => ca.id == category_id);
+            if (category.parent_id.GetValueOrDefault() == 0)
+            {
+                // 当前 category_id 就是大类别ID
+                rootCategoryId = category_id;
+            }
+            else
+            {
+                // 当前 category_id 不是大类别ID
+                rootCategoryId = category.parent_id.Value;
+            }
+
             //HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
 
-            CategoryIdTitleMap = context.dt_article_category.Where(
-                c => c.channel_id == 6 && c.parent_id == 0)
+            SubCategoryIdTitleMap = context.dt_article_category.Where(
+                c => c.channel_id == 6 && c.parent_id == rootCategoryId)
                 .OrderBy(c => c.sort_id)
                 .ToDictionary(c => c.id, c => c.title);
 

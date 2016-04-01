@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Web;
 using Agp2p.Common;
 using TinyMessenger;
 using xBrainLab.Security.Cryptography;
@@ -17,12 +19,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Remarks { get; set; }
         public bool Cancel { get; set; }
 
-        public AutoBidSignReqMsg(int userId, string contractFund = null, string projectType = null, bool cancel = false, string remarks = "")
+        public AutoBidSignReqMsg(int userId, bool cancel = false, string protocolCode = "", string remarks = "",string contractFund = null, string projectType = null)
         {
             Cancel = cancel;
             UserId = userId;
             ContractFund = contractFund;
             ProjectType = projectType;
+            ProtocolCode = protocolCode ?? "BidS" + Utils.GetOrderNumber();
+            Remarks = remarks;
 
             if (!cancel)
             {
@@ -35,17 +39,13 @@ namespace Agp2p.Core.Message.PayApiMsg
                 ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoBid_toCancelAutoBid";
             }
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            Remarks = remarks;
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProtocolCode + SuccessReturnUrl +
-                                               FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProtocolCode + SuccessReturnUrl +
+                                               FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -63,7 +63,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             };
             if (!string.IsNullOrEmpty(ContractFund)) sd.Add("contractFund", ContractFund);
             if (!string.IsNullOrEmpty(ProjectType)) sd.Add("projectType", ProjectType);
-            if (!string.IsNullOrEmpty(Remarks)) sd.Add("remarks", Remarks);
+            if (!string.IsNullOrEmpty(Remarks)) sd.Add("remarks", HttpUtility.UrlEncode(Remarks, Encoding.GetEncoding("GBK")));
 
             return sd;
         }

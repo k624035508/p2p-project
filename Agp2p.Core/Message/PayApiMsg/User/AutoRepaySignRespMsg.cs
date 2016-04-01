@@ -1,4 +1,6 @@
 ﻿
+using Agp2p.Common;
+
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
@@ -11,9 +13,19 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Name { get; set; }//姓名
         public bool Cancel { get; set; }
 
-        public AutoRepaySignRespMsg(bool cancel = false)
+        public AutoRepaySignRespMsg(string requestStr, bool cancel = false)
         {
             Cancel = cancel;
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
+            BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
+            Name = map.ContainsKey("name") ? map["name"] : "";
+            ProjectCode = map.ContainsKey("projectCode") ? map["projectCode"] : "";
         }
 
         public override bool CheckSignature()

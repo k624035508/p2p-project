@@ -227,6 +227,11 @@ namespace Agp2p.Core
             }
         }
 
+        public static li_claims GetRootClaim(this li_claims claim)
+        {
+            return claim.Parent == null ? claim : claim.Parent.GetSourceClaim();
+        }
+
         public static li_claims GetHistoryClaimByOwner(this li_claims claim, int userId)
         {
             if (claim.userId == userId)
@@ -266,49 +271,42 @@ namespace Agp2p.Core
             return (int)(startTime - task.GetStartProfitingTime().Date).TotalDays;
         }
 
-        public static T GetProfitingDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, T> callback, DateTime? moment = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="claim"></param>
+        /// <param name="task"></param>
+        /// <param name="callback">三个参数的回调：债权生效前天数，债权生效天数，债权失效后天数</param>
+        /// <returns></returns>
+        public static T GetProfitingSectionDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, int, T> callback)
         {
-            /* 1、债权转让人的收益从提交转让申请当天停止计息，若转让失败则恢复转让期间利息并继续计息；
-               2、购买债权转让项目从债权转让人提交债权转让申请当天开始计息；*/
-            Debug.Assert(task.project == claim.projectId);
-            Debug.Assert(claim.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+            int claimBeforeProfitingDays, claimProfitingDays;
 
-            var startProfitingPoint = new[]
-                {
-                    claim.createTime.Date,
-                    task.GetStartProfitingTime().Date
-                }.Max();
-            var endProfitingPoint = new[]
-                {
-                    moment.GetValueOrDefault(DateTime.Now).Date,
-                    task.should_repay_time.Date
-                }.Min();
-
-            var claimPrifitingDays = (int)(endProfitingPoint - startProfitingPoint).TotalDays;
-
-            var taskTotalProfitingDay = task.GetTotalProfitingDays();
-            Debug.Assert(claimPrifitingDays <= taskTotalProfitingDay);
-            return callback(claimPrifitingDays, taskTotalProfitingDay);
-        }
-
-        public static T GetWithdrawClaimProfitingDays<T>(this li_claims claim, li_repayment_tasks task, Func<int, int, int, T> callback)
-        {
-            Debug.Assert(task.project == claim.projectId);
-            Debug.Assert(claim.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer);
-
-            var ct = claim.Parent.GetProfitingDays(task, (claimProfitingDays, taskProfitingDays) => new { claimProfitingDays, taskProfitingDays}, task.should_repay_time);
-
-            var withdrawClaimStartProfitingPoint = new[]
+            var taskStartProfitingTime = task.GetStartProfitingTime();
+            if (claim.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
             {
-                claim.Parent.createTime.Date, task.GetStartProfitingTime().Date
-            }.Max();
-            var withdrawClaimEndProfitingPoint = new[]
+                var parent = claim.Parent;
+                // 提现债权（返回提现成功后的实际收益天数）
+                claimBeforeProfitingDays = parent.createTime <= taskStartProfitingTime
+                    ? 0
+                    : (int) (parent.createTime.Date - taskStartProfitingTime.Date).TotalDays;
+
+                claimProfitingDays = (int) (claim.createTime.Date - parent.createTime.Date).TotalDays;
+            }
+            else
             {
-                // 利润从开始提现的那天开始算
-                claim.createTime.Date, task.should_repay_time.Date
-            }.Min();
-            var withdrawClaimPrifitedDays = (int)(withdrawClaimEndProfitingPoint - withdrawClaimStartProfitingPoint).TotalDays;
-            return callback(withdrawClaimPrifitedDays, ct.claimProfitingDays, ct.taskProfitingDays);
+                // 普通债权
+                claimBeforeProfitingDays = claim.createTime <= taskStartProfitingTime
+                    ? 0
+                    : (int) (claim.createTime.Date - taskStartProfitingTime.Date).TotalDays;
+
+                claimProfitingDays = (int) (task.should_repay_time.Date - new[] {claim.createTime, taskStartProfitingTime}.Max().Date).TotalDays;
+            }
+
+            var claimInvalidDays = task.GetTotalProfitingDays() - claimBeforeProfitingDays - claimProfitingDays;
+            Debug.Assert(0 <= claimInvalidDays);
+            return callback(claimBeforeProfitingDays, claimProfitingDays, claimInvalidDays);
         }
 
         public static IEnumerable<T> AsEnumerableAutoPartialQuery<T>(this IQueryable<T> src, out int totalCount, int queryAmountOnce = 32)

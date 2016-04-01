@@ -613,7 +613,7 @@ namespace Agp2p.Web.UI.Page
         {
             { Agp2pEnums.StaticClaimQueryEnum.Profiting, new[] {Agp2pEnums.ClaimStatusEnum.Nontransferable, Agp2pEnums.ClaimStatusEnum.Transferable} },
             { Agp2pEnums.StaticClaimQueryEnum.Transfering, new[] { Agp2pEnums.ClaimStatusEnum.NeedTransfer, Agp2pEnums.ClaimStatusEnum.CompletedUnpaid, Agp2pEnums.ClaimStatusEnum.TransferredUnpaid } },
-            { Agp2pEnums.StaticClaimQueryEnum.Completed, new[] { Agp2pEnums.ClaimStatusEnum.Completed, Agp2pEnums.ClaimStatusEnum.Invalid, Agp2pEnums.ClaimStatusEnum.Transferred } },
+            { Agp2pEnums.StaticClaimQueryEnum.Transferred, new[] { Agp2pEnums.ClaimStatusEnum.Transferred } },
         };
         [WebMethod]
         public static string AjaxQueryStaticClaim(byte claimQueryType, int pageIndex, int pageSize)
@@ -636,6 +636,7 @@ namespace Agp2p.Web.UI.Page
 
             var query = context.li_claims.Where(c =>
                         c.userId == userInfo.id &&
+                        c.projectId == c.profitingProjectId &&
                         StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
                         !c.Children.Any());
 
@@ -678,8 +679,16 @@ namespace Agp2p.Web.UI.Page
 
             if (userInfo.li_claims.Any(c => c.id == claimId))
             {
-                TransactionFacade.StaticProjectWithdraw(context, claimId);
-                return "ok";
+                try
+                {
+                    TransactionFacade.StaticProjectWithdraw(context, claimId);
+                    return "ok";
+                }
+                catch (Exception ex)
+                {
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return ex.Message;
+                }
             }
 
             HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;

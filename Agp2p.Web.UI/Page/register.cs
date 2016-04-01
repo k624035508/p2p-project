@@ -8,6 +8,7 @@ namespace Agp2p.Web.UI.Page
         protected string action = string.Empty;
         protected string username = string.Empty;
         protected string invite_code = string.Empty;
+        protected string result = string.Empty;
 
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行

@@ -10,7 +10,7 @@ $(function() {
     $('[data-toggle="popover"]').popover();
 
     //根据步骤显示
-    var { step } = $("#step").data();
+    var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
         $(".register-left").eq(0).addClass("hidden");
@@ -42,6 +42,8 @@ $(function() {
             //失败
         }
 }
+
+       
 
     //邀请码选填 
     $("div.invite2").hide();
