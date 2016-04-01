@@ -1451,6 +1451,9 @@ namespace Agp2p.Core
 
         public static decimal GetFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
+            if (proj.IsHuoqiProject())
+                return proj.profit_rate_year/100/365;
+
             if (0 < proj.profit_rate)
                 return proj.profit_rate;
 
