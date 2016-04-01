@@ -58,6 +58,11 @@ namespace Agp2p.Web.api.payment.sumapay
                     }
                     reqMsg = new AutoBidSignReqMsg(user.id, true, user.protocolCode);
                     break;
+                //个人自动账户/银行还款开通
+                case (int)Agp2pEnums.SumapayApiEnum.AcReO:
+                case (int)Agp2pEnums.SumapayApiEnum.AbReO:
+                    reqMsg = new AutoRepaySignReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("projectCode"), DTRequest.GetQueryString("repayLimit"), requestApi != (int)Agp2pEnums.SumapayApiEnum.AcReO);
+                    break;
                 default:
                     reqMsg = new BaseReqMsg();
                     break;

@@ -24,16 +24,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = useBank ? (int)Agp2pEnums.SumapayApiEnum.AbReO : (int) Agp2pEnums.SumapayApiEnum.AcReO;
             ApiInterface = SumapayConfig.TestApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Cycle + RepayLimit +
-                                               SuccessReturnUrl + FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Cycle + RepayLimit +
+                                               SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
