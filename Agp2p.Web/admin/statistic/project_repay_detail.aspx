@@ -117,18 +117,18 @@
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
-                <tr <%# (Eval("RepaymentTask.ProjectName") + "").EndsWith("计") ? "class='sum'" : ""%>>
-                    <td style="text-align: center;"><%# Eval("RepaymentTask.Index")%></td>
-                    <td><%# Eval("RepaymentTask.ProjectName")%></td>
-                    <td><%# Eval("RepaymentTask.CreditorName")%></td>
-                    <td align="center"><%#Eval("RepaymentTask.Category")%></td>
-                    <td class="money"><%# Eval("RepaymentTask.FinancingAmount") == null ? "" : Convert.ToDecimal(Eval("RepaymentTask.FinancingAmount")).ToString("c")%></td>
-                    <td class="center"><%# Eval("RepaymentTask.ProfitRateYear")%></td>
-                    <td><%# Eval("RepaymentTask.InvestCompleteTime")%></td>
-                    <td><%# Eval("RepaymentTask.RepayCompleteTime")%></td>
-                    <td><%# Eval("RepaymentTask.Term")%></td>
-                    <td><%# Eval("RepaymentTask.ShouldRepayAt")%></td>
-                    <td><%# Eval("RepaymentTask.RepayAt")%></td>
+                <tr <%# (Eval("RepayTask.ProjectName") + "").EndsWith("计") ? "class='sum'" : ""%>>
+                    <td style="text-align: center;"><%# Eval("RepayTask.Index")%></td>
+                    <td><%# Eval("RepayTask.ProjectName")%></td>
+                    <td><%# Eval("RepayTask.CreditorName")%></td>
+                    <td align="center"><%#Eval("RepayTask.Category")%></td>
+                    <td class="money"><%# Eval("RepayTask.FinancingAmount") == null ? "" : Convert.ToDecimal(Eval("RepayTask.FinancingAmount")).ToString("c")%></td>
+                    <td class="center"><%# Eval("RepayTask.ProfitRateYear")%></td>
+                    <td><%# Eval("RepayTask.InvestCompleteTime")%></td>
+                    <td><%# Eval("RepayTask.RepayCompleteTime")%></td>
+                    <td><%# Eval("RepayTask.Term")%></td>
+                    <td><%# Eval("RepayTask.ShouldRepayAt")%></td>
+                    <td><%# Eval("RepayTask.RepayAt")%></td>
                     <td><%# Eval("InvestorRealName") != null && Eval("InvestorRealName") != "" ? Eval("InvestorRealName") : Eval("InvestorUserName")%></td>
                     <%--<td class="money"><%# Eval("InvestValue") == null ? "" : Convert.ToDecimal(Eval("InvestValue")).ToString("c")%></td>
     <td class="center"><%# Eval("InvestTime")%></td>--%>

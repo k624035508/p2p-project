@@ -55,7 +55,7 @@ namespace Agp2p.Web.admin.statistic
             }
         }
 
-        protected class RepaymentTaskDetail
+        protected class RepayTaskDetail
         {
             public string Index { get; set; }
             public string ShouldRepayAt { get; set; }
@@ -71,9 +71,9 @@ namespace Agp2p.Web.admin.statistic
             public string OverTimeDay { get; set; }
             public string RepayAt { get; set; }
         }
-        protected class RepaymentDetail
+        protected class RepayTransactionDetail
         {
-            public RepaymentTaskDetail RepaymentTask { get; set; }
+            public RepayTaskDetail RepayTask { get; set; }
             public string InvestorRealName { get; set; }
             public string InvestorUserName { get; set; }
             public decimal? InvestValue { get; set; }
@@ -87,10 +87,27 @@ namespace Agp2p.Web.admin.statistic
         #region 数据绑定=================================
         private void RptBind()
         {
-            var beforePaging = QueryRepayDetails();
-            totalCount = beforePaging.Count();
-            rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataBind();
+            if (string.IsNullOrWhiteSpace(txtStartTime.Text) && string.IsNullOrWhiteSpace(txtKeywords.Text) && string.IsNullOrWhiteSpace(txtEndTime.Text))
+            {
+                txtStartTime.Text = DateTime.Today.AddMonths(-1).ToString("yyyy-MM-dd");
+            }
+
+            var totalCount = 0;
+            if (string.IsNullOrWhiteSpace(txtStartTime.Text))
+            {
+                var dataSource = QueryRepayDetails().Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+
+                totalCount = dataSource.Count == pageSize ? (page + 1) * pageSize : page * pageSize;
+                rptList.DataSource = dataSource;
+                rptList.DataBind();
+            }
+            else
+            {
+                var beforePaging = QueryRepayDetails().ToList();
+                totalCount = beforePaging.Count;
+                rptList.DataSource = beforePaging.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+                rptList.DataBind();
+            }
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
@@ -100,7 +117,7 @@ namespace Agp2p.Web.admin.statistic
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
 
-        private List<RepaymentDetail> QueryRepayDetails()
+        private IEnumerable<RepayTransactionDetail> QueryRepayDetails()
         {
             var loadOptions = new DataLoadOptions();
             loadOptions.LoadWith<li_repayment_tasks>(t => t.li_projects);
@@ -119,7 +136,7 @@ namespace Agp2p.Web.admin.statistic
                 if (rblRepaymentTaskStatus.SelectedValue == "2") // 已还款
                     query = query.Where(r => (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid <= r.status);
                 else
-                    query = query.Where(r => Convert.ToByte(rblRepaymentTaskStatus.SelectedValue) == r.status || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
+                    query = query.Where(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime);
             }
 
             if (!string.IsNullOrWhiteSpace(txtStartTime.Text))
@@ -131,97 +148,105 @@ namespace Agp2p.Web.admin.statistic
                 query = query.Where(q => q.should_repay_time.Date <= Convert.ToDateTime(txtEndTime.Text));
             }
 
-            var sorted = query.OrderBy(r => r.should_repay_time).AsEnumerable();
+            var repaymentTasks = query.OrderBy(r => r.should_repay_time).AsEnumerableAutoPartialQuery(16);
 
-            var appendedSums = sorted
-                    .Zip(Utils.Infinite(1), (repayment, index) => new {repayment, index})
-                    .SelectMany(ri =>
+            decimal totalInterest = 0, totalPrincipal = 0, totalRepay = 0;
+
+            var emptyRepayTaskDetail = new RepayTaskDetail();
+            var appendedSums = repaymentTasks
+                .Zip(Utils.Infinite(1), (repayment, index) => new {repayment, index})
+                .SelectMany(ri =>
+                {
+                    var repaymentTask = ri.repayment;
+                    var pro = repaymentTask.li_projects;
+                    List<li_project_transactions> profiting;
+
+                    if (ri.repayment.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                     {
-                        var r = ri.repayment;
-                        var pro = r.li_projects;
-                        List<li_project_transactions> profiting;
-                        if (ri.repayment.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
-                        {
-                            // 查询所有收益记录
-                            profiting = pro.li_project_transactions.Where(
-                                t =>
-                                    t.create_time == r.repay_at && t.type != (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                                    t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).ToList();
-                        }
-                        else
-                        {
-                            profiting = TransactionFacade.GenerateRepayTransactions(r, r.should_repay_time, true); // 临时预计收益
-                        }
-                        //根据组权限查询数据
-                        profiting = profiting.Where(ptr => !canAccessGroups.Any() || canAccessGroups.Contains(ptr.dt_users.group_id)).ToList();
+                        // 查询所有收益记录
+                        profiting = pro.li_project_transactions.Where(
+                            t =>
+                                t.create_time == repaymentTask.repay_at && t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                                (t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor ||
+                                 t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayOverdueFine)).ToList();
+                    }
+                    else
+                    {
+                        profiting = TransactionFacade.GenerateRepayTransactions(repaymentTask, repaymentTask.should_repay_time, true); // 临时预计收益
+                    }
 
-                        if (profiting.Count == 0) return Enumerable.Empty<RepaymentDetail>();
-                        var repaymentDetails = profiting.Select(tr => new RepaymentDetail
-                            {
-                                RepaymentTask = new RepaymentTaskDetail(),
-                                InvestorRealName = tr.dt_users.real_name,
-                                InvestorUserName = tr.dt_users.user_name,
-                                // 用最后一次的投资时间作为呈现的时间
-                                InvestTime =
-                                    pro.li_project_transactions.Last(t => t.investor == tr.investor &&
-                                                                          (t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest 
-                                                                          || t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn) &&
-                                                                          t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).create_time.ToString(),
-                                // 反查总投资金额
-                                InvestValue = pro.li_project_transactions.Where(
-                                t =>
-                                    t.investor == tr.investor &&
-                                    (t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                                    || t.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn) &&
-                                    t.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                                .Select(t => t.principal).AsEnumerable().Sum(),
-                            RepayPrincipal = tr.principal,
-                                RepayInterest = tr.interest.GetValueOrDefault(0),
-                                RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0))
-                            }).ToList();
+                    //根据组权限查询数据
+                    profiting = profiting.Where(ptr => !canAccessGroups.Any() || canAccessGroups.Contains(ptr.dt_users.group_id)).ToList();
 
-                        repaymentDetails.First().RepaymentTask = new RepaymentTaskDetail
-                        {
-                            Index = ri.index.ToString(),
-                            ProjectName = pro.title,
-                            Category = CategoryIdTitleMap[pro.category_id],
-                            ShouldRepayAt = r.should_repay_time.ToString("yyyy-MM-dd"),
-                            CreditorName = context.GetLonerName(r.project),
-                            FinancingAmount = pro.financing_amount,
-                            ProfitRateYear = pro.profit_rate_year.ToString(),
-                            Term = r.li_projects.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
-                                ? "1/1"
-                                : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}",
-                        RepayAt = r.repay_at?.ToString("yyyy-MM-dd") ?? "",
-
-                            InvestCompleteTime = pro.invest_complete_time.ToString(),
-                            RepayCompleteTime = pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),
-                        }; // 首个记录显示项目信息
-                        return repaymentDetails.Concat(new[]
-                        {
-                            new RepaymentDetail
-                            {
-                                RepaymentTask = new RepaymentTaskDetail {ProjectName = "小计"},
-                                InvestValue = repaymentDetails.Sum(p => p.InvestValue),
-                                RepayInterest = repaymentDetails.Sum(p => p.RepayInterest),
-                                RepayPrincipal = repaymentDetails.Sum(p => p.RepayPrincipal),
-                                RepayTotal = repaymentDetails.Sum(p => p.RepayTotal),
-                            }
-                        });
+                    if (profiting.Count == 0) return Enumerable.Empty<RepayTransactionDetail>();
+                    var repaymentDetails = profiting.Select(tr => new RepayTransactionDetail
+                    {
+                        RepayTask = emptyRepayTaskDetail,
+                        InvestorRealName = tr.dt_users.real_name,
+                        InvestorUserName = tr.dt_users.user_name,
+                        // 用最后一次的投资时间作为呈现的时间
+                        InvestTime = tr.li_claims_from != null
+                            ? tr.li_claims_from.createTime.ToString()
+                            : pro.li_project_transactions.Last(t =>
+                                t.investor == tr.investor &&
+                                t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                                t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest).create_time.ToString(),
+                        // 反查总投资金额
+                        InvestValue = tr.li_claims_from != null
+                            ? tr.li_claims_from.principal
+                            : pro.li_project_transactions.Where(t =>
+                                t.investor == tr.investor &&
+                                t.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                                t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                                .Aggregate(0m, (sum, ptr) => sum + ptr.principal),
+                        RepayPrincipal = tr.principal,
+                        RepayInterest = tr.interest.GetValueOrDefault(0),
+                        RepayTotal = (tr.principal + tr.interest.GetValueOrDefault(0))
                     }).ToList();
 
-            var sumRows = appendedSums.Where(p => p.RepaymentTask.ProjectName != null && p.RepaymentTask.ProjectName.EndsWith("小计")).ToList();
-            var beforePaging = appendedSums.Concat(new[]
+                    repaymentDetails.First().RepayTask = new RepayTaskDetail
+                    {
+                        Index = ri.index.ToString(),
+                        ProjectName = pro.title,
+                        Category = CategoryIdTitleMap[pro.category_id],
+                        ShouldRepayAt = repaymentTask.should_repay_time.ToString("yyyy-MM-dd"),
+                        CreditorName = context.GetLonerName(repaymentTask.project),
+                        FinancingAmount = pro.financing_amount,
+                        ProfitRateYear = pro.profit_rate_year.ToString(),
+                        Term = repaymentTask.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                            ? "1/1"
+                            : $"{repaymentTask.term.ToString()}/{repaymentTask.li_projects.repayment_term_span_count}",
+                        RepayAt = repaymentTask.repay_at?.ToString("yyyy-MM-dd") ?? "",
+
+                        InvestCompleteTime = pro.invest_complete_time.ToString(),
+                        RepayCompleteTime =
+                            pro.li_repayment_tasks.Max(cr => cr.should_repay_time).ToString("yyyy-MM-dd"),
+                    }; // 首个记录显示项目信息
+
+                    var subSum = new RepayTransactionDetail
+                    {
+                        RepayTask = new RepayTaskDetail {ProjectName = "小计"},
+                        InvestValue = repaymentDetails.Sum(p => p.InvestValue),
+                        RepayInterest = repaymentDetails.Sum(p => p.RepayInterest),
+                        RepayPrincipal = repaymentDetails.Sum(p => p.RepayPrincipal),
+                        RepayTotal = repaymentDetails.Sum(p => p.RepayTotal),
+                    };
+                    totalInterest += subSum.RepayInterest;
+                    totalPrincipal += subSum.RepayPrincipal;
+                    totalRepay += subSum.RepayTotal;
+                    return repaymentDetails.Concat(Enumerable.Repeat(subSum, 1));
+                });
+
+            var totalSum = Enumerable.Range(0, 1).Select(i => new RepayTransactionDetail
             {
-                new RepaymentDetail
-                {
-                    RepaymentTask = new RepaymentTaskDetail {ProjectName = "总计"},
-                    InvestValue = null,
-                    RepayInterest = sumRows.Sum(p => p.RepayInterest),
-                    RepayPrincipal = sumRows.Sum(p => p.RepayPrincipal),
-                    RepayTotal = sumRows.Sum(p => p.RepayTotal),
-                }
-            }).ToList();
+                RepayTask = new RepayTaskDetail {ProjectName = "总计"},
+                InvestValue = null,
+                RepayInterest = totalInterest,
+                RepayPrincipal = totalPrincipal,
+                RepayTotal = totalRepay
+            });
+
+            var beforePaging = appendedSums.Concat(totalSum);
             return beforePaging;
         }
 
@@ -295,17 +320,17 @@ namespace Agp2p.Web.admin.statistic
             var beforePaging = QueryRepayDetails();
             var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
             {
-                d.RepaymentTask.Index,
-                d.RepaymentTask.ProjectName,
-                d.RepaymentTask.CreditorName,
-                d.RepaymentTask.Category,
-                d.RepaymentTask.FinancingAmount,
-                d.RepaymentTask.ProfitRateYear,
-                d.RepaymentTask.InvestCompleteTime,
-                d.RepaymentTask.RepayCompleteTime,
-                d.RepaymentTask.Term,
-                d.RepaymentTask.ShouldRepayAt,
-                d.RepaymentTask.RepayAt,
+                d.RepayTask.Index,
+                d.RepayTask.ProjectName,
+                d.RepayTask.CreditorName,
+                d.RepayTask.Category,
+                d.RepayTask.FinancingAmount,
+                d.RepayTask.ProfitRateYear,
+                d.RepayTask.InvestCompleteTime,
+                d.RepayTask.RepayCompleteTime,
+                d.RepayTask.Term,
+                d.RepayTask.ShouldRepayAt,
+                d.RepayTask.RepayAt,
                 d.InvestorRealName,
                 d.RepayPrincipal,
                 d.RepayInterest,
