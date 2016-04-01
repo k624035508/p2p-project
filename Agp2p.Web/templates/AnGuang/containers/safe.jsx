@@ -317,6 +317,74 @@ class IdentityBinding extends React.Component {
 	}
 }
 
+class CustodyAccount extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+	        bindingIdCard: false, trueName: "", idCardNumber: ""
+	        };
+	        }
+	componentWillReceiveProps(nextProps) {
+		this.setState({trueName: nextProps.realName, idCardNumber: nextProps.idCardNumber});
+		}
+	bindIdentity() {
+		confirm("身份资料填写后则不能再修改，是否确认？", () => {
+			ajax({
+			        type: "POST",
+			                url: '/tools/submit_ajax.ashx?action=bind_idcard',
+			            data: {
+			                trueName: this.state.trueName,
+			                    idCardNumber: this.state.idCardNumber,
+			                    },
+			            dataType: "json",
+			            success: data => {
+                            alert(data.msg);
+                            this.props.dispatch(fetchWalletAndUserInfo());
+                            },
+			            error: jqXHR => {
+                            alert(jqXHR.responseJSON.msg);
+                            }
+			            });
+			        });
+			}
+	render() {
+		return (
+			<li>
+				<div className="list-cell">
+					<span className="name"></span>
+					<span className="list-th">托管账户</span>
+					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
+					<span className="pull-right"><a href="javascript:" style={this.props.realName ? null : {color: "red"}}
+						onClick={ev => this.setState({bindingIdCard: !this.state.bindingIdCard})}>{this.props.realName ? "查看" : "立即认证"}</a></span>
+				</div>
+	    {!this.state.bindingIdCard ? null :
+        <div className="setting-wrap" id="name-setting">
+            <div className="cancel">
+                <span className="th-setting">实名认证</span>
+                <span className="tips">为确保您的账户安全，每个身份证号只能绑定一个安广融合账号</span>
+                <span className="glyphicon glyphicon-remove pull-right cancel-btn"
+                    onClick={ev => this.setState({bindingIdCard: false})}></span>
+            </div>
+            <div className="settings">
+                <div className="form-group">
+                    <label htmlFor="email">真实姓名：</label>
+                    <input type="text" id="email" onBlur={ev => this.setState({trueName: ev.target.value})}
+                        defaultValue={this.props.realName} disabled={this.props.realName}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="personalID">身份证号：</label>
+                    <input type="text" id="personalID" onBlur={ev => this.setState({idCardNumber: ev.target.value})}
+                        defaultValue={mask(this.props.idCardNumber)} disabled={this.props.idCardNumber} />
+	    </div>
+        <div className="btn-wrap" style={this.props.realName ? {display: "none"} : null}><a href="javascript:"
+							onClick={ev => this.bindIdentity()}>提 交</a></div>
+					</div>
+				</div>}
+			</li>
+		);
+					}
+	}
+
 class ResetLoginPassword extends React.Component {
 	constructor(props) {
 		super(props);
@@ -492,10 +560,11 @@ class SafeCenter extends React.Component {
 				<div className="safe-center">
 					<div className="safe-center-th"><span>安全中心</span></div>
 					<div className="setting-list">
-						<ul className="list-unstyled">
-							<EmailBinding {...this.props} />
+						<ul className="list-unstyled">							
 							<MobileBinding {...this.props} />
 							<IdentityBinding {...this.props} />
+                            <CustodyAccount {...this.props} />
+                            <EmailBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
 							<ResetTransactPassword {...this.props} />
 						</ul>

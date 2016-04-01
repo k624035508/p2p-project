@@ -908,6 +908,8 @@
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
+    <Content Include="templates\AnGuang\imgs\register\loading.gif" />
+    <Content Include="templates\AnGuang\imgs\register\loading2.gif" />
     <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />

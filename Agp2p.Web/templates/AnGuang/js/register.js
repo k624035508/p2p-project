@@ -250,16 +250,25 @@ $(function() {
     });
 
     //实名认证
+    
     $("#realNameAuthBtn").click(function(){  
+      /*
         $.ajax({
-            url: "/tools/submit_ajax.ashx?action=bind_idcard",
+              url: "/tools/submit_ajax.ashx?action=bind_idcard",
+            
             type: "post",
             dataType: "json",
             data: {
                 idCardNumber: $("#identify").val(),
                 trueName: $("#realname").val()
             },
+            beforeSend:function(XMLHttpRequest){ 
+                $("#realNameAuthBtn").hide(); //在后台返回success之前显示loading图标
+                $(".nameLoading").show().html("<img src='/templates/AnGuang/imgs/register/loading2.gif' />");
+            }, 
             success: function(data) {
+                $("#realNameAuthBtn").show();
+                $(".nameLoading").empty();
                 if (data.status == 1) {
                     //实名验证成功，进入开户步骤
                     location.href="register.html?action=3";
@@ -268,6 +277,39 @@ $(function() {
                 }
             },
             error: function(data) {
+                $("#realNameAuthBtn").show();
+                $(".nameLoading").empty();
+                alert("操作超时，请重试");
+            }
+        });
+        */
+
+
+        $.ajax({
+            url:"",
+            type: "post",
+            dataType: "json",
+            data: {
+                idCardNumber: $("#identify").val(),
+                trueName: $("#realname").val()
+            },
+            beforeSend:function(XMLHttpRequest){ 
+                $("#realNameAuthBtn").hide(); //在后台返回success之前显示loading图标
+                $(".nameLoading").show().html("<img src='/templates/AnGuang/imgs/register/loading2.gif' />");
+            }, 
+            success: function(data) {
+                $("#realNameAuthBtn").show();
+                $(".nameLoading").empty();
+                if (data.status == 1) {
+                    //实名验证成功，进入开户步骤
+                    location.href="register.html?action=3";
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function(data) {
+                $("#realNameAuthBtn").show();
+                $(".nameLoading").empty();
                 alert("操作超时，请重试");
             }
         });
