@@ -679,8 +679,16 @@ namespace Agp2p.Web.UI.Page
 
             if (userInfo.li_claims.Any(c => c.id == claimId))
             {
-                TransactionFacade.StaticProjectWithdraw(context, claimId);
-                return "ok";
+                try
+                {
+                    TransactionFacade.StaticProjectWithdraw(context, claimId);
+                    return "ok";
+                }
+                catch (Exception ex)
+                {
+                    HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return ex.Message;
+                }
             }
 
             HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
