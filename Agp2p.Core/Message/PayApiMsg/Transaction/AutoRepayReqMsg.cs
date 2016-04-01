@@ -15,7 +15,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string FeeType { get; set; }//手续费收取方式
         public bool Collective { get; set; }//集合项目标识
 
-        public AutoRepayReqMsg(int userId, string sum, string fayType, bool collective = false)
+        public AutoRepayReqMsg(int userId, string sum, bool collective = false, string fayType = "0")
         {
             UserId = userId;
             Sum = sum;
