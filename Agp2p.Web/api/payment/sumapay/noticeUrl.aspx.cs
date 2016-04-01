@@ -58,11 +58,11 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                             //个人自动投标续约
                             case (int) Agp2pEnums.SumapayApiEnum.AtBid:
-                                respMsg = BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
+                                respMsg = isSync ? new AutoBidSignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
                                 break;
                             //个人自动投标取消
                             case (int) Agp2pEnums.SumapayApiEnum.ClBid:
-                                respMsg = BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
+                                respMsg = isSync ? new AutoBidSignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
                                 ((AutoBidSignRespMsg) respMsg).Cancel = true;
                                 break;
                             //个人自动账户/银行还款开通

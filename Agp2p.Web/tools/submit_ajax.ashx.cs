@@ -326,7 +326,6 @@ namespace Agp2p.Web.tools
         {
             string code = DTRequest.GetFormString("txtVerifyCode").Trim();
             string invitecode = DTRequest.GetFormString("txtInviteCode").Trim();
-            string inviteNo = DTRequest.GetFormString("txtInviteNo").Trim();
             //string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
             string username = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string password = DTRequest.GetFormString("txtPassword").Trim();
@@ -478,12 +477,10 @@ namespace Agp2p.Web.tools
 
                 #region 邀请信息
                 //如果有邀请人手机或用户名、邀请码则记录邀请信息
-                if (!string.IsNullOrEmpty(inviteNo) || !string.IsNullOrEmpty(invitecode))
+                if (!string.IsNullOrWhiteSpace(invitecode))
                 {
-                    dt_users inviteUser = null;
-                    if (!string.IsNullOrEmpty(inviteNo))
-                        inviteUser = linqContext.dt_users.FirstOrDefault(u => u.user_name == inviteNo || u.mobile == inviteNo);
-                    else
+                    dt_users inviteUser = linqContext.dt_users.FirstOrDefault(u => u.user_name == invitecode || u.mobile == invitecode);
+                    if(inviteUser == null)
                     {
                         var invitecodeModel = linqContext.dt_user_code.FirstOrDefault(c => c.str_code == invitecode && c.type == DTEnums.CodeEnum.Register.ToString());
                         if (invitecodeModel != null)

@@ -67,7 +67,7 @@ class HuoqiFacade extends React.Component {
             <div className="top-wrapper">
                 <div className="topic-icon"><span>安融活期</span></div>
                 <div className="profit-container">
-                    <p className="expected-profit-title">今日预期收益<span className="pull-right current-protocol">安融活期协议</span></p>
+                    <p className="expected-profit-title">今日预期收益<a className="pull-right current-protocol" href="/api/payment/sumapay/index.aspx?api=6">安融活期协议</a></p>
                     <p className="expected-profit">{this.state.TodayProfitPredict} <span className="profit-unit">元</span></p>
                     <ul className="profit-db list-unstyled list-inline">
                         <li>

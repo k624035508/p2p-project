@@ -21,6 +21,13 @@ namespace Agp2p.Web.api.payment.sumapay
                     case (int)Agp2pEnums.SumapayApiEnum.Activ:
                         Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/register.html?action=4&result=fail");
                         break;
+                    case (int)Agp2pEnums.SumapayApiEnum.AtBid:
+                        Response.Write("自动投标续约失败！");
+                        break;
+                    //个人自动投标解约
+                    case (int)Agp2pEnums.SumapayApiEnum.ClBid:
+                        Response.Write("自动投标解约失败！");
+                        break;
                 }
             }
         }

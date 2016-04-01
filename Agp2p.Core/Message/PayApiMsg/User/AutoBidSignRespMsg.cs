@@ -1,4 +1,6 @@
 ﻿
+using Agp2p.Common;
+
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
@@ -10,9 +12,18 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string ContractFund { get; set; }//签约金额
         public bool Cancel { get; set; }
 
-        public AutoBidSignRespMsg(bool cancel = false)
+        public AutoBidSignRespMsg(string requestStr, bool cancel = false)
         {
             Cancel = cancel;
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            ProtocolCode = map["protocolCode"];
+            ContractFund = map.ContainsKey("contractFund") ? map["contractFund"] : "";
+
         }
 
         public override bool CheckSignature()
