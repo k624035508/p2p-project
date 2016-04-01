@@ -79,19 +79,26 @@
             <div class="title-tips"><span class="register-msg">实名认证</span> <span class="pull-right"><a href='<%linkurl("usercenter","index")%>#'>跳过此步</a> </span></div>
             <div class="form-box"><input id="realname" class="input-l" type="text" placeholder="请输入真实姓名" /><span class="status"></span></div>
             <div class="form-box"><input id="identify" class="input-l" type="text" placeholder="请输入身份证号码" /><span class="status"></span></div>
-            <div class="register-btn"><button id="realNameAuthBtn" type="button">实名认证</button></div>
-            <span class="nameLoading"></span>
+            <div class="register-btn"><button id="realNameAuthBtn" type="button">实名认证</button></div>     
+            
             <div class="warm-tips"><span>温馨提示</span></div>
             <p>1.安广融合不会在任何地方泄漏您的信息。</p>
             <p>2.每天实名认证不能超过3次，一年不能超过6次，请认真核对信息。</p>
         </div>
         <div class="register-left hidden">
             <div class="form-box" style="margin-top:80px;">实名验证成功，请开通第三方托管账户：</div>
-            <div class="register-btn "><a id="tuoguanBtn" class="" href='/api/payment/sumapay/index.aspx?api=1'>开通托管账户</a></div>
+            <div class="register-btn "><button id="tuoguanBtn"> <!-- href='/api/payment/sumapay/index.aspx?api=1' >-->开通托管账户</button></div>
             <div class="warm-tips"><span>温馨提示</span></div>
             <p>1.为了保障您的资金安全，请开通第三方托管账户。</p>
-        </div>
+        </div>    
+        <div class="register-left hidden">
+            <div class="form-box" style="margin-top:80px;">第三方托管账户开通成功：</div>
+            <div class="register-btn "><a id="investBtn" href='<%linkurl("projects")%>#'>开始投资</a></div>
+            <div class="warm-tips"><span>温馨提示</span></div>
+            <p>1.为了保障您的资金安全，请开通第三方托管账户。</p>
+        </div>           
     </div>
+    <div class="nameLoading content-wrap"></div> 
     <!--register box end-->
 
     <div id="step"

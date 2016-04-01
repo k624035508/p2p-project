@@ -25,8 +25,23 @@ $(function() {
         $(".register-left").eq(2).removeClass("hidden");
         $(".step3-hr").addClass("step-red");
         $(".step3").addClass("redstep");
+        $(".tips2").addClass("tips-red");
         $(".tips3").addClass("tips-red");
-    }
+    } else if (step == "4") {
+            //开户结果处理显示  TODO
+        if (result=="success"){
+            $(".register-left").eq(0).addClass("hidden");
+            $(".register-left").eq(1).addClass("hidden");
+            $(".register-left").eq(2).addClass("hidden");
+            $(".register-left").eq(3).removeClass("hidden");
+            $(".step3-hr").addClass("step-red");
+            $(".step3").addClass("redstep");
+            $(".tips2").addClass("tips-red");
+            $(".tips3").addClass("tips-red");
+        } else{
+            //失败
+        }
+}
 
     //邀请码选填 
     $("div.invite2").hide();
@@ -286,7 +301,7 @@ $(function() {
 
 
         $.ajax({
-            url:"",
+            url:"about.html",
             type: "post",
             dataType: "json",
             data: {
@@ -294,11 +309,11 @@ $(function() {
                 trueName: $("#realname").val()
             },
             beforeSend:function(XMLHttpRequest){ 
-                $("#realNameAuthBtn").hide(); //在后台返回success之前显示loading图标
-                $(".nameLoading").show().html("<img src='/templates/AnGuang/imgs/register/loading2.gif' />");
+                 //在后台返回success之前显示loading图标
+                $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
             }, 
             success: function(data) {
-                $("#realNameAuthBtn").show();
+          
                 $(".nameLoading").empty();
                 if (data.status == 1) {
                     //实名验证成功，进入开户步骤
@@ -307,11 +322,30 @@ $(function() {
                     alert(data.msg);
                 }
             },
-            error: function(data) {
-                $("#realNameAuthBtn").show();
-                $(".nameLoading").empty();
+            error: function(data) {             
+                $(".nameLoading").css("z-index","-2").empty();
                 alert("操作超时，请重试");
             }
         });
-    });   
+    }); 
+    
+    $("#tuoguanBtn").click(function(){
+        $.ajax({
+            url: "/api/payment/sumapay/index.aspx?api=1",         
+            type: "post",
+            dataType: "json", 
+            success: function(data) {
+                if (data.status == 1) {
+                    //托管开户成功
+                    location.href="register.html?action=4";
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function(data) {
+                alert("操作超时，请重试");
+            }
+        });
+    });
+
 });
