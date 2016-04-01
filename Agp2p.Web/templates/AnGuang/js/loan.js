@@ -13,13 +13,7 @@ $(function () {
 
     //data-toggle 初始化
     $('[data-toggle="popover"]').popover();
-
-
-
-    
     var { step,userId,userName,loanerId,pendingProjectId,quotaUse } = $("#main").data();
-
-
 
     var $step1 = $("ul.application-ul li.step1");
     var $step2 = $("ul.application-ul li.step2");
@@ -55,6 +49,7 @@ $(function () {
         if(step != "2"){
             $(".form-wrapper form.personal-info-form input").attr("readonly","readonly");
             $("#marital-status").attr("disabled","disabled");
+            $("#education").attr("disabled","disabled");
             $('#loanerApplyBtn').hide();
 
             if(step == "21"){
@@ -65,6 +60,7 @@ $(function () {
                 $('#loanerApplyFailed').show();
                 $(".form-wrapper form.personal-info-form input").removeAttr("readonly");
                 $("#marital-status").removeAttr("disabled");
+                $("#education").removeAttr("disabled");
                 $('#loanerApplyBtn').show();
             }else if(step == "23"){
                 //显示禁止再申请借款人步骤
@@ -80,13 +76,24 @@ $(function () {
         }
     } else if(step == "5") {
         //显示借款完成步骤
-        alert("asdkja");
+        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
+        $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
         $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish.png') no-repeat");
         $wancheng.show();
 
-        
+        $("#loanApplyAgainBtn").click(function() {
+            //再次申请借款
+            showLoanApplyStep("3", quotaUse);
+            $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish-grey.png') no-repeat");
+            $wancheng.hide();
+        });
+
     } else {
         //显示申请借款步骤
+        showLoanApplyStep(step, quotaUse);
+    }
+
+    function showLoanApplyStep(step, quotaUse) {
         $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
         $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
         $loanDetail.show();
@@ -97,8 +104,8 @@ $(function () {
 
         if(step == "3") {            
             $("#loan-amount").blur(function(){
-                if ($("#loan-amount").val() > quotaUse){
-                    alert("借款额度不能大于可用额度！")
+                if ($("#loan-amount").val() > quotaUse) {
+                    alert("借款额度不能大于可用额度！");
                 }
             });
         } else if(step == "4") {
@@ -109,10 +116,10 @@ $(function () {
 
             $(".form-wrapper form.loan-detail-form textarea").attr("readonly","readonly");
             $("#loan-amount").attr("readonly","readonly");            
-            $("#ddl_project_type").attr("disabled","disabled");
+            //$("#ddl_project_type").attr("disabled","disabled");
             
             $("#loan-amount").val(projectAmount);
-            $("#ddl_project_type").val(projectCategoryId);
+            //$("#ddl_project_type").val(projectCategoryId);
             $("#loan-description").val(projectLoanerContent);
             $("#loan-usage").val(projectLoanUsage);
             $("#repayment-source").val(projectSourceOfRepayment);
@@ -185,12 +192,10 @@ $(function () {
                 loaner_content:$("#loan-description").val(),
                 loan_usage:$("#loan-usage").val(),
                 source_of_repayment:$("#repayment-source").val(),
-                category_id:$("#ddl_project_type").val(),
                 amount:$("#loan-amount").val()
             }),
             success: function(data){
                location.reload();
-
             },
             error: function(xhr, status, err){                
                 alert(xhr.responseJSON.Message);

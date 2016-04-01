@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Text;
-using System.Data;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
+
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
+using System.Linq;
 
 namespace Agp2p.Web.admin.users
 {
@@ -149,6 +148,56 @@ namespace Agp2p.Web.admin.users
                 Utils.CombUrlTxt("user_audit.aspx", "keywords={0}", txtKeywords.Text), "Success");
         }
 
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            ChkAdminLevel("user_list", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            var sucCount = 0;
+            var errorCount = 0;
+            var bll = new BLL.users();
+            var context = new Agp2pDataContext();
+            for (var i = 0; i < rptList.Items.Count; i++)
+            {
+                var id = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
+                var cb = (CheckBox)rptList.Items[i].FindControl("chkId");
+                if (cb.Checked)
+                {
+                    //查询该用户钱包
+                    var walletDel = context.li_wallets.FirstOrDefault(w => w.user_id == id);
+                    if (walletDel != null)
+                    {
+                        var wallet_historiesDel = context.li_wallet_histories.Where(wh => wh.user_id == id).ToList();
+                        //无资金流水的会员可以删除
+                        if (!wallet_historiesDel.Any())
+                        {
+                            context.li_wallet_histories.DeleteAllOnSubmit(wallet_historiesDel);
+                            context.li_wallets.DeleteOnSubmit(walletDel);
+                            try
+                            {
+                                context.SubmitChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除用户" + id + "失败：" + ex.Message);
+                                errorCount += 1;
+                                continue;
+                            }
+                        }
+                    }
 
+                    if (bll.Delete(id))
+                    {
+                        sucCount += 1;
+                    }
+                    else
+                    {
+                        errorCount += 1;
+                    }
+                }
+            }
+
+            AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除用户" + sucCount + "条，失败" + errorCount + "条"); //记录日志
+            JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！",
+                Utils.CombUrlTxt("user_audit.aspx", "keywords={0}", txtKeywords.Text), "Success");
+        }
     }
 }

@@ -4,3 +4,10 @@
     }
 };
 
+$(function(){
+    $("#financial ul li").click(function(){
+        var indexed=$("#financial ul li").index(this);
+        $(".consume ul li").eq(indexed).addClass("bluecon").siblings().removeClass("bluecon");   
+        $(".fincategory>div").eq(indexed).removeClass("hidden").siblings().addClass("hidden");
+    });
+});

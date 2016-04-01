@@ -1,5 +1,6 @@
 ﻿<%namespace "Agp2p.Core"%>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +16,7 @@
 </head>
 <body>
     <!--head-->
+    <a name="ticket-area"></a>
     <%template src="_header.html"%>
     <!--head end-->
     <!--面包屑导航-->
@@ -24,7 +26,19 @@
         <span>我要理财</span>
     </div>
     <!--面包屑导航 end-->
+    <div class="content-wrap consume">
+        <ul>
+            <li class="bluecon ticket-area-li">票据专区 <p>2</p><span></span> </li>
+            <li class="zhaiquan-li">债权转让<span></span></li>
+            <li class="huoqibao-li">活期宝<span></span></li>
+            <li class="wentibao-li">文体宝<span></span></li>
+            <li class="consumefin-li">消费金融<span></span></li>
+        </ul>
+    </div>
 
+<div class="fincategory">
+<div>   
+   
     <div class="top-part content-wrap">
         <div class="select-box">
             <div class="project-time">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more",54)%>'>发标公告</a>。</div>
@@ -45,6 +59,7 @@
                             <a href='<%linkurl("projects",0,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                                class='<%=0==category_id?"selected":""%>'>全部</a>
                         </li>
+                       <!--
                         <%foreach(var kvp in CategoryIdTitleMap)%>
                         <li>
                             <a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
@@ -57,6 +72,31 @@
                             </a>
                         </li>
                         <%/foreach%>
+                          -->
+                        
+                        <li>
+                            <a href='<%linkurl("projects",60,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
+                               class='<%=60==category_id?"selected":""%>'>
+                                银票宝
+                                <%if(60!=category_id)%>
+               <%=FinancingProjectMap.ContainsKey(60)?"<span style='color: red;padding:0 1px'>("+FinancingProjectMap[60]+")</span>":""%>
+    <%else%>
+               <%=FinancingProjectMap.ContainsKey(60)?"<span style='color: white;padding:0 1px'>("+FinancingProjectMap[60]+")</span>":""%>
+                                <%/if%>
+                            </a>
+                        </li> 
+                        <li>
+                            <a href='<%linkurl("projects",62,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
+                               class='<%=62==category_id?"selected":""%>'>
+                                天盈宝
+                                <%if(62!=category_id)%>
+                                <%=FinancingProjectMap.ContainsKey(62)?"<span style='color: red;padding:0 1px'>("+FinancingProjectMap[62]+")</span>":""%>
+                                <%else%>
+                                <%=FinancingProjectMap.ContainsKey(62)?"<span style='color: white;padding:0 1px'>("+FinancingProjectMap[62]+")</span>":""%>
+                                <%/if%>
+                            </a>
+                        </li> 
+                        
                     </ul>
                 </div>
                 <div class="project-profit">
@@ -86,7 +126,7 @@
             </div>
         </div>
         <div class="novice-guide pull-right">
-            <p class="topic-title"><a href="<%linkurl("help")%>" target="_blank">新手指引</a></p>
+        
             <ul class="guide-list">
                 <li><a href="<%linkurl("article_show",78)%>" target="_blank">如何进行充值?</a></li>
                 <li><a href="<%linkurl("article_show",89)%>" target="_blank">如何进行投资?</a></li>
@@ -159,7 +199,98 @@
 
     <!--取得分页页码列表-->
     <div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("projects",{category_id},{project_profit_rate_index},{project_repayment_index},{project_status_index},"__id__"))%></div>
+</div>
 
+    <!--债权转让-->
+    <div class="hidden zhaiquan">
+         <a name="zhaiquan"></a>
+        <div class="invest-list content-wrap">
+            <div class="list-head">
+                <span class="title-th">借款标题</span>
+                <span class="apr-th">年化利率</span>
+                <span class="sum-th">借款金额</span>
+                <span class="deadline-th">期限</span>
+                <span class="back-way-th">还款方式</span>
+                <span class="progress-th">进度</span>
+                <span class="status pull-right">状态</span>
+            </div>
+            <%set var projects2=QueryProjects(PAGE_SIZE,page-1,out totalcount,69,project_profit_rate_index,project_repayment_index,project_status_index)%>
+            <%if(!projects2.Any())%>
+            <div class="empty-box content-wrap">
+                <div class="empty-icon">暂没有找到相关数据</div>
+            </div>
+            <%/if%>
+            <%foreach(var p2 in projects2)%>
+            <div class="invest-per">
+                <span class="title">
+                    <i class="title-mark"><%=p2.dt_article_category.title%></i>
+                    <a href='<%linkurl("project",p2.id)%>'>{p2.title}</a>
+                    <%if((p2.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
+                    <span class="invest-list-icon yue-icon"></span>
+                    <%/if%>
+                    <%if((p2.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
+                    <span class="invest-list-icon jian-icon"></span>
+                    <%/if%>
+                    <%if((p2.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
+                    <span class="invest-list-icon xin-icon"></span>
+                    <%/if%>
+                </span>
+                <span class="apr"><%=p2.profit_rate_year.ToString("f1")%><i>%</i></span>
+                <span class="sum"><%=p2.financing_amount.ToString("n0")%><i>元</i></span>
+                <span class="deadline">{p2.repayment_term_span_count}<i>{p2.GetProjectTermSpanEnumDesc()}</i></span>
+                <span class="back-way">{p2.GetProjectRepaymentTypeDesc()}</span>
+                <span class="progress-wrap">
+                    <div class="progress progress-custom">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%=(p2.GetInvestmentProgressPercent()*100)%>"
+                             aria-valuemin="0" aria-valuemax="100" style='width: 0'>
+                            <%=p2.GetInvestmentProgressPercent().ToString("p1")%>
+                        </div>
+                    </div>
+                </span>
+                <span class="btn-wrap pull-right">
+                    <%if(p2.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                    <a class="btn-grey" href='<%linkurl("project2",p2.id)%>'>待发标</a>
+                    <%else if(p2.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                    <a class="btn-red" href='<%linkurl("project2",p2.id)%>'>立即投资</a>
+                    <%else if(p2.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p2.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                    <a class="btn-grey" href='<%linkurl("project2",p2.id)%>'>审核中</a>
+                    <%else if(p2.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                    <a class="btn-grey" href='<%linkurl("project2",p2.id)%>'>还款中</a>
+                    <%else if(p2.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                    <a class="btn-grey" href='<%linkurl("project2",p2.id)%>'>已完成</a>
+                    <%/if%>
+                </span>
+            </div>
+            <%/foreach%>
+          </div>
+        </div>
+
+    <!--活期宝-->
+    <div class="hidden huoqibao">
+        <a name="huoqibao"></a>
+        <div class="content-wrap">
+            <img src="<%templateskin%>/imgs/projects/002.jpg" />
+                <div>敬请期待</div>
+        </div>
+    </div>
+
+    <!--文体宝-->
+    <div class="hidden wentibao">
+        <a name="wentibao"></a>
+        <div class="content-wrap">
+            <img src="<%templateskin%>/imgs/projects/002.jpg" />
+                <div>敬请期待</div>
+        </div>
+    </div>
+    <!--消费金融-->
+    <div class="consumefin hidden ">
+        <a name="consumefin"></a>
+        <div class="content-wrap">
+           <img src="<%templateskin%>/imgs/projects/002.jpg" />
+                <div>敬请期待</div>
+        </div>
+    </div>
+</div>
     <%template src="_floating.html"%>
 
     <!--footer-->

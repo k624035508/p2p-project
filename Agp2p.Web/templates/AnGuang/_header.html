@@ -22,11 +22,11 @@
                 <li><a id="logout" href='<%linkurl("usercenter","exit")%>'>退出</a></li>
                 <%/if%>
                 <li class="hr-line">|</li>
-                <li><a id="help" href='<%=linkurl("help")%>'>帮助</a></li>
-                <li class="hr-line">|</li>
                 <li><a id="help" href='<%=linkurl("loan")%>'>我要借款</a></li>
                 <li class="hr-line">|</li>
                 <li><a id="help" href='<%=linkurl("coop")%>'>融资合作</a></li>
+                <li class="hr-line">|</li>
+                <li><a id="help" href='<%=linkurl("help")%>'>帮助</a></li>
                 <li class="hr-line">|</li>
                 <li><a id="apps" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" data-content="<img style='width:95px' src='<%templateskin%>/imgs/index/top-bar-app-code.png'/>" href='<%linkurl("activity_apps")%>' target="_blank"></a></li>
             </ul>
@@ -43,13 +43,23 @@
         <nav class="pull-right">
             <ul class="list-inline in-header">
                 <li><a href="/">首页</a></li>
-                <li><a href='<%linkurl("projects")%>'>我要理财</a></li>
+                <li role="presentation" id="financial" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" onclick="location.href = this.getAttribute('href');" href='<%linkurl("projects")%>'
+                   role="button" aria-haspopup="true" aria-expanded="false">
+                   我要理财 <span class="arrowsituation"></span>
+                </a>
+                    <ul class="dropdown-menu dropdown-menu-custom">
+                        <li><a href='<%linkurl("projects")%>#ticket-area'>票据专区</a></li>
+                        <li><a href='<%linkurl("projects")%>#zhaiquan'>债权转让</a></li>
+                        <li><a href='<%linkurl("projects")%>#huoqibao'>活期宝</a></li>
+                        <li><a href='<%linkurl("projects")%>#wentibao'>文体宝</a></li>
+                        <li><a href='<%linkurl("projects")%>#consumefin'>消费金融</a></li>
+                    </ul>
+                </li>
                 <li role="presentation" id="myAccount" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" onclick="location.href = this.getAttribute('href');" href='<%linkurl("usercenter","index")%>'
                         role="button" aria-haspopup="true" aria-expanded="false">
-                        我的账户
-                    <!--<span class="caret"></span>-->
-                        <i class="iconfont">&#xe695;</i>
+                        我的账户 <span class="arrowsituation"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-custom">
                         <li><a href='<%linkurl("usercenter","index")%>#'>账户总览</a></li>

@@ -92,7 +92,9 @@ namespace Agp2p.Web.UI.Page
                     }
 
                     //查看是否有在审批中的借款申请
-                    var project = context.li_projects.Where(p => p.user_name == user.user_name && p.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted).ToList();
+                    var project = context.li_projects.Where(p => p.li_risks.li_loaners.dt_users.id == user.id && p.status >= (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted
+                    && p.status < (int)Agp2pEnums.ProjectStatusEnum.Financing && p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail
+                    && p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingFail).ToList();
                     if (project.Any())
                     {
                         step = "4"; //显示正在审批步骤
@@ -112,15 +114,22 @@ namespace Agp2p.Web.UI.Page
                         var projectAll =
                             context.li_projects.Where(
                                 p =>
-                                    p.user_name == user.user_name &&
-                                    p.status > (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted &&
-                                    p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail);
+                                    p.li_risks.li_loaners.dt_users.id == user.id &&
+                                    p.status >= (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                                    p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail &&
+                                    p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail &&
+                                    p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel);
                         //查询可用额度
-                        quota_use = projectAll.Any()
-                            ? loaner.quota - (int) projectAll.Sum(p => p.financing_amount)
-                            : loaner.quota;
-                        //借款人额度为0表示不限额，或者大于0则可继续申请借款
-                        step = loaner.quota == 0 || quota_use > 0 ? "3" : "5";
+                        if (projectAll.Any())
+                        {
+                            step = "5";
+                            quota_use = loaner.quota - (int) projectAll.Sum(p => p.financing_amount);
+                        }
+                        else
+                        {
+                            step = "3";
+                            quota_use = loaner.quota;
+                        }
                     }
                 }
             }
@@ -199,7 +208,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="amount"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string ApplyLoan(int loaner_id, string user_name, string loaner_content, string loan_usage, string source_of_repayment, int category_id, int amount)
+        public static string ApplyLoan(int loaner_id, string user_name, string loaner_content, string loan_usage, string source_of_repayment, int amount)
         {
             try
             {
@@ -215,7 +224,7 @@ namespace Agp2p.Web.UI.Page
                 var project = new li_projects()
                 {
                     li_risks = risk,
-                    category_id = category_id,
+                    category_id = 61,
                     financing_amount = amount,
                     user_name = user_name,
                     add_time = DateTime.Now,
