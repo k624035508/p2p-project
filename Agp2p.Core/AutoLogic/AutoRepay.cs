@@ -29,10 +29,19 @@ namespace Agp2p.Core.AutoLogic
         public static void CheckStaticProjectWithdrawOvertime(bool onTime)
         {
             var context = new Agp2pDataContext();
-            var withdrawOvertimeClaims = context.li_claims.Where(
-                c =>
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.projectId == c.profitingProjectId &&
-                    c.createTime < DateTime.Now.AddDays(-2) && !c.Children.Any()).ToList();
+            // 申请时间超过 2 日 / 到达还款日，则取消债权转让申请
+            var withdrawOvertimeClaims = context.li_claims
+                .Where(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.projectId == c.profitingProjectId &&
+                        !c.Children.Any())
+                .AsEnumerable().Where(c =>
+                {
+                    var nextRepayDate = c.li_projects.li_repayment_tasks.FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time.Date;
+                    if (nextRepayDate != null && nextRepayDate.Value <= DateTime.Today)
+                    {
+                        return true;
+                    }
+                    return c.createTime < DateTime.Now.AddDays(-2);
+                }).ToList();
             if (!withdrawOvertimeClaims.Any()) return;
 
             withdrawOvertimeClaims.ForEach(c => TransactionFacade.StaticClaimWithdrawCancel(context, c.id, false));
@@ -105,7 +114,9 @@ namespace Agp2p.Core.AutoLogic
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
-            SendRepayNotice(shouldRepayTask, context);
+
+            // 活期项目不发兑付公告
+            SendRepayNotice(shouldRepayTask.Where(t => !t.li_projects.IsHuoqiProject()).ToList(), context);
         }
 
         /// <summary>

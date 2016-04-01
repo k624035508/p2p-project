@@ -8,7 +8,9 @@ class Pagination extends React.Component {
         this.state = {};
     }
     componentWillReceiveProps (nextProps) {
-    	if (nextProps.pageCount != this.props.pageCount && nextProps.pageCount <= Math.max(nextProps.pageIndex, this.props.pageIndex)) {
+    	if (nextProps.pageCount != this.props.pageCount &&
+            nextProps.pageCount <= Math.max(nextProps.pageIndex, this.props.pageIndex) &&
+            0 < nextProps.pageCount) {
     		this.props.onPageSelected(0);
     	}
     }
