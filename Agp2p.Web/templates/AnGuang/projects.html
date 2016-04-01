@@ -28,9 +28,9 @@
     <!--面包屑导航 end-->
     <div class="content-wrap consume">
         <ul>
-            <li class="bluecon ticket-area-li">票据专区 <p>2</p><span></span> </li>
-            <li class="zhaiquan-li">债权转让<span></span></li>
-            <li class="huoqibao-li">活期宝<span></span></li>
+            <li class='<%=rootCategoryId==70?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",70)%>'">票据专区 <p><%=FinancingProjectMap.GetValueOrDefault(70,0)%></p><span></span> </li>
+            <li class='<%=rootCategoryId==69?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",69)%>'">债权转让<span></span></li>
+            <li class='<%=rootCategoryId==67?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",67)%>'">活期宝<span></span></li>
             <li class="wentibao-li">文体宝<span></span></li>
             <li class="consumefin-li">消费金融<span></span></li>
         </ul>
@@ -52,53 +52,29 @@
                 <%/foreach%>
                 </ul>
                 </div>-->
+                <%if(SubCategoryIdTitleMap.Any())%>
                 <div class="project-types">
                     <span>项目类型</span>
                     <ul class="list-unstyled">
                         <li>
                             <a href='<%linkurl("projects",0,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
-                               class='<%=0==category_id?"selected":""%>'>全部</a>
+                               class='<%=0==category_id||rootCategoryId==category_id?"selected":""%>'>全部</a>
                         </li>
-                       <!--
-                        <%foreach(var kvp in CategoryIdTitleMap)%>
+                        <%foreach(var kvp in SubCategoryIdTitleMap)%>
                         <li>
                             <a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                                class='<%=kvp.Key==category_id?"selected":""%>'><%=kvp.Value%>
                                 <%if(kvp.Key!=category_id)%>
-                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: red;padding:0 5px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
+                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: red;padding:0 1px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
                                 <%else%>
-                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: white;padding:0 5px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
+                                <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: white;padding:0 1px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
                                 <%/if%>
                             </a>
                         </li>
                         <%/foreach%>
-                          -->
-                        
-                        <li>
-                            <a href='<%linkurl("projects",60,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
-                               class='<%=60==category_id?"selected":""%>'>
-                                银票宝
-                                <%if(60!=category_id)%>
-                                <%=FinancingProjectMap.ContainsKey(60)?"<span style='color: red;padding:0 1px'>("+FinancingProjectMap[60]+")</span>":""%>
-                                <%else%>
-                                <%=FinancingProjectMap.ContainsKey(60)?"<span style='color: white;padding:0 1px'>("+FinancingProjectMap[60]+")</span>":""%>
-                                <%/if%>
-                            </a>
-                        </li> 
-                        <li>
-                            <a href='<%linkurl("projects",62,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
-                               class='<%=62==category_id?"selected":""%>'>
-                                天盈宝
-                                <%if(62!=category_id)%>
-                                <%=FinancingProjectMap.ContainsKey(62)?"<span style='color: red;padding:0 1px'>("+FinancingProjectMap[62]+")</span>":""%>
-                                <%else%>
-                                <%=FinancingProjectMap.ContainsKey(62)?"<span style='color: white;padding:0 1px'>("+FinancingProjectMap[62]+")</span>":""%>
-                                <%/if%>
-                            </a>
-                        </li> 
-                        
                     </ul>
                 </div>
+                <%/if%>
                 <div class="project-profit">
                     <span>项目收益</span>
                     <ul class="list-unstyled list-inline">
@@ -146,7 +122,7 @@
             <span class="progress-th">进度</span>
             <span class="status pull-right">状态</span>
         </div>
-        <%set var investables=QueryInvestables(PAGE_SIZE,page-1,out totalcount,category_id,project_profit_rate_index,project_repayment_index,project_status_index)%>
+        <%set var investables=QueryInvestables(PAGE_SIZE,page-1,out totalcount,category_id==0?rootCategoryId:category_id,project_profit_rate_index,project_repayment_index,project_status_index)%>
         <%if(!investables.Any())%>
         <div class="empty-box content-wrap">
             <div class="empty-icon">暂没有找到相关数据</div>
@@ -170,7 +146,11 @@
             </span>
             <span class="apr"><%=p.profit_rate_year.ToString("f1")%><i>%</i></span>
             <span class="sum"><%=inv.FinancingAmount.ToString("n0")%><i>元</i></span>
+            <%if(p.IsHuoqiProject())%>
+            <span class="deadline">--</span>
+            <%else%>
             <span class="deadline">{p.repayment_term_span_count}<i>{p.GetProjectTermSpanEnumDesc()}</i></span>
+            <%/if%>
             <span class="back-way">{p.GetProjectRepaymentTypeDesc()}</span>
             <span class="progress-wrap">
                 <div class="progress progress-custom">
