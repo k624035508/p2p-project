@@ -10,7 +10,7 @@ $(function() {
     $('[data-toggle="popover"]').popover();
 
     //根据步骤显示
-    var { step } = $("#step").data();
+    var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
         $(".register-left").eq(0).addClass("hidden");
@@ -26,6 +26,19 @@ $(function() {
         $(".step3-hr").addClass("step-red");
         $(".step3").addClass("redstep");
         $(".tips3").addClass("tips-red");
+    } else if (step == "4") {
+        //开户处理结果显示 TODO
+        if (result=="success") {
+            $(".register-left").eq(0).addClass("hidden");
+            $(".register-left").eq(1).addClass("hidden");
+            $(".register-left").eq(2).removeClass("hidden");
+            $(".step3-hr").addClass("step-red");
+            $(".step3").addClass("redstep");
+            $(".tips3").addClass("tips-red");
+        } else {
+            //失败
+
+        }
     }
 
     //邀请码选填 

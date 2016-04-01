@@ -23,7 +23,7 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
-                    Response.Write("开通托管账户成功！");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/register.html?action=4&result=success");
                     break;
             }
         }
