@@ -1846,16 +1846,16 @@ namespace Agp2p.Core
         /// <param name="proj"></param>
         /// <param name="queryTime">查询时间，会根据它查询出不同的债权状态，默认是当前时间。区间应该位于还款计划进行期间</param>
         /// <returns></returns>
-        private static Dictionary<li_claims, decimal> GetClaimRatio(this li_projects proj, DateTime? queryTime = null)
+        public static Dictionary<li_claims, decimal> GetClaimRatio(this li_projects proj, DateTime? queryTime = null)
         {
             if (proj.IsHuoqiProject())
             {
-                var claims = proj.li_claims_profiting.AsEnumerable().Where(c => c.IsProfiting(queryTime)).ToList();
+                var claims = proj.li_claims_profiting.Where(c => c.IsProfiting(queryTime)).ToList();
                 var huoqiProjectInvestmentAmount = claims.Aggregate(0m, (sum, c) => sum + c.principal);
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var profitingClaims = proj.li_claims.AsEnumerable().Where(c => c.IsProfiting(queryTime)).ToList();
+            var profitingClaims = proj.li_claims.Where(c => c.IsProfiting(queryTime)).ToList();
 
             // 由于存在使用了父债权时间的债权，所以上述查询可能会同时查出子债权和父债权，造成比例异常，需要排除掉父债权
             if (proj.financing_amount < profitingClaims.Aggregate(0m, (sum, c) => sum + c.principal))
@@ -1889,7 +1889,7 @@ namespace Agp2p.Core
         /// <param name="unsafeCreateEntities">如果设置了实体类到 project_transaction 然后 SubmitChanges 的话，ptr 会被插入到数据库 </param>
         /// <param name="applyCostIntoInterest">如果为 true ，则 interest 实际上为计算了 cost 的收益</param>
         /// <returns></returns>
-        private static List<li_project_transactions> GenerateRepayTransactions(this Dictionary<li_claims, decimal> claimRatio,
+        public static List<li_project_transactions> GenerateRepayTransactions(this Dictionary<li_claims, decimal> claimRatio,
             li_repayment_tasks repaymentTask, DateTime transactTime, bool unsafeCreateEntities = false, bool applyCostIntoInterest = false)
         {
             if (!claimRatio.Any())
