@@ -44,7 +44,10 @@ namespace Agp2p.Web.UI.Page
         {
             var context = new Agp2pDataContext();
 
-            var query = context.li_claims.Where(c => c.userId == userId && c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any());
+            var query = context.li_claims.Where(c =>
+                        c.userId == userId && c.projectId == c.profitingProjectId &&
+                        c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any());
+
             if (!string.IsNullOrWhiteSpace(startTime))
                 query = query.Where(c => Convert.ToDateTime(startTime) <= c.createTime);
             if (!string.IsNullOrWhiteSpace(endTime))
