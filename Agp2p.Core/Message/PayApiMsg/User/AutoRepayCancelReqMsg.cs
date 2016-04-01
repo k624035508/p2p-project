@@ -19,15 +19,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int)Agp2pEnums.SumapayApiEnum.ClRep;
             ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoRepay_toCancelAutoRepay";
             RequestId = Agp2pEnums.SumapayApiEnum.ClRep.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + SuccessReturnUrl + FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

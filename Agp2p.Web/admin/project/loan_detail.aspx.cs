@@ -741,7 +741,7 @@ namespace Agp2p.Web.admin.project
         }
 
         /// <summary>
-        /// 自动还款签约
+        /// 账户自动还款签约
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -749,16 +749,10 @@ namespace Agp2p.Web.admin.project
         {
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             var loaner = project.li_risks.li_loaners;
-            if (loaner != null)
-            {
-                var reqMsg = new AutoRepaySignReqMsg(project.li_risks.li_loaners.dt_users.id, ProjectId.ToString(), project.investment_amount.ToString("N"), true);
-                MessageBus.Main.PublishAsync(reqMsg, ar =>
-                {
-                    Context.Response.Redirect(reqMsg.RequestContent);
-                });
-
-            }
-            
+            if (loaner?.dt_users != null)
+                Response.Write("<script>window.open('" +
+                               $"/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.AcReO}&userId={loaner.dt_users.id}&projectCode={ProjectId}&repayLimit={project.investment_amount.ToString("N")}" +
+                               "','_blank')</script>");
         }
     }
 

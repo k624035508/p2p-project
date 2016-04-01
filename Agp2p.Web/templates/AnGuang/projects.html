@@ -214,7 +214,7 @@
                 <span class="progress-th">进度</span>
                 <span class="status pull-right">状态</span>
             </div>
-            <%set var projects2=QueryProjects(PAGE_SIZE,page-1,out totalcount,69,project_profit_rate_index,project_repayment_index,project_status_index)%>
+            <%set var projects2=QueryInvestables(PAGE_SIZE,page-1,out totalcount,69,project_profit_rate_index,project_repayment_index,project_status_index)%>
             <%if(!projects2.Any())%>
             <div class="empty-box content-wrap">
                 <div class="empty-icon">暂没有找到相关数据</div>
