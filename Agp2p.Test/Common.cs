@@ -69,10 +69,7 @@ namespace Agp2p.Test
             var preDelProj = context.li_projects.Where(p => deleteAfter <= p.add_time).ToList();
             preDelProj.ForEach(p =>
             {
-                if (deleteAfter <= p.make_loan_time)
-                {
-                    context.li_repayment_tasks.DeleteAllOnSubmit(p.li_repayment_tasks);
-                }
+                context.li_repayment_tasks.DeleteAllOnSubmit(p.li_repayment_tasks);
 
                 var ptrs = p.li_project_transactions.Where(ptr => deleteAfter <= ptr.create_time).ToList();
                 ptrs.ForEach(ptr =>
@@ -86,6 +83,8 @@ namespace Agp2p.Test
                 context.li_claims.DeleteAllOnSubmit(preDelClaims);
 
                 context.li_risks.DeleteOnSubmit(p.li_risks);
+
+                context.li_company_inoutcome.DeleteAllOnSubmit(p.li_company_inoutcome);
             });
             context.li_projects.DeleteAllOnSubmit(preDelProj);
 
@@ -143,6 +142,9 @@ namespace Agp2p.Test
                 });
                 context.li_activity_transactions.DeleteAllOnSubmit(preDelAtr);
             });
+
+            var managerLogs = context.dt_manager_log.Where(l => deleteAfter <= l.add_time).ToList();
+            context.dt_manager_log.DeleteAllOnSubmit(managerLogs);
 
             context.SubmitChanges();
         }
