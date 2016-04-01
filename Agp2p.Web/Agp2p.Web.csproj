@@ -337,6 +337,7 @@
     <Content Include="api\payment\lianlianpay\prepositPay.aspx" />
     <Content Include="api\payment\lianlianpay\urlReturn.aspx" />
     <Content Include="api\payment\sumapay\failReturnUrl.aspx" />
+    <Content Include="api\payment\sumapay\index.aspx" />
     <Content Include="api\payment\sumapay\noticeUrl.aspx" />
     <Content Include="api\payment\sumapay\successReturnUrl.aspx" />
     <Content Include="api\payment\tenpay\index.aspx" />
@@ -2395,6 +2396,10 @@
     </Compile>
     <Compile Include="api\payment\sumapay\failReturnUrl.aspx.cs">
       <DependentUpon>failReturnUrl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="api\payment\sumapay\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="api\payment\sumapay\noticeUrl.aspx.cs">

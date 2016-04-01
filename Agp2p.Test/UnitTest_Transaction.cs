@@ -149,7 +149,7 @@ namespace Agp2p.Test
         public void TestRepayNotice()
         {
             var context = new Agp2pDataContext();
-            var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
+            var rt = context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
 
@@ -324,7 +324,7 @@ namespace Agp2p.Test
             {
                 request_id = msgReq.RequestId,
                 result = "00000",
-                status = (int)Agp2pEnums.SumapayResponseEnum.Return,
+                status = (int) Agp2pEnums.SumapayResponseEnum.Return,
                 response_time = DateTime.Now,
                 response_content = "{request:'" + msgReq.RequestId + "',result:'00000'}"
             };
@@ -338,10 +338,10 @@ namespace Agp2p.Test
                     {
                         var req = context.li_pay_request_log.SingleOrDefault(r => r.id == responseLog.request_id);
                         req.complete_time = DateTime.Now;
-                        req.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+                        req.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
 
                         responseLog.user_id = respMsg.UserIdIdentity;
-                        responseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
+                        responseLog.status = (int) Agp2pEnums.SumapayResponseEnum.Complete;
                     }
                     responseLog.remarks = respMsg.Remarks;
                     context.SubmitChanges();
@@ -383,9 +383,10 @@ namespace Agp2p.Test
                 if (ptr.li_projects.IsNewbieProject())
                 {
                     var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
-                    if (task.status != (int)Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    if (task.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)
                     {
-                        var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value,
+                            Agp2pEnums.ClaimStatusEnum.Completed);
                         context.li_claims.InsertOnSubmit(claim);
                         count += 1;
                     }
@@ -394,7 +395,8 @@ namespace Agp2p.Test
                 {
                     if (ptr.li_projects.complete_time.HasValue)
                     {
-                        var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed);
+                        var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value,
+                            Agp2pEnums.ClaimStatusEnum.Completed);
                         context.li_claims.InsertOnSubmit(claim);
                         count += 1;
                     }
@@ -418,13 +420,13 @@ namespace Agp2p.Test
         {
             var now = DateTime.Now;
             Common.DeltaDay(now, -1);
-            Common.MakeSureHaveIdleMoney("13535656867", 10 * 10000);
-            Common.MakeSureHaveIdleMoney("13590609455", 10 * 10000);
-            Common.MakeSureHaveIdleMoney("CompanyAccount", 10 * 10000);
+            Common.MakeSureHaveIdleMoney("13535656867", 10*10000);
+            Common.MakeSureHaveIdleMoney("13590609455", 10*10000);
+            Common.MakeSureHaveIdleMoney("CompanyAccount", 10*10000);
             Common.DeltaDay(now, 0);
         }
 
-        class DebugTextWriter : TextWriter
+        private class DebugTextWriter : TextWriter
         {
             public int writeCount = 0;
 

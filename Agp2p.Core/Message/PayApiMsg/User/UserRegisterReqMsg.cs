@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using System.Web;
 using Agp2p.Common;
 using xBrainLab.Security.Cryptography;
 
@@ -27,15 +29,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int) Agp2pEnums.SumapayApiEnum.URegi;
             ApiInterface = SumapayConfig.TestApiUrl + "user/register_toRegister";
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
-            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
-                                           PayType);
+            return SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
+                                           PayType, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

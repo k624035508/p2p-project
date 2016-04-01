@@ -102,11 +102,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
@@ -137,11 +137,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
@@ -173,11 +173,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
@@ -209,11 +209,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息

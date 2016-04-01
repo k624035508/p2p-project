@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
@@ -37,7 +39,7 @@ namespace Agp2p.Core.PayApiLogic
                     status = (int) Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
                     //生成发送报文
-                    request_content = Utils.BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface, "post", "gbk")
+                    request_content = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface)
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
@@ -49,6 +51,22 @@ namespace Agp2p.Core.PayApiLogic
                 //TODO 返回错误信息
                 throw ex;
             }
+        }
+
+        private static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway)
+        {
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + "' method='post'>");
+
+            foreach (KeyValuePair<string, string> temp in sParaTemp)
+            {
+                sbHtml.Append("<input type='hidden' name='" + temp.Key + "' value='" + temp.Value + "'/>");
+            }
+
+            sbHtml.Append("<input type='submit' value='ok' style='display:none;'></form>");
+            sbHtml.Append("<script>document.forms['submit'].submit();</script>");
+
+            return sbHtml.ToString();
         }
 
         /// <summary>

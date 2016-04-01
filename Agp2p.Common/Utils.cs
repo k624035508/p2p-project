@@ -1325,6 +1325,19 @@ namespace Agp2p.Common
             }
             return _url + DelLastChar(urlParams.ToString(), "&");
         }
+
+        /// <summary>
+        /// 解析Url参数
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> UrlParamToData(string param)
+        {
+            Regex re = new Regex(@"(^|&)?(\w+)=([^&]+)(&|$)?", RegexOptions.Compiled);
+            MatchCollection mc = re.Matches(param);
+            return mc.Cast<Match>().ToDictionary(m => m.Result("$2"), m => m.Result("$3"));
+        }
+
         #endregion
 
         #region URL请求数据
@@ -1871,24 +1884,6 @@ namespace Agp2p.Common
                 return ex.InnerException.GetSimpleCrashInfo();
             }
             return ex.Message + "\n" + ex.StackTrace?.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
-        }
-
-        public static string BuildFormHtml(SortedDictionary<string, string> sParaTemp, string gateway, string strMethod,
-            string inputCharset)
-        {
-            StringBuilder sbHtml = new StringBuilder();
-            sbHtml.Append("<form id='submit' name='submit' action='" + gateway + "' encoding='" + inputCharset +
-                          "' method='" + strMethod.ToLower().Trim() + "'>");
-
-            foreach (KeyValuePair<string, string> temp in sParaTemp)
-            {
-                sbHtml.Append("<input type='hidden' name='" + temp.Key + "' value='" + temp.Value + "'/>");
-            }
-
-            sbHtml.Append("<input type='submit' value='ok' style='display:none;'></form>");
-            sbHtml.Append("<script>document.forms['submit'].submit();</script>");
-
-            return sbHtml.ToString();
         }
 
         public static Dictionary<TKey, TVal> ReplaceKey<TKey, TVal>(this Dictionary<TKey, TVal> src, TKey originalKey, TKey replacement)

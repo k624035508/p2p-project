@@ -14,6 +14,7 @@ using Agp2p.Linq2SQL;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;

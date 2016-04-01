@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TinyMessenger;
+using System.Web;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -14,6 +14,8 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public FrontEndReqMsg()
         {
+            SuccessReturnUrl = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/successReturnUrl.aspx";
+            FailReturnUrl = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/failReturnUrl.aspx";
         }
 
         public override string GetSignature()
