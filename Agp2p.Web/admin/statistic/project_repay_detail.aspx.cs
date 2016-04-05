@@ -172,7 +172,11 @@ namespace Agp2p.Web.admin.statistic
                     }
                     else
                     {
-                        profiting = TransactionFacade.GenerateRepayTransactions(repaymentTask, repaymentTask.should_repay_time, true); // 临时预计收益
+                        // 临时预计收益，直接查询有效的叶子节点（避免活期债权影响债权比率，会小于 1）
+                        var claimRatio = repaymentTask.li_projects.li_claims
+                            .Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.IsLeafClaim())
+                            .ToDictionary(c => c, c => c.principal/repaymentTask.li_projects.investment_amount);
+                        profiting = claimRatio.GenerateRepayTransactions(repaymentTask, repaymentTask.should_repay_time, true);
                     }
 
                     //根据组权限查询数据
