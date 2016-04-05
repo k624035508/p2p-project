@@ -11,3 +11,5 @@ $(function(){
         $(".fincategory>div").eq(indexed).removeClass("hidden").siblings().addClass("hidden");
     });
 });
+
+
