@@ -458,7 +458,11 @@ namespace Agp2p.Common
             [Description("汇潮网银支付")]
             Ecpss = 4,
             [Description("汇潮快捷支付")]
-            EcpssQ = 5
+            EcpssQ = 5,
+            [Description("丰付网银支付")]
+            Sumapay = 6,
+            [Description("丰付一键支付")]
+            SumapayQ = 7,
         }
 
         /// <summary>

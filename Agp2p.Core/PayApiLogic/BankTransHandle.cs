@@ -77,8 +77,8 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //异步返回的结果才是充值已到账
-                            if (!msg.Sync)
+                            //TODO 异步返回的结果才是充值已到账
+                            if (msg.Sync)
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
                                 //TODO 检查用户资金信息

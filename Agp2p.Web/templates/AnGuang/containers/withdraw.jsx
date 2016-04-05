@@ -83,12 +83,15 @@ class WithdrawPage extends React.Component {
 				transactPassword: this.state.transactPassword
 			},
 			dataType: "json",
-			success: data => {
-				alert(data.msg);
+			success: data => {				
 				if (data.status == 1) {
-					this.setState({toWithdraw: "", transactPassword: ""})
-					this.props.dispatch(fetchWalletAndUserInfo());
+				    //this.setState({toWithdraw: "", transactPassword: ""})
+				    //this.props.dispatch(fetchWalletAndUserInfo());
+				    location.href = data.url;
+				} else{
+				    alert(data.msg);
 				}
+
 			},
 			error: jqXHR => {
 				alert("提交失败，请重试");

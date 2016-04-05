@@ -1,4 +1,6 @@
 ﻿
+using Agp2p.Common;
+
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
@@ -18,9 +20,25 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BankName { get; set; }//银行名称
         public string Name { get; set; }//用户姓名
 
-        public RechargeRespMsg()
+        public RechargeRespMsg(string requestStr)
         {
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
 
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            Sum = map["sum"];
+            UserBalance = map["userBalance"];
+            WithdrawableBalance = map["withdrawableBalance"];
+            FrozenBalance = map["frozenBalance"];
+            UnsettledBalance = map["unsettledBalance"];
+            PayType = map["payType"];
+            MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
+            MainAccountCode = map.ContainsKey("mainAccountType") ? map["mainAccountCode"] : "";
+            BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
+            BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
+            Name = map.ContainsKey("name") ? map["name"] : "";
         }
 
         public override bool CheckSignature()

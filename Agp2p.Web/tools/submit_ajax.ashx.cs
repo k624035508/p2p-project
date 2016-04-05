@@ -2304,9 +2304,9 @@ namespace Agp2p.Web.tools
         private void recharge(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
             if (string.IsNullOrEmpty(user.mobile))
@@ -2340,14 +2340,15 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                     return;
                 }
-                //发送充值请求
-                BaseReqMsg reqMsg;
-                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum);
-                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode);
-                MessageBus.Main.PublishAsync(reqMsg, ar =>
-                {
-                    context.Response.Write(reqMsg.RequestContent);
-                });
+                if (!quickPayment)
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                           (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
+                                           rechargeSum + "&bankCode=" +
+                                           bankCode + "\"}");
+                else
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                           (int) Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                           rechargeSum + "\"}");
             }
             catch (Exception e)
             {
@@ -2362,11 +2363,11 @@ namespace Agp2p.Web.tools
         private void withdraw(HttpContext context)
         {            
             var user = BasePage.GetUserInfoByLinq();
-            if (string.IsNullOrEmpty(user.pay_password))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
-                return;
-            }
+            //if (string.IsNullOrEmpty(user.pay_password))
+            //{
+            //    context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+            //    return;
+            //}
             if (string.IsNullOrEmpty(user.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
@@ -2404,17 +2405,16 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"请输入交易密码！\"}");
                     return;
                 }
-                if (!Utils.MD5(pw).Equals(user.pay_password))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
-                    return;
-                }
+                //if (!Utils.MD5(pw).Equals(user.pay_password))
+                //{
+                //    context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
+                //    return;
+                //}
 
-                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"));
-                MessageBus.Main.PublishAsync(reqMsg, ar =>
-                {
-                    context.Response.Write(reqMsg.RequestContent);
-                });
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                           (int)Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                           howmany + "&bankId=" +
+                                           cardId + "\"}");
             }
             catch (Exception e)
             {

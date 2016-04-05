@@ -130,6 +130,24 @@ namespace Agp2p.Web.admin.settings {
         protected global::System.Web.UI.WebControls.TextBox txt_recharge_lowest;
         
         /// <summary>
+        /// txt_recharge_fee_rate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_recharge_fee_rate;
+        
+        /// <summary>
+        /// txt_recharge_fee_rate_quick 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_recharge_fee_rate_quick;
+        
+        /// <summary>
         /// btnSave 控件。
         /// </summary>
         /// <remarks>

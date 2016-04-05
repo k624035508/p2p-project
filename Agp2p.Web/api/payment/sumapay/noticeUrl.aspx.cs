@@ -78,7 +78,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             //个人网银/一键充值
                             case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                             case (int) Agp2pEnums.SumapayApiEnum.WhRec:
-                                respMsg = BaseRespMsg.NewInstance<RechargeRespMsg>(reqStr);
+                                respMsg = isSync ? new RechargeRespMsg(reqStr) : BaseRespMsg.NewInstance<RechargeRespMsg>(reqStr);
                                 break;
                             //个人投标/自动投标 普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaBid:
@@ -103,7 +103,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                             //个人提现
                             case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
-                                respMsg = BaseRespMsg.NewInstance<WithdrawRespMsg>(reqStr);
+                                respMsg = isSync ? new WithdrawRespMsg(reqStr, true) : BaseRespMsg.NewInstance<WithdrawRespMsg>(reqStr);
                                 break;
                             //个人存管账户还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaRep:

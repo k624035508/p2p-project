@@ -24,12 +24,15 @@ namespace Agp2p.Core.Message.PayApiMsg
             {
                 if (string.IsNullOrEmpty(subledgerList))
                 {
-                    subledgerList = JsonHelper.ObjectToJSON(new
+                    subledgerList = JsonHelper.ObjectToJSON(new List<object>()
                     {
-                        roleType = "0",
-                        roleCode = UserId,
-                        inOrOut = "0",
-                        sum = Sum
+                        new
+                        {
+                            roleType = "0",
+                            roleCode = UserId.ToString(),
+                            inOrOut = "0",
+                            sum = Sum
+                        }
                     });
                 }
                 return subledgerList;
@@ -38,7 +41,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         }
 
 
-        public WhRechargeReqMsg(int userId, string sum, string passThrough = "", string payType = "2",
+        public WhRechargeReqMsg(int userId, string sum, string passThrough = "", string payType = "3",
             string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
@@ -49,18 +52,15 @@ namespace Agp2p.Core.Message.PayApiMsg
             PassThrough = passThrough;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/webBankRecharge_toRecharge";
+            ApiInterface = SumapayConfig.TestApiUrl + "user/withholdingRecharge_toWithholdingRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum  +
-                SuccessReturnUrl + FailReturnUrl  + PayType + SubledgerList);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum  +
+                SuccessReturnUrl + FailReturnUrl  + PayType + SubledgerList, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

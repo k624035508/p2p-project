@@ -46,7 +46,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Charge(this Agp2pDataContext context, int userId, decimal money,
-            Agp2pEnums.PayApiTypeEnum payApi, string remark = null)
+            byte payApi, string noOrder = "", string remark = null)
         {
             // 创建交易记录（充值进行中）
             var tr = new li_bank_transactions
@@ -58,10 +58,10 @@ namespace Agp2p.Core
                 value = money,
                 handling_fee = 0,
                 handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
-                no_order = Utils.GetOrderNumberLonger(),
+                no_order = string.IsNullOrEmpty(noOrder) ? Utils.GetOrderNumberLonger() : noOrder,
                 create_time = DateTime.Now,
                 remarks = remark,
-                pay_api = (byte) payApi
+                pay_api = payApi
             };
             context.li_bank_transactions.InsertOnSubmit(tr);
 
@@ -90,7 +90,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId,
-            decimal withdrawMoney, string remark = null)
+            decimal withdrawMoney, string noOrder = "", string remark = null)
         {
             // 提现 100 起步，5w 封顶
             if (withdrawMoney < 100)
@@ -136,7 +136,7 @@ namespace Agp2p.Core
                         (unusedMoney == 0
                             ? Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawHandlingFee
                             : Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee),
-                no_order = Utils.GetOrderNumberLonger(),
+                no_order = string.IsNullOrEmpty(noOrder) ? Utils.GetOrderNumberLonger() : noOrder,
                 remarks = remark,
                 create_time = wallet.last_update_time // 时间应该一致
             };
@@ -212,18 +212,31 @@ namespace Agp2p.Core
                 context.li_wallet_histories.InsertOnSubmit(his);
 
                 //添加充值手续费
-                //汇潮支付
-                //TODO 丰付支付手续费 按收费配置收取手续费 
-                if (tr.pay_api != null && (tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ || tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.Ecpss))
+                if (tr.pay_api != null)
                 {
+                    var feeConfig = ConfigLoader.loadCostConfig();
                     var rechangerFee = new li_company_inoutcome()
                     {
                         create_time = DateTime.Now,
                         user_id = (int) tr.charger,
-                        outcome = tr.pay_api == (int)Agp2pEnums.PayApiTypeEnum.EcpssQ ? tr.value*0.005m : tr.value * 0.0025m,
                         type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
                         remark = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum)tr.pay_api) + "充值手续费"
                     };
+                    switch (tr.pay_api)
+                    {
+                        case (int)Agp2pEnums.PayApiTypeEnum.Ecpss:
+                        case (int)Agp2pEnums.PayApiTypeEnum.Sumapay:
+                            rechangerFee.outcome = tr.value * feeConfig.recharge_fee_rate;
+                            break;
+                        case (int)Agp2pEnums.PayApiTypeEnum.EcpssQ:
+                            rechangerFee.outcome = tr.value * 0.005m;
+                            break;
+                        case (int)Agp2pEnums.PayApiTypeEnum.SumapayQ:
+                            rechangerFee.outcome = tr.value*feeConfig.recharge_fee_rate_quick >= 3
+                                ? tr.value*feeConfig.recharge_fee_rate_quick
+                                : 3;
+                            break;
+                    }
                     context.li_company_inoutcome.InsertOnSubmit(rechangerFee);
                 }
                 context.SubmitChanges();

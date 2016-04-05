@@ -28,6 +28,20 @@ namespace Agp2p.Web.api.payment.sumapay
                     case (int)Agp2pEnums.SumapayApiEnum.ClBid:
                         Response.Write("自动投标解约失败！");
                         break;
+                    //个人自动账户/银行还款开通
+                    case (int)Agp2pEnums.SumapayApiEnum.AcReO:
+                    case (int)Agp2pEnums.SumapayApiEnum.AbReO:
+                        Response.Write("个人自动账户/银行还款开通失败！");
+                        break;
+                    //个人自动还款取消
+                    case (int)Agp2pEnums.SumapayApiEnum.ClRep:
+                        Response.Write("个人自动账户/银行还款取消失败！");
+                        break;
+                    //个人网银/一键充值
+                    case (int)Agp2pEnums.SumapayApiEnum.WeRec:
+                    case (int)Agp2pEnums.SumapayApiEnum.WhRec:
+                        Response.Write("个人充值失败！");
+                        break;
                 }
             }
         }

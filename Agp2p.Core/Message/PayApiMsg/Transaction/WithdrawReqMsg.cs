@@ -25,12 +25,15 @@ namespace Agp2p.Core.Message.PayApiMsg
             {
                 if (string.IsNullOrEmpty(subledgerList))
                 {
-                    subledgerList = JsonHelper.ObjectToJSON(new
+                    subledgerList = JsonHelper.ObjectToJSON(new List<object>()
                     {
-                        roleType = "0",
-                        roleCode = UserId,
-                        inOrOut = "1",
-                        sum = Sum
+                        new
+                        {
+                            roleType = "0",
+                            roleCode = UserId.ToString(),
+                            inOrOut = "1",
+                            sum = Sum
+                        }
                     });
                 }
                 return subledgerList;
@@ -39,7 +42,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         }
 
         public WithdrawReqMsg(int userId, string sum, string bankCode = "", string bankAccount = "",
-            string payType = "2", string mainAccountType = "", string mainAccountCode = "")
+            string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             Sum = sum;
@@ -52,16 +55,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int) Agp2pEnums.SumapayApiEnum.Wdraw;
             ApiInterface = SumapayConfig.TestApiUrl + "user/withdraw_toWithdraw";
             RequestId = Agp2pEnums.SumapayApiEnum.Wdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum  +
-                SuccessReturnUrl + FailReturnUrl + PayType + SubledgerList);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum  +
+                SuccessReturnUrl + FailReturnUrl + PayType + SubledgerList, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

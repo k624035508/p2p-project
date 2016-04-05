@@ -23,7 +23,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public ReturnPrinInteReqMsg(int userId, string sum, string subledgerList, bool collective = false, string payType = "2", string mainAccountType = "", string mainAccountCode = "")
+        public ReturnPrinInteReqMsg(int userId, string sum, string subledgerList, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             Sum = sum;
