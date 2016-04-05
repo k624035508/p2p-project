@@ -57,11 +57,11 @@ tr.sum td { color: red; }
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th align="left" width="3%" style="padding-left: 1em;">序号</th>
-    <th align="left" width="10%">原债权所有者</th>
+    <th align="left" width="8%">原债权所有者</th>
+    <th align="left" width="8%">原债权所有者申请转让时间</th>
     <th align="left" width="5%">本金</th>
     <th align="left" width="5%">项目</th>
-    <th align="left" width="10%">原债权所有者申请转让时间</th>
-    <th align="left" width="10%">中间人买入时间</th>
+    <th align="left" width="8%">中间人买入时间</th>
     <th align="left" width="10%">活期投资者</th>
     <th align="left" width="10%">活期投资时间</th>
   </tr>
@@ -69,10 +69,10 @@ tr.sum td { color: red; }
 <ItemTemplate>
   <tr <%# ((BuyedClaim)Container.DataItem).ClaimId == 0 ? "class='sum'" : ""%>>
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
-    <td><%# Eval("OriginalOwner") %></td>
+    <td><%# Eval("WithdrawClaim.OriginalOwner") %></td>
+    <td><%# Eval("WithdrawClaim.WithdrawTime") %></td>
     <td><%# Eval("Principal") %></td>
     <td><%# Eval("ProjectName") %></td>
-    <td><%# Eval("WithdrawTime") %></td>
     <td><%# Eval("BuyTime") %></td>
     <td><%# Eval("HuoqiInvestor") %></td>
     <td><%# Eval("HuoqiInvestTime") %></td>
