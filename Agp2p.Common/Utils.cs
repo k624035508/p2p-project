@@ -1827,5 +1827,33 @@ namespace Agp2p.Common
                 .Where(p => !EqualityComparer<TKey>.Default.Equals(p.Key, originalKey))
                 .ToDictionary(p => p.Key, p => p.Value);
         }
+
+        class DebugTextWriter : TextWriter
+        {
+            private int writeCount = 0;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new string(buffer, index, count);
+                Debug.Write(str);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                    Debug.Write("\n Times: " + writeCount);
+                }
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        public static TextWriter GetDbDebugLogger()
+        {
+            return new DebugTextWriter();
+        }
     }
 }
