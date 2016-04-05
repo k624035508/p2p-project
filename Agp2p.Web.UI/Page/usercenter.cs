@@ -952,7 +952,7 @@ namespace Agp2p.Web.UI.Page
                     p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
 
             var myHuoqiClaims =
-                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
+                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.IsLeafClaim()).ToList() ??
                 Enumerable.Empty<li_claims>().ToList();
 
             var totalPrincipal = myHuoqiClaims.Aggregate(0m, (sum, c) => sum + c.principal);
