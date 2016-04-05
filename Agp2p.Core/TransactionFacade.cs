@@ -2296,7 +2296,9 @@ namespace Agp2p.Core
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.Invest
                     || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess
                     || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest
-                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims)
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess)
                 {
                     receivedPrincipal = profited = null;
                 }
@@ -2371,7 +2373,10 @@ namespace Agp2p.Core
                     return null;
                 if (his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest)
                     return his.li_project_transactions.interest.GetValueOrDefault();
-                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess
                     ? his.li_project_transactions.principal // 投资
                     : (decimal?) null;
             }

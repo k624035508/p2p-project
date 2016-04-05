@@ -1831,6 +1831,7 @@ namespace Agp2p.Common
         class DebugTextWriter : TextWriter
         {
             private int writeCount = 0;
+            private DateTime startAt = DateTime.Now;
 
             public override void Write(char[] buffer, int index, int count)
             {
@@ -1839,7 +1840,7 @@ namespace Agp2p.Common
                 if (str.Contains("-- Context"))
                 {
                     writeCount += 1;
-                    Debug.Write("\n Times: " + writeCount);
+                    Debug.WriteLine("Times: " + writeCount + " Elapse(s): " + (DateTime.Now - startAt).TotalSeconds);
                 }
             }
 
