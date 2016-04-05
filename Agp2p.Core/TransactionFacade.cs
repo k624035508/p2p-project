@@ -23,6 +23,9 @@ namespace Agp2p.Core
     {
         public const decimal StandGuardFeeRate = 0;//0.006m;
         public const decimal DefaultHandlingFee = 0;//1;
+        public const int NormalProjectProfitingDay = 365;
+        public const int TicketProjectProfitingDay = 360;
+        public const int HuoqiProjectProfitingDay = 360;
 
         internal static void DoSubscribe()
         {
@@ -1452,7 +1455,7 @@ namespace Agp2p.Core
         public static decimal GetFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
             if (proj.IsHuoqiProject())
-                return proj.profit_rate_year/100/365;
+                return proj.profit_rate_year/100/HuoqiProjectProfitingDay;
 
             if (0 < proj.profit_rate)
                 return proj.profit_rate;
@@ -1491,9 +1494,9 @@ namespace Agp2p.Core
                     // 最后那期还款的日期 - 满标的日期 = 总天数
                     var lastRepayDate = proj.CalcRepayTimeByTerm(termSpanCount, makeLoanTime).Date;
                     var days = lastRepayDate.Subtract(baseTime.Date).Days;
-                    return profitRateYear*days/365;
+                    return profitRateYear*days/NormalProjectProfitingDay;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
-                    return profitRateYear*termSpanCount/365;
+                    return profitRateYear*termSpanCount/NormalProjectProfitingDay;
                 default:
                     throw new InvalidEnumArgumentException("异常的项目还款跨度值");
             }
