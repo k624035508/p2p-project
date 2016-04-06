@@ -931,6 +931,7 @@ namespace Agp2p.Web.UI.Page
 
             var totalProfit = context.li_project_transactions.Where(
                 ptr =>
+                    ptr.investor == userInfo.id &&
                     ptr.li_projects.dt_article_category.call_index == "huoqi" &&
                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor).AsEnumerable()
                 .Aggregate(0m, (sum, ptr) => sum + ptr.principal + ptr.interest.GetValueOrDefault());

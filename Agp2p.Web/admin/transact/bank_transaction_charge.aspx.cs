@@ -40,7 +40,7 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 var bankTransaction = context.Charge(userId, Math.Abs(Convert.ToDecimal(txtValue.Text)),
-                    Agp2pEnums.PayApiTypeEnum.ManualAppend,
+                    (int)Agp2pEnums.PayApiTypeEnum.ManualAppend,
                     string.IsNullOrWhiteSpace(txtRemarks.Text) ? null : txtRemarks.Text.Trim());
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), string.Format("{0} 添加用户 {1} 充值记录: {2} 备注: {3}", lblUser.Text, bankTransaction.dt_users.user_name, txtValue.Text, txtRemarks.Text)); //记录日志
                 return true;

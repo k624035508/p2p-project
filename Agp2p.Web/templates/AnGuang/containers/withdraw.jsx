@@ -67,28 +67,38 @@ class WithdrawPage extends React.Component {
 	}
 	doWithdraw(ev) {
 		if (this.state.selectedCardIndex == -1) {
-			alert("请先选择银行卡");
+			alert("请先选择银行卡.");
 			return;
 		}
 		if ((parseFloat(this.state.toWithdraw) || 0) <= 0) {
-			alert("请填写正确的提现金额");
+			alert("请填写正确的提现金额！");
 			return;
 		}
+		if(parseFloat(this.state.toWithdraw) > this.props.idleMoney){
+		    alert("提现金额超过当前余额！");
+		    return;
+		}
+
 		ajax({
 			type: "POST",
 			url: "/tools/submit_ajax.ashx?action=withdraw",
 			data: {
-				cardId: this.props.cards[this.state.selectedCardIndex].cardId,
+			    cardId: this.props.cards[this.state.selectedCardIndex].cardId,
+			    bankName:this.props.cards[this.state.selectedCardIndex].bankName,
+			    bankAccount:this.props.cards[this.state.selectedCardIndex].cardNumber,
 				howmany: this.state.toWithdraw,
 				transactPassword: this.state.transactPassword
 			},
 			dataType: "json",
-			success: data => {
-				alert(data.msg);
+			success: data => {				
 				if (data.status == 1) {
-					this.setState({toWithdraw: "", transactPassword: ""})
-					this.props.dispatch(fetchWalletAndUserInfo());
+				    //this.setState({toWithdraw: "", transactPassword: ""})
+				    //this.props.dispatch(fetchWalletAndUserInfo());
+				    location.href = data.url;
+				} else{
+				    alert(data.msg);
 				}
+
 			},
 			error: jqXHR => {
 				alert("提交失败，请重试");
@@ -135,21 +145,22 @@ class WithdrawPage extends React.Component {
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
 				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span className="hidden">{"实际到账：" + this.state.realityWithdraw + " 元"}</span></div>
 				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay + " （1-2个工作日内到账，双休日和法定节假日除外）"}</div>
-				    <div className="psw-withdraw"><span><i>*</i>交易密码：</span>
+				        {/* <div className="psw-withdraw"><span><i>*</i>交易密码：</span>
 					    <input type="password"
 					    	onFocus={ev => this.setState({passwordReadonly: false})}
 					    	value={this.state.transactPassword}
 					    	onChange={ev => this.setState({transactPassword: ev.target.value})}
 					    	disabled={!this.props.hasTransactPassword}
 					    	placeholder={this.props.hasTransactPassword ? "" : "（请先设置交易密码）"} />
-			    	</div>
+			    	</div>*/}
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
 				</div>
 				<div className="bank-chose-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
 				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
 				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
-				    <p>3. 如果充值金额没有及时到账，请拨打客服电话：400-8878-200。</p>
+				    <p>3. 提现金额每笔最小100元，最大50000元。</p>
+				    <p>4. 如果充值金额没有及时到账，请拨打客服电话：400-8878-200。</p>
 				</div>
 			</div>
 		);

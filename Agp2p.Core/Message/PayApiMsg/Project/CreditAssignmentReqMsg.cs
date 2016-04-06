@@ -42,7 +42,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         }
 
         public CreditAssignmentReqMsg(int userId, string projectCode, string originalRequestId, string originalOrderSum,
-            string assignmentSum, string undertakeSum, string payType = "2", string mainAccountType = "", string mainAccountCode = "", 
+            string assignmentSum, string undertakeSum, string payType = "3", string mainAccountType = "", string mainAccountCode = "", 
             string projectDescription = "", string creditValue = "", string undertakePercentage = "")
         {
             UserId = userId;

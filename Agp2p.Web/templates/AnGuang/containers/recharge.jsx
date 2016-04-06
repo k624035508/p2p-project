@@ -34,8 +34,7 @@ class RechargePage extends React.Component {
 			alert("请输入正确的金额");
 			ev.preventDefault();
 			return;
-		}
-		$("#waitforPaymentDialog").modal('show');
+		}		
 
 		$.ajax({
             type: "post",
@@ -44,10 +43,16 @@ class RechargePage extends React.Component {
             data: {
                 rechargeSum: this.state.chargingAmount,
                 bankCode: this.state.selectedBankId,
-                quickPayment: quickPayment
+                quickPayment: this.state.selectedBankId == "NOCARD"
             },
             success: function(data){
-                
+                if(data.status == "0"){
+                    alert(data.msg)
+                }else{
+                    //$("#waitforPaymentDialog").modal('show');
+                    //跳转到托管充值地址
+                    location.href = data.url;
+                }
             },
             error: function(xhr, status, err){
                 alert("操作超时，请重试。");

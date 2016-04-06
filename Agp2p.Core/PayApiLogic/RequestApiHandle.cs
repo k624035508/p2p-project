@@ -43,6 +43,24 @@ namespace Agp2p.Core.PayApiLogic
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
+                //创建交易流水
+                if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.WeRec)
+                {
+                    //充值
+                    context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
+                }
+                if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.WhRec)
+                {
+                    context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
+                }
+                else if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.Wdraw)
+                {
+                    //提现
+                    var withdrawReqMsg = (WithdrawReqMsg) msg;
+                    context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
+                        Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
+                }
+
                 context.SubmitChanges();
                 msg.RequestContent = requestLog.request_content;
             }

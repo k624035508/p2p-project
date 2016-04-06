@@ -2304,9 +2304,9 @@ namespace Agp2p.Web.tools
         private void recharge(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (user == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
             if (string.IsNullOrEmpty(user.mobile))
@@ -2314,45 +2314,34 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
-                return;
-            }
             if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
-            try
+            var bankCode = DTRequest.GetFormString("bankCode");
+            var rechargeSum = DTRequest.GetFormString("rechargeSum");
+            var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
+            if (string.IsNullOrWhiteSpace(bankCode))
             {
-                var bankCode = DTRequest.GetFormString("bankCode");
-                var rechargeSum = DTRequest.GetFormString("rechargeSum");
-                var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
-                if (string.IsNullOrWhiteSpace(bankCode))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(rechargeSum))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
-                    return;
-                }
-                //发送充值请求
-                BaseReqMsg reqMsg;
-                if (quickPayment) reqMsg = new WhRechargeReqMsg(user.id, rechargeSum);
-                else reqMsg = new WebRechargeReqMsg(user.id, rechargeSum, bankCode);
-                MessageBus.Main.PublishAsync(reqMsg, ar =>
-                {
-                    context.Response.Write(reqMsg.RequestContent);
-                });
+                context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                return;
             }
-            catch (Exception e)
+            if (string.IsNullOrWhiteSpace(rechargeSum))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"提交充值请求失败：" + e.Message + "\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
             }
+            if (!quickPayment)
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                        (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
+                                        rechargeSum + "&bankCode=" +
+                                        bankCode + "\"}");
+            else
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                        (int) Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                        rechargeSum + "\"}");
         }
 
         /// <summary>
@@ -2362,9 +2351,9 @@ namespace Agp2p.Web.tools
         private void withdraw(HttpContext context)
         {            
             var user = BasePage.GetUserInfoByLinq();
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (user == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
             if (string.IsNullOrEmpty(user.mobile))
@@ -2383,43 +2372,39 @@ namespace Agp2p.Web.tools
                 return;
             }
 
-            try
+            var cardId = DTRequest.GetFormInt("cardId", 0);
+            var bankName = DTRequest.GetFormString("bankName");
+            var bankAccount = DTRequest.GetFormString("bankAccount");
+            var howmany = DTRequest.GetFormDecimal("howmany", 0);
+            var pw = DTRequest.GetFormString("transactPassword");
+
+            // 提现 100 起步，5w 封顶
+            if (howmany < 100)
             {
-                var cardId = DTRequest.GetFormInt("cardId", 0);
-                var howmany = DTRequest.GetFormDecimal("howmany", 0);
-                var pw = DTRequest.GetFormString("transactPassword");
-
-                if (cardId <= 0)
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
-                    return;
-                }
-                if (howmany <= 0)
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
-                    return;
-                }
-                if (string.IsNullOrEmpty(pw))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请输入交易密码！\"}");
-                    return;
-                }
-                if (!Utils.MD5(pw).Equals(user.pay_password))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
-                    return;
-                }
-
-                var reqMsg = new WithdrawReqMsg(user.id, howmany.ToString("N"));
-                MessageBus.Main.PublishAsync(reqMsg, ar =>
-                {
-                    context.Response.Write(reqMsg.RequestContent);
-                });
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最低 100 元！\"}");
+                return;
             }
-            catch (Exception e)
+            if (howmany > 50000)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"提现申请提交失败：" + e.Message + "\"}");
-            }                
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 50000 元！\"}");
+                return;
+            }
+            if (cardId <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                return;
+            }
+            if (howmany <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
+            }
+            context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                        (int)Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                        howmany + "&bankId=" +
+                                        cardId + "&bankName=" +
+                                        bankName + "&bankAccount=" +
+                                        bankAccount + "\"}");                
         }
 
         /// <summary>

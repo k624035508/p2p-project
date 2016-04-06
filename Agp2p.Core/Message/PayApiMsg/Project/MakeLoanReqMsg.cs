@@ -48,7 +48,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             set { subledgerList = value; }
         }
 
-        public MakeLoanReqMsg(string projectCode, string sum, decimal feeRate, bool collective = false, string payType = "2", string mainAccountType = "", string mainAccountCode = "")
+        public MakeLoanReqMsg(string projectCode, string sum, decimal feeRate, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             ProjectCode = projectCode;
             Sum = sum;

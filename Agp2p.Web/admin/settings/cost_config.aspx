@@ -102,6 +102,18 @@
                     <asp:TextBox ID="txt_recharge_lowest" runat="server" CssClass="input small" datatype="n" sucmsg=" "></asp:TextBox>
                     <span class="Validform_checktip">元</span></dd>
             </dl>
+            <dl>
+                <dt>网银充值费</dt>
+                <dd>
+                    <asp:TextBox ID="txt_recharge_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">‰</span></dd>
+            </dl>
+            <dl>
+                <dt>快捷充值</dt>
+                <dd>
+                    <asp:TextBox ID="txt_recharge_fee_rate_quick" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip">‰</span></dd>
+            </dl>
         </div>
         <div class="page-footer">
             <div class="btn-list">

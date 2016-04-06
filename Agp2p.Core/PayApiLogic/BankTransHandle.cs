@@ -40,8 +40,26 @@ namespace Agp2p.Core.PayApiLogic
                             if (trans.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
-                                //TODO 检查用户资金信息
+                                //一键充值后自动绑定银行账号
+                                if (!string.IsNullOrEmpty(msg.BankAccount))
+                                {
+                                    var bank =
+                                        context.li_bank_accounts.SingleOrDefault(b => b.account == msg.BankAccount);
+                                    if (bank == null)
+                                    {
+                                        var bankNew = new li_bank_accounts()
+                                        {
+                                            owner = (int) msg.UserIdIdentity,
+                                            bank = msg.BankName,
+                                            account = msg.BankAccount,
+                                            last_access_time = DateTime.Now
+                                        };
+                                        context.li_bank_accounts.InsertOnSubmit(bankNew);
+                                        context.SubmitChanges();
+                                    }
+                                }
 
+                                //TODO 检查用户资金信息
                                 msg.HasHandle = true;
                             }
                         }
@@ -77,8 +95,8 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         if (trans != null)
                         {
-                            //异步返回的结果才是充值已到账
-                            if (!msg.Sync)
+                            //TODO 异步返回的结果才是充值已到账
+                            if (msg.Sync)
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
                                 //TODO 检查用户资金信息
