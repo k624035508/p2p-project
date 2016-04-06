@@ -517,7 +517,7 @@ class SafeCenter extends React.Component {
                             <CustodyAccount {...this.props} />
                             <EmailBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
-							<ResetTransactPassword {...this.props} />
+							{/*<ResetTransactPassword {...this.props} />*/}
 						</ul>
 					</div>
 				</div>

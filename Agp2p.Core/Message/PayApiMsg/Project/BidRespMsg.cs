@@ -1,4 +1,6 @@
 ﻿
+using Agp2p.Common;
+
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
@@ -12,8 +14,21 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string RemainInvestmentSum { get; set; }//剩余可投金额
         public string ProtocolCode { get; set; }//自动投标授权协议号
 
-        public BidRespMsg()
-        { 
+        public BidRespMsg(string requestStr)
+        {
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            ProjectCode = map["projectCode"];
+            Sum = map["sum"];
+            InvestmentSum = map["investmentSum"];
+            ProjectSum = map["projectSum"];
+            RemainInvestmentSum = map["remainInvestmentSum"];
+            ProtocolCode = map.ContainsKey("protocolCode") ? map["protocolCode"] : "";
+
         }
 
         public override bool CheckSignature()

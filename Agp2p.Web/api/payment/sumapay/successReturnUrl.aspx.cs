@@ -51,6 +51,11 @@ namespace Agp2p.Web.api.payment.sumapay
                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                     Response.Write("个人提现成功！");
                     break;
+                //投标
+                case (int)Agp2pEnums.SumapayApiEnum.MaBid:
+                case (int)Agp2pEnums.SumapayApiEnum.McBid:
+                    Response.Write("投标成功！");
+                    break;
             }
         }
 

@@ -85,7 +85,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             case (int) Agp2pEnums.SumapayApiEnum.McBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AmBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AcBid:
-                                respMsg = BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
+                                respMsg = isSync ? new BidRespMsg(reqStr) : BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
                                 break;
                             //个人撤标 普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.CaPro:

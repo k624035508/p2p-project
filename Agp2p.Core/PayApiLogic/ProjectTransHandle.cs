@@ -39,17 +39,17 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
-                        var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                        if (trans != null)
-                        {
-                            //TODO 检查用户资金信息
-                            TransactionFacade.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
-                            msg.HasHandle = true;
-                        }
-                        else
-                        {
-                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
-                        }
+                        //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        //if (trans != null)
+                        //{
+                        //TODO 检查用户资金信息
+                        TransactionFacade.Invest((int)msg.UserIdIdentity, Utils.StrToInt(msg.ProjectCode, 0), Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                        msg.HasHandle = true;
+                        //}
+                        //else
+                        //{
+                        //    msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                        //}
                     }
                 }
             }

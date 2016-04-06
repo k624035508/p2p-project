@@ -40,24 +40,6 @@ namespace Agp2p.Core.PayApiLogic
                             if (trans.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
-                                //一键充值后自动绑定银行账号
-                                if (!string.IsNullOrEmpty(msg.BankAccount))
-                                {
-                                    var bank =
-                                        context.li_bank_accounts.SingleOrDefault(b => b.account == msg.BankAccount);
-                                    if (bank == null)
-                                    {
-                                        var bankNew = new li_bank_accounts()
-                                        {
-                                            owner = (int) msg.UserIdIdentity,
-                                            bank = msg.BankName,
-                                            account = msg.BankAccount,
-                                            last_access_time = DateTime.Now
-                                        };
-                                        context.li_bank_accounts.InsertOnSubmit(bankNew);
-                                        context.SubmitChanges();
-                                    }
-                                }
 
                                 //TODO 检查用户资金信息
                                 msg.HasHandle = true;
@@ -87,13 +69,13 @@ namespace Agp2p.Core.PayApiLogic
                 //检查签名
                 if (msg.CheckSignature())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    Agp2pDataContext context = new Agp2pDataContext();
+                    //查找对应的交易流水
+                    var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                    if (trans != null)
                     {
-                        Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的交易流水
-                        var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                        if (trans != null)
+                        //检查请求处理结果
+                        if (msg.CheckResult())
                         {
                             //TODO 异步返回的结果才是充值已到账
                             if (msg.Sync)
@@ -103,11 +85,17 @@ namespace Agp2p.Core.PayApiLogic
 
                                 msg.HasHandle = true;
                             }
+
                         }
                         else
                         {
-                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                            //取消提现
+                            context.CancelBankTransaction(trans.id, 1);
                         }
+                    }
+                    else
+                    {
+                        msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                     }
                 }
             }

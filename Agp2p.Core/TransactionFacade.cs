@@ -353,7 +353,7 @@ namespace Agp2p.Core
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
         /// <param name="investingMoney"></param>
-        public static void Invest(int userId, int projectId, decimal investingMoney)
+        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "")
         {
             li_project_transactions tr;
             li_wallets wallet;
@@ -426,7 +426,8 @@ namespace Agp2p.Core
                     type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
                     principal = investingMoney,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    create_time = wallet.last_update_time // 时间应该一致
+                    create_time = wallet.last_update_time, // 时间应该一致
+                    no_order = noOrder
                 };
                 context.li_project_transactions.InsertOnSubmit(tr);
 
@@ -2496,7 +2497,7 @@ namespace Agp2p.Core
                 switch (project.type)
                 {
                     case (int)Agp2pEnums.LoanTypeEnum.Company:
-                        return project.li_risks.li_loaners?.li_loaner_companies.name;
+                        return project.li_risks.li_loaners?.li_loaner_companies?.name;
                     default:
                         if (project.li_risks.li_loaners == null)
                             return "";

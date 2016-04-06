@@ -20,26 +20,27 @@ namespace Agp2p.Web.api.payment.sumapay
             BaseReqMsg reqMsg = null;
             int requestApi = DTRequest.GetQueryInt("api", 0);
             switch (requestApi)
-            {//个人开户/激活
+            {
+                //个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
                     //实名验证接口
-                    user = CheckUserLogin();
+                    if(!CheckUserLogin(out user)) return;
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
                 //跳转托管账户
                 case (int)Agp2pEnums.SumapayApiEnum.Accou:
-                    user = CheckUserLogin();
+                    if (!CheckUserLogin(out user)) return;
                     reqMsg = new UserToAccountReqMsg(user.id);
                     break;
                 //个人自动投标续约
                 case (int)Agp2pEnums.SumapayApiEnum.AtBid:
-                    user = CheckUserLogin();
+                    if (!CheckUserLogin(out user)) return;
                     reqMsg = new AutoBidSignReqMsg(user.id);
                     break;
                 //个人自动投标取消
                 case (int)Agp2pEnums.SumapayApiEnum.ClBid:
-                    user = CheckUserLogin();
+                    if (!CheckUserLogin(out user)) return;
                     reqMsg = new AutoBidSignReqMsg(user.id, true, user.protocolCode);
                     break;
                 //个人自动账户/银行还款开通
@@ -67,6 +68,14 @@ namespace Agp2p.Web.api.payment.sumapay
                         DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("bankName"),
                         DTRequest.GetQueryString("bankAccount"));
                     break;
+                //个人投标 普通/集合项目
+                case (int)Agp2pEnums.SumapayApiEnum.MaBid:
+                case (int)Agp2pEnums.SumapayApiEnum.McBid:
+                    reqMsg = new ManualBidReqMsg(DTRequest.GetQueryInt("userId", 0),
+                        DTRequest.GetQueryString("projectCode"), DTRequest.GetQueryString("sum"),
+                        DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
+                        requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
+                    break;
                 default:
                     reqMsg = new BaseReqMsg();
                     break;
@@ -78,20 +87,20 @@ namespace Agp2p.Web.api.payment.sumapay
             Response.Write(reqMsg.RequestContent);
         }
 
-        private dt_users CheckUserLogin()
+        private bool CheckUserLogin(out dt_users user)
         {
-            var user = BasePage.GetUserInfoByLinq();
+            user = BasePage.GetUserInfoByLinq();
             if (user == null)
             {
                 Response.Write("对不起，用户尚未登录或已超时！");
-                return null;
+                return false;
             }
             if (string.IsNullOrEmpty(user.token))
             {
                 Response.Write("请先开通托管账户！");
-                return null;
+                return false;
             }
-            return user;
+            return true;
         }
     }
 }

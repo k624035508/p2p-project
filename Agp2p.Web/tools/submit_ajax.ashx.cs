@@ -2132,47 +2132,44 @@ namespace Agp2p.Web.tools
         {
             var linqContext = new Agp2pDataContext();
             var user = BasePage.GetUserInfoByLinq(linqContext);
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (user == null)
             {
-                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心设置交易密码", status = 0}));
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            if (string.IsNullOrWhiteSpace(user.real_name) || string.IsNullOrWhiteSpace(user.id_card_number))
+            if (string.IsNullOrEmpty(user.mobile))
             {
-                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心进行实名认证", status = 0}));
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
             try
             {
-                var investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
+                var investingAmount = DTRequest.GetFormDecimal("investingAmount", 0);
                 var projectId = DTRequest.GetFormInt("projectId", 0);
                 var buyClaimId = DTRequest.GetFormInt("buyClaimId", 0);
-                var pw = DTRequest.GetFormString("transactPassword");
-                if (Utils.MD5(pw).Equals(user.pay_password))
+                var projectSum = DTRequest.GetFormDecimal("projectSum", 0);
+                var projectDescription = DTRequest.GetFormString("projectDescription");
+                var huoqi = !string.IsNullOrEmpty(DTRequest.GetFormString("huoqi"));
+
+                if (buyClaimId != 0)
                 {
-                    if (buyClaimId != 0)
-                    {
-                        TransactionFacade.BuyClaim(linqContext, buyClaimId, user.id, investingMoney);
-                    }
-                    else
-                    {
-                        TransactionFacade.Invest(user.id, projectId, investingMoney);
-                    }
-
-                    /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
-                            context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");
-                        else*/
+                    //TODO 发起债权转让托管请求
+                    TransactionFacade.BuyClaim(linqContext, buyClaimId, user.id, investingAmount);
                     context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
-
-                    //投标前调用托管接口确认投标，在投标异步响应中执行投标行为 TODO 项目总额、项目描述
-                    //ManualBidReqMsg msg = new ManualBidReqMsg(user.id, projectId.ToString(), investingMoney.ToString("n"), "projectSum", "projectDes");
-                    //MessageBus.Main.PublishAsync(msg, result =>
-                    //{
-                    //    context.Response.Redirect(msg.RequestContent);
-                    //});
                 }
                 else
-                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "交易密码错误！", status = 0}));
+                {
+                    int reqApi = huoqi ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
+                                           + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
+                                           + "&projectSum=" + projectSum + "&projectDescription=" +
+                                           projectDescription + "\"}");
+                }
             }
             catch (Exception e)
             {
@@ -2361,14 +2358,9 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
-                return;
-            }
             if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行托管账户开户！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
@@ -2376,7 +2368,6 @@ namespace Agp2p.Web.tools
             var bankName = DTRequest.GetFormString("bankName");
             var bankAccount = DTRequest.GetFormString("bankAccount");
             var howmany = DTRequest.GetFormDecimal("howmany", 0);
-            var pw = DTRequest.GetFormString("transactPassword");
 
             // 提现 100 起步，5w 封顶
             if (howmany < 100)
