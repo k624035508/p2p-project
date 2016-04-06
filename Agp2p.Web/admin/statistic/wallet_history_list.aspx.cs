@@ -215,6 +215,7 @@ namespace Agp2p.Web.admin.statistic
             options.LoadWith<li_wallet_histories>(h => h.li_bank_transactions);
             options.LoadWith<li_wallet_histories>(h => h.li_activity_transactions);
             options.LoadWith<li_project_transactions>(tr => tr.li_projects);
+            options.LoadWith<li_project_transactions>(tr => tr.li_claims_from);
             context.LoadOptions = options;
 
             IQueryable<li_wallet_histories> query = context.li_wallet_histories;

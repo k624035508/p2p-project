@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
@@ -809,6 +811,8 @@ namespace Agp2p.Web.UI.Page
             return "ok";
         }
 
+        
+
         private static readonly Dictionary<Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]> HuoqiTradeQueryTypeMap = new Dictionary
             <Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]>
         {
@@ -822,6 +826,10 @@ namespace Agp2p.Web.UI.Page
         public static string AjaxQueryHuoqiTransactions(byte huoqiQueryType, short pageIndex, short pageSize)
         {
             var context = new Agp2pDataContext();
+            var options = new DataLoadOptions();
+            options.LoadWith<li_wallet_histories>(his => his.li_project_transactions);
+            context.LoadOptions = options;
+
             var userInfo = GetUserInfoByLinq(context);
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
@@ -839,19 +847,40 @@ namespace Agp2p.Web.UI.Page
                         his.li_project_transactions.li_projects.dt_article_category.call_index == "huoqi" &&
                         HuoqiTradeQueryTypeMap[huoqiQueryEnum].Cast<int>().Contains(his.action_type));
 
-            var count = query.Count();
-            var data = query.OrderByDescending(his => his.id)
-                .Skip(pageIndex*pageSize)
-                .Take(pageSize)
-                .AsEnumerable()
-                .Select(his => new
+            var dataBeforePaging = query.OrderByDescending(his => his.id)
+                .AsEnumerableAutoPartialQuery()
+                .GroupBy(his => new {his.action_type, his.create_time})
+                .SelectMany(hises =>
                 {
-                    his.id,
-                    createTime = his.create_time.ToString("yyyy-MM-dd HH:mm"),
-                    type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)his.action_type),
-                    outcome = his.QueryTransactionOutcome()?.ToString("n"),
-                    income = TransactionFacade.QueryTransactionIncome<string>(his)
+                    if (hises.Key.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest)
+                    {
+                        return Enumerable.Repeat(new
+                        {
+                            hises.First().id,
+                            createTime = hises.Key.create_time.ToString("yyyy-MM-dd HH:mm"),
+                            type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) hises.Key.action_type),
+                            outcome = "",
+                            income = hises.Aggregate(0m, (sum, his) =>
+                                sum +
+                                TransactionFacade.QueryTransactionIncome(his,
+                                    (principal, interest) => interest.GetValueOrDefault())).ToString("c")
+                        }, 1);
+                    }
+                    return hises.Select(his => new
+                    {
+                        his.id,
+                        createTime = his.create_time.ToString("yyyy-MM-dd HH:mm"),
+                        type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) his.action_type),
+                        outcome = his.QueryTransactionOutcome()?.ToString("n"),
+                        income = TransactionFacade.QueryTransactionIncome<string>(his)
+                    });
                 });
+            var data = dataBeforePaging.Skip(pageIndex*pageSize).Take(pageSize);
+
+            var count = query.Count(his => his.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest) +
+                    query.Where(his => his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest)
+                        .GroupBy(his => his.create_time)
+                        .Count();
 
             return JsonConvert.SerializeObject(new {totalCount = count, data});
         }
@@ -923,7 +952,7 @@ namespace Agp2p.Web.UI.Page
                     p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
 
             var myHuoqiClaims =
-                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
+                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.IsLeafClaim()).ToList() ??
                 Enumerable.Empty<li_claims>().ToList();
 
             var totalPrincipal = myHuoqiClaims.Aggregate(0m, (sum, c) => sum + c.principal);
@@ -938,10 +967,15 @@ namespace Agp2p.Web.UI.Page
 
             return JsonConvert.SerializeObject(new
             {
-                TodayProfitPredict = Math.Round(1m/365* totalProfitingPrincipal * (currentHuoqiProject?.profit_rate_year).GetValueOrDefault()/100, 2).ToString("n"),
+                TodayProfitPredict = Math.Round(
+                        1m/TransactionFacade.HuoqiProjectProfitingDay*totalProfitingPrincipal*
+                        (currentHuoqiProject?.profit_rate_year).GetValueOrDefault()/100, 2).ToString("n"),
                 TotalHuoqiClaimPrincipal = totalPrincipal.ToString("n"),
                 TotalHuoqiProfit = totalProfit.ToString("n"),
-                CurrentHuoqiProjectProfitRateYearly = currentHuoqiProject == null ? "(目前没有活期项目)" : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
+                CurrentHuoqiProjectProfitRateYearly =
+                    currentHuoqiProject == null
+                        ? "(目前没有活期项目)"
+                        : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
                 CurrentHuoqiProjectId = currentHuoqiProject?.id
             });
         }

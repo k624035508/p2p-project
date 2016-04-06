@@ -74,7 +74,7 @@ namespace Agp2p.Core.AutoLogic
                     {
                         should_repay_time = today.AddHours(15),
                         repay_principal = 0,
-                        repay_interest = Math.Round(1m/365*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal), 2),
+                        repay_interest = Math.Round(1m/TransactionFacade.HuoqiProjectProfitingDay*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal), 2),
                         project = p.id,
                         status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                         term = (short) ((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)

@@ -1905,5 +1905,34 @@ namespace Agp2p.Common
             TValue value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValueProvider();
         }
+
+        class DebugTextWriter : TextWriter
+        {
+            private int writeCount = 0;
+            private DateTime startAt = DateTime.Now;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new string(buffer, index, count);
+                Debug.Write(str);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                    Debug.WriteLine("Times: " + writeCount + " Elapse(s): " + (DateTime.Now - startAt).TotalSeconds);
+                }
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        public static TextWriter GetDbDebugLogger()
+        {
+            return new DebugTextWriter();
+        }
     }
 }
