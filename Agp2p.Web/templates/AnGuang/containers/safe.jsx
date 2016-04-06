@@ -328,7 +328,7 @@ class CustodyAccount extends React.Component {
 		return (
 			<li>
 				<div className="list-cell">
-					<span className="name"></span>
+					<span className="custody"></span>
 					<span className="list-th">托管账户</span>
 					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
 					<span className="pull-right"><a href="javascript:void(0);">查看</a></span>

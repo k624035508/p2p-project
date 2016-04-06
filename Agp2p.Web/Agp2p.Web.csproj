@@ -985,6 +985,8 @@
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\sinaweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\tencentweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\wechat.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\custody-grey.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\custody.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\name-grey.png" />

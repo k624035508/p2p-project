@@ -31,8 +31,8 @@ $(function () {
             var changdu1=prog.parent().width();
             var changdu2=parseInt(prog.eq(0).html())/100;     
             prog.eq(0).width(changdu2*changdu1); 
-            var progresswidth=prog.eq(0).offsetTop();
-            console.log(progresswidth);
+            var progresswidth=prog.eq(0).offset().top;
+       
         $(window).scroll(function(){
            
             var windowtop = $(window).scrollTop();
