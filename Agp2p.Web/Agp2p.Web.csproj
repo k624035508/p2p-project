@@ -804,6 +804,7 @@
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-04.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />

@@ -46,13 +46,15 @@ $(function () {
     });
 
 
-    //1.焦点图轮换
+
+
+    //1.焦点图轮换 
     $(".m-banner").slide({titCell:".hd li",mainCell:".bd ul",effect:"fold",autoPlay:true, trigger:"mouseover" })
         .hover(function(){
             $(".prev, .next").show();
         },function(){
             $(".prev , .next").hide();
         });
-   
+  
  
 });
