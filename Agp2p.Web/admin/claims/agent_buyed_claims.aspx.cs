@@ -19,6 +19,7 @@ namespace Agp2p.Web.admin.claims
     {
         public int ClaimId { get; set; }
         public WithdrawClaim WithdrawClaim { get; set; }
+        public string Number  { get; set; }
         public decimal Principal { get; set; }
         public string ProjectName  { get; set; }
         public string HuoqiInvestor  { get; set; }
@@ -107,6 +108,7 @@ namespace Agp2p.Web.admin.claims
                                 {
                                     ClaimId = cl.id,
                                     WithdrawClaim = emptyWithdrawClaim,
+                                    Number = cl.number,
                                     Principal = cl.principal,
                                     BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
                                     ProjectName = cl.li_projects.title,
@@ -118,6 +120,7 @@ namespace Agp2p.Web.admin.claims
                             {
                                 ClaimId = cl.id,
                                 WithdrawClaim = emptyWithdrawClaim,
+                                Number = cl.number,
                                 Principal = cl.principal,
                                 BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
                                 ProjectName = cl.li_projects.title,
@@ -135,6 +138,8 @@ namespace Agp2p.Web.admin.claims
                                 ClaimId = 0,
                                 WithdrawClaim = new WithdrawClaim {OriginalOwner = "原债权本金"},
                                 Principal = rootWithdrawClaim.principal,
+                                ProjectName = "已买入活期",
+                                HuoqiInvestor = buyedClaims.Where(c => !string.IsNullOrWhiteSpace(c.HuoqiInvestor)).Aggregate(0m, (sum, c) => sum + c.Principal).ToString("f"),
                             }, 1));
                         }
                         return buyedClaims;
@@ -142,7 +147,9 @@ namespace Agp2p.Web.admin.claims
                     {
                         ClaimId = 0,
                         WithdrawClaim = new WithdrawClaim {OriginalOwner = "总计"},
-                        Principal = thisPageClaims.Aggregate(0m, (sum, c) => sum + c.principal)
+                        Principal = thisPageClaims.Aggregate(0m, (sum, c) => sum + c.principal),
+                        ProjectName = "已买入活期",
+                        HuoqiInvestor = thisPageClaims.Where(c => c.agent != null).Aggregate(0m, (sum, c) => sum + c.principal).ToString("f"),
                     }, 1)).ToList();
             rptList.DataBind();
 
