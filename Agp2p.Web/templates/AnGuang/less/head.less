@@ -108,13 +108,15 @@ div.nav-bar-wrap {
     background: #fff;
     .nav-active {
         color: #ff414b !important;
-        border-bottom: 2px solid #ff414b;                                         
+        border-bottom: 2px solid #ff414b;                                                            
     }
+
     .nav-bar {
         width: @min-width;
         font-size: @font17;
         line-height: 60px;
         margin: 0 auto;
+                              
         nav.pull-right {
             margin-top: 15px;
             ul.list-inline {
@@ -125,41 +127,43 @@ div.nav-bar-wrap {
                         padding-bottom: 13px;
                         text-decoration: none;
                         .arrowsituation{width:16px; height:16px; .inline-block;
-                              background:url("../imgs/index/right.jpg");
+                              background:url("../imgs/index/bottom.jpg");
                               margin-left:-3px;
                          }
                     }
-                    a.nav-active{
+                       a.nav-active{
                         .arrowsituation{
-                             background:url("../imgs/index/righthover.jpg");
+                             background:url("../imgs/index/bottomhover.jpg");
                         }
-                              &:hover{ 
-                                .arrowsituation{                              
-                                  background:url("../imgs/index/bottomhover.jpg"); 
-                                  }
-                                }
                     }
-
+                    &:hover{
+                        a{
+                            .arrowsituation{
+                                background:url("../imgs/index/top.jpg");
+                            }
+                        }
+                    }
                  }
+                li.li-active{
+                        &:hover{
+                        a.nav-active{
+                            .arrowsituation{
+                                background:url("../imgs/index/tophover.jpg");
+                            }
+                        }
+                    }
+                }
                 li:first-child { padding-left: 0;
                 }
 
-                 & > li > a:hover, & > li > a:focus { .nav-active;}
-                 
-                 #myAccount,#financial{                               
-                     a{
-                            &:hover{ 
-                                .arrowsituation{                              
-                                  background:url("../imgs/index/bottomhover.jpg"); 
-                                  }                                                                      
-                     }
-                         }
-                              &:hover{ 
-                                .arrowsituation{                              
-                                  background:url("../imgs/index/bottom.jpg"); 
-                                  }                                                                      
-                     }                
+                 & > li > a:hover, & > li > a:focus {
+                     .nav-active;
+                       .arrowsituation{
+                            background:url("../imgs/index/tophover.jpg");
+                        }
                  }
+                 
+
                  .dropdown-menu-custom {
                     top: 88%;
                     left: 30%;
