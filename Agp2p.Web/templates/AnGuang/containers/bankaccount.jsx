@@ -28,7 +28,6 @@ class BankAccount extends React.Component {
     	this.setState({selectedCardIndex: this.state.selectedCardIndex == index ? -1 : index});
     }
     render() {
-        var shouldShowCardEditor = this.props.cards.length !== 0 && this.state.selectedCardIndex != -1 || this.props.cards.length === 0;
         return (
             <div className="bank-account-wrap">
                 <div className="cards-list-th"><span>银行卡列表</span></div>
@@ -47,10 +46,9 @@ class BankAccount extends React.Component {
                 </ul>
                 </div>
 
-                {/* 限制不能添加多于一张银行卡 */}
-                <div style={shouldShowCardEditor ? null: {display: 'none'}} className="add-cards-th">
+                <div className="add-cards-th">
                     <span>{this.state.selectedCardIndex == -1 ? "新增银行卡" : "修改银行卡"}</span></div>
-                <CardEditor rootClass="add-cards-wrap" style={shouldShowCardEditor ? null: {display: 'none'}}
+                <CardEditor rootClass="add-cards-wrap"
                     onOperationSuccess={() => this.setState({selectedCardIndex: -1})}
                     value={this.state.selectedCardIndex == -1 ? null : this.props.cards[this.state.selectedCardIndex]}/>
 
