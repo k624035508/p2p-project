@@ -15,22 +15,16 @@ namespace Agp2p.Web.api.payment.sumapay
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            BaseReqMsg reqMsg = null;
+            //TODO 在页面显示错误提示
             dt_users user = null;
+            BaseReqMsg reqMsg = null;
             int requestApi = DTRequest.GetQueryInt("api", 0);
             switch (requestApi)
-            {
-                //个人开户/激活
+            {//个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
-                    //TODO 在页面显示错误提示
+                    //实名验证接口
                     user = CheckUserLogin();
-                    if (string.IsNullOrEmpty(user.token))
-                    {
-                        Response.Write("请先进行实名验证！");
-                        return;
-                    }
-                    //调用托管平台实名验证接口
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
                 //跳转托管账户
@@ -57,31 +51,21 @@ namespace Agp2p.Web.api.payment.sumapay
                 case (int)Agp2pEnums.SumapayApiEnum.ClRep:
                     reqMsg = new AutoRepayCancelReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("projectCode"));
                     break;
-                //个人网银/一键充值
+                //个人网银充值
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
-                case (int)Agp2pEnums.SumapayApiEnum.WhRec:
-                    byte payApi = 0;
-                    if (requestApi == (int) Agp2pEnums.SumapayApiEnum.WeRec)
-                    {
-                        reqMsg = new WebRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
+                    reqMsg = new WebRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
                             DTRequest.GetQueryString("sum"), DTRequest.GetQueryString("bankCode"));
-                        payApi = (byte) Agp2pEnums.PayApiTypeEnum.Sumapay;
-                    }
-                    else
-                    {
-                        reqMsg = new WhRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
+                    break;
+                //个人一键充值
+                case (int)Agp2pEnums.SumapayApiEnum.WhRec:
+                    reqMsg = new WhRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
                             DTRequest.GetQueryString("sum"));
-                        payApi = (byte)Agp2pEnums.PayApiTypeEnum.SumapayQ;
-                    }
-                    //创建交易流水
-                    new Agp2pDataContext().Charge((int)reqMsg.UserId, DTRequest.GetQueryDecimal("sum", 0), payApi,  reqMsg.RequestId);
                     break;
                 //个人提现
                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
-                    reqMsg = new WithdrawReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("sum"));
-                    //创建充值交易流水
-                    new Agp2pDataContext().Withdraw(DTRequest.GetQueryInt("bankId", 0),
-                        DTRequest.GetQueryDecimal("sum", 0), reqMsg.RequestId);
+                    reqMsg = new WithdrawReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("sum"),
+                        DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("bankName"),
+                        DTRequest.GetQueryString("bankAccount"));
                     break;
                 default:
                     reqMsg = new BaseReqMsg();
@@ -100,6 +84,11 @@ namespace Agp2p.Web.api.payment.sumapay
             if (user == null)
             {
                 Response.Write("对不起，用户尚未登录或已超时！");
+                return null;
+            }
+            if (string.IsNullOrEmpty(user.token))
+            {
+                Response.Write("请先开通托管账户！");
                 return null;
             }
             return user;

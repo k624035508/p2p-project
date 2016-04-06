@@ -42,6 +42,10 @@ namespace Agp2p.Web.api.payment.sumapay
                     case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                         Response.Write("个人充值失败！");
                         break;
+                    //个人提现
+                    case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                        Response.Write("个人提现失败！");
+                        break;
                 }
             }
         }

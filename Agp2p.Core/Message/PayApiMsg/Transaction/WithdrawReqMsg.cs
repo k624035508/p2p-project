@@ -12,6 +12,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     public class WithdrawReqMsg : FrontEndReqMsg
     {
         public string Sum { get; set; }//充值金额
+        public string BankId { get; set; }//银行编码
         public string BankCode { get; set; }//银行编码
         public string BankAccount { get; set; }//银行账号
         public string PayType { get; set; }
@@ -41,20 +42,35 @@ namespace Agp2p.Core.Message.PayApiMsg
             set { subledgerList = value; }
         }
 
-        public WithdrawReqMsg(int userId, string sum, string bankCode = "", string bankAccount = "",
+        public WithdrawReqMsg(int userId, string sum, string bankId, string bankCode = "", string bankAccount = "",
             string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             Sum = sum;
-            BankCode = bankCode;
-            BankAccount = bankAccount;
             PayType = payType;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
+            BankId = bankId;
+            SetBankCodeAccount(bankCode, bankAccount);
 
             Api = (int) Agp2pEnums.SumapayApiEnum.Wdraw;
             ApiInterface = SumapayConfig.TestApiUrl + "user/withdraw_toWithdraw";
             RequestId = Agp2pEnums.SumapayApiEnum.Wdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        private void SetBankCodeAccount(string bankCode, string bankAccount)
+        {
+            if (!string.IsNullOrEmpty(bankCode))
+            {
+                Utils.GetEnumValues<Agp2pEnums.SumapayBankCodeEnum>().ForEach(e =>
+                {
+                    if (Utils.GetAgp2pEnumDes(e).Equals(bankCode))
+                    {
+                        BankAccount = bankAccount;
+                        BankCode = e.ToString();
+                    }
+                });
+            }
         }
 
         public override string GetSignature()

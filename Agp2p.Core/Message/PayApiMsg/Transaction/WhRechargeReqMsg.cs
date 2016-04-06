@@ -51,9 +51,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountCode = mainAccountCode;
             PassThrough = passThrough;
 
-            Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
+            Api = (int) Agp2pEnums.SumapayApiEnum.WhRec;
             ApiInterface = SumapayConfig.TestApiUrl + "user/withholdingRecharge_toWithholdingRecharge";
-            RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.WhRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()

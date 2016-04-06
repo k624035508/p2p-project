@@ -682,40 +682,40 @@ namespace Agp2p.Common
         }
 
         /// <summary>
-        /// 汇潮支付银行代码枚举
+        /// 丰付支付银行代码枚举
         /// </summary>
-        public enum EcpssBankCodeEnum
+        public enum SumapayBankCodeEnum
         {
-            [Description("工商银行")]
-            ICBC = 1,
-            [Description("建设银行")]
-            CCB = 2,
-            [Description("农业银行")]
-            ABC = 3,
+            [Description("中国工商银行")]
+            icbc = 1,
+            [Description("中国建设银行")]
+            ccb = 2,
+            [Description("中国农业银行")]
+            abc = 3,
             [Description("招商银行")]
-            CMB = 4,
+            cmb = 4,
             [Description("交通银行")]
-            BOCOM = 5,
+            comm = 5,
             [Description("中国银行")]
-            BOCSH = 6,
-            [Description("光大银行")]
-            CEB = 7,
-            [Description("民生银行")]
-            CMBC = 8,
+            boc = 6,
+            [Description("中国光大银行")]
+            ceb = 7,
+            [Description("中国民生银行")]
+            cmsb = 8,
             [Description("兴业银行")]
-            CIB = 9,
+            cib = 9,
             [Description("中信银行")]
-            CNCB = 10,
+            cncb = 10,
             [Description("广发银行")]
-            GDB = 11,
+            cgb = 11,
             [Description("浦发银行")]
-            SPDB = 12,
+            spdb = 12,
             [Description("平安银行")]
-            PAB = 13,
+            pab = 13,
             [Description("华夏银行")]
-            HXB = 14,
-            [Description("中国邮政银行")]
-            PSBC = 15
+            hxb = 14,
+            [Description("中国邮政储蓄银行")]
+            psbc = 15
         }
 
         /// <summary>
