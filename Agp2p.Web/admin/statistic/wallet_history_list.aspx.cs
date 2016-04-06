@@ -331,7 +331,7 @@ namespace Agp2p.Web.admin.statistic
                 {
                     var claim = his.li_project_transactions.li_claims_from;
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
-                        projectNameMapper(his), claim == null ? "" : "债权: " + claim.principal.ToString("c"));
+                        projectNameMapper(his), claim == null ? "" : "债权: " + claim.number);
                 }
                 // 查出 还款期数/总期数
                 var term = proj.li_repayment_tasks.SingleOrDefault(t => t.repay_at == his.li_project_transactions.create_time)?.term.ToString() ?? "?";
