@@ -14,12 +14,14 @@ namespace Agp2p.Core.AutoLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.OnTime)); // 活期项目提现后，由中间户接手
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.OnTime, DateTime.Now)); // 活期项目提现的执行
+            MessageBus.Main.Subscribe<TimerMsg>(m => HuoqiClaimTransferToCompanyWhenNeeded(m.TimerType, m.OnTime)); // 活期项目提现后，由中间户接手
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoHuoqiProjectWithdraw(m.TimerType, m.OnTime, DateTime.Now)); // 活期项目提现的执行
         }
 
-        public static void HuoqiClaimTransferToCompanyWhenNeeded(bool onTime)
+        public static void HuoqiClaimTransferToCompanyWhenNeeded(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             using (var ts = new TransactionScope())
             {
                 // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
@@ -44,8 +46,10 @@ namespace Agp2p.Core.AutoLogic
             }
         }
 
-        public static void DoHuoqiProjectWithdraw(bool onTime, DateTime withdrawAt)
+        public static void DoHuoqiProjectWithdraw(TimerMsg.Type timerType, bool onTime, DateTime withdrawAt)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             var repayTime = DateTime.Now;
 
