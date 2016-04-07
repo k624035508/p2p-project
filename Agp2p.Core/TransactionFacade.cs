@@ -1568,6 +1568,8 @@ namespace Agp2p.Core
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerMakeLoanSuccess);
             his.li_bank_transactions = btr;
             context.li_wallet_histories.InsertOnSubmit(his);
+
+            context.SubmitChanges();
         }
 
         /// <summary>
@@ -1605,6 +1607,8 @@ namespace Agp2p.Core
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerRepaySuccess);
             his.li_bank_transactions = btr;
             context.li_wallet_histories.InsertOnSubmit(his);
+
+            context.SubmitChanges();
         }
 
         /// <summary>
