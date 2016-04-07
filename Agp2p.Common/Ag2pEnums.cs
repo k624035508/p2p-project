@@ -219,9 +219,9 @@ namespace Agp2p.Common
             Withdraw = 2,
 
             // 借款人相关
-            [Description("借款人放款")]
+            [Description("向借款人放款")]
             LoanerMakeLoan = 10,
-            [Description("借款人还款")]
+            [Description("收取借款人还款")]
             LoanerRepay = 11,
         }
 
@@ -416,9 +416,9 @@ namespace Agp2p.Common
             LostCancel = 45,
 
             // 借款人相关
-            [Description("借款人放款成功")]
+            [Description("向借款人放款成功")]
             LoanerMakeLoanSuccess = 50,
-            [Description("借款人还款成功")]
+            [Description("收取借款人还款成功")]
             LoanerRepaySuccess = 51,
         }
 
