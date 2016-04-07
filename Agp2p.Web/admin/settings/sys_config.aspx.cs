@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
 using Agp2p.Core;
+using Agp2p.Core.Message;
 
 namespace Agp2p.Web.admin.settings
 {
@@ -129,6 +130,7 @@ namespace Agp2p.Web.admin.settings
             // 自动放款设置
             enableAutoRepay.Checked = model.enableAutoRepay == 1;
             txtSystemTimerTriggerTime.Text = model.systemTimerTriggerTime;
+            txtLoanerRepayTime.Text = model.loanerRepayTime;
             sendShortMsgAfterRepay.Checked = model.sendShortMsgAfterRepay == 1;
             sendRepayAnnounceAfterRepay.Checked = model.sendRepayAnnounceAfterRepay == 1;
         }
@@ -279,9 +281,16 @@ namespace Agp2p.Web.admin.settings
                 model.enableAutoRepay = enableAutoRepay.Checked ? 1 : 0;
                 if (!model.systemTimerTriggerTime.Equals(txtSystemTimerTriggerTime.Text))
                 {
-                    Global.InitDailyTimer(txtSystemTimerTriggerTime.Text);
+                    Global.InitDailyTimer(TimerMsg.Type.AutoRepayTimer, txtSystemTimerTriggerTime.Text);
                 }
                 model.systemTimerTriggerTime = txtSystemTimerTriggerTime.Text;
+
+                if (!model.loanerRepayTime.Equals(txtLoanerRepayTime.Text))
+                {
+                    Global.InitDailyTimer(TimerMsg.Type.LoanerRepayTimer, txtLoanerRepayTime.Text);
+                }
+                model.loanerRepayTime = txtLoanerRepayTime.Text;
+
                 model.sendShortMsgAfterRepay = sendShortMsgAfterRepay.Checked ? 1 : 0;
                 model.sendRepayAnnounceAfterRepay = sendRepayAnnounceAfterRepay.Checked ? 1 : 0;
 

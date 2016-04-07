@@ -922,6 +922,7 @@ namespace Agp2p.Web.UI.Page
             {
                 c.id,
                 c.number,
+                project = c.li_projects.title,
                 principal = c.principal.ToString("n"),
                 queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum)c.status]),
                 createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),

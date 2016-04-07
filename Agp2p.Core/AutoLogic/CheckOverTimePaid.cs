@@ -12,11 +12,13 @@ namespace Agp2p.Core.AutoLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoCheckOverTimePaid(m.OnTime)); // 每日定时检测逾期还款，设置为逾期状态
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoCheckOverTimePaid(m.TimerType, m.OnTime)); // 每日定时检测逾期还款，设置为逾期状态
         }
 
-        private static void DoCheckOverTimePaid(bool onTime)
+        private static void DoCheckOverTimePaid(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var db = new Agp2pDataContext();
             var overTime =
                 db.li_repayment_tasks.Where(

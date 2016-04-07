@@ -21,13 +21,15 @@ namespace Agp2p.Core.AutoLogic
 
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => CheckStaticProjectWithdrawOvertime(m.OnTime)); // 检查定期项目债权转让是否超时
-            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
+            MessageBus.Main.Subscribe<TimerMsg>(m => CheckStaticProjectWithdrawOvertime(m.TimerType, m.OnTime)); // 检查定期项目债权转让是否超时
+            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.TimerType, m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.TimerType, m.OnTime)); // 每日定时还款
         }
 
-        public static void CheckStaticProjectWithdrawOvertime(bool onTime)
+        public static void CheckStaticProjectWithdrawOvertime(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             // 申请时间超过 2 日 / 到达还款日，则取消债权转让申请
             var withdrawOvertimeClaims = context.li_claims
@@ -49,8 +51,10 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        public static void GenerateHuoqiRepaymentTask(bool onTime)
+        public static void GenerateHuoqiRepaymentTask(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             var today = DateTime.Today;
 
@@ -91,8 +95,9 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        public static void DoRepay(bool onTime)
+        public static void DoRepay(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
             if (ConfigLoader.loadSiteConfig().enableAutoRepay == 0) return;
 
             var context = new Agp2pDataContext();
