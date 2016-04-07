@@ -756,6 +756,20 @@ namespace Agp2p.Core
             // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
+
+            if (0 < finalCost)
+            {
+                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                {
+                    user_id = needTransferClaim.userId,
+                    income = finalCost,
+                    project_id = needTransferClaim.projectId,
+                    type = (int)Agp2pEnums.OfflineTransactionTypeEnum.StaticClaimTransfer,
+                    create_time = now,
+                    remark = $"债权'{needTransferClaim.Parent.number}'转让成功，收取债权转让管理费",
+                });
+            }
+
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,

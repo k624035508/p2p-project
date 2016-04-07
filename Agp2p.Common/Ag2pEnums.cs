@@ -431,6 +431,8 @@ namespace Agp2p.Common
             ManagementFeeOfOverTime = 11,
             [Description("风险保证金")]
             BondFee = 12,
+            [Description("债权转让管理费")]
+            StaticClaimTransfer = 13,
 
             // 支出
             [Description("充值手续费")]
