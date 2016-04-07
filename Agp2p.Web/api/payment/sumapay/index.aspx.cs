@@ -82,7 +82,7 @@ namespace Agp2p.Web.api.payment.sumapay
                 case (int)Agp2pEnums.SumapayApiEnum.McRep:
                     reqMsg = new AccountRepayReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("projectCode"), DTRequest.GetQueryString("sum"),
                         "http://" + HttpContext.Current.Request.Url.Authority.ToLower() +
-                        "user/center/index.html#/recharge", requestApi == (int) Agp2pEnums.SumapayApiEnum.McRep);
+                        "/user/center/index.html#/recharge", requestApi == (int) Agp2pEnums.SumapayApiEnum.McRep);
                     break;
                 //个人协议还款普通/集合项目
                 case (int)Agp2pEnums.SumapayApiEnum.BaRep:

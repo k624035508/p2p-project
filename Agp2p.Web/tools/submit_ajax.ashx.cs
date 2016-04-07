@@ -151,9 +151,6 @@ namespace Agp2p.Web.tools
                 case "user_bank_card_delete": //删除客户银行卡
                     user_bank_card_delete(context);
                     break;
-                case "user_bank_card_show": //显示客户银行卡
-                    user_bank_card_show(context);
-                    break;
                 case "bind_idcard": // 实名认证
                     bind_idcard(context);
                     break;

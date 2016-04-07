@@ -201,7 +201,7 @@ namespace Agp2p.Web.admin.repayment
                     {
                         Response.Write("<script>window.open('" +
                                        $"/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.MaRep}&userId={loaner.dt_users.id}" +
-                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest).ToString("N")}" +
+                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}" +
                                        "','_blank')</script>");
                     }
                     else
@@ -254,7 +254,7 @@ namespace Agp2p.Web.admin.repayment
                     {
                         Response.Write("<script>window.open('" +
                                        $"/api/payment/sumapay/index.aspx?api={(int)Agp2pEnums.SumapayApiEnum.BaRep}&userId={loaner.dt_users.id}" +
-                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest).ToString("N")}" +
+                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}" +
                                        "','_blank')</script>");
                     }
                     else

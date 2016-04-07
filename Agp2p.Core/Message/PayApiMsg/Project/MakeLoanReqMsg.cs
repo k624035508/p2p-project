@@ -24,23 +24,24 @@ namespace Agp2p.Core.Message.PayApiMsg
             {
                 if (string.IsNullOrEmpty(subledgerList))
                 {
+                    var loanSum = Utils.StrToDecimal(Sum, 0);
                     subledgerList = JsonHelper.ObjectToJSON(new List<object>
                     {
                         //借款人收到的款
                         new
                         {
                             roleType = "0",
-                            roleCode = UserId,
+                            roleCode = UserId.ToString(),
                             inOrOut = "0",
-                            sum = Sum
+                            sum = (loanSum - loanSum * FeeRate).ToString("f")
                         },
                         //平台服务费
                         new
                         {
                             roleType = "1",
                             roleCode = SumapayConfig.MerchantCode,
-                            inOrOut = "1",
-                            sum = Utils.StrToDecimal(Sum, 0) * FeeRate
+                            inOrOut = "0",
+                            sum = (loanSum * FeeRate).ToString("f")
                         }
                     });
                 }
@@ -49,8 +50,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             set { subledgerList = value; }
         }
 
-        public MakeLoanReqMsg(string projectCode, string sum, decimal feeRate, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
+        public MakeLoanReqMsg(int userId, string projectCode, string sum, decimal feeRate, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
+            UserId = userId;
             ProjectCode = projectCode;
             Sum = sum;
             PayType = payType;

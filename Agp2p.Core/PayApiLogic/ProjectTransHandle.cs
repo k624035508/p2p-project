@@ -4,6 +4,7 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
+using Agp2p.Core;
 
 namespace Agp2p.Core.PayApiLogic
 {
@@ -152,7 +153,7 @@ namespace Agp2p.Core.PayApiLogic
                             if (msg.Sync)
                             {
                                 //生成放款交易记录
-                                TransactionFacade.MakeLoan((int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                context.MakeLoan(DateTime.Now, Utils.StrToInt(msg.ProjectCode, 0), pro.li_risks.li_loaners.user_id, Utils.StrToDecimal(msg.Sum, 0));
                                 //生成还款计划
                                 context.StartRepayment(Utils.StrToInt(msg.ProjectCode, 0));
                                 
@@ -192,7 +193,7 @@ namespace Agp2p.Core.PayApiLogic
                         if (pro != null)
                         {
                             //生成还款记录
-                            TransactionFacade.GainLoanerRepayment(pro.li_risks.li_loaners.user_id, 0, 0);
+                            context.GainLoanerRepayment(DateTime.Now, pro.id, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
                             msg.HasHandle = true;
                         }
                         else

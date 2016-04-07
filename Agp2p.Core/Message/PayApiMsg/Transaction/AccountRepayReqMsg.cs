@@ -51,14 +51,14 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode ", ProjectCode},
+                {"projectCode", ProjectCode},
                 {"sum", Sum},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
-            if (!string.IsNullOrEmpty(RechargeUrl)) sd.Add("rechargeUrl ", RechargeUrl);
+            if (!string.IsNullOrEmpty(RechargeUrl)) sd.Add("rechargeUrl", RechargeUrl);
             if (!string.IsNullOrEmpty(GiftFlag)) sd.Add("giftFlag", GiftFlag);
             if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("subledgerList", SubledgerList);
 

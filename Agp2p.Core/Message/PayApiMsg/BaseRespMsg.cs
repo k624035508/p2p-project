@@ -56,7 +56,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!Result.Equals("00000"))
             {
                 //TODO 根据结果编码记录失败原因
-                Remarks += "xx";
+                Remarks += Result;
                 return false;
             }
             return true;

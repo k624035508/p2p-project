@@ -99,7 +99,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             //普通/集合项目放款
                             case (int) Agp2pEnums.SumapayApiEnum.ALoan:
                             case (int) Agp2pEnums.SumapayApiEnum.CLoan:
-                                respMsg = isSync ? new MakeLoanRespMsg(reqStr, true) : BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr);
+                                respMsg = BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr);
                                 break;
                             //个人提现
                             case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
