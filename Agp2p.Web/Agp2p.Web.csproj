@@ -830,6 +830,7 @@
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
+    <Content Include="templates\AnGuang\imgs\index\manbiao.jpg" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\news-ring.png" />

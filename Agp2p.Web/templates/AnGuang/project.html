@@ -170,29 +170,61 @@
                     <tbody>
                         <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
                         <tr><td>投标人数</td><td colspan="2">{invsetorCount}人</td></tr>
-                        <tr><td>投标进度</td><td><div class="progress progress-custom">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(projectModel.GetInvestmentProgressPercent()*100)%>'
-                                 aria-valuemin="0" aria-valuemax="100" style='width: <%=projectModel.GetInvestmentProgressPercent().ToString("p1")%>'>
-                            </div>
-                        </div></td><td><%=projectModel.GetInvestmentProgressPercent().ToString("p1")%></td></tr>
+                        <tr>
+                            <td>投标进度</td>
+                            <td>
+                                <div class="progress progress-custom">
+                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(projectModel.GetInvestmentProgressPercent()*100)%>'
+                                         aria-valuemin="0" aria-valuemax="100" style='width: <%=projectModel.GetInvestmentProgressPercent().ToString("p1")%>'>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><%=projectModel.GetInvestmentProgressPercent().ToString("p1")%></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="interest-way">
+            <!--  <div class="interest-way">
+              <table>
+                <tbody>
+                      <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
+                      <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+                      <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                      <%else%>
+                      <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
+                      <%/if%>
+                      <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                      <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
+                      <%/if%>
+                  </tbody>
+                  </table>
+              </div>
+               -->
+            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <div class="interest-way" style="padding-top:10px ;height:90px ;background:url('<%templateskin%>/imgs/index/manbiao.jpg') no-repeat 150px -25px; ">
                 <table>
                     <tbody>
                         <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
-                        <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
                         <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
-                        <%else%>
-                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
-                        <%/if%>
                         <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                         <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
                         <%/if%>
                     </tbody>
                 </table>
             </div>
+            <%else%>
+            <div class="interest-way">
+                <table>
+                    <tbody>
+                        <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
+                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                        <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                        <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
+                        <%/if%>
+                    </tbody>
+                </table>
+            </div>
+            <%/if%>
         </div>
     </div>
     
