@@ -1541,6 +1541,73 @@ namespace Agp2p.Core
         }
 
         /// <summary>
+        /// 放款
+        /// </summary>
+        /// <param name="loanerUserId"></param>
+        /// <param name="amount"></param>
+        public static void MakeLoan(int loanerUserId, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var now = DateTime.Now;
+
+            var btr = new li_bank_transactions
+            {
+                handling_fee_type = (byte)Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
+                type = (byte)Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan,
+                status = (byte)Agp2pEnums.BankTransactionStatusEnum.Confirm,
+                create_time = now,
+                transact_time = now,
+                charger = loanerUserId,
+                value = amount,
+            };
+            // 创建钱包历史
+            var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
+            wallet.idle_money += amount;
+            wallet.last_update_time = now;
+
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerMakeLoanSuccess);
+            his.li_bank_transactions = btr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+        }
+
+        /// <summary>
+        /// 收取借款人的还款
+        /// </summary>
+        /// <param name="loanerUserId"></param>
+        /// <param name="bankAccountId"></param>
+        /// <param name="amount"></param>
+        public static void GainLoanerRepayment(int loanerUserId, int bankAccountId, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
+            if (wallet.idle_money < amount)
+                throw new InvalidOperationException("借款人的余额不足");
+            var now = DateTime.Now;
+
+            var bankAccount = context.li_bank_accounts.Single(ac => ac.id == bankAccountId);
+            if (bankAccount.owner != loanerUserId)
+                throw new InvalidOperationException("银行卡账号不对应借款人");
+
+            var btr = new li_bank_transactions
+            {
+                handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
+                type = (byte) Agp2pEnums.BankTransactionTypeEnum.LoanerRepay,
+                status = (byte) Agp2pEnums.BankTransactionStatusEnum.Confirm,
+                create_time = now,
+                transact_time = now,
+                withdraw_account = bankAccountId,
+                value = amount,
+            };
+            // 创建钱包历史
+            wallet.idle_money -= amount;
+            wallet.last_update_time = now;
+
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerRepaySuccess);
+            his.li_bank_transactions = btr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+        }
+
+        /// <summary>
         /// 马上执行还款计划（不能异步执行）
         /// </summary>
         /// <param name="context"></param>
