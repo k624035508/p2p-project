@@ -99,7 +99,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             //普通/集合项目放款
                             case (int) Agp2pEnums.SumapayApiEnum.ALoan:
                             case (int) Agp2pEnums.SumapayApiEnum.CLoan:
-                                respMsg = BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr);
+                                respMsg = isSync ? new MakeLoanRespMsg(reqStr, true) : BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr);
                                 break;
                             //个人提现
                             case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
@@ -108,18 +108,18 @@ namespace Agp2p.Web.api.payment.sumapay
                             //个人存管账户还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.McRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 break;
                             //个人协议还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.BaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.BcRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 ((RepayRespMsg) respMsg).BankRepay = true;
                                 break;
                             //个人自动还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.AcRep:
                             case (int) Agp2pEnums.SumapayApiEnum.AbRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 ((RepayRespMsg) respMsg).AutoRepay = true;
                                 break;
                             //普通/集合项目本息到账

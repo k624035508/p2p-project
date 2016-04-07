@@ -31,11 +31,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
@@ -67,11 +67,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的原交易流水
@@ -102,11 +102,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
@@ -137,20 +137,25 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            if (!msg.Sync)
+                            //TODO 正式后改为异步返回才放款
+                            if (msg.Sync)
                             {
-                                context.StartRepayment(pro.id);
+                                //生成放款交易记录
+                                TransactionFacade.MakeLoan((int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                //生成还款计划
+                                context.StartRepayment(Utils.StrToInt(msg.ProjectCode, 0));
+                                
                                 msg.HasHandle = true;
                             }
                         }
@@ -175,21 +180,19 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //TODO 还款
-
-
-                            context.SubmitChanges();
+                            //生成还款记录
+                            TransactionFacade.GainLoanerRepayment(pro.li_risks.li_loaners.user_id, 0, 0);
                             msg.HasHandle = true;
                         }
                         else
@@ -213,11 +216,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
@@ -238,7 +241,7 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 msg.Remarks = "没有找到项目当天的还款计划，项目编号为：" + msg.ProjectCode;
                             }
-                            
+
                         }
                         else
                         {
@@ -261,11 +264,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的债权

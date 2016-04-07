@@ -26,12 +26,13 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
+
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
@@ -66,16 +67,14 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                Agp2pDataContext context = new Agp2pDataContext();
+                //查找对应的交易流水
+                var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                if (trans != null)
                 {
-                    Agp2pDataContext context = new Agp2pDataContext();
-                    //查找对应的交易流水
-                    var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                    if (trans != null)
+                    if (msg.CheckResult())
                     {
-                        //检查请求处理结果
-                        if (msg.CheckResult())
+                        if (msg.CheckSignature())
                         {
                             //TODO 异步返回的结果才是充值已到账
                             if (msg.Sync)
@@ -85,18 +84,15 @@ namespace Agp2p.Core.PayApiLogic
 
                                 msg.HasHandle = true;
                             }
-
-                        }
-                        else
-                        {
-                            //取消提现
-                            context.CancelBankTransaction(trans.id, 1);
                         }
                     }
-                    else
-                    {
-                        msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
-                    }
+                    //取消提现
+                    if (!msg.HasHandle)
+                        context.CancelBankTransaction(trans.id, 1);
+                }
+                else
+                {
+                    msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
                 }
             }
             catch (Exception ex)

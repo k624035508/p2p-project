@@ -500,11 +500,32 @@ namespace Agp2p.Web.admin.project
             try
             {
                 ChkAdminLevel("make_loan_audit", DTEnums.ActionEnum.Audit.ToString());
-                //TODO 资金打入借款人账户
-                LqContext.StartRepayment(ProjectId);
-                JscriptMsg("放款操作成功！",
-                    Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
-                        ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
+                var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+
+                //调用托管平台实名验证接口
+                if (project != null)
+                {
+                    var msg = new MakeLoanReqMsg(ProjectId.ToString(), project.financing_amount.ToString("N"), 0);
+                    MessageBus.Main.Publish(msg);
+                    //处理实名验证返回结果
+                    var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
+                    MessageBus.Main.Publish(msgResp);
+                    if (msgResp.HasHandle)
+                    {
+                        JscriptMsg("放款申请成功！",
+                            Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                                ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
+                    }
+                    else
+                    {
+                        JscriptMsg("放款操作失败：" + msgResp.Remarks, "back", "Error");
+                    }
+                }
+                else
+                {
+                    JscriptMsg("放款操作失败，没有找到项目！", "back", "Error");
+                }
+                
             }
             catch (Exception ex)
             {

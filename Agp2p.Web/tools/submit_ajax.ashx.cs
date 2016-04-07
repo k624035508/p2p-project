@@ -2440,40 +2440,6 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
-        /// TODO 展示银行卡信息
-        /// </summary>
-        /// <param name="context"></param>
-        private void user_bank_card_show(HttpContext context)
-        {
-            try
-            {
-                int card_id = DTRequest.GetFormInt("cardId", 0);
-                var linqContext = new Agp2pDataContext();
-                var card = linqContext.li_bank_accounts.FirstOrDefault(b => b.id == card_id);
-                if (card == null)
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"查询银行卡信息失败！\"}");
-                    return;
-                }
-                context.Response.ContentType = "application/json";
-                var json = JsonConvert.SerializeObject(
-                    new
-                    {
-                        status = 1,
-                        cardNo = card.account,
-                        bankName = card.bank,
-                        opening_bank = card.opening_bank,
-                        location = card.location
-                    });
-                context.Response.Write(json);
-            }
-            catch (Exception ex)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"删除银行卡失败！银行卡有提现记录不允许删除。（" + ex.Message + "）\"}");
-            }            
-        }
-
-        /// <summary>
         /// 生成用户投资协议
         /// </summary>
         /// <param name="httpContext"></param>

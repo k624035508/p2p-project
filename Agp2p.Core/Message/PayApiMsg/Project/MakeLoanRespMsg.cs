@@ -1,4 +1,6 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿using Agp2p.Common;
+
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 项目放款响应
@@ -12,10 +14,22 @@
         public bool Collective { get; set; }//集合项目标识
         public bool Sync { get; set; }//同步标识
 
-        public MakeLoanRespMsg(bool collective = false, bool sync = false)
+        public MakeLoanRespMsg(string requestStr, bool sync = false, bool collective = false)
         {
             Collective = collective;
             Sync = sync;
+
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            ProjectCode = map["projectCode"];
+            Sum = map["sum"];
+            PayType = map["payType"];
+            MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
+            MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";
         }
 
         public override bool CheckSignature()

@@ -22,9 +22,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public AccountRepayReqMsg(int userId, string sum, string rechargeUrl, string giftFlag, string subledgerList, bool collective = false)
+        public AccountRepayReqMsg(int userId, string projectCode, string sum, string rechargeUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
+            ProjectCode = projectCode;
             Sum = sum;
             SubledgerList = subledgerList;
             RechargeUrl = rechargeUrl;
@@ -34,16 +35,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  +
-                RechargeUrl + SuccessReturnUrl + FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  +
+                RechargeUrl + SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

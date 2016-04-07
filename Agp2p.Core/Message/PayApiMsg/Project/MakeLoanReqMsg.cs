@@ -34,6 +34,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                             inOrOut = "0",
                             sum = Sum
                         },
+                        //平台服务费
                         new
                         {
                             roleType = "1",
@@ -65,10 +66,9 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode  + Sum + PayType +
-                                               SubledgerList + NoticeUrl + MainAccountType + MainAccountCode);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + ProjectCode  + Sum + PayType +
+                                               SubledgerList + NoticeUrl + MainAccountType + MainAccountCode, SumapayConfig.Key);
         }
 
         public override string GetPostPara()
