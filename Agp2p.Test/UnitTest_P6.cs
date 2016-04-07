@@ -11,7 +11,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P6, P6-1 测试流程：
+        P6, P6-1 测试流程：（测试活期自动续投）
             Day 1
                 发活期标
                 发 5 日标，金额 50000，A 投 50000 放款；A 提现 50000；公司账号接手 50000
@@ -28,7 +28,7 @@ namespace Agp2p.Test
                 P6-1 回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 21, 9, 00, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 31, 9, 00, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)

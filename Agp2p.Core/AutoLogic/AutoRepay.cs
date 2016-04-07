@@ -21,9 +21,54 @@ namespace Agp2p.Core.AutoLogic
 
         internal static void DoSubscribe()
         {
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoGainLoanerRepayment(m.TimerType, m.OnTime)); // 回款前取得借款人还的款
+
             MessageBus.Main.Subscribe<TimerMsg>(m => CheckStaticProjectWithdrawOvertime(m.TimerType, m.OnTime)); // 检查定期项目债权转让是否超时
             MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.TimerType, m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.TimerType, m.OnTime)); // 每日定时还款
+        }
+
+        public static void DoGainLoanerRepayment(TimerMsg.Type timerType, bool onTime)
+        {
+            if (timerType != TimerMsg.Type.LoanerRepayTimer) return;
+
+            // 找出今天需要回款，并且没有收取还款的计划
+            var context = new Agp2pDataContext();
+            var shouldRepayTask = context.li_repayment_tasks.Where(t =>
+                    t.li_projects.li_risks.li_loaners != null &&
+                    t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                    t.should_repay_time.Date <= DateTime.Today)
+                .AsEnumerable()
+                .Where(t => !t.li_projects.IsHuoqiProject() && !t.li_projects.IsNewbieProject())
+                .Where(t =>
+                {
+                    var loaner = t.li_projects.li_risks.li_loaners;
+                    return !loaner.dt_users.li_bank_transactions.Any(
+                        btr =>
+                            btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay &&
+                            btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm && btr.remarks != t.id.ToString());
+                })
+                .ToList();
+            if (!shouldRepayTask.Any()) return;
+
+            var gainAt = DateTime.Now;
+
+            shouldRepayTask.ForEach(t =>
+            {
+                var loaner = t.li_projects.li_risks.li_loaners;
+                try
+                {
+                    TransactionFacade.GainLoanerRepayment(context, gainAt, t.id, loaner.user_id, t.repay_principal + t.repay_interest, false);
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLog("GainLoanerRepayment",
+                        ex.Message == "借款人的余额不足"
+                            ? $"借款人 {loaner.dt_users.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
+                            : ex.GetSimpleCrashInfo());
+                }
+            });
+            context.SubmitChanges();
         }
 
         public static void CheckStaticProjectWithdrawOvertime(TimerMsg.Type timerType, bool onTime)

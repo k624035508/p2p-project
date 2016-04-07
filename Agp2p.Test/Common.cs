@@ -53,6 +53,11 @@ namespace Agp2p.Test
             }
         }
 
+        public static void GainLoanerRepaymentSimulate()
+        {
+            AutoRepay.DoGainLoanerRepayment(TimerMsg.Type.LoanerRepayTimer, false);
+        }
+
         public static void AutoRepaySimulate(DateTime? runAt = null)
         {
             AutoRepay.CheckStaticProjectWithdrawOvertime(TimerMsg.Type.AutoRepayTimer, false);

@@ -10,7 +10,7 @@ namespace Agp2p.Test
         private const string UserA = "13535656867";
         private const string UserB = "13590609455";
         /*
-        P1 测试流程：
+        P1 测试流程：（测试普通定期还款）
         Day 1
             发 1 日标，金额 50000，A 投 15000 * 2，B 投 20000，放款
         Day 2
