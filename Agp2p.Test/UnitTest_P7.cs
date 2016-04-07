@@ -23,7 +23,7 @@ namespace Agp2p.Test
                 回款
         */
 
-        private readonly DateTime TestStartAt = new DateTime(2016, 03, 31, 8, 20, 00);/* 开始测试前请设置好实际日期 */
+        private readonly DateTime TestStartAt = new DateTime(2016, 4, 7, 8, 20, 00);/* 开始测试前请设置好实际日期 */
         private static int _totalDays;
 
         [ClassInitialize]
@@ -83,9 +83,9 @@ namespace Agp2p.Test
 
             // 回款，总数应为 417.81
 
-            Common.AssertWalletDelta(UserA, 162.6m, 0, 0, 0, 0, 0, 30000, 162.6m, TestStartAt);
+            Common.AssertWalletDelta(UserA, 165m, 0, 0, 0, 0, 0, 30000, 165m, TestStartAt);
             Common.AssertWalletDelta(UserB, 0, 0, 0, 0, 0, 0, 50000, 0m, TestStartAt);
-            Common.AssertWalletDelta(CompanyAccount, 255.21m, 0, 0, 0, 0, 0, 50000, 417.81m, TestStartAt);
+            Common.AssertWalletDelta(CompanyAccount, 252.81m, 0, 0, 0, 0, 0, 50000, 417.81m, TestStartAt);
         }
 
         [TestMethod]
