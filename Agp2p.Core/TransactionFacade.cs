@@ -1610,7 +1610,7 @@ namespace Agp2p.Core
         /// <param name="loanerUserId"></param>
         /// <param name="bankAccountId"></param>
         /// <param name="amount"></param>
-        public static void GainLoanerRepayment(Agp2pDataContext context, DateTime gainAt, int repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
+        public static void GainLoanerRepayment(Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
         {
             var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
             if (wallet.idle_money < amount)
@@ -1626,7 +1626,7 @@ namespace Agp2p.Core
                 charger = loanerUserId,
                 value = amount,
                 no_order = "",
-                remarks = repaymentTaskId.ToString()
+                remarks = repaymentTaskId?.ToString()
             };
             // 创建钱包历史
             wallet.idle_money -= amount;
@@ -2133,6 +2133,10 @@ namespace Agp2p.Core
             var willInvalidTasks = unpaidTasks.Skip(1).ToList();
             if (!willInvalidTasks.Any())
             {
+                // 向借款人收取还款
+                GainLoanerRepayment(context, DateTime.Now, currentTask.id,
+                    currentTask.li_projects.li_risks.li_loaners.user_id,
+                    currentTask.repay_principal + currentTask.repay_interest);
                 context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
                 return project;
             }
@@ -2163,6 +2167,10 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
+            GainLoanerRepayment(context, DateTime.Now, null,
+                currentTask.li_projects.li_risks.li_loaners.user_id,
+                currentTask.repay_principal + currentTask.repay_interest + earlierRepayTask.repay_principal +
+                earlierRepayTask.repay_interest);
             context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
             context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 
