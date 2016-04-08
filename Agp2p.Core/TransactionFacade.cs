@@ -771,6 +771,20 @@ namespace Agp2p.Core
             // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
+
+            if (0 < finalCost)
+            {
+                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                {
+                    user_id = needTransferClaim.userId,
+                    income = finalCost,
+                    project_id = needTransferClaim.projectId,
+                    type = (int)Agp2pEnums.OfflineTransactionTypeEnum.StaticClaimTransfer,
+                    create_time = now,
+                    remark = $"债权'{needTransferClaim.Parent.number}'转让成功，收取债权转让管理费",
+                });
+            }
+
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,
@@ -1598,7 +1612,7 @@ namespace Agp2p.Core
         /// <param name="loanerUserId"></param>
         /// <param name="bankAccountId"></param>
         /// <param name="amount"></param>
-        public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
+        public static void GainLoanerRepayment(Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
         {
             var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
             if (wallet.idle_money < amount)
@@ -1614,7 +1628,7 @@ namespace Agp2p.Core
                 charger = loanerUserId,
                 value = amount,
                 no_order = "",
-                remarks = repaymentTaskId.ToString()
+                remarks = repaymentTaskId?.ToString()
             };
             // 创建钱包历史
             wallet.idle_money -= amount;
@@ -2121,6 +2135,10 @@ namespace Agp2p.Core
             var willInvalidTasks = unpaidTasks.Skip(1).ToList();
             if (!willInvalidTasks.Any())
             {
+                // 向借款人收取还款
+                GainLoanerRepayment(context, DateTime.Now, currentTask.id,
+                    currentTask.li_projects.li_risks.li_loaners.user_id,
+                    currentTask.repay_principal + currentTask.repay_interest);
                 context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
                 return project;
             }
@@ -2151,6 +2169,10 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
+            GainLoanerRepayment(context, DateTime.Now, null,
+                currentTask.li_projects.li_risks.li_loaners.user_id,
+                currentTask.repay_principal + currentTask.repay_interest + earlierRepayTask.repay_principal +
+                earlierRepayTask.repay_interest);
             context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
             context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 

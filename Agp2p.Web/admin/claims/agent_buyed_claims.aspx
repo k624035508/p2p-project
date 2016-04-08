@@ -59,6 +59,7 @@ tr.sum td { color: red; }
     <th align="left" width="3%" style="padding-left: 1em;">序号</th>
     <th align="left" width="8%">原债权所有者</th>
     <th align="left" width="8%">原债权所有者申请转让时间</th>
+    <th align="left" width="8%">原债权还款日</th>
     <th align="left" width="8%">债权编号</th>
     <th align="left" width="5%">本金</th>
     <th align="left" width="5%">项目</th>
@@ -72,6 +73,7 @@ tr.sum td { color: red; }
     <td style="padding-left: 1em;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
     <td><%# Eval("WithdrawClaim.OriginalOwner") %></td>
     <td><%# Eval("WithdrawClaim.WithdrawTime") %></td>
+    <td><%# Eval("WithdrawClaim.WithdrawClaimCompleteDay") %></td>
     <td><%# Eval("Number") %></td>
     <td><%# Eval("Principal") %></td>
     <td><%# Eval("ProjectName") %></td>
@@ -81,7 +83,7 @@ tr.sum td { color: red; }
   </tr>
 </ItemTemplate>
 <FooterTemplate>
-  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"8\">暂无记录</td></tr>" : ""%>
+  <%#rptList.Items.Count == 0 ? "<tr><td align=\"center\" colspan=\"10\">暂无记录</td></tr>" : ""%>
 </table>
 </FooterTemplate>
 </asp:Repeater>

@@ -341,6 +341,17 @@ namespace Agp2p.Web.admin.statistic
             }
             if (his.li_bank_transactions != null)
             {
+                if (his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan)
+                {
+                    var projectId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    return $"关联项目：{context.li_projects.Single(p => p.id == projectId).title}";
+                }
+                if (his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay)
+                {
+                    var repaymentTaskId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    var task = context.li_repayment_tasks.Single(p => p.id == repaymentTaskId);
+                    return $"关联还款计划：{task.li_projects.title} 第 {task.term} 期";
+                }
                 return his.li_bank_transactions.remarks;
             }
             return his.li_activity_transactions != null ? his.li_activity_transactions.remarks : "";

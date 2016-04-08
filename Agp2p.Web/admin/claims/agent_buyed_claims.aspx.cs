@@ -13,6 +13,7 @@ namespace Agp2p.Web.admin.claims
     {
         public string OriginalOwner { get; set; }
         public DateTime? WithdrawTime  { get; set; }
+        public string WithdrawClaimCompleteDay  { get; set; }
     }
 
     public class BuyedClaim
@@ -131,7 +132,8 @@ namespace Agp2p.Web.admin.claims
                             buyedClaims.First().WithdrawClaim = new WithdrawClaim
                             {
                                 OriginalOwner = rootWithdrawClaim.dt_users.GetFriendlyUserName(),
-                                WithdrawTime = rootWithdrawClaim.createTime
+                                WithdrawTime = rootWithdrawClaim.createTime,
+                                WithdrawClaimCompleteDay = rootWithdrawClaim.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd")
                             };
                             return buyedClaims.Concat(Enumerable.Repeat(new BuyedClaim
                             {

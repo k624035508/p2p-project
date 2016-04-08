@@ -130,6 +130,7 @@ namespace Agp2p.Web.admin.statistic
             (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
             (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfOverTime,
             (int) Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
+            (int) Agp2pEnums.OfflineTransactionTypeEnum.StaticClaimTransfer,
         };
 
         private IEnumerable<OfflineTransaction> QueryProjectTransactions()
