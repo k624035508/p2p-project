@@ -5,6 +5,7 @@ using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 using Agp2p.Core;
+using Newtonsoft.Json;
 
 namespace Agp2p.Core.PayApiLogic
 {
@@ -189,23 +190,54 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
-                            //TODO 正式要加上时间条件
-                            //找出最近的一个还款计划
-                            var repayTask = pro.li_repayment_tasks.OrderBy(r => r.should_repay_time)
-                                .First(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid 
-                                //&&r.should_repay_time.Date <= DateTime.Today
-                                );
-
-                            //生成还款记录
-                            context.GainLoanerRepayment(DateTime.Now, repayTask.id, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
-                            //执行还款计划
-                            context.ExecuteRepaymentTask(repayTask.id);
-                            msg.HasHandle = true;
+                            var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
+                            if (req != null)
+                            {
+                                var dic = Utils.UrlParamToData(req.remarks);
+                                int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
+                                if (repayRask != null)
+                                {
+                                    if (Utils.StrToBool(dic["isEarly"], false))
+                                    {
+                                        //TODO 提前还款
+                                    }
+                                    else
+                                    {
+                                        //生成还款记录
+                                        context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
+                                            Utils.StrToDecimal(msg.Sum, 0));
+                                        //手动还款立刻发送本息到账请求
+                                        if (!msg.AutoRepay)
+                                        {
+                                            //计算投资者本息明细
+                                            var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
+                                            //创建本息到账请求并设置分账列表
+                                            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(msg.ProjectCode, msg.Sum);
+                                            returnPrinInteReqMsg.SetSubledgerList(transList);
+                                            //发送请求
+                                            MessageBus.Main.Publish(returnPrinInteReqMsg);
+                                            //处理请求结果
+                                            var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+                                            returnPrinInteRespMsg.Sync = true;
+                                            returnPrinInteRespMsg.RepayTaskId = repayId;
+                                            MessageBus.Main.Publish(returnPrinInteRespMsg);
+                                            if (!returnPrinInteRespMsg.HasHandle)
+                                            {
+                                                msg.Remarks = "本息到账失败：" + returnPrinInteRespMsg.Remarks;
+                                            }
+                                        }
+                                    }
+                                    msg.HasHandle = true;
+                                }
+                                else
+                                    msg.Remarks = "没有找到对应的还款计划，还款计划编号为：" + repayId;
+                            }
+                            else
+                                msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
                         }
                         else
-                        {
                             msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
-                        }
                     }
                 }
             }
@@ -230,29 +262,16 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
-                        if (pro != null)
+                        if (!msg.IsEarlyPay)
                         {
-                            //找出项目对应的当日还款计划
-                            var shouldRepayTask = context.li_repayment_tasks.SingleOrDefault(t =>
-                                                        t.project == pro.id &&
-                                                        t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid &&
-                                                        t.should_repay_time.Date == DateTime.Today);
-                            if (shouldRepayTask != null)
-                            {
-                                context.ExecuteRepaymentTask(shouldRepayTask.id);
-                                msg.HasHandle = true;
-                            }
-                            else
-                            {
-                                msg.Remarks = "没有找到项目当天的还款计划，项目编号为：" + msg.ProjectCode;
-                            }
-
+                            context.ExecuteRepaymentTask(msg.RepayTaskId);
+                            msg.HasHandle = true;
                         }
                         else
                         {
-                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
+                            //TODO 提前还款
+
+
                         }
                     }
                 }

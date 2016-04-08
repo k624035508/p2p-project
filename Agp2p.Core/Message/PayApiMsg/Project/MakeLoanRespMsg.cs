@@ -17,22 +17,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         public MakeLoanRespMsg()
         { }
 
-        public MakeLoanRespMsg(string requestStr, bool sync = false, bool collective = false)
+        public MakeLoanRespMsg(bool sync = false, bool collective = false)
         {
             Collective = collective;
             Sync = sync;
-
-            var map = Utils.UrlParamToData(requestStr);
-            RequestId = map["requestId"];
-            Result = map["result"];
-            Signature = map["signature"];
-
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            ProjectCode = map["projectCode"];
-            Sum = map["sum"];
-            PayType = map["payType"];
-            MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
-            MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";
         }
 
         public override bool CheckSignature()

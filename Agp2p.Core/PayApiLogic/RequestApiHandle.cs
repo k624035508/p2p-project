@@ -38,6 +38,7 @@ namespace Agp2p.Core.PayApiLogic
                     api = msg.Api,
                     status = (int) Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
+                    remarks = msg.Remarks,
                     //生成发送报文
                     request_content = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface)
                 };
@@ -115,6 +116,7 @@ namespace Agp2p.Core.PayApiLogic
                 //创建交易记录
                 switch (requestLog.api)
                 {
+                    //放款请求
                     case (int) Agp2pEnums.SumapayApiEnum.ALoan:
                     case (int) Agp2pEnums.SumapayApiEnum.CLoan:
                         var makeLoanReqMsg = (MakeLoanReqMsg) msg;

@@ -512,7 +512,7 @@ namespace Agp2p.Web.admin.project
                     MessageBus.Main.Publish(msgResp);
                     if (msgResp.HasHandle)
                     {
-                        JscriptMsg("放款申请成功！",
+                        JscriptMsg("放款操作成功！",
                             Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
                                 ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
                     }

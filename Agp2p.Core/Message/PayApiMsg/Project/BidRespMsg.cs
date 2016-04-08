@@ -14,6 +14,8 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string RemainInvestmentSum { get; set; }//剩余可投金额
         public string ProtocolCode { get; set; }//自动投标授权协议号
 
+        public BidRespMsg(){}
+
         public BidRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);

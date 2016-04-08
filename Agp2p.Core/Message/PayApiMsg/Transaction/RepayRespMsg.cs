@@ -26,6 +26,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool BankRepay { get; set; }//是否协议还款
         public bool AutoRepay { get; set; }//是否自动还款
 
+        public RepayRespMsg()
+        {
+        }
+
         public RepayRespMsg(string requestStr, bool bankRepay = false, bool autoRepay = false)
         {
             BankRepay = bankRepay;
@@ -39,10 +43,11 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
             ProjectCode = map["projectCode"];
 
-            UserBalance = map["userBalance"];
-            WithdrawableBalance = map["withdrawableBalance"];
-            FrozenBalance = map["frozenBalance"];
-            UnsettledBalance = map["unsettledBalance"];
+            //账户还款参数
+            UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";
+            WithdrawableBalance = map.ContainsKey("withdrawableBalance") ? map["withdrawableBalance"] : "";
+            FrozenBalance = map.ContainsKey("frozenBalance") ? map["frozenBalance"] : "";
+            UnsettledBalance = map.ContainsKey("unsettledBalance") ? map["unsettledBalance"] : "";
             //协议还款参数
             PayType = map.ContainsKey("payType") ? map["payType"] : "";
             Sum = map.ContainsKey("sum") ? map["sum"] : "";

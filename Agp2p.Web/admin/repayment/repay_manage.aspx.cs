@@ -189,17 +189,28 @@ namespace Agp2p.Web.admin.repayment
         /// <param name="e"></param>
         protected void lbt_repay_OnClick(object sender, EventArgs e)
         {
+            int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+            DoRepay(repayId, (int)Agp2pEnums.SumapayApiEnum.MaRep);
+        }
+
+        private void DoRepay(int repayId, int repayType, bool isEarly = false)
+        {
             try
             {
                 ChkAdminLevel("repay_manage", DTEnums.ActionEnum.Add.ToString());
-                int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+
                 var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
-                //最近的还款计划
                 if (repay != null)
                 {
+                    if (repay.li_projects.IsHuoqiProject() || repay.li_projects.IsNewbieProject())
+                    {
+                        JscriptMsg("活期或新手项目不能手动还款！", "back", "Error");
+                        return;
+                    }
+                    //最近的还款计划
                     //TODO 正式要加上时间条件
                     var repayTask = repay.li_projects.li_repayment_tasks.OrderBy(r => r.should_repay_time)
-                        .First(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid 
+                        .First(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid
                         //&& r.should_repay_time.Date <= DateTime.Today
                         );
                     if (repayTask.id != repay.id)
@@ -210,10 +221,10 @@ namespace Agp2p.Web.admin.repayment
                     var loaner = repay.li_projects.li_risks.li_loaners;
                     if (loaner != null)
                     {
-                        Response.Write("<script>window.open('" +
-                                       $"/api/payment/sumapay/index.aspx?api={(int)Agp2pEnums.SumapayApiEnum.MaRep}&userId={loaner.dt_users.id}" +
-                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}" +
-                                       "','_blank')</script>");
+                        var url = $"/api/payment/sumapay/index.aspx?api={repayType}&userId={loaner.dt_users.id}" +
+                                  $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}&repayTaskId={repay.id}";
+                        if (isEarly) url += "&isEarly=true";
+                        Response.Write("<script>window.open('" + url + "','_blank')</script>");
                     }
                     else
                     {
@@ -238,35 +249,18 @@ namespace Agp2p.Web.admin.repayment
         /// <param name="e"></param>
         protected void lby_bankrepay_OnClick(object sender, EventArgs e)
         {
-            try
-            {
-                ChkAdminLevel("repay_manage", DTEnums.ActionEnum.Add.ToString());
-                int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
-                var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
-                if (repay != null)
-                {
-                    var loaner = repay.li_projects.li_risks.li_loaners;
-                    if (loaner != null)
-                    {
-                        Response.Write("<script>window.open('" +
-                                       $"/api/payment/sumapay/index.aspx?api={(int)Agp2pEnums.SumapayApiEnum.BaRep}&userId={loaner.dt_users.id}" +
-                                       $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}" +
-                                       "','_blank')</script>");
-                    }
-                    else
-                    {
-                        JscriptMsg("没有借款人！", "back", "Error");
-                    }
-                }
-                else
-                {
-                    JscriptMsg("没有找到还款计划！", "back", "Error");
-                }
-            }
-            catch (Exception ex)
-            {
-                JscriptMsg("还款失败！" + ex.Message, "back", "Error");
-            }
+            int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+            DoRepay(repayId, (int)Agp2pEnums.SumapayApiEnum.BaRep);
+        }
+
+        /// <summary>
+        /// 提前还款
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbt_earlyPay_OnClick(object sender, EventArgs e)
+        {
+
 
         }
     }

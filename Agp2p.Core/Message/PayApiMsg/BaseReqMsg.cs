@@ -12,6 +12,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public int? UserId { get; set; }
         public string ProjectCode { get; set; }
         public string RequestContent { get; set; }
+        public string Remarks { get; set; }//1、手动还款：记录是否提前还款、还款计划id isEarly=false&repayTaskId="1" 
 
         public BaseReqMsg()
         {

@@ -20,6 +20,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BankName { get; set; }//银行名称
         public string Name { get; set; }//用户姓名
 
+        public RechargeRespMsg()
+        {
+        }
+
         public RechargeRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);
