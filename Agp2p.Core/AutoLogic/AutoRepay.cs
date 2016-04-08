@@ -58,7 +58,7 @@ namespace Agp2p.Core.AutoLogic
                 var loaner = t.li_projects.li_risks.li_loaners;
                 try
                 {
-                    TransactionFacade.GainLoanerRepayment(context, gainAt, t.id, loaner.user_id, t.repay_principal + t.repay_interest, false);
+                    context.GainLoanerRepayment(gainAt, t.id, loaner.user_id, t.repay_principal + t.repay_interest, false);
                 }
                 catch (Exception ex)
                 {

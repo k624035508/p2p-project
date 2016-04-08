@@ -147,9 +147,6 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_claims(li_claims instance);
     partial void Updateli_claims(li_claims instance);
     partial void Deleteli_claims(li_claims instance);
-    partial void Insertli_pay_request_log(li_pay_request_log instance);
-    partial void Updateli_pay_request_log(li_pay_request_log instance);
-    partial void Deleteli_pay_request_log(li_pay_request_log instance);
     partial void Insertli_pay_response_log(li_pay_response_log instance);
     partial void Updateli_pay_response_log(li_pay_response_log instance);
     partial void Deleteli_pay_response_log(li_pay_response_log instance);
@@ -162,6 +159,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_risks(li_risks instance);
     partial void Updateli_risks(li_risks instance);
     partial void Deleteli_risks(li_risks instance);
+    partial void Insertli_pay_request_log(li_pay_request_log instance);
+    partial void Updateli_pay_request_log(li_pay_request_log instance);
+    partial void Deleteli_pay_request_log(li_pay_request_log instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -508,14 +508,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		public System.Data.Linq.Table<li_pay_request_log> li_pay_request_log
-		{
-			get
-			{
-				return this.GetTable<li_pay_request_log>();
-			}
-		}
-		
 		public System.Data.Linq.Table<li_pay_response_log> li_pay_response_log
 		{
 			get
@@ -545,6 +537,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_risks>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_pay_request_log> li_pay_request_log
+		{
+			get
+			{
+				return this.GetTable<li_pay_request_log>();
 			}
 		}
 	}
@@ -14418,305 +14418,6 @@ namespace Agp2p.Linq2SQL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_pay_request_log")]
-	public partial class li_pay_request_log : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _id;
-		
-		private System.Nullable<int> _user_id;
-		
-		private string _project_id;
-		
-		private int _api;
-		
-		private int _status;
-		
-		private string _request_content;
-		
-		private System.DateTime _request_time;
-		
-		private System.Nullable<System.DateTime> _complete_time;
-		
-		private EntitySet<li_pay_response_log> _li_pay_response_log;
-		
-		private EntityRef<dt_users> _dt_users;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(string value);
-    partial void OnidChanged();
-    partial void Onuser_idChanging(System.Nullable<int> value);
-    partial void Onuser_idChanged();
-    partial void Onproject_idChanging(string value);
-    partial void Onproject_idChanged();
-    partial void OnapiChanging(int value);
-    partial void OnapiChanged();
-    partial void OnstatusChanging(int value);
-    partial void OnstatusChanged();
-    partial void Onrequest_contentChanging(string value);
-    partial void Onrequest_contentChanged();
-    partial void Onrequest_timeChanging(System.DateTime value);
-    partial void Onrequest_timeChanged();
-    partial void Oncomplete_timeChanging(System.Nullable<System.DateTime> value);
-    partial void Oncomplete_timeChanged();
-    #endregion
-		
-		public li_pay_request_log()
-		{
-			this._li_pay_response_log = new EntitySet<li_pay_response_log>(new Action<li_pay_response_log>(this.attach_li_pay_response_log), new Action<li_pay_response_log>(this.detach_li_pay_response_log));
-			this._dt_users = default(EntityRef<dt_users>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int")]
-		public System.Nullable<int> user_id
-		{
-			get
-			{
-				return this._user_id;
-			}
-			set
-			{
-				if ((this._user_id != value))
-				{
-					if (this._dt_users.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.Onuser_idChanging(value);
-					this.SendPropertyChanging();
-					this._user_id = value;
-					this.SendPropertyChanged("user_id");
-					this.Onuser_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project_id", DbType="VarChar(20)")]
-		public string project_id
-		{
-			get
-			{
-				return this._project_id;
-			}
-			set
-			{
-				if ((this._project_id != value))
-				{
-					this.Onproject_idChanging(value);
-					this.SendPropertyChanging();
-					this._project_id = value;
-					this.SendPropertyChanged("project_id");
-					this.Onproject_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_api", DbType="Int NOT NULL")]
-		public int api
-		{
-			get
-			{
-				return this._api;
-			}
-			set
-			{
-				if ((this._api != value))
-				{
-					this.OnapiChanging(value);
-					this.SendPropertyChanging();
-					this._api = value;
-					this.SendPropertyChanged("api");
-					this.OnapiChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="Int NOT NULL")]
-		public int status
-		{
-			get
-			{
-				return this._status;
-			}
-			set
-			{
-				if ((this._status != value))
-				{
-					this.OnstatusChanging(value);
-					this.SendPropertyChanging();
-					this._status = value;
-					this.SendPropertyChanged("status");
-					this.OnstatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_request_content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string request_content
-		{
-			get
-			{
-				return this._request_content;
-			}
-			set
-			{
-				if ((this._request_content != value))
-				{
-					this.Onrequest_contentChanging(value);
-					this.SendPropertyChanging();
-					this._request_content = value;
-					this.SendPropertyChanged("request_content");
-					this.Onrequest_contentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_request_time", DbType="DateTime NOT NULL")]
-		public System.DateTime request_time
-		{
-			get
-			{
-				return this._request_time;
-			}
-			set
-			{
-				if ((this._request_time != value))
-				{
-					this.Onrequest_timeChanging(value);
-					this.SendPropertyChanging();
-					this._request_time = value;
-					this.SendPropertyChanged("request_time");
-					this.Onrequest_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_complete_time", DbType="DateTime")]
-		public System.Nullable<System.DateTime> complete_time
-		{
-			get
-			{
-				return this._complete_time;
-			}
-			set
-			{
-				if ((this._complete_time != value))
-				{
-					this.Oncomplete_timeChanging(value);
-					this.SendPropertyChanging();
-					this._complete_time = value;
-					this.SendPropertyChanged("complete_time");
-					this.Oncomplete_timeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_pay_request_log_li_pay_response_log", Storage="_li_pay_response_log", ThisKey="id", OtherKey="request_id")]
-		public EntitySet<li_pay_response_log> li_pay_response_log
-		{
-			get
-			{
-				return this._li_pay_response_log;
-			}
-			set
-			{
-				this._li_pay_response_log.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_pay_request_log", Storage="_dt_users", ThisKey="user_id", OtherKey="id", IsForeignKey=true)]
-		public dt_users dt_users
-		{
-			get
-			{
-				return this._dt_users.Entity;
-			}
-			set
-			{
-				dt_users previousValue = this._dt_users.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_users.Entity = null;
-						previousValue.li_pay_request_log.Remove(this);
-					}
-					this._dt_users.Entity = value;
-					if ((value != null))
-					{
-						value.li_pay_request_log.Add(this);
-						this._user_id = value.id;
-					}
-					else
-					{
-						this._user_id = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("dt_users");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_li_pay_response_log(li_pay_response_log entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_pay_request_log = this;
-		}
-		
-		private void detach_li_pay_response_log(li_pay_response_log entity)
-		{
-			this.SendPropertyChanging();
-			entity.li_pay_request_log = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_pay_response_log")]
 	public partial class li_pay_response_log : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -14741,9 +14442,9 @@ namespace Agp2p.Linq2SQL
 		
 		private string _remarks;
 		
-		private EntityRef<li_pay_request_log> _li_pay_request_log;
-		
 		private EntityRef<dt_users> _dt_users;
+		
+		private EntityRef<li_pay_request_log> _li_pay_request_log;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -14771,8 +14472,8 @@ namespace Agp2p.Linq2SQL
 		
 		public li_pay_response_log()
 		{
-			this._li_pay_request_log = default(EntityRef<li_pay_request_log>);
 			this._dt_users = default(EntityRef<dt_users>);
+			this._li_pay_request_log = default(EntityRef<li_pay_request_log>);
 			OnCreated();
 		}
 		
@@ -14964,40 +14665,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_pay_request_log_li_pay_response_log", Storage="_li_pay_request_log", ThisKey="request_id", OtherKey="id", IsForeignKey=true)]
-		public li_pay_request_log li_pay_request_log
-		{
-			get
-			{
-				return this._li_pay_request_log.Entity;
-			}
-			set
-			{
-				li_pay_request_log previousValue = this._li_pay_request_log.Entity;
-				if (((previousValue != value) 
-							|| (this._li_pay_request_log.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._li_pay_request_log.Entity = null;
-						previousValue.li_pay_response_log.Remove(this);
-					}
-					this._li_pay_request_log.Entity = value;
-					if ((value != null))
-					{
-						value.li_pay_response_log.Add(this);
-						this._request_id = value.id;
-					}
-					else
-					{
-						this._request_id = default(string);
-					}
-					this.SendPropertyChanged("li_pay_request_log");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_pay_response_log", Storage="_dt_users", ThisKey="user_id", OtherKey="id", IsForeignKey=true)]
 		public dt_users dt_users
 		{
@@ -15028,6 +14695,40 @@ namespace Agp2p.Linq2SQL
 						this._user_id = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_pay_request_log_li_pay_response_log", Storage="_li_pay_request_log", ThisKey="request_id", OtherKey="id", IsForeignKey=true)]
+		public li_pay_request_log li_pay_request_log
+		{
+			get
+			{
+				return this._li_pay_request_log.Entity;
+			}
+			set
+			{
+				li_pay_request_log previousValue = this._li_pay_request_log.Entity;
+				if (((previousValue != value) 
+							|| (this._li_pay_request_log.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._li_pay_request_log.Entity = null;
+						previousValue.li_pay_response_log.Remove(this);
+					}
+					this._li_pay_request_log.Entity = value;
+					if ((value != null))
+					{
+						value.li_pay_response_log.Add(this);
+						this._request_id = value.id;
+					}
+					else
+					{
+						this._request_id = default(string);
+					}
+					this.SendPropertyChanged("li_pay_request_log");
 				}
 			}
 		}
@@ -15157,8 +14858,6 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_claims> _li_claims;
 		
-		private EntitySet<li_pay_request_log> _li_pay_request_log;
-		
 		private EntitySet<li_pay_response_log> _li_pay_response_log;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
@@ -15252,7 +14951,6 @@ namespace Agp2p.Linq2SQL
 			this._li_loaners = new EntitySet<li_loaners>(new Action<li_loaners>(this.attach_li_loaners), new Action<li_loaners>(this.detach_li_loaners));
 			this._li_claims_byAgent = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims_byAgent), new Action<li_claims>(this.detach_li_claims_byAgent));
 			this._li_claims = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims), new Action<li_claims>(this.detach_li_claims));
-			this._li_pay_request_log = new EntitySet<li_pay_request_log>(new Action<li_pay_request_log>(this.attach_li_pay_request_log), new Action<li_pay_request_log>(this.detach_li_pay_request_log));
 			this._li_pay_response_log = new EntitySet<li_pay_response_log>(new Action<li_pay_response_log>(this.attach_li_pay_response_log), new Action<li_pay_response_log>(this.detach_li_pay_response_log));
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
@@ -16174,19 +15872,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_pay_request_log", Storage="_li_pay_request_log", ThisKey="id", OtherKey="user_id")]
-		public EntitySet<li_pay_request_log> li_pay_request_log
-		{
-			get
-			{
-				return this._li_pay_request_log;
-			}
-			set
-			{
-				this._li_pay_request_log.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_pay_response_log", Storage="_li_pay_response_log", ThisKey="id", OtherKey="user_id")]
 		public EntitySet<li_pay_response_log> li_pay_response_log
 		{
@@ -16442,18 +16127,6 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_claims(li_claims entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = null;
-		}
-		
-		private void attach_li_pay_request_log(li_pay_request_log entity)
-		{
-			this.SendPropertyChanging();
-			entity.dt_users = this;
-		}
-		
-		private void detach_li_pay_request_log(li_pay_request_log entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -17547,6 +17220,288 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.li_risks = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_pay_request_log")]
+	public partial class li_pay_request_log : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _id;
+		
+		private System.Nullable<int> _user_id;
+		
+		private string _project_id;
+		
+		private int _api;
+		
+		private int _status;
+		
+		private string _request_content;
+		
+		private System.DateTime _request_time;
+		
+		private System.Nullable<System.DateTime> _complete_time;
+		
+		private string _remarks;
+		
+		private EntitySet<li_pay_response_log> _li_pay_response_log;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(string value);
+    partial void OnidChanged();
+    partial void Onuser_idChanging(System.Nullable<int> value);
+    partial void Onuser_idChanged();
+    partial void Onproject_idChanging(string value);
+    partial void Onproject_idChanged();
+    partial void OnapiChanging(int value);
+    partial void OnapiChanged();
+    partial void OnstatusChanging(int value);
+    partial void OnstatusChanged();
+    partial void Onrequest_contentChanging(string value);
+    partial void Onrequest_contentChanged();
+    partial void Onrequest_timeChanging(System.DateTime value);
+    partial void Onrequest_timeChanged();
+    partial void Oncomplete_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Oncomplete_timeChanged();
+    partial void OnremarksChanging(string value);
+    partial void OnremarksChanged();
+    #endregion
+		
+		public li_pay_request_log()
+		{
+			this._li_pay_response_log = new EntitySet<li_pay_response_log>(new Action<li_pay_response_log>(this.attach_li_pay_response_log), new Action<li_pay_response_log>(this.detach_li_pay_response_log));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int")]
+		public System.Nullable<int> user_id
+		{
+			get
+			{
+				return this._user_id;
+			}
+			set
+			{
+				if ((this._user_id != value))
+				{
+					this.Onuser_idChanging(value);
+					this.SendPropertyChanging();
+					this._user_id = value;
+					this.SendPropertyChanged("user_id");
+					this.Onuser_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_project_id", DbType="VarChar(20)")]
+		public string project_id
+		{
+			get
+			{
+				return this._project_id;
+			}
+			set
+			{
+				if ((this._project_id != value))
+				{
+					this.Onproject_idChanging(value);
+					this.SendPropertyChanging();
+					this._project_id = value;
+					this.SendPropertyChanged("project_id");
+					this.Onproject_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_api", DbType="Int NOT NULL")]
+		public int api
+		{
+			get
+			{
+				return this._api;
+			}
+			set
+			{
+				if ((this._api != value))
+				{
+					this.OnapiChanging(value);
+					this.SendPropertyChanging();
+					this._api = value;
+					this.SendPropertyChanged("api");
+					this.OnapiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="Int NOT NULL")]
+		public int status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_request_content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string request_content
+		{
+			get
+			{
+				return this._request_content;
+			}
+			set
+			{
+				if ((this._request_content != value))
+				{
+					this.Onrequest_contentChanging(value);
+					this.SendPropertyChanging();
+					this._request_content = value;
+					this.SendPropertyChanged("request_content");
+					this.Onrequest_contentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_request_time", DbType="DateTime NOT NULL")]
+		public System.DateTime request_time
+		{
+			get
+			{
+				return this._request_time;
+			}
+			set
+			{
+				if ((this._request_time != value))
+				{
+					this.Onrequest_timeChanging(value);
+					this.SendPropertyChanging();
+					this._request_time = value;
+					this.SendPropertyChanged("request_time");
+					this.Onrequest_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_complete_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> complete_time
+		{
+			get
+			{
+				return this._complete_time;
+			}
+			set
+			{
+				if ((this._complete_time != value))
+				{
+					this.Oncomplete_timeChanging(value);
+					this.SendPropertyChanging();
+					this._complete_time = value;
+					this.SendPropertyChanged("complete_time");
+					this.Oncomplete_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remarks", DbType="NVarChar(500)")]
+		public string remarks
+		{
+			get
+			{
+				return this._remarks;
+			}
+			set
+			{
+				if ((this._remarks != value))
+				{
+					this.OnremarksChanging(value);
+					this.SendPropertyChanging();
+					this._remarks = value;
+					this.SendPropertyChanged("remarks");
+					this.OnremarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="li_pay_request_log_li_pay_response_log", Storage="_li_pay_response_log", ThisKey="id", OtherKey="request_id")]
+		public EntitySet<li_pay_response_log> li_pay_response_log
+		{
+			get
+			{
+				return this._li_pay_response_log;
+			}
+			set
+			{
+				this._li_pay_response_log.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_li_pay_response_log(li_pay_response_log entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_pay_request_log = this;
+		}
+		
+		private void detach_li_pay_response_log(li_pay_response_log entity)
+		{
+			this.SendPropertyChanging();
+			entity.li_pay_request_log = null;
 		}
 	}
 }

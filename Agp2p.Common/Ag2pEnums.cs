@@ -424,6 +424,12 @@ namespace Agp2p.Common
 
         public enum OfflineTransactionTypeEnum
         {
+            // 预计收入
+            [Description("预计平台服务费")]
+            SumManagementFeeOfLoanning = 1,
+            [Description("预计风险保证金")]
+            SumBondFee = 2,
+
             // 收入
             [Description("平台服务费")]
             ManagementFeeOfLoanning = 10,

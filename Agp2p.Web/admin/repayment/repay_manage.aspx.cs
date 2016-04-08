@@ -114,7 +114,7 @@ namespace Agp2p.Web.admin.repayment
                 Principal = r.repay_principal,
                 Interest = r.repay_interest,
                 TimeTerm =
-                    r.li_projects.repayment_term_span == (int) Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
+                    r.li_projects.repayment_term_span == (int)Agp2pEnums.ProjectRepaymentTermSpanEnum.Day
                         ? "1/1"
                         : $"{r.term.ToString()}/{r.li_projects.repayment_term_span_count}",
                 ShouldRepayTime = r.should_repay_time.ToString("yyyy-MM-dd"),
@@ -123,17 +123,17 @@ namespace Agp2p.Web.admin.repayment
                 Category = r.li_projects.category_id,
                 ProfitRate = r.li_projects.profit_rate_year,
                 RepaymentType =
-                    Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum) r.li_projects.repayment_type),
+                    Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)r.li_projects.repayment_type),
                 ProjectId = r.li_projects.id,
                 ProjectTitle = r.li_projects.title,
                 ProjectStatus = r.li_projects.status,
                 RepayStatus = r.status,
                 RepayId = r.id
             }).AsQueryable();
-            
+
             this.TotalCount = repayList.Count();
             return repayList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
-        }       
+        }
         #endregion
 
         //关健字查询
@@ -145,7 +145,7 @@ namespace Agp2p.Web.admin.repayment
 
         //筛选类别
         protected void ddlCategoryId_SelectedIndexChanged(object sender, EventArgs e)
-        {            
+        {
             Response.Redirect(Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&keywords={2}&status={3}&startTime={4}&endTime={5}",
                 this.ChannelId.ToString(), ddlCategoryId.SelectedValue, txtKeywords.Text, this.ProjectStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
         }
@@ -192,15 +192,26 @@ namespace Agp2p.Web.admin.repayment
             try
             {
                 ChkAdminLevel("repay_manage", DTEnums.ActionEnum.Add.ToString());
-                int repayId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);
+                int repayId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
                 var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
+                //最近的还款计划
                 if (repay != null)
                 {
+                    //TODO 正式要加上时间条件
+                    var repayTask = repay.li_projects.li_repayment_tasks.OrderBy(r => r.should_repay_time)
+                        .First(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid 
+                        //&& r.should_repay_time.Date <= DateTime.Today
+                        );
+                    if (repayTask.id != repay.id)
+                    {
+                        JscriptMsg("当前还款计划不是最近的还款计划！", "back", "Error");
+                    }
+
                     var loaner = repay.li_projects.li_risks.li_loaners;
                     if (loaner != null)
                     {
                         Response.Write("<script>window.open('" +
-                                       $"/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.MaRep}&userId={loaner.dt_users.id}" +
+                                       $"/api/payment/sumapay/index.aspx?api={(int)Agp2pEnums.SumapayApiEnum.MaRep}&userId={loaner.dt_users.id}" +
                                        $"&projectCode={repay.project}&sum={(repay.repay_principal + repay.repay_interest)}" +
                                        "','_blank')</script>");
                     }
@@ -213,21 +224,6 @@ namespace Agp2p.Web.admin.repayment
                 {
                     JscriptMsg("没有找到还款计划！", "back", "Error");
                 }
-
-
-                //根据时间判断是否提前还款
-                //var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
-                //if (repay.should_repay_time.Date >= DateTime.Now.Date)
-                //{
-                //    decimal cost = (decimal) Costconfig.earlier_pay;
-                //    context.EarlierRepayAll(repay.project, cost);
-                //}
-                //else
-                //    context.ExecuteRepaymentTask(repayId, Agp2pEnums.RepaymentStatusEnum.ManualPaid);
-
-                //JscriptMsg("还款成功！",
-                //    Utils.CombUrlTxt("repay_manage.aspx", "channel_id={0}&category_id={1}&status={2}&startTime={4}&endTime={5}",
-                //        this.ChannelId.ToString(), this.CategoryId.ToString(), this.ProjectStatus.ToString(), txtStartTime.Text, txtEndTime.Text));
             }
             catch (Exception ex)
             {

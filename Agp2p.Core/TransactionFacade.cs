@@ -1269,7 +1269,24 @@ namespace Agp2p.Core
                 {
                     throw new InvalidOperationException("这个项目已经进行过放款");
                 }
-                MakeLoan(context, project.make_loan_time.Value, projectId, loaner.user_id, project.investment_amount, false);
+                //需扣除手续费后再放款给借款人,并更改手续费状态
+                decimal projectSum = project.investment_amount;
+                //平台服务费
+                var loanFee = context.li_company_inoutcome.SingleOrDefault(c => c.project_id == projectId && c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning);
+                if (loanFee != null)
+                {
+                    projectSum -= (decimal)loanFee.income;
+                    loanFee.type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning;
+                }
+                //风险保证金
+                var boanFee = context.li_company_inoutcome.SingleOrDefault(c => c.project_id == projectId && c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee);
+                if (boanFee != null)
+                {
+                    projectSum -= (decimal)boanFee.income;
+                    boanFee.type = (int)Agp2pEnums.OfflineTransactionTypeEnum.BondFee;
+                }
+
+                MakeLoan(context, project.make_loan_time.Value, projectId, loaner.user_id, projectSum, false);
             }
 
             var repaymentType = (Agp2pEnums.ProjectRepaymentTypeEnum) project.repayment_type; // 还款类型
@@ -1277,7 +1294,7 @@ namespace Agp2p.Core
             // 满标时计算真实总利率
             project.profit_rate = project.GetFinalProfitRate();
             var termCount = project.CalcRealTermCount(); // 实际期数
-
+            
             var repayPrincipal = project.investment_amount; // 本金投资总额
             var interestAmount = Math.Round(project.profit_rate*repayPrincipal, 2); // 利息总额
 
@@ -1335,37 +1352,7 @@ namespace Agp2p.Core
 
             // 计算每个投资人的待收益金额，因为不一定是投资当日满标，所以不能投资时就知道收益（不同时间满标/截标会对导致不同的回款时间间隔，从而导致利率不同）
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
-
-            // 计算平台服务费
-            if (!project.dt_article_category.call_index.Equals("newbie"))
-            {
-                if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
-                {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                    {
-                        user_id = loaner.dt_users.id,
-                        income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
-                        project_id = projectId,
-                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
-                        create_time = DateTime.Now,
-                        remark = $"借款项目'{project.title}'收取平台服务费"
-                    });
-                }
-
-                //计算风险保证金
-                if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
-                {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                    {
-                        user_id = loaner.dt_users.id,
-                        income = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
-                        project_id = projectId,
-                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee,
-                        create_time = DateTime.Now,
-                        remark = $"借款项目'{project.title}'收取风险保证金"
-                    });
-                }
-            }
+            
             context.SubmitChanges();
 
             MessageBus.Main.PublishAsync(new ProjectStartRepaymentMsg(projectId)); // 广播项目开始还款的消息

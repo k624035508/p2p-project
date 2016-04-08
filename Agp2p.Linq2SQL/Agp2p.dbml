@@ -633,20 +633,6 @@
       <Association Name="li_project_transactions_li_claims" Member="li_project_transactions_invest" ThisKey="createFromInvestment" OtherKey="id" Type="li_project_transactions" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.li_pay_request_log" Member="li_pay_request_log">
-    <Type Name="li_pay_request_log">
-      <Column Name="id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="project_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="api" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="request_content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="request_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="li_pay_request_log_li_pay_response_log" Member="li_pay_response_log" ThisKey="id" OtherKey="request_id" Type="li_pay_response_log" />
-      <Association Name="dt_users_li_pay_request_log" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.li_pay_response_log" Member="li_pay_response_log">
     <Type Name="li_pay_response_log">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -658,8 +644,8 @@
       <Column Name="response_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="result" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Association Name="li_pay_request_log_li_pay_response_log" Member="li_pay_request_log" ThisKey="request_id" OtherKey="id" Type="li_pay_request_log" IsForeignKey="true" />
       <Association Name="dt_users_li_pay_response_log" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_pay_request_log_li_pay_response_log" Member="li_pay_request_log" ThisKey="request_id" OtherKey="id" Type="li_pay_request_log" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.dt_users" Member="dt_users">
@@ -713,7 +699,6 @@
       <Association Name="dt_users_li_loaners" Member="li_loaners" ThisKey="id" OtherKey="user_id" Type="li_loaners" />
       <Association Name="dt_users_li_claims" Member="li_claims_byAgent" ThisKey="id" OtherKey="agent" Type="li_claims" />
       <Association Name="dt_users_li_claims1" Member="li_claims" ThisKey="id" OtherKey="userId" Type="li_claims" />
-      <Association Name="dt_users_li_pay_request_log" Member="li_pay_request_log" ThisKey="id" OtherKey="user_id" Type="li_pay_request_log" />
       <Association Name="dt_users_li_pay_response_log" Member="li_pay_response_log" ThisKey="id" OtherKey="user_id" Type="li_pay_response_log" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
@@ -761,6 +746,20 @@
       <Association Name="li_guarantors_li_risks" Member="li_guarantors" ThisKey="guarantor_id" OtherKey="id" Type="li_guarantors" IsForeignKey="true" />
       <Association Name="li_creditors_li_risks" Member="li_creditors" ThisKey="creditor" OtherKey="user_id" Type="li_creditors" IsForeignKey="true" />
       <Association Name="li_loaners_li_risks" Member="li_loaners" ThisKey="loaner" OtherKey="id" Type="li_loaners" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_pay_request_log" Member="li_pay_request_log">
+    <Type Name="li_pay_request_log">
+      <Column Name="id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="project_id" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="api" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="request_content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="request_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="li_pay_request_log_li_pay_response_log" Member="li_pay_response_log" ThisKey="id" OtherKey="request_id" Type="li_pay_response_log" />
     </Type>
   </Table>
 </Database>

@@ -152,11 +152,8 @@ namespace Agp2p.Core.PayApiLogic
                             //TODO 正式后改为异步返回才放款
                             if (msg.Sync)
                             {
-                                //生成放款交易记录
-                                context.MakeLoan(DateTime.Now, Utils.StrToInt(msg.ProjectCode, 0), pro.li_risks.li_loaners.user_id, Utils.StrToDecimal(msg.Sum, 0));
-                                //生成还款计划
+                                //开始还款，包括向借款人放款
                                 context.StartRepayment(Utils.StrToInt(msg.ProjectCode, 0));
-                                
                                 msg.HasHandle = true;
                             }
                         }
@@ -192,8 +189,17 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
                         if (pro != null)
                         {
+                            //TODO 正式要加上时间条件
+                            //找出最近的一个还款计划
+                            var repayTask = pro.li_repayment_tasks.OrderBy(r => r.should_repay_time)
+                                .First(r => r.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid 
+                                //&&r.should_repay_time.Date <= DateTime.Today
+                                );
+
                             //生成还款记录
-                            context.GainLoanerRepayment(DateTime.Now, pro.id, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                            context.GainLoanerRepayment(DateTime.Now, repayTask.id, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                            //执行还款计划
+                            context.ExecuteRepaymentTask(repayTask.id);
                             msg.HasHandle = true;
                         }
                         else

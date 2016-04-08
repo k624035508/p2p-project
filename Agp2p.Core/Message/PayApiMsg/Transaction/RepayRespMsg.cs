@@ -64,7 +64,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             {
                 return base.CheckSignature(RequestId + UserIdIdentity + Result + AccountBalance);
             }
-            return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity + UserBalance);
+            return base.CheckSignature(RequestId + Result + UserIdIdentity + UserBalance);
         }
     }
 }
