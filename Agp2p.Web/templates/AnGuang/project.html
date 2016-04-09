@@ -82,7 +82,7 @@
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}" data-has-identification="{HasIdentification()}"
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
-                        data-project-id="{projectModel.id}">投 资</button>
+                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}">投 资</button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
@@ -107,7 +107,7 @@
                             </ul>
                         </div>
                         <div class="profit-wrap"><span>预期收益：</span><span class="profit">0.00</span></div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>
+                        <!--<div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>-->
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意
                             <%if(projectModel.dt_article_category.call_index!="newbie")%>

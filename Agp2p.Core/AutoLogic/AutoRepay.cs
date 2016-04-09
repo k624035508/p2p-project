@@ -8,6 +8,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using System.Web.UI.WebControls;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.PayApiLogic;
 using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
@@ -51,14 +52,25 @@ namespace Agp2p.Core.AutoLogic
                 .ToList();
             if (!shouldRepayTask.Any()) return;
 
-            var gainAt = DateTime.Now;
-
             shouldRepayTask.ForEach(t =>
             {
                 var loaner = t.li_projects.li_risks.li_loaners;
                 try
                 {
-                    context.GainLoanerRepayment(gainAt, t.id, loaner.user_id, t.repay_principal + t.repay_interest, false);
+                    //TODO 根据项目的autopay自动判断是否自动还款
+                    if (loaner.dt_users.autoRepay != null && (bool)loaner.dt_users.autoRepay)
+                    {
+                        //创建自动还款托管接口请求
+                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project.ToString(), (t.repay_principal + t.repay_interest).ToString("f"));
+                        //发送请求
+                        MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
+                        {
+                            //处理请求同步返回结果
+                            var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
+                            repayRespMsg.AutoRepay = true;
+                            MessageBus.Main.PublishAsync(repayRespMsg);
+                        });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -157,10 +169,9 @@ namespace Agp2p.Core.AutoLogic
             // 优先进行特殊项目的回款
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
-                //调用托管本息到账接口,在本息到账异步响应中执行还款计划 TODO 个人本息明细写在分账列表字段中
-                //MessageBus.Main.PublishAsync(new ReturnPrinInteReqMsg(ta.li_projects.li_risks.li_loaners.user_id, (ta.repay_principal + ta.repay_interest).ToString("N"), "分账列表"));
-
-                context.ExecuteRepaymentTask(ta.id);
+                //TODO 特殊项目回款处理
+                //调用托管本息到账接口,在本息到账异步响应中执行还款计划
+                RequestApiHandle.SendReturnPrinInte(ta.project.ToString(), (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false);
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);

@@ -36,7 +36,7 @@ namespace Agp2p.Core.PayApiLogic
                     user_id = msg.UserId,
                     project_id = msg.ProjectCode,
                     api = msg.Api,
-                    status = (int) Agp2pEnums.SumapayRequestEnum.Waiting,
+                    status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
                     remarks = msg.Remarks,
                     //生成发送报文
@@ -117,9 +117,9 @@ namespace Agp2p.Core.PayApiLogic
                 switch (requestLog.api)
                 {
                     //放款请求
-                    case (int) Agp2pEnums.SumapayApiEnum.ALoan:
-                    case (int) Agp2pEnums.SumapayApiEnum.CLoan:
-                        var makeLoanReqMsg = (MakeLoanReqMsg) msg;
+                    case (int)Agp2pEnums.SumapayApiEnum.ALoan:
+                    case (int)Agp2pEnums.SumapayApiEnum.CLoan:
+                        var makeLoanReqMsg = (MakeLoanReqMsg)msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(makeLoanReqMsg.ProjectCode, 0));
                         if (project != null)
                         {
@@ -130,13 +130,13 @@ namespace Agp2p.Core.PayApiLogic
                                 //计算平台服务费
                                 if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
                                 {
-                                    loanFee = (decimal) (project.financing_amount*(project.loan_fee_rate/100));
+                                    loanFee = (decimal)(project.financing_amount * (project.loan_fee_rate / 100));
                                     context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                                     {
                                         user_id = (int)msg.UserId,
                                         income = loanFee,
                                         project_id = project.id,
-                                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
+                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
                                         create_time = DateTime.Now,
                                         remark = $"借款项目'{project.title}'收取平台服务费"
                                     });
@@ -145,13 +145,13 @@ namespace Agp2p.Core.PayApiLogic
                                 //计算风险保证金
                                 if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
                                 {
-                                    bondFee = project.financing_amount*(project.bond_fee_rate/100) ?? 0;
+                                    bondFee = project.financing_amount * (project.bond_fee_rate / 100) ?? 0;
                                     context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                                     {
                                         user_id = (int)msg.UserId,
                                         income = bondFee,
                                         project_id = project.id,
-                                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
+                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
                                         create_time = DateTime.Now,
                                         remark = $"借款项目'{project.title}'收取风险保证金"
                                     });
@@ -190,13 +190,15 @@ namespace Agp2p.Core.PayApiLogic
             var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(projectCode, sum);
             returnPrinInteReqMsg.SetSubledgerList(transList);
             //发送请求
-            MessageBus.Main.Publish(returnPrinInteReqMsg);
-            //处理请求结果
-            var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-            returnPrinInteRespMsg.Sync = true;
-            returnPrinInteRespMsg.RepayTaskId = repayTaskId;
-            returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
-            MessageBus.Main.Publish(returnPrinInteRespMsg);
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, ar =>
+            {
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+                returnPrinInteRespMsg.Sync = true;
+                returnPrinInteRespMsg.RepayTaskId = repayTaskId;
+                returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
+            });
         }
     }
 }

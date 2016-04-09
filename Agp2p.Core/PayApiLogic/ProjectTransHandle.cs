@@ -193,17 +193,22 @@ namespace Agp2p.Core.PayApiLogic
                             var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
                             if (req != null)
                             {
-                                var dic = Utils.UrlParamToData(req.remarks);
-                                int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                //生成还款记录
-                                context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
-                                //如果是手动还款立刻发送本息到账请求
-                                if (!msg.AutoRepay)
+                                if (!string.IsNullOrEmpty(req.remarks))
                                 {
-                                    RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
-                                        Utils.StrToBool(dic["isEarly"], false));
+                                    var dic = Utils.UrlParamToData(req.remarks);
+                                    int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                    //生成还款记录
+                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                    //如果是手动还款立刻发送本息到账请求
+                                    if (!msg.AutoRepay)
+                                    {
+                                        RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                            Utils.StrToBool(dic["isEarly"], false));
+                                    }
+                                    msg.HasHandle = true;
                                 }
-                                msg.HasHandle = true;
+                                else
+                                    msg.Remarks = "请求没有包含还款计划信息！";
 
                             }
                             else

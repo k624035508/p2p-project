@@ -60,7 +60,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
-            if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription", HttpUtility.UrlEncode(ProjectDescription, Encoding.GetEncoding("GBK")));
+            if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription", ProjectDescription);
             if (!string.IsNullOrEmpty(GiftFlag)) sd.Add("giftFlag", GiftFlag);
             if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("subledgerList", SubledgerList);
             if (!string.IsNullOrEmpty(ProjectSum)) sd.Add("projectSum", ProjectSum);

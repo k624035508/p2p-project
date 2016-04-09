@@ -140,16 +140,16 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                         }
 
-                        if (isSync)
-                        {
-                            //发送响应消息同步处理
-                            MessageBus.Main.Publish(respMsg);
-                            UpdateLog(respMsg);
-                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                            context.SubmitChanges();
-                        }
-                        else
-                        {
+                        //if (isSync)
+                        //{
+                        //    //发送响应消息同步处理
+                        //    MessageBus.Main.Publish(respMsg);
+                        //    UpdateLog(respMsg);
+                        //    context.li_pay_response_log.InsertOnSubmit(ResponseLog);
+                        //    context.SubmitChanges();
+                        //}
+                        //else
+                        //{
                             //发送响应消息异步处理
                             MessageBus.Main.PublishAsync(respMsg, s =>
                             {
@@ -157,7 +157,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                                 context.SubmitChanges();
                             });
-                        }
+                        //}
                     }
                 }
                 else
