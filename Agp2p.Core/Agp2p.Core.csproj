@@ -85,6 +85,7 @@
     <Compile Include="ActivityLogic\InviterBonus.cs" />
     <Compile Include="ActivityLogic\TrialActivity.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
+    <Compile Include="AutoLogic\CheckDelayInvestOverTime.cs" />
     <Compile Include="AutoLogic\CheckOverTimePaid.cs" />
     <Compile Include="AutoLogic\FinancingTimeout.cs" />
     <Compile Include="AutoLogic\ProjectWithdraw.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Message\ProjectFinancingTimeoutMsg.cs" />
     <Compile Include="Message\ProjectFinancingCompleteEvenTimeoutMsg.cs" />
     <Compile Include="Message\ProjectFinancingCompletedMsg.cs" />
+    <Compile Include="Message\StaticClaimTransferSuccessMsg.cs" />
     <Compile Include="Message\UserRefundMsg.cs" />
     <Compile Include="Message\ProjectFinancingFailMsg.cs" />
     <Compile Include="Message\BankTransactionCreatedMsg.cs" />

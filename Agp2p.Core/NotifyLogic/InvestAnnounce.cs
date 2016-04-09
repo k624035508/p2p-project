@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Agp2p.Common;
+using Agp2p.Core.AutoLogic;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Agp2p.Model;
@@ -19,7 +20,55 @@ namespace Agp2p.Core.NotifyLogic
         {
             MessageBus.Main.Subscribe<ProjectStartRepaymentMsg>(m => HandleProjectInvestCompletedMsg(m.ProjectId)); // 计算每个投资者账单收益
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleProjectInvestMsg(m.ProjectTransactionId, m.InvestTime)); // 发送投资成功消息
+            MessageBus.Main.Subscribe<UserInvestedMsg>(m =>
+            {
+                // 进行了一次活期延迟投资，通知中间人补充活期债权
+                if (m.IsDelayInvest)
+                {
+                    HandleDelayInvest(m.ProjectTransactionId, m.InvestTime);
+                }
+            }); 
             MessageBus.Main.Subscribe<ProjectFinancingFailMsg>(m => HandleProjectFinancingFailMsg(m.ProjectId)); // 发送流标的通知
+        }
+
+        private static void HandleDelayInvest(int projectTransactionId, DateTime investTime)
+        {
+            var context = new Agp2pDataContext();
+            var agent = context.dt_users.FirstOrDefault(u => u.dt_user_groups.title == AutoRepay.AgentGroup);
+            try
+            {
+                if (agent == null)
+                    throw new InvalidOperationException("没有找到中间人组，不能发送提醒短信");
+
+                if (string.IsNullOrWhiteSpace(agent.mobile))
+                    throw new InvalidOperationException("中间人没有设置手机，不能发送提醒短信");
+
+                var ptr = context.li_project_transactions.Single(ptr0 => ptr0.id == projectTransactionId);
+
+                var investableHuoqiClaimAmount = context.GetHuoqiInvestableClaims()
+                    .Aggregate(0m, (sum, c) => sum + c.principal);
+
+                var delayInvested = ptr.li_projects.li_project_transactions.Where(
+                    tr =>
+                        tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
+                    .Aggregate(0m, (sum, tr) => sum + tr.principal);
+
+                var msgContent = $"用户总共延期投资了活期项目 {ptr.li_projects.title} {delayInvested.ToString("c")}，但活期债权本金总额（{investableHuoqiClaimAmount.ToString("c")}）不足，请尽快处理";
+                var errorMsg = string.Empty;
+                if (!SMSHelper.SendTemplateSms(agent.mobile, msgContent, out errorMsg))
+                {
+                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信成功：" + msgContent);
+                }
+                else
+                {
+                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + errorMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + ex.GetSimpleCrashInfo());
+            }
         }
 
         private static void HandleProjectFinancingFailMsg(int projectId)
