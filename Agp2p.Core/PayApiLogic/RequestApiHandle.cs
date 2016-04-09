@@ -172,5 +172,31 @@ namespace Agp2p.Core.PayApiLogic
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// 发送本息到账请求
+        /// </summary>
+        /// <param name="projectCode"></param>
+        /// <param name="sum"></param>
+        /// <param name="repayTaskId"></param>
+        /// <param name="isEarlyPay"></param>
+        public static void SendReturnPrinInte(string projectCode, string sum, int repayTaskId, bool isEarlyPay)
+        {
+            var context = new Agp2pDataContext();
+            //计算投资者本息明细
+            var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayTaskId);
+            var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
+            //创建本息到账请求并设置分账列表
+            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(projectCode, sum);
+            returnPrinInteReqMsg.SetSubledgerList(transList);
+            //发送请求
+            MessageBus.Main.Publish(returnPrinInteReqMsg);
+            //处理请求结果
+            var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+            returnPrinInteRespMsg.Sync = true;
+            returnPrinInteRespMsg.RepayTaskId = repayTaskId;
+            returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
+            MessageBus.Main.Publish(returnPrinInteRespMsg);
+        }
     }
 }

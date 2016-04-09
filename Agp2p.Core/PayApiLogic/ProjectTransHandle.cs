@@ -195,43 +195,16 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 var dic = Utils.UrlParamToData(req.remarks);
                                 int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
-                                if (repayRask != null)
+                                //生成还款记录
+                                context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                //如果是手动还款立刻发送本息到账请求
+                                if (!msg.AutoRepay)
                                 {
-                                    if (Utils.StrToBool(dic["isEarly"], false))
-                                    {
-                                        //TODO 提前还款
-                                    }
-                                    else
-                                    {
-                                        //生成还款记录
-                                        context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
-                                            Utils.StrToDecimal(msg.Sum, 0));
-                                        //手动还款立刻发送本息到账请求
-                                        if (!msg.AutoRepay)
-                                        {
-                                            //计算投资者本息明细
-                                            var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
-                                            //创建本息到账请求并设置分账列表
-                                            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(msg.ProjectCode, msg.Sum);
-                                            returnPrinInteReqMsg.SetSubledgerList(transList);
-                                            //发送请求
-                                            MessageBus.Main.Publish(returnPrinInteReqMsg);
-                                            //处理请求结果
-                                            var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-                                            returnPrinInteRespMsg.Sync = true;
-                                            returnPrinInteRespMsg.RepayTaskId = repayId;
-                                            MessageBus.Main.Publish(returnPrinInteRespMsg);
-                                            if (!returnPrinInteRespMsg.HasHandle)
-                                            {
-                                                msg.Remarks = "本息到账失败：" + returnPrinInteRespMsg.Remarks;
-                                            }
-                                        }
-                                    }
-                                    msg.HasHandle = true;
+                                    RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                        Utils.StrToBool(dic["isEarly"], false));
                                 }
-                                else
-                                    msg.Remarks = "没有找到对应的还款计划，还款计划编号为：" + repayId;
+                                msg.HasHandle = true;
+
                             }
                             else
                                 msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
@@ -263,16 +236,10 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         if (!msg.IsEarlyPay)
-                        {
                             context.ExecuteRepaymentTask(msg.RepayTaskId);
-                            msg.HasHandle = true;
-                        }
                         else
-                        {
-                            //TODO 提前还款
-
-
-                        }
+                            context.EarlierRepayAll(Utils.StrToInt(msg.ProjectCode, 0), ConfigLoader.loadCostConfig().earlier_pay);
+                        msg.HasHandle = true;
                     }
                 }
             }
