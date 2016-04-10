@@ -1572,6 +1572,7 @@ namespace Agp2p.Core
                 transact_time = makeLoanAt,
                 charger = loanerUserId,
                 value = amount,
+                no_order = "",
                 remarks = projectId.ToString()
             };
             // 创建钱包历史
@@ -1604,12 +1605,13 @@ namespace Agp2p.Core
             var btr = new li_bank_transactions
             {
                 handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
-                type = (byte) Agp2pEnums.BankTransactionTypeEnum.LoanerRepay,
+                type = (byte) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay,
                 status = (byte) Agp2pEnums.BankTransactionStatusEnum.Confirm,
                 create_time = gainAt,
                 transact_time = gainAt,
                 charger = loanerUserId,
                 value = amount,
+                no_order = "",
                 remarks = repaymentTaskId.ToString()
             };
             // 创建钱包历史
@@ -2374,7 +2376,8 @@ namespace Agp2p.Core
         {
             if (his.li_bank_transactions != null)
             {
-                var chargedValue = his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                var btrType = his.li_bank_transactions.type;
+                var chargedValue = btrType == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw || btrType == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay
                     ? (decimal?) null
                     : his.li_bank_transactions.value;
                 return callback(chargedValue, null);
@@ -2452,7 +2455,8 @@ namespace Agp2p.Core
         {
             if (his.li_bank_transactions != null)
             {
-                return his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.Charge
+                var btrType = his.li_bank_transactions.type;
+                return btrType == (int) Agp2pEnums.BankTransactionTypeEnum.Charge || btrType == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan
                     ? (decimal?) null
                     : his.li_bank_transactions.value; // 提现
             }

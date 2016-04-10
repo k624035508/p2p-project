@@ -12,7 +12,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P2-1 测试流程：
+        P2-1 测试流程：（测试债权转让失败后的计息是否正确）
         Day 1
             发 4 日标，金额 60000，A 投 25000
         Day 2
@@ -26,7 +26,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 22, 8, 30, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 03, 31, 8, 30, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)

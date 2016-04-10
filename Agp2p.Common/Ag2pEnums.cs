@@ -222,7 +222,7 @@ namespace Agp2p.Common
             [Description("向借款人放款")]
             LoanerMakeLoan = 10,
             [Description("收取借款人还款")]
-            LoanerRepay = 11,
+            GainLoanerRepay = 11,
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Agp2p.Core.AutoLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.TimerType, m.OnTime)); // 每日定时还款
         }
 
-        private static void DoGainLoanerRepayment(TimerMsg.Type timerType, bool onTime)
+        public static void DoGainLoanerRepayment(TimerMsg.Type timerType, bool onTime)
         {
             if (timerType != TimerMsg.Type.LoanerRepayTimer) return;
 
@@ -42,7 +42,7 @@ namespace Agp2p.Core.AutoLogic
                     var loaner = t.li_projects.li_risks.li_loaners;
                     return !loaner.dt_users.li_bank_transactions.Any(
                         btr =>
-                            btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerRepay &&
+                            btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay &&
                             btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm && btr.remarks != t.id.ToString());
                 })
                 .ToList();

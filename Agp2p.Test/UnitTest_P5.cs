@@ -11,7 +11,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P5 测试流程：
+        P5 测试流程：（测试活期部分提现）
             Day 1
                 发活期标
                 发 6 日标，金额 50000，B 投 50000 放款
