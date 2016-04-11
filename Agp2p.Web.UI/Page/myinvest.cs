@@ -163,8 +163,14 @@ namespace Agp2p.Web.UI.Page
             var result = projects.Select(c =>
             {
                 var risk = c.li_risks.li_loaners;
-                decimal profit=10;
-         
+                decimal profit;
+                if (c.dt_article_category.call_index == "newbie") profit = 10;
+                else
+                {
+                    profit = c.profit_rate == 0
+                        ? Math.Round(Convert.ToInt32(risk.income) * c.GetFinalProfitRate(now), 2)
+                        : Math.Round(c.profit_rate * Convert.ToInt32(risk.income), 2);
+                }
                 return new
                 {
                     ptrId = c.id,
