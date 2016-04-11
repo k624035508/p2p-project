@@ -218,6 +218,7 @@ export default class AgCurrent extends React.Component {
                             <thead>
                                 <tr>
                                     <th>债权编号</th>
+                                    <th>原债权项目</th>
                                     <th>买入本金（元）</th>
                                     <th>状态</th>
                                     <th>创建时间</th>
@@ -228,6 +229,7 @@ export default class AgCurrent extends React.Component {
                             {this.state.data.length == 0 ? <tr><td colSpan="5">暂无内容</td></tr> : this.state.data.map(c => 
                                 <tr key={c.id}>
                                     <td>{c.number}</td>
+                                    <td>{c.project}</td>
                                     <td>{c.principal}</td>
                                     <td>{c.queryType}</td>
                                     <td>{c.createTime}</td>
