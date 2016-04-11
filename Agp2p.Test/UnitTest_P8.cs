@@ -41,7 +41,6 @@ namespace Agp2p.Test
             Common.MakeSureHaveIdleMoney(UserA, 10*10000);
             Common.MakeSureHaveIdleMoney(UserB, 10*10000);
 
-            Common.GainLoanerRepaymentSimulate();
             Common.AutoRepaySimulate();
 
             // 发 3 日标，金额 50000，A 投 30000，B 投 20000，放款
@@ -59,7 +58,6 @@ namespace Agp2p.Test
         public void Day02()
         {
             Common.DeltaDay(TestStartAt, 1);
-            Common.GainLoanerRepaymentSimulate();
             Common.AutoRepaySimulate();
         }
 
@@ -67,7 +65,6 @@ namespace Agp2p.Test
         public void Day03()
         {
             Common.DeltaDay(TestStartAt, 2);
-            Common.GainLoanerRepaymentSimulate();
             Common.AutoRepaySimulate();
         }
 
@@ -77,7 +74,6 @@ namespace Agp2p.Test
             Common.DeltaDay(TestStartAt, 3);
 
             // 回款，总数：20.83
-            Common.GainLoanerRepaymentSimulate();
             Common.AutoRepaySimulate();
 
             Common.AssertWalletDelta(UserA, 12.5m, 0, 0, 0, 10 * 10000, 0, 30000, 12.5m, TestStartAt);

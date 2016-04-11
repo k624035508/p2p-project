@@ -65,6 +65,8 @@
     <Compile Include="UnitTest_P3_3.cs" />
     <Compile Include="UnitTest_P3_2.cs" />
     <Compile Include="UnitTest_P3_1.cs" />
+    <Compile Include="UnitTest_P4_2.cs" />
+    <Compile Include="UnitTest_P4_1.cs" />
     <Compile Include="UnitTest_P8.cs" />
     <Compile Include="UnitTest_P7.cs" />
     <Compile Include="UnitTest_P6.cs" />

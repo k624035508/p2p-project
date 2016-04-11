@@ -8,7 +8,7 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.AutoLogic
 {
-    class CheckDelayInvestOverTime
+    public class CheckDelayInvestOverTime
     {
         internal static void DoSubscribe()
         {
@@ -56,7 +56,7 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        private static void DoCheckDelayInvestOverTime(TimerMsg.Type timerType, bool onTime)
+        public static void DoCheckDelayInvestOverTime(TimerMsg.Type timerType, bool onTime)
         {
             if (timerType != TimerMsg.Type.AutoRepayTimer) return;
 
@@ -74,9 +74,7 @@ namespace Agp2p.Core.AutoLogic
 
             var huoqiInvestableClaimsAmount = context.GetHuoqiInvestableClaims()
                 .Aggregate(0m, (sum, c) => sum + c.principal);
-            delayInvested.Where(ptr => ptr.principal <= huoqiInvestableClaimsAmount)
-                .OrderBy(ptr => ptr.principal)
-                .Aggregate(huoqiInvestableClaimsAmount, (total, ptr) =>
+            delayInvested.Aggregate(huoqiInvestableClaimsAmount, (total, ptr) =>
                 {
                     if (ptr.principal <= total)
                     {

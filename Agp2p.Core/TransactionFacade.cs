@@ -760,6 +760,9 @@ namespace Agp2p.Core
                 StaticClaimTransferComplete(context, needTransferClaim, buyedTrs.Concat(new[] { buyInPtr }).ToList());
             }
             context.SubmitChanges();
+
+            if (remainBuyable == amount)
+                MessageBus.Main.Publish(new StaticClaimTransferSuccessMsg(needTransferClaim.id));
         }
 
         /// <summary>
@@ -942,8 +945,6 @@ namespace Agp2p.Core
                 his.li_project_transactions = buyTr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             });
-
-            MessageBus.Main.Publish(new StaticClaimTransferSuccessMsg(needTransferClaim.id));
         }
 
         public static void HuoqiProjectWithdraw(this Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
