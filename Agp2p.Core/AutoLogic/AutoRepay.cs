@@ -58,7 +58,7 @@ namespace Agp2p.Core.AutoLogic
                 try
                 {
                     //TODO 根据项目的autopay自动判断是否自动还款
-                    if (loaner.dt_users.autoRepay != null && (bool)loaner.dt_users.autoRepay)
+                    if (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay)
                     {
                         //创建自动还款托管接口请求
                         var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project.ToString(), (t.repay_principal + t.repay_interest).ToString("f"));

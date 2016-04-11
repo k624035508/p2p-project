@@ -182,11 +182,11 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
-                        if (user != null)
+                        //查找对应的项目
+                        var project = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        if (project != null)
                         {
-                            user.autoRepay = !msg.Cancel;
+                            project.autoRepay = !msg.Cancel;
                             msg.HasHandle = true;
                             context.SubmitChanges();
                         }
