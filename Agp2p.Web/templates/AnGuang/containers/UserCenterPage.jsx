@@ -68,8 +68,8 @@ class UserCenterPage extends React.Component {
 			            <li><a className="investing">投资管理</a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/myinvest" activeClassName="active-link">我的投资</Link></li>
-			                    <li><Link to="/current" activeClassName="active-link">安融活期</Link></li>
-			                    <li><Link to="/claims" activeClassName="active-link">债权转让</Link></li>
+			                  {/*  <li><Link to="/current" activeClassName="active-link">安融活期</Link></li>
+			                    <li><Link to="/claims" activeClassName="active-link">债权转让</Link></li>  */}
 			                    <li><Link to="/invest-record" activeClassName="active-link">投资记录</Link></li>
 			                    <li><Link to="/myrepayments" activeClassName="active-link">回款计划</Link></li>
 			                </ul>
@@ -86,6 +86,11 @@ class UserCenterPage extends React.Component {
 			                <ul className="list-unstyled inner-ul">
 								<li><Link to="/mynews" activeClassName="active-link">我的消息</Link></li>
 								<li><Link to="/settings" activeClassName="active-link">通知设置</Link></li>
+			                </ul>
+			            </li>
+                        <li><a className="myloan">借款管理</a>
+			                <ul className="list-unstyled inner-ul">
+								<li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
 			                </ul>
 			            </li>
 			        </ul>

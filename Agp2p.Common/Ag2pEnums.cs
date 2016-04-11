@@ -866,5 +866,16 @@ namespace Agp2p.Common
             [Description("转出")]
             TransferOut = 3,
         }
+        public enum MyLoanQueryTypeEnum
+        {
+            [Description("申请中")]
+            Applying = 0,
+            [Description("借款中")]
+            Loaning = 1,
+            [Description("还款中")]
+            Repaying = 2,
+            [Description("已还款")]
+            Repaid = 3,
+        }
     }
 }

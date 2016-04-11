@@ -59,6 +59,7 @@ div.usercenter {
 			.investing { background: url("@{usercenter}/investing.png") no-repeat; }
 			.account { background: url("@{usercenter}/account.png") no-repeat; }
 			.news { background: url("@{usercenter}/news.png") no-repeat; }
+            .myloan{background: url("@{usercenter}/myloan.png") no-repeat;}
 		}
 		.inner-ul {
 			& > li {
@@ -144,14 +145,17 @@ div.usercenter {
 		}
 
 		.content-body {
-			padding: 30px 25px;
-			min-height: 699px;
+			padding: 30px 25px 0 25px;
+			height: 787px;
 		}
 	}
 	//会员中心翻页页码样式
 	div.nav {
 		text-align: center;
+        padding-top:100px;
 		.pagination {
+            margin-top:42px;
+            margin-bottom:0;
 			& > li > a, & > li > span {
 				width: 25px;
 				height: 25px;

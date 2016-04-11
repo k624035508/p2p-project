@@ -30,6 +30,7 @@ import MyLotteryPage from "../containers/mylottery.jsx"
 import MyInvestPage from "../containers/myinvest.jsx"
 import AgCurrentPage from "../containers/agcurrent.jsx"
 import ClaimsTransferPage from "../containers/claimstransfer.jsx"
+import MyLoanPage from "../containers/myloan.jsx"
 
 import header from "./header.js"
 window['$'] = $;
@@ -60,6 +61,7 @@ $(function(){
 						<Route path="/settings" component={SettingsPage}/>
 						<Route path="/mylottery" component={MyLotteryPage}/>
 						<Route path="/myinvest" component={MyInvestPage}/>
+						<Route path="/myloan" component={MyLoanPage}/>
 					</Route>
 					<Route path="/safe" component={SafeCenterPage}/>
 					<Route path="/current" component={AgCurrentPage}/>
