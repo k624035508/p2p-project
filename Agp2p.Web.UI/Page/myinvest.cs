@@ -167,13 +167,13 @@ namespace Agp2p.Web.UI.Page
          
                 return new
                 {
-                   
-                    projectId = c.id,
+                    ptrId = c.id,
+                    projectId = risk.id,
                     projectUrl = linkurl(config, "project", c.id),
                     projectName = c.title,
                     projectProfitRateYearly = c.GetProfitRateYearly(),
                     term =c.repayment_term_span_count + c.GetProjectTermSpanEnumDesc(),
-                    investTime = c.make_loan_time,
+                    investTime = Convert.ToDateTime(c.make_loan_time).ToString("yy/MM/dd"),
                     investValue = risk.income,
                     profit,
                     status = c.GetProjectStatusDesc(),
