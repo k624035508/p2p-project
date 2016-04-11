@@ -80,9 +80,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="xBrainLab.Security.Cryptography">
-      <HintPath>..\DLL\xBrainLab.Security.Cryptography.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityLogic\InviterBonus.cs" />

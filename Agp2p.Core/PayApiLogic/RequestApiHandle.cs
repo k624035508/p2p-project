@@ -61,6 +61,19 @@ namespace Agp2p.Core.PayApiLogic
                         context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
                             Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
                         break;
+                    //债权转让
+                    case (int)Agp2pEnums.SumapayApiEnum.CreAs:
+                        var creditAssignmentReqMsg = (CreditAssignmentReqMsg) msg;
+                        //通过债权找出对应的投资记录
+                        var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
+                        //计算手续费
+                        var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw / 100;
+                        var finalCost = Math.Round(Utils.StrToDecimal(creditAssignmentReqMsg.AssignmentSum, 0) * staticWithdrawCostPercent, 2);
+
+
+
+                        break;
+
                         //case (int)Agp2pEnums.SumapayApiEnum.MaBid:
                         //    //投资
                         //    var manualBidReqMsg = (ManualBidReqMsg) msg;

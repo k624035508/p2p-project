@@ -19,38 +19,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string ProjectDescription { get; set; }//项目描述
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码 
-        //分账列表
-        private string subledgerList;
-        public string SubledgerList
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(subledgerList))
-                {
-                    subledgerList = JsonHelper.ObjectToJSON(new List<object>()
-                    {
-                        new
-                        {
-                            roleType = "0",
-                            roleCode = UserId,
-                            inOrOut = "0",
-                            sum = AssignmentSum
-                        }
-                    });
-                }
-                return subledgerList;
-            }
-            set { subledgerList = value; }
-        }
+        public int ClaimId { get; set; }//债权编号
+        public string SubledgerList { get; set; }//分账列表
 
-        public CreditAssignmentReqMsg(int userId, int projectCode, string originalRequestId, string originalOrderSum,
-            string assignmentSum, string undertakeSum, string payType = "3", string mainAccountType = "", string mainAccountCode = "", 
-            string projectDescription = "", string creditValue = "", string undertakePercentage = "")
+        public CreditAssignmentReqMsg(int userId, int projectCode, string assignmentSum, string undertakeSum, string projectDescription = "",
+            string creditValue = "", string undertakePercentage = "", string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
-            OriginalRequestId = originalRequestId;
-            OriginalOrderSum = originalOrderSum;
             AssignmentSum = assignmentSum;
             UndertakeSum = undertakeSum;
             PayType = payType;
