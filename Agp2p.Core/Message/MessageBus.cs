@@ -20,6 +20,7 @@ namespace Agp2p.Core.Message
 
             // Business
             TransactionFacade.DoSubscribe();
+            CheckDelayInvestOverTime.DoSubscribe();
             AutoRepay.DoSubscribe();
             ProjectWithdraw.DoSubscribe();
             CheckOverTimePaid.DoSubscribe();
