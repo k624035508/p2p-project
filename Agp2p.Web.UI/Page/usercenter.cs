@@ -984,7 +984,7 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public static string AjaxQueryLoan(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
-            return myinvest.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
+            return myloan.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
         }
     }
 }
