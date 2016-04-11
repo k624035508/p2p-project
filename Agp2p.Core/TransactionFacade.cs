@@ -23,6 +23,9 @@ namespace Agp2p.Core
     {
         public const decimal StandGuardFeeRate = 0;//0.006m;
         public const decimal DefaultHandlingFee = 0;//1;
+        public const int NormalProjectProfitingDay = 365;
+        public const int TicketProjectProfitingDay = 360;
+        public const int HuoqiProjectProfitingDay = 360;
 
         internal static void DoSubscribe()
         {
@@ -350,7 +353,7 @@ namespace Agp2p.Core
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
         /// <param name="investingMoney"></param>
-        public static void Invest(int userId, int projectId, decimal investingMoney)
+        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "")
         {
             li_project_transactions tr;
             li_wallets wallet;
@@ -423,7 +426,8 @@ namespace Agp2p.Core
                     type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
                     principal = investingMoney,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    create_time = wallet.last_update_time // 时间应该一致
+                    create_time = wallet.last_update_time, // 时间应该一致
+                    no_order = noOrder
                 };
                 context.li_project_transactions.InsertOnSubmit(tr);
 
@@ -767,6 +771,20 @@ namespace Agp2p.Core
             // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
+
+            if (0 < finalCost)
+            {
+                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                {
+                    user_id = needTransferClaim.userId,
+                    income = finalCost,
+                    project_id = needTransferClaim.projectId,
+                    type = (int)Agp2pEnums.OfflineTransactionTypeEnum.StaticClaimTransfer,
+                    create_time = now,
+                    remark = $"债权'{needTransferClaim.Parent.number}'转让成功，收取债权转让管理费",
+                });
+            }
+
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,
@@ -1253,12 +1271,44 @@ namespace Agp2p.Core
             project.status = (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
             project.make_loan_time = DateTime.Now; // 放款时间
 
+            // 放款给借款人
+            var loaner = project.li_risks.li_loaners;
+            if (!project.IsNewbieProject() && !project.IsHuoqiProject() && loaner != null)
+            {
+                // 如果已经进行过放款，则报错
+                if (loaner.dt_users.li_bank_transactions.Any(btr =>
+                        btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan &&
+                        btr.status == (int) Agp2pEnums.BankTransactionStatusEnum.Confirm &&
+                        btr.remarks == projectId.ToString()))
+                {
+                    throw new InvalidOperationException("这个项目已经进行过放款");
+                }
+                //需扣除手续费后再放款给借款人,并更改手续费状态
+                decimal projectSum = project.investment_amount;
+                //平台服务费
+                var loanFee = context.li_company_inoutcome.SingleOrDefault(c => c.project_id == projectId && c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning);
+                if (loanFee != null)
+                {
+                    projectSum -= (decimal)loanFee.income;
+                    loanFee.type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning;
+                }
+                //风险保证金
+                var boanFee = context.li_company_inoutcome.SingleOrDefault(c => c.project_id == projectId && c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee);
+                if (boanFee != null)
+                {
+                    projectSum -= (decimal)boanFee.income;
+                    boanFee.type = (int)Agp2pEnums.OfflineTransactionTypeEnum.BondFee;
+                }
+
+                MakeLoan(context, project.make_loan_time.Value, projectId, loaner.user_id, projectSum, false);
+            }
+
             var repaymentType = (Agp2pEnums.ProjectRepaymentTypeEnum) project.repayment_type; // 还款类型
 
             // 满标时计算真实总利率
             project.profit_rate = project.GetFinalProfitRate();
             var termCount = project.CalcRealTermCount(); // 实际期数
-
+            
             var repayPrincipal = project.investment_amount; // 本金投资总额
             var interestAmount = Math.Round(project.profit_rate*repayPrincipal, 2); // 利息总额
 
@@ -1316,37 +1366,7 @@ namespace Agp2p.Core
 
             // 计算每个投资人的待收益金额，因为不一定是投资当日满标，所以不能投资时就知道收益（不同时间满标/截标会对导致不同的回款时间间隔，从而导致利率不同）
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
-
-            // 计算平台服务费
-            if (!project.dt_article_category.call_index.Equals("newbie"))
-            {
-                if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
-                {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                    {
-                        user_id = project.li_risks.li_loaners.dt_users.id,
-                        income = (decimal) (project.financing_amount*(project.loan_fee_rate/100)),
-                        project_id = projectId,
-                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.ManagementFeeOfLoanning,
-                        create_time = DateTime.Now,
-                        remark = $"借款项目'{project.title}'收取平台服务费"
-                    });
-                }
-
-                //计算风险保证金
-                if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
-                {
-                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                    {
-                        user_id = project.li_risks.li_loaners.dt_users.id,
-                        income = project.financing_amount*(project.bond_fee_rate/100) ?? 0,
-                        project_id = projectId,
-                        type = (int) Agp2pEnums.OfflineTransactionTypeEnum.BondFee,
-                        create_time = DateTime.Now,
-                        remark = $"借款项目'{project.title}'收取风险保证金"
-                    });
-                }
-            }
+            
             context.SubmitChanges();
 
             MessageBus.Main.PublishAsync(new ProjectStartRepaymentMsg(projectId)); // 广播项目开始还款的消息
@@ -1466,7 +1486,7 @@ namespace Agp2p.Core
         public static decimal GetFinalProfitRate(this li_projects proj, DateTime? makeLoanTime = null)
         {
             if (proj.IsHuoqiProject())
-                return proj.profit_rate_year/100/365;
+                return proj.profit_rate_year/100/HuoqiProjectProfitingDay;
 
             if (0 < proj.profit_rate)
                 return proj.profit_rate;
@@ -1505,9 +1525,9 @@ namespace Agp2p.Core
                     // 最后那期还款的日期 - 满标的日期 = 总天数
                     var lastRepayDate = proj.CalcRepayTimeByTerm(termSpanCount, makeLoanTime).Date;
                     var days = lastRepayDate.Subtract(baseTime.Date).Days;
-                    return profitRateYear*days/365;
+                    return profitRateYear*days/NormalProjectProfitingDay;
                 case Agp2pEnums.ProjectRepaymentTermSpanEnum.Day:
-                    return profitRateYear*termSpanCount/365;
+                    return profitRateYear*termSpanCount/NormalProjectProfitingDay;
                 default:
                     throw new InvalidEnumArgumentException("异常的项目还款跨度值");
             }
@@ -1549,6 +1569,79 @@ namespace Agp2p.Core
         {
             return task.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
                    task.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime;
+        }
+
+        /// <summary>
+        /// 放款
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="loanerUserId"></param>
+        /// <param name="amount"></param>
+        public static void MakeLoan(this Agp2pDataContext context, DateTime makeLoanAt, int projectId, int loanerUserId, decimal amount, bool save = true)
+        {
+            var btr = new li_bank_transactions
+            {
+                handling_fee_type = (byte)Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
+                type = (byte)Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan,
+                status = (byte)Agp2pEnums.BankTransactionStatusEnum.Confirm,
+                create_time = makeLoanAt,
+                transact_time = makeLoanAt,
+                charger = loanerUserId,
+                value = amount,
+                no_order = "",
+                remarks = projectId.ToString()
+            };
+            // 创建钱包历史
+            var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
+            wallet.idle_money += amount;
+            wallet.last_update_time = makeLoanAt;
+
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerMakeLoanSuccess);
+            his.li_bank_transactions = btr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+
+            if (save)
+            {
+                context.SubmitChanges();
+            }
+        }
+
+        /// <summary>
+        /// 收取借款人的还款
+        /// </summary>
+        /// <param name="loanerUserId"></param>
+        /// <param name="bankAccountId"></param>
+        /// <param name="amount"></param>
+        public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
+        {
+            var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
+            if (wallet.idle_money < amount)
+                throw new InvalidOperationException("借款人的余额不足");
+
+            var btr = new li_bank_transactions
+            {
+                handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
+                type = (byte) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay,
+                status = (byte) Agp2pEnums.BankTransactionStatusEnum.Confirm,
+                create_time = gainAt,
+                transact_time = gainAt,
+                charger = loanerUserId,
+                value = amount,
+                no_order = "",
+                remarks = repaymentTaskId?.ToString()
+            };
+            // 创建钱包历史
+            wallet.idle_money -= amount;
+            wallet.last_update_time = gainAt;
+
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.LoanerRepaySuccess);
+            his.li_bank_transactions = btr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+
+            if (save)
+            {
+                context.SubmitChanges();
+            }
         }
 
         /// <summary>
@@ -2042,6 +2135,10 @@ namespace Agp2p.Core
             var willInvalidTasks = unpaidTasks.Skip(1).ToList();
             if (!willInvalidTasks.Any())
             {
+                // 向借款人收取还款
+                GainLoanerRepayment(context, DateTime.Now, currentTask.id,
+                    currentTask.li_projects.li_risks.li_loaners.user_id,
+                    currentTask.repay_principal + currentTask.repay_interest);
                 context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
                 return project;
             }
@@ -2072,6 +2169,10 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
+            GainLoanerRepayment(context, DateTime.Now, null,
+                currentTask.li_projects.li_risks.li_loaners.user_id,
+                currentTask.repay_principal + currentTask.repay_interest + earlierRepayTask.repay_principal +
+                earlierRepayTask.repay_interest);
             context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
             context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 
@@ -2299,7 +2400,8 @@ namespace Agp2p.Core
         {
             if (his.li_bank_transactions != null)
             {
-                var chargedValue = his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                var btrType = his.li_bank_transactions.type;
+                var chargedValue = btrType == (int) Agp2pEnums.BankTransactionTypeEnum.Withdraw || btrType == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay
                     ? (decimal?) null
                     : his.li_bank_transactions.value;
                 return callback(chargedValue, null);
@@ -2310,7 +2412,9 @@ namespace Agp2p.Core
                 if (his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.Invest
                     || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess
                     || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest
-                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims)
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess)
                 {
                     receivedPrincipal = profited = null;
                 }
@@ -2375,7 +2479,8 @@ namespace Agp2p.Core
         {
             if (his.li_bank_transactions != null)
             {
-                return his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.Charge
+                var btrType = his.li_bank_transactions.type;
+                return btrType == (int) Agp2pEnums.BankTransactionTypeEnum.Charge || btrType == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan
                     ? (decimal?) null
                     : his.li_bank_transactions.value; // 提现
             }
@@ -2385,7 +2490,10 @@ namespace Agp2p.Core
                     return null;
                 if (his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest)
                     return his.li_project_transactions.interest.GetValueOrDefault();
-                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                return his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.Invest
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn
+                        || his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess
                     ? his.li_project_transactions.principal // 投资
                     : (decimal?) null;
             }
@@ -2488,7 +2596,7 @@ namespace Agp2p.Core
                 switch (project.type)
                 {
                     case (int)Agp2pEnums.LoanTypeEnum.Company:
-                        return project.li_risks.li_loaners?.li_loaner_companies.name;
+                        return project.li_risks.li_loaners?.li_loaner_companies?.name;
                     default:
                         if (project.li_risks.li_loaners == null)
                             return "";

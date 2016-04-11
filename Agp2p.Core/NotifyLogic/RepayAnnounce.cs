@@ -15,12 +15,14 @@ namespace Agp2p.Core.NotifyLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMessage(m.OnTime)); // 还款前 3 日发送还款提醒给借款人
+            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMessage(m.TimerType, m.OnTime)); // 还款前 3 日发送还款提醒给借款人
             MessageBus.Main.Subscribe<ProjectRepaidMsg>(m => HandleProjectRepaidMsg(m.RepaymentTaskId)); // 放款计划执行后发送还款提醒
         }
 
-        private static void HandleTimerMessage(bool onTime)
+        private static void HandleTimerMessage(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             // 安广融合借款人还款提现：你 3 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。
             var context = new Agp2pDataContext();
             var willRepayTasks =

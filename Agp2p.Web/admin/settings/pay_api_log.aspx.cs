@@ -74,7 +74,7 @@ namespace Agp2p.Web.admin.repayment
                 {
                     Index = r.index,
                     RequestId = r.req.id,
-                    ProjectId = string.IsNullOrEmpty(r.req.project_id)? 0 : Convert.ToInt32(r.req.project_id),
+                    ProjectId = r.req.project_id ?? 0,
                     UserId = r.req.user_id,
                     Type = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayApiEnum)r.req.api),
                     Status = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayRequestEnum)r.req.status),

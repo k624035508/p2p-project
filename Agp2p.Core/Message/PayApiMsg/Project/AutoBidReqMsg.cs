@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -16,7 +16,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string ProjectSum { get; set; }//项目总额
         public bool Collective { get; set; }//集合项目标识
 
-        public AutoBidReqMsg(string protocolCode, string projectCode, string sum, string projectSum, string projectDescription, bool collective = false)
+        public AutoBidReqMsg(string protocolCode, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false)
         {
             ProtocolCode = protocolCode;
             ProjectCode = projectCode;
@@ -32,10 +32,9 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode + ProjectDescription + Sum +
-                                               ProtocolCode + NoticeUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + ProjectCode + ProjectDescription + Sum +
+                                               ProtocolCode + NoticeUrl, SumapayConfig.Key);
         }
 
         public override string GetPostPara()

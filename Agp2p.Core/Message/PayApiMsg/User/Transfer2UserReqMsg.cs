@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -25,9 +25,8 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + UserAccountType + Sum + NoticeUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + UserAccountType + Sum + NoticeUrl, SumapayConfig.Key);
         }
 
         public override string GetPostPara()

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.AutoLogic;
+using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,13 +53,18 @@ namespace Agp2p.Test
             }
         }
 
+        public static void GainLoanerRepaymentSimulate()
+        {
+            AutoRepay.DoGainLoanerRepayment(TimerMsg.Type.LoanerRepayTimer, false);
+        }
+
         public static void AutoRepaySimulate(DateTime? runAt = null)
         {
-            AutoRepay.CheckStaticProjectWithdrawOvertime(false);
-            AutoRepay.GenerateHuoqiRepaymentTask(false);
-            AutoRepay.DoRepay(false);
-            ProjectWithdraw.HuoqiClaimTransferToCompanyWhenNeeded(false);
-            ProjectWithdraw.DoHuoqiProjectWithdraw(false, runAt.GetValueOrDefault(DateTime.Now));
+            AutoRepay.CheckStaticProjectWithdrawOvertime(TimerMsg.Type.AutoRepayTimer, false);
+            AutoRepay.GenerateHuoqiRepaymentTask(TimerMsg.Type.AutoRepayTimer, false);
+            AutoRepay.DoRepay(TimerMsg.Type.AutoRepayTimer, false);
+            ProjectWithdraw.HuoqiClaimTransferToCompanyWhenNeeded(TimerMsg.Type.AutoRepayTimer, false);
+            ProjectWithdraw.DoHuoqiProjectWithdraw(TimerMsg.Type.AutoRepayTimer, false, runAt.GetValueOrDefault(DateTime.Now));
         }
 
         public static void DoSimpleCleanUp(DateTime deleteAfter)

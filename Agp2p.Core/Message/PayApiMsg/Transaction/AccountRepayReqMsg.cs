@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Agp2p.Common;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -15,6 +15,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string RechargeUrl { get; set; }//P2P充值跳转地址
         public string GiftFlag { get; set; }//红包标识
         public bool Collective { get; set; }//集合项目标识
+        
         /// <summary>
         /// 分账列表 当红包标识字段不为空时，此字段必输。当红包标识为 0 时， 则只对应记录一笔用户的出账明细；当红包标识为 1 时， 
         /// 分账列表内对应零笔或一笔用户的出账明细， 一笔商户的出账明细。用户需对应第三方用户标识，商 户需对应商户编码；
@@ -22,9 +23,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public AccountRepayReqMsg(int userId, string sum, string rechargeUrl, string giftFlag, string subledgerList, bool collective = false)
+        public AccountRepayReqMsg(int userId, int projectCode, string sum, string rechargeUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
+            ProjectCode = projectCode;
             Sum = sum;
             SubledgerList = subledgerList;
             RechargeUrl = rechargeUrl;
@@ -34,16 +36,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  +
-                RechargeUrl + SuccessReturnUrl + FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  +
+                RechargeUrl + SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -53,14 +52,14 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode ", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"sum", Sum},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
-            if (!string.IsNullOrEmpty(RechargeUrl)) sd.Add("rechargeUrl ", RechargeUrl);
+            if (!string.IsNullOrEmpty(RechargeUrl)) sd.Add("rechargeUrl", RechargeUrl);
             if (!string.IsNullOrEmpty(GiftFlag)) sd.Add("giftFlag", GiftFlag);
             if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("subledgerList", SubledgerList);
 

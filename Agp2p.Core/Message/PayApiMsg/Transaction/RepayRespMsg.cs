@@ -1,4 +1,6 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿using Agp2p.Common;
+
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 个人存管账户/协议还款项目响应
@@ -24,10 +26,37 @@
         public bool BankRepay { get; set; }//是否协议还款
         public bool AutoRepay { get; set; }//是否自动还款
 
-        public RepayRespMsg(bool bankRepay = false, bool autoRepay = false)
+        public RepayRespMsg()
+        {
+        }
+
+        public RepayRespMsg(string requestStr, bool bankRepay = false, bool autoRepay = false)
         {
             BankRepay = bankRepay;
             AutoRepay = autoRepay;
+
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            ProjectCode = Utils.StrToInt(map["projectCode"], 0);
+
+            //账户还款参数
+            UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";
+            WithdrawableBalance = map.ContainsKey("withdrawableBalance") ? map["withdrawableBalance"] : "";
+            FrozenBalance = map.ContainsKey("frozenBalance") ? map["frozenBalance"] : "";
+            UnsettledBalance = map.ContainsKey("unsettledBalance") ? map["unsettledBalance"] : "";
+            //协议还款参数
+            PayType = map.ContainsKey("payType") ? map["payType"] : "";
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
+            BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
+            BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
+            Name = map.ContainsKey("name") ? map["name"] : "";
+            //自动还款参数
+            AccountBalance = map.ContainsKey("accountBalance") ? map["accountBalance"] : "";
+            FeeType = map.ContainsKey("feeType") ? map["feeType"] : "";
         }
 
         public override bool CheckSignature()
@@ -40,7 +69,7 @@
             {
                 return base.CheckSignature(RequestId + UserIdIdentity + Result + AccountBalance);
             }
-            return base.CheckSignature(RequestId + Result + Sum + UserIdIdentity + UserBalance);
+            return base.CheckSignature(RequestId + Result + UserIdIdentity + UserBalance);
         }
     }
 }

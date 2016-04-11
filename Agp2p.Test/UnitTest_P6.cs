@@ -11,7 +11,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P6, P6-1 测试流程：
+        P6, P6-1 测试流程：（测试活期自动续投）
             Day 1
                 发活期标
                 发 5 日标，金额 50000，A 投 50000 放款；A 提现 50000；公司账号接手 50000
@@ -28,7 +28,7 @@ namespace Agp2p.Test
                 P6-1 回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 21, 9, 00, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 4, 7, 9, 00, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -133,8 +133,8 @@ namespace Agp2p.Test
             Common.AutoRepaySimulate();
 
             Common.AssertWalletDelta(UserA, 16.67m, 0, 0, 0, 0, 0, 100000, 16.67m, realDate);
-            Common.AssertWalletDelta(UserB, 9.04m, 0, 0, 0, 0, 0, 50000, 9.04m, realDate);
-            Common.AssertWalletDelta(CompanyAccount, 36.79m, 0, 0, 0, 0, 0, 70000, 45.83m, realDate);
+            Common.AssertWalletDelta(UserB, 9.16m, 0, 0, 0, 0, 0, 50000, 9.16m, realDate);
+            Common.AssertWalletDelta(CompanyAccount, 36.67m, 0, 0, 0, 0, 0, 70000, 45.83m, realDate);
         }
 
         [TestMethod]

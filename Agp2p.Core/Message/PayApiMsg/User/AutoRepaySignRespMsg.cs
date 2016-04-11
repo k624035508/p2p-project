@@ -25,7 +25,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
             BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
             Name = map.ContainsKey("name") ? map["name"] : "";
-            ProjectCode = map.ContainsKey("projectCode") ? map["projectCode"] : "";
+            ProjectCode = map.ContainsKey("projectCode") ? Utils.StrToInt(map["projectCode"], 0) : 0;
         }
 
         public override bool CheckSignature()

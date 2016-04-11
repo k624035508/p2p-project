@@ -13,6 +13,6 @@ namespace Agp2p.Core.Message.PayApiMsg
         public static string Key = "RPZJNXEUQW89L2AF6HS5YIDGBC37MKT4V";
         public static string TestApiUrl = "https://fbtest.sumapay.com/";
         public static string ApiUrl = "";
-        public static string NoticeUrl = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/notifyUrl.aspx";
+        public static string NoticeUrl = "http://test.agrhp2p.com/api/payment/sumapay/notifyUrl.aspx";
     }
 }

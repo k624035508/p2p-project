@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Agp2p.Common;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -15,9 +15,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string FeeType { get; set; }//手续费收取方式
         public bool Collective { get; set; }//集合项目标识
 
-        public AutoRepayReqMsg(int userId, string sum, bool collective = false, string fayType = "0")
+        public AutoRepayReqMsg()
+        {
+        }
+
+        public AutoRepayReqMsg(int userId, int projectCode, string sum, bool collective = false, string fayType = "2")
         {
             UserId = userId;
+            ProjectCode = projectCode;
             Sum = sum;
             FeeType = fayType;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.AbRep : (int) Agp2pEnums.SumapayApiEnum.AcRep;
@@ -28,9 +33,8 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  + FeeType + NoticeUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  + FeeType + NoticeUrl, SumapayConfig.Key);
         }
 
         public override string GetPostPara()

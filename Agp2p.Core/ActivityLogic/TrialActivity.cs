@@ -13,11 +13,13 @@ namespace Agp2p.Core.ActivityLogic
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => CheckNewbieInvest(m.ProjectTransactionId)); // 用户投资消息，检测是不是投资了新手体验标，是的话执行相应逻辑
-            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMsg(m.OnTime)); // 到期则放款
+            MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMsg(m.TimerType, m.OnTime)); // 到期则放款
         }
 
-        private static void HandleTimerMsg(bool onTime)
+        private static void HandleTimerMsg(TimerMsg.Type timerName, bool onTime)
         {
+            if (timerName != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>

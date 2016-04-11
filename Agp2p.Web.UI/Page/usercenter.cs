@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
@@ -28,7 +30,7 @@ namespace Agp2p.Web.UI.Page
         protected decimal GetLotteriesValue()
         {
             return GetUserInfoByLinq().li_activity_transactions
-                .Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
                 .Aggregate(0m, (sum, a) => sum + a.value);
         }
 
@@ -84,7 +86,7 @@ namespace Agp2p.Web.UI.Page
 
             var wallet = userInfo.li_wallets;
             var userCode = context.dt_user_code.FirstOrDefault(u => u.user_id == userInfo.id && u.type == DTEnums.CodeEnum.Register.ToString());
-            var lotteriesValue = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+            var lotteriesValue = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting)
                 .Aggregate(0m, (sum, a) => sum + a.value);
             return JsonConvert.SerializeObject(new
             {
@@ -158,7 +160,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryRepayments(short type, short pageSize, short pageIndex, string startTime = "", string endTime = "")
+        public static string AjaxQueryRepayments(short type, short pageSize, short pageIndex, string startTime="", string endTime="")
         {
             var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -168,9 +170,9 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo, (Agp2pEnums.MyRepaymentQueryTypeEnum)type, startTime, endTime);
+            var myRepayments = myreceiveplan.QueryProjectRepayments(userInfo, (Agp2pEnums.MyRepaymentQueryTypeEnum) type, startTime, endTime);
             var repayments = myRepayments.Skip(pageSize * pageIndex).Take(pageSize);
-            return JsonConvert.SerializeObject(new { totalCount = myRepayments.Count, data = repayments });
+            return JsonConvert.SerializeObject(new {totalCount = myRepayments.Count, data = repayments});
         }
 
         [WebMethod]
@@ -187,9 +189,9 @@ namespace Agp2p.Web.UI.Page
 
             var queryable = userInfo.dt_user_message.Where(m => m.is_read.GetValueOrDefault() == readStatus);
             var totalCount = queryable.Count();
-            var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable()
+            var msgs = queryable.OrderByDescending(m => m.id).Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable()
                 .Select(idOnly
-                    ? (Func<dt_user_message, object>)(m => new { m.id })
+                    ? (Func<dt_user_message, object>) (m => new {m.id})
                     : m => new
                     {
                         m.id,
@@ -198,7 +200,7 @@ namespace Agp2p.Web.UI.Page
                         m.content,
                         receiveTime = m.post_time.ToString("yyyy/MM/dd HH:mm"),
                     });
-            return JsonConvert.SerializeObject(new { totalCount, msgs });
+            return JsonConvert.SerializeObject(new {totalCount, msgs});
         }
 
         [WebMethod]
@@ -252,24 +254,24 @@ namespace Agp2p.Web.UI.Page
             // 查询自己的奖励
             var myRewards = context.li_activity_transactions.Where(
                 tr =>
-                    tr.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.RefereeFirstTimeProfitBonus)
-                .ToDictionary(t => ((JObject)JsonConvert.DeserializeObject(t.details)).Value<int>("Invitee"),
+                    tr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.RefereeFirstTimeProfitBonus)
+                .ToDictionary(t => ((JObject) JsonConvert.DeserializeObject(t.details)).Value<int>("Invitee"),
                     atr =>
                         atr.value.ToString("c") +
-                        (atr.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm ? "（已发放）" : "（待发放）"));
+                        (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm ? "（已发放）" : "（待发放）"));
 
-            var data = query.Skip(pageIndex * pageSize).Take(pageSize).Select(i =>
-              {
-                  var firstInvestmentAmount = i.li_project_transactions?.principal ?? 0;
-                  return new
-                  {
-                      inviteeId = i.user_id,
-                      inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
-                      firstInvestmentAmount = firstInvestmentAmount == 0 ? "" : firstInvestmentAmount.ToString(),
-                      reward = myRewards.ContainsKey(i.user_id) ? myRewards[i.user_id] : (firstInvestmentAmount == 0 ? "（未投资）" : "（已投资，未放款）")
-                  };
-              });
-            return JsonConvert.SerializeObject(new { totalCount = query.Count, data });
+            var data = query.Skip(pageIndex*pageSize).Take(pageSize).Select(i =>
+            {
+                var firstInvestmentAmount = i.li_project_transactions?.principal ?? 0;
+                return new
+                {
+                    inviteeId = i.user_id,
+                    inviteeName = string.IsNullOrWhiteSpace(i.dt_users.real_name) ? i.dt_users.user_name : i.dt_users.real_name,
+                    firstInvestmentAmount = firstInvestmentAmount == 0 ? "" : firstInvestmentAmount.ToString(),
+                    reward = myRewards.ContainsKey(i.user_id) ? myRewards[i.user_id] : (firstInvestmentAmount == 0 ? "（未投资）" : "（已投资，未放款）")
+                };
+            });
+            return JsonConvert.SerializeObject(new {totalCount = query.Count, data});
         }
 
         private static readonly int[] LotteryType =
@@ -302,7 +304,7 @@ namespace Agp2p.Web.UI.Page
                 a.create_time,
                 a.transact_time,
             });
-            return JsonConvert.SerializeObject(new { totalCount, data });
+            return JsonConvert.SerializeObject(new {totalCount, data});
         }
 
         [WebMethod]
@@ -361,7 +363,7 @@ namespace Agp2p.Web.UI.Page
             var values = Enum.GetValues(type).Cast<Enum>();
             return
                 JsonConvert.SerializeObject(
-                    values.Select(en => new { key = Utils.GetAgp2pEnumDes(en), value = Convert.ToInt32(en) }));
+                    values.Select(en => new {key = Utils.GetAgp2pEnumDes(en), value = Convert.ToInt32(en)}));
         }
 
         [WebMethod]
@@ -375,7 +377,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var valueTable = Enum.GetValues(typeof(Agp2pEnums.DisabledNotificationTypeEnum))
+            var valueTable = Enum.GetValues(typeof (Agp2pEnums.DisabledNotificationTypeEnum))
                 .Cast<Agp2pEnums.DisabledNotificationTypeEnum>()
                 .Select(e =>
                 {
@@ -385,7 +387,7 @@ namespace Agp2p.Web.UI.Page
                         {
                             row = split[0],
                             column = split[1],
-                            value = (int)e,
+                            value = (int) e,
                         };
                 })
                 .GroupBy(a => a.row)
@@ -393,7 +395,7 @@ namespace Agp2p.Web.UI.Page
 
             var disabledNotificationTypes = userInfo.li_notification_settings.Select(n => n.type).ToList();
 
-            return JsonConvert.SerializeObject(new { valueTable, disabledNotificationTypes });
+            return JsonConvert.SerializeObject(new {valueTable, disabledNotificationTypes });
         }
 
         [WebMethod]
@@ -421,7 +423,7 @@ namespace Agp2p.Web.UI.Page
             return "保存成功";
         }
 
-        private static IEnumerable<Tuple<string, DateTime, DateTime>> GenMountlyTimeSpan(DateTime startTime, DateTime endTime)
+        private static IEnumerable<Tuple<string,DateTime,DateTime>> GenMountlyTimeSpan(DateTime startTime, DateTime endTime)
         {
             for (var i = startTime; i <= endTime; i = i.AddMonths(1))
             {
@@ -483,8 +485,8 @@ namespace Agp2p.Web.UI.Page
                 }
                 var lastInvestmentTime = user.li_project_transactions.Last(
                     ptr =>
-                        ptr.project == r.Project.Id && ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                        ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success).create_time;
+                        ptr.project == r.Project.Id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                        ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).create_time;
                 return GetFirstDayOfThisMouth(lastInvestmentTime);
             }).ToDictionary(g => g.Key, g => g.Sum(rt => rt.RepayPrincipal));
 
@@ -503,8 +505,8 @@ namespace Agp2p.Web.UI.Page
             var mouthlyInvestedAmount = user.li_project_transactions.Where(
                 ptr =>
                     DateTime.Now.AddMonths(-13) <= ptr.create_time && // 不需要查一年前的
-                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success) // 排除流标 / 退款的
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success) // 排除流标 / 退款的
                 .GroupBy(ptr => ptr.li_projects)
                 .GroupBy(pptr =>
                     pptr.Key.invest_complete_time == null
@@ -556,7 +558,7 @@ namespace Agp2p.Web.UI.Page
                 case Agp2pEnums.ChartQueryEnum.AccumulativeProfit:
                     return PredictMouthlyProfiting(userInfo, (predictTimeSpans, predictsTimeline) =>
                     {
-                        var zipped = predictTimeSpans.Zip(predictsTimeline, (tuple, prof) => new { tuple, prof }).ToList();
+                        var zipped = predictTimeSpans.Zip(predictsTimeline, (tuple, prof) => new {tuple, prof}).ToList();
                         var lastMouthProfiting = zipped.LastOrDefault(x => x.prof != 0);
                         var chartLastMouth = lastMouthProfiting?.tuple.Item2 ?? DateTime.Today;
 
@@ -605,7 +607,7 @@ namespace Agp2p.Web.UI.Page
             });
 
             // [{'2015年1月':0},{'2月':100}]
-            return JsonConvert.SerializeObject(timeSpans.Zip(currencyVals, (tuple, arg2) => new Dictionary<string, decimal> { { tuple.Item1, arg2 } }));
+            return JsonConvert.SerializeObject(timeSpans.Zip(currencyVals, (tuple, arg2) => new Dictionary<string,decimal> { {tuple.Item1, arg2} }));
         }
 
         private static readonly Dictionary<Agp2pEnums.StaticClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]> StaticClaimQueryTypeStatusMap = new Dictionary
@@ -629,7 +631,7 @@ namespace Agp2p.Web.UI.Page
 
             var reverseMap =
                 StaticClaimQueryTypeStatusMap
-                    .SelectMany(pair => pair.Value.Select(st => new { st, pair.Key }))
+                    .SelectMany(pair => pair.Value.Select(st => new {st, pair.Key}))
                     .ToDictionary(t => t.st, t => t.Key);
 
             var claimQueryEnum = (Agp2pEnums.StaticClaimQueryEnum)claimQueryType;
@@ -643,7 +645,7 @@ namespace Agp2p.Web.UI.Page
             var count = query.Count();
             var data =
                 query.OrderByDescending(c => c.id)
-                    .Skip(pageIndex * pageSize)
+                    .Skip(pageIndex*pageSize)
                     .Take(pageSize)
                     .AsEnumerable()
                     .Select(c => new
@@ -653,16 +655,16 @@ namespace Agp2p.Web.UI.Page
                         profitingProject = c.li_projects.title,
                         profitingYearly = c.li_projects.profit_rate_year,
                         principal = c.principal.ToString("n"),
-                        queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum)c.status]),
+                        queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum) c.status]),
                         createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
                         nextProfitDay = c.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
                         c.status,
-                        buyerCount = c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions_profiting.Count(
+                        buyerCount = c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions_profiting.Count(
                             ptr =>
-                                ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
-                                ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0
+                                ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0
                     });
-            return JsonConvert.SerializeObject(new { totalCount = count, data });
+            return JsonConvert.SerializeObject(new { totalCount = count, data});
         }
 
         [WebMethod]
@@ -743,12 +745,12 @@ namespace Agp2p.Web.UI.Page
             /*成功转出金额 已转出债权笔数 成功买入金额 已买入债权笔数*/
 
             var transferredClaims = userInfo.li_claims.Where(
-                c => c.status == (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
+                c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferred).ToList();
 
             var buyedClaims = userInfo.li_claims.Where(
                 c =>
-                    c.status < (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.Parent != null &&
-                    c.Parent.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.status < (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && c.Parent != null &&
+                    c.Parent.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                     c.Parent.userId != c.userId).ToList();
             return
                 JsonConvert.SerializeObject(
@@ -777,7 +779,7 @@ namespace Agp2p.Web.UI.Page
             var huoqiProject = context.li_projects.Single(
                 p =>
                     p.dt_article_category.call_index == "huoqi" &&
-                    p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
             TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
 
             return "ok";
@@ -804,10 +806,12 @@ namespace Agp2p.Web.UI.Page
             var huoqiProject = context.li_projects.Single(
                 p =>
                     p.dt_article_category.call_index == "huoqi" &&
-                    p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
             context.HuoqiProjectWithdraw(userInfo.id, huoqiProject.id, amount);
             return "ok";
         }
+
+        
 
         private static readonly Dictionary<Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]> HuoqiTradeQueryTypeMap = new Dictionary
             <Agp2pEnums.HuoqiTransactionQueryEnum, Agp2pEnums.WalletHistoryTypeEnum[]>
@@ -822,6 +826,10 @@ namespace Agp2p.Web.UI.Page
         public static string AjaxQueryHuoqiTransactions(byte huoqiQueryType, short pageIndex, short pageSize)
         {
             var context = new Agp2pDataContext();
+            var options = new DataLoadOptions();
+            options.LoadWith<li_wallet_histories>(his => his.li_project_transactions);
+            context.LoadOptions = options;
+
             var userInfo = GetUserInfoByLinq(context);
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
@@ -830,7 +838,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var huoqiQueryEnum = (Agp2pEnums.HuoqiTransactionQueryEnum)huoqiQueryType;
+            var huoqiQueryEnum = (Agp2pEnums.HuoqiTransactionQueryEnum) huoqiQueryType;
             var query =
                 context.li_wallet_histories.Where(
                     his =>
@@ -839,21 +847,42 @@ namespace Agp2p.Web.UI.Page
                         his.li_project_transactions.li_projects.dt_article_category.call_index == "huoqi" &&
                         HuoqiTradeQueryTypeMap[huoqiQueryEnum].Cast<int>().Contains(his.action_type));
 
-            var count = query.Count();
-            var data = query.OrderByDescending(his => his.id)
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize)
-                .AsEnumerable()
-                .Select(his => new
+            var dataBeforePaging = query.OrderByDescending(his => his.id)
+                .AsEnumerableAutoPartialQuery()
+                .GroupBy(his => new {his.action_type, his.create_time})
+                .SelectMany(hises =>
                 {
-                    his.id,
-                    createTime = his.create_time.ToString("yyyy-MM-dd HH:mm"),
-                    type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)his.action_type),
-                    outcome = his.QueryTransactionOutcome()?.ToString("n"),
-                    income = TransactionFacade.QueryTransactionIncome<string>(his)
+                    if (hises.Key.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest)
+                    {
+                        return Enumerable.Repeat(new
+                        {
+                            hises.First().id,
+                            createTime = hises.Key.create_time.ToString("yyyy-MM-dd HH:mm"),
+                            type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) hises.Key.action_type),
+                            outcome = "",
+                            income = hises.Aggregate(0m, (sum, his) =>
+                                sum +
+                                TransactionFacade.QueryTransactionIncome(his,
+                                    (principal, interest) => interest.GetValueOrDefault())).ToString("c")
+                        }, 1);
+                    }
+                    return hises.Select(his => new
+                    {
+                        his.id,
+                        createTime = his.create_time.ToString("yyyy-MM-dd HH:mm"),
+                        type = Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum) his.action_type),
+                        outcome = his.QueryTransactionOutcome()?.ToString("n"),
+                        income = TransactionFacade.QueryTransactionIncome<string>(his)
+                    });
                 });
+            var data = dataBeforePaging.Skip(pageIndex*pageSize).Take(pageSize);
 
-            return JsonConvert.SerializeObject(new { totalCount = count, data });
+            var count = query.Count(his => his.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest) +
+                    query.Where(his => his.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest)
+                        .GroupBy(his => his.create_time)
+                        .Count();
+
+            return JsonConvert.SerializeObject(new {totalCount = count, data});
         }
 
         private static readonly Dictionary<Agp2pEnums.HuoqiClaimQueryEnum, Agp2pEnums.ClaimStatusEnum[]> HuoqiClaimQueryTypeStatusMap = new Dictionary
@@ -876,7 +905,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var claimQueryEnum = (Agp2pEnums.HuoqiClaimQueryEnum)claimQueryType;
+            var claimQueryEnum = (Agp2pEnums.HuoqiClaimQueryEnum) claimQueryType;
             var query = context.li_claims.Where(
                 c =>
                     c.userId == userInfo.id &&
@@ -889,10 +918,11 @@ namespace Agp2p.Web.UI.Page
                     .ToDictionary(t => t.st, t => t.Key);
 
             var count = query.Count();
-            var data = query.OrderByDescending(c => c.id).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(c => new
+            var data = query.OrderByDescending(c => c.id).Skip(pageSize*pageIndex).Take(pageSize).AsEnumerable().Select(c => new
             {
                 c.id,
                 c.number,
+                project = c.li_projects.title,
                 principal = c.principal.ToString("n"),
                 queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum)c.status]),
                 createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
@@ -900,7 +930,7 @@ namespace Agp2p.Web.UI.Page
                 c.status,
             });
 
-            return JsonConvert.SerializeObject(new { totalCount = count, data });
+            return JsonConvert.SerializeObject(new {totalCount = count, data});
         }
 
         [WebMethod]
@@ -920,10 +950,10 @@ namespace Agp2p.Web.UI.Page
             var currentHuoqiProject = context.li_projects.FirstOrDefault(
                 p =>
                     p.dt_article_category.call_index == "huoqi" &&
-                    p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
+                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
 
             var myHuoqiClaims =
-                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.IsLeafClaim()).ToList() ??
+                currentHuoqiProject?.li_claims_profiting.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.IsLeafClaim()).ToList() ??
                 Enumerable.Empty<li_claims>().ToList();
 
             var totalPrincipal = myHuoqiClaims.Aggregate(0m, (sum, c) => sum + c.principal);
@@ -933,24 +963,28 @@ namespace Agp2p.Web.UI.Page
                 ptr =>
                     ptr.investor == userInfo.id &&
                     ptr.li_projects.dt_article_category.call_index == "huoqi" &&
-                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor).AsEnumerable()
+                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor).AsEnumerable()
                 .Aggregate(0m, (sum, ptr) => sum + ptr.principal + ptr.interest.GetValueOrDefault());
 
             return JsonConvert.SerializeObject(new
             {
-                TodayProfitPredict = Math.Round(1m / 365 * totalProfitingPrincipal * (currentHuoqiProject?.profit_rate_year).GetValueOrDefault() / 100, 2).ToString("n"),
+                TodayProfitPredict = Math.Round(
+                        1m/TransactionFacade.HuoqiProjectProfitingDay*totalProfitingPrincipal*
+                        (currentHuoqiProject?.profit_rate_year).GetValueOrDefault()/100, 2).ToString("n"),
                 TotalHuoqiClaimPrincipal = totalPrincipal.ToString("n"),
                 TotalHuoqiProfit = totalProfit.ToString("n"),
-                CurrentHuoqiProjectProfitRateYearly = currentHuoqiProject == null ? "(目前没有活期项目)" : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
+                CurrentHuoqiProjectProfitRateYearly =
+                    currentHuoqiProject == null
+                        ? "(目前没有活期项目)"
+                        : currentHuoqiProject.profit_rate_year.ToString("n1") + "%",
                 CurrentHuoqiProjectId = currentHuoqiProject?.id
             });
         }
 
         [WebMethod]
-    
         public static string AjaxQueryLoan(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
-                 return myinvest.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
+            return myinvest.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
         }
     }
 }

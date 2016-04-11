@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Web;
 using Agp2p.Common;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -22,8 +24,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public ManualBidReqMsg(int userId, string projectCode, string sum, string projectSum, string projectDescription, string giftFlag = "0",
-            string subledgerList = "", bool collective = false)
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -36,17 +37,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveBid_toCollectiveBid" : "user/manualBid_toManualBid");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
-
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
-                SuccessReturnUrl + FailReturnUrl + SumapayConfig.NoticeUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
+                SuccessReturnUrl + FailReturnUrl + SumapayConfig.NoticeUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -57,7 +54,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
-                {"projectCode", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},

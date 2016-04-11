@@ -11,7 +11,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P3-3 测试流程：
+        P3-3 测试流程：（测试债权转让）
         Day 1
             发 5 日标，金额 50000，A 投 20000 B 投 30000，放款
         Day 2
@@ -28,7 +28,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 03, 28, 8, 30, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = new DateTime(2016, 4, 7, 8, 30, 00); /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -118,9 +118,9 @@ namespace Agp2p.Test
             // 回款，总数应为 34.72
             Common.AutoRepaySimulate();
 
-            Common.AssertWalletDelta(UserA, 13.89m, 0, 0, 0, 0, 0, 50000, 13.89m, realDate);
-            Common.AssertWalletDelta(UserB, 8.33m, 0, 0, 0, 0, 0, 30000, 8.33m, realDate);
-            Common.AssertWalletDelta(CompanyAccount, 12.5m, 0, 0, 0, 0, 0, 30000, 12.5m, realDate);
+            Common.AssertWalletDelta(UserA, 18.06m, 0, 0, 0, 0, 0, 50000, 18.06m, realDate);
+            Common.AssertWalletDelta(UserB, 4.17m, 0, 0, 0, 0, 0, 30000, 4.17m, realDate);
+            Common.AssertWalletDelta(CompanyAccount, 12.49m, 0, 0, 0, 0, 0, 30000, 12.49m, realDate);
         }
 
         [TestMethod]

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -23,12 +25,11 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public ReturnPrinInteReqMsg(int userId, string sum, string subledgerList, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
+        public ReturnPrinInteReqMsg(int projectCode, string sum, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
-            UserId = userId;
+            ProjectCode = projectCode;
             Sum = sum;
             PayType = payType;
-            SubledgerList = subledgerList;
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
 
@@ -40,9 +41,8 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + ProjectCode + Sum  + PayType + SubledgerList + NoticeUrl + MainAccountType + MainAccountCode);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + ProjectCode + Sum  + PayType + SubledgerList + NoticeUrl + MainAccountType + MainAccountCode, SumapayConfig.Key);
         }
 
         public override string GetPostPara()
@@ -52,6 +52,24 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!string.IsNullOrEmpty(MainAccountType)) postStr += $"&mainAccountType={MainAccountType}";
             if (!string.IsNullOrEmpty(MainAccountCode)) postStr += $"&mainAccountCode={MainAccountCode}";
             return postStr;
+        }
+
+        public void SetSubledgerList(List<li_project_transactions> trans)
+        {
+            var subledgerList = new List<object>();
+            trans.ForEach(t =>
+            {
+                subledgerList.Add( 
+                    //投资者收益
+                    new
+                    {
+                        roleType = "0",
+                        roleCode = t.investor.ToString(),
+                        inOrOut = "0",
+                        sum = (t.interest + t.principal).ToString()
+                    });
+            });
+            SubledgerList = JsonHelper.ObjectToJSON(subledgerList);
         }
     }
 }

@@ -222,7 +222,11 @@
                                     <span id="dlgField_InvestAmount"></span>
                                 </li>
                                 <li>
+                                    <%if(!projectModel.IsHuoqiProject())%>
                                     <span>预计收益</span>
+                                    <%else%>
+                                    <span>预计每日收益</span>
+                                    <%/if%>
                                     <span id="dlgField_ProfitPredict"></span>
                                 </li>
                                 <li>

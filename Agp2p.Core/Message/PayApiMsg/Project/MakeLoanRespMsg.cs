@@ -1,4 +1,6 @@
-﻿namespace Agp2p.Core.Message.PayApiMsg
+﻿using Agp2p.Common;
+
+namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
     /// 项目放款响应
@@ -12,7 +14,10 @@
         public bool Collective { get; set; }//集合项目标识
         public bool Sync { get; set; }//同步标识
 
-        public MakeLoanRespMsg(bool collective = false, bool sync = false)
+        public MakeLoanRespMsg()
+        { }
+
+        public MakeLoanRespMsg(bool sync = false, bool collective = false)
         {
             Collective = collective;
             Sync = sync;

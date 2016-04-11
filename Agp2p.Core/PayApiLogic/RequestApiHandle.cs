@@ -13,7 +13,7 @@ namespace Agp2p.Core.PayApiLogic
     /// <summary>
     /// 第三方托管请求消息处理
     /// </summary>
-    internal class RequestApiHandle
+    public class RequestApiHandle
     {
         internal static void DoSubscribe()
         {
@@ -36,31 +36,37 @@ namespace Agp2p.Core.PayApiLogic
                     user_id = msg.UserId,
                     project_id = msg.ProjectCode,
                     api = msg.Api,
-                    status = (int) Agp2pEnums.SumapayRequestEnum.Waiting,
+                    status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
+                    remarks = msg.Remarks,
                     //生成发送报文
                     request_content = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface)
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 //创建交易流水
-                if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.WeRec)
+                switch (requestLog.api)
                 {
-                    //充值
-                    context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
+                    case (int)Agp2pEnums.SumapayApiEnum.WeRec:
+                        //网银充值
+                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
+                        break;
+                    case (int)Agp2pEnums.SumapayApiEnum.WhRec:
+                        //快捷充值
+                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
+                        break;
+                    case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                        //提现
+                        var withdrawReqMsg = (WithdrawReqMsg)msg;
+                        context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
+                            Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
+                        break;
+                        //case (int)Agp2pEnums.SumapayApiEnum.MaBid:
+                        //    //投资
+                        //    var manualBidReqMsg = (ManualBidReqMsg) msg;
+                        //    TransactionFacade.Invest((int)requestLog.user_id, Utils.StrToInt(manualBidReqMsg.ProjectCode, 0), Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);
+                        //    break;
                 }
-                if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.WhRec)
-                {
-                    context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
-                }
-                else if (requestLog.api == (int) Agp2pEnums.SumapayApiEnum.Wdraw)
-                {
-                    //提现
-                    var withdrawReqMsg = (WithdrawReqMsg) msg;
-                    context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
-                        Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
-                }
-
                 context.SubmitChanges();
                 msg.RequestContent = requestLog.request_content;
             }
@@ -104,19 +110,96 @@ namespace Agp2p.Core.PayApiLogic
                     api = msg.Api,
                     status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
-                    //生成发送报文
-                    request_content = msg.GetPostPara()
+                    remarks = msg.Remarks,
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
-                context.SubmitChanges();
+                //创建交易记录
+                switch (requestLog.api)
+                {
+                    //放款请求
+                    case (int)Agp2pEnums.SumapayApiEnum.ALoan:
+                    case (int)Agp2pEnums.SumapayApiEnum.CLoan:
+                        var makeLoanReqMsg = (MakeLoanReqMsg)msg;
+                        var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
+                        if (project != null)
+                        {
+                            decimal loanFee = 0;
+                            decimal bondFee = 0;
+                            if (!project.IsHuoqiProject() && !project.IsNewbieProject())
+                            {
+                                //计算平台服务费
+                                if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
+                                {
+                                    loanFee = (decimal)(project.financing_amount * (project.loan_fee_rate / 100));
+                                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                                    {
+                                        user_id = (int)msg.UserId,
+                                        income = loanFee,
+                                        project_id = project.id,
+                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
+                                        create_time = DateTime.Now,
+                                        remark = $"借款项目'{project.title}'收取平台服务费"
+                                    });
+                                }
+
+                                //计算风险保证金
+                                if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
+                                {
+                                    bondFee = project.financing_amount * (project.bond_fee_rate / 100) ?? 0;
+                                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                                    {
+                                        user_id = (int)msg.UserId,
+                                        income = bondFee,
+                                        project_id = project.id,
+                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
+                                        create_time = DateTime.Now,
+                                        remark = $"借款项目'{project.title}'收取风险保证金"
+                                    });
+                                }
+                            }
+                            makeLoanReqMsg.SetSubledgerList(loanFee, bondFee);
+                        }
+                        break;
+                }
+                //生成发送报文
+                requestLog.request_content = msg.GetPostPara();
                 msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
+                context.SubmitChanges();
             }
             catch (Exception ex)
             {
                 //TODO 返回错误信息
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// 发送本息到账请求
+        /// </summary>
+        /// <param name="projectCode"></param>
+        /// <param name="sum"></param>
+        /// <param name="repayTaskId"></param>
+        /// <param name="isEarlyPay"></param>
+        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay)
+        {
+            var context = new Agp2pDataContext();
+            //计算投资者本息明细
+            var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayTaskId);
+            var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
+            //创建本息到账请求并设置分账列表
+            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(projectCode, sum);
+            returnPrinInteReqMsg.SetSubledgerList(transList);
+            //发送请求
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, ar =>
+            {
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+                returnPrinInteRespMsg.Sync = true;
+                returnPrinInteRespMsg.RepayTaskId = repayTaskId;
+                returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
+            });
         }
     }
 }

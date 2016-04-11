@@ -182,18 +182,24 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的平台账户，更新用户信息
-                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
-                        if (user != null)
+                        //查找对应的项目
+                        var reqMsg = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
+                        if (reqMsg != null)
                         {
-                            user.autoRepay = msg.Cancel;
-                            msg.HasHandle = true;
-                            context.SubmitChanges();
+                            var project = context.li_projects.SingleOrDefault(p => p.id == reqMsg.project_id);
+                            if (project != null)
+                            {
+                                project.autoRepay = !msg.Cancel;
+                                msg.HasHandle = true;
+                                context.SubmitChanges();
+                            }
+                            else
+                            {
+                                msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
+                            }
                         }
                         else
-                        {
-                            msg.Remarks = "没有找到平台账户，UserId：" + msg.UserIdIdentity;
-                        }
+                            msg.Remarks = "没有找到对应的请求，RequestId：" + msg.RequestId;
                     }
                 }
 

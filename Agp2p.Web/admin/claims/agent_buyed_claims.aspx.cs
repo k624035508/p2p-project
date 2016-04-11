@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
@@ -8,15 +9,22 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.claims
 {
+    public class WithdrawClaim
+    {
+        public string OriginalOwner { get; set; }
+        public DateTime? WithdrawTime  { get; set; }
+        public string WithdrawClaimCompleteDay  { get; set; }
+    }
+
     public class BuyedClaim
     {
         public int ClaimId { get; set; }
-        public string OriginalOwner { get; set; }
+        public WithdrawClaim WithdrawClaim { get; set; }
+        public string Number  { get; set; }
         public decimal Principal { get; set; }
         public string ProjectName  { get; set; }
         public string HuoqiInvestor  { get; set; }
         public DateTime? HuoqiInvestTime  { get; set; }
-        public DateTime? WithdrawTime  { get; set; }
         public DateTime? BuyTime  { get; set; }
     }
 
@@ -85,39 +93,66 @@ namespace Agp2p.Web.admin.claims
 
             totalCount = query.Count();
             var thisPageClaims = query.OrderByDescending(c => c.createTime).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
-            rptList.DataSource = thisPageClaims.Select(cl =>
-            {
-                var firstHistoryClaimByAgent = cl.GetFirstHistoryClaimByOwner(selectedAgent);
-                var rootWithdrawClaim = firstHistoryClaimByAgent.Parent;
-                if (cl.agent != null)
-                {
-                    return new BuyedClaim
+
+            var emptyWithdrawClaim = new WithdrawClaim();
+            rptList.DataSource = thisPageClaims.Select(cl => new {firstHistoryClaimByAgent = cl.GetFirstHistoryClaimByOwner(selectedAgent), cl})
+                    .GroupBy(g => g.firstHistoryClaimByAgent, g => g.cl)
+                    .SelectMany(pairs =>
                     {
-                        ClaimId = cl.id,
-                        Principal = cl.principal,
-                        WithdrawTime = rootWithdrawClaim.createTime,
-                        OriginalOwner = rootWithdrawClaim.dt_users.GetFriendlyUserName(),
-                        BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
-                        ProjectName = cl.li_projects.title,
-                        HuoqiInvestor = cl.dt_users.GetFriendlyUserName(),
-                        HuoqiInvestTime = cl.li_project_transactions_invest.create_time
-                    };
-                }
-                return new BuyedClaim
-                {
-                    ClaimId = cl.id,
-                    Principal = cl.principal,
-                    WithdrawTime = rootWithdrawClaim.createTime,
-                    OriginalOwner = rootWithdrawClaim.dt_users.GetFriendlyUserName(),
-                    BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
-                    ProjectName = cl.li_projects.title,
-                };
-            }).Concat(Enumerable.Repeat(new BuyedClaim
-            {
-                ClaimId = 0,
-                OriginalOwner = "总计",
-                Principal = thisPageClaims.Aggregate(0m, (sum, c) => sum + c.principal)
-            }, 1)).ToList();
+                        var firstHistoryClaimByAgent = pairs.Key;
+                        var rootWithdrawClaim = firstHistoryClaimByAgent.Parent;
+                        var buyedClaims = pairs.Select(cl =>
+                        {
+                            if (cl.agent != null)
+                            {
+                                return new BuyedClaim
+                                {
+                                    ClaimId = cl.id,
+                                    WithdrawClaim = emptyWithdrawClaim,
+                                    Number = cl.number,
+                                    Principal = cl.principal,
+                                    BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
+                                    ProjectName = cl.li_projects.title,
+                                    HuoqiInvestor = cl.dt_users.GetFriendlyUserName(),
+                                    HuoqiInvestTime = cl.li_project_transactions_invest.create_time
+                                };
+                            }
+                            return new BuyedClaim
+                            {
+                                ClaimId = cl.id,
+                                WithdrawClaim = emptyWithdrawClaim,
+                                Number = cl.number,
+                                Principal = cl.principal,
+                                BuyTime = firstHistoryClaimByAgent.li_project_transactions_invest.create_time,
+                                ProjectName = cl.li_projects.title,
+                            };
+                        }).ToList();
+                        if (buyedClaims.Any())
+                        {
+                            buyedClaims.First().WithdrawClaim = new WithdrawClaim
+                            {
+                                OriginalOwner = rootWithdrawClaim.dt_users.GetFriendlyUserName(),
+                                WithdrawTime = rootWithdrawClaim.createTime,
+                                WithdrawClaimCompleteDay = rootWithdrawClaim.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd")
+                            };
+                            return buyedClaims.Concat(Enumerable.Repeat(new BuyedClaim
+                            {
+                                ClaimId = 0,
+                                WithdrawClaim = new WithdrawClaim {OriginalOwner = "原债权本金"},
+                                Principal = rootWithdrawClaim.principal,
+                                ProjectName = "已买入活期",
+                                HuoqiInvestor = buyedClaims.Where(c => !string.IsNullOrWhiteSpace(c.HuoqiInvestor)).Aggregate(0m, (sum, c) => sum + c.Principal).ToString("f"),
+                            }, 1));
+                        }
+                        return buyedClaims;
+                    }).Concat(Enumerable.Repeat(new BuyedClaim
+                    {
+                        ClaimId = 0,
+                        WithdrawClaim = new WithdrawClaim {OriginalOwner = "总计"},
+                        Principal = thisPageClaims.Aggregate(0m, (sum, c) => sum + c.principal),
+                        ProjectName = "已买入活期",
+                        HuoqiInvestor = thisPageClaims.Where(c => c.agent != null).Aggregate(0m, (sum, c) => sum + c.principal).ToString("f"),
+                    }, 1)).ToList();
             rptList.DataBind();
 
             //绑定页码

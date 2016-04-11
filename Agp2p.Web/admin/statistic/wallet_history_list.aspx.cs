@@ -215,6 +215,7 @@ namespace Agp2p.Web.admin.statistic
             options.LoadWith<li_wallet_histories>(h => h.li_bank_transactions);
             options.LoadWith<li_wallet_histories>(h => h.li_activity_transactions);
             options.LoadWith<li_project_transactions>(tr => tr.li_projects);
+            options.LoadWith<li_project_transactions>(tr => tr.li_claims_from);
             context.LoadOptions = options;
 
             IQueryable<li_wallet_histories> query = context.li_wallet_histories;
@@ -330,7 +331,7 @@ namespace Agp2p.Web.admin.statistic
                 {
                     var claim = his.li_project_transactions.li_claims_from;
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
-                        projectNameMapper(his), claim == null ? "" : "债权: " + claim.principal.ToString("c"));
+                        projectNameMapper(his), claim == null ? "" : "债权: " + claim.number);
                 }
                 // 查出 还款期数/总期数
                 var term = proj.li_repayment_tasks.SingleOrDefault(t => t.repay_at == his.li_project_transactions.create_time)?.term.ToString() ?? "?";
@@ -340,6 +341,17 @@ namespace Agp2p.Web.admin.statistic
             }
             if (his.li_bank_transactions != null)
             {
+                if (his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan)
+                {
+                    var projectId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    return $"关联项目：{context.li_projects.Single(p => p.id == projectId).title}";
+                }
+                if (his.li_bank_transactions.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay)
+                {
+                    var repaymentTaskId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    var task = context.li_repayment_tasks.Single(p => p.id == repaymentTaskId);
+                    return $"关联还款计划：{task.li_projects.title} 第 {task.term} 期";
+                }
                 return his.li_bank_transactions.remarks;
             }
             return his.li_activity_transactions != null ? his.li_activity_transactions.remarks : "";

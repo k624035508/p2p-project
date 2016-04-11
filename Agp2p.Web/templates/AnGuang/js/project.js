@@ -50,17 +50,19 @@ $(function () {
         var $investBtn = $("button.investing-btn");
         var projectId = $investBtn.data()["projectId"];
         var buyClaimId = $investBtn.data()["buyClaimId"];
+        var projectSum = $investBtn.data()["projectSum"];
+        var projectDescription = $investBtn.data()["projectDescription"];
         $investBtn.click(function () {
             var investBtnData = $investBtn.data();
-            var hasPayPassword = investBtnData["hasPayPassword"] == "True";
             var hasIdentification = investBtnData["hasIdentification"] == "True";
+            /*var hasPayPassword = investBtnData["hasPayPassword"] == "True";
             if (!hasPayPassword) {
                 confirm("您需要先设置交易密码，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 });
                 return;
-            }
+            }*/
             if (!hasIdentification) {
                 confirm("您需要先进行身份认证，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
@@ -103,11 +105,11 @@ $(function () {
 
         // 进行投资操作
         $("button.confirm-btn").click(function () {
-        	var transactPassword = $("div.pswInput input[type=password]").val();
+        	/*var transactPassword = $("div.pswInput input[type=password]").val();
         	if (transactPassword == "") {
         		alert("请先填写支付密码");
         		return;
-        	}
+        	}*/
         	if (!$("div.agreement input[type=checkbox]")[0].checked) {
         		alert("请先同意投资协议");
         		return;
@@ -117,14 +119,14 @@ $(function () {
         		type: "post",
         		dataType: "json",
         		url: "/tools/submit_ajax.ashx?action=invest_project",
-        		data: {investingAmount: investAmount, projectId, buyClaimId, transactPassword: transactPassword},
+        		data: {investingAmount: investAmount, projectId, buyClaimId, projectSum: projectSum, projectDescription: projectDescription},
         		timeout: 10000,
         		success: function(result) {
-        			alert(result.msg, () => {
-                        if (result.status == 1) {
-                            location.reload();
-                        }
-                    });
+        		    if (result.status == 0) {
+		                alert(result.msg);
+		            } else {
+        		        location.href = result.url;
+		            }
         		}.bind(this),
         		error: function(xhr, status, err) {
         			alert("操作失败，请重试");

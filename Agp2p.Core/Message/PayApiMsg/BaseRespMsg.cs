@@ -4,14 +4,13 @@ using Agp2p.Common;
 using Agp2p.Core.PayApiLogic;
 using Agp2p.Linq2SQL;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
     public class BaseRespMsg : ITinyMessage
     {
         public int? UserIdIdentity { get; set; }
-        public string ProjectCode { get; set; }
+        public int ProjectCode { get; set; }
         public string RequestId { get; set; }
         public string Result { get; set; }
         public string ResponseContent { get; set; }
@@ -45,7 +44,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         {
             if (!Signature.Equals(SumaPayUtils.GenSign(paras, SumapayConfig.Key)))
             {
-                Remarks = "数字签名验证不通过;";
+                Remarks += "数字签名验证不通过;";
                 return false;
             }
             return true;
@@ -56,7 +55,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!Result.Equals("00000"))
             {
                 //TODO 根据结果编码记录失败原因
-                Remarks = "xx";
+                Remarks += Result;
                 return false;
             }
             return true;

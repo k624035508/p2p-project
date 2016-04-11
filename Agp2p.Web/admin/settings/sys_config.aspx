@@ -535,6 +535,13 @@
         </dd>
     </dl>
     <dl>
+        <dt>借款人还款时间</dt>
+        <dd>
+            <asp:TextBox ID="txtLoanerRepayTime" runat="server" CssClass="input txt" datatype="/^\d{1,2}:\d{2}:\d{2}$/" sucmsg=" " />
+            <span class="Validform_checktip">*格式（24小时制）</span>
+        </dd>
+    </dl>
+    <dl>
         <dt>是否启用自动任务</dt>
         <dd>
             <div class="rule-single-checkbox">

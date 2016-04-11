@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="{projectModel.seo_keywords}" name="keywords" />
     <meta content="{projectModel.seo_description}" name="description"/>
-    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? Investable.Title : projectModel.seo_title%></title>
+    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? projectModel.title : projectModel.seo_title%></title>
     <!--[if lt IE 9]>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
     <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
@@ -33,32 +33,32 @@
 <!--标书样式-->
 <div class="tender-content">
     <div class="invest-control pull-right">
-        <%if(Investable.Status!=Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+        <%if(projectModel.status!=(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
         <div><span class="title-mark">可投金额</span></div>
         <%else%>
         <div><span class="title-mark">剩余金额</span></div>
         <%/if%>
         <div class="investable-amount-wrap">
-            <div class="investable-amount">{Investable.InvestmentBalance}</div>
-            <%if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingSuccess)%>
+            <div class="investable-amount">{investmentBalance}</div>
+            <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess)%>
             <!--满标，审核中-->
             <div class="account-balance-empty">
                 <div class="tips" style="text-align: center">已满标</div>
                 <button type="button" class="btn-common empty-btn" disabled>审 核 中</button>
             </div>
-            <%else if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <%else if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
             <!--到期未满标，审核中-->
             <div class="account-balance-empty">
                 <div class="tips" style="text-align: center">已过期</div>
                 <button type="button" class="btn-common empty-btn" disabled>审 核 中</button>
             </div>
-            <%else if(Investable.Status>Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <%else if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
             <!--满标-->
             <div class="account-balance-empty">
-                <div class="tips">已经有{Investable.InvesterCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
+                <div class="tips">已经有{invsetorCount}名聪明的投资者投资此项目,敬请关注安广融合其他项目！</div>
                 <button type="button" class="btn-common empty-btn" disabled>抢 光 了</button>
             </div>
-            <%else if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingFail)%>
+            <%else if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.FinancingFail)%>
             <!--流标-->
             <div class="account-balance-empty">
                 <div class="tips">项目已流标，已投资款项已退回</div>
@@ -78,12 +78,11 @@
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
-                <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> />
+                <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> />
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}" data-has-identification="{HasIdentification()}"
-                        data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
-                        data-project-id="{projectModel.id}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
+                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}">投 资</button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
@@ -95,25 +94,23 @@
                         </div>
                         <div class="modal-body">
                             <ul class="list-unstyled">
-                                <li><span>项目标题：</span><span><%=Investable.Title%></span></li>
-                                <%if(projectModel.IsNewbieProject())%>
+                                <li><span>项目标题：</span><span>{projectModel.title}</span></li>
+                                <%if(projectModel.dt_article_category.call_index=="newbie")%>
                                 <li><span>年利率：</span><span class="rate">--</span></li>
                                 <%else%>
                                 <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", projectModel.profit_rate_year)%></span></li>
                                 <%/if%>
-                                <%if(!projectModel.IsHuoqiProject())%>
                                 <li><span>还款期限：</span><span>{projectModel.repayment_term_span_count}<%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></li>
-                                <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
                                 <li><span>保障方式：</span><span>本金 + 利息</span></li>
                             </ul>
                         </div>
                         <div class="profit-wrap"><span>预期收益：</span><span class="profit">0.00</span></div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>
+                        <!--<div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>-->
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意
-                            <%if(!projectModel.IsNewbieProject())%>
+                            <%if(projectModel.dt_article_category.call_index!="newbie")%>
                             </label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a> <span>和 
                             <%/if%>
                             <a href="<%templateskin%>/risk-tips.html" target="_blank">《风险说明书》</a></span>
@@ -136,8 +133,8 @@
     </div>
     <div class="tender-face">
         <div class="invest-title">
-            <span class="invest-style-tab">{Investable.CategoryName}</span>
-            <span>{Investable.Title}</span>
+            <span class="invest-style-tab">{projectModel.dt_article_category.title}</span>
+            <span>{projectModel.title}</span>
             
             <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
             <span class="invest-list-icon yue-icon"></span>
@@ -148,29 +145,20 @@
             <%if((projectModel.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
             <span class="invest-list-icon xin-icon"></span>
             <%/if%>
-            <%if (projectModel.IsHuoqiProject()) %>
-            <span class="invest-plus">+0.2%</span>
-            <%/if%>
         </div>
         <div class="invest-rules">
             <div class="sum">
-                <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
+                <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目金额":"借款金额"%></div>
                 <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
             </div>
             <div class="deadline">
                 <div>期限</div>
-                <%if(projectModel.IsHuoqiProject())%>
-                <div class="rules-style">活期</div>
-                <%else%>
                 <div class="rules-style">{projectModel.repayment_term_span_count}<span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></div>
-                <%/if%>
             </div>
             <div class="apr">
-                <div><%=projectModel.IsNewbieProject()?"项目收益":"年化利率"%></div>
-                <%if(projectModel.IsNewbieProject())%>
+                <div><%=projectModel.dt_article_category.call_index=="newbie"?"项目收益":"年化利率"%></div>
+                <%if(projectModel.dt_article_category.call_index=="newbie")%>
                 <div class="rules-style">10<span> 元</span></div>
-                <%else if(projectModel.IsHuoqiProject())%>
-                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span>+0.2<span> %</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
                 <%/if%>
@@ -180,53 +168,63 @@
             <div class="repayment-way">
                 <table>
                     <tbody>
-                        <%if (projectModel.IsHuoqiProject()) %>
-                        <tr><td>收益起始日</td><td colspan="2">T+1（自然日）</td></tr>
-                        <tr><td>投标人数</td><td colspan="2">{Investable.InvesterCount}人</td></tr>
+                        <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
+                        <tr><td>投标人数</td><td colspan="2">{invsetorCount}人</td></tr>
                         <tr>
                             <td>投标进度</td>
                             <td>
                                 <div class="progress progress-custom">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(Investable.InvestmentProgress*100)%>'
-                                         aria-valuemin="0" aria-valuemax="100" style='width: <%=Investable.InvestmentProgress.ToString("p1")%>'>
+                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(projectModel.GetInvestmentProgressPercent()*100)%>'
+                                         aria-valuemin="0" aria-valuemax="100" style='width: <%=projectModel.GetInvestmentProgressPercent().ToString("p1")%>'>
                                     </div>
                                 </div>
                             </td>
-                            <td><%=Investable.InvestmentProgress.ToString("p1")%></td>
+                            <td><%=projectModel.GetInvestmentProgressPercent().ToString("p1")%></td>
                         </tr>
-                        
-                        <%else%>
-                        <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
-                        <tr><td>投标人数</td><td colspan="2">{Investable.InvesterCount}人</td></tr>
-                        <tr><td>投标进度</td><td><div class="progress progress-custom">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow='<%=(Investable.InvestmentProgress*100)%>'
-                                 aria-valuemin="0" aria-valuemax="100" style='width: <%=Investable.InvestmentProgress.ToString("p1")%>'>
-                            </div>
-                        </div></td><td><%=Investable.InvestmentProgress.ToString("p1")%></td></tr>
-                        <%/if%>
                     </tbody>
                 </table>
             </div>
-            <div class="interest-way">
+            <!--  <div class="interest-way">
+              <table>
+                <tbody>
+                      <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
+                      <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+                      <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                      <%else%>
+                      <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
+                      <%/if%>
+                      <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                      <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
+                      <%/if%>
+                  </tbody>
+                  </table>
+              </div>
+               -->
+            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <div class="interest-way" style="padding-top:10px ;height:90px ;background:url('<%templateskin%>/imgs/index/manbiao.jpg') no-repeat 150px -25px; ">
                 <table>
                     <tbody>
-                        <%if(projectModel.IsHuoqiProject())%>
-                        <tr><td>每人购买限额</td><td>50000.0元</td></tr>
-                        <tr><td>每人提取限额</td><td>20000.0元</td></tr>
-                        <%else%>
-                        <tr><td>计息方式</td><td><%=projectModel.IsNewbieProject()?"投标后立即计息":"满标当天，立即计息"%></td></tr>
-                        <%if(Investable.Status>Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+                        <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
                         <tr><td>满标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
-                        <%else%>
-                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
-                        <%/if%>
                         <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
                         <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
                         <%/if%>
+                    </tbody>
+                </table>
+            </div>
+            <%else%>
+            <div class="interest-way">
+                <table>
+                    <tbody>
+                        <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
+                        <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.invest_complete_time)%></td></tr>
+                        <%if(projectModel.status==(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                        <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
                         <%/if%>
                     </tbody>
                 </table>
             </div>
+            <%/if%>
         </div>
     </div>
     
@@ -237,12 +235,8 @@
 <%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
-        <%if(projectModel.IsNewbieProject())%>
+        <%if(projectModel.dt_article_category.call_index=="newbie")%>
         <%template src="_new_hand.html"%>
-        <%template src="_invest_record.html"%>
-        <%else if(projectModel.IsHuoqiProject())%>
-
-        <%template src="_project_intro.html"%>
         <%template src="_invest_record.html"%>
         <%else%>
         <%template src="_project_intro.html"%>

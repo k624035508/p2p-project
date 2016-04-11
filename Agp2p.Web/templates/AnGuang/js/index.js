@@ -15,7 +15,6 @@ $(function () {
     header.setHeaderHighlight(0);
    //计算器初始化
     $('[data-toggle="popover"]').popover();
-
    
     $(".project-content").hover(function(){
 
@@ -26,34 +25,29 @@ $(function () {
         });
     
 
- 
-            var prog=$("div.progress-bar");       
-            var changdu1=prog.parent().width();
-            var changdu2=parseInt(prog.eq(0).html())/100;     
-            prog.eq(0).width(changdu2*changdu1); 
-            var progresswidth=prog.eq(0).offset().top;
-       
-        $(window).scroll(function(){
-           
+    var prog=$("div.progress-bar");
+    var changdu1=prog.parent().width();
+    for(var i=0;i<5;i++){
+        var changdu2=parseInt(prog.eq(i).html())/100; 
+        var progoffset=prog.eq(i).offset().top;
+        if(progoffset<810){
+            prog.eq(i).width(changdu2*changdu1); 
+        }
+    }
+        $(window).scroll(function(){      
             var windowtop = $(window).scrollTop();
             if(windowtop>99 && windowtop<1040){        
-   
                 for(var i=1;i<5;i++){
                     var changdu2=parseInt(prog.eq(i).html())/100;              
                     prog.eq(i).width(changdu2*changdu1);        
                 }      
-
-            }
-                
-            if(windowtop>490){
-    
+            }                
+            if(windowtop>490){ 
                 for(var i=5;i<(prog.length);i++){
                     var changdu2=parseInt(prog.eq(i).html())/100;              
                     prog.eq(i).width(changdu2*changdu1);        
                 }
-            }
-         
-            
+            }                    
         });
        
 

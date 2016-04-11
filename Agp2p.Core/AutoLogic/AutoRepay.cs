@@ -8,6 +8,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using System.Web.UI.WebControls;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.PayApiLogic;
 using Agp2p.Model;
 
 namespace Agp2p.Core.AutoLogic
@@ -21,13 +22,71 @@ namespace Agp2p.Core.AutoLogic
 
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<TimerMsg>(m => CheckStaticProjectWithdrawOvertime(m.OnTime)); // 检查定期项目债权转让是否超时
-            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
-            MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.OnTime)); // 每日定时还款
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoGainLoanerRepayment(m.TimerType, m.OnTime)); // 回款前取得借款人还的款
+
+            MessageBus.Main.Subscribe<TimerMsg>(m => CheckStaticProjectWithdrawOvertime(m.TimerType, m.OnTime)); // 检查定期项目债权转让是否超时
+            MessageBus.Main.Subscribe<TimerMsg>(m => GenerateHuoqiRepaymentTask(m.TimerType, m.OnTime)); // 每日定时生成活期项目的还款计划（注意：这个任务需要放在每日定时还款任务之前）
+            MessageBus.Main.Subscribe<TimerMsg>(m => DoRepay(m.TimerType, m.OnTime)); // 每日定时还款
         }
 
-        public static void CheckStaticProjectWithdrawOvertime(bool onTime)
+        public static void DoGainLoanerRepayment(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.LoanerRepayTimer) return;
+
+            // 找出今天需要回款，并且没有收取还款的计划
+            var context = new Agp2pDataContext();
+            var shouldRepayTask = context.li_repayment_tasks.Where(t =>
+                    t.li_projects.li_risks.li_loaners != null &&
+                    t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
+                    t.should_repay_time.Date <= DateTime.Today)
+                .AsEnumerable()
+                .Where(t => !t.li_projects.IsHuoqiProject() && !t.li_projects.IsNewbieProject())
+                .Where(t =>
+                {
+                    var loaner = t.li_projects.li_risks.li_loaners;
+                    return !loaner.dt_users.li_bank_transactions.Any(
+                        btr =>
+                            btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay &&
+                            btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm && btr.remarks == t.id.ToString());
+                })
+                .ToList();
+            if (!shouldRepayTask.Any()) return;
+
+            shouldRepayTask.ForEach(t =>
+            {
+                var loaner = t.li_projects.li_risks.li_loaners;
+                try
+                {
+                    if (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay)
+                    {
+                        //创建自动还款托管接口请求
+                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
+                        autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
+                        //发送请求
+                        MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
+                        {
+                            //处理请求同步返回结果
+                            var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
+                            repayRespMsg.AutoRepay = true;
+                            MessageBus.Main.Publish(repayRespMsg);
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    context.AppendAdminLog("GainLoanerRepayment",
+                        ex.Message == "借款人的余额不足"
+                            ? $"借款人 {loaner.dt_users.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
+                            : ex.GetSimpleCrashInfo());
+                }
+            });
+            context.SubmitChanges();
+        }
+
+        public static void CheckStaticProjectWithdrawOvertime(TimerMsg.Type timerType, bool onTime)
+        {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             // 申请时间超过 2 日 / 到达还款日，则取消债权转让申请
             var withdrawOvertimeClaims = context.li_claims
@@ -49,8 +108,10 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        public static void GenerateHuoqiRepaymentTask(bool onTime)
+        public static void GenerateHuoqiRepaymentTask(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
+
             var context = new Agp2pDataContext();
             var today = DateTime.Today;
 
@@ -74,7 +135,7 @@ namespace Agp2p.Core.AutoLogic
                     {
                         should_repay_time = today.AddHours(15),
                         repay_principal = 0,
-                        repay_interest = Math.Round(1m/365*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal), 2),
+                        repay_interest = Math.Round(1m/TransactionFacade.HuoqiProjectProfitingDay*p.profit_rate_year/100*shouldRepayTo.Sum(c => c.principal), 2),
                         project = p.id,
                         status = (byte) Agp2pEnums.RepaymentStatusEnum.Unpaid,
                         term = (short) ((p.li_repayment_tasks.LastOrDefault()?.term ?? 0) + 1)
@@ -91,8 +152,9 @@ namespace Agp2p.Core.AutoLogic
             context.SubmitChanges();
         }
 
-        public static void DoRepay(bool onTime)
+        public static void DoRepay(TimerMsg.Type timerType, bool onTime)
         {
+            if (timerType != TimerMsg.Type.AutoRepayTimer) return;
             if (ConfigLoader.loadSiteConfig().enableAutoRepay == 0) return;
 
             var context = new Agp2pDataContext();
@@ -107,10 +169,9 @@ namespace Agp2p.Core.AutoLogic
             // 优先进行特殊项目的回款
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
-                //调用托管本息到账接口,在本息到账异步响应中执行还款计划 TODO 个人本息明细写在分账列表字段中
-                //MessageBus.Main.PublishAsync(new ReturnPrinInteReqMsg(ta.li_projects.li_risks.li_loaners.user_id, (ta.repay_principal + ta.repay_interest).ToString("N"), "分账列表"));
-
-                context.ExecuteRepaymentTask(ta.id);
+                //TODO 特殊项目回款处理
+                //调用托管本息到账接口,在本息到账异步响应中执行还款计划
+                RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false);
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);

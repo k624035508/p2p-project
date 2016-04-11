@@ -25,6 +25,10 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public bool Sync { get; set; }
 
+        public WithdrawRespMsg()
+        {
+        }
+
         public WithdrawRespMsg(string requestStr, bool sync = false)
         {
             Sync = sync;

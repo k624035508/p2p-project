@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Agp2p.Common;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -11,7 +11,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class AutoRepayCancelReqMsg : FrontEndReqMsg
     {
-        public AutoRepayCancelReqMsg(int userId, string projectCode)
+        public AutoRepayCancelReqMsg(int userId, int projectCode)
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -34,7 +34,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},

@@ -85,7 +85,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             case (int) Agp2pEnums.SumapayApiEnum.McBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AmBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AcBid:
-                                respMsg = BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
+                                respMsg = isSync ? new BidRespMsg(reqStr) : BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
                                 break;
                             //个人撤标 普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.CaPro:
@@ -108,18 +108,18 @@ namespace Agp2p.Web.api.payment.sumapay
                             //个人存管账户还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.McRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 break;
                             //个人协议还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.BaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.BcRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 ((RepayRespMsg) respMsg).BankRepay = true;
                                 break;
                             //个人自动还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.AcRep:
                             case (int) Agp2pEnums.SumapayApiEnum.AbRep:
-                                respMsg = BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
                                 ((RepayRespMsg) respMsg).AutoRepay = true;
                                 break;
                             //普通/集合项目本息到账
@@ -140,16 +140,16 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                         }
 
-                        if (isSync)
-                        {
-                            //发送响应消息同步处理
-                            MessageBus.Main.Publish(respMsg);
-                            UpdateLog(respMsg);
-                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                            context.SubmitChanges();
-                        }
-                        else
-                        {
+                        //if (isSync)
+                        //{
+                        //    //发送响应消息同步处理
+                        //    MessageBus.Main.Publish(respMsg);
+                        //    UpdateLog(respMsg);
+                        //    context.li_pay_response_log.InsertOnSubmit(ResponseLog);
+                        //    context.SubmitChanges();
+                        //}
+                        //else
+                        //{
                             //发送响应消息异步处理
                             MessageBus.Main.PublishAsync(respMsg, s =>
                             {
@@ -157,7 +157,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                                 context.SubmitChanges();
                             });
-                        }
+                        //}
                     }
                 }
                 else

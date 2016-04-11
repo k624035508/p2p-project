@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Web;
 using Agp2p.Common;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -23,9 +25,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public BankRepayReqMsg(int userId, string sum, string payType, string projectDescription, string giftFlag, string subledgerList, bool collective = false)
+        public BankRepayReqMsg(int userId, int projectCode, string sum, bool collective = false, string projectDescription = "", string payType = "2", string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
+            ProjectCode = projectCode;
             Sum = sum;
             PayType = payType;
             SubledgerList = subledgerList;
@@ -35,17 +38,13 @@ namespace Agp2p.Core.Message.PayApiMsg
             ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
-
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  + PayType +
-                SuccessReturnUrl + FailReturnUrl);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + Sum  + PayType +
+                SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -55,15 +54,15 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode ", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"sum", Sum},
-                {"payType ", PayType},
+                {"payType", PayType},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},
                 {"signature", GetSignature()}
             };
-            if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription ", ProjectDescription);
+            if (!string.IsNullOrEmpty(ProjectDescription)) sd.Add("projectDescription ", HttpUtility.UrlEncode(ProjectDescription, Encoding.GetEncoding("GBK")));
             if (!string.IsNullOrEmpty(GiftFlag)) sd.Add("giftFlag", GiftFlag);
             if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("subledgerList", SubledgerList);
 

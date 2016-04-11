@@ -4,6 +4,8 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
+using Agp2p.Core;
+using Newtonsoft.Json;
 
 namespace Agp2p.Core.PayApiLogic
 {
@@ -31,25 +33,25 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
-                        var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                        if (trans != null)
-                        {
-                            //TODO 检查用户资金信息
-                            TransactionFacade.Invest(trans.investor, trans.project, trans.interest.GetValueOrDefault(0));
-                            msg.HasHandle = true;
-                        }
-                        else
-                        {
-                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
-                        }
+                        //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        //if (trans != null)
+                        //{
+                        //TODO 检查用户资金信息
+                        TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode, Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                        msg.HasHandle = true;
+                        //}
+                        //else
+                        //{
+                        //    msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                        //}
                     }
                 }
             }
@@ -67,11 +69,11 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的原交易流水
@@ -102,15 +104,15 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             context.ProjectFinancingFail(pro.id);
@@ -137,20 +139,22 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
-                            if (!msg.Sync)
+                            //TODO 正式后改为异步返回才放款
+                            if (msg.Sync)
                             {
-                                context.StartRepayment(pro.id);
+                                //开始还款，包括向借款人放款
+                                context.StartRepayment(msg.ProjectCode);
                                 msg.HasHandle = true;
                             }
                         }
@@ -175,27 +179,43 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
-                            //TODO 还款
+                            var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
+                            if (req != null)
+                            {
+                                if (!string.IsNullOrEmpty(req.remarks))
+                                {
+                                    var dic = Utils.UrlParamToData(req.remarks);
+                                    int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                    //生成还款记录
+                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                    //如果是手动还款立刻发送本息到账请求
+                                    if (!msg.AutoRepay)
+                                    {
+                                        RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                            Utils.StrToBool(dic["isEarly"], false));
+                                    }
+                                    msg.HasHandle = true;
+                                }
+                                else
+                                    msg.Remarks = "请求没有包含还款计划信息！";
 
-
-                            context.SubmitChanges();
-                            msg.HasHandle = true;
+                            }
+                            else
+                                msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
                         }
                         else
-                        {
                             msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
-                        }
                     }
                 }
             }
@@ -213,37 +233,18 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
-                        if (pro != null)
-                        {
-                            //找出项目对应的当日还款计划
-                            var shouldRepayTask = context.li_repayment_tasks.SingleOrDefault(t =>
-                                                        t.project == pro.id &&
-                                                        t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid &&
-                                                        t.should_repay_time.Date == DateTime.Today);
-                            if (shouldRepayTask != null)
-                            {
-                                context.ExecuteRepaymentTask(shouldRepayTask.id);
-                                msg.HasHandle = true;
-                            }
-                            else
-                            {
-                                msg.Remarks = "没有找到项目当天的还款计划，项目编号为：" + msg.ProjectCode;
-                            }
-                            
-                        }
+                        if (!msg.IsEarlyPay)
+                            context.ExecuteRepaymentTask(msg.RepayTaskId);
                         else
-                        {
-                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
-                        }
+                            context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                        msg.HasHandle = true;
                     }
                 }
             }
@@ -261,15 +262,15 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查签名
-                if (msg.CheckSignature())
+                //检查请求处理结果
+                if (msg.CheckResult())
                 {
-                    //检查请求处理结果
-                    if (msg.CheckResult())
+                    //检查签名
+                    if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的债权
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             //TODO 债权转让

@@ -13,7 +13,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P7 测试流程：
+        P7 测试流程：（测试月度项目的活期还款）
             Day 1
                 发活期标
                 发 2 月标，金额 50000，B 投 50000 放款；B 提现 50000；公司账号接手 50000
@@ -23,7 +23,7 @@ namespace Agp2p.Test
                 回款
         */
 
-        private readonly DateTime TestStartAt = new DateTime(2016, 03, 23, 8, 20, 00);/* 开始测试前请设置好实际日期 */
+        private readonly DateTime TestStartAt = new DateTime(2016, 4, 7, 8, 20, 00);/* 开始测试前请设置好实际日期 */
         private static int _totalDays;
 
         [ClassInitialize]
@@ -47,7 +47,7 @@ namespace Agp2p.Test
             // 发活期标
             Common.PublishHuoqiProject("HP1");
 
-            // 发 6 日标，金额 50000，B 投 50000，放款
+            // 发 2 月标，金额 50000，B 投 50000，放款
             Common.PublishMonthlyProject("P7", 2, 50000, 5);
             Common.InvestProject(UserB, "P7", 50000);
             Common.ProjectStartRepay("P7");
@@ -83,9 +83,9 @@ namespace Agp2p.Test
 
             // 回款，总数应为 417.81
 
-            Common.AssertWalletDelta(UserA, 162.6m, 0, 0, 0, 0, 0, 30000, 162.6m, TestStartAt);
+            Common.AssertWalletDelta(UserA, 165m, 0, 0, 0, 0, 0, 30000, 165m, TestStartAt);
             Common.AssertWalletDelta(UserB, 0, 0, 0, 0, 0, 0, 50000, 0m, TestStartAt);
-            Common.AssertWalletDelta(CompanyAccount, 255.21m, 0, 0, 0, 0, 0, 50000, 417.81m, TestStartAt);
+            Common.AssertWalletDelta(CompanyAccount, 252.81m, 0, 0, 0, 0, 0, 50000, 417.81m, TestStartAt);
         }
 
         [TestMethod]

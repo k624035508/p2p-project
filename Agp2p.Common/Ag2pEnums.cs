@@ -217,6 +217,12 @@ namespace Agp2p.Common
             Charge = 1,
             [Description("提现")]
             Withdraw = 2,
+
+            // 借款人相关
+            [Description("向借款人放款")]
+            LoanerMakeLoan = 10,
+            [Description("收取借款人还款")]
+            GainLoanerRepay = 11,
         }
 
         /// <summary>
@@ -287,7 +293,7 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectTransactionTypeEnum
         {
-            // 线上（关联投资者）
+            // 投资者 相关
             [Description("投标")]
             Invest = 1,
             [Description("返还给投资者")]
@@ -408,10 +414,22 @@ namespace Agp2p.Common
             GainCancel = 44,
             [Description("取消扣取金钱")]
             LostCancel = 45,
+
+            // 借款人相关
+            [Description("向借款人放款成功")]
+            LoanerMakeLoanSuccess = 50,
+            [Description("收取借款人还款成功")]
+            LoanerRepaySuccess = 51,
         }
 
         public enum OfflineTransactionTypeEnum
         {
+            // 预计收入
+            [Description("预计平台服务费")]
+            SumManagementFeeOfLoanning = 1,
+            [Description("预计风险保证金")]
+            SumBondFee = 2,
+
             // 收入
             [Description("平台服务费")]
             ManagementFeeOfLoanning = 10,
@@ -419,6 +437,8 @@ namespace Agp2p.Common
             ManagementFeeOfOverTime = 11,
             [Description("风险保证金")]
             BondFee = 12,
+            [Description("债权转让管理费")]
+            StaticClaimTransfer = 13,
 
             // 支出
             [Description("充值手续费")]
