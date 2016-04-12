@@ -2154,16 +2154,14 @@ namespace Agp2p.Web.tools
 
                 if (buyClaimId != 0)
                 {
-                    //TODO 发起债权转让托管请求
-
-
-                    //TransactionFacade.BuyClaim(linqContext, buyClaimId, user.id, investingAmount);
-                    //context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                           + "&userId=" + user.id + "&projectCode=" + projectId + "&assignmentSum=" + projectSum
+                                           + "&undertakeSum=" + investingAmount + "&projectDescription=" + projectDescription + "\"}");
                 }
                 else
                 {
                     //TODO 判断活期项目
-                    int reqApi = true ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
+                    int reqApi = false ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                            + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
                                            + "&projectSum=" + projectSum + "&projectDescription=" +

@@ -38,9 +38,7 @@ namespace Agp2p.Core.PayApiLogic
                     api = msg.Api,
                     status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
                     request_time = DateTime.Now,
-                    remarks = msg.Remarks,
-                    //生成发送报文
-                    request_content = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface)
+                    remarks = msg.Remarks
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
@@ -63,15 +61,15 @@ namespace Agp2p.Core.PayApiLogic
                         break;
                     //债权转让
                     case (int)Agp2pEnums.SumapayApiEnum.CreAs:
-                        var creditAssignmentReqMsg = (CreditAssignmentReqMsg) msg;
-                        //通过债权找出对应的投资记录
-                        var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
+                        var creditAssignmentReqMsg = (CreditAssignmentReqMsg)msg;
                         //计算手续费
                         var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw / 100;
                         var finalCost = Math.Round(Utils.StrToDecimal(creditAssignmentReqMsg.AssignmentSum, 0) * staticWithdrawCostPercent, 2);
-
-
-
+                        creditAssignmentReqMsg.SetSubledgerList(finalCost);
+                        //通过债权找出对应的投资记录
+                        var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
+                        creditAssignmentReqMsg.OriginalOrderSum = claim.li_project_transactions_invest.principal.ToString("f");
+                        creditAssignmentReqMsg.OriginalRequestId = claim.li_project_transactions_invest.no_order;
                         break;
 
                         //case (int)Agp2pEnums.SumapayApiEnum.MaBid:
@@ -80,8 +78,10 @@ namespace Agp2p.Core.PayApiLogic
                         //    TransactionFacade.Invest((int)requestLog.user_id, Utils.StrToInt(manualBidReqMsg.ProjectCode, 0), Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);
                         //    break;
                 }
+                //生成发送报文
+                msg.RequestContent = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface);
+                requestLog.request_content = msg.RequestContent;
                 context.SubmitChanges();
-                msg.RequestContent = requestLog.request_content;
             }
             catch (Exception ex)
             {
@@ -135,41 +135,43 @@ namespace Agp2p.Core.PayApiLogic
                     case (int)Agp2pEnums.SumapayApiEnum.CLoan:
                         var makeLoanReqMsg = (MakeLoanReqMsg)msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
-                        if (project != null)
+                        //非活期和新手标项目，以及没有生成过服务费
+                        if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject() 
+                            && !context.li_company_inoutcome.Any(c => c.project_id == project.id 
+                            && (c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning
+                            || (c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee))))
                         {
                             decimal loanFee = 0;
                             decimal bondFee = 0;
-                            if (!project.IsHuoqiProject() && !project.IsNewbieProject())
-                            {
-                                //计算平台服务费
-                                if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
-                                {
-                                    loanFee = (decimal)(project.financing_amount * (project.loan_fee_rate / 100));
-                                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                                    {
-                                        user_id = (int)msg.UserId,
-                                        income = loanFee,
-                                        project_id = project.id,
-                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
-                                        create_time = DateTime.Now,
-                                        remark = $"借款项目'{project.title}'收取平台服务费"
-                                    });
-                                }
 
-                                //计算风险保证金
-                                if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
+                            //计算平台服务费
+                            if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
+                            {
+                                loanFee = (decimal)(project.financing_amount * (project.loan_fee_rate / 100));
+                                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                                 {
-                                    bondFee = project.financing_amount * (project.bond_fee_rate / 100) ?? 0;
-                                    context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                                    {
-                                        user_id = (int)msg.UserId,
-                                        income = bondFee,
-                                        project_id = project.id,
-                                        type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
-                                        create_time = DateTime.Now,
-                                        remark = $"借款项目'{project.title}'收取风险保证金"
-                                    });
-                                }
+                                    user_id = (int)msg.UserId,
+                                    income = loanFee,
+                                    project_id = project.id,
+                                    type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
+                                    create_time = DateTime.Now,
+                                    remark = $"借款项目'{project.title}'收取平台服务费"
+                                });
+                            }
+
+                            //计算风险保证金
+                            if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
+                            {
+                                bondFee = project.financing_amount * (project.bond_fee_rate / 100) ?? 0;
+                                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
+                                {
+                                    user_id = (int)msg.UserId,
+                                    income = bondFee,
+                                    project_id = project.id,
+                                    type = (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
+                                    create_time = DateTime.Now,
+                                    remark = $"借款项目'{project.title}'收取风险保证金"
+                                });
                             }
                             makeLoanReqMsg.SetSubledgerList(loanFee, bondFee);
                         }

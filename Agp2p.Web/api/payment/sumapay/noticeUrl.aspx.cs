@@ -129,7 +129,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                             //债权转让
                             case (int) Agp2pEnums.SumapayApiEnum.CreAs:
-                                respMsg = BaseRespMsg.NewInstance<CreditAssignmentRespMsg>(reqStr);
+                                respMsg = isSync ? new CreditAssignmentRespMsg(reqStr) : BaseRespMsg.NewInstance<CreditAssignmentRespMsg>(reqStr);
                                 break;
                             //付款到个人
                             case (int) Agp2pEnums.SumapayApiEnum.TranU:
