@@ -273,8 +273,6 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(p => p.no_order == msg.OriginalRequestId);
                         if (trans != null)
                         {
-                            //TODO 债权转让
-
                             TransactionFacade.BuyClaim(context, trans.li_claims_invested.First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).id, (int) msg.UserIdIdentity,
                                 Utils.StrToDecimal(msg.AssignmentSum, 0));
                             msg.HasHandle = true;

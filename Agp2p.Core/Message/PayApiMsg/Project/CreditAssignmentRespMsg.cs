@@ -23,7 +23,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
             ProjectCode = Utils.StrToInt(map["projectCode"], 0);
-            AssignmentSum = map["sum"];
+            AssignmentSum = map["assignmentSum"];
             OriginalRequestId = map["originalRequestId"];
             MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
             MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";

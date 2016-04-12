@@ -83,7 +83,7 @@
                         data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
-                        data-project-id="{projectModel.id}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
+                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
@@ -117,7 +117,7 @@
                             <%/if%>
                             <span class="profit">0.00</span>
                         </div>
-                        <div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>
+                        <!--<div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>-->
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意
                             <%if(!projectModel.IsNewbieProject())%>

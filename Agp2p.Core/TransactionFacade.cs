@@ -705,14 +705,14 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("中间人不能转出债权");
 
             var timeSpan = DateTime.Today - claim.GetSourceClaim().createTime.Date;
-            //if (timeSpan.TotalDays < 15 && !claim.dt_users.IsCompanyAccount())
-            //    throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
+            if (timeSpan.TotalDays < 15 && !claim.dt_users.IsCompanyAccount())
+                throw new InvalidOperationException("你必须持有该债权满 15 日才能进行转让");
 
             var nextRepayTime = claim.li_projects.li_repayment_tasks.FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time;
             if (nextRepayTime == null)
                 throw new InvalidOperationException("项目已经完成还款，不能进行债权转让申请");
-            //if (nextRepayTime.Value.Date <= DateTime.Today.AddDays(1))
-            //    throw new InvalidOperationException("不能在项目还款日的 1 天前申请债权转让");
+            if (nextRepayTime.Value.Date <= DateTime.Today.AddDays(1))
+                throw new InvalidOperationException("不能在项目还款日的 1 天前申请债权转让");
 
             var needTransferClaim = claim.NewStatusChild(DateTime.Now, Agp2pEnums.ClaimStatusEnum.NeedTransfer);
             context.li_claims.InsertOnSubmit(needTransferClaim);
