@@ -329,7 +329,7 @@ class CustodyAccount extends React.Component {
 					<span className="custody"></span>
 					<span className="list-th">资金托管</span>
 					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方托管、监管</span>
-					<span className="pull-right"><a href="/api/payment/sumapay/index.aspx?api=4">查看</a></span>
+					<span className="pull-right"><a href="/api/payment/sumapay/index.aspx?api=4" target="_blank">查看</a></span>
 				</div>
 			</li>
 		);

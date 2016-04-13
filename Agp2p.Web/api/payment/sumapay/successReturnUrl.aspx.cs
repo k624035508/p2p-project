@@ -65,7 +65,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     break;
                 //债权转让
                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:
-                    Response.Write("债权转让失败！");
+                    Response.Write("债权转让成功！");
                     break;
             }
         }

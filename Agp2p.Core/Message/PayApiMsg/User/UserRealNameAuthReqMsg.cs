@@ -23,9 +23,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             IdNumber = idNumber;
 
             PayType = "1";
-            Api = (int)Agp2pEnums.SumapayApiEnum.URegi;
+            Api = (int)Agp2pEnums.SumapayApiEnum.UAuth;
             ApiInterface = SumapayConfig.TestApiUrl + "main/UserForFT_realNameAuth";
-            RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.UAuth.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()

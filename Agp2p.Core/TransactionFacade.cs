@@ -887,8 +887,8 @@ namespace Agp2p.Core
 
 
             // 创建提现人收益记录，如果是公司账号不收取
-            var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
-            var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
+            //var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
+            var finalCost = Math.Round(needTransferClaim.principal * ConfigLoader.loadCostConfig().static_withdraw / 100, 2);
 
             if (0 < finalCost)
             {

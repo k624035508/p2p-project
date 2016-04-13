@@ -134,10 +134,15 @@ namespace Agp2p.Web.admin.claims
 
             try
             {
-                TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
                 context = new Agp2pDataContext();
-                RptBind();
-                JscriptMsg("买入债权成功", "", "Success");
+                var claim = context.li_claims.SingleOrDefault(c => c.id == claimId);
+                Response.Write("<script>window.open('" +"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                           + "&userId=" + claim.li_project_transactions_invest.investor + "&projectCode=" + claim.projectId + "&claimId=" + claimId + "&assignmentSum=" + claim.li_project_transactions_invest.principal
+                                           + "&undertakeSum=" + buyAmount + "&projectDescription=" + claim.li_projects.title + "','_blank')</script>");
+
+                //TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
+                //RptBind();
+                //JscriptMsg("买入债权成功", "", "Success");
             }
             catch (Exception ex)
             {
