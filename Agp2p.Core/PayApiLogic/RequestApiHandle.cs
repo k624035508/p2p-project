@@ -40,8 +40,6 @@ namespace Agp2p.Core.PayApiLogic
                     request_time = DateTime.Now,
                     remarks = msg.Remarks
                 };
-                //保存日志
-                context.li_pay_request_log.InsertOnSubmit(requestLog);
                 //创建交易流水
                 switch (requestLog.api)
                 {
@@ -81,6 +79,8 @@ namespace Agp2p.Core.PayApiLogic
                 //生成发送报文
                 msg.RequestContent = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface);
                 requestLog.request_content = msg.RequestContent;
+                //保存日志
+                context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
             }
             catch (Exception ex)

@@ -871,8 +871,11 @@
     <Content Include="templates\AnGuang\imgs\register\006.png" />
     <Content Include="templates\AnGuang\imgs\register\007.png" />
     <Content Include="templates\AnGuang\imgs\register\008.png" />
+    <Content Include="templates\AnGuang\imgs\register\009-1.png" />
     <Content Include="templates\AnGuang\imgs\register\009.png" />
     <Content Include="templates\AnGuang\imgs\register\010.png" />
+    <Content Include="templates\AnGuang\imgs\register\012-1.png" />
+    <Content Include="templates\AnGuang\imgs\register\012.png" />
     <Content Include="templates\AnGuang\imgs\register\11.png" />
     <Content Include="templates\AnGuang\imgs\loan\001.png" />
     <Content Include="templates\AnGuang\imgs\loan\0011.png" />
@@ -1324,6 +1327,7 @@
     <Content Include="templates\AnGuang\containers\myloan.jsx" />
     <Content Include="templates\AnGuang\components\myloan-table.jsx" />
     <Content Include="templates\AnGuang\less\myloan.less" />
+    <None Include="Properties\PublishProfiles\minson_98.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
