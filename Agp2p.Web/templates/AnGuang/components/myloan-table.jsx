@@ -54,7 +54,7 @@ class MyloanTable extends React.Component {
             <tr className="detailRow" key={tr.ptrId}>
                             <td><a href={tr.projectUrl} target="_blank" title={tr.projectName}>{tr.projectName}</a></td>
                             <td>{tr.projectProfitRateYearly}</td>
-                            <td>{tr.investTime}</td>
+                            <td>{tr.investTime == "01/01/01" ? "" :tr.investTime}</td>
                             <td>{tr.investValue}</td>
                             <td>{tr.profit}</td>
                             <td>1/1</td>

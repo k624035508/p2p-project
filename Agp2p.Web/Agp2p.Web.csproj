@@ -863,8 +863,11 @@
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
     <Content Include="templates\AnGuang\imgs\loan\001-1.png" />
+    <Content Include="templates\AnGuang\imgs\register\001-hover.png" />
     <Content Include="templates\AnGuang\imgs\register\001.png" />
+    <Content Include="templates\AnGuang\imgs\register\002-hover.png" />
     <Content Include="templates\AnGuang\imgs\register\002.png" />
+    <Content Include="templates\AnGuang\imgs\register\003-hover.png" />
     <Content Include="templates\AnGuang\imgs\register\003.png" />
     <Content Include="templates\AnGuang\imgs\register\004.png" />
     <Content Include="templates\AnGuang\imgs\register\005.png" />
@@ -920,7 +923,6 @@
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\loading.gif" />
-    <Content Include="templates\AnGuang\imgs\register\loading2.gif" />
     <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />

@@ -13,37 +13,29 @@ $(function() {
     var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
-        $(".register-left").eq(0).addClass("hidden");
-        $(".register-left").eq(1).removeClass("hidden");
-        $(".step2-hr").addClass("step-red");
-        $(".step2").addClass("redstep");
+        $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+        $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
         $(".tips2").addClass("tips-red");
     } else if (step == "3"){
         //托管开户
-        $(".register-left").eq(0).addClass("hidden");
-        $(".register-left").eq(1).addClass("hidden");
-        $(".register-left").eq(2).removeClass("hidden");
-        $(".step3-hr").addClass("step-red");
-        $(".step3").addClass("redstep");
-        $(".tips2").addClass("tips-red");
-        $(".tips3").addClass("tips-red");
+        $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+        $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+        $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+        $(".tips2,.tips3").addClass("tips-red");
     } else if (step == "4") {
-            //开户结果处理显示  TODO
+        //开户结果处理显示
         if (result=="success"){
-            $(".register-left").eq(0).addClass("hidden");
-            $(".register-left").eq(1).addClass("hidden");
-            $(".register-left").eq(2).addClass("hidden");
-            $(".register-left").eq(3).removeClass("hidden");
-            $(".step3-hr").addClass("step-red");
-            $(".step3").addClass("redstep");
-            $(".tips2").addClass("tips-red");
-            $(".tips3").addClass("tips-red");
+            $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+            $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+            $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+            $(".tips2,.tips3").addClass("tips-red");
         } else{
-            //失败
+            $(".register-left").eq(step).removeClass("hidden").siblings().addClass("hidden");
+            $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+            $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+            $(".tips2,.tips3").addClass("tips-red");
         }
-}
-
-       
+    }
 
     //邀请码选填 
     $("div.invite2").hide();
@@ -277,7 +269,7 @@ $(function() {
                 trueName: $("#realname").val()
             },
             beforeSend:function(XMLHttpRequest){ 
-                 //在后台返回success之前显示loading图标
+                //在后台返回success之前显示loading图标
                 $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
             }, 
             success: function(data) {
