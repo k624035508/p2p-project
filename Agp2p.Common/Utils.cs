@@ -1350,7 +1350,7 @@ namespace Agp2p.Common
             request.ContentType = "application/x-www-form-urlencoded;charset=GBK";
             request.ContentLength = data.Length;
             request.Accept = "*/*";
-            request.Timeout = 15000;
+            request.Timeout = 20000;
             request.AllowAutoRedirect = false;
 
             Stream requestStream = null;

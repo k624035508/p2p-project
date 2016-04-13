@@ -502,6 +502,8 @@ namespace Agp2p.Web.admin.project
             {
                 ChkAdminLevel("make_loan_audit", DTEnums.ActionEnum.Audit.ToString());
                 var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+                //LqContext.StartRepayment(project.id);
+                //return;
 
                 //调用托管平台实名验证接口
                 if (project != null)

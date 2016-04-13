@@ -23,7 +23,7 @@ $(function() {
         $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
         $(".tips2,.tips3").addClass("tips-red");
     } else if (step == "4") {
-            //开户结果处理显示  TODO
+        //开户结果处理显示
         if (result=="success"){
             $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
             $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
@@ -35,9 +35,7 @@ $(function() {
             $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
             $(".tips2,.tips3").addClass("tips-red");
         }
-}
-
-       
+    }
 
     //邀请码选填 
     $("div.invite2").hide();
@@ -261,12 +259,9 @@ $(function() {
     });
 
     //实名认证
-    
     $("#realNameAuthBtn").click(function(){  
-      /*
         $.ajax({
-              url: "/tools/submit_ajax.ashx?action=bind_idcard",
-            
+            url:"/tools/submit_ajax.ashx?action=bind_idcard",
             type: "post",
             dataType: "json",
             data: {
@@ -274,38 +269,7 @@ $(function() {
                 trueName: $("#realname").val()
             },
             beforeSend:function(XMLHttpRequest){ 
-                $("#realNameAuthBtn").hide(); //在后台返回success之前显示loading图标
-                $(".nameLoading").show().html("<img src='/templates/AnGuang/imgs/register/loading2.gif' />");
-            }, 
-            success: function(data) {
-                $("#realNameAuthBtn").show();
-                $(".nameLoading").empty();
-                if (data.status == 1) {
-                    //实名验证成功，进入开户步骤
-                    location.href="register.html?action=3";
-                } else {
-                    alert(data.msg);
-                }
-            },
-            error: function(data) {
-                $("#realNameAuthBtn").show();
-                $(".nameLoading").empty();
-                alert("操作超时，请重试");
-            }
-        });
-        */
-
-
-        $.ajax({
-            url:"about.html",
-            type: "post",
-            dataType: "json",
-            data: {
-                idCardNumber: $("#identify").val(),
-                trueName: $("#realname").val()
-            },
-            beforeSend:function(XMLHttpRequest){ 
-                 //在后台返回success之前显示loading图标
+                //在后台返回success之前显示loading图标
                 $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
             }, 
             success: function(data) {
@@ -324,5 +288,4 @@ $(function() {
             }
         });
     }); 
-
 });
