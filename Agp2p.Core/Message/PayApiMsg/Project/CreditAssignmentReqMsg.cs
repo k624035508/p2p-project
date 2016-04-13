@@ -79,16 +79,16 @@ namespace Agp2p.Core.Message.PayApiMsg
             return sd;
         }
 
-        public void SetSubledgerList(decimal fee)
+        public void SetSubledgerList(decimal fee, string buyClaimerId)
         {
             var loanSum = Utils.StrToDecimal(UndertakeSum, 0);
             var list = new List<object>
             {
-                //借款人收到的款
+                //转让人收到的款
                 new
                 {
                     roleType = "0",
-                    roleCode = UserId.ToString(),
+                    roleCode = buyClaimerId,
                     inOrOut = "0",
                     sum = (loanSum - fee).ToString("f")
                 }

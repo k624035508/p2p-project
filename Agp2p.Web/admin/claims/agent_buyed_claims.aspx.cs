@@ -70,7 +70,10 @@ namespace Agp2p.Web.admin.claims
                     .ToArray());
             if (ddlAgent.Items.Count != 0)
             {
-                selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                if (selectedAgent == 0)
+                    selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                else
+                    ddlAgent.SelectedValue = selectedAgent.ToString();
             }
             else
             {

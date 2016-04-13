@@ -60,7 +60,10 @@ namespace Agp2p.Web.admin.claims
                     .ToArray());
             if (ddlAgent.Items.Count != 0)
             {
-                selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                if (selectedAgent == 0)
+                    selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                else
+                    ddlAgent.SelectedValue = selectedAgent.ToString();
             }
             else
             {
@@ -77,7 +80,7 @@ namespace Agp2p.Web.admin.claims
             // 中间人在后台只能买公司账号转出的债权
             var query =
                 context.li_claims.Where(
-                    c =>
+                    c => c.userId == selectedAgent &&
                         c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                         c.Parent.dt_users.dt_user_groups.title == AutoRepay.CompanyAccount &&
                         !c.Children.Any())
@@ -137,7 +140,7 @@ namespace Agp2p.Web.admin.claims
                 context = new Agp2pDataContext();
                 var claim = context.li_claims.SingleOrDefault(c => c.id == claimId);
                 Response.Write("<script>window.open('" +"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
-                                           + "&userId=" + claim.li_project_transactions_invest.investor + "&projectCode=" + claim.projectId + "&claimId=" + claimId + "&assignmentSum=" + claim.li_project_transactions_invest.principal
+                                           + "&userId=" + selectedAgent + "&projectCode=" + claim.projectId + "&claimId=" + claimId + "&assignmentSum=" + claim.li_project_transactions_invest.principal
                                            + "&undertakeSum=" + buyAmount + "&projectDescription=" + claim.li_projects.title + "','_blank')</script>");
 
                 //TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
