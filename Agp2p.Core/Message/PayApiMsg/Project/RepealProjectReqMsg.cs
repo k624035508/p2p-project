@@ -24,7 +24,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public override string GetSignature()
         {
             return
-                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + ProjectCode  + Sum + NoticeUrl, SumapayConfig.Key);
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + ProjectCode + Sum + NoticeUrl, SumapayConfig.Key);
         }
 
         public override string GetPostPara()

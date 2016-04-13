@@ -135,7 +135,7 @@ namespace Agp2p.Core.PayApiLogic
                     case (int)Agp2pEnums.SumapayApiEnum.CLoan:
                         var makeLoanReqMsg = (MakeLoanReqMsg)msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
-                        //非活期和新手标项目，以及没有生成过服务费
+                        //非活期和新手标项目，以及没有生成过服务费 TODO 只计算？
                         if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject() 
                             && !context.li_company_inoutcome.Any(c => c.project_id == project.id 
                             && (c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning

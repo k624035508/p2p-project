@@ -25,6 +25,10 @@ namespace Agp2p.Web.api.payment.sumapay
             Response.Write("success");
         }
 
+        /// <summary>
+        /// 处理托管接口请求响应
+        /// </summary>
+        /// <param name="isSync">是否同步返回</param>
         protected void DoResponse(bool isSync = false)
         {
             string reqStr = ReadReqStr();
@@ -87,12 +91,12 @@ namespace Agp2p.Web.api.payment.sumapay
                             case (int) Agp2pEnums.SumapayApiEnum.AcBid:
                                 respMsg = isSync ? new BidRespMsg(reqStr) : BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
                                 break;
-                            //TODO 个人撤标 普通/集合项目
+                            //个人撤标
                             case (int) Agp2pEnums.SumapayApiEnum.CaPro:
                             case (int) Agp2pEnums.SumapayApiEnum.CoPro:
                                 respMsg = BaseRespMsg.NewInstance<WithDrawalRespMsg>(reqStr);
                                 break;
-                            //TODO 个人流标普通项目
+                            //流标普通项目
                             case (int) Agp2pEnums.SumapayApiEnum.RePro:
                                 respMsg = BaseRespMsg.NewInstance<RepealProjectRespMsg>(reqStr);
                                 break;
@@ -153,7 +157,22 @@ namespace Agp2p.Web.api.payment.sumapay
                             //发送响应消息异步处理
                             MessageBus.Main.PublishAsync(respMsg, s =>
                             {
-                                UpdateLog(respMsg);
+                                ResponseLog.user_id = respMsg.UserIdIdentity;
+                                ResponseLog.project_id = respMsg.ProjectCode;
+                                RequestLog.complete_time = DateTime.Now;
+
+                                if (respMsg.HasHandle)
+                                {
+                                    ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
+                                    RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+                                }
+                                else
+                                {
+                                    ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
+                                    RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
+                                    //记录失败信息
+                                    ResponseLog.remarks += respMsg.Remarks + ";";
+                                }
                                 context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                                 context.SubmitChanges();
                             });
@@ -172,26 +191,6 @@ namespace Agp2p.Web.api.payment.sumapay
                 ResponseLog.remarks = "请求流水号为空！";
                 context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                 context.SubmitChanges();
-            }
-        }
-
-        private void UpdateLog(BaseRespMsg respMsg)
-        {
-            ResponseLog.user_id = respMsg.UserIdIdentity;
-            ResponseLog.project_id = respMsg.ProjectCode;
-            RequestLog.complete_time = DateTime.Now;
-
-            if (respMsg.HasHandle)
-            {
-                ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
-                RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
-            }
-            else
-            {
-                ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
-                RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
-                //记录失败信息
-                ResponseLog.remarks += respMsg.Remarks + ";";
             }
         }
 
