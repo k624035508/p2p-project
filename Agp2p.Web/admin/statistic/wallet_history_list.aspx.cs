@@ -297,24 +297,19 @@ namespace Agp2p.Web.admin.statistic
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidInterest, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipal, "{0} 回款 {1}"},
             {Agp2pEnums.WalletHistoryTypeEnum.RepaidPrincipalAndInterest, "{0} 回款 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredOut, "{0} 债权转出"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn, "{0} 债权买入"},
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess, "{0} 债权买入成功"},
             {Agp2pEnums.WalletHistoryTypeEnum.HuoqiProjectWithdrawSuccess, "{0} 活期项目提现 {1}"},
-            {Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest, "{0} 中间人垫付利息" },
-            {Agp2pEnums.WalletHistoryTypeEnum.AgentGainPaidInterest, "{0} 中间人收回垫付利息" },
-            {Agp2pEnums.WalletHistoryTypeEnum.AgentRecaptureHuoqiClaims, "{0} 中间人收回债权" },
-            {Agp2pEnums.WalletHistoryTypeEnum.AutoInvest, "{0} 自动续投" },
-            {Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInFail, "{0} 债权买入失败" },
         };
 
         protected string QueryTransactionRemark(li_wallet_histories his, Func<li_wallet_histories, string> projectNameMapper)
         {
             if (his.li_project_transactions != null)
             {
+                if (!RemarkHintMap.ContainsKey((Agp2pEnums.WalletHistoryTypeEnum)his.action_type))
+                {
+                    RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum)his.action_type] = "{0} " + Utils.GetAgp2pEnumDes((Agp2pEnums.WalletHistoryTypeEnum)his.action_type);
+                }
                 if (his.li_project_transactions.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                 {
-
                     return
                         string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type],
                             projectNameMapper(his),

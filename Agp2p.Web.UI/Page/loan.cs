@@ -234,7 +234,7 @@ namespace Agp2p.Web.UI.Page
                     type = (int)Agp2pEnums.LoanTypeEnum.Personal
                 };
                 //项目编号
-                var latestProject = context.li_projects.Where(p => p.category_id == project.category_id).OrderByDescending(p => p.add_time).FirstOrDefault();
+                var latestProject = context.li_projects.Where(p => p.category_id == project.category_id).OrderByDescending(p => p.id).FirstOrDefault();
                 int prjectCount = latestProject == null ? 0 : Utils.StrToInt(latestProject.title.Substring(latestProject.title.Length - 5), 0);
                 project.title += new BLL.article_category().GetModel(project.category_id).call_index.ToUpper() + (prjectCount + 1).ToString("00000");
                 context.li_risks.InsertOnSubmit(risk);

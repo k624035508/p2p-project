@@ -2151,17 +2151,17 @@ namespace Agp2p.Web.tools
                 var buyClaimId = DTRequest.GetFormInt("buyClaimId", 0);
                 var projectSum = DTRequest.GetFormDecimal("projectSum", 0);
                 var projectDescription = DTRequest.GetFormString("projectDescription");
-                var huoqi = !string.IsNullOrEmpty(DTRequest.GetFormString("huoqi"));
 
                 if (buyClaimId != 0)
                 {
-                    //TODO 发起债权转让托管请求
-                    TransactionFacade.BuyClaim(linqContext, buyClaimId, user.id, investingAmount);
-                    context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资成功！", status = 1 }));
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                           + "&userId=" + user.id + "&projectCode=" + projectId + "&claimId=" + buyClaimId + "&assignmentSum=" + projectSum
+                                           + "&undertakeSum=" + investingAmount + "&projectDescription=" + projectDescription + "\"}");
                 }
                 else
                 {
-                    int reqApi = huoqi ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
+                    //TODO 判断活期项目
+                    int reqApi = false ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                            + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
                                            + "&projectSum=" + projectSum + "&projectDescription=" +
@@ -2546,13 +2546,13 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                //使用免费接口先核实有效的身份证
-                var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
-                var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
-                if (resultModel != null)
-                {
-                    if (resultModel.Resultcode == "200")
-                    {
+                //TODO 使用免费接口先核实有效的身份证
+                //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
+                //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
+                //if (resultModel != null)
+                //{
+                //    if (resultModel.Resultcode == "200")
+                //    {
                         //调用托管平台实名验证接口
                         var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
                         MessageBus.Main.Publish(msg);
@@ -2567,10 +2567,10 @@ namespace Agp2p.Web.tools
                         {
                             context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                         }
-                    }
-                    else
-                        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
-                }
+                //    }
+                //    else
+                //        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //}
 
                 
             }

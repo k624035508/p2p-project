@@ -374,6 +374,8 @@ namespace Agp2p.Common
             InvestSuccess = 11,
             [Description("投资撤销")]
             InvestorRefund = 12,
+            [Description("活期推迟投资成功")]
+            DelayInvestSuccess = 13,
 
             [Description("利息收益")]
             RepaidInterest = 20,

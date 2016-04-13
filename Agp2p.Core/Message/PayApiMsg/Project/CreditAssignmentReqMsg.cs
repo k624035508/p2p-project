@@ -9,48 +9,26 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class CreditAssignmentReqMsg : FrontEndReqMsg
     {
-        public string OriginalRequestId { get; set; }//原请求流水号
-        public string OriginalOrderSum { get; set; }//原投标金额
-        public string AssignmentSum { get; set; }//转让价格
-        public string UndertakeSum { get; set; }//购买价格
-        public string PayType { get; set; }//手续费收取方式
-        public string CreditValue { get; set; }//转让债权价值
-        public string UndertakePercentage { get; set; }//承接系数
-        public string ProjectDescription { get; set; }//项目描述
-        public string MainAccountType { get; set; }//主账户类型
-        public string MainAccountCode { get; set; }//主账户编码 
-        //分账列表
-        private string subledgerList;
-        public string SubledgerList
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(subledgerList))
-                {
-                    subledgerList = JsonHelper.ObjectToJSON(new List<object>()
-                    {
-                        new
-                        {
-                            roleType = "0",
-                            roleCode = UserId,
-                            inOrOut = "0",
-                            sum = AssignmentSum
-                        }
-                    });
-                }
-                return subledgerList;
-            }
-            set { subledgerList = value; }
-        }
+        public string OriginalRequestId { get; set; } //原请求流水号
+        public string OriginalOrderSum { get; set; } //原投标金额
+        public string AssignmentSum { get; set; } //转让价格
+        public string UndertakeSum { get; set; } //购买价格
+        public string PayType { get; set; } //手续费收取方式
+        public string CreditValue { get; set; } //转让债权价值
+        public string UndertakePercentage { get; set; } //承接系数
+        public string ProjectDescription { get; set; } //项目描述
+        public string MainAccountType { get; set; } //主账户类型
+        public string MainAccountCode { get; set; } //主账户编码 
+        public int ClaimId { get; set; } //债权编号
+        public string SubledgerList { get; set; } //分账列表
 
-        public CreditAssignmentReqMsg(int userId, int projectCode, string originalRequestId, string originalOrderSum,
-            string assignmentSum, string undertakeSum, string payType = "3", string mainAccountType = "", string mainAccountCode = "", 
-            string projectDescription = "", string creditValue = "", string undertakePercentage = "")
+        public CreditAssignmentReqMsg(int userId, int projectCode, int claimId, string assignmentSum, string undertakeSum,
+            string projectDescription = "", string creditValue = "", string undertakePercentage = "", string payType = "1", string mainAccountType = "",
+            string mainAccountCode = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
-            OriginalRequestId = originalRequestId;
-            OriginalOrderSum = originalOrderSum;
+            ClaimId = claimId;
             AssignmentSum = assignmentSum;
             UndertakeSum = undertakeSum;
             PayType = payType;
@@ -60,7 +38,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
 
-            Api =  (int) Agp2pEnums.SumapayApiEnum.CreAs;
+            Api = (int) Agp2pEnums.SumapayApiEnum.CreAs;
             ApiInterface = SumapayConfig.TestApiUrl + "user/creditAssignment_toCreditAssignment";
             RequestId = Agp2pEnums.SumapayApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
@@ -69,8 +47,8 @@ namespace Agp2p.Core.Message.PayApiMsg
         {
             return
                 SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
-                                               OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
-                                               SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
+                                     OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
+                                     SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -100,5 +78,35 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             return sd;
         }
+
+        public void SetSubledgerList(decimal fee)
+        {
+            var loanSum = Utils.StrToDecimal(UndertakeSum, 0);
+            var list = new List<object>
+            {
+                //借款人收到的款
+                new
+                {
+                    roleType = "0",
+                    roleCode = UserId.ToString(),
+                    inOrOut = "0",
+                    sum = (loanSum - fee).ToString("f")
+                }
+            };
+            //服务费为0不能发生生成分账列表
+            if (fee > 0)
+            {
+                //平台服务费
+                list.Add(new
+                {
+                    roleType = "1",
+                    roleCode = SumapayConfig.MerchantCode,
+                    inOrOut = "0",
+                    sum = fee.ToString("f")
+                });
+            }
+            SubledgerList = JsonHelper.ObjectToJSON(list);
+        }
+        
     }
 }

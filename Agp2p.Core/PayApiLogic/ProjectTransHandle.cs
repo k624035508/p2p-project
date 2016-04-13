@@ -269,12 +269,12 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的债权
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
-                        if (pro != null)
+                        //查找对应的债权交易流水
+                        var trans = context.li_project_transactions.SingleOrDefault(p => p.no_order == msg.OriginalRequestId);
+                        if (trans != null)
                         {
-                            //TODO 债权转让
-
+                            TransactionFacade.BuyClaim(context, trans.li_claims_invested.First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).id, (int) msg.UserIdIdentity,
+                                Utils.StrToDecimal(msg.AssignmentSum, 0));
                             msg.HasHandle = true;
                         }
                         else

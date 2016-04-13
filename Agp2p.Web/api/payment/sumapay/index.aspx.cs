@@ -91,6 +91,12 @@ namespace Agp2p.Web.api.payment.sumapay
                         , requestApi == (int)Agp2pEnums.SumapayApiEnum.BcRep);
                     reqMsg.Remarks = $"isEarly=false&repayTaskId={DTRequest.GetQueryString("repayTaskId")}";
                     break;
+                //债权转让
+                case (int)Agp2pEnums.SumapayApiEnum.CreAs:
+                    reqMsg = new CreditAssignmentReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("projectCode"),
+                        DTRequest.GetQueryInt("claimId"), DTRequest.GetQueryString("assignmentSum"),
+                        DTRequest.GetQueryString("undertakeSum"), DTRequest.GetQueryString("projectDescription"));
+                    break;
                 default:
                     reqMsg = new BaseReqMsg();
                     break;

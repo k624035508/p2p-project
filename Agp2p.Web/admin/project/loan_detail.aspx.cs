@@ -382,23 +382,24 @@ namespace Agp2p.Web.admin.project
         /// <param name="e"></param>
         protected void btnFail_OnClick(object sender, EventArgs e)
         {
+            ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
-                try
+                var msg = new RepealProjectReqMsg(ProjectId, project.investment_amount.ToString("F"));
+                MessageBus.Main.Publish(msg);
+                var msgResp = BaseRespMsg.NewInstance<RepealProjectRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
                 {
-                    ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingFail;
-                    //TODO 资金原路退回投资者账户
-                    LqContext.ProjectFinancingFail(project.id);
-                    LqContext.SubmitChanges();
-                    JscriptMsg("借款流标操作成功！",
+                    JscriptMsg("流标操作成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
-                            ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+                            ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
                 }
-                catch (Exception ex)
+                else
                 {
-                    JscriptMsg("借款流标操作失败：" + ex.Message, "back", "Error");
+                    JscriptMsg("流标操作失败：" + msgResp.Remarks, "back", "Error");
                 }
             }
             else
