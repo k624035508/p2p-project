@@ -327,8 +327,8 @@ class CustodyAccount extends React.Component {
 			<li>
 				<div className="list-cell">
 					<span className="custody"></span>
-					<span className="list-th">托管账户</span>
-					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
+					<span className="list-th">资金托管</span>
+					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方托管、监管</span>
 					<span className="pull-right"><a href="/api/payment/sumapay/index.aspx?api=4">查看</a></span>
 				</div>
 			</li>

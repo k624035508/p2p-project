@@ -2546,13 +2546,13 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                //使用免费接口先核实有效的身份证
-                var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
-                var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
-                if (resultModel != null)
-                {
-                    if (resultModel.Resultcode == "200")
-                    {
+                //TODO 使用免费接口先核实有效的身份证
+                //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
+                //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
+                //if (resultModel != null)
+                //{
+                //    if (resultModel.Resultcode == "200")
+                //    {
                         //调用托管平台实名验证接口
                         var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
                         MessageBus.Main.Publish(msg);
@@ -2567,10 +2567,10 @@ namespace Agp2p.Web.tools
                         {
                             context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                         }
-                    }
-                    else
-                        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
-                }
+                //    }
+                //    else
+                //        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                //}
 
                 
             }
