@@ -272,9 +272,8 @@ $(function() {
                 //在后台返回success之前显示loading图标
                 $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
             }, 
-            success: function(data) {
-          
-                $(".nameLoading").empty();
+            success: function(data) {        
+                $(".nameLoading").empty().css("z-index","-2");
                 if (data.status == 1) {
                     //实名验证成功，进入开户步骤
                     location.href="register.html?action=3";
@@ -283,7 +282,7 @@ $(function() {
                 }
             },
             error: function(data) {             
-                $(".nameLoading").css("z-index","-2").empty();
+                $(".nameLoading").empty().css("z-index","-2");
                 alert("操作超时，请重试");
             }
         });
