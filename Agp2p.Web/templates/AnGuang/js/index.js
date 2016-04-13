@@ -27,7 +27,7 @@ $(function () {
 
     var prog=$("div.progress-bar");
     var changdu1=prog.parent().width();
-    for(var i=0;i<5;i++){
+    for(var i=0;i<prog.length;i++){
         var changdu2=parseInt(prog.eq(i).html())/100; 
         var progoffset=prog.eq(i).offset().top;
         if(progoffset<810){
@@ -36,16 +36,20 @@ $(function () {
     }
         $(window).scroll(function(){      
             var windowtop = $(window).scrollTop();
-            if(windowtop>99 && windowtop<1040){        
-                for(var i=1;i<5;i++){
-                    var changdu2=parseInt(prog.eq(i).html())/100;              
-                    prog.eq(i).width(changdu2*changdu1);        
-                }      
+            if(windowtop>150 && windowtop<1040){        
+                for(var i=0;i<prog.length;i++){
+                    if(progoffset<1210){
+                        var changdu2=parseInt(prog.eq(i).html())/100;              
+                        prog.eq(i).width(changdu2*changdu1);        
+                    }
+                }
             }                
-            if(windowtop>490){ 
-                for(var i=5;i<(prog.length);i++){
-                    var changdu2=parseInt(prog.eq(i).html())/100;              
-                    prog.eq(i).width(changdu2*changdu1);        
+            if(windowtop>500){ 
+                for(var i=0;i<(prog.length);i++){
+                    if(progoffset<1610){
+                        var changdu2=parseInt(prog.eq(i).html())/100;              
+                        prog.eq(i).width(changdu2*changdu1);        
+                    }
                 }
             }                    
         });
