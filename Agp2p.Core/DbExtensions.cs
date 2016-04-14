@@ -254,7 +254,7 @@ namespace Agp2p.Core
 
         public static li_claims GetRootClaim(this li_claims claim)
         {
-            return claim.Parent == null ? claim : claim.Parent.GetSourceClaim();
+            return claim.Parent == null ? claim : claim.Parent.GetRootClaim();
         }
 
         public static li_claims GetHistoryClaimByOwner(this li_claims claim, int userId)
