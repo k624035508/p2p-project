@@ -150,8 +150,8 @@ class MyAccount extends React.Component {
 				</div>)}
 			</div>
 		);
-	}
-}
+								}
+								}
 
 import assign from "lodash/object/assign"
 

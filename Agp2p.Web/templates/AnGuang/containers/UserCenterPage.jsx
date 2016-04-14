@@ -88,11 +88,12 @@ class UserCenterPage extends React.Component {
 								<li><Link to="/settings" activeClassName="active-link">通知设置</Link></li>
 			                </ul>
 			            </li>
+                        {!this.props.isLoaner ? null :
                         <li><a className="myloan">借款管理</a>
 			                <ul className="list-unstyled inner-ul">
 								<li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
 			                </ul>
-			            </li>
+			            </li>}
 			        </ul>
 			    </div>
 		        {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
@@ -104,7 +105,8 @@ class UserCenterPage extends React.Component {
 function mapStateToProps(state) {
 	var walletInfo = state.walletInfo;
 	return {
-		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney
+	    totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney,
+        isLoaner: state.userInfo.isLoaner
 	};
 }
 
