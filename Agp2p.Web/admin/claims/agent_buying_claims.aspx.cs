@@ -138,9 +138,8 @@ namespace Agp2p.Web.admin.claims
             {
                 context = new Agp2pDataContext();
                 var claim = context.li_claims.SingleOrDefault(c => c.id == claimId);
-                Response.Write("<script>window.open('" +"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
-                                           + "&userId=" + selectedAgent + "&projectCode=" + claim.projectId + "&claimId=" + claimId + "&assignmentSum=" + claim.li_project_transactions_invest.principal
-                                           + "&undertakeSum=" + buyAmount + "&projectDescription=" + claim.li_projects.title + "','_blank')</script>");
+                Response.Write("<script>window.open('" + "/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                           + "&userId=" + selectedAgent + "&claimId=" + claimId + "&undertakeSum=" + buyAmount +"','_blank')</script>");
 
                 //TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
                 //RptBind();

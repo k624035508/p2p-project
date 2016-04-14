@@ -2155,8 +2155,7 @@ namespace Agp2p.Web.tools
                 if (buyClaimId != 0)
                 {
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
-                                           + "&userId=" + user.id + "&projectCode=" + projectId + "&claimId=" + buyClaimId + "&assignmentSum=" + projectSum
-                                           + "&undertakeSum=" + investingAmount + "&projectDescription=" + projectDescription + "\"}");
+                                           + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" + investingAmount + "\"}");
                 }
                 else
                 {
