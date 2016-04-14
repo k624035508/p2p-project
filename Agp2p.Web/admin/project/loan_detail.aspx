@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_detail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loan_detail.aspx.cs" Inherits="Agp2p.Web.admin.project.loan_detail" EnableEventValidation="false" %>
 
 <%@ Import Namespace="Agp2p.Common" %>
 <%@ Import Namespace="Agp2p.Linq2SQL" %>
@@ -540,7 +540,7 @@
                             Text="申请转让"
                             UseSubmitBehavior="False"
                             CommandArgument='<%# Eval("id") %>'
-                            OnClientClick="return ExeNoCheckPostBack(this.id.replace(/_/g, '$'), '是否为该债权申请转让？');"
+                            OnClientClick="return PromptPostBack(this.id.replace(/_/g, '$'), '请输入转让利息比率（0~100）：', '0');"
                             OnClick="btnBecomeTransferable_OnClick"
                             Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable && ((li_claims) Container.DataItem).IsLeafClaim() %>" />
                         <!--TODO 提现撤销-->

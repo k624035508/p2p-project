@@ -91,12 +91,13 @@ namespace Agp2p.Web.admin.project
 
         protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
         {
+            var transferAmount = Request["__EVENTARGUMENT"];
             int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
             var claim = LqContext.li_claims.Single(c => c.id == claimId);
 
             var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
             LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
-            TransactionFacade.StaticProjectWithdraw(LqContext, claimId);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId, 1 - Convert.ToDecimal(transferAmount)/100);
 
             ShowClaimsInfo(claim.li_projects);
 
