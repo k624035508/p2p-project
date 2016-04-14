@@ -85,6 +85,7 @@ namespace Agp2p.Core
                 number = parent.number,
                 status = parent.status,
                 agent = parent.agent,
+                legacyInterest = parent.legacyInterest,
             };
         }
 
@@ -92,6 +93,10 @@ namespace Agp2p.Core
         {
             var child = parent.MakeChild(createTime);
             child.status = (byte)newStatus;
+            if ((int) Agp2pEnums.ClaimStatusEnum.Completed <= child.status)
+            {
+                child.legacyInterest = null;
+            }
             return child;
         }
 
@@ -99,13 +104,33 @@ namespace Agp2p.Core
         {
             var child = parent.MakeChild(createTime);
             child.principal = childPrincipal;
+            if (parent.legacyInterest.GetValueOrDefault() != 0)
+            {
+                // 由于这里的四舍五入可能会导致总数不一致，所以最后要执行 CheckChildrenLegacyInterestIsPerfectRounding
+                child.legacyInterest = Math.Round(parent.legacyInterest.GetValueOrDefault()*childPrincipal/parent.principal, 2);
+            }
             return child;
+        }
+
+        public static void CheckSplitedChildrenLegacyInterestIsPerfectRounding(this li_claims parent)
+        {
+            if (parent.legacyInterest.GetValueOrDefault() == 0) return;
+            var validChilds = parent.Children.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed).ToList();
+            if (validChilds.Count == 1) return;
+
+            var legacyInterests = validChilds.Select(c => c.legacyInterest.GetValueOrDefault()).ToList();
+            var perfectRounding = Utils.GetPerfectRounding(legacyInterests, parent.legacyInterest.GetValueOrDefault(), 2);
+            validChilds.ZipEach(perfectRounding, (c, newInterest) => c.legacyInterest = newInterest);
         }
 
         public static li_claims NewPrincipalAndStatusChild(this li_claims parent, DateTime createTime, Agp2pEnums.ClaimStatusEnum newStatus, decimal childPrincipal)
         {
-            var child = parent.NewStatusChild(createTime, newStatus);
-            child.principal = childPrincipal;
+            var child = parent.NewPrincipalChild(createTime, childPrincipal);
+            child.status = (byte)newStatus;
+            if ((int) Agp2pEnums.ClaimStatusEnum.Completed <= child.status)
+            {
+                child.legacyInterest = null;
+            }
             return child;
         }
 

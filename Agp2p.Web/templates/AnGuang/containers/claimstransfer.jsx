@@ -5,6 +5,10 @@ import Pagination from "../components/pagination.jsx";
 import "../less/claimstransfer.less";
 import confirm from "../components/tips_confirm.js";
 import alert from "../components/tips_alert.js";
+import CustomDlg from "../components/custom-dialog.jsx"
+
+import "rc-slider/assets/index.css";
+import Slider from "rc-slider";
 
 const ClaimStatusEnum = {
     Nontransferable : 1,
@@ -16,6 +20,29 @@ const ClaimStatusEnum = {
     TransferredUnpaid : 21,
     Invalid : 30,
 };
+
+class LegacyInterestPickerDlg extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {currentVal: 0, legacyInterest: 0, callback: null};
+    }
+    show(legacyInterest, callback) {
+        this.setState({legacyInterest, callback});
+        this.refs.customDlg.show();
+    }
+    hide() {
+        this.refs.customDlg.hide();
+    }
+    render() {
+        return (<CustomDlg ref="customDlg" title="请选择折让比例" onSubmit={() => this.state.callback(this.state.currentVal)}>
+                    <div style={{margin: "0 0 10px 0"}}>
+                        <Slider min={0} max={this.state.legacyInterest} step={0.01} onChange={v => this.setState({currentVal: v})} />
+                    </div>
+                    您将 {this.state.currentVal.format(2)} 元利息留给了你的债权受让人<br />
+                    温馨提示：折让越大，债权会更容易转让成功
+                </CustomDlg>);
+    }
+}
 
 export default class ClaimsTransfer extends React.Component {
     constructor(props) {
@@ -64,9 +91,31 @@ export default class ClaimsTransfer extends React.Component {
             }.bind(this)
         });
     }
+    doClaimTransfer(claimId, keepInterestPercent) {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxApplyForClaimTransfer";
+        ajax({
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({claimId, keepInterestPercent}),
+            success: function(result) {
+                if (result.d === "ok") {
+                    alert("申请转让成功", () => {
+                        this.fetchSummery();
+                        this.fetchClaims(2, 0);
+                    });
+                }
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(url, status, err.toString());
+                alert('申请债权转让失败：' + xhr.responseJSON.d);
+            }.bind(this)
+        }); 
+    }
     applyForClaimTransfer(claimId) {
         confirm("转让成功后将会扣除一部分的手续费，是否继续？", () => {
-            let url = USER_CENTER_ASPX_PATH + "/AjaxApplyForClaimTransfer";
+            let url = USER_CENTER_ASPX_PATH + "/AjaxQueryClaimUnpaidInterest";
             ajax({
                 type: "POST",
                 dataType: "json",
@@ -74,16 +123,17 @@ export default class ClaimsTransfer extends React.Component {
                 url: url,
                 data: JSON.stringify({claimId}),
                 success: function(result) {
-                    if (result.d === "ok") {
-                        alert("申请转让成功", () => {
-                            this.fetchSummery();
-                            this.fetchClaims(2, 0);
-                        });
+                    let withdrawClaimFinalInterest = JSON.parse(result.d).withdrawClaimFinalInterest;
+                    if (withdrawClaimFinalInterest == 0) {
+                        doClaimTransfer(claimId, 1);
+                    } else {
+                        this.refs.legacyInterestPicker.show(withdrawClaimFinalInterest,
+                            v => this.doClaimTransfer(claimId, (withdrawClaimFinalInterest - v)/withdrawClaimFinalInterest));
                     }
                 }.bind(this),
                 error: function(xhr, status, err) {
                     console.error(url, status, err.toString());
-                    alert('申请债权转让失败：' + xhr.responseJSON.d);
+                    alert('查询债权应收利息失败：' + xhr.responseJSON.d);
                 }.bind(this)
             });
         });
@@ -179,6 +229,7 @@ export default class ClaimsTransfer extends React.Component {
                     </div>
                     <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                                 onPageSelected={pageIndex => this.fetchClaims(this.state.claimQueryType, pageIndex)}/>
+                    <LegacyInterestPickerDlg ref="legacyInterestPicker" />
                 </div>
             </div>
         );

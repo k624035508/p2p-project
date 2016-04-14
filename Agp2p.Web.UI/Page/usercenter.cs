@@ -662,13 +662,40 @@ namespace Agp2p.Web.UI.Page
                         buyerCount = c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer ? c.li_project_transactions_profiting.Count(
                             ptr =>
                                 ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
-                                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0
+                                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending) : 0,
                     });
             return JsonConvert.SerializeObject(new { totalCount = count, data});
         }
 
         [WebMethod]
-        public static string AjaxApplyForClaimTransfer(int claimId)
+        public static string AjaxQueryClaimUnpaidInterest(int claimId)
+        {
+            // 查询债权实际产生的收益（提现后能产生的收益）
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var claim = context.li_claims.Single(c => c.id == claimId);
+            if ((int) Agp2pEnums.ClaimStatusEnum.NeedTransfer <= claim.status)
+                throw new InvalidOperationException("只能查询未申请转让的债权");
+
+            var withdrawClaim = claim.NewStatusChild(DateTime.Now, Agp2pEnums.ClaimStatusEnum.NeedTransfer);
+            withdrawClaim.li_projects = claim.li_projects;
+            withdrawClaim.li_projects_profiting = claim.li_projects_profiting;
+            withdrawClaim.dt_users = claim.dt_users;
+
+            var withdrawClaimFinalInterest = TransactionFacade.QueryWithdrawClaimFinalInterest(context, withdrawClaim);
+
+            return JsonConvert.SerializeObject(new { withdrawClaimFinalInterest });
+        }
+
+        [WebMethod]
+        public static string AjaxApplyForClaimTransfer(int claimId, decimal keepInterestPercent)
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);
@@ -683,7 +710,7 @@ namespace Agp2p.Web.UI.Page
             {
                 try
                 {
-                    TransactionFacade.StaticProjectWithdraw(context, claimId);
+                    TransactionFacade.StaticProjectWithdraw(context, claimId, keepInterestPercent);
                     return "ok";
                 }
                 catch (Exception ex)

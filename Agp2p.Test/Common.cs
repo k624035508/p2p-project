@@ -323,13 +323,13 @@ namespace Agp2p.Test
             Assert.AreEqual(withdrawDelta, totalWithdraw);
         }
 
-        public static void StaticProjectWithdraw(string projectName, string userName, decimal amount)
+        public static void StaticProjectWithdraw(string projectName, string userName, decimal amount, decimal keepInterestPercent = 1)
         {
             var context = new Agp2pDataContext();
             var project = context.li_projects.Single(p => p.title == projectName);
             var user = context.dt_users.Single(u => u.user_name == userName);
             var preWithdrawClaim = project.li_claims.Where(c => c.userId == user.id && c.principal == amount).AsEnumerable().Single(c => c.IsProfiting());
-            TransactionFacade.StaticProjectWithdraw(context, preWithdrawClaim.id);
+            TransactionFacade.StaticProjectWithdraw(context, preWithdrawClaim.id, keepInterestPercent);
         }
 
         public static void BuyClaim(string projectName, string userName, decimal amount)
