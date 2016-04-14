@@ -80,8 +80,7 @@ namespace Agp2p.Web.admin.claims
             // 中间人在后台只能买公司账号转出的债权
             var query =
                 context.li_claims.Where(
-                    c => c.userId == selectedAgent &&
-                        c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c => c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                         c.Parent.dt_users.dt_user_groups.title == AutoRepay.CompanyAccount &&
                         !c.Children.Any())
                     .AsEnumerable()
