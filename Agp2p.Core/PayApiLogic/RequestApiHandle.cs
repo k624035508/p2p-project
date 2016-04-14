@@ -13,7 +13,7 @@ namespace Agp2p.Core.PayApiLogic
     /// <summary>
     /// 第三方托管请求消息处理
     /// </summary>
-    internal class RequestApiHandle
+    public class RequestApiHandle
     {
         internal static void DoSubscribe()
         {
@@ -109,7 +109,8 @@ namespace Agp2p.Core.PayApiLogic
                     project_id = msg.ProjectCode,
                     api = msg.Api,
                     status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
-                    request_time = DateTime.Now
+                    request_time = DateTime.Now,
+                    remarks = msg.Remarks,
                 };
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);

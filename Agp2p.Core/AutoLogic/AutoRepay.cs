@@ -62,13 +62,14 @@ namespace Agp2p.Core.AutoLogic
                     {
                         //创建自动还款托管接口请求
                         var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project.ToString(), (t.repay_principal + t.repay_interest).ToString("f"));
+                        autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
                         //发送请求
                         MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
                         {
                             //处理请求同步返回结果
                             var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
                             repayRespMsg.AutoRepay = true;
-                            MessageBus.Main.PublishAsync(repayRespMsg);
+                            MessageBus.Main.Publish(repayRespMsg);
                         });
                     }
                 }
