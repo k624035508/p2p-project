@@ -117,7 +117,8 @@ namespace Agp2p.Web.UI.Page
                     userInfo.address,
                     invitationCode = userCode == null ? myreward.GetInviteCode(context) : userCode.str_code,
                     hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password),
-                    groupName = userInfo.dt_user_groups.title
+                    groupName = userInfo.dt_user_groups.title,
+                    isLoaner = userInfo.li_loaners.Any()
                 }
             });
         }

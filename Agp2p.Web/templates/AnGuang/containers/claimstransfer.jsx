@@ -9,7 +9,7 @@ import CustomDlg from "../components/custom-dialog.jsx"
 
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
-
+    
 const ClaimStatusEnum = {
     Nontransferable : 1,
     Transferable : 2,

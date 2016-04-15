@@ -34,9 +34,15 @@ class UserStatus extends React.Component {
 		            </div>
 		        </div>
 
-		        <div className="content-body">
-		        {this.props.children}
-		        </div>
+		                {!this.props.isLoaner?    
+                          <div className="content-body">
+                             {this.props.children}
+                         </div>
+                         :
+		                        <div className="content-body-loaner">
+                                {this.props.children}
+                            </div>
+		                }
 			</div>
 		);
 	}
@@ -48,6 +54,7 @@ function mapStateToProps(state) {
 	return {
 		userName: userInfo.userName,
 		nickName: userInfo.nickName,
+        isLoaner: userInfo.isLoaner,
 		prevLoginTime: userInfo.prevLoginTime,
 		idleMoney: walletInfo.idleMoney,
 		lockedMoney: walletInfo.lockedMoney,

@@ -4,6 +4,7 @@ import Pagination from "../components/pagination.jsx";
 import DropdownPicker from "../components/dropdown-picker.jsx";
 import "../less/agcurrent.less";
 import alert from "../components/tips_alert.js";
+import { fetchWalletAndUserInfo } from "../actions/usercenter.js"
 
 class HuoqiFacade extends React.Component {
     constructor(props) {
@@ -178,7 +179,7 @@ export default class AgCurrent extends React.Component {
         return(
             <div className="agCurrentPage">
                 <HuoqiFacade />
-                <div className="bottom-wrapper">
+                <div  className="bottom-wrapper" >
                     <div className="select-bar">
                         {this.state.tableType == 0
                             ? <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+HuoqiTransactionQueryEnum"
