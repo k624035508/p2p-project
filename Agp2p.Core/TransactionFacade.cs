@@ -709,11 +709,11 @@ namespace Agp2p.Core
                 context.li_claims.InsertOnSubmit(needTransferClaim);
                 context.SubmitChanges();
 
-                if (keepInterestPercent != 1)
+                if (keepInterestPercent != 0)
                 {
                     // 将利息留给受让人，以便更快转出债权
                     var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
-                    needTransferClaim.legacyInterest = (1 - keepInterestPercent) * withdrawerProfitted;
+                    needTransferClaim.keepInterest = keepInterestPercent * withdrawerProfitted;
                 }
 
                 context.SubmitChanges();
@@ -750,16 +750,16 @@ namespace Agp2p.Core
                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending).ToList();
 
-            var withdrawerLegacy = needTransferClaim.legacyInterest.GetValueOrDefault();
-            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
-            var financingAmount = needTransferClaim.principal + (withdrawerProfitted - withdrawerLegacy);
+            var financingAmount = needTransferClaim.principal + needTransferClaim.keepInterest.GetValueOrDefault();
 
             var remainBuyable = financingAmount - buyedTrs.Aggregate(0m, (sum, tr) => sum + tr.principal);
 
             if (StaticClaimTransferToOneUser)
             {
-                if (remainBuyable != amount)
+                if (amount < remainBuyable)
                     throw new InvalidOperationException("您必须完全买入此债权");
+                if (remainBuyable < amount)
+                    throw new InvalidOperationException("请输入合适的债权购买金额");
             }
             else
             {
@@ -873,13 +873,8 @@ namespace Agp2p.Core
             }).ToList();
 
             // 根据债权计息时长来取得应收利息，这部分利息是受让人支付的
-
-            // 提现时债权所产生的实际收益
-            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
-            // 出让人选择的折让金额
-            var withdrawerLegacy = needTransferClaim.legacyInterest.GetValueOrDefault();
             // 出让人保留的利息
-            var buyerPaidInterest = withdrawerProfitted - withdrawerLegacy;
+            var buyerPaidInterest = needTransferClaim.keepInterest.GetValueOrDefault();
 
             // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
@@ -898,6 +893,8 @@ namespace Agp2p.Core
                 });
             }
 
+            // 提现时债权所产生的实际收益
+            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,
@@ -908,7 +905,7 @@ namespace Agp2p.Core
                 create_time = now,
                 li_claims_from = transferredClaim,
                 project = needTransferClaim.projectId,
-                remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，折让 {withdrawerLegacy.ToString("n")}，" +
+                remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，折让 {(withdrawerProfitted - buyerPaidInterest).ToString("n")}，" +
                          needTransferClaim.GetProfitingSectionDays(currentRepaymentTask,
                              (d0, dProfiting, dAfter) =>
                                  $"原收益天数：{d0 + dProfiting + dAfter}，实际收益天数：{dProfiting}") + "，手续费：" + finalCost.ToString("n")

@@ -27,7 +27,7 @@ class LegacyInterestPickerDlg extends React.Component {
         this.state = {currentVal: 0, legacyInterest: 0, callback: null};
     }
     show(legacyInterest, callback) {
-        this.setState({legacyInterest, callback});
+        this.setState({legacyInterest, callback, currentVal: legacyInterest});
         this.refs.customDlg.show();
     }
     hide() {
@@ -36,7 +36,8 @@ class LegacyInterestPickerDlg extends React.Component {
     render() {
         return (<CustomDlg ref="customDlg" title="请选择折让比例" onSubmit={() => this.state.callback(this.state.currentVal)}>
                     <div style={{margin: "0 0 10px 0"}}>
-                        <Slider min={0} max={this.state.legacyInterest} step={0.01} onChange={v => this.setState({currentVal: v})} />
+                        <Slider min={0} max={this.state.legacyInterest}
+                            value={this.state.legacyInterest} step={0.01} onChange={v => this.setState({currentVal: v})} />
                     </div>
                     您将 {this.state.currentVal.format(2)} 元利息留给了你的债权受让人<br />
                     温馨提示：折让越大，债权会更容易转让成功

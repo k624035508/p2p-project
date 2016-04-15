@@ -16185,8 +16185,8 @@ namespace Agp2p.Linq2SQL
     partial void OncreateFromInvestmentChanged();
     partial void OnnumberChanging(string value);
     partial void OnnumberChanged();
-    partial void OnlegacyInterestChanging(System.Nullable<decimal> value);
-    partial void OnlegacyInterestChanged();
+    partial void OnkeepInterestChanging(System.Nullable<decimal> value);
+    partial void OnkeepInterestChanged();
     #endregion
 		
 		public li_claims()
@@ -16447,7 +16447,7 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_legacyInterest", DbType="Decimal(19,2)")]
-		public System.Nullable<decimal> legacyInterest
+		public System.Nullable<decimal> keepInterest
 		{
 			get
 			{
@@ -16457,11 +16457,11 @@ namespace Agp2p.Linq2SQL
 			{
 				if ((this._legacyInterest != value))
 				{
-					this.OnlegacyInterestChanging(value);
+					this.OnkeepInterestChanging(value);
 					this.SendPropertyChanging();
 					this._legacyInterest = value;
-					this.SendPropertyChanged("legacyInterest");
-					this.OnlegacyInterestChanged();
+					this.SendPropertyChanged("keepInterest");
+					this.OnkeepInterestChanged();
 				}
 			}
 		}
