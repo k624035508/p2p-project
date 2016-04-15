@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Agp2p.Core;
+using Agp2p.Core.AutoLogic;
 
 namespace Agp2p.Web.admin.project
 {
@@ -510,12 +512,8 @@ namespace Agp2p.Web.admin.project
             //活期项目
             else if (category != null && category.call_index.Equals("huoqi"))
             {
-                div_risks_info.Visible = false;
-                div_mortgages_info.Visible = false;
                 div_loan_fee_rate.Visible = false;
                 div_bond_fee_rate.Visible = false;
-                li_mortgages.Visible = false;
-                li_risk.Visible = false;
 
                 txt_project_repayment_type.Items.Clear();
                 txt_project_repayment_type.Items.Add(new ListItem("每日收益", "40"));
