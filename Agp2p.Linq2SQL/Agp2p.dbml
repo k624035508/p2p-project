@@ -694,7 +694,7 @@
       <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="create_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="agree_no" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="remark" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="gainFromClaim" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="li_project_transactions_li_invitations" Member="li_invitations" ThisKey="id" OtherKey="first_invest_transaction" Type="li_invitations" />
       <Association Name="li_project_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="project_transaction" Type="li_wallet_histories" />

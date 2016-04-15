@@ -26,13 +26,14 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 4, 7, 8, 30, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = UnitTest_Init.TestStartAt; /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
         {
             // 准备好之后注释这行
             throw new InvalidOperationException("1. 备份好数据库；2. 设置实际日期");    
+            TransactionFacade.StaticClaimTransferToOneUser = false;
         }
 
         [TestMethod]
@@ -115,7 +116,7 @@ namespace Agp2p.Test
 
             Common.AssertWalletDelta(UserA, 24.31m, 0, 0, 0, 0, 0, 35000, 24.31m, realDate);
             Common.AssertWalletDelta(UserB, 17.36m, 0, 0, 0, 0, 0, 25000, 17.36m, realDate);
-            Common.AssertWalletDelta(CompanyAccount, 0m, 0, 0, 0, 0, 0, 25000, 0m, realDate);
+            Common.AssertWalletDelta(CompanyAccount, 0m, 0, 0, 0, 0, 0, 0, 0m, realDate);
         }
 
         [TestMethod]

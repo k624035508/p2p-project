@@ -126,16 +126,34 @@ namespace Agp2p.Web.UI
                         ptr.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
                     .Aggregate(0m, (sum, tr) => sum + tr.principal);
 
-            public decimal FinancingAmount => NeedTransferClaim == null ? Project.financing_amount : NeedTransferClaim.principal;
+            public decimal FinancingAmount => NeedTransferClaim == null
+                ? Project.financing_amount
+                : NeedTransferClaim.principal + NeedTransferClaim.legacyInterest.GetValueOrDefault();
 
             public decimal InvestmentProgress => NeedTransferClaim == null
                 ? Project.GetInvestmentProgress(
                     (investedAmount, financingAmount) => investedAmount/financingAmount)
-                : (InvestmentAmount/NeedTransferClaim.principal);
+                : (InvestmentAmount/FinancingAmount);
+
+            public decimal ProfitRateYearly => NeedTransferClaim == null
+                ? Project.profit_rate_year/100
+                : FinancingAmount*
+                  (Project.IsHuoqiProject()
+                      ? TransactionFacade.HuoqiProjectProfitingDay
+                      : TransactionFacade.NormalProjectProfitingDay)/NeedTransferClaim.principal/RemainDays;
+
+            private int RemainDays
+            {
+                get
+                {
+                    var task = Project.li_repayment_tasks.Last(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid);
+                    return (int) (task.should_repay_time.Date - NeedTransferClaim.createTime.Date).TotalDays;
+                }
+            }
 
             public decimal InvestmentBalance => NeedTransferClaim == null
                 ? Project.financing_amount - Project.investment_amount
-                : NeedTransferClaim.principal - InvestmentAmount;
+                : FinancingAmount - InvestmentAmount;
 
             public int InvesterCount => NeedTransferClaim == null
                 ? Project.GetInvestedUserCount()

@@ -26,6 +26,7 @@ namespace Agp2p.Core
         public const int NormalProjectProfitingDay = 365;
         public const int TicketProjectProfitingDay = 360;
         public const int HuoqiProjectProfitingDay = 360;
+        public static bool StaticClaimTransferToOneUser = true;
 
         internal static void DoSubscribe()
         {
@@ -711,8 +712,8 @@ namespace Agp2p.Core
                 if (keepInterestPercent != 1)
                 {
                     // 将利息留给受让人，以便更快转出债权
-                    var agentPaidInterest = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
-                    needTransferClaim.legacyInterest = needTransferClaim.legacyInterest.GetValueOrDefault() + (1 - keepInterestPercent) * agentPaidInterest;
+                    var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
+                    needTransferClaim.legacyInterest = (1 - keepInterestPercent) * withdrawerProfitted;
                 }
 
                 context.SubmitChanges();
@@ -749,9 +750,28 @@ namespace Agp2p.Core
                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending).ToList();
 
-            var remainBuyable = needTransferClaim.principal - buyedTrs.Aggregate(0m, (sum, tr) => sum + tr.principal);
-            if (remainBuyable != amount)
-                throw new InvalidOperationException("您必须完全买入此债权");
+            var withdrawerLegacy = needTransferClaim.legacyInterest.GetValueOrDefault();
+            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
+            var financingAmount = needTransferClaim.principal + (withdrawerProfitted - withdrawerLegacy);
+
+            var remainBuyable = financingAmount - buyedTrs.Aggregate(0m, (sum, tr) => sum + tr.principal);
+
+            if (StaticClaimTransferToOneUser)
+            {
+                if (remainBuyable != amount)
+                    throw new InvalidOperationException("您必须完全买入此债权");
+            }
+            else
+            {
+                if (remainBuyable < amount)
+                    throw new InvalidOperationException("买入的金额大于债权剩余可买入的金额");
+                if (100 <= remainBuyable && amount < 100)
+                    throw new InvalidOperationException("买入债权的金额最低为 100 元");
+                if (remainBuyable < 100 && amount != remainBuyable)
+                    throw new InvalidOperationException("由于购买债权的最低金额为 100 元，但鉴于债权的可买入金额已低于 100 元，所以您必须全额买入该债权");
+                if (remainBuyable != amount && remainBuyable - amount < 100)
+                    throw new InvalidOperationException("您买入债权后债权的可投金额将低于 100 元，这样下一个人就不能买啦，所以请调整你的投标金额");
+            }
 
             var buyer = context.dt_users.Single(u => u.id == buyerId);
             var buyInPtr = new li_project_transactions
@@ -772,8 +792,6 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("余额不足以买入债权");
 
             wallet.idle_money -= amount;
-            wallet.investing_money += amount;
-            wallet.total_investment += amount;
             wallet.last_update_time = buyInPtr.create_time;
 
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredIn);
@@ -817,7 +835,6 @@ namespace Agp2p.Core
 
                         var buyerWallet = buyInPtr.dt_users.li_wallets;
                         buyerWallet.idle_money += buyInPtr.principal;
-                        buyerWallet.investing_money -= buyInPtr.principal;
                         buyerWallet.last_update_time = now;
 
                         var his = CloneFromWallet(buyerWallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInFail);
@@ -839,7 +856,7 @@ namespace Agp2p.Core
             var transferredClaim = needTransferClaim.NewStatusChild(now, Agp2pEnums.ClaimStatusEnum.Transferred);
             context.li_claims.InsertOnSubmit(transferredClaim);
 
-            // 原债权人减少原本债权产生的代收利息，并发放部分利息
+            // 原债权人减少原本债权产生的待收利息，并收回本金、利息（减去了手续费后）
             var unpaidTasks = needTransferClaim.li_projects.li_repayment_tasks.Where(t => t.IsUnpaid()).ToList();
             var currentRepaymentTask = unpaidTasks.First();
             var profitings = unpaidTasks.Select(task =>
@@ -855,49 +872,18 @@ namespace Agp2p.Core
                     }).interest.GetValueOrDefault();
             }).ToList();
 
-            // 根据债权计息时长来取得应收利息，这部分利息是中间人垫付的
-            var withdrawClaimFinalInterest = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
-            var withdrawerLegacy = needTransferClaim.legacyInterest.GetValueOrDefault() - needTransferClaim.Parent.legacyInterest.GetValueOrDefault();
-            var agentPaidInterest = withdrawClaimFinalInterest - withdrawerLegacy;
+            // 根据债权计息时长来取得应收利息，这部分利息是受让人支付的
 
-            // 选择一个中间人来预先支付利息
-            var selectedAgent = needTransferClaim.dt_users.IsAgent()
-                ? needTransferClaim.dt_users
-                : context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.AgentGroup)
-                    .OrderByDescending(u => u.li_wallets.idle_money)
-                    .First();
-            if (selectedAgent == null)
-                throw new InvalidOperationException("请先设置中间人账号到“中间户”组");
-
-            // 创建中间人垫付记录
-            if (agentPaidInterest != 0)
-            {
-                var agentPaidPtr = new li_project_transactions
-                {
-                    investor = selectedAgent.id,
-                    principal = 0,
-                    interest = agentPaidInterest,
-                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest,
-                    status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Pending, /* 还款给中间人时设为完成，添加收益记录 */
-                    create_time = now,
-                    li_claims_from = transferredClaim,
-                    project = needTransferClaim.projectId
-                };
-                context.li_project_transactions.InsertOnSubmit(agentPaidPtr);
-
-                var agentWallet = selectedAgent.li_wallets;
-                agentWallet.idle_money -= agentPaidPtr.interest.GetValueOrDefault();
-                agentWallet.profiting_money += agentPaidPtr.interest.GetValueOrDefault();
-                agentWallet.last_update_time = agentPaidPtr.create_time;
-
-                var agentPaidHis = CloneFromWallet(agentWallet, Agp2pEnums.WalletHistoryTypeEnum.AgentPaidInterest);
-                agentPaidHis.li_project_transactions = agentPaidPtr;
-                context.li_wallet_histories.InsertOnSubmit(agentPaidHis);
-            }
+            // 提现时债权所产生的实际收益
+            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
+            // 出让人选择的折让金额
+            var withdrawerLegacy = needTransferClaim.legacyInterest.GetValueOrDefault();
+            // 出让人保留的利息
+            var buyerPaidInterest = withdrawerProfitted - withdrawerLegacy;
 
             // 创建提现人收益记录，如果是公司账号不收取
             var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
-            var finalCost = Math.Round(needTransferClaim.principal * staticWithdrawCostPercent, 2);
+            var finalCost = Math.Round((needTransferClaim.principal + buyerPaidInterest) * staticWithdrawCostPercent, 2);
 
             if (0 < finalCost)
             {
@@ -918,15 +904,14 @@ namespace Agp2p.Core
                 principal = needTransferClaim.principal - finalCost,
                 type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredOut,
                 status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                interest = agentPaidInterest,
+                interest = buyerPaidInterest,
                 create_time = now,
                 li_claims_from = transferredClaim,
                 project = needTransferClaim.projectId,
-                remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，" +
+                remark = $"债权 {needTransferClaim.principal.ToString("n")} 转让成功，折让 {withdrawerLegacy.ToString("n")}，" +
                          needTransferClaim.GetProfitingSectionDays(currentRepaymentTask,
                              (d0, dProfiting, dAfter) =>
-                                 $"原收益天数：{d0 + dProfiting + dAfter}，实际收益天数：{dProfiting}") + "，手续费：" +
-                         finalCost.ToString("n")
+                                 $"原收益天数：{d0 + dProfiting + dAfter}，实际收益天数：{dProfiting}") + "，手续费：" + finalCost.ToString("n")
             };
             context.li_project_transactions.InsertOnSubmit(claimTransferredOutPtr);
 
@@ -935,7 +920,7 @@ namespace Agp2p.Core
             ownerWallet.idle_money += claimTransferredOutPtr.principal + claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.investing_money -= needTransferClaim.principal;
             // 再次转让的话上一个转让人的利息不归再次出让人
-            ownerWallet.profiting_money -= profitings.Sum() + needTransferClaim.Parent.legacyInterest.GetValueOrDefault();
+            ownerWallet.profiting_money -= profitings.Sum();
             ownerWallet.total_profit += claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.last_update_time = claimTransferredOutPtr.create_time;
 
@@ -945,11 +930,18 @@ namespace Agp2p.Core
 
 
             // 为 债权受让人 生成债权、计算代收利息、创建钱包历史
-            var remainProfitingOfClaim = profitings.Sum() - withdrawClaimFinalInterest;
-            var buyerProfitingsBeforeRounding = buyedTrs.Select(ptr => remainProfitingOfClaim * ptr.principal/needTransferClaim.principal).ToList();
+            var remainProfitingOfClaim = profitings.Sum();
+            var financingAmount = needTransferClaim.principal + buyerPaidInterest;
+            var buyerProfitingsBeforeRounding = buyedTrs.Select(ptr => remainProfitingOfClaim * ptr.principal/financingAmount).ToList();
             var buyerProfitings = Utils.GetPerfectRounding(buyerProfitingsBeforeRounding, remainProfitingOfClaim, 2);
 
-            buyedTrs.ZipEach(buyerProfitings, (buyTr, profiting) =>
+            // 由于买入债权时有一部分可能是利息，这部分和买入债权的本金部分要按各用户的买入比例分开
+            var interestRatio = buyerPaidInterest/(needTransferClaim.principal + buyerPaidInterest);
+            var buyerInterestPartsNotRound = buyedTrs.Select(tr => tr.principal*interestRatio).ToList();
+            var buyerInterestParts = Utils.GetPerfectRounding(buyerInterestPartsNotRound, buyerPaidInterest, 2);
+
+            var zip = buyerProfitings.Zip(buyerInterestParts, (profiting, buyerPaidInterestPart) => new {profiting, buyerPaidInterestPart});
+            buyedTrs.ZipEach(zip, (buyTr, pi) =>
             {
                 // 由中间户买入的债权为可转让债权，可以用作活期债权
                 // 按提现时候开始计息，所以债权的创建时间为提现的时间
@@ -957,23 +949,21 @@ namespace Agp2p.Core
                     buyTr.dt_users.IsAgent()
                         ? Agp2pEnums.ClaimStatusEnum.Transferable
                         : Agp2pEnums.ClaimStatusEnum.Nontransferable,
-                    buyTr.principal, buyTr);
+                    buyTr.principal - pi.buyerPaidInterestPart, buyTr);
                 context.li_claims.InsertOnSubmit(transferedChild);
 
                 buyTr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success;
 
                 var wallet = buyTr.dt_users.li_wallets;
-                wallet.profiting_money += profiting + transferedChild.legacyInterest.GetValueOrDefault();
+                wallet.profiting_money += pi.profiting;
+                wallet.investing_money += transferedChild.principal;
+                wallet.total_investment += transferedChild.principal;
                 wallet.last_update_time = now;
 
                 var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess);
                 his.li_project_transactions = buyTr;
                 context.li_wallet_histories.InsertOnSubmit(his);
             });
-            if (1 < buyedTrs.Count)
-            {
-                needTransferClaim.CheckSplitedChildrenLegacyInterestIsPerfectRounding();
-            }
         }
 
         public static void HuoqiProjectWithdraw(this Agp2pDataContext context, int userId, int huoqiProjectId, decimal withdrawMoney)
@@ -1055,8 +1045,6 @@ namespace Agp2p.Core
 
                 var splited = headClaim.NewPrincipalAndStatusChild(withdrawTime, Agp2pEnums.ClaimStatusEnum.NeedTransfer, withdrawMoney);
                 context.li_claims.InsertOnSubmit(splited);
-
-                headClaim.CheckSplitedChildrenLegacyInterestIsPerfectRounding();
             }
         }
 
@@ -1307,12 +1295,6 @@ namespace Agp2p.Core
             else
             {
                 throw new InvalidOperationException("异常的原始债权状态");
-            }
-
-            // 拆分过债权，可能需要调整四舍五入
-            if (amount < originalClaim.principal)
-            {
-                originalClaim.CheckSplitedChildrenLegacyInterestIsPerfectRounding();
             }
             return takeoverPart;
         }
@@ -1838,10 +1820,6 @@ namespace Agp2p.Core
             {
                 // 增加钱包空闲金额与减去待收本金和待收利润
                 var wallet = ptr.dt_users.li_wallets;
-                var legacyInterest = proj.IsHuoqiProject() ? 0 : ptr.li_claims_from.legacyInterest.GetValueOrDefault();
-
-                // 加上折让的利息
-                ptr.interest = ptr.interest.GetValueOrDefault() + legacyInterest;
 
                 wallet.idle_money += ptr.interest.GetValueOrDefault() + ptr.principal;
                 wallet.investing_money -= ptr.principal;
@@ -1851,7 +1829,7 @@ namespace Agp2p.Core
                     // 由于 提前还款/逾期还款 的缘故，需要修正待收益
                     wallet.profiting_money -= ptrAddedCost == null
                         ? ptr.interest.GetValueOrDefault()
-                        : ptrAddedCost[ptr.investor].interest.GetValueOrDefault() + legacyInterest;
+                        : ptrAddedCost[ptr.investor].interest.GetValueOrDefault();
                 }
                 wallet.total_profit += ptr.interest.GetValueOrDefault();
                 wallet.last_update_time = ptr.create_time;
@@ -1862,14 +1840,7 @@ namespace Agp2p.Core
                 context.li_wallet_histories.InsertOnSubmit(his);
             }
 
-            
-            if (!proj.IsHuoqiProject())
-            {
-                // 归还定期项目提现时中间人垫付的部分
-                AgentRepayForStaticProjectEarlyWithdraw(context, proj, repaymentTask);
-            }
             context.SubmitChanges();
-
 
             var projectNeedComplete = !proj.IsHuoqiProject() && !proj.IsNewbieProject() && !proj.li_repayment_tasks.Any(
                 ta =>
@@ -1879,40 +1850,6 @@ namespace Agp2p.Core
             MessageBus.Main.Publish(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息，不能使用异步消息，否则续投活期债权会出现多线程竞争冒险
 
             return repaymentTask;
-        }
-
-        private static void AgentRepayForStaticProjectEarlyWithdraw(Agp2pDataContext context, li_projects proj, li_repayment_tasks repaymentTask)
-        {
-            var agentPaidPtr = proj.li_project_transactions.Where(
-                ptr =>
-                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.AgentPaidInterest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending).ToList();
-            agentPaidPtr.ForEach(ptr =>
-            {
-                ptr.status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success;
-
-                var agentRepayPtr = new li_project_transactions
-                {
-                    investor = ptr.investor,
-                    principal = 0,
-                    interest = ptr.interest.GetValueOrDefault(),
-                    type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.AgentGainPaidInterest,
-                    status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
-                    create_time = repaymentTask.repay_at.Value,
-                    li_claims_from = ptr.li_claims_from,
-                    project = ptr.project
-                };
-                context.li_project_transactions.InsertOnSubmit(agentRepayPtr);
-
-                var agentWallet = ptr.dt_users.li_wallets;
-                agentWallet.idle_money += ptr.interest.GetValueOrDefault();
-                agentWallet.profiting_money -= ptr.interest.GetValueOrDefault();
-                agentWallet.last_update_time = repaymentTask.repay_at.Value;
-
-                var agentPaidHis = CloneFromWallet(agentWallet, Agp2pEnums.WalletHistoryTypeEnum.AgentGainPaidInterest);
-                agentPaidHis.li_project_transactions = agentRepayPtr;
-                context.li_wallet_histories.InsertOnSubmit(agentPaidHis);
-            });
         }
 
         private static void InsertAgentPrepayPtr(Agp2pDataContext context, List<li_project_transactions> ptrs)
@@ -2183,7 +2120,8 @@ namespace Agp2p.Core
                     // 根据买入时间计算利息
                     var realityInterest = Math.Round(totalInterest, 2);
 
-                    if (!repaymentTask.li_projects.IsHuoqiProject())
+                    // 为提现的债权计算应收利息
+                    if (!repaymentTask.li_projects.IsHuoqiProject() && profitingDayLengthBaseClaim.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
                     {
                         var tmp = profitingDayLengthBaseClaim.GetProfitingSectionDays(repaymentTask,
                                 (claimBeforeProfitingDays, claimProfitingDays, claimInvalidDays) =>
