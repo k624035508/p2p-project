@@ -88,9 +88,9 @@ namespace Agp2p.Web.admin.claims
                         new BuyableClaim
                         {
                             ClaimId = cl.id,
-                            Principal = cl.principal,
+                            Principal = cl.principal + cl.keepInterest.GetValueOrDefault(),
                             BuyableAmount =
-                                cl.principal - cl.li_project_transactions_profiting.Where(ptr =>
+                                cl.principal + cl.keepInterest.GetValueOrDefault() - cl.li_project_transactions_profiting.Where(ptr =>
                                     ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
                                     ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
                                     .Aggregate(0m, (sum, tr) => sum + tr.principal),
