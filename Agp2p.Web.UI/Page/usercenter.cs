@@ -639,6 +639,7 @@ namespace Agp2p.Web.UI.Page
             var query = context.li_claims.Where(c =>
                         c.userId == userInfo.id &&
                         c.projectId == c.profitingProjectId &&
+                        (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= c.li_projects.status &&
                         StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
                         !c.Children.Any());
 
