@@ -59,7 +59,7 @@ class MyloanTable extends React.Component {
                             <td>{tr.profit}</td>
                             <td>1/1</td>
                             <td>
-                                <a href="javascript:">{tr.autoRepay==true ? "取消自动还款" : "开通自动还款"}</a>
+                                {tr.autoRepay==true ? <a href="javascript:">取消自动还款</a> : <a href="javascript:">开通自动还款</a> }
                                 <a href="javascript:">账户还款</a>
                                 <a href="javascript:">银行卡还款</a> 
                             </td>

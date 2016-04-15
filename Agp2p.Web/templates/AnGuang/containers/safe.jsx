@@ -281,7 +281,7 @@ class IdentityBinding extends React.Component {
 	}
 	render() {
 		return (
-			<li>
+			<li>    
 				<div className="list-cell">
 					<span className="name"></span>
 					<span className="list-th">实名认证</span>
@@ -320,8 +320,11 @@ class IdentityBinding extends React.Component {
 class CustodyAccount extends React.Component {
 	constructor(props) {
 		super(props);
-        this.state = {Accou:true};
-        }
+		   this.state={ trueName:" "}
+		   }
+        componentWillReceiveProps(nextProps) {
+		this.setState({trueName: nextProps.realName});
+		}
 	render() {
 		return (
 			<li>
@@ -330,10 +333,10 @@ class CustodyAccount extends React.Component {
 					<span className="list-th">资金托管</span>
 					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方托管、监管</span>
 					<span className="pull-right">
-                    {this.props.Accou ? 
+                    {this.props.realName ? 
                     <a href="/api/payment/sumapay/index.aspx?api=4" >查看</a> 
                     :
-                    <a href="/api/payment/sumapay/index.aspx?api=1" style={{color:"red"}}>立即认证</a>}
+                    <a href="/api/payment/sumapay/index.aspx?api=1" style={{color:"red"}}>立即开通</a>}
                     </span>
 				</div>
 			</li>
