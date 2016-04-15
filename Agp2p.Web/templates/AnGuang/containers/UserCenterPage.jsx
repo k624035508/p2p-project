@@ -35,7 +35,7 @@ class UserCenterPage extends React.Component {
 		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
 	}
 	componentDidMount() {
-		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue} = $("#app").data();
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner} = $("#app").data();
 		var walletInfo = {
 			idleMoney : idleMoney.toNum(),
 			lockedMoney : lockedMoney.toNum(),
@@ -44,7 +44,7 @@ class UserCenterPage extends React.Component {
 			lotteriesValue : lotteriesValue.toNum()
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
-		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime }));
+		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True" }));
 	}
 	render() {
 		return (
@@ -93,7 +93,7 @@ class UserCenterPage extends React.Component {
 			                <ul className="list-unstyled inner-ul">
 								<li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
 			                </ul>
-			            </li>}
+			            </li> }
 			        </ul>
 			    </div>
 		        {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
