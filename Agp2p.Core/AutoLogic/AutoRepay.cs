@@ -114,13 +114,21 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var today = DateTime.Today;
 
-            // 第三日开始返息：如果存在需要回款的活期项目债权，并且今天没有该项目的回款计划，则生成
-            var huoqiProjects = context.li_projects
-                .Where(p => p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing && p.dt_article_category.call_index == "huoqi")
-                .Where(p => p.li_repayment_tasks.All(ta => ta.should_repay_time.Date != today)).ToList();
+            var huoqiProjects = context.li_projects.Where(p =>
+                        p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing &&
+                        p.dt_article_category.call_index == "huoqi").ToList();
 
             var dailyRepayments = huoqiProjects.SelectMany(p =>
             {
+                // 检查今日是否已经生成过还款计划
+                var lastRepaymentTask = context.li_repayment_tasks.Where(ta => ta.project == p.id)
+                    .OrderByDescending(ta => ta.should_repay_time)
+                    .FirstOrDefault();
+                if (lastRepaymentTask != null && today < lastRepaymentTask.should_repay_time)
+                {
+                    return Enumerable.Empty<li_repayment_tasks>();
+                }
+
                 // 如果是今天/昨日才投的活期标，则不返利
                 // 如果前日有 不可转让/可转让 的债权，则会产生收益（提现后不再产生收益）
                 var shouldRepayTo = p.li_claims_profiting.Where(c => c.IsProfiting()).ToList();
