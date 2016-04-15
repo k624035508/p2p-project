@@ -57,17 +57,22 @@ namespace Agp2p.Core.PayApiLogic
                         context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
                             Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
                         break;
-                    //债权转让
+                        //债权转让
                     case (int)Agp2pEnums.SumapayApiEnum.CreAs:
                         var creditAssignmentReqMsg = (CreditAssignmentReqMsg)msg;
+                        //通过债权找出对应的投资信息
+                        var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
+                        creditAssignmentReqMsg.AssignmentSum = (claim.li_project_transactions_invest.principal + claim.li_project_transactions_invest.interest).ToString();
+                        creditAssignmentReqMsg.ProjectCode = claim.projectId;
+                        creditAssignmentReqMsg.ProjectDescription = claim.li_projects.title;
                         //计算手续费
                         var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw / 100;
-                        var finalCost = Math.Round(Utils.StrToDecimal(creditAssignmentReqMsg.AssignmentSum, 0) * staticWithdrawCostPercent, 2);
-                        creditAssignmentReqMsg.SetSubledgerList(finalCost);
-                        //通过债权找出对应的投资记录
-                        var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
-                        creditAssignmentReqMsg.OriginalOrderSum = claim.li_project_transactions_invest.principal.ToString("f");
-                        creditAssignmentReqMsg.OriginalRequestId = claim.li_project_transactions_invest.no_order;
+                        var finalCost = Math.Round(Utils.StrToDecimal(creditAssignmentReqMsg.UndertakeSum, 0) * staticWithdrawCostPercent, 2);
+                        //父债权才有原投资流水号
+                        var rooClaim = claim.GetRootClaim();
+                        creditAssignmentReqMsg.OriginalOrderSum = rooClaim.li_project_transactions_invest.principal.ToString("f");
+                        creditAssignmentReqMsg.OriginalRequestId = rooClaim.li_project_transactions_invest.no_order;
+                        creditAssignmentReqMsg.SetSubledgerList(finalCost, claim.userId.ToString());
                         break;
 
                         //case (int)Agp2pEnums.SumapayApiEnum.MaBid:

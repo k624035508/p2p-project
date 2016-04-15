@@ -18,6 +18,7 @@ namespace Agp2p.Web.UI.Page
             action = DTRequest.GetQueryString("action");
             username = DTRequest.GetQueryString("username");
             invite_code = DTRequest.GetQueryString("invite_code");
+            result = DTRequest.GetQueryString("result");
             username = Utils.DropHTML(username);
             //检查是否关闭会员注册服务
             if (action == "" && uconfig.regstatus == 0)

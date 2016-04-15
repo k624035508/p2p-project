@@ -1,8 +1,7 @@
 /*tips-alert.less(弹窗样式)*/
 @import "common-style";
 
-#tipsAlert, #tipsConfirm {
-	z-index: 9999;
+.custom-dlg {
 	.modal-dialog {
 		width: 360px;
 		margin: 30px auto; // 防止 ie8 不支持媒体查询
@@ -44,4 +43,9 @@
 			}
 		}
 	}
+}
+
+#tipsAlert, #tipsConfirm {
+	.custom-dlg;
+	z-index: 9999;
 }

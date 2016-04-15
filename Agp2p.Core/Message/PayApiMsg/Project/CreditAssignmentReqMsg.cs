@@ -22,17 +22,13 @@ namespace Agp2p.Core.Message.PayApiMsg
         public int ClaimId { get; set; } //债权编号
         public string SubledgerList { get; set; } //分账列表
 
-        public CreditAssignmentReqMsg(int userId, int projectCode, int claimId, string assignmentSum, string undertakeSum,
-            string projectDescription = "", string creditValue = "", string undertakePercentage = "", string payType = "1", string mainAccountType = "",
+        public CreditAssignmentReqMsg(int userId, int claimId, string undertakeSum, string creditValue = "", string undertakePercentage = "", string payType = "1", string mainAccountType = "",
             string mainAccountCode = "")
         {
             UserId = userId;
-            ProjectCode = projectCode;
             ClaimId = claimId;
-            AssignmentSum = assignmentSum;
             UndertakeSum = undertakeSum;
             PayType = payType;
-            ProjectDescription = projectDescription;
             CreditValue = creditValue;
             UndertakePercentage = undertakePercentage;
             MainAccountType = mainAccountType;
@@ -79,16 +75,16 @@ namespace Agp2p.Core.Message.PayApiMsg
             return sd;
         }
 
-        public void SetSubledgerList(decimal fee)
+        public void SetSubledgerList(decimal fee, string buyClaimerId)
         {
             var loanSum = Utils.StrToDecimal(UndertakeSum, 0);
             var list = new List<object>
             {
-                //借款人收到的款
+                //转让人收到的款
                 new
                 {
                     roleType = "0",
-                    roleCode = UserId.ToString(),
+                    roleCode = buyClaimerId,
                     inOrOut = "0",
                     sum = (loanSum - fee).ToString("f")
                 }

@@ -12814,6 +12814,8 @@ namespace Agp2p.Linq2SQL
 		
 		private string _number;
 		
+		private System.Nullable<decimal> _legacyInterest;
+		
 		private EntitySet<li_claims> _li_claims2;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions_profiting;
@@ -12856,6 +12858,8 @@ namespace Agp2p.Linq2SQL
     partial void OncreateFromInvestmentChanged();
     partial void OnnumberChanging(string value);
     partial void OnnumberChanged();
+    partial void OnlegacyInterestChanging(System.Nullable<decimal> value);
+    partial void OnlegacyInterestChanged();
     #endregion
 		
 		public li_claims()
@@ -13111,6 +13115,26 @@ namespace Agp2p.Linq2SQL
 					this._number = value;
 					this.SendPropertyChanged("number");
 					this.OnnumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_legacyInterest", DbType="Decimal(19,2)")]
+		public System.Nullable<decimal> legacyInterest
+		{
+			get
+			{
+				return this._legacyInterest;
+			}
+			set
+			{
+				if ((this._legacyInterest != value))
+				{
+					this.OnlegacyInterestChanging(value);
+					this.SendPropertyChanging();
+					this._legacyInterest = value;
+					this.SendPropertyChanged("legacyInterest");
+					this.OnlegacyInterestChanged();
 				}
 			}
 		}

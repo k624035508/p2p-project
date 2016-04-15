@@ -60,7 +60,10 @@ namespace Agp2p.Web.admin.claims
                     .ToArray());
             if (ddlAgent.Items.Count != 0)
             {
-                selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                if (selectedAgent == 0)
+                    selectedAgent = Convert.ToInt32(ddlAgent.Items[0].Value);
+                else
+                    ddlAgent.SelectedValue = selectedAgent.ToString();
             }
             else
             {
@@ -77,8 +80,7 @@ namespace Agp2p.Web.admin.claims
             // 中间人在后台只能买公司账号转出的债权
             var query =
                 context.li_claims.Where(
-                    c =>
-                        c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c => c.profitingProjectId == c.projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                         c.Parent.dt_users.dt_user_groups.title == AutoRepay.CompanyAccount &&
                         !c.Children.Any())
                     .AsEnumerable()
@@ -134,10 +136,14 @@ namespace Agp2p.Web.admin.claims
 
             try
             {
-                TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
                 context = new Agp2pDataContext();
-                RptBind();
-                JscriptMsg("买入债权成功", "", "Success");
+                var claim = context.li_claims.SingleOrDefault(c => c.id == claimId);
+                Response.Write("<script>window.open('" + "/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                           + "&userId=" + selectedAgent + "&claimId=" + claimId + "&undertakeSum=" + buyAmount +"','_blank')</script>");
+
+                //TransactionFacade.BuyClaim(context, claimId, selectedAgent, Convert.ToDecimal(buyAmount));
+                //RptBind();
+                //JscriptMsg("买入债权成功", "", "Success");
             }
             catch (Exception ex)
             {
