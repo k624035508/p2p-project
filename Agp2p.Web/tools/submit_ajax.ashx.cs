@@ -2151,7 +2151,7 @@ namespace Agp2p.Web.tools
                 var buyClaimId = DTRequest.GetFormInt("buyClaimId", 0);
                 var projectSum = DTRequest.GetFormDecimal("projectSum", 0);
                 var projectDescription = DTRequest.GetFormString("projectDescription");
-
+                var huoqi = DTRequest.GetFormString("huoqi");
                 if (buyClaimId != 0)
                 {
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
@@ -2159,8 +2159,7 @@ namespace Agp2p.Web.tools
                 }
                 else
                 {
-                    //TODO 判断活期项目
-                    int reqApi = false ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
+                    int reqApi = huoqi.Equals("True") ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                            + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
                                            + "&projectSum=" + projectSum + "&projectDescription=" +

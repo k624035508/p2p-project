@@ -83,7 +83,8 @@
                         data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
-                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
+                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}"
+                        data-project-huoqi="{projectModel.IsHuoqiProject()}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">

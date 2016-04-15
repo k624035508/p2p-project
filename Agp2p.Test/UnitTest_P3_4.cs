@@ -28,7 +28,7 @@ namespace Agp2p.Test
             回款
         */
 
-        readonly DateTime realDate = new DateTime(2016, 4, 13, 8, 30, 00); /* 开始测试前请设置好实际日期 */
+        readonly DateTime realDate = UnitTest_Init.TestStartAt; /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
@@ -90,7 +90,7 @@ namespace Agp2p.Test
             /* A 提现 40000，要利息
                公司账号接手 40000 */
             Common.StaticProjectWithdraw("P3", UserA, 40000);
-            Common.BuyClaim("P3", CompanyAccount, 40000);
+            Common.BuyClaim("P3", CompanyAccount, 40005.56m);
 
             Common.AutoRepaySimulate();
         }
@@ -121,7 +121,7 @@ namespace Agp2p.Test
 
             Common.AssertWalletDelta(UserA, 12.5m, 0, 0, 0, 0, 0, 50000, 12.5m, realDate);
             Common.AssertWalletDelta(UserB, 0m, 0, 0, 0, 0, 0, 40000, 0m, realDate);
-            Common.AssertWalletDelta(CompanyAccount, 22.22m, 0, 0, 0, 0, 0, 40000, 22.22m, realDate);
+            Common.AssertWalletDelta(CompanyAccount, 22.22m, 0, 0, 0, 0, 0, 40000, 27.78m, realDate);
         }
 
         [TestMethod]

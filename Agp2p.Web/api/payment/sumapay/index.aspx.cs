@@ -76,7 +76,7 @@ namespace Agp2p.Web.api.payment.sumapay
                         DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
                         requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
                     break;
-                //个人存管账户还款普通/集合项目
+                //个人存管账户还款普通/集合项目 TODO Remarks移动到RequestApiHandle处理
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
                 case (int)Agp2pEnums.SumapayApiEnum.McRep:
                     reqMsg = new AccountRepayReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
@@ -84,7 +84,7 @@ namespace Agp2p.Web.api.payment.sumapay
                         "/user/center/index.html#/recharge", requestApi == (int) Agp2pEnums.SumapayApiEnum.McRep);
                     reqMsg.Remarks = $"isEarly=false&repayTaskId={DTRequest.GetQueryString("repayTaskId")}";
                     break;
-                //个人协议还款普通/集合项目
+                //个人协议还款普通/集合项目 TODO Remarks移动到RequestApiHandle处理
                 case (int)Agp2pEnums.SumapayApiEnum.BaRep:
                 case (int)Agp2pEnums.SumapayApiEnum.BcRep:
                     reqMsg = new BankRepayReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum")

@@ -90,7 +90,6 @@
             <div id="floatHead" class="content-tab">
                 <div class="content-tab-ul-wrap">
                     <ul>
-                        <% %>
                         <li><a href="javascript:;" id="a_item_base" onclick="tabs(this);" class="selected">基本信息</a></li>
                         <li id="li_mortgages" runat="server"><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
                         <li id="li_risk" runat="server"><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>

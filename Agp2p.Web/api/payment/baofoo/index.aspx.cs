@@ -26,7 +26,7 @@ namespace Agp2p.Web.api.payment.baofoo
             string amount = DTRequest.GetFormString("OrderMoney");
             //创建充值订单
             var context = new Agp2pDataContext();
-            var charge_order = context.Charge(user_id, decimal.Parse(amount), (byte)Agp2pEnums.PayApiTypeEnum.Baofoo, "");
+            var charge_order = context.Charge(user_id, decimal.Parse(amount), Agp2pEnums.PayApiTypeEnum.Baofoo, "");
 
             Service server = new Service();
             string sHtmlText = server.BuildFormHtml(charge_order.no_order, charge_order.create_time.ToString("yyyyMMddHHmmss"), amount, strPayID);

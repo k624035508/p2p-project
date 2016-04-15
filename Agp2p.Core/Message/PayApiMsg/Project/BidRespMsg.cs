@@ -26,9 +26,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
             ProjectCode = Utils.StrToInt(map["projectCode"], 0);
             Sum = map["sum"];
-            InvestmentSum = map.ContainsKey("protocolCode") ? map["investmentSum"] : "";
-            ProjectSum = map.ContainsKey("protocolCode") ? map["projectSum"] : "";
-            RemainInvestmentSum = map["remainInvestmentSum"];
+            InvestmentSum = map.ContainsKey("investmentSum") ? map["investmentSum"] : "";
+            ProjectSum = map.ContainsKey("projectSum") ? map["projectSum"] : "";
+            RemainInvestmentSum = map.ContainsKey("remainInvestmentSum") ? map["remainInvestmentSum"] : "";
             ProtocolCode = map.ContainsKey("protocolCode") ? map["protocolCode"] : "";
 
         }

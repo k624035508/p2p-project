@@ -45,11 +45,11 @@ namespace Agp2p.Core.PayApiLogic
                 {
                     case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                         //网银充值
-                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
+                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
                         break;
                     case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                         //快捷充值
-                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), (byte)Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
+                        context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
                         break;
                     case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                         //提现

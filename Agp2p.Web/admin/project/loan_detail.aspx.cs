@@ -776,8 +776,7 @@ namespace Agp2p.Web.admin.project
             var loaner = project.li_risks.li_loaners;
             //TODO 还款上限
             if (loaner?.dt_users != null)
-                Response.Write("<script>window.open('" +
-                               $"/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.AcReO}&userId={loaner.dt_users.id}&projectCode={ProjectId}&repayLimit=1000" +
+                Response.Write($"<script>window.open(\'/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.AcReO}&userId={loaner.dt_users.id}&projectCode={ProjectId}&repayLimit=1000" +
                                "','_blank')</script>");
         }
     }

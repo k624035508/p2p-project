@@ -208,11 +208,9 @@ namespace Agp2p.Web.admin.repayment
                         return;
                     }
                     //最近的还款计划
-                    //TODO 正式要加上时间条件
                     var repayTask = repay.li_projects.li_repayment_tasks.OrderBy(r => r.should_repay_time)
                         .First(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid
-                        //&& r.should_repay_time.Date <= DateTime.Today
-                        );
+                        && r.should_repay_time.Date <= DateTime.Today);
                     if (repayTask.id != repay.id)
                     {
                         JscriptMsg("当前还款计划不是最近的还款计划！", "back", "Error");
