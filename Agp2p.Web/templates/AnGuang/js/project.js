@@ -77,7 +77,7 @@ $(function () {
                 alert("对不起，最少100元起投！");
                 return;
             }
-            if (investAmount != ~~investAmount) {
+            if (buyClaimId === 0 && investAmount != ~~investAmount) {
                 alert("对不起，请输入整数金额！");
                 return;
             }

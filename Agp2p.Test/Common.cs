@@ -340,8 +340,8 @@ namespace Agp2p.Test
 
             var preBuyClaim = project.li_claims.Where(
                 c =>
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer && amount <= c.principal &&
-                    c.IsLeafClaim()).OrderBy(c => c.principal - amount).First();
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    c.IsLeafClaim()).OrderBy(c => Math.Abs(c.principal - amount)).First();
 
             TransactionFacade.BuyClaim(context, preBuyClaim.id, user.id, amount);
 

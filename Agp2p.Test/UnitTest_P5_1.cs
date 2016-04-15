@@ -27,7 +27,7 @@ namespace Agp2p.Test
                 回款
         */
 
-        private readonly DateTime TestStartAt = new DateTime(2016, 4, 13, 8, 20, 00);/* 开始测试前请设置好实际日期 */
+        readonly DateTime TestStartAt = UnitTest_Init.TestStartAt; /* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
