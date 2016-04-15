@@ -877,8 +877,8 @@ namespace Agp2p.Core
             // 出让人保留的利息
             var buyerPaidInterest = needTransferClaim.keepInterest.GetValueOrDefault();
 
-            // 创建提现人收益记录，如果是公司账号不收取
-            var staticWithdrawCostPercent = needTransferClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
+            // 创建提现人收益记录，扣取手续费
+            var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
             var finalCost = Math.Round((needTransferClaim.principal + buyerPaidInterest) * staticWithdrawCostPercent, 2);
 
             if (0 < finalCost)

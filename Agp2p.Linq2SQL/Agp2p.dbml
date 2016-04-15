@@ -580,7 +580,7 @@
       <Column Name="parentClaimId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="createFromInvestment" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="number" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
-      <Column Name="legacyInterest" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
+      <Column Name="keepInterest" Type="System.Decimal" DbType="Decimal(19,2)" CanBeNull="true" />
       <Association Name="li_claims_li_claims" Member="Children" Storage="_li_claims2" ThisKey="id" OtherKey="parentClaimId" Type="li_claims" />
       <Association Name="li_claims_li_project_transactions" Member="li_project_transactions_profiting" ThisKey="id" OtherKey="gainFromClaim" Type="li_project_transactions" />
       <Association Name="li_claims_li_claims" Member="Parent" Storage="_li_claims1" ThisKey="parentClaimId" OtherKey="id" Type="li_claims" IsForeignKey="true" />

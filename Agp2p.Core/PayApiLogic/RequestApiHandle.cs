@@ -62,7 +62,7 @@ namespace Agp2p.Core.PayApiLogic
                         var creditAssignmentReqMsg = (CreditAssignmentReqMsg)msg;
                         //通过债权找出对应的投资信息
                         var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);
-                        creditAssignmentReqMsg.AssignmentSum = (claim.principal + claim.legacyInterest.GetValueOrDefault(0)).ToString();
+                        creditAssignmentReqMsg.AssignmentSum = (claim.principal + claim.keepInterest.GetValueOrDefault(0)).ToString();
                         creditAssignmentReqMsg.ProjectCode = claim.projectId;
                         creditAssignmentReqMsg.ProjectDescription = claim.li_projects.title;
                         requestLog.project_id = claim.projectId;
