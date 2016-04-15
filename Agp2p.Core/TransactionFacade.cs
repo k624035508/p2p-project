@@ -50,7 +50,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Charge(this Agp2pDataContext context, int userId, decimal money,
-            Agp2pEnums.PayApiTypeEnum payApi, string remark = null)
+            Agp2pEnums.PayApiTypeEnum payApi, string noOrder = "", string remark = null)
         {
             // 创建交易记录（充值进行中）
             var tr = new li_bank_transactions
@@ -62,7 +62,7 @@ namespace Agp2p.Core
                 value = money,
                 handling_fee = 0,
                 handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
-                no_order = Utils.GetOrderNumberLonger(),
+                no_order = noOrder.Equals("") ? Utils.GetOrderNumberLonger() : noOrder,
                 create_time = DateTime.Now,
                 remarks = remark,
                 pay_api = (byte) payApi
@@ -94,7 +94,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId,
-            decimal withdrawMoney, string remark = null)
+            decimal withdrawMoney, string noOrder = "", string remark = null)
         {
             // 提现 100 起步，5w 封顶
             if (withdrawMoney < 100)
@@ -140,7 +140,7 @@ namespace Agp2p.Core
                         (unusedMoney == 0
                             ? Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawHandlingFee
                             : Agp2pEnums.BankTransactionHandlingFeeTypeEnum.WithdrawUnusedMoneyHandlingFee),
-                no_order = Utils.GetOrderNumberLonger(),
+                no_order = noOrder.Equals("") ? Utils.GetOrderNumberLonger() : noOrder,
                 remarks = remark,
                 create_time = wallet.last_update_time // 时间应该一致
             };
@@ -448,7 +448,7 @@ namespace Agp2p.Core
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
         /// <param name="investingMoney"></param>
-        public static void Invest(int userId, int projectId, decimal investingMoney)
+        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "")
         {
             li_project_transactions tr;
             li_wallets wallet;
@@ -521,6 +521,7 @@ namespace Agp2p.Core
                     type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
                     principal = investingMoney,
                     status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Success,
+                    no_order = noOrder,
                     create_time = wallet.last_update_time // 时间应该一致
                 };
                 context.li_project_transactions.InsertOnSubmit(tr);
@@ -1747,7 +1748,7 @@ namespace Agp2p.Core
         /// <param name="loanerUserId"></param>
         /// <param name="bankAccountId"></param>
         /// <param name="amount"></param>
-        public static void GainLoanerRepayment(Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
+        public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
         {
             var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
             if (wallet.idle_money < amount)

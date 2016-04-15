@@ -20,7 +20,7 @@ namespace Agp2p.Web.api.payment.lianlianpay
                 string amount = DTRequest.GetFormString("amount");                
                 //创建充值订单
                 var context = new Agp2pDataContext();
-                var charge_order = context.Charge(user_id, decimal.Parse(amount), (byte)Agp2pEnums.PayApiTypeEnum.Lianlianpay);
+                var charge_order = context.Charge(user_id, decimal.Parse(amount), Agp2pEnums.PayApiTypeEnum.Lianlianpay);
 
                 //请求连连快捷支付接口                
                 var service = new LianlianpayService();

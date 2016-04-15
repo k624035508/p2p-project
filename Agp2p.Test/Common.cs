@@ -363,7 +363,7 @@ namespace Agp2p.Test
             if (wallet.idle_money < amount)
             {
                 Debug.WriteLine($"为用户 {wallet.dt_users.GetFriendlyUserName()} 充值 {amount - wallet.idle_money}");
-                var btr = context.Charge(wallet.user_id, amount - wallet.idle_money, (byte)Agp2pEnums.PayApiTypeEnum.ManualAppend);
+                var btr = context.Charge(wallet.user_id, amount - wallet.idle_money, Agp2pEnums.PayApiTypeEnum.ManualAppend);
                 context.ConfirmBankTransaction(btr.id, null);
             }
         }
