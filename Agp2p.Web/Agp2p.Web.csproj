@@ -350,7 +350,6 @@
     <Content Include="api\payment\ecpss\pay_test.aspx" />
     <Content Include="api\payment\ecpss\notify_url.aspx" />
     <Content Include="api\weixin\wx.aspx" />
-    <Content Include="aspx\main\project.aspx" />
     <Content Include="css\image1.gif" />
     <Content Include="css\image2.gif" />
     <Content Include="css\jcrop.gif" />
@@ -2541,6 +2540,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="aspx\main\" />
     <Folder Include="aspx\mobile\" />
     <Folder Include="aspx\plugin\" />
     <Folder Include="html\" />

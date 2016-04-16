@@ -86,6 +86,7 @@
     <Compile Include="ActivityLogic\TrialActivity.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
     <Compile Include="AutoLogic\CheckDelayInvestOverTime.cs" />
+    <Compile Include="AutoLogic\AutoMakeLoan.cs" />
     <Compile Include="AutoLogic\CheckOverTimePaid.cs" />
     <Compile Include="AutoLogic\FinancingTimeout.cs" />
     <Compile Include="AutoLogic\ProjectWithdraw.cs" />
