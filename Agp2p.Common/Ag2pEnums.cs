@@ -853,6 +853,7 @@ namespace Agp2p.Common
             [Description("债权转让")] CreAs = 30,
             [Description("单笔付款至个人")] TranU = 31,
             [Description("用户签约银行卡查询")] QuBan = 32,
+            [Description("商户项目查询")] QuPro = 33
         }
 
         public enum StaticClaimQueryEnum

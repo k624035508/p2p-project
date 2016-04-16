@@ -11,7 +11,9 @@ namespace Agp2p.Core.Message
             [Description("自动回款")]
             AutoRepayTimer = 1,
             [Description("借款人还款")]
-            LoanerRepayTimer = 2
+            LoanerRepayTimer = 2,
+            [Description("活期项目放款")]
+            AutoMakeLoanTimer = 3,
         }
 
         public bool OnTime { get; protected set; }

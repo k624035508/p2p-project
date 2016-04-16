@@ -100,10 +100,10 @@
                                 <%if(projectModel.IsNewbieProject())%>
                                 <li><span>年利率：</span><span class="rate">--</span></li>
                                 <%else%>
-                                <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", projectModel.profit_rate_year)%></span></li>
+                                <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%/if%>
                                 <%if(!projectModel.IsHuoqiProject())%>
-                                <li><span>还款期限：</span><span>{projectModel.repayment_term_span_count}<%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></li>
+                                <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}<%=Investable.ProjectTermSpanName%></span></li>
                                 <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
@@ -162,19 +162,24 @@
         </div>
         <div class="invest-rules">
             <div class="sum">
+
                 <div><%=projectModel.IsNewbieProject() ? "项目金额" : (Investable.IsClaimTransferProject ? "预期年化收益率" : "借款金额")%></div>
                 <%if(Investable.IsClaimTransferProject)%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
                 <%/if%>
+
+                <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
+                <div class="rules-style"><%=string.Format("{0:N0}", Investable.FinancingAmount)%><span> 元</span></div>
+
             </div>
             <div class="deadline">
                 <div><%=(Investable.IsClaimTransferProject ? "剩余期限" : "期限")%></div>
                 <%if(projectModel.IsHuoqiProject())%>
                 <div class="rules-style">活期</div>
                 <%else%>
-                <div class="rules-style">{projectModel.repayment_term_span_count}<span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></span></div>
+                <div class="rules-style">{Investable.RepaymentTermSpanCount}<span> <%=Investable.ProjectTermSpanName%></span></div>
                 <%/if%>
             </div>
             <div class="apr">
@@ -182,11 +187,15 @@
                 <%if(projectModel.IsNewbieProject())%>
                 <div class="rules-style">10<span> 元</span></div>
                 <%else if(projectModel.IsHuoqiProject())%>
+
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span>+0.2<span> %</span></div>
                 <%else if(Investable.IsClaimTransferProject)%>
                 <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
+
+                <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span>+0.2<span> %</span></div>
+
                 <%else%>
-                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
+                <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span></div>
                 <%/if%>
             </div>
         </div>

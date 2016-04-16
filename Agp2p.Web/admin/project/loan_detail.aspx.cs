@@ -59,7 +59,6 @@ namespace Agp2p.Web.admin.project
                     return;
                 }
                 Loan = new BLL.loan(LqContext);
-                ShowByStatus();
                 ShowProjectInfo(project);
                 if (project.IsHuoqiProject())
                 {
@@ -70,6 +69,7 @@ namespace Agp2p.Web.admin.project
                     ShowClaimsInfo(project);
                 }
                 LoanType = project.type;
+                ShowByStatus();
             }
         }
 
@@ -131,6 +131,7 @@ namespace Agp2p.Web.admin.project
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.Financing:
                     btnDrop.Visible = true;
+                    if(isHuoqiProject) btnAutoRepaySign.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout:
                     btnFail.Visible = true;

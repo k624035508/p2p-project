@@ -86,6 +86,7 @@
     <Compile Include="ActivityLogic\TrialActivity.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
     <Compile Include="AutoLogic\CheckDelayInvestOverTime.cs" />
+    <Compile Include="AutoLogic\AutoMakeLoan.cs" />
     <Compile Include="AutoLogic\CheckOverTimePaid.cs" />
     <Compile Include="AutoLogic\FinancingTimeout.cs" />
     <Compile Include="AutoLogic\ProjectWithdraw.cs" />
@@ -98,6 +99,8 @@
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\QueryProjectRespMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\QueryProjectReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\CreditAssignmentReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\CreditAssignmentRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\RepealProjectReqMsg.cs" />

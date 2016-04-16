@@ -31,6 +31,8 @@ namespace Agp2p.Web.UI.Page
 
         protected Agp2pDataContext context = new Agp2pDataContext();
 
+        protected int tickerCategoryId, claimsCategoryId, huoqiCategoryId; 
+
         protected Dictionary<int, string> SubCategoryIdTitleMap;
         protected Dictionary<int, int> FinancingProjectMap;
 
@@ -39,6 +41,13 @@ namespace Agp2p.Web.UI.Page
         /// </summary>
         protected override void ShowPage()
         {
+            var caMap = context.dt_article_category.Where(
+                ca => ca.call_index == "piaojuzhuanqu" || ca.call_index == "claims" || ca.call_index == "huoqi")
+                .ToDictionary(ca => ca.call_index);
+            tickerCategoryId = caMap["piaojuzhuanqu"].id;
+            claimsCategoryId = caMap["claims"].id;
+            huoqiCategoryId = caMap["huoqi"].id;
+
             page = DTRequest.GetQueryInt("page", 1);
             //项目字段
             project_profit_rate_index = DTRequest.GetQueryInt("profit_rate_index");

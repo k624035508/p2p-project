@@ -16,13 +16,14 @@ namespace Agp2p.Core.PayApiLogic
     {
         internal static void DoSubscribe()
         {
-            MessageBus.Main.Subscribe<BidRespMsg>(Bid);//投资
-            MessageBus.Main.Subscribe<WithDrawalRespMsg>(Withdrawal);//撤销投标
-            MessageBus.Main.Subscribe<RepealProjectRespMsg>(RepealProject);//流标
-            MessageBus.Main.Subscribe<MakeLoanRespMsg>(MakeLoan);//放款
-            MessageBus.Main.Subscribe<RepayRespMsg>(Repay);//还款
-            MessageBus.Main.Subscribe<ReturnPrinInteRespMsg>(ReturnPrinInte);//本息到账
-            MessageBus.Main.Subscribe<CreditAssignmentRespMsg>(CreditAssignment);//债权转让
+            MessageBus.Main.Subscribe<BidRespMsg>(Bid); //投资
+            MessageBus.Main.Subscribe<WithDrawalRespMsg>(Withdrawal); //撤销投标
+            MessageBus.Main.Subscribe<RepealProjectRespMsg>(RepealProject); //流标
+            MessageBus.Main.Subscribe<MakeLoanRespMsg>(MakeLoan); //放款
+            MessageBus.Main.Subscribe<RepayRespMsg>(Repay); //还款
+            MessageBus.Main.Subscribe<ReturnPrinInteRespMsg>(ReturnPrinInte); //本息到账
+            MessageBus.Main.Subscribe<CreditAssignmentRespMsg>(CreditAssignment); //债权转让
+            MessageBus.Main.Subscribe<QueryProjectRespMsg>(QueryProject); //查询项目
         }
 
         /// <summary>
@@ -45,7 +46,8 @@ namespace Agp2p.Core.PayApiLogic
                         //if (trans != null)
                         //{
                         //TODO 检查用户资金信息
-                        TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode, Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                        TransactionFacade.Invest((int) msg.UserIdIdentity, msg.ProjectCode,
+                            Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
                         msg.HasHandle = true;
                         //}
                         //else
@@ -198,7 +200,8 @@ namespace Agp2p.Core.PayApiLogic
                                     var dic = Utils.UrlParamToData(req.remarks);
                                     int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
                                     //生成还款记录
-                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity, Utils.StrToDecimal(msg.Sum, 0));
+                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
+                                        Utils.StrToDecimal(msg.Sum, 0));
                                     //如果是手动还款立刻发送本息到账请求
                                     if (!msg.AutoRepay)
                                     {
@@ -270,16 +273,63 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的债权交易流水
-                        var trans = context.li_project_transactions.SingleOrDefault(p => p.no_order == msg.OriginalRequestId);
+                        var trans =
+                            context.li_project_transactions.SingleOrDefault(p => p.no_order == msg.OriginalRequestId);
                         if (trans != null)
                         {
-                            TransactionFacade.BuyClaim(context, trans.li_claims_invested.OrderByDescending(c => c.createTime).First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).id, (int) msg.UserIdIdentity,
+                            TransactionFacade.BuyClaim(context,
+                                trans.li_claims_invested.OrderByDescending(c => c.createTime)
+                                    .First(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                                    .id, (int) msg.UserIdIdentity,
                                 Utils.StrToDecimal(msg.AssignmentSum, 0));
                             msg.HasHandle = true;
                         }
                         else
                         {
                             msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 查询项目
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void QueryProject(QueryProjectRespMsg msg)
+        {
+            try
+            {
+                //检查请求处理结果
+                if (msg.CheckResult())
+                {
+                    //检查签名
+                    if (msg.CheckSignature())
+                    {
+                        //根据放款余额，发送放款请求
+                        if (Utils.StrToDecimal(msg.LoanAccountBalance, 0) > 0)
+                        {
+                            Agp2pDataContext context = new Agp2pDataContext();
+                            var project = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
+                            if (project != null)
+                            {
+                                var makeLoanReqMsg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, project.id, msg.LoanAccountBalance);
+                                MessageBus.Main.PublishAsync(msg, ar =>
+                                {
+                                    var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(makeLoanReqMsg.SynResult);
+                                    msgResp.Sync = true;
+                                    MessageBus.Main.PublishAsync(msgResp);
+                                });
+                            }
+                            else
+                            {
+                                msg.Remarks = "没有找到对应的项目，项目id：" + msg.ProjectCode;
+                            }
                         }
                     }
                 }
