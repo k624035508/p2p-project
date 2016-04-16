@@ -24,10 +24,10 @@ const ClaimStatusEnum = {
 class LegacyInterestPickerDlg extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentVal: 0, legacyInterest: 0, callback: null};
+        this.state = {currentVal: 0, profittedInterest: 0, callback: null};
     }
-    show(legacyInterest, callback) {
-        this.setState({legacyInterest, callback, currentVal: legacyInterest});
+    show(profittedInterest, callback) {
+        this.setState({profittedInterest, callback, currentVal: profittedInterest});
         this.refs.customDlg.show();
     }
     hide() {
@@ -36,10 +36,10 @@ class LegacyInterestPickerDlg extends React.Component {
     render() {
         return (<CustomDlg ref="customDlg" title="请选择折让比例" onSubmit={() => this.state.callback(this.state.currentVal)}>
                     <div style={{margin: "0 0 10px 0"}}>
-                        <Slider min={0} max={this.state.legacyInterest}
-                            value={this.state.legacyInterest} step={0.01} onChange={v => this.setState({currentVal: v})} />
+                        <Slider min={0} max={this.state.profittedInterest}
+                            value={this.state.currentVal} step={0.01} onChange={v => this.setState({currentVal: v})} />
                     </div>
-                    您将保留 {this.state.currentVal.format(2)} 元利息，其余留给了你的债权受让人<br />
+                    您将保留 {this.state.currentVal.format(2)} 元利息，其余留给了债权受让人<br />
                     温馨提示：折让越大，债权会更容易转让成功
                 </CustomDlg>);
     }
