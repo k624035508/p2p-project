@@ -41,7 +41,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             set { subledgerList = value; }
         }
 
-        public CreditAssignmentReqMsg(int userId, string projectCode, string originalRequestId, string originalOrderSum,
+        public CreditAssignmentReqMsg(int userId, int projectCode, string originalRequestId, string originalOrderSum,
             string assignmentSum, string undertakeSum, string payType = "3", string mainAccountType = "", string mainAccountCode = "", 
             string projectDescription = "", string creditValue = "", string undertakePercentage = "")
         {
@@ -81,13 +81,13 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode", ProjectCode},
-                {"originalRequestId", ProjectCode},
-                {"originalOrderSum", ProjectCode},
-                {"assignmentSum", ProjectCode},
-                {"undertakeSum", ProjectCode},
-                {"payType", ProjectCode},
-                {"subledgerList", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
+                {"originalRequestId", OriginalRequestId},
+                {"originalOrderSum", OriginalOrderSum},
+                {"assignmentSum", AssignmentSum},
+                {"undertakeSum", UndertakeSum},
+                {"payType", PayType},
+                {"subledgerList", SubledgerList},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},

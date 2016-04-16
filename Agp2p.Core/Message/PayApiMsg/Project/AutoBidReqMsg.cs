@@ -16,7 +16,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string ProjectSum { get; set; }//项目总额
         public bool Collective { get; set; }//集合项目标识
 
-        public AutoBidReqMsg(string protocolCode, string projectCode, string sum, string projectSum, string projectDescription, bool collective = false)
+        public AutoBidReqMsg(string protocolCode, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false)
         {
             ProtocolCode = protocolCode;
             ProjectCode = projectCode;

@@ -19,7 +19,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         {
         }
 
-        public AutoRepayReqMsg(int userId, string projectCode, string sum, bool collective = false, string fayType = "2")
+        public AutoRepayReqMsg(int userId, int projectCode, string sum, bool collective = false, string fayType = "2")
         {
             UserId = userId;
             ProjectCode = projectCode;

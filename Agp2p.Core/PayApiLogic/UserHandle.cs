@@ -183,7 +183,7 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var project = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var project = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (project != null)
                         {
                             project.autoRepay = !msg.Cancel;

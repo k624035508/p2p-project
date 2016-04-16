@@ -24,7 +24,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public ManualBidReqMsg(int userId, string projectCode, string sum, string projectSum, string projectDescription, bool collective = false, string giftFlag = "", string subledgerList = "")
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -54,7 +54,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
-                {"projectCode", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},

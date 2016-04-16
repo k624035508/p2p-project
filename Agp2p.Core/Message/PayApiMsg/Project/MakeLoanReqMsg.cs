@@ -17,7 +17,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool Collective { get; set; }//集合项目标识
         public string SubledgerList { get; set; }//分账列表
 
-        public MakeLoanReqMsg(int userId, string projectCode, string sum, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
+        public MakeLoanReqMsg(int userId, int projectCode, string sum, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             ProjectCode = projectCode;

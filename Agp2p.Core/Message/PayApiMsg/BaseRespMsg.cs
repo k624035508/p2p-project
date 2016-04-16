@@ -11,7 +11,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     public class BaseRespMsg : ITinyMessage
     {
         public int? UserIdIdentity { get; set; }
-        public string ProjectCode { get; set; }
+        public int ProjectCode { get; set; }
         public string RequestId { get; set; }
         public string Result { get; set; }
         public string ResponseContent { get; set; }

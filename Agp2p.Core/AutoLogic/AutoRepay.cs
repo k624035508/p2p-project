@@ -61,7 +61,7 @@ namespace Agp2p.Core.AutoLogic
                     if (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay)
                     {
                         //创建自动还款托管接口请求
-                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project.ToString(), (t.repay_principal + t.repay_interest).ToString("f"));
+                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
                         autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
                         //发送请求
                         MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
@@ -172,7 +172,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 //TODO 特殊项目回款处理
                 //调用托管本息到账接口,在本息到账异步响应中执行还款计划
-                RequestApiHandle.SendReturnPrinInte(ta.project.ToString(), (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false);
+                RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false);
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);

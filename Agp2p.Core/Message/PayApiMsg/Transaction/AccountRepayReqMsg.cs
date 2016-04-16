@@ -23,7 +23,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
-        public AccountRepayReqMsg(int userId, string projectCode, string sum, string rechargeUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
+        public AccountRepayReqMsg(int userId, int projectCode, string sum, string rechargeUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -52,7 +52,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"sum", Sum},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},

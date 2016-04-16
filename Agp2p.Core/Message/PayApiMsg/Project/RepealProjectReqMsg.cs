@@ -12,7 +12,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string Sum { get; set; }//原投标订单金额
 
-        public RepealProjectReqMsg(string projectCode, string sum)
+        public RepealProjectReqMsg(int projectCode, string sum)
         {
             ProjectCode = projectCode;
             Sum = sum;

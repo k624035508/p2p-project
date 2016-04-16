@@ -15,7 +15,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string WithdrawalFund { get; set; }//撤标金额
         public bool Collective { get; set; }//集合项目标识
 
-        public WithDrawalReqMsg(string projectCode, string sum, string bidRequestId, string withdrawalFund, bool collective = false)
+        public WithDrawalReqMsg(int projectCode, string sum, string bidRequestId, string withdrawalFund, bool collective = false)
         {
             ProjectCode = projectCode;
             Sum = sum;

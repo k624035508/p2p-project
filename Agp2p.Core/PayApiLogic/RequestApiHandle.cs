@@ -121,7 +121,7 @@ namespace Agp2p.Core.PayApiLogic
                     case (int)Agp2pEnums.SumapayApiEnum.ALoan:
                     case (int)Agp2pEnums.SumapayApiEnum.CLoan:
                         var makeLoanReqMsg = (MakeLoanReqMsg)msg;
-                        var project = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(makeLoanReqMsg.ProjectCode, 0));
+                        var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
                         if (project != null)
                         {
                             decimal loanFee = 0;
@@ -181,7 +181,7 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="sum"></param>
         /// <param name="repayTaskId"></param>
         /// <param name="isEarlyPay"></param>
-        public static void SendReturnPrinInte(string projectCode, string sum, int repayTaskId, bool isEarlyPay)
+        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay)
         {
             var context = new Agp2pDataContext();
             //计算投资者本息明细

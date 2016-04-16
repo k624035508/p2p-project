@@ -45,7 +45,7 @@ namespace Agp2p.Core.PayApiLogic
                         //if (trans != null)
                         //{
                         //TODO 检查用户资金信息
-                        TransactionFacade.Invest((int)msg.UserIdIdentity, Utils.StrToInt(msg.ProjectCode, 0), Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                        TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode, Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
                         msg.HasHandle = true;
                         //}
                         //else
@@ -112,7 +112,7 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             context.ProjectFinancingFail(pro.id);
@@ -147,14 +147,14 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             //TODO 正式后改为异步返回才放款
                             if (msg.Sync)
                             {
                                 //开始还款，包括向借款人放款
-                                context.StartRepayment(Utils.StrToInt(msg.ProjectCode, 0));
+                                context.StartRepayment(msg.ProjectCode);
                                 msg.HasHandle = true;
                             }
                         }
@@ -187,7 +187,7 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
@@ -243,7 +243,7 @@ namespace Agp2p.Core.PayApiLogic
                         if (!msg.IsEarlyPay)
                             context.ExecuteRepaymentTask(msg.RepayTaskId);
                         else
-                            context.EarlierRepayAll(Utils.StrToInt(msg.ProjectCode, 0), ConfigLoader.loadCostConfig().earlier_pay);
+                            context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
                         msg.HasHandle = true;
                     }
                 }
@@ -270,7 +270,7 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的债权
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == Utils.StrToInt(msg.ProjectCode, 0));
+                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
                             //TODO 债权转让

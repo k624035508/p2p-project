@@ -14,7 +14,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Cycle { get; set; }//还款周期
         public string RepayLimit { get; set; }//还款上限金额
 
-        public AutoRepaySignReqMsg(int userId, string projectCode, string repayLimit, bool useBank, string cycle = "")
+        public AutoRepaySignReqMsg(int userId, int projectCode, string repayLimit, bool useBank, string cycle = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -40,7 +40,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"projectCode", ProjectCode},
+                {"projectCode", ProjectCode.ToString()},
                 {"repayLimit", RepayLimit},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
