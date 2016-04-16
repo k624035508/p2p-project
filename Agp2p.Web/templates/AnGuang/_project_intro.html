@@ -77,6 +77,7 @@
 <%/if%>
 
 <%if(Investable.IsClaimTransferProject)%>
+<div class="project-detail-claim">
 <span class="title-mark">{hIndex++}.债权介绍</span>
 <div class="claims-detail">
    <div class="claims-left">
@@ -89,13 +90,14 @@
        <div><span>原债权规模</span><span>1145.62元</span></div>
        <div><span>原年化收益</span><span>9.8%</span></div>
        <div><span>还款方式</span><span>到期还本付息</span></div>
-       <div><span></span><span><a>查看原项目详情></a></span></div>
+       <div><a href=" ">查看原项目详情 ></a></div>
    </div>
+</div>
 </div>
 <%/if%>
 
 
-<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl"&&projectModel.dt_article_category.call_index!="huoqi"&&projectModel.dt_article_category.call_index!="claims")%>
+<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl"&&projectModel.dt_article_category.call_index!="huoqi")%>
 <div id="project-summary">
     <span class="title-mark">{hIndex++}.项目简介</span>
     <ul class="list-unstyled">
