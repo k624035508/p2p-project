@@ -179,7 +179,7 @@ export default class AgCurrent extends React.Component {
         return(
             <div className="agCurrentPage">
                 <HuoqiFacade />
-                <div  className="bottom-wrapper" >
+                <div  className={!this.props.isLoaner ? "bottom-wrapper" : "bottom-wrapper-loaner"}>
                     <div className="select-bar">
                         {this.state.tableType == 0
                             ? <DropdownPicker enumFullName="Agp2p.Common.Agp2pEnums+HuoqiTransactionQueryEnum"
@@ -252,3 +252,11 @@ export default class AgCurrent extends React.Component {
         );
     }
 }
+function mapStateToProps(state) {         
+            return {              
+isLoaner: state.userInfo.isLoaner
+};
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(AgCurrent);

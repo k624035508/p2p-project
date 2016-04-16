@@ -34,6 +34,11 @@ namespace Agp2p.Web.UI.Page
                 .Aggregate(0m, (sum, a) => sum + a.value);
         }
 
+        protected bool IsLoaner()
+        {
+            return userModel.li_loaners.Any();
+        }
+
         /// <summary>
         /// 重写虚方法,此方法在Init事件执行
         /// </summary>

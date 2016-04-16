@@ -78,7 +78,9 @@
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
+
                 <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> />
+
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}" data-has-identification="{HasIdentification()}"
                         data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
@@ -247,14 +249,16 @@
 <%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
-        <%if(projectModel.IsNewbieProject())%>
+   <%if(projectModel.IsNewbieProject())%>
         <%template src="_new_hand.html"%>
         <%template src="_invest_record.html"%>
-        <%else if(projectModel.IsHuoqiProject())%>
-
+   <%else if(projectModel.IsHuoqiProject())%>        
         <%template src="_project_intro.html"%>
         <%template src="_invest_record.html"%>
-        <%else%>
+  <%else if(Investable.IsClaimTransferProject)%>
+        <%template src="_project_intro.html"%>
+        <%template src="_invest_record.html"%>
+  <%else%>
         <%template src="_project_intro.html"%>
         <%template src="_loaner_info.html"%>
         <%template src="_ticket_info.html"%>

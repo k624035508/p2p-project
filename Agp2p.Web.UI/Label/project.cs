@@ -104,6 +104,8 @@ namespace Agp2p.Web.UI
 
             private Agp2pDataContext Context => _context ?? (_context = new Agp2pDataContext());
 
+            public bool IsClaimTransferProject => NeedTransferClaim != null;
+
             public string Title => NeedTransferClaim == null ? Project.title : NeedTransferClaim.number;
 
             public string CategoryName => NeedTransferClaim == null

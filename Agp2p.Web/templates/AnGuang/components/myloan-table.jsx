@@ -1,6 +1,10 @@
 import React from "react";
 import { ajax } from "jquery";
 import isEqual from "lodash/lang/isEqual"
+import alert from "../components/tips_alert.js";
+import CustomDlg from "../components/custom-dialog.jsx"
+import confirm from "../components/tips_confirm.js";
+
 
 class MyloanTable extends React.Component {
     constructor(props) {
@@ -33,6 +37,12 @@ class MyloanTable extends React.Component {
             }.bind(this)
         });
     }
+        applyForAutoRepay(autoRepay){
+            confirm("是否确定开通自动还款");
+        }
+        applyForCanelAutoRepay(autoRepay){
+            confirm("是否确定取消自动还款");
+        }
         render() {
             return (
                 <div className="tb-wrap">
@@ -59,7 +69,7 @@ class MyloanTable extends React.Component {
                             <td>{tr.profit}</td>
                             <td>1/1</td>
                             <td>
-                                {tr.autoRepay==true ? <a href="javascript:">取消自动还款</a> : <a href="javascript:">开通自动还款</a> }
+                                {tr.autoRepay==true ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay()}>取消自动还款</a> : <a href="javascript:" onClick={ev => this.applyForAutoRepay()}>开通自动还款</a> }
                                 <a href="javascript:">账户还款</a>
                                 <a href="javascript:">银行卡还款</a> 
                             </td>
