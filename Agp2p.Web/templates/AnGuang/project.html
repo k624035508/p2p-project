@@ -78,7 +78,9 @@
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
+
                 <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> />
+
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}" data-has-identification="{HasIdentification()}"
                         data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
