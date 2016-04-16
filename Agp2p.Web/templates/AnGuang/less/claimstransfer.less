@@ -3,7 +3,7 @@
 
 .claimsTransferPage {
 	width: 855px;
-
+    height:702px;
 	& > div {
 		width: 100%;
 		border: @border;
@@ -40,10 +40,9 @@
 		}
 	}
 
-	.bottom-wrapper {
-		height: 702px;
+	.bottom-wrapper , .bottom-wrapper-loaner {
 		padding: 25px;
-
+        height:702px;
 		ul {
 			float: none !important;
 			margin-top: 30px;
@@ -72,7 +71,14 @@
 				}
 			}
 		}
-
-		.nav { margin-top: 27px; }
+	      .nav{
+            padding-top:70px;           
+        }  
 	}
+    .bottom-wrapper-loaner{
+         height:792px;
+        .nav{
+            padding-top:70px;           
+        }
+    }
 }

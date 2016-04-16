@@ -1,4 +1,29 @@
 ﻿<div id="invest-record">
+    <%if(Investable.IsClaimTransferProject)%>
+    <span class="title-mark">{hIndex++}.转入记录</span>
+    <div class="invest-record">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>时间</th><th>认购人</th><th>认购金额</th><th>状态</th></tr>
+            </thead>
+            <tbody>
+                <%set var investmentsClaim=QueryProjectTransactions()%>
+                <%for(int i=0;i
+                <investmentsClaim.Count;i++)%>
+                    <tr>
+                        <td>{i+1}</td>
+                        <td class="account-style"><%=investmentsClaim[i].user_name%></td>
+                        <td><%=investmentsClaim[i].value%></td>
+                        <td><%=investmentsClaim[i].create_time%></td>
+                    </tr>
+                    <%/for%>
+                    <%if(investmentsClaim.Count==0)%>
+                    <tr><td align="center" colspan="4">暂无记录</td></tr>
+                    <%/if%>
+            </tbody>
+        </table>
+    </div>
+    <%/if%>
     <span class="title-mark">{hIndex++}.投标记录</span>
     <div class="invest-record">
         <table class="table table-hover">
