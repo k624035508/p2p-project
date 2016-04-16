@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Agp2p.Common;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.AutoLogic
@@ -23,7 +24,19 @@ namespace Agp2p.Core.AutoLogic
             if (timerType != TimerMsg.Type.AutoMakeLoanTimer) return;
 
             var db = new Agp2pDataContext();
-            
+            var huoqiPro = db.li_projects.OrderByDescending(p => p.publish_time).FirstOrDefault(p => p.dt_article_category.call_index == "huoqi");
+            if (huoqiPro != null)
+            {
+                //查询活期项目放款余额
+                var reqMsg = new QueryProjectReqMsg(huoqiPro.id);
+                MessageBus.Main.PublishAsync(reqMsg, ar =>
+                {
+                    var msgResp = BaseRespMsg.NewInstance<QueryProjectRespMsg>(reqMsg.SynResult);
+                    msgResp.Sync = true;
+                    MessageBus.Main.Publish(msgResp);
+                    db.AppendAdminLog("AutoMakeLoan", "查询今日放款余额为：" + msgResp.LoanAccountBalance);
+                });
+            }
         }
     }
 }

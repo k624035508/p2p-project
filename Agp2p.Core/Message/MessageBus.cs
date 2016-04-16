@@ -26,6 +26,7 @@ namespace Agp2p.Core.Message
             CheckOverTimePaid.DoSubscribe();
             FinancingTimeout.DoSubscribe();
             ScheduleAnnounce.DoSubscribe();
+            AutoMakeLoan.DoSubscribe();
 
             // Notify
             InvestAnnounce.DoSubscribe();
