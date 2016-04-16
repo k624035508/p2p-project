@@ -39,7 +39,7 @@ class LegacyInterestPickerDlg extends React.Component {
                         <Slider min={0} max={this.state.legacyInterest}
                             value={this.state.legacyInterest} step={0.01} onChange={v => this.setState({currentVal: v})} />
                     </div>
-                    您将 {this.state.currentVal.format(2)} 元利息留给了你的债权受让人<br />
+                    您将保留 {this.state.currentVal.format(2)} 元利息，其余留给了你的债权受让人<br />
                     温馨提示：折让越大，债权会更容易转让成功
                 </CustomDlg>);
     }
@@ -129,7 +129,7 @@ export default class ClaimsTransfer extends React.Component {
                         this.doClaimTransfer(claimId, 1);
                     } else {
                         this.refs.legacyInterestPicker.show(withdrawClaimFinalInterest,
-                            v => this.doClaimTransfer(claimId, (withdrawClaimFinalInterest - v)/withdrawClaimFinalInterest));
+                            v => this.doClaimTransfer(claimId, v/withdrawClaimFinalInterest));
                     }
                 }.bind(this),
                 error: function(xhr, status, err) {
