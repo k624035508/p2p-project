@@ -11,7 +11,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string UserId { get; set; }
         public string Name { get; set; }
         public string Telephone { get; set; }
+        public string MobileNo { get; set; }
         public string PayType { get; set; }
+
+        public UserRegisterRespMsg() { }
 
         public UserRegisterRespMsg(string requestStr)
         {
@@ -23,7 +26,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserId = map["userId"];
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
             Name = map["name"];
-            Telephone = map["telephone"];
+            Telephone = map.ContainsKey("telephone") ? map["telephone"] : "";
+            MobileNo = map.ContainsKey("mobileNo") ? map["mobileNo"] : "";
             PayType = map["payType"];
         }
 

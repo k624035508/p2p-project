@@ -24,6 +24,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         /// </summary>
         public string SubledgerList { get; set; }
 
+        public string BackUrl { get; set; }
+        public string RequestType { get; set; }
+
         public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
@@ -39,11 +42,33 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
         }
 
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, string backUrl, string giftFlag = "", string subledgerList = "")
+        {
+            UserId = userId;
+            ProjectCode = projectCode;
+            Sum = sum;
+            SubledgerList = subledgerList;
+            ProjectSum = projectSum;
+            ProjectDescription = projectDescription;
+            GiftFlag = giftFlag;
+            BackUrl = backUrl;
+
+            RequestType = "PFT0003";
+            Api = (int)Agp2pEnums.SumapayMobileApiEnum.MaBid;
+            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            RequestId = Agp2pEnums.SumapayMobileApiEnum.MaBid.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
         public override string GetSignature()
         {
-            return
-                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
-                SuccessReturnUrl + FailReturnUrl + SumapayConfig.NoticeUrl, SumapayConfig.Key);
+            return !string.IsNullOrEmpty(RequestType)
+                ? SumaPayUtils.GenSign(
+                    RequestType + RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode +
+                    ProjectDescription + ProjectSum + GiftFlag + SubledgerList + SumapayConfig.NoticeUrl +
+                    SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key)
+                : SumaPayUtils.GenSign(
+                    RequestId + SumapayConfig.MerchantCode + UserId + Sum + ProjectCode + ProjectDescription +
+                    SuccessReturnUrl + FailReturnUrl + SumapayConfig.NoticeUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -64,6 +89,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!string.IsNullOrEmpty(GiftFlag)) sd.Add("giftFlag", GiftFlag);
             if (!string.IsNullOrEmpty(SubledgerList)) sd.Add("subledgerList", SubledgerList);
             if (!string.IsNullOrEmpty(ProjectSum)) sd.Add("projectSum", ProjectSum);
+            if (!string.IsNullOrEmpty(BackUrl)) sd.Add("backUrl", BackUrl);
+            if (!string.IsNullOrEmpty(RequestType)) sd.Add("requestType", RequestType);
 
             return sd;
         }

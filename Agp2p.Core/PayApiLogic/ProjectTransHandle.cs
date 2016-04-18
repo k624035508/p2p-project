@@ -210,7 +210,7 @@ namespace Agp2p.Core.PayApiLogic
                                     //生成还款记录
                                     context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
                                         Utils.StrToDecimal(msg.Sum, 0));
-                                    //如果是手动还款立刻发送本息到账请求
+                                    //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
                                     if (!msg.AutoRepay)
                                     {
                                         RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
@@ -320,14 +320,14 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
                         //根据放款余额，发送放款请求
-                        if (Utils.StrToDecimal(msg.RepayAccountBalance, 0) > 0)
+                        if (Utils.StrToDecimal(msg.LoanAccountBalance, 0) > 0)
                         {
                             Agp2pDataContext context = new Agp2pDataContext();
                             var project = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                             if (project != null)
                             {
                                 //TODO 改为放款余额
-                                var makeLoanReqMsg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, project.id, msg.RepayAccountBalance, true);
+                                var makeLoanReqMsg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, project.id, msg.LoanAccountBalance, true);
                                 MessageBus.Main.PublishAsync(makeLoanReqMsg, ar =>
                                 {
                                     var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(makeLoanReqMsg.SynResult);
