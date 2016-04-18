@@ -1044,8 +1044,10 @@
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
+    <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
+    <None Include="templates\AnGuang\less\success_return.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
@@ -1071,6 +1073,7 @@
     <Content Include="templates\AnGuang\safe_defence.html" />
     <Content Include="templates\AnGuang\404.html" />
     <Content Include="templates\AnGuang\sitemap.html" />
+    <Content Include="templates\AnGuang\success_return.html" />
     <Content Include="templates\AnGuang\usercenter.html" />
     <Content Include="templates\AnGuang\watch.bat" />
     <Content Include="templates\AnGuang\webpack.config.js" />

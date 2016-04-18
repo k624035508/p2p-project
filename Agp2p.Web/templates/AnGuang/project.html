@@ -162,8 +162,13 @@
         </div>
         <div class="invest-rules">
             <div class="sum">
-                <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
-                <div class="rules-style"><%=Investable.IsClaimTransferProject?Investable.FinancingAmount.ToString("n2"):Investable.FinancingAmount.ToString("n0")%><span> 元</span></div>
+
+                <div><%=projectModel.IsNewbieProject() ? "项目金额" : (Investable.IsClaimTransferProject ? "预期年化收益率" : "借款金额")%></div>
+                <%if(Investable.IsClaimTransferProject)%>
+                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
+                <%else%>
+                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
+                <%/if%>
             </div>
             <div class="deadline">
                 <div>期限</div>

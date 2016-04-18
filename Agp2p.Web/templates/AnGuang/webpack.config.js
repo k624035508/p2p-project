@@ -24,6 +24,7 @@ module.exports = {
         forgot_password: "./js/forgot_password.js",
         loan: "./js/loan.js",
         coop: "./js/coop.js",
+        success_return:"./js/success_return.js"
     },
     output: {
         path: path.join(__dirname, './build'),
