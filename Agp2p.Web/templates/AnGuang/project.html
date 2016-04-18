@@ -169,10 +169,6 @@
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
                 <%/if%>
-
-                <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
-                <div class="rules-style"><%=string.Format("{0:N0}", Investable.FinancingAmount)%><span> 元</span></div>
-
             </div>
             <div class="deadline">
                 <div><%=(Investable.IsClaimTransferProject ? "剩余期限" : "期限")%></div>
