@@ -137,10 +137,12 @@ namespace Agp2p.Web.UI
 
             public decimal ProfitRateYearly => NeedTransferClaim == null
                 ? Project.profit_rate_year/100
-                : (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
-                   NeedTransferClaim.keepInterest.GetValueOrDefault())*(Project.IsHuoqiProject()
+                : ClaimTransferProfitingAmount*(Project.IsHuoqiProject()
                        ? TransactionFacade.HuoqiProjectProfitingDay
                        : TransactionFacade.NormalProjectProfitingDay)/NeedTransferClaim.principal/RemainDays;
+
+            public decimal ClaimTransferProfitingAmount => (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
+                                                             NeedTransferClaim.keepInterest.GetValueOrDefault());
 
             private int RemainDays
             {
@@ -279,7 +281,7 @@ namespace Agp2p.Web.UI
                 ? Enumerable.Empty<li_claims>().AsQueryable()
                 : context.li_claims.Where(c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
-                    c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount)
+                    c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount && !c.Children.Any())
                     .OrderByDescending(c => c.createTime);
 
             int projectTotalCount = 0, claimTotalCount = 0;

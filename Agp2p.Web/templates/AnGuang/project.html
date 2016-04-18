@@ -84,7 +84,7 @@
                         data-idle-money="{idle_money}"
                         data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
                         data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}"
-                        data-project-huoqi="{projectModel.IsHuoqiProject()}"><%=projectModel.IsHuoqiProject()?"转入活期宝": (Investable.IsClaimTransferProject ? "认购债权" :"投资")%></button>
+                        data-project-huoqi="{projectModel.IsHuoqiProject()}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="investConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
@@ -162,20 +162,11 @@
         </div>
         <div class="invest-rules">
             <div class="sum">
-
-                <div><%=projectModel.IsNewbieProject() ? "项目金额" : (Investable.IsClaimTransferProject ? "预期年化收益率" : "借款金额")%></div>
-                <%if(Investable.IsClaimTransferProject)%>
-                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
-                <%else%>
-                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
-                <%/if%>
-
                 <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
-                <div class="rules-style"><%=string.Format("{0:N0}", Investable.FinancingAmount)%><span> 元</span></div>
-
+                <div class="rules-style"><%=Investable.IsClaimTransferProject?Investable.FinancingAmount.ToString("n2"):Investable.FinancingAmount.ToString("n0")%><span> 元</span></div>
             </div>
             <div class="deadline">
-                <div><%=(Investable.IsClaimTransferProject ? "剩余期限" : "期限")%></div>
+                <div>期限</div>
                 <%if(projectModel.IsHuoqiProject())%>
                 <div class="rules-style">活期</div>
                 <%else%>
@@ -183,17 +174,11 @@
                 <%/if%>
             </div>
             <div class="apr">
-                <div><%=projectModel.IsNewbieProject()?"项目收益": (Investable.IsClaimTransferProject ? "债权总额" : "年化利率")%></div>
+                <div><%=projectModel.IsNewbieProject()?"项目收益":"年化利率"%></div>
                 <%if(projectModel.IsNewbieProject())%>
                 <div class="rules-style">10<span> 元</span></div>
                 <%else if(projectModel.IsHuoqiProject())%>
-
-                <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span>+0.2<span> %</span></div>
-                <%else if(Investable.IsClaimTransferProject)%>
-                <div class="rules-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%><span> 元</span></div>
-
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span>+0.2<span> %</span></div>
-
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span></div>
                 <%/if%>
@@ -217,9 +202,7 @@
                             </td>
                             <td><%=Investable.InvestmentProgress.ToString("p1")%></td>
                         </tr>
-                        <%else if(Investable.IsClaimTransferProject)%>
-                        <tr style="width:140px; margin-top:12px;display:inline-block;"><td  style=" padding-right:0; color:#aaaaaa;" >认购当天，立即计息</td></tr>
-                        <tr style=><td style="width:80px; display:inline-block;">还款方式</td><td style="text-align:left; padding-left:5px; width:140px; display:inline-block;"">到期还本付息</td></tr>
+                        
                         <%else%>
                         <tr><td>还款方式</td><td colspan="2"><%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTypeEnum)projectModel.repayment_type)%></td></tr>
                         <tr><td>投标人数</td><td colspan="2">{Investable.InvesterCount}人</td></tr>
@@ -233,16 +216,7 @@
                 </table>
             </div>
 
-            <%if(Investable.IsClaimTransferProject)%>
-            <div class="interest-way" style="margin-top:12px;" >
-                <table>
-                    <tbody>                     
-                        <tr><td>转让日期</td><td>2016-04-14</td></tr>
-                        <tr><td>还款日期</td><td>2016-05-05</td></tr>                      
-                    </tbody>
-                </table>
-            </div>
-            <%else if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
             <div class="interest-way" style="margin-top:-10px;height:128px ;background:url('<%templateskin%>/imgs/index/manbiao.jpg') no-repeat 210px 0; ">
         
             </div>
@@ -277,9 +251,7 @@
         <%template src="_new_hand.html"%>
         <%template src="_invest_record.html"%>
         <%else if(projectModel.IsHuoqiProject())%>
-        <%template src="_project_intro.html"%>
-        <%template src="_invest_record.html"%>
-        <%else if(Investable.IsClaimTransferProject)%>
+
         <%template src="_project_intro.html"%>
         <%template src="_invest_record.html"%>
         <%else%>
