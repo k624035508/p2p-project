@@ -99,7 +99,7 @@
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
-    <Compile Include="Message\PayApiMsg\Mobile\UserRegisterMoblieReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\User\UserRegisterMoblieReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\QueryProjectRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\QueryProjectReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\CreditAssignmentReqMsg.cs" />
