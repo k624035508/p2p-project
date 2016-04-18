@@ -27,19 +27,19 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="msg"></param>
         private static void DoFrontEndRequest(FrontEndReqMsg msg)
         {
+            Agp2pDataContext context = new Agp2pDataContext();
+            var requestLog = new li_pay_request_log
+            {
+                id = msg.RequestId,
+                user_id = msg.UserId,
+                project_id = msg.ProjectCode,
+                api = msg.Api,
+                status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
+                request_time = DateTime.Now,
+                remarks = msg.Remarks
+            };
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
-                var requestLog = new li_pay_request_log
-                {
-                    id = msg.RequestId,
-                    user_id = msg.UserId,
-                    project_id = msg.ProjectCode,
-                    api = msg.Api,
-                    status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
-                    request_time = DateTime.Now,
-                    remarks = msg.Remarks
-                };
                 //创建交易流水
                 switch (requestLog.api)
                 {
@@ -91,8 +91,9 @@ namespace Agp2p.Core.PayApiLogic
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                requestLog.remarks = ex.Message;
+                context.li_pay_request_log.InsertOnSubmit(requestLog);
+                context.SubmitChanges();
             }
         }
 
@@ -118,21 +119,19 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="msg"></param>
         private static void DoBackEndRequest(BackEndReqMsg msg)
         {
+            Agp2pDataContext context = new Agp2pDataContext();
+            var requestLog = new li_pay_request_log
+            {
+                id = msg.RequestId,
+                user_id = msg.UserId,
+                project_id = msg.ProjectCode,
+                api = msg.Api,
+                status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
+                request_time = DateTime.Now,
+                remarks = msg.Remarks,
+            };
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
-                var requestLog = new li_pay_request_log
-                {
-                    id = msg.RequestId,
-                    user_id = msg.UserId,
-                    project_id = msg.ProjectCode,
-                    api = msg.Api,
-                    status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
-                    request_time = DateTime.Now,
-                    remarks = msg.Remarks,
-                };
-                //保存日志
-                context.li_pay_request_log.InsertOnSubmit(requestLog);
                 //创建交易记录
                 switch (requestLog.api)
                 {
@@ -142,7 +141,7 @@ namespace Agp2p.Core.PayApiLogic
                         var makeLoanReqMsg = (MakeLoanReqMsg)msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
                         //非活期和新手标项目，以及没有生成过服务费 TODO 只计算？
-                        if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject() 
+                        if (project != null && !project.IsNewbieProject() 
                             && !context.li_company_inoutcome.Any(c => c.project_id == project.id 
                             && (c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning
                             || (c.type == (int)Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee))))
@@ -184,14 +183,18 @@ namespace Agp2p.Core.PayApiLogic
                         break;
                 }
                 //生成发送报文
-                requestLog.request_content = msg.GetPostPara();
+                msg.RequestContent = msg.GetPostPara();
+                requestLog.request_content = msg.RequestContent;
                 msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
+                //保存日志
+                context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
             }
             catch (Exception ex)
             {
-                //TODO 返回错误信息
-                throw ex;
+                requestLog.remarks = ex.Message;
+                context.li_pay_request_log.InsertOnSubmit(requestLog);
+                context.SubmitChanges();
             }
         }
 

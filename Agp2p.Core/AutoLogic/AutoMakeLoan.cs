@@ -35,6 +35,7 @@ namespace Agp2p.Core.AutoLogic
                     msgResp.Sync = true;
                     MessageBus.Main.Publish(msgResp);
                     db.AppendAdminLog("AutoMakeLoan", "查询今日放款余额为：" + msgResp.LoanAccountBalance);
+                    db.SubmitChanges();
                 });
             }
         }
