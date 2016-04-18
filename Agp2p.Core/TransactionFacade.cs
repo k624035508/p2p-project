@@ -1808,11 +1808,11 @@ namespace Agp2p.Core
                 ptrAddedCost = GenerateRepayTransactions(repaymentTask, repaymentTask.repay_at.Value, false, true).ToDictionary(tr => tr.investor);
             }
 
-            if (proj.IsHuoqiProject())
-            {
-                // 由于活期的收益是由中间人垫付的，所以需要生成中间人的垫付交易记录
-                InsertAgentPrepayPtr(context, ptrs);
-            }
+            //if (proj.IsHuoqiProject())
+            //{
+            //    // 由于活期的收益是由中间人垫付的，所以需要生成中间人的垫付交易记录
+            //    InsertAgentPrepayPtr(context, ptrs);
+            //}
 
             foreach (var ptr in ptrs)
             {
