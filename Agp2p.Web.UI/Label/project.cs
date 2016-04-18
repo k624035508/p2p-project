@@ -137,10 +137,12 @@ namespace Agp2p.Web.UI
 
             public decimal ProfitRateYearly => NeedTransferClaim == null
                 ? Project.profit_rate_year/100
-                : (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
-                   NeedTransferClaim.keepInterest.GetValueOrDefault())*(Project.IsHuoqiProject()
+                : ClaimTransferProfitingAmount*(Project.IsHuoqiProject()
                        ? TransactionFacade.HuoqiProjectProfitingDay
                        : TransactionFacade.NormalProjectProfitingDay)/NeedTransferClaim.principal/RemainDays;
+
+            public decimal ClaimTransferProfitingAmount => (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
+                                                             NeedTransferClaim.keepInterest.GetValueOrDefault());
 
             private int RemainDays
             {
