@@ -2424,7 +2424,7 @@ namespace Agp2p.Web.tools
                 return;
             }
             //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
-            if (!string.IsNullOrEmpty(backUrl))
+            if (string.IsNullOrEmpty(backUrl))
             {
                 context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
                                        (int) Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
