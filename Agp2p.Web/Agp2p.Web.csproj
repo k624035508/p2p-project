@@ -964,6 +964,8 @@
     <Content Include="templates\AnGuang\imgs\usercenter\003.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\004.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\005.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\007.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\008.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
