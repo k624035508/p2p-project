@@ -28,10 +28,18 @@ namespace Agp2p.Web.api.payment.sumapay
                     if(!CheckUserLogin(out user)) return;
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.URegi:
+                    if (!CheckUserLogin(out user)) return;
+                    reqMsg = new UserRegisterMoblieReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token, DTRequest.GetQueryString("backUrl"));
+                    break;
                 //跳转托管账户
                 case (int)Agp2pEnums.SumapayApiEnum.Accou:
                     if (!CheckUserLogin(out user)) return;
                     reqMsg = new UserToAccountReqMsg(user.id);
+                    break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.Accou:
+                    if (!CheckUserLogin(out user)) return;
+                    reqMsg = new UserToAccountReqMsg(user.id, DTRequest.GetQueryString("backUrl"));
                     break;
                 //个人自动投标续约
                 case (int)Agp2pEnums.SumapayApiEnum.AtBid:
