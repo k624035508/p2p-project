@@ -1946,6 +1946,12 @@ namespace Agp2p.Common
             }
         }
 
+        /// <summary>
+        /// http://stackoverflow.com/questions/3314140/how-to-read-embedded-resource-text-file
+        /// </summary>
+        /// <param name="executingAssembly"></param>
+        /// <param name="resourceName"></param>
+        /// <returns></returns>
         public static string[] ReadAllLinesFromResource(Assembly executingAssembly, string resourceName)
         {
             var list = new List<string>();
