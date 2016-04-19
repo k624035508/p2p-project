@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Caching;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -32,7 +33,7 @@ namespace Agp2p.Core
                 if (configCache != null) return configCache;
 
                 var numReg = new Regex(@"\d+");
-                configCache = File.ReadAllLines("sumapay_error_no.txt").SelectMany(line =>
+                configCache = Utils.ReadAllLinesFromResource(Assembly.GetExecutingAssembly(), "Agp2p.Core.sumapay_error_no.txt").SelectMany(line =>
                 {
                     var splitAt = line.IndexOf('：');
                     if (splitAt == -1)

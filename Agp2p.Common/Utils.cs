@@ -1945,5 +1945,19 @@ namespace Agp2p.Common
                 match = match.NextMatch();
             }
         }
+
+        public static string[] ReadAllLinesFromResource(Assembly executingAssembly, string resourceName)
+        {
+            var list = new List<string>();
+            using(var resourceStream = executingAssembly.GetManifestResourceStream(resourceName))
+            using (var streamReader = new StreamReader(resourceStream, Encoding.UTF8))
+            {
+                string str;
+                while ((str = streamReader.ReadLine()) != null)
+                    list.Add(str);
+            }
+
+            return list.ToArray();
+        }
     }
 }
