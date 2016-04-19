@@ -9,7 +9,10 @@ import CustomDlg from "../components/custom-dialog.jsx"
 
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
-    
+
+import find from "lodash/collection/find";
+import assign from "lodash/object/assign";
+
 const ClaimStatusEnum = {
     Nontransferable : 1,
     Transferable : 2,
@@ -21,27 +24,79 @@ const ClaimStatusEnum = {
     Invalid : 30,
 };
 
-class LegacyInterestPickerDlg extends React.Component {
+class KeepInterestPickerDlg extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentVal: 0, profittedInterest: 0, callback: null};
+        this.state = { callback: null, currentVal: 0, isAgreeToAgreement: false};
     }
-    show(profittedInterest, callback) {
-        this.setState({profittedInterest, callback, currentVal: profittedInterest});
-        this.refs.customDlg.show();
+    alignToCenter() {
+        var offsetHeight = ($(window).height() - $(".modal-content", this.refs.customDialog).height()) / 2;
+        $(".modal-dialog", this.refs.customDialog).css("margin-top", offsetHeight + "px");
+    }
+    show(callback) {
+        var {principal: claimPrincipal, withdrawClaimFinalInterest: profittedInterest} = this.props.transferingClaim;
+
+        this.setState({callback: () => {
+            if (this.state.isAgreeToAgreement) {
+                $(this.refs.customDialog).modal('hide');
+                callback(this.state.currentVal - claimPrincipal)
+            } else {
+                alert("请先阅读并同意债权转让协议");
+            }
+        }, currentVal: claimPrincipal + profittedInterest});
+
+        $(this.refs.customDialog).modal();
+        this.alignToCenter();
     }
     hide() {
-        this.refs.customDlg.hide();
+        $(this.refs.customDialog).modal('hide');
     }
     render() {
-        return (<CustomDlg ref="customDlg" title="请选择折让比例" onSubmit={() => this.state.callback(this.state.currentVal)}>
-                    <div style={{margin: "0 0 10px 0"}}>
-                        <Slider min={0} max={this.state.profittedInterest}
-                            value={this.state.currentVal} step={0.01} onChange={v => this.setState({currentVal: v})} />
+        var {principal: claimPrincipal, withdrawClaimFinalInterest: profittedInterest, originalClaimFinalInterest: originalInterest,
+            profitingYearly: originalProfitRateYearly, remainDays, staticWithdrawCostPercent} = this.props.transferingClaim;
+        var profitingRateAfterTransfer = (originalInterest - (this.state.currentVal - claimPrincipal)) * 360 / claimPrincipal / remainDays;
+        return (<div className="modal fade custom-dlg" id="customDialog" ref="customDialog" data-backdrop="static" tabIndex="-1"
+                     role="dialog" aria-labelledby="customDialogLabel">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 className="modal-title" id="customDialogLabel">申请债权转让确认</h4>
+                            </div>
+                            <div className="modal-body">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col-md-3">转让价格：</div>
+                                        <div className="col-md-3">
+                                            <Slider min={claimPrincipal} max={claimPrincipal + profittedInterest}
+                                                value={this.state.currentVal} step={0.01} onChange={v => this.setState({currentVal: v})} />
+                                        </div>
+                                        <div className="col-md-6 span-desc">
+                                            <span className="glyphicon glyphicon-exclamation-sign warning" aria-hidden="true" />{`只能设置在 ${claimPrincipal} ~ ${claimPrincipal + profittedInterest} 元之间`}</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3">原年利率：</div><div className="col-md-9 pink">{originalProfitRateYearly}</div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3">折让后年利率：</div><div className="col-md-9 pink">{(profitingRateAfterTransfer*100).format(1) + '%'}</div>
+                                    </div>
+                                    <div className="row" style={{paddingBottom: '0'}}>
+                                        <div className="col-md-3">转让手续费：</div><div className="col-md-9">{(this.state.currentVal * staticWithdrawCostPercent).format(2) + '元'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <div className="agreement-issue">
+                                    <input type="checkbox" id="isAgreeToAgreement" checked={this.state.isAgreeToAgreement} onClick={ev => this.setState({isAgreeToAgreement: ev.target.checked})} />
+                                    <label htmlFor="isAgreeToAgreement">我已经阅读并同意<a href="javascript:" className="claimTransferAgreement">《债权转让协议》</a></label>
+                                </div>
+                                <button type="button" className="confirm-btn" onClick={this.state.callback}>确 定</button>
+                                <button type="button" className="cancel-btn" data-dismiss="modal">取 消</button>
+                            </div>
+                        </div>
                     </div>
-                    您将保留 {this.state.currentVal.format(2)} 元利息，其余留给了债权受让人<br />
-                    温馨提示：折让越大，债权会更容易转让成功
-                </CustomDlg>);
+                </div>);
     }
 }
 
@@ -50,11 +105,11 @@ export default class ClaimsTransfer extends React.Component {
         super(props);
         this.state = {claimQueryType:1, pageIndex:0, pageCount:0, claims: [],
             StaticClaimWithdrawAmount: '0.00', StaticClaimWithdrawCount: 0,
-            BuyedStaticClaimAmount: '0.00', BuyedStaticClaimCount: 0};
+            BuyedStaticClaimAmount: '0.00', BuyedStaticClaimCount: 0, applyingTransferClaimId: 0};
     }
     componentDidMount() {
         this.fetchSummery();
-        this.fetchClaims(1, 0);      
+        this.fetchClaims(1, 0);
     }
     fetchSummery() {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryClaimTransferSummery";
@@ -115,8 +170,9 @@ export default class ClaimsTransfer extends React.Component {
         }); 
     }
     applyForClaimTransfer(claimId) {
-        confirm("转让成功后将会扣除一部分的手续费，是否继续？", () => {
-            let url = USER_CENTER_ASPX_PATH + "/AjaxQueryClaimUnpaidInterest";
+        var claim = find(this.state.claims, c => c.id == claimId);
+        if (!claim.loadedExtraInfo) {
+            let url = USER_CENTER_ASPX_PATH + "/AjaxQueryWithdrawClaimExtraInfo";
             ajax({
                 type: "POST",
                 dataType: "json",
@@ -124,20 +180,24 @@ export default class ClaimsTransfer extends React.Component {
                 url: url,
                 data: JSON.stringify({claimId}),
                 success: function(result) {
-                    let withdrawClaimFinalInterest = JSON.parse(result.d).withdrawClaimFinalInterest;
-                    if (withdrawClaimFinalInterest == 0) {
-                        this.doClaimTransfer(claimId, 1);
-                    } else {
-                        this.refs.legacyInterestPicker.show(withdrawClaimFinalInterest,
-                            v => this.doClaimTransfer(claimId, v/withdrawClaimFinalInterest));
-                    }
+                    let extraInfo = JSON.parse(result.d);
+                    extraInfo.loadedExtraInfo = true;
+
+                    assign(claim, extraInfo);
+                    this.setState({applyingTransferClaimId: claimId, claims: this.state.claims});
+
+                    this.refs.legacyInterestPicker.show(
+                        v => this.doClaimTransfer(claimId, extraInfo.withdrawClaimFinalInterest == 0 ? 1 : v.toFixed(2)/extraInfo.withdrawClaimFinalInterest));
                 }.bind(this),
                 error: function(xhr, status, err) {
                     console.error(url, status, err.toString());
                     alert('查询债权应收利息失败：' + xhr.responseJSON.d);
                 }.bind(this)
             });
-        });
+        } else {
+            this.refs.legacyInterestPicker.show(
+                v => this.doClaimTransfer(claimId, claim.withdrawClaimFinalInterest == 0 ? 1 : v.toFixed(2)/claim.withdrawClaimFinalInterest));
+        }
     }
     applyForCancelClaimTransfer(withdrawClaimId) {
         confirm("是否取消债权转让申请？", () => {
@@ -189,7 +249,7 @@ export default class ClaimsTransfer extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <div className={!this.props.isLoaner ? "bottom-wrapper" : "bottom-wrapper-loaner"}>
+                <div className="bottom-wrapper">
                     <div className="warm-tips"><span>债权转让</span></div>
                     <HorizontalPicker onTypeChange={newType => this.fetchClaims(newType, 0) }
                         enumFullName="Agp2p.Common.Agp2pEnums+StaticClaimQueryEnum" value={this.state.claimQueryType} />
@@ -213,8 +273,8 @@ export default class ClaimsTransfer extends React.Component {
                                     <tr key={c.id}>
                                         <td>{c.number}</td>
                                         <td>{c.profitingProject}</td>
-                                        <td>{c.profitingYearly + "%"}</td>
-                                        <td>{c.principal}</td>
+                                        <td>{c.profitingYearly}</td>
+                                        <td>{c.principal.format(2)}</td>
                                         <td>{c.queryType}</td>
                                         <td>{c.createTime}</td>
                                         <td>{c.nextProfitDay}</td>
@@ -230,18 +290,9 @@ export default class ClaimsTransfer extends React.Component {
                     </div>
                     <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
                                 onPageSelected={pageIndex => this.fetchClaims(this.state.claimQueryType, pageIndex)}/>
-                    <LegacyInterestPickerDlg ref="legacyInterestPicker" />
+                    <KeepInterestPickerDlg ref="legacyInterestPicker" transferingClaim={find(this.state.claims, c => c.id == this.state.applyingTransferClaimId) || {}} />
                 </div>
             </div>
         );
     }
 }
-
-        function mapStateToProps(state) {         
-            return {              
-                isLoaner: state.userInfo.isLoaner
-            };
-        }
-
-import { connect } from 'react-redux';
-export default connect(mapStateToProps)(ClaimsTransfer);

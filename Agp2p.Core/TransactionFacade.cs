@@ -713,7 +713,7 @@ namespace Agp2p.Core
                 if (keepInterestPercent != 0)
                 {
                     // 将利息留给受让人，以便更快转出债权
-                    var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
+                    var withdrawerProfitted = QueryWithdrawClaimFinalInterest(needTransferClaim);
                     needTransferClaim.keepInterest = keepInterestPercent * withdrawerProfitted;
                 }
 
@@ -722,7 +722,7 @@ namespace Agp2p.Core
             }
         }
 
-        public static decimal QueryWithdrawClaimFinalInterest(Agp2pDataContext context, li_claims needTransferClaim)
+        public static decimal QueryWithdrawClaimFinalInterest(li_claims needTransferClaim)
         {
             var currentRepaymentTask = needTransferClaim.li_projects.li_repayment_tasks.First(t => t.IsUnpaid());
 
@@ -733,7 +733,7 @@ namespace Agp2p.Core
                 {
                     if (ptr.gainFromClaim == needTransferClaim.id)
                         return true;
-                    return context.li_claims.Single(c => c.id == ptr.gainFromClaim.Value).IsParentOf(needTransferClaim);
+                    return needTransferClaim.li_projects.li_claims.Single(c => c.id == ptr.gainFromClaim.Value).IsParentOf(needTransferClaim);
                 }).interest.GetValueOrDefault();
             return agentPaidInterest;
         }
@@ -904,7 +904,7 @@ namespace Agp2p.Core
             }
 
             // 提现时债权所产生的实际收益
-            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(context, needTransferClaim);
+            var withdrawerProfitted = QueryWithdrawClaimFinalInterest(needTransferClaim);
             var claimTransferredOutPtr = new li_project_transactions
             {
                 investor = needTransferClaim.userId,

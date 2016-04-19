@@ -660,8 +660,8 @@ namespace Agp2p.Web.UI.Page
                         c.id,
                         c.number,
                         profitingProject = c.li_projects.title,
-                        profitingYearly = c.li_projects.profit_rate_year,
-                        principal = c.principal.ToString("n"),
+                        profitingYearly = c.li_projects.profit_rate_year.ToString("n1") + "%",
+                        c.principal,
                         queryType = Utils.GetAgp2pEnumDes(reverseMap[(Agp2pEnums.ClaimStatusEnum) c.status]),
                         createTime = c.createTime.ToString("yyyy-MM-dd HH:mm"),
                         nextProfitDay = c.li_projects.li_repayment_tasks.FirstOrDefault(t => t.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
@@ -675,7 +675,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryClaimUnpaidInterest(int claimId)
+        public static string AjaxQueryWithdrawClaimExtraInfo(int claimId)
         {
             // 查询债权实际产生的收益（提现后能产生的收益）
             var context = new Agp2pDataContext();
@@ -696,9 +696,15 @@ namespace Agp2p.Web.UI.Page
             withdrawClaim.li_projects_profiting = claim.li_projects_profiting;
             withdrawClaim.dt_users = claim.dt_users;
 
-            var withdrawClaimFinalInterest = TransactionFacade.QueryWithdrawClaimFinalInterest(context, withdrawClaim);
+            var withdrawClaimFinalInterest = TransactionFacade.QueryWithdrawClaimFinalInterest(withdrawClaim);
+            var originalClaimFinalInterest = TransactionFacade.QueryOriginalClaimFinalInterest(withdrawClaim);
 
-            return JsonConvert.SerializeObject(new { withdrawClaimFinalInterest });
+            var task = withdrawClaim.li_projects.li_repayment_tasks.Last(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid);
+            var remainDays = (int) (task.should_repay_time.Date - withdrawClaim.createTime.Date).TotalDays;
+
+            var staticWithdrawCostPercent = withdrawClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
+
+            return JsonConvert.SerializeObject(new { withdrawClaimFinalInterest, originalClaimFinalInterest, remainDays, staticWithdrawCostPercent });
         }
 
         [WebMethod]
