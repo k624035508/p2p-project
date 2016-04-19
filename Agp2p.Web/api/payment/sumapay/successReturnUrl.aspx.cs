@@ -17,7 +17,6 @@ namespace Agp2p.Web.api.payment.sumapay
         protected new void Page_Load(object sender, EventArgs e)
         {
             DoResponse(true);
-
             switch (RequestLog.api)
             {
                 //个人开户/激活
@@ -47,26 +46,26 @@ namespace Agp2p.Web.api.payment.sumapay
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                 case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
-                    Response.Write("个人充值成功！");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#recharge");
                     break;
                 //个人提现
                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                 case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
-                    Response.Write("个人提现成功！");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#withdraw");
                     break;
                 //投标
                 case (int)Agp2pEnums.SumapayApiEnum.MaBid:
                 case (int)Agp2pEnums.SumapayApiEnum.McBid:
                 case (int)Agp2pEnums.SumapayMobileApiEnum.MaBid:
                 case (int)Agp2pEnums.SumapayMobileApiEnum.McBid:
-                    Response.Write("投标成功！");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#invested");
                     break;
                 //个人还款
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
                 case (int)Agp2pEnums.SumapayApiEnum.McRep:
                 case (int)Agp2pEnums.SumapayApiEnum.BaRep:
                 case (int)Agp2pEnums.SumapayApiEnum.BcRep:
-                    Response.Write("还款成功！");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#repay");                    
                     break;
                 //债权转让
                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:

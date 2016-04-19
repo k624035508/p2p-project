@@ -6,18 +6,18 @@ export default class CustomDialog extends React.Component {
 		this.state = {  };
 	}
 	alignToCenter() {
-		var offsetHeight = ($(window).height() - $("#customDialog .modal-content").height()) / 2;
-		$("#customDialog .modal-dialog").css("margin-top", offsetHeight + "px");
+		var offsetHeight = ($(window).height() - $(".modal-content", this.refs.customDialog).height()) / 2;
+		$(".modal-dialog", this.refs.customDialog).css("margin-top", offsetHeight + "px");
 	}
 	show() {
-		$("#customDialog").modal();
+		$(this.refs.customDialog).modal();
 		this.alignToCenter();
 	}
 	hide() {
-		$("#customDialog").modal('hide');
+		$(this.refs.customDialog).modal('hide');
 	}
 	render() {
-		return (<div className="modal fade custom-dlg" id="customDialog" data-backdrop="static" tabIndex="-1"
+		return (<div className="modal fade custom-dlg" id="customDialog" ref="customDialog" data-backdrop="static" tabIndex="-1"
 					 role="dialog" aria-labelledby="customDialogLabel">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">

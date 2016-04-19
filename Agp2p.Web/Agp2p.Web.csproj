@@ -721,6 +721,7 @@
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\help.html" />
+    <Content Include="templates\AnGuang\imgs\usercenter\006.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
