@@ -32,6 +32,8 @@ namespace Agp2p.Web.UI.Page
         protected List<li_repayment_tasks> repayment_tasks = new List<li_repayment_tasks>();//还款计划
         protected decimal idle_money = 0;//客户可用余额
         protected bool has_email = false;
+        protected decimal projectSum;//项目总额
+        protected string projectDescription;//项目描述
 
         protected static readonly short PageSize = 20;
         protected int page;
@@ -84,6 +86,8 @@ namespace Agp2p.Web.UI.Page
             mortgages = projectModel.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).ToList();
 
             invsetorCount = projectModel.GetInvestedUserCount();
+            projectSum = projectModel.financing_amount;
+            projectDescription = projectModel.title;
 
             //还款计划
             repayment_tasks = projectModel.li_repayment_tasks
