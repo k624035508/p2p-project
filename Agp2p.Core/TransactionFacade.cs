@@ -849,6 +849,25 @@ namespace Agp2p.Core
             }
         }
 
+        public static decimal QueryOriginalClaimFinalInterest(li_claims needTransferClaim)
+        {
+            var tasks = needTransferClaim.li_projects.li_repayment_tasks.Where(t => needTransferClaim.createTime < t.should_repay_time).ToList();
+            var currentRepaymentTask = tasks.First();
+            var claimRatio = needTransferClaim.li_projects.GetClaimRatio(new[] { needTransferClaim.Parent.createTime, currentRepaymentTask.GetStartProfitingTime() }.Max());
+            return tasks.Select(task =>
+            {
+                return claimRatio
+                    .GenerateRepayTransactions(task, task.should_repay_time)
+                    .Single(ptr =>
+                    {
+                        if (ptr.gainFromClaim == needTransferClaim.id)
+                            return true;
+                        return
+                            needTransferClaim.li_projects.li_claims.Single(c => c.id == ptr.gainFromClaim.Value).IsParentOf(needTransferClaim);
+                    }).interest.GetValueOrDefault();
+            }).Sum();
+        }
+
         private static void StaticClaimTransferComplete(Agp2pDataContext context, li_claims needTransferClaim, List<li_project_transactions> buyedTrs)
         {
             var now = DateTime.Now;
@@ -860,18 +879,8 @@ namespace Agp2p.Core
             // 原债权人减少原本债权产生的待收利息，并收回本金、利息（减去了手续费后）
             var unpaidTasks = needTransferClaim.li_projects.li_repayment_tasks.Where(t => t.IsUnpaid()).ToList();
             var currentRepaymentTask = unpaidTasks.First();
-            var profitings = unpaidTasks.Select(task =>
-            {
-                // 取得原债权本金对应的应收利润
-                return task.li_projects.GetClaimRatio(new[] { needTransferClaim.Parent.createTime, currentRepaymentTask.GetStartProfitingTime() }.Max())
-                    .GenerateRepayTransactions(task, task.should_repay_time)
-                    .Single(ptr =>
-                    {
-                        if (ptr.gainFromClaim == needTransferClaim.id)
-                            return true;
-                        return context.li_claims.Single(c => c.id == ptr.gainFromClaim.Value).IsParentOf(needTransferClaim);
-                    }).interest.GetValueOrDefault();
-            }).ToList();
+            // 取得原债权本金对应的应收利润
+            var originalClaimFinalInterest = QueryOriginalClaimFinalInterest(needTransferClaim);
 
             // 根据债权计息时长来取得应收利息，这部分利息是受让人支付的
             // 出让人保留的利息
@@ -918,7 +927,7 @@ namespace Agp2p.Core
             ownerWallet.idle_money += claimTransferredOutPtr.principal + claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.investing_money -= needTransferClaim.principal;
             // 再次转让的话上一个转让人的利息不归再次出让人
-            ownerWallet.profiting_money -= profitings.Sum();
+            ownerWallet.profiting_money -= originalClaimFinalInterest;
             ownerWallet.total_profit += claimTransferredOutPtr.interest.GetValueOrDefault();
             ownerWallet.last_update_time = claimTransferredOutPtr.create_time;
 
@@ -928,7 +937,7 @@ namespace Agp2p.Core
 
 
             // 为 债权受让人 生成债权、计算代收利息、创建钱包历史
-            var remainProfitingOfClaim = profitings.Sum();
+            var remainProfitingOfClaim = originalClaimFinalInterest;
             var financingAmount = needTransferClaim.principal + buyerPaidInterest;
             var buyerProfitingsBeforeRounding = buyedTrs.Select(ptr => remainProfitingOfClaim * ptr.principal/financingAmount).ToList();
             var buyerProfitings = Utils.GetPerfectRounding(buyerProfitingsBeforeRounding, remainProfitingOfClaim, 2);

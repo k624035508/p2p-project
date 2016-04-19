@@ -137,10 +137,10 @@ namespace Agp2p.Web.UI
 
             public decimal ProfitRateYearly => NeedTransferClaim == null
                 ? Project.profit_rate_year/100
-                : FinancingAmount*
-                  (Project.IsHuoqiProject()
-                      ? TransactionFacade.HuoqiProjectProfitingDay
-                      : TransactionFacade.NormalProjectProfitingDay)/NeedTransferClaim.principal/RemainDays;
+                : (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
+                   NeedTransferClaim.keepInterest.GetValueOrDefault())*(Project.IsHuoqiProject()
+                       ? TransactionFacade.HuoqiProjectProfitingDay
+                       : TransactionFacade.NormalProjectProfitingDay)/NeedTransferClaim.principal/RemainDays;
 
             private int RemainDays
             {
@@ -150,6 +150,10 @@ namespace Agp2p.Web.UI
                     return (int) (task.should_repay_time.Date - NeedTransferClaim.createTime.Date).TotalDays;
                 }
             }
+
+            public int RepaymentTermSpanCount => NeedTransferClaim == null ? Project.repayment_term_span_count : RemainDays;
+
+            public string ProjectTermSpanName => NeedTransferClaim == null ? Project.GetProjectTermSpanEnumDesc() : "日";
 
             public decimal InvestmentBalance => NeedTransferClaim == null
                 ? Project.financing_amount - Project.investment_amount

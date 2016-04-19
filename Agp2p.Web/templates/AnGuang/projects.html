@@ -28,9 +28,9 @@
     <!--面包屑导航 end-->
     <div class="content-wrap consume">
         <ul>
-            <li class='<%=rootCategoryId==70?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",70)%>'">票据专区 <p><%=FinancingProjectMap.GetValueOrDefault(70,0)%></p><span></span> </li>
-            <li class='<%=rootCategoryId==69?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",69)%>'">债权转让<span></span></li>
-            <li class='<%=rootCategoryId==67?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",67)%>'">活期宝<span></span></li>
+            <li class='<%=rootCategoryId==tickerCategoryId?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">票据专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
+            <li class='<%=rootCategoryId==claimsCategoryId?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",claimsCategoryId)%>'">债权转让<span></span></li>
+            <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li>
             <li class="wentibao-li">文体宝<span></span></li>
             <li class="consumefin-li">消费金融<span></span></li>
         </ul>
@@ -144,12 +144,12 @@
                 <span class="invest-list-icon xin-icon"></span>
                 <%/if%>
             </span>
-            <span class="apr"><%=p.profit_rate_year.ToString("f1")%><i>%</i></span>
+            <span class="apr"><%=(inv.ProfitRateYearly*100).ToString("f1")%><i>%</i></span>
             <span class="sum"><%=inv.FinancingAmount.ToString("n0")%><i>元</i></span>
             <%if(p.IsHuoqiProject())%>
             <span class="deadline">--</span>
             <%else%>
-            <span class="deadline">{p.repayment_term_span_count}<i>{p.GetProjectTermSpanEnumDesc()}</i></span>
+            <span class="deadline">{inv.RepaymentTermSpanCount}<i>{inv.ProjectTermSpanName}</i></span>
             <%/if%>
             <span class="back-way">{p.GetProjectRepaymentTypeDesc()}</span>
             <span class="progress-wrap">
@@ -194,7 +194,7 @@
                 <span class="progress-th">进度</span>
                 <span class="status pull-right">状态</span>
             </div>
-            <%set var investables0=QueryInvestables(PAGE_SIZE,page-1,out totalcount,69,project_profit_rate_index,project_repayment_index,project_status_index)%>
+            <%set var investables0=QueryInvestables(PAGE_SIZE,page-1,out totalcount,claimsCategoryId,project_profit_rate_index,project_repayment_index,project_status_index)%>
             <%if(!investables0.Any())%>
             <div class="empty-box content-wrap">
                 <div class="empty-icon">暂没有找到相关数据</div>
