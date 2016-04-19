@@ -64,21 +64,18 @@ function initPage(){
             investingAmount: $(".invest-action input").val(),
             projectId: projectId,
             buyClaimId: buyClaimId,
-            transactPassword: $("#transactPwd").val()
+            projectSum: projectSum,
+            projectDescription:projectName,
+            huoqi: huoqi,
+            backUrl:location.href
         }, function(data) {
             if (data.status === 0) {
                 $.dialog.alert(data.msg);
-            } else if (data.status === 3) {
-                $.dialog.tips("投资成功！", 2, "32X32/succ.png", function(){
-                    location.reload();
-                });
-                //$.dialog.alert(data.msg, function() {
+            } else {
+                //$.dialog.tips("投资成功！", 2, "32X32/succ.png", function(){
                 //    location.reload();
                 //});
-            } else {
-                $.dialog.tips(data.msg, 2, "32X32/succ.png", function(){
-                    location.reload();
-                });
+                location.href = data.url;
             }
         }, "json").fail(function(resp) {
             $.dialog.alert("投资失败，请重试。<br>" + resp.errorMessage);

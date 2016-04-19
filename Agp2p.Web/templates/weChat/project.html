@@ -12,6 +12,8 @@
         var idleMoney = {idle_money};
         var investProgress = <%=(Investable.InvestmentProgress*100)%>;
         var projectId = {projectModel.id};
+        var projectSum = {projectModel.financing_amount};
+        var huoqi = '{projectModel.IsHuoqiProject()}';
         var projectName = '{Investable.Title}';
         var buyClaimId = '{buyClaimId}';
     </script>

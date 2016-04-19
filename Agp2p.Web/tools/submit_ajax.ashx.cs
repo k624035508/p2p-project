@@ -2152,18 +2152,44 @@ namespace Agp2p.Web.tools
                 var projectSum = DTRequest.GetFormDecimal("projectSum", 0);
                 var projectDescription = DTRequest.GetFormString("projectDescription");
                 var huoqi = DTRequest.GetFormString("huoqi");
+                var backUrl = DTRequest.GetFormString("backUrl");
+
                 if (buyClaimId != 0)
                 {
-                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + (int)Agp2pEnums.SumapayApiEnum.CreAs
-                                           + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" + investingAmount + "\"}");
+                    //债权转让
+                    if (string.IsNullOrEmpty(backUrl))
+                    {
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                               (int) Agp2pEnums.SumapayApiEnum.CreAs
+                                               + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
+                                               investingAmount + "\"}");
+                    }
+                    else
+                    {
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                               (int)Agp2pEnums.SumapayMobileApiEnum.CreAs
+                                               + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
+                                               investingAmount + "&backUrl = " + backUrl + "\"}");
+                    }
                 }
                 else
                 {
-                    int reqApi = huoqi.Equals("True") ? (int) Agp2pEnums.SumapayApiEnum.McBid : (int) Agp2pEnums.SumapayApiEnum.MaBid;
-                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
+                    if (string.IsNullOrEmpty(backUrl))
+                    {
+                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int)Agp2pEnums.SumapayApiEnum.MaBid;
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                            + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
                                            + "&projectSum=" + projectSum + "&projectDescription=" +
                                            projectDescription + "\"}");
+                    }
+                    else
+                    {
+                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayMobileApiEnum.McBid : (int)Agp2pEnums.SumapayMobileApiEnum.MaBid;
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
+                                               + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" +
+                                               investingAmount + "&projectSum=" + projectSum + "&projectDescription=" +
+                                               projectDescription + "&backUrl = " + backUrl + "\"}");
+                    }
                 }
             }
             catch (Exception e)
