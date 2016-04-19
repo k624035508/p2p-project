@@ -426,7 +426,8 @@ namespace Agp2p.Test
             Debug.Assert(dict[200200002] == "支付系统异常，请联系管理员4008908970");
             Debug.Assert(dict[110170055] == "付款总笔数不符合规范");
             Debug.Assert(dict[310070319] == "查无此交易");
-
+            Debug.Assert(dict[110400021] == "项目不存在");
+            Debug.Assert(dict[110490001] == "通讯异常，请联系丰付客服");
         }
     }
 }
