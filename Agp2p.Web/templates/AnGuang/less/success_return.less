@@ -43,7 +43,8 @@ body { background: @body-color; }
                     .returnBtn{ margin-left:341px;}
                  .closeBtn{margin-left:183px;}
                  }
-.recharge,.repay,.withdraw{
+
+     .returnSuccess,.returnFail{
     background:@white;
     height:750px;
     width:1100px;
@@ -53,7 +54,7 @@ body { background: @body-color; }
                     background:url("@{usercenter}/005.png") no-repeat 318px 130px;
                     font-size:40px; color:#37aaf0; font-weight:bold;
                   }
-                                      div.contentbg{
+                            div.contentbg{
                      height:270px; margin-top:90px; 
                  }
                                                        .returnBtn,.closeBtn{
@@ -62,6 +63,25 @@ body { background: @body-color; }
                  }
                     .returnBtn{ margin-left:341px;}
                  .closeBtn{margin-left:183px;}
+}
+     .returnFail{
+         p{background:url("@{usercenter}/008.png") no-repeat 318px 130px;}
+         div.contentbg{ background:url("@{usercenter}/007.png") no-repeat center; }
+     }
+
+.tranClaim , .autoTender , .autoTenderCancel ,
+.tranClaimFail , .autoTenderFail , .autoTenderCancelFail
+{
+    p{
+        background-position-x:238px;
+    }
+}
+.autoAccount,.autoAccountCancel,
+.autoAccountFail,.autoAccountCancelFail
+{
+    p{
+        background-position-x:198px;
+    }
 }
 
                   .rechargebg{ background:url("@{usercenter}/003.png") no-repeat center;}                                   
