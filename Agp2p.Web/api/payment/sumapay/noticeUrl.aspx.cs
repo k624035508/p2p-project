@@ -56,7 +56,8 @@ namespace Agp2p.Web.api.payment.sumapay
                         switch (RequestLog.api)
                         {
                             //个人开户/激活
-                            case (int) Agp2pEnums.SumapayApiEnum.URegi:
+                            case (int)Agp2pEnums.SumapayApiEnum.URegi:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.URegi:
                             case (int) Agp2pEnums.SumapayApiEnum.Activ:
                                 respMsg = isSync ? new UserRegisterRespMsg(reqStr) : BaseRespMsg.NewInstance<UserRegisterRespMsg>(reqStr);
                                 break;
@@ -185,7 +186,7 @@ namespace Agp2p.Web.api.payment.sumapay
                 }
                 else
                 {
-                    ResponseLog.remarks = "没有找到对应的请求流水号或请求已处理，RequestID:" + ResponseLog.request_id;
+                    ResponseLog.remarks = "没有找到对应的请求流水号，RequestID:" + ResponseLog.request_id;
                     context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                     context.SubmitChanges();
                 }

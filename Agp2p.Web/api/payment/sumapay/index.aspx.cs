@@ -62,11 +62,20 @@ namespace Agp2p.Web.api.payment.sumapay
                     reqMsg = new WhRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
                             DTRequest.GetQueryString("sum"));
                     break;
+                //个人移动端一键充值
+                case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
+                    reqMsg = new WhRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
+                            DTRequest.GetQueryString("sum"), DTRequest.GetQueryString("backUrl"), "", "3", "", "");
+                    break;
                 //个人提现
                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                     reqMsg = new WithdrawReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("sum"),
-                        DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("bankName"),
-                        DTRequest.GetQueryString("bankAccount"));
+                        DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("bankName"), DTRequest.GetQueryString("bankAccount"), "3", "", "");
+                    break;
+                //个人移动端提现
+                case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
+                    reqMsg = new WithdrawReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("sum"),
+                        DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("backUrl"), "3", "", "");
                     break;
                 //个人投标 普通/集合项目
                 case (int)Agp2pEnums.SumapayApiEnum.MaBid:
@@ -75,6 +84,14 @@ namespace Agp2p.Web.api.payment.sumapay
                         DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
                         DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
                         requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
+                    break;
+                //个人移动端投标 普通/集合项目
+                case (int)Agp2pEnums.SumapayMobileApiEnum.MaBid:
+                case (int)Agp2pEnums.SumapayMobileApiEnum.McBid:
+                    reqMsg = new ManualBidReqMsg(DTRequest.GetQueryInt("userId", 0),
+                        DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
+                        DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
+                        DTRequest.GetQueryString("backUrl"), requestApi == (int) Agp2pEnums.SumapayMobileApiEnum.McBid);
                     break;
                 //个人存管账户还款普通/集合项目 TODO Remarks移动到RequestApiHandle处理
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
@@ -94,6 +111,10 @@ namespace Agp2p.Web.api.payment.sumapay
                 //债权转让
                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:
                     reqMsg = new CreditAssignmentReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("claimId"), DTRequest.GetQueryString("undertakeSum"));
+                    break;
+                //移动端债权转让
+                case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
+                    reqMsg = new CreditAssignmentReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("claimId"), DTRequest.GetQueryString("undertakeSum"), DTRequest.GetQueryString("backUrl"), "1", "", "");
                     break;
                 default:
                     reqMsg = new BaseReqMsg();

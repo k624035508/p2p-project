@@ -21,6 +21,8 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; } //主账户编码 
         public int ClaimId { get; set; } //债权编号
         public string SubledgerList { get; set; } //分账列表
+        public string BackUrl { get; set; }
+        public string RequestType { get; set; }
 
         public CreditAssignmentReqMsg(int userId, int claimId, string undertakeSum, string creditValue = "", string undertakePercentage = "", string payType = "1", string mainAccountType = "",
             string mainAccountCode = "")
@@ -39,12 +41,33 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = Agp2pEnums.SumapayApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
+        public CreditAssignmentReqMsg(int userId, int claimId, string undertakeSum, string backUrl, string payType = "1", string mainAccountType = "", string mainAccountCode = "")
+        {
+            UserId = userId;
+            ClaimId = claimId;
+            UndertakeSum = undertakeSum;
+            PayType = payType;
+            MainAccountType = mainAccountType;
+            MainAccountCode = mainAccountCode;
+            BackUrl = backUrl;
+
+            RequestType = "PFT0012";
+            Api = (int)Agp2pEnums.SumapayMobileApiEnum.CreAs;
+            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            RequestId = Agp2pEnums.SumapayMobileApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
         public override string GetSignature()
         {
-            return
-                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
-                                     OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
-                                     SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
+            return !string.IsNullOrEmpty(RequestType)
+                ? SumaPayUtils.GenSign(
+                    RequestType + RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + ProjectDescription +
+                    OriginalRequestId + OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList + CreditValue +
+                    UndertakePercentage + MainAccountType + MainAccountCode + SumapayConfig.NoticeUrl +
+                    SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key)
+                : SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
+                                       OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
+                                       SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()
@@ -71,6 +94,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!string.IsNullOrEmpty(UndertakePercentage)) sd.Add("undertakePercentage", UndertakePercentage);
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);
             if (!string.IsNullOrEmpty(MainAccountCode)) sd.Add("mainAccountCode", MainAccountCode);
+            if (!string.IsNullOrEmpty(BackUrl)) sd.Add("backUrl", BackUrl);
+            if (!string.IsNullOrEmpty(RequestType)) sd.Add("requestType", RequestType);
 
             return sd;
         }

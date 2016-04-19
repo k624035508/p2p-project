@@ -155,8 +155,16 @@ namespace Agp2p.Core.PayApiLogic
                             //TODO 正式后改为异步返回才放款
                             if (msg.Sync)
                             {
-                                //开始还款，包括向借款人放款
-                                context.StartRepayment(msg.ProjectCode);
+                                //定期项目进入开始还款，活期项目直接向借款人放款
+                                if (pro.IsHuoqiProject())
+                                {
+                                    TransactionFacade.MakeLoan(context, DateTime.Now, msg.ProjectCode, pro.li_risks.li_loaners.user_id, Utils.StrToDecimal(msg.Sum, 0));
+                                }
+                                else
+                                {
+                                    context.StartRepayment(pro.id);
+                                }
+                                
                                 msg.HasHandle = true;
                             }
                         }
@@ -202,7 +210,7 @@ namespace Agp2p.Core.PayApiLogic
                                     //生成还款记录
                                     context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
                                         Utils.StrToDecimal(msg.Sum, 0));
-                                    //如果是手动还款立刻发送本息到账请求
+                                    //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
                                     if (!msg.AutoRepay)
                                     {
                                         RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
@@ -298,7 +306,7 @@ namespace Agp2p.Core.PayApiLogic
         }
 
         /// <summary>
-        /// 查询项目
+        /// 查询活期项目
         /// </summary>
         /// <param name="msg"></param>
         private static void QueryProject(QueryProjectRespMsg msg)
@@ -318,8 +326,9 @@ namespace Agp2p.Core.PayApiLogic
                             var project = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                             if (project != null)
                             {
-                                var makeLoanReqMsg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, project.id, msg.LoanAccountBalance);
-                                MessageBus.Main.PublishAsync(msg, ar =>
+                                //TODO 改为放款余额
+                                var makeLoanReqMsg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, project.id, msg.LoanAccountBalance, true);
+                                MessageBus.Main.PublishAsync(makeLoanReqMsg, ar =>
                                 {
                                     var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(makeLoanReqMsg.SynResult);
                                     msgResp.Sync = true;

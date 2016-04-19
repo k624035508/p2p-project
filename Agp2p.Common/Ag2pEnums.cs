@@ -856,6 +856,24 @@ namespace Agp2p.Common
             [Description("商户项目查询")] QuPro = 33
         }
 
+        public enum SumapayMobileApiEnum
+        {
+            [Description("实名开户")]
+            URegi = 101,
+            [Description("账户管理")]
+            Accou = 104,
+            [Description("一键充值")]
+            WhRec = 111,
+            [Description("用户提现")]
+            Wdraw = 121,
+            [Description("投标普通项目")]
+            MaBid = 112,
+            [Description("投标集合项目")]
+            McBid = 113,
+            [Description("债权转让")]
+            CreAs = 130
+        }
+
         public enum StaticClaimQueryEnum
         {
             [Description("可转让")]

@@ -14,39 +14,32 @@ namespace Agp2p.Web.api.payment.sumapay
 {
     public partial class successReturnUrl : noticeUrl
     {
-        protected int action = 0;
-
         protected new void Page_Load(object sender, EventArgs e)
-        {          
-            //DoResponse(true);
-
-            //switch (RequestLog.api)
-            action = DTRequest.GetQueryInt("action");
-            switch (action)
+        {
+            DoResponse(true);
+            switch (RequestLog.api)
             {
                 //个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
-                    
                     Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/register.html?action=4&result=success");
                     break;
                 //个人自动投标续约
                 case (int)Agp2pEnums.SumapayApiEnum.AtBid:
-                    // Response.Write("自动投标续约成功！");
-                  
+                    Response.Write("自动投标续约成功！");
                     break;
                 //个人自动投标解约
                 case (int)Agp2pEnums.SumapayApiEnum.ClBid:
-                 //   Response.Write("自动投标解约成功！");
+                    Response.Write("自动投标解约成功！");
                     break;
                 //个人自动账户/银行还款开通
                 case (int)Agp2pEnums.SumapayApiEnum.AcReO:
                 case (int)Agp2pEnums.SumapayApiEnum.AbReO:
-                //    Response.Write("个人自动账户/银行还款开通成功！");
+                    Response.Write("个人自动账户/银行还款开通成功！");
                     break;
                 //个人自动还款取消
                 case (int)Agp2pEnums.SumapayApiEnum.ClRep:
-                 //   Response.Write("个人自动账户/银行还款取消成功！");
+                    Response.Write("个人自动账户/银行还款取消成功！");
                     break;
                 //个人网银/一键充值
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
@@ -71,11 +64,11 @@ namespace Agp2p.Web.api.payment.sumapay
                 case (int)Agp2pEnums.SumapayApiEnum.BaRep:
                 case (int)Agp2pEnums.SumapayApiEnum.BcRep:
                     //    Response.Write("还款成功！");
-                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#repay");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#repay");                    
                     break;
                 //债权转让
                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:
-                //    Response.Write("债权转让成功！");
+                    Response.Write("债权转让成功！");
                     break;
             }
         }
