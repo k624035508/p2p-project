@@ -36,7 +36,8 @@ namespace Agp2p.Core.PayApiLogic
                 api = msg.Api,
                 status = (int)Agp2pEnums.SumapayRequestEnum.Waiting,
                 request_time = DateTime.Now,
-                remarks = msg.Remarks
+                remarks = msg.Remarks,
+                request_content = ""
             };
             try
             {

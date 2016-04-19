@@ -128,7 +128,8 @@ $(function () {
         if (data.status === 1) { //成功
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
-                location.href = "/";
+                //注册成功后进入开户
+                location.href = "/api/payment/sumapay/index.aspx?api=101&backUrl="+location.href;
             });
         } else { //失败
             $.dialog.alert(data.msg);
