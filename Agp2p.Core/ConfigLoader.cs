@@ -44,7 +44,7 @@ namespace Agp2p.Core
                     var numPart = line.Substring(0, splitAt);
                     var descPart = line.Substring(splitAt + 1);
                     return numPart.MatchSteam(numReg).Select(m => new {Number = Convert.ToInt32(m.Value), Description = descPart});
-                }).GroupBy(pair => pair.Number, pair => pair.Description).ToDictionary(g => g.Key, g => string.Join("，", g.ToList()));
+                }).GroupBy(pair => pair.Number, pair => pair.Description).ToDictionary(g => g.Key, g => string.Join("，", g.Distinct().ToList()));
 
                 MemoryCache.Default.Set("sumapay_err_num_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
                 return configCache;
