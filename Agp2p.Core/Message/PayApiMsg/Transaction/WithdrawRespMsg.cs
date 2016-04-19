@@ -39,16 +39,16 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
             Sum = map["sum"];
-            UserBalance = map["userBalance"];
-            WithdrawableBalance = map["withdrawableBalance"];
-            FrozenBalance = map["frozenBalance"];
-            UnsettledBalance = map["unsettledBalance"];
-            PayType = map["payType"];
+            UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";
+            WithdrawableBalance = map.ContainsKey("withdrawableBalance") ? map["withdrawableBalance"] : "";
+            FrozenBalance = map.ContainsKey("frozenBalance") ? map["frozenBalance"] : "";
+            UnsettledBalance = map.ContainsKey("unsettledBalance") ? map["unsettledBalance"] : "";
+            PayType = map.ContainsKey("payType") ? map["payType"] : "";
             MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
-            MainAccountCode = map.ContainsKey("mainAccountType") ? map["mainAccountCode"] : "";
-            BankAccount = map["bankAccount"];
-            BankName = map["bankName"];
-            Name = map["name"];
+            MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";
+            BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
+            BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
+            Name = map.ContainsKey("name") ? map["name"] : "";
 
             NoticeType = map.ContainsKey("noticeType") ? map["noticeType"] : "";
             FailReason = map.ContainsKey("failReason") ? map["failReason"] : "";

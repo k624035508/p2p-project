@@ -22,8 +22,10 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
-                case (int)Agp2pEnums.SumapayMobileApiEnum.URegi:
                     Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/register.html?action=4&result=success");
+                    break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.URegi:
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "mobile/user/center/index.html");
                     break;
                 //个人自动投标续约
                 case (int)Agp2pEnums.SumapayApiEnum.AtBid:
@@ -45,20 +47,26 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人网银/一键充值
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
-                case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
                     Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#recharge");
+                    break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "mobile/user/center/index.html");
                     break;
                 //个人提现
                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
-                case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
                     Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#withdraw");
+                    break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "mobile/user/center/index.html");
                     break;
                 //投标
                 case (int)Agp2pEnums.SumapayApiEnum.MaBid:
                 case (int)Agp2pEnums.SumapayApiEnum.McBid:
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#invested");
+                    break;
                 case (int)Agp2pEnums.SumapayMobileApiEnum.MaBid:
                 case (int)Agp2pEnums.SumapayMobileApiEnum.McBid:
-                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/success_return.html#invested");
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "mobile/user/myreceiveplan/myreceiveplan-1-0-0-0.html#projects");
                     break;
                 //个人还款
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
@@ -69,8 +77,10 @@ namespace Agp2p.Web.api.payment.sumapay
                     break;
                 //债权转让
                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:
-                case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
                     Response.Write("债权转让成功！");
+                    break;
+                case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
+                    Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "mobile/user/center/index.html");
                     break;
             }
         }
