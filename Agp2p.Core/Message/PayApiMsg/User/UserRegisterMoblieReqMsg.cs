@@ -30,9 +30,9 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0000";
             PayType = "1";
-            Api = (int)Agp2pEnums.SumapayMobileApiEnum.URegi;
+            Api = (int)Agp2pEnums.SumapayApiEnum.URegM;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
-            RequestId = Agp2pEnums.SumapayMobileApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.URegM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()

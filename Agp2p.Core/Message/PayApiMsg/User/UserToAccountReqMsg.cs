@@ -28,9 +28,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             BackUrl = backUrl;
 
             RequestType = "PFT0013";
-            Api = (int)Agp2pEnums.SumapayMobileApiEnum.Accou;
+            Api = (int)Agp2pEnums.SumapayApiEnum.AccoM;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
-            RequestId = Agp2pEnums.SumapayMobileApiEnum.Accou.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.AccoM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()
