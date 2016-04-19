@@ -42,7 +42,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
         }
 
-        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, string backUrl, string giftFlag = "", string subledgerList = "")
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, string backUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -53,10 +53,11 @@ namespace Agp2p.Core.Message.PayApiMsg
             GiftFlag = giftFlag;
             BackUrl = backUrl;
 
-            RequestType = "PFT0003";
-            Api = (int)Agp2pEnums.SumapayMobileApiEnum.MaBid;
+            RequestType = collective ? "PFT0014" : "PFT0003";
+            Api = collective ? (int)Agp2pEnums.SumapayMobileApiEnum.McBid : (int)Agp2pEnums.SumapayMobileApiEnum.MaBid;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
-            RequestId = Agp2pEnums.SumapayMobileApiEnum.MaBid.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            Collective = collective;
         }
 
         public override string GetSignature()
