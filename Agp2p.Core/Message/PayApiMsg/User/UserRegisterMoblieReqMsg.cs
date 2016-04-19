@@ -43,16 +43,13 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override SortedDictionary<string, string> GetSubmitPara()
         {
-            return new SortedDictionary<string, string>
+            var sd = new SortedDictionary<string, string>
             {
                 {"requestType", RequestType},
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
                 {"mobileNo", MobileNo},
-                {"userName", UserName},
-                {"idNumber", IdNumber.ToUpper()},
-                {"realNameToken", UserName},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},
@@ -60,6 +57,11 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"payType", PayType},
                 {"signature", GetSignature()}
             };
+            if (!string.IsNullOrEmpty(UserName)) sd.Add("userName", UserName);
+            if (!string.IsNullOrEmpty(IdNumber)) sd.Add("idNumber", IdNumber);
+            if (!string.IsNullOrEmpty(RealNameToken)) sd.Add("realNameToken", RealNameToken);
+
+            return sd;
         }
     }
 }
