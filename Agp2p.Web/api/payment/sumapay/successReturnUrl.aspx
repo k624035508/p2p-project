@@ -38,14 +38,11 @@
         </style>
     </head>
 <body>
-    <%if (action == (int)Agp2pEnums.SumapayApiEnum.WeRec || action == (int)Agp2pEnums.SumapayApiEnum.WhRec)
-        { %>
     <div class="contenttips">
         <p>恭喜您，充值成功</p>
         <div class="chongzhi"></div>
         <a class="returnBtn">返回</a>
         <a class="closeBtn">关闭</a>
     </div>
-    <%} %>
 </body>
 </html>

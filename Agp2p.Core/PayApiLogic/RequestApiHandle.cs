@@ -48,10 +48,12 @@ namespace Agp2p.Core.PayApiLogic
                         context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg)msg).Sum, 0), Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
                         break;
                     case (int)Agp2pEnums.SumapayApiEnum.WhRec:
+                    case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
                         //快捷充值
                         context.Charge((int)requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg)msg).Sum, 0), Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
                         break;
                     case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                    case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
                         //提现
                         var withdrawReqMsg = (WithdrawReqMsg)msg;
                         context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
@@ -59,6 +61,7 @@ namespace Agp2p.Core.PayApiLogic
                         break;
                         //债权转让
                     case (int)Agp2pEnums.SumapayApiEnum.CreAs:
+                    case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
                         var creditAssignmentReqMsg = (CreditAssignmentReqMsg)msg;
                         //通过债权找出对应的投资信息
                         var claim = context.li_claims.SingleOrDefault(c => c.id == creditAssignmentReqMsg.ClaimId);

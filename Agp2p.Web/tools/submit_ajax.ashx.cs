@@ -2315,25 +2315,37 @@ namespace Agp2p.Web.tools
             var bankCode = DTRequest.GetFormString("bankCode");
             var rechargeSum = DTRequest.GetFormString("rechargeSum");
             var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
-            if (string.IsNullOrWhiteSpace(bankCode))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
-                return;
-            }
+            var backUrl = DTRequest.GetFormString("backUrl");
             if (string.IsNullOrWhiteSpace(rechargeSum))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                 return;
             }
             if (!quickPayment)
+            {
+                if (string.IsNullOrWhiteSpace(bankCode))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                    return;
+                }
                 context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                        (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
-                                        rechargeSum + "&bankCode=" +
-                                        bankCode + "\"}");
+                                       (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "&bankCode=" +
+                                       bankCode + "\"}");
+            }
             else
-                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                        (int) Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
-                                        rechargeSum + "\"}");
+            {
+                //有返回地址参数的是移动端请求
+                if(string.IsNullOrEmpty(backUrl))
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "\"}");
+                else
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayMobileApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "&backUrl=" + backUrl + "\"}");
+            }
+                
         }
 
         /// <summary>
@@ -2363,7 +2375,7 @@ namespace Agp2p.Web.tools
             var bankName = DTRequest.GetFormString("bankName");
             var bankAccount = DTRequest.GetFormString("bankAccount");
             var howmany = DTRequest.GetFormDecimal("howmany", 0);
-
+            var backUrl = DTRequest.GetFormString("backUrl");
             // 提现 100 起步，5w 封顶
             if (howmany < 100)
             {
@@ -2385,12 +2397,22 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                 return;
             }
-            context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                        (int)Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
-                                        howmany + "&bankId=" +
-                                        cardId + "&bankName=" +
-                                        bankName + "&bankAccount=" +
-                                        bankAccount + "\"}");                
+            //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
+            if (!string.IsNullOrEmpty(backUrl))
+            {
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int) Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                       howmany + "&bankId=" +
+                                       cardId + "&bankName=" +
+                                       bankName + "&bankAccount=" +
+                                       bankAccount + "\"}");
+            }
+            else
+            {
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                       howmany + "&bankId=" + cardId + "&backUrl=" + backUrl + "\"}");
+            }
         }
 
         /// <summary>
