@@ -862,9 +862,9 @@ namespace Agp2p.Common
             URegi = 101,
             [Description("账户管理")]
             Accou = 104,
-            [Description("一键充值")]
+            [Description("移动端充值")]
             WhRec = 111,
-            [Description("用户提现")]
+            [Description("移动端提现")]
             Wdraw = 121,
             [Description("投标普通项目")]
             MaBid = 112,

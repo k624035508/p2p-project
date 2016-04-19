@@ -12,6 +12,8 @@
         var idleMoney = {idle_money};
         var investProgress = <%=(Investable.InvestmentProgress*100)%>;
         var projectId = {projectModel.id};
+        var projectSum = {projectModel.financing_amount};
+        var huoqi = '{projectModel.IsHuoqiProject()}';
         var projectName = '{Investable.Title}';
         var buyClaimId = '{buyClaimId}';
     </script>
@@ -234,7 +236,7 @@
                                     <span id="dlgField_IdleMoney"></span>
                                 </li>                                
                             </ul>
-                            <input type="password" id="transactPwd" class="form-control" placeholder="请输入交易密码">
+                            <!--<input type="password" id="transactPwd" class="form-control" placeholder="请输入交易密码">-->
                         </div>
                     </div>
                 </div>

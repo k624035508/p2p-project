@@ -83,11 +83,14 @@ namespace Agp2p.Web.api.payment.sumapay
                             //个人网银/一键充值
                             case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                             case (int) Agp2pEnums.SumapayApiEnum.WhRec:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
                                 respMsg = isSync ? new RechargeRespMsg(reqStr) : BaseRespMsg.NewInstance<RechargeRespMsg>(reqStr);
                                 break;
                             //个人投标/自动投标 普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaBid:
                             case (int) Agp2pEnums.SumapayApiEnum.McBid:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.MaBid:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.McBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AmBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AcBid:
                                 respMsg = isSync ? new BidRespMsg(reqStr) : BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
@@ -108,6 +111,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                             //个人提现
                             case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
                                 respMsg = isSync ? new WithdrawRespMsg(reqStr, true) : BaseRespMsg.NewInstance<WithdrawRespMsg>(reqStr);
                                 break;
                             //个人存管账户还款普通/集合项目
@@ -134,6 +138,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 break;
                             //债权转让
                             case (int) Agp2pEnums.SumapayApiEnum.CreAs:
+                            case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
                                 respMsg = isSync ? new CreditAssignmentRespMsg(reqStr) : BaseRespMsg.NewInstance<CreditAssignmentRespMsg>(reqStr);
                                 break;
                             //付款到个人
