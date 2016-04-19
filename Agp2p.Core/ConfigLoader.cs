@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.Caching;
+using System.Text;
+using System.Text.RegularExpressions;
 using Agp2p.Common;
 using Agp2p.Model;
 
@@ -17,6 +22,36 @@ namespace Agp2p.Core
             MemoryCache.Default.Remove("site_config");
             MemoryCache.Default.Remove("user_config");
             MemoryCache.Default.Remove("cost_config");
+        }
+
+        public static Dictionary<int, string> loadSumapayErrorNumberDescDict()
+        {
+            try
+            {
+                var configCache = (Dictionary<int, string>)MemoryCache.Default.Get("sumapay_err_num_config");
+                if (configCache != null) return configCache;
+
+                var numReg = new Regex(@"\d+");
+                configCache = File.ReadAllLines("sumapay_error_no.txt").SelectMany(line =>
+                {
+                    var splitAt = line.IndexOf('：');
+                    if (splitAt == -1)
+                    {
+                        splitAt = line.IndexOf(':');
+                    }
+
+                    var numPart = line.Substring(0, splitAt);
+                    var descPart = line.Substring(splitAt + 1);
+                    return numPart.MatchSteam(numReg).Select(m => new {Number = Convert.ToInt32(m.Value), Description = descPart});
+                }).GroupBy(pair => pair.Number, pair => pair.Description).ToDictionary(g => g.Key, g => string.Join("，", g.ToList()));
+
+                MemoryCache.Default.Set("sumapay_err_num_config", configCache, DateTime.Now.AddMinutes(20)); // 20 分钟超时
+                return configCache;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         /// <summary>

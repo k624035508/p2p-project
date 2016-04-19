@@ -417,5 +417,16 @@ namespace Agp2p.Test
             Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
             Debug.WriteLine("Entities count: " + users.Count);
         }
+
+        [TestMethod]
+        public void TestMatchSteam()
+        {
+            var dict = ConfigLoader.loadSumapayErrorNumberDescDict();
+            Debug.Assert(dict[110170006] == "请求流水为空或不符合规范");
+            Debug.Assert(dict[200200002] == "支付系统异常，请联系管理员4008908970");
+            Debug.Assert(dict[110170055] == "付款总笔数不符合规范");
+            Debug.Assert(dict[310070319] == "查无此交易");
+
+        }
     }
 }

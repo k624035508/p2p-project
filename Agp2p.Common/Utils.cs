@@ -1935,5 +1935,15 @@ namespace Agp2p.Common
             TValue value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValueProvider();
         }
+
+        public static IEnumerable<Match> MatchSteam(this string src, Regex pattern)
+        {
+            var match = pattern.Match(src);
+            while (match.Success)
+            {
+                yield return match;
+                match = match.NextMatch();
+            }
+        }
     }
 }
