@@ -42,7 +42,7 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
 
-                                //TODO 检查用户资金信息 一键充值后自动绑定银行卡
+                                //TODO 检查用户资金信息 一键充值后自动取消注销银行卡（同卡进出只能使用绑定卡提现）
                                 msg.HasHandle = true;
                             }
                         }
