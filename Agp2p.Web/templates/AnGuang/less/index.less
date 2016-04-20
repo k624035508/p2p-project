@@ -146,6 +146,7 @@ body {background: @body-color;}
 div#bannerCarousel {
     min-width: @min-width;
     margin: 0 auto;
+    position:relative;
     .carousel-indicators li {
         width: 12px;
         height: 12px;
@@ -164,6 +165,7 @@ div#bannerCarousel {
             }
             .banner2 { background: url("@{images}/banner-02.jpg") no-repeat center; }
             .banner3 { background: url("@{images}/banner-03.jpg") no-repeat center; }
+            .banner4 { background: url("@{images}/banner-04.jpg") no-repeat center; }
             .apps-btns {
                 position: absolute;
                 width: 155px;
@@ -187,7 +189,16 @@ div#bannerCarousel {
             }
         }
     }
+      .prev{
+         position:absolute; height:76px; width:53px; background: url("@{images}/slider-arrow.png") no-repeat 10px 0; top:139px; left:7%; z-index:100;cursor:pointer;
+         &:hover{background-position:-36px 0;}
+     }
+     .next{
+         position:absolute; height:76px; width:55px; background: url("@{images}/slider-arrow.png") no-repeat -82px 0; top:139px; right:9%; z-index:100;cursor:pointer;
+         &:hover{background-position:-128px 0;}
+     }
 }
+
 .m-banner{ min-width: @min-width;position:relative;height:350px;z-index:0; padding:0;margin:0; overflow:hidden;
      .prev{
          position:absolute; height:76px; width:53px; background: url("@{images}/slider-arrow.png") no-repeat 10px 0; top:40%; left:8%; z-index:100;cursor:pointer;
@@ -232,21 +243,19 @@ div#bannerCarousel {
                 }
             }
          }
-    
+         .banner4 { background: url("@{images}/banner-04.jpg") no-repeat center; }
     }
     }
    .hd{width:100%;position:absolute;height:40px;text-align:center;z-index:15; bottom:0;
         padding:0;
         li{margin-right:-5px;*margin-right:-1px; 
-           cursor:pointer;display:inline-block;*display:inline;width:140px;height:45px;line-height:40px;font-size:15px;color:#fff;
-           background: url("@{images}/bgbanner.png"); 
-           border:1px solid #ddd;border:1px solid rgba(255,255,255,.5);border-bottom:none;border-radius:5px 5px 0 0;
-        
+           cursor:pointer;display:inline-block;*display:inline;width:30px;height:45px;line-height:40px;font-size:30px;color:#ebe1e1; opacity:0.2;      
 }
-       .on{position:relative; bottom:5px;}
+       .on{position:relative; color:#fff;opacity:1;}
       }
    
    }
+    
 /*公告板*/
 div.announcement-wrap {
     background: #f7f4ed;

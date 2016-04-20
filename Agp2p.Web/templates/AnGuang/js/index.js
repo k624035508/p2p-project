@@ -23,11 +23,14 @@ $(function () {
    
     var prog=$("div.progress-bar");       
     var changdu1=prog.parent().width();
-    var changdu2=parseInt(prog.eq(0).html())/100;     
-    prog.eq(0).width(changdu2*changdu1);    
-   
-    $(window).scroll(function(){
-           
+    for(var i=0;i<5;i++){
+        if (prog.eq(i).offset().top<820) {
+            var changdu2=parseInt(prog.eq(i).html())/100;     
+            prog.eq(i).width(changdu2*changdu1);    
+        }
+    }
+
+    $(window).scroll(function(){          
         var windowtop = $(window).scrollTop();
         if(windowtop>99 && windowtop<1040){        
    
@@ -37,7 +40,7 @@ $(function () {
             }      
         }
                 
-        if(windowtop>490){
+        if(windowtop>285){
             for(var i=5;i<(prog.length);i++){
                 var changdu2=parseInt(prog.eq(i).html())/100;              
                 prog.eq(i).width(changdu2*changdu1);        
@@ -46,13 +49,15 @@ $(function () {
     });
 
 
-    //1.焦点图轮换
+
+
+    //1.焦点图轮换 
     $(".m-banner").slide({titCell:".hd li",mainCell:".bd ul",effect:"fold",autoPlay:true, trigger:"mouseover" })
         .hover(function(){
             $(".prev, .next").show();
         },function(){
             $(".prev , .next").hide();
         });
-   
+  
  
 });
