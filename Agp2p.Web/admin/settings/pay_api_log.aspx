@@ -47,8 +47,8 @@
                         <th align="left" width="15%">请求编号</th>
                         <th align="left" width="8%">请求类型</th>
                         <th align="left" width="6%">请求状态</th>
-                        <th align="left" width="8%">关联用户</th>
-                        <th align="left" width="12%">关联项目</th>
+                        <th align="left" width="10%">关联用户</th>
+                        <th align="left" width="8%">关联项目</th>
                         <th align="left" width="8%">请求时间</th>
                         <th align="left" width="8%">响应时间</th>
                         <th align="left" width="6%">响应结果</th>

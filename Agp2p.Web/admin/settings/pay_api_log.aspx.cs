@@ -78,7 +78,7 @@ namespace Agp2p.Web.admin.repayment
                     UserId = r.req.user_id,
                     Type = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayApiEnum)r.req.api),
                     Status = Utils.GetAgp2pEnumDes((Agp2pEnums.SumapayRequestEnum)r.req.status),
-                    RequestTime = r.req.request_time.ToString("yyyy-M-d hh:mm:ss")
+                    RequestTime = r.req.request_time.ToString("yyyy-M-d HH:mm:ss")
                 };
                 if (requestLog.ProjectId > 0)
                 {
@@ -97,7 +97,7 @@ namespace Agp2p.Web.admin.repayment
                     .Select(rs => new ResponseLog()
                     {
                         Id = rs.id,
-                        ResponseTime = rs.response_time.ToString("yyyy-M-d hh:mm:ss"),
+                        ResponseTime = rs.response_time.ToString("yyyy-M-d HH:mm:ss"),
                         ResponseResult = rs.result,
                         ResponseRemark = rs.remarks
                     }).ToList();

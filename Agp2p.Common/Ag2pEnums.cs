@@ -853,25 +853,22 @@ namespace Agp2p.Common
             [Description("债权转让")] CreAs = 30,
             [Description("单笔付款至个人")] TranU = 31,
             [Description("用户签约银行卡查询")] QuBan = 32,
-            [Description("商户项目查询")] QuPro = 33
-        }
+            [Description("商户项目查询")] QuPro = 33,
 
-        public enum SumapayMobileApiEnum
-        {
-            [Description("实名开户")]
-            URegi = 101,
-            [Description("账户管理")]
-            Accou = 104,
-            [Description("移动端充值")]
-            WhRec = 111,
+            [Description("移动端实名开户")]
+            URegM = 101,
+            [Description("移动端账户管理")]
+            AccoM = 104,
+            [Description("移动端移动端充值")]
+            WhReM = 111,
             [Description("移动端提现")]
-            Wdraw = 121,
-            [Description("投标普通项目")]
-            MaBid = 112,
-            [Description("投标集合项目")]
-            McBid = 113,
-            [Description("债权转让")]
-            CreAs = 130
+            WdraM = 121,
+            [Description("移动端投标普通项目")]
+            MaBiM = 112,
+            [Description("移动端投标集合项目")]
+            McBiM = 113,
+            [Description("移动端债权转让")]
+            CreAM = 130
         }
 
         public enum StaticClaimQueryEnum

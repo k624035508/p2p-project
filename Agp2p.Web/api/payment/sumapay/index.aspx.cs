@@ -28,7 +28,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     if(!CheckUserLogin(out user)) return;
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
-                case (int)Agp2pEnums.SumapayMobileApiEnum.URegi:
+                case (int)Agp2pEnums.SumapayApiEnum.URegM:
                     if (!CheckUserLogin(out user, false)) return;
                     reqMsg = new UserRegisterMoblieReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token, DTRequest.GetQueryString("backUrl"));
                     break;
@@ -37,7 +37,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     if (!CheckUserLogin(out user)) return;
                     reqMsg = new UserToAccountReqMsg(user.id);
                     break;
-                case (int)Agp2pEnums.SumapayMobileApiEnum.Accou:
+                case (int)Agp2pEnums.SumapayApiEnum.AccoM:
                     if (!CheckUserLogin(out user)) return;
                     reqMsg = new UserToAccountReqMsg(user.id, DTRequest.GetQueryString("backUrl"));
                     break;
@@ -71,7 +71,7 @@ namespace Agp2p.Web.api.payment.sumapay
                             DTRequest.GetQueryString("sum"));
                     break;
                 //个人移动端一键充值
-                case (int)Agp2pEnums.SumapayMobileApiEnum.WhRec:
+                case (int)Agp2pEnums.SumapayApiEnum.WhReM:
                     reqMsg = new WhRechargeReqMsg(DTRequest.GetQueryInt("userId", 0),
                             DTRequest.GetQueryString("sum"), DTRequest.GetQueryString("backUrl"), "", "3", "", "");
                     break;
@@ -81,7 +81,7 @@ namespace Agp2p.Web.api.payment.sumapay
                         DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("bankName"), DTRequest.GetQueryString("bankAccount"), "3", "", "");
                     break;
                 //个人移动端提现
-                case (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw:
+                case (int)Agp2pEnums.SumapayApiEnum.WdraM:
                     reqMsg = new WithdrawReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryString("sum"),
                         DTRequest.GetQueryString("bankId"), DTRequest.GetQueryString("backUrl"), "3", "", "");
                     break;
@@ -94,12 +94,12 @@ namespace Agp2p.Web.api.payment.sumapay
                         requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
                     break;
                 //个人移动端投标 普通/集合项目
-                case (int)Agp2pEnums.SumapayMobileApiEnum.MaBid:
-                case (int)Agp2pEnums.SumapayMobileApiEnum.McBid:
+                case (int)Agp2pEnums.SumapayApiEnum.MaBiM:
+                case (int)Agp2pEnums.SumapayApiEnum.McBiM:
                     reqMsg = new ManualBidReqMsg(DTRequest.GetQueryInt("userId", 0),
                         DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
                         DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
-                        DTRequest.GetQueryString("backUrl"), requestApi == (int) Agp2pEnums.SumapayMobileApiEnum.McBid);
+                        DTRequest.GetQueryString("backUrl"), requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
                     break;
                 //个人存管账户还款普通/集合项目 TODO Remarks移动到RequestApiHandle处理
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
@@ -121,7 +121,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     reqMsg = new CreditAssignmentReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("claimId"), DTRequest.GetQueryString("undertakeSum"));
                     break;
                 //移动端债权转让
-                case (int)Agp2pEnums.SumapayMobileApiEnum.CreAs:
+                case (int)Agp2pEnums.SumapayApiEnum.CreAM:
                     reqMsg = new CreditAssignmentReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("claimId"), DTRequest.GetQueryString("undertakeSum"), DTRequest.GetQueryString("backUrl"), "1", "", "");
                     break;
                 default:

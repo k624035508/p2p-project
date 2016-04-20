@@ -52,9 +52,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             BackUrl = backUrl;
 
             RequestType = "PFT0012";
-            Api = (int)Agp2pEnums.SumapayMobileApiEnum.CreAs;
+            Api = (int)Agp2pEnums.SumapayApiEnum.CreAM;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
-            RequestId = Agp2pEnums.SumapayMobileApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.CreAM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         public override string GetSignature()

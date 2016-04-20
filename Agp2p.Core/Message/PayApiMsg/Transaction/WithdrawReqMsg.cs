@@ -72,9 +72,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             BackUrl = backUrl;
 
             RequestType = "PFT0002";
-            Api = (int)Agp2pEnums.SumapayMobileApiEnum.Wdraw;
+            Api = (int)Agp2pEnums.SumapayApiEnum.WdraM;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
-            RequestId = Agp2pEnums.SumapayMobileApiEnum.Wdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.WdraM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
         private void SetBankCodeAccount(string bankCode, string bankAccount)

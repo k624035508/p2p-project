@@ -54,7 +54,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             BackUrl = backUrl;
 
             RequestType = collective ? "PFT0014" : "PFT0003";
-            Api = collective ? (int)Agp2pEnums.SumapayMobileApiEnum.McBid : (int)Agp2pEnums.SumapayMobileApiEnum.MaBid;
+            Api = collective ? (int)Agp2pEnums.SumapayApiEnum.McBiM : (int)Agp2pEnums.SumapayApiEnum.MaBiM;
             ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;

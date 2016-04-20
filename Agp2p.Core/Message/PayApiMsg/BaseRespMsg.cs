@@ -55,7 +55,11 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!Result.Equals("00000"))
             {
                 var errorDict = ConfigLoader.loadSumapayErrorNumberDescDict();
-                Remarks += errorDict[Convert.ToInt32(Result)];
+                var resultCode = Convert.ToInt32(Result);
+                if (errorDict != null && errorDict.ContainsKey(resultCode))
+                    Remarks += errorDict[resultCode];
+                else
+                    Remarks += Result;
                 return false;
             }
             return true;
