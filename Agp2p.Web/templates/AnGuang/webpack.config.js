@@ -24,7 +24,8 @@ module.exports = {
         forgot_password: "./js/forgot_password.js",
         loan: "./js/loan.js",
         coop: "./js/coop.js",
-        success_return:"./js/success_return.js"
+        success_return: "./js/success_return.js",
+        fail_return:"./js/fail_return.js"
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -33,9 +34,9 @@ module.exports = {
     },
     plugins: [
         // CommonsChunkPlugin 能将公共的模块抽出到单独的 js，再由页面单独引用。参考 https://webpack.github.io/docs/optimization.html
-        new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password", "article_show"]),
+        new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password", "article_show", "success_return","fail_return"]),
         new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", "login", "register", "project",
-            "projects", "aboutus", "safe_defence","sitemap","404", "help", "about_more", "loan","coop","success_return"]),
+            "projects", "aboutus", "safe_defence","sitemap","404", "help", "about_more", "loan","coop","success_return","fail_return"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

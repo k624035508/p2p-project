@@ -3,7 +3,7 @@
 
 body { background: @body-color; }
 
-.invested{
+#returnSuccess{
     background:@white;
     height:750px;
     width:1100px;
@@ -17,13 +17,18 @@ body { background: @body-color; }
                      }
                  }
                  p{
+                     img{margin-right:26px; padding-bottom:2px;}
                     height:55px; text-align:center; 
-                    background:url("@{usercenter}/005.png") no-repeat 318px 7px;
                     font-size:40px; color:#37aaf0; font-weight:bold;
                   }
                  div.contentbg{
                      height:270px; margin-top:50px; 
                  }
+                  .rechargebg{ background:url("@{usercenter}/003.png") no-repeat center;  height:270px; margin-top:50px; }                                   
+                  .withdrawbg{ background:url("@{usercenter}/002.png") no-repeat center;  height:270px; margin-top:50px; }
+                  .investedbg{ background:url("@{usercenter}/001.png") no-repeat center;  height:270px; margin-top:50px; }
+                  .repaybg{ background:url("@{usercenter}/004.png") no-repeat center;  height:270px; margin-top:50px; }
+
                  div.investedtip{
                      width:560px;  height:65px;  background:#fff9e3; border:1px solid #f39700; padding-left:25px; padding-top:7px; 
                      margin:43px auto 0 auto; 
@@ -44,49 +49,6 @@ body { background: @body-color; }
                  .closeBtn{margin-left:183px;}
                  }
 
-     .returnSuccess,.returnFail{
-    background:@white;
-    height:750px;
-    width:1100px;
-    margin:30px auto;
-                     p{
-                    height:175px; text-align:center;  padding-top:123px;
-                    background:url("@{usercenter}/005.png") no-repeat 318px 130px;
-                    font-size:40px; color:#37aaf0; font-weight:bold;
-                  }
-                            div.contentbg{
-                     height:270px; margin-top:90px; 
-                 }
-                                                       .returnBtn,.closeBtn{
-                    display:inline-block; text-decoration:none; width:115px; height:35px; font-size:16px; color:#fff; background:@red;
-                    border-radius:4px; text-align:center; letter-spacing:10px; padding-top:6px; padding-left:9px; margin-top:80px;
-                 }
-                    .returnBtn{ margin-left:341px;}
-                 .closeBtn{margin-left:183px;}
-}
-     .returnFail{
-         p{background:url("@{usercenter}/008.png") no-repeat 318px 130px;}
-         div.contentbg{ background:url("@{usercenter}/007.png") no-repeat center; }
-     }
 
-.tranClaim , .autoTender , .autoTenderCancel ,
-.tranClaimFail , .autoTenderFail , .autoTenderCancelFail
-{
-    p{
-        background-position-x:238px;
-    }
-}
-.autoAccount,.autoAccountCancel,
-.autoAccountFail,.autoAccountCancelFail
-{
-    p{
-        background-position-x:198px;
-    }
-}
-
-                  .rechargebg{ background:url("@{usercenter}/003.png") no-repeat center;}                                   
-                  .withdrawbg{ background:url("@{usercenter}/002.png") no-repeat center;}
-                  .investedbg{ background:url("@{usercenter}/001.png") no-repeat center;}
-                  .repaybg{ background:url("@{usercenter}/004.png") no-repeat center;}
-
+                 
                
