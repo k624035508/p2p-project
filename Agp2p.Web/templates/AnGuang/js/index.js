@@ -9,60 +9,51 @@ window['jQuery'] = $;
 window['$'] = $;
 import "./jquery.superslide.2.1.1.js"
 
-
-
 $(function () {
     header.setHeaderHighlight(0);
-   //计算器初始化
+    //计算器初始化
     $('[data-toggle="popover"]').popover();
    
     $(".project-content").hover(function(){
-
-          $(this).stop().animate({paddingLeft:"20px",paddingRight:"10px"},300);
+        $(this).stop().animate({paddingLeft:"20px",paddingRight:"10px"},300);
     },function(){
-        
-           $(this).stop().animate({paddingLeft:"15px",paddingRight:"15px"},300);
-        });
-    
-
-    var prog=$("div.progress-bar");
-    var changdu1=prog.parent().width();
-    for(var i=0;i<prog.length;i++){
-        var changdu2=parseInt(prog.eq(i).html())/100; 
-        var progoffset=prog.eq(i).offset().top;
-        if(progoffset<810){
-            prog.eq(i).width(changdu2*changdu1); 
-        }
-    }
-        $(window).scroll(function(){      
-            var windowtop = $(window).scrollTop();
-            if(windowtop>150 && windowtop<1040){        
-                for(var i=0;i<prog.length;i++){
-                    if(progoffset<1210){
-                        var changdu2=parseInt(prog.eq(i).html())/100;              
-                        prog.eq(i).width(changdu2*changdu1);        
-                    }
-                }
-            }                
-            if(windowtop>500){ 
-                for(var i=0;i<(prog.length);i++){
-                    if(progoffset<1610){
-                        var changdu2=parseInt(prog.eq(i).html())/100;              
-                        prog.eq(i).width(changdu2*changdu1);        
-                    }
-                }
-            }                    
-        });
-       
-
-
-    //1.焦点图轮换
-$(".m-banner").slide({titCell:".hd li",mainCell:".bd ul",effect:"fold",autoPlay:true, trigger:"mouseover" })
-    .hover(function(){
-        $(".prev, .next").show();
-    },function(){
-        $(".prev , .next").hide();
+        $(this).stop().animate({paddingLeft:"15px",paddingRight:"15px"},300);
     });
    
+    var prog=$("div.progress-bar");       
+    var changdu1=prog.parent().width();
+    for(var i=0;i<5;i++){
+        if (prog.eq(i).offset().top<820) {
+            var changdu2=parseInt(prog.eq(i).html())/100;     
+            prog.eq(i).width(changdu2*changdu1);    
+        }
+    }
+
+    $(window).scroll(function(){          
+        var windowtop = $(window).scrollTop();
+        if(windowtop>99 && windowtop<1040){        
+   
+            for(var i=1;i<5;i++){
+                var changdu2=parseInt(prog.eq(i).html())/100;              
+                prog.eq(i).width(changdu2*changdu1);        
+            }      
+        }
+                
+        if(windowtop>285){
+            for(var i=5;i<(prog.length);i++){
+                var changdu2=parseInt(prog.eq(i).html())/100;              
+                prog.eq(i).width(changdu2*changdu1);        
+            }
+        }
+    });
+
+    //1.焦点图轮换 
+    $(".m-banner").slide({titCell:".hd li",mainCell:".bd ul",effect:"fold",autoPlay:true, trigger:"mouseover" })
+        .hover(function(){
+            $(".prev, .next").show();
+        },function(){
+            $(".prev , .next").hide();
+        });
+  
  
 });

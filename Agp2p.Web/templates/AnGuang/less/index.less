@@ -2,11 +2,14 @@
 @import "common-style.less";
 @images: "../imgs/index";
 
-body {background: @body-color;}
+body {
+    background: @body-color;
+}
 
 .banner-floating {
     position: absolute;
     width: 100%;
+
     .content-wrap {
         .floating-box {
             position: relative;
@@ -16,6 +19,7 @@ body {background: @body-color;}
             width: 285px;
             height: 285px;
             z-index: 10;
+
             .opacity {
                 position: absolute;
                 top: 0;
@@ -28,24 +32,38 @@ body {background: @body-color;}
                 -moz-opacity: 0.4;
                 -khtml-opacity: 0.4;
             }
+
             .content-body {
                 position: relative;
+
                 * {
                     color: @white;
                     text-align: center;
                 }
+
                 .title {
                     font-size: @font25;
                     letter-spacing: 3px;
                     margin: 35px 0 15px 0;
                 }
+
                 .rate {
                     font-size: @font20;
                     margin-bottom: 20px;
-                    span { color: #ff9b00; }
-                    .num { font-size: 40px; }
+
+                    span {
+                        color: #ff9b00;
+                    }
+
+                    .num {
+                        font-size: 40px;
+                    }
                 }
-                .invest-amount { font-size: @font15; }
+
+                .invest-amount {
+                    font-size: @font15;
+                }
+
                 .register-btn {
                     display: block;
                     height: 40px;
@@ -56,27 +74,35 @@ body {background: @body-color;}
                     background: @red;
                     border-radius: 6px;
                 }
+
                 .switch {
                     margin-top: 18px;
                     text-align: right;
                     font-size: @font13;
+
                     a {
                         text-decoration: none;
                         border-bottom: 1px solid @white;
                     }
                 }
+
                 .user {
                     margin-top: 35px;
                     font-size: @font20;
-                    .account { color: #ff9b00; }
+
+                    .account {
+                        color: #ff9b00;
+                    }
                 }
+
                 .enter {
                     margin-top: 40px;
                     margin-bottom: 25px;
                 }
             }
         }
-         .floating-box2 {
+
+        .floating-box2 {
             position: relative;
             float: right;
             margin-top: 52px;
@@ -84,6 +110,7 @@ body {background: @body-color;}
             width: 285px;
             height: 235px;
             z-index: 10;
+
             .opacity {
                 position: absolute;
                 top: 0;
@@ -96,18 +123,27 @@ body {background: @body-color;}
                 -moz-opacity: 0.4;
                 -khtml-opacity: 0.4;
             }
+
             .content-body {
                 position: relative;
+
                 * {
                     color: @white;
                     text-align: center;
                 }
-                       .title {
+
+                .title {
                     font-size: @font25;
                     letter-spacing: 3px;
                     margin: 35px 0 15px 0;
                 }
-                .invest-amount { font-size: @font22; font-weight:bold; margin-top:47px;}
+
+                .invest-amount {
+                    font-size: @font22;
+                    font-weight: bold;
+                    margin-top: 47px;
+                }
+
                 .register-btn {
                     display: block;
                     height: 40px;
@@ -117,22 +153,29 @@ body {background: @body-color;}
                     font-size: @font20;
                     background: @red;
                     border-radius: 6px;
-                    margin-top:30px;
+                    margin-top: 30px;
                 }
+
                 .switch {
                     margin-top: 32px;
                     text-align: right;
                     font-size: @font13;
+
                     a {
                         text-decoration: none;
                         border-bottom: 1px solid @white;
                     }
                 }
+
                 .user {
                     margin-top: 15px;
                     font-size: @font20;
-                    .account { color: #ff9b00; }
+
+                    .account {
+                        color: #ff9b00;
+                    }
                 }
+
                 .enter {
                     margin-top: 20px;
                     margin-bottom: 25px;
@@ -146,140 +189,297 @@ body {background: @body-color;}
 div#bannerCarousel {
     min-width: @min-width;
     margin: 0 auto;
+    position: relative;
+
     .carousel-indicators li {
         width: 12px;
         height: 12px;
         margin: 0;
     }
+
     .carousel-inner {
         .carousel-control.left, .carousel-control.right {
             background-image: none !important;
             filter: none !important;
         }
+
         .item {
             a {
                 display: block;
                 width: 100%;
                 height: 350px;
             }
-            .banner2 { background: url("@{images}/banner-02.jpg") no-repeat center; }
-            .banner3 { background: url("@{images}/banner-03.jpg") no-repeat center; }
+
+            .banner2 {
+                background: url("@{images}/banner-02.jpg") no-repeat center;
+            }
+
+            .banner3 {
+                background: url("@{images}/banner-03.jpg") no-repeat center;
+            }
+
+            .banner4 {
+                background: url("@{images}/banner-04.jpg") no-repeat center;
+            }
+
             .apps-btns {
                 position: absolute;
                 width: 155px;
                 left: 50%;
                 margin-left: -245px;
                 margin-top: -126px;
+
                 a {
                     display: block;
                     width: 100%;
                     height: 40px;
                 }
+
                 .android-btn {
                     background: url("@{images}/android-btn.png");
-                    &:hover,&:visited { background: url("@{images}/android-btn-hover.png") no-repeat; }
+
+                    &:hover, &:visited {
+                        background: url("@{images}/android-btn-hover.png") no-repeat;
+                    }
                 }
+
                 .ios-btn {
                     margin-top: 20px;
                     background: url("@{images}/ios-btn.png");
-                    &:hover, &:visited { background: url("@{images}/ios-btn-hover.png") no-repeat; }
+
+                    &:hover, &:visited {
+                        background: url("@{images}/ios-btn-hover.png") no-repeat;
+                    }
                 }
             }
         }
     }
+
+    .prev {
+        position: absolute;
+        height: 76px;
+        width: 53px;
+        background: url("@{images}/slider-arrow.png") no-repeat 10px 0;
+        top: 139px;
+        left: 7%;
+        z-index: 100;
+        cursor: pointer;
+
+        &:hover {
+            background-position: -36px 0;
+        }
+    }
+
+    .next {
+        position: absolute;
+        height: 76px;
+        width: 55px;
+        background: url("@{images}/slider-arrow.png") no-repeat -82px 0;
+        top: 139px;
+        right: 9%;
+        z-index: 100;
+        cursor: pointer;
+
+        &:hover {
+            background-position: -128px 0;
+        }
+    }
 }
-.m-banner{ min-width: @min-width;position:relative;height:350px;z-index:0; padding:0;margin:0; overflow:hidden;
-     .prev{
-         position:absolute; height:76px; width:53px; background: url("@{images}/slider-arrow.png") no-repeat 10px 0; top:40%; left:8%; z-index:100;cursor:pointer;
-         &:hover{background-position:-36px 0;}
-     }
-     .next{
-         position:absolute; height:76px; width:55px; background: url("@{images}/slider-arrow.png") no-repeat -82px 0; top:40%; right:10%; z-index:100;cursor:pointer;
-         &:hover{background-position:-128px 0;}
-     }
-    .bd{position:relative; bottom:0;
-       
-    ul{width:100% !important; z-index:10; height:350px; padding:0;
-        li{
-            width:100% !important; height:350px;
-            a{margin:0; padding:0;
-                display: block;
-                width: 100%;
+
+.m-banner {
+    min-width: @min-width;
+    position: relative;
+    height: 350px;
+    z-index: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    .prev {
+        position: absolute;
+        height: 76px;
+        width: 53px;
+        background: url("@{images}/slider-arrow.png") no-repeat 10px 0;
+        top: 40%;
+        left: 8%;
+        z-index: 100;
+        cursor: pointer;
+
+        &:hover {
+            background-position: -36px 0;
+        }
+    }
+
+    .next {
+        position: absolute;
+        height: 76px;
+        width: 55px;
+        background: url("@{images}/slider-arrow.png") no-repeat -82px 0;
+        top: 40%;
+        right: 10%;
+        z-index: 100;
+        cursor: pointer;
+
+        &:hover {
+            background-position: -128px 0;
+        }
+    }
+
+    .bd {
+        position: relative;
+        bottom: 0;
+
+        ul {
+            width: 100% !important;
+            z-index: 10;
+            height: 350px;
+            padding: 0;
+
+            li {
+                width: 100% !important;
                 height: 350px;
-            }
-            }
-         .banner2 { background: url("@{images}/banner-02.jpg") no-repeat center; }
-         .banner3 { background: url("@{images}/banner-03.jpg") no-repeat center; 
-                                .apps-btns {
-                position: absolute;
-                width: 155px;
-                left: 50%;
-                margin-left: -253px;
-                margin-top: -150px;
+
                 a {
+                    margin: 0;
+                    padding: 0;
                     display: block;
                     width: 100%;
-                    height: 40px;
-                }
-                .android-btn {
-                    background: url("@{images}/android-btn.png");
-                    &:hover,&:visited { background: url("@{images}/android-btn-hover.png") no-repeat; }
-                }
-                .ios-btn {
-                    margin-top: 20px;
-                    background: url("@{images}/ios-btn.png");
-                    &:hover, &:visited { background: url("@{images}/ios-btn-hover.png") no-repeat; }
+                    height: 350px;
                 }
             }
-         }
-           .banner4 { background: url("@{images}/banner-04.jpg") no-repeat center; }
+
+            .banner2 {
+                background: url("@{images}/banner-02.jpg") no-repeat center;
+            }
+
+            .banner3 {
+                background: url("@{images}/banner-03.jpg") no-repeat center;
+
+                .apps-btns {
+                    position: absolute;
+                    width: 155px;
+                    left: 50%;
+                    margin-left: -253px;
+                    margin-top: -150px;
+
+                    a {
+                        display: block;
+                        width: 100%;
+                        height: 40px;
+                    }
+
+                    .android-btn {
+                        background: url("@{images}/android-btn.png");
+
+                        &:hover, &:visited {
+                            background: url("@{images}/android-btn-hover.png") no-repeat;
+                        }
+                    }
+
+                    .ios-btn {
+                        margin-top: 20px;
+                        background: url("@{images}/ios-btn.png");
+
+                        &:hover, &:visited {
+                            background: url("@{images}/ios-btn-hover.png") no-repeat;
+                        }
+                    }
+                }
+            }
+
+            .banner4 {
+                background: url("@{images}/banner-04.jpg") no-repeat center;
+            }
+        }
     }
+
+    .hd {
+        width: 100%;
+        position: absolute;
+        height: 40px;
+        text-align: center;
+        z-index: 15;
+        bottom: 9px;
+        padding: 0;
+
+        li {
+            margin-right: -5px;
+            *margin-right: -1px;
+            cursor: pointer;
+            display: inline-block;
+            *display: inline;
+            width: 30px;
+            height: 45px;
+            line-height: 40px;
+            font-size: 30px;
+            color: #ebe1e1;
+            opacity: 0.2;
+        }
+
+        .on {
+            position: relative;
+            color: #fff;
+            opacity: 1;
+        }
     }
-   .hd{width:100%;position:absolute;height:40px;text-align:center;z-index:15; bottom:9px;
-        padding:0;
-        li{margin-right:-5px;*margin-right:-1px; 
-           cursor:pointer;display:inline-block;*display:inline;width:40px;height:40px;line-height:40px;font-size:40px;color:#fff;
-           opacity:0.3;   
 }
-       .on{position:relative; opacity:1 }
-      }
-   
-   }
+
 /*公告板*/
 div.announcement-wrap {
     background: #f7f4ed;
+
     .announcement {
         width: @min-width;
         height: 40px;
         padding: 5.5px 0;
         margin: 0 auto;
+
         * {
             .inline-block;
             color: @darker-grey;
             font-size: @font15;
         }
+
         a {
             text-decoration: none;
-            &:hover { color:@red; }
+
+            &:hover {
+                color: @red;
+            }
         }
-        .return-announce { margin: 0 5px 0 15px; }
+
+        .return-announce {
+            margin: 0 5px 0 15px;
+        }
+
         .web-announce a {
             max-width: 350px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .pull-right a {line-height: 29px;}
+
+        .pull-right a {
+            line-height: 29px;
+        }
+
         .announce-board-icon {
             width: 29px;
             height: 29px;
             background: url("@{images}/announce-icon.png") no-repeat;
         }
-        .announce-icon {background-position: -15px -13px;}
 
-        .news-icon {background-position: -15px -68px;}
+        .announce-icon {
+            background-position: -15px -13px;
+        }
 
-        span.web-announce {margin: 0 5px 0 120px;}
+        .news-icon {
+            background-position: -15px -68px;
+        }
+
+        span.web-announce {
+            margin: 0 5px 0 120px;
+        }
     }
 }
 
@@ -288,45 +488,69 @@ div.announcement-wrap {
     height: 130px;
     background: @white;
     box-shadow: 0 3px 5px #d9d9d9;
+
     ul {
         text-align: center;
         padding-left: 15px;
+
         li {
             width: 30%;
             *width: auto;
             margin: 15px 0 15px 50px;
-            & > * { .inline-block; }
+
+            & > * {
+                .inline-block;
+            }
+
             a {
                 width: 90px;
                 height: 100px;
                 margin-right: 30px;
             }
+
             .funds-icon {
                 background: url("@{images}/funds.png");
-                &:hover { background: url("@{images}/funds-hover.png"); }
+
+                &:hover {
+                    background: url("@{images}/funds-hover.png");
+                }
             }
+
             .acceptance-icon {
                 background: url("@{images}/acceptance.png");
-                &:hover { background: url("@{images}/acceptance-hover.png"); }
+
+                &:hover {
+                    background: url("@{images}/acceptance-hover.png");
+                }
             }
+
             .guarantee-icon {
                 background: url("@{images}/guarantee.png");
-                &:hover { background: url("@{images}/guarantee-hover.png"); }
+
+                &:hover {
+                    background: url("@{images}/guarantee-hover.png");
+                }
             }
+
             div {
                 width: 140px;
+
                 p {
                     color: @dark-grey;
                     font-size: @font15;
                     text-align: left;
                 }
+
                 p:first-child {
                     font-size: @font20;
                     margin: 15px 0;
                 }
             }
         }
-        li:first-child { margin-left: 0; }
+
+        li:first-child {
+            margin-left: 0;
+        }
     }
 }
 /*标书*/
@@ -334,49 +558,59 @@ div.announcement-wrap {
     color: @grey;
     font-size: @font13;
 }
+
 .dark-grey13px {
     color: @dark-grey;
     font-size: @font13;
 }
+
 .dark-grey15px {
     color: @dark-grey;
     font-size: @font15;
 }
+
 .dark-grey25px {
     color: @dark-grey;
     font-size: @font25;
 }
+
 .white35px {
     color: @white;
     font-size: 35px;
     text-align: center;
 }
+
 .white13px {
     color: @white;
     font-size: @font13;
     text-indent: 26px;
     margin: 0 0 3px;
 }
+
 .white18px {
     color: @white;
     font-size: @font18;
     text-indent: 26px;
 }
+
 .icon-corner {
     height: 10px;
     background: url("@{images}/corner.png") no-repeat left;
 }
+
 .progress-custom {
     height: 15px;
-    width:188px;
+    width: 188px;
     margin-bottom: 10px;
     background: #cdcdcd;
+
     .progress-bar {
-        transition:width 1.5s;
+        transition: width 1.5s;
         line-height: 14px;
         background-color: #38aaf0 !important;
     }
 }
+
 .invest-btn {
     display: block;
     height: 35px;
@@ -385,29 +619,40 @@ div.announcement-wrap {
     text-align: center;
     border-radius: 4px;
 }
+
 a.invest-btn-red {
     color: @white;
     background: @red;
     text-decoration: none;
-    &:hover{background:#f0323c;}
+
+    &:hover {
+        background: #f0323c;
+    }
 }
+
 a.invest-btn-grey {
     color: @dark-grey;
     background: @light-grey;
     text-decoration: none;
-    &:hover{background:#cdcdcd;}
+
+    &:hover {
+        background: #cdcdcd;
+    }
 }
 /*新手标*/
 .new-hand {
     margin-top: 30px !important;
     height: 195px;
+
     & > div {
         .inline-block;
         float: left;
         height: 100%;
     }
+
     .newHand-left {
         width: 220px;
+
         a {
             display: block;
             height: 100%;
@@ -416,30 +661,42 @@ a.invest-btn-grey {
             background: url("@{images}/newhand-bg.png") no-repeat;
         }
     }
+
     .newHand-right {
         .content-bottom {
             height: 185px;
             background: @white;
             border: @border;
-            & > div { .inline-block; }
-             .project-content {
+
+            & > div {
+                .inline-block;
+            }
+
+            .project-content {
                 width: 440px;
                 height: 100%;
                 padding: 0 15px;
                 border-right: @border;
-                overflow:hidden;
+                overflow: hidden;
+
                 .title-wrap {
                     margin-top: 13px;
+
                     & > * {
                         .inline-block;
                         line-height: 29px;
                     }
+
                     .title {
                         color: @darker-grey;
                         font-size: @font18;
                         text-decoration: none;
-                        &:hover { color: @red; }
+
+                        &:hover {
+                            color: @red;
+                        }
                     }
+
                     .tips {
                         width: 185px;
                         height: 30px;
@@ -449,54 +706,68 @@ a.invest-btn-grey {
                         border: 1px solid #1478d2;
                     }
                 }
+
                 .content-body {
                     margin-top: 25px;
-                    .margin-left30 { margin-left: 30px; }
+
+                    .margin-left30 {
+                        margin-left: 30px;
+                    }
+
                     & > div {
                         .inline-block;
                         height: 81px;
                     }
+
                     .left-part {
-                        .progress-custom { width: 188px; }
+                        .progress-custom {
+                            width: 188px;
+                        }
                     }
+
                     .invest-btn {
                         width: 155px;
                         margin-top: 17px;
                     }
-                    .bottom18px { margin-bottom: 18px; }
+
+                    .bottom18px {
+                        margin-bottom: 18px;
+                    }
                 }
-                 .status-icon {
-                     position: absolute;
-                   
-                     margin-left: 345px;
-                     margin-top: -30px;
-                     width: 73px;
-                     height: 65px;
-                     background: url("@{images}/over-icon.png") bottom right;
-                 }
-              
-             }
+
+                .status-icon {
+                    position: absolute;
+                    margin-left: 345px;
+                    margin-top: -30px;
+                    width: 73px;
+                    height: 65px;
+                    background: url("@{images}/over-icon.png") bottom right;
+                }
+            }
+
             .rules {
                 width: 433px;
                 height: 155px;
                 padding: 45px 50px 0 230px;
                 cursor: pointer;
                 background: url("@{images}/apps-bg.png") no-repeat center;
-                transition:padding-left .3s;
+                transition: padding-left .3s;
+
                 p {
                     width: 165px;
                     color: @white;
                     font-size: @font20;
                     text-align: center;
+
                     span {
                         color: #fff600;
                         font-size: @font13;
                         margin: 0 5px;
                     }
                 }
-                &:hover{
-                    padding-left:225px;
-                    
+
+                &:hover {
+                    padding-left: 225px;
                 }
             }
         }
@@ -506,19 +777,26 @@ a.invest-btn-grey {
 .tender {
     margin-top: 30px !important;
     height: 370px;
+
     & > div {
         .inline-block;
         height: 100%;
         float: left;
     }
+
     .tender-left {
         width: 220px;
         padding-top: 15px;
-        p span:first-child { margin-right: 20px; }
+
+        p span:first-child {
+            margin-right: 20px;
+        }
+
         .geometry-icon {
             height: 150px;
             margin-top: 8px;
         }
+
         a {
             display: block;
             margin: 20px auto 0 auto;
@@ -532,13 +810,19 @@ a.invest-btn-grey {
             border: 1px solid @white;
         }
     }
+
     .tender-right {
         width: 878px;
+
         .title-wrap {
             border-bottom: @border;
             padding-bottom: 20px;
             margin-bottom: 13px;
-            & > * { .inline-block; }
+
+            & > * {
+                .inline-block;
+            }
+
             a {
                 max-width: 115px;
                 overflow: hidden;
@@ -547,46 +831,77 @@ a.invest-btn-grey {
                 color: @darker-grey;
                 font-size: @font18;
                 text-decoration: none;
-                &:hover { color: @red; }
+
+                &:hover {
+                    color: @red;
+                }
             }
+
             i {
                 display: inline-block;
                 width: 20px;
                 height: 20px;
                 margin-left: 12px;
             }
-            .jian-icon { background: url("@{images}/jian.png"); }
-            .xin-icon { background: url("@{images}/xin.png"); }
-            .yue-icon { background: url("@{images}/yue.png"); }
+
+            .jian-icon {
+                background: url("@{images}/jian.png");
+            }
+
+            .xin-icon {
+                background: url("@{images}/xin.png");
+            }
+
+            .yue-icon {
+                background: url("@{images}/yue.png");
+            }
         }
-        .back-way { margin-bottom: 13px; }
+
+        .back-way {
+            margin-bottom: 13px;
+        }
+
         .amount-status {
             margin-top: 11px;
             color: @dark-grey;
             font-size: @font13;
             text-align: center;
-            .hr { margin: 0 5px; }
+
+            .hr {
+                margin: 0 5px;
+            }
         }
+
         .data-box {
             height: 75px;
+
             & > span {
                 .inline-block;
                 width: 50%;
                 height: 65px;
                 float: left;
-                p { text-align: center; }
+
+                p {
+                    text-align: center;
+                }
             }
-            & > span:first-child { border-right: @border; }
+
+            & > span:first-child {
+                border-right: @border;
+            }
         }
+
         .invest-btn {
             width: 185px;
             margin-top: 15px;
         }
     }
+
     .content-bottom {
         height: 360px;
         background: @white;
         border: @border;
+
         & > div {
             display: inline-block;
             width: 25%;
@@ -595,7 +910,10 @@ a.invest-btn-grey {
             float: left;
             border-left: @border;
         }
-        & > div:first-child { border-left: none; }
+
+        & > div:first-child {
+            border-left: none;
+        }
     }
 }
 
@@ -603,18 +921,33 @@ a.invest-btn-grey {
 .tianyingbao {
     .tender-left {
         background: #5ac3fa;
+
         .geometry-icon {
             background: url("@{images}/tianyingbao-geo.png") no-repeat center;
         }
-        a{ height:30px; line-height:28px;
-        &:hover{background-color:#46b4eb; border-color:#46b4eb; }
+
+        a {
+            height: 30px;
+            line-height: 28px;
+
+            &:hover {
+                background-color: #46b4eb;
+                border-color: #46b4eb;
+            }
         }
     }
+
     .tender-right {
         .tender-cell {
             transition: padding .3s;
-            .data-box {  margin-top: 40px; }
-            &:hover{padding-top:20px;}
+
+            .data-box {
+                margin-top: 40px;
+            }
+
+            &:hover {
+                padding-top: 20px;
+            }
         }
     }
 }
@@ -623,19 +956,37 @@ a.invest-btn-grey {
 .yinpiaobao {
     .tender-left {
         background: #4ea4f2;
+
         .geometry-icon {
             background: url("@{images}/yinpiaobao-geo.png") no-repeat center;
         }
-        a{height:30px; line-height:28px;
-         &:hover{background-color:#3796e6; border-color:#3796e6;}
-         }
+
+        a {
+            height: 30px;
+            line-height: 28px;
+
+            &:hover {
+                background-color: #3796e6;
+                border-color: #3796e6;
+            }
+        }
     }
+
     .tender-right {
         .tender-cell {
             transition: padding .3s;
-            .cash-bank { text-align: center; }
-            .data-box {  margin-top: 16px; }
-            &:hover{padding-top:20px;}
+
+            .cash-bank {
+                text-align: center;
+            }
+
+            .data-box {
+                margin-top: 16px;
+            }
+
+            &:hover {
+                padding-top: 20px;
+            }
         }
     }
 }
@@ -647,6 +998,7 @@ div.dynamic-wrap {
     margin: 30px auto 0 auto;
     border: @border;
     background: @white;
+
     & > div {
         float: left;
         display: inline-block;
@@ -655,32 +1007,50 @@ div.dynamic-wrap {
         height: 100%;
         border-right: @border;
     }
-    .company-placard {border-right: none;}
+
+    .company-placard {
+        border-right: none;
+    }
+
     .dynamic-title-wrap {
         height: 55px;
         *height: auto;
         padding: 12.5px 20px;
         border-bottom: @border;
-        & a > span { .inline-block; }
+
+        & a > span {
+            .inline-block;
+        }
     }
+
     ul li {
-        .list-title-wrap { 
+        .list-title-wrap {
             width: 307px;
+
             a {
-                & > span { .inline-block; }
+                & > span {
+                    .inline-block;
+                }
+
                 color: @darker-grey;
                 text-decoration: none;
+
                 .list-mark {
                     width: 5px;
                     height: 5px;
                     margin-right: 8px;
                     background: @grey;
                 }
-                &:hover { 
+
+                &:hover {
                     color: @red;
-                    .list-mark { background: #fa7878; }
+
+                    .list-mark {
+                        background: #fa7878;
+                    }
                 }
             }
+
             .list-title {
                 display: inline-block;
                 width: 200px;
@@ -690,31 +1060,46 @@ div.dynamic-wrap {
             }
         }
     }
+
     .dynamic-title {
         color: @darker-grey;
         font-size: @font20;
         padding-left: 10px;
         border-left: 5px solid @red;
-        &:hover { color: @red; }
+
+        &:hover {
+            color: @red;
+        }
     }
+
     .link-mark {
         width: 30px;
         height: 30px;
         background: url("@{images}/link-mark-icon.png") no-repeat;
     }
+
     .news-wrap, .report-wrap {
         padding: 25px 20px;
+
         ul {
             *margin-left: 0px;
         }
-        ul li { margin-bottom: 10px; }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
         .img-wrap {
             width: 100%;
             height: 205px;
             overflow-y: hidden;
             display: block;
-            img { width: 100%; }
+
+            img {
+                width: 100%;
+            }
         }
+
         .img-title {
             position: relative;
             top: -25px;
@@ -729,14 +1114,15 @@ div.dynamic-wrap {
             filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
         }
     }
+
     .company-placard ul {
         height: 360px;
         padding: 15px 20px;
         *margin-left: 0px;
+
         li {
             height: 10%;
             line-height: 30px;
         }
     }
 }
-
