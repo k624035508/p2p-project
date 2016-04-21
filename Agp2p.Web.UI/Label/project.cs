@@ -146,7 +146,7 @@ namespace Agp2p.Web.UI
                                                              NeedTransferClaim.keepInterest.GetValueOrDefault());
 
             public decimal TotalInterest => NeedTransferClaim == null
-                        ? Project.li_repayment_tasks.Aggregate(0m, (sum, task) => sum + task.repay_interest)
+                        ? Project.GetFinalProfitRate(Project.publish_time.GetValueOrDefault(DateTime.Now).AddDays(Project.financing_day)) * FinancingAmount
                         : ClaimTransferProfitingAmount;
 
             private int RemainDays
