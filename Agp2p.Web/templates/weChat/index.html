@@ -77,15 +77,15 @@
                 <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
                 <div class="rate-wrap">
                     <div class="title-style">年化利率</div>
-                    <div class="txt-red-s"><span class="txt-red-l"><%=p.profit_rate_year.ToString("f1")%></span> %</div>
+                    <div class="txt-red-s"><span class="txt-red-l"><%=(inv.ProfitRateYearly*100).ToString("f1")%></span> %</div>
                 </div>
                 <div class="time-wrap">
                     <div class="title-style">期限</div>
-                    <div><span class="txt-darkgrey-l">{p.repayment_term_span_count}</span> {p.GetProjectTermSpanEnumDesc()}</div>
+                    <div><span class="txt-darkgrey-l">{inv.RepaymentTermSpanCount}</span> {inv.ProjectTermSpanName}</div>
                 </div>
                 <div class="amount-wrap">
                     <div class="title-style">借款金额</div>
-                    <div><span class="txt-darkgrey-l"><%=inv.FinancingAmount.ToString("n0")%></span> 元</div>
+                    <div><span class="txt-darkgrey-l"><%=inv.FinancingAmountStr%></span> 元</div>
                 </div>
                 <div class="invest-status flex flex-center-wrapper">
                     <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>

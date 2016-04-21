@@ -48,7 +48,6 @@ namespace Agp2p.Web.UI
         protected static DataTable get_project_list(int pageSize, int pageNum, out int total, int category_id, int profit_rate_index, int repayment_index, int status_index)
         {
             Model.siteconfig config = new BLL.siteconfig().loadConfig();
-            var articleCategory = new Agp2pDataContext().dt_article_category.Single(ca => ca.title == "债权转让");
             var queryToNewObj = QueryInvestables(pageSize, pageNum - 1, out total, category_id, profit_rate_index, repayment_index, status_index).Select(inv =>
             {
                 var p = inv.Project;
@@ -61,22 +60,22 @@ namespace Agp2p.Web.UI
                     status = (int) inv.Status,
                     sort_id = p.sort_id,
                     repayment_type = p.GetProjectRepaymentTypeDesc(),
-                    repayment_term = p.GetProjectTermSpanEnumDesc(),
-                    repayment_number = p.repayment_term_span_count,
-                    profit_rate_year = p.profit_rate_year,
+                    repayment_term = inv.ProjectTermSpanName,
+                    repayment_number = inv.RepaymentTermSpanCount,
+                    profit_rate_year = Math.Round(inv.ProfitRateYearly*100, 1),
                     /*category_id = inv.CategoryId,*/
                     categoryTitle = inv.CategoryName,
                     categoryCallIndex = inv.CategoryCallIndex,
-                    amount = p.financing_amount,
+                    amount = inv.FinancingAmount,
                     add_time = p.publish_time ?? p.add_time,
                     publish_time = p.publish_time,
                     tag = p.tag.GetValueOrDefault(),
                     //category_img = get_category_icon_by_categoryid(categoryList, p.category_id),//类别图标路径
                     //project_repayment = p.GetProjectTermSpanEnumDesc(),//项目还款期限单位
-                    project_amount_str = p.financing_amount.ToString("n0"),//项目金额字符
-                    project_investment_progress = inv.InvestmentProgress.ToString("p1").Split('%')[0],//项目进度
-                    project_investment_balance = inv.InvestmentBalance.ToString("n0") + "元",//项目投资剩余金额
-                    project_investment_count = inv.InvesterCount,//项目投资人数
+                    project_amount_str = inv.FinancingAmountStr, //项目金额字符
+                    project_investment_progress = inv.InvestmentProgress.ToString("p1").Split('%')[0], //项目进度
+                    project_investment_balance = inv.InvestmentBalance.ToString("n0") + "元", //项目投资剩余金额
+                    project_investment_count = inv.InvesterCount, //项目投资人数
                     linkurl = inv.Linkurl(config)
                 };
             });
@@ -89,8 +88,7 @@ namespace Agp2p.Web.UI
         {
             var context = new Agp2pDataContext();
             return context.li_projects.OrderByDescending(p => p.id)
-                .FirstOrDefault(
-                    p =>
+                .FirstOrDefault(p =>
                         (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
                         p.dt_article_category.call_index == "newbie");
         }
@@ -130,6 +128,9 @@ namespace Agp2p.Web.UI
                 ? Project.financing_amount
                 : NeedTransferClaim.principal + NeedTransferClaim.keepInterest.GetValueOrDefault();
 
+            public string FinancingAmountStr
+                => IsClaimTransferProject ? FinancingAmount.ToString("n2") : FinancingAmount.ToString("n0");
+
             public decimal InvestmentProgress => NeedTransferClaim == null
                 ? Project.GetInvestmentProgress(
                     (investedAmount, financingAmount) => investedAmount/financingAmount)
@@ -143,6 +144,10 @@ namespace Agp2p.Web.UI
 
             public decimal ClaimTransferProfitingAmount => (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
                                                              NeedTransferClaim.keepInterest.GetValueOrDefault());
+
+            public decimal TotalInterest => NeedTransferClaim == null
+                        ? Project.GetFinalProfitRate(Project.publish_time.GetValueOrDefault(DateTime.Now).AddDays(Project.financing_day)) * FinancingAmount
+                        : ClaimTransferProfitingAmount;
 
             private int RemainDays
             {
@@ -192,6 +197,10 @@ namespace Agp2p.Web.UI
                     ? linkurl(config, "project", Project.id)
                     : linkurl(config, "project", Project.id, NeedTransferClaim.id);
             }
+
+            public string FixInvestAmountString => NeedTransferClaim == null
+                        ? (Project.IsNewbieProject() ? "value='100' disabled" : "")
+                        : $"value='{FinancingAmount}' disabled";
         }
 
         public static IQueryable<li_projects> QueryingProjects(Agp2pDataContext context, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)

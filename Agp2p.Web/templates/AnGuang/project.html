@@ -78,11 +78,12 @@
             <!--未满标 登录后-->
             <div class="account-balance">
                 <div><a id="link-recharge" href='<%linkurl("usercenter","index")%>#/recharge' class="pull-right">[充值]</a><span>账户余额 {idle_money} 元</span></div>
-                <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> />
+                <input type="text" placeholder="请输入投资金额（不小于 100）" id="investAmount-input" <%=Investable.FixInvestAmountString%> />
                 <button type="button" class="btn-common investing-btn" data-has-pay-password="{HasPayPassword()}" data-has-identification="{HasIdentification()}"
                         data-buy-claim-id="{buyClaimId}"
                         data-idle-money="{idle_money}"
-                        data-profit-rate='<%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>'
+                        data-financing-amount="{Investable.FinancingAmount}"
+                        data-total-interest="{Investable.TotalInterest}"
                         data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}"
                         data-project-huoqi="{projectModel.IsHuoqiProject()}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
             </div>
@@ -103,7 +104,7 @@
                                 <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%/if%>
                                 <%if(!projectModel.IsHuoqiProject())%>
-                                <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}<%=Investable.ProjectTermSpanName%></span></li>
+                                <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</span></li>
                                 <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>

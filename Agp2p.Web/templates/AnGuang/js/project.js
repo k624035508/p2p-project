@@ -92,7 +92,10 @@ $(function () {
                 $("span.profit").text("10 元");
             } else {
                 // 计算预期收益
-                var profit = parseFloat(investBtnData["profitRate"]) * investAmount;
+                var totalInterest = parseFloat(investBtnData["totalInterest"]);
+                var financingAmount = parseFloat(investBtnData["financingAmount"]);
+
+                var profit = totalInterest * investAmount / financingAmount;
                 $("span.profit").text(profit.toFixed(2) + " 元");
             }
 

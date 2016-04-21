@@ -100,7 +100,7 @@ namespace Agp2p.Web.UI.Page
                     projectProfitRateYearly = proj.GetProfitRateYearly(),
                     term = proj.repayment_term_span_count + proj.GetProjectTermSpanEnumDesc(),
                     investTime = c.createTime.ToString("yy/MM/dd HH:mm"),
-                    investValue = c.principal,
+                    investValue = c.li_project_transactions_invest.principal,
                     profit,
                     status = proj.GetProjectStatusDesc(),
                     isNewbieProject = proj.dt_article_category.call_index == "newbie"
