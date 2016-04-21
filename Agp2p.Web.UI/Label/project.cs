@@ -289,8 +289,9 @@ namespace Agp2p.Web.UI
             var claimQuerying = categoryId != 0 && categoryId != claimsCategory.id
                 ? Enumerable.Empty<li_claims>().AsQueryable()
                 : context.li_claims.Where(c =>
-                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
-                    c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount && !c.Children.Any())
+                    c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer
+                    && c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount
+                    && !c.Children.Any())
                     .OrderByDescending(c => c.createTime);
 
             int projectTotalCount = 0, claimTotalCount = 0;
