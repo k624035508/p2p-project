@@ -249,7 +249,7 @@ export default class ClaimsTransfer extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <div className="bottom-wrapper">
+                <div className={!this.props.isLoaner ? "bottom-wrapper" : "bottom-wrapper-loaner"}>
                     <div className="warm-tips"><span>债权转让</span></div>
                     <HorizontalPicker onTypeChange={newType => this.fetchClaims(newType, 0) }
                         enumFullName="Agp2p.Common.Agp2pEnums+StaticClaimQueryEnum" value={this.state.claimQueryType} />
@@ -296,3 +296,12 @@ export default class ClaimsTransfer extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {         
+            return {              
+    isLoaner: state.userInfo.isLoaner
+};
+}
+
+import { connect } from 'react-redux';
+export default connect(mapStateToProps)(ClaimsTransfer);

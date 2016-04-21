@@ -164,14 +164,14 @@
             <div class="photos-box">
                 <%set var pics=QueryAlbums()%>
                 <%foreach(var picture in pics)%>
-                <div class="photo-cell">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog">
+                <div class="photo-cell" >
+                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog"> 
                 </div>
                 <%/foreach%>
                 <%if(!pics.Any())%>
-                <div class="loading-hint">
-                    <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-                    <p style="color:#ccc">目前没有照片记录</p>
+                <div class="loading-hint" >
+                    <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+                    <p style="color: #ccc">目前没有照片记录</p>              
                 </div>
                 <%/if%>
             </div>
