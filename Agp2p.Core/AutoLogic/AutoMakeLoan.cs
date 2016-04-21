@@ -34,8 +34,7 @@ namespace Agp2p.Core.AutoLogic
                     var msgResp = BaseRespMsg.NewInstance<QueryProjectRespMsg>(reqMsg.SynResult);
                     msgResp.Sync = true;
                     MessageBus.Main.Publish(msgResp);
-                    //TODO 改为放款余额
-                    db.AppendAdminLog("AutoMakeLoan", "查询今日放款余额为：" + msgResp.RepayAccountBalance);
+                    db.AppendAdminLog("AutoMakeLoan", "查询今日放款余额为：" + msgResp.LoanAccountBalance);
                     db.SubmitChanges();
                 });
             }

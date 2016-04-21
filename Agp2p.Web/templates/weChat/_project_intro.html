@@ -23,6 +23,52 @@
         <p>为了让新会员体验安广融合投资流程，平台特推出新手标项目，100%本息保障</p>
     </div>
 </div>
+<%else if(projectModel.IsHuoqiProject())%>
+<div class="content-wrap">
+    <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">项目简介</span></div>
+    <div class="project-info">
+        <p><strong>产品概述</strong>：活期宝是安广融合旗下的一款活期理财产品，以高安全性银行承兑汇票为还款保障，实现随买随赎需求，没有期限限制，具有收益稳健，天天结算，理财灵活等特点。</p>
+        <p><strong>投资范围</strong>：由平台推荐的真实借款项目（100%适用于平台风险备用金制度）</p>
+        <p><strong>期限</strong>：活期</p>
+        <p><strong>预期年化收益</strong>：<%=Investable.ProfitRateYearly.ToString("p1")%></p>
+        <p><strong>起投金额</strong>：100元</p>
+        <p><strong>资产总规模</strong>：100万元</p>
+        <p><strong>购买规则</strong>：</p>
+        <ul class="list-unstyled">
+            <li>1、起投金额为100元；</li>
+            <li>2、当日购买，次日可提取；</li>
+            <li>3、用户可以在限额内进行重复购买，单个用户的购买限额为10万元。</li>
+        </ul>
+        <p><strong>赎回规则</strong>：</p>
+        <ul class="list-unstyled">
+            <li>1、每人每日赎回总金额不得超过5万元；</li>
+            <li>2、每日可申请赎回3次，超限每次收取0.25%赎回费（不足一元按一元计算）；</li>
+            <li>3、平台会根据流动性情况对可提取额度进行调整，一般情况下，均能满足用户实际赎回需求。</li>
+        </ul>
+        <p><strong>提取到账时间</strong>：T+1个工作日（节假日顺延）提取至用户的安广融合账户中</p>
+        <p><strong>收益方式</strong>：</p>
+        <ul class="list-unstyled">
+            <li>1、T日购买，T+1日计息，T+2日显示收益（T为自然日）；</li>
+            <li>2、获得的收益不按复利结算；</li>
+            <li>3、周末及节假日转入计息照常。</li>
+        </ul>
+        <p><strong>费用</strong>：购买费用：0元，提取费用：0元</p>
+    </div>
+</div>
+<%else if(Investable.IsClaimTransferProject)%>
+<div class="content-wrap">
+    <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">债权介绍</span></div>
+    <div class="project-info">
+        <p><strong>债权总额</strong>：<%=Investable.FinancingAmount.ToString("n2")%>元</p>
+        <p><strong>转让债权年化收益</strong>：<%=Investable.ProfitRateYearly.ToString("p1")%></p>
+        <p><strong>债权剩余期限</strong>：{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</p>
+        <p><strong>转让债权预期收益</strong>：<%=Investable.ClaimTransferProfitingAmount.ToString("n")%>元</p>
+        <p><strong>原债权规模</strong>：<%=Investable.NeedTransferClaim.Parent.principal.ToString("n2")%>元</p>
+        <p><strong>原年化收益</strong>：<%=(Investable.Project.profit_rate_year/100).ToString("p1")%></p>
+        <p><strong>还款方式</strong>：到期还本付息</p>
+        <p><a href='<%linkurl("project",Investable.Project.id)%>'>查看原项目详情 ></a></p>
+    </div>
+</div>
 <%else if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
 <div class="content-wrap">
     <div class="project-detail-title"><span class="title-icon"></span><span class="title-style">项目简介</span></div>

@@ -122,7 +122,7 @@ class InvitationPage extends React.Component {
                 <div className="warm-tips-th"><span>温馨提示</span></div>
                 <div className="warmTips">
                     <p>1. 安广融合将采用大数据技术杜绝违规操作及作弊行为(包括但不限于：恶意注册虚假账号、恶意刷奖等)，若判<span style={{display:"inline-block", width:"17px"}}></span>定为违规操作及作弊行为，安广融合有权取消其获奖资格。</p>
-                    <p>2. 好友需通过您的专属链接注册才能建立推荐关系；奖励针对活动期间的推荐，累计奖励无上限。</p>
+                    <p>2. 好友需通过您的专属链接注册才能建立推荐关系；</p>
                     <p>3. 活动解释权归安广融合所有。</p>
                 </div>
             </div>
