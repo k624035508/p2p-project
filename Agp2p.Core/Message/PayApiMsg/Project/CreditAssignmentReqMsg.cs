@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
-using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -28,12 +27,15 @@ namespace Agp2p.Core.Message.PayApiMsg
             {
                 if (string.IsNullOrEmpty(subledgerList))
                 {
-                    subledgerList = JsonHelper.ObjectToJSON(new
+                    subledgerList = JsonHelper.ObjectToJSON(new List<object>()
                     {
-                        roleType = "0",
-                        roleCode = UserId,
-                        inOrOut = "0",
-                        sum = AssignmentSum
+                        new
+                        {
+                            roleType = "0",
+                            roleCode = UserId,
+                            inOrOut = "0",
+                            sum = AssignmentSum
+                        }
                     });
                 }
                 return subledgerList;
@@ -61,17 +63,14 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api =  (int) Agp2pEnums.SumapayApiEnum.CreAs;
             ApiInterface = SumapayConfig.TestApiUrl + "user/creditAssignment_toCreditAssignment";
             RequestId = Agp2pEnums.SumapayApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
-            SuccessReturnUrl = "";
-            FailReturnUrl = "";
         }
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
             return
-                hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + ProjectCode + OriginalRequestId +
                                                OriginalOrderSum + AssignmentSum + UndertakeSum + PayType + SubledgerList +
-                                               SuccessReturnUrl + FailReturnUrl);
+                                               SuccessReturnUrl + FailReturnUrl, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

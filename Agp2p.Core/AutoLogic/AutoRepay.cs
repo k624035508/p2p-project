@@ -57,7 +57,6 @@ namespace Agp2p.Core.AutoLogic
                 var loaner = t.li_projects.li_risks.li_loaners;
                 try
                 {
-                    //TODO 根据项目的autopay自动判断是否自动还款
                     if (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay)
                     {
                         //创建自动还款托管接口请求

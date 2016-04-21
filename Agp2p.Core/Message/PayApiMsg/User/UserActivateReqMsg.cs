@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
-using xBrainLab.Security.Cryptography;
+
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -23,9 +23,8 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override string GetSignature()
         {
-            HMACMD5 hmac = new HMACMD5(SumapayConfig.Key);
-            return hmac.ComputeHashToBase64String(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
-                                           PayType);
+            return SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
+                                           PayType, SumapayConfig.Key);
         }
 
         public override SortedDictionary<string, string> GetSubmitPara()

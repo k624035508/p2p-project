@@ -4,7 +4,6 @@ using Agp2p.Common;
 using Agp2p.Core.PayApiLogic;
 using Agp2p.Linq2SQL;
 using TinyMessenger;
-using xBrainLab.Security.Cryptography;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
