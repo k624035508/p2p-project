@@ -12,7 +12,7 @@ class TransactionTable extends React.Component {
         }
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
-        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory", pageSize = 15;
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory", pageSize = 13;
         $.ajax({
             type: "post",
             dataType: "json",
@@ -34,7 +34,7 @@ class TransactionTable extends React.Component {
     }
     render() {
         return (
-            <div className="tb-wrap expandable-table">
+            <div className="tb-wrap">
                 <table className="table trade-tb">
                     <thead>
                     <tr>
