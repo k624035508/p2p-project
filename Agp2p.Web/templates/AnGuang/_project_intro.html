@@ -76,6 +76,25 @@
 </div>
 <%/if%>
 
+<%if(Investable.IsClaimTransferProject)%>
+<div class="project-detail-claim">
+<span class="title-mark">{hIndex++}.债权介绍</span>
+<div class="claims-detail">
+   <div class="claims-left">
+       <div><span>债权总额</span><span><%=Investable.FinancingAmount.ToString("n2")%>元</span></div>
+       <div><span>转让债权年化收益</span><span><%=Investable.ProfitRateYearly.ToString("p1")%></span></div>
+       <div><span>债权剩余期限</span><span>{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</span></div>
+       <div><span>转让债权预期收益</span><span><%=Investable.ClaimTransferProfitingAmount.ToString("n")%>元</span></div>
+   </div>
+   <div class="claims-right">
+       <div><span>原债权规模</span><span><%=Investable.NeedTransferClaim.Parent.principal.ToString("n2")%>元</span></div>
+       <div><span>原年化收益</span><span><%=(Investable.Project.profit_rate_year/100).ToString("p1")%></span></div>
+       <div><span>还款方式</span><span>到期还本付息</span></div>
+       <div><a href='<%linkurl("project",Investable.Project.id)%>'>查看原项目详情 ></a></div>
+   </div>
+</div>
+</div>
+<%/if%>
 
 
 

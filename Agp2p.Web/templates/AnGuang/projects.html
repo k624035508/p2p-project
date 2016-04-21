@@ -145,7 +145,7 @@
                 <%/if%>
             </span>
             <span class="apr"><%=(inv.ProfitRateYearly*100).ToString("f1")%><i>%</i></span>
-            <span class="sum"><%=inv.FinancingAmount.ToString("n0")%><i>元</i></span>
+            <span class="sum"><%=inv.IsClaimTransferProject?inv.FinancingAmount.ToString("n2"):inv.FinancingAmount.ToString("n0")%><i>元</i></span>
             <%if(p.IsHuoqiProject())%>
             <span class="deadline">--</span>
             <%else%>

@@ -163,7 +163,7 @@
         <div class="invest-rules">
             <div class="sum">
                 <div><%=projectModel.IsNewbieProject()?"项目金额":"借款金额"%></div>
-                <div class="rules-style"><%=string.Format("{0:N0}", Investable.FinancingAmount)%><span> 元</span></div>
+                <div class="rules-style"><%=Investable.IsClaimTransferProject?Investable.FinancingAmount.ToString("n2"):Investable.FinancingAmount.ToString("n0")%><span> 元</span></div>
             </div>
             <div class="deadline">
                 <div>期限</div>
