@@ -47,7 +47,7 @@ namespace Agp2p.Core.AutoLogic
                     return !loaner.dt_users.li_bank_transactions.Any(
                         btr =>
                             btr.type == (int) Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay &&
-                            btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm && btr.remarks != t.id.ToString());
+                            btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm && btr.remarks == t.id.ToString());
                 })
                 .ToList();
             if (!shouldRepayTask.Any()) return;
