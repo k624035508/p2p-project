@@ -714,6 +714,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bank-nanyue.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\bigevents.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\chenmaoqiang.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\codeCard-bg.png" />
@@ -736,6 +737,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\office-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001big.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office02-bg.png" />
@@ -770,6 +773,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\sumapay.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
