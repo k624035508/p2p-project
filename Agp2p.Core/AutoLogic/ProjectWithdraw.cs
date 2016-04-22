@@ -24,7 +24,7 @@ namespace Agp2p.Core.AutoLogic
 
             using (var ts = new TransactionScope())
             {
-                // 将需要转让的债权由公司账号购买，转手之后设置为 TransferredUnpaid
+                // 将需要转让的债权由中间人购买，转手之后设置为 TransferredUnpaid
                 var context = new Agp2pDataContext();
                 var companyUsers = context.dt_users.Where(u => u.dt_user_groups.title == AutoRepay.AgentGroup).ToList();
                 if (!companyUsers.Any())

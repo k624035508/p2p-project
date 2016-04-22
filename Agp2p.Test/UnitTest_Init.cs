@@ -14,7 +14,7 @@ namespace Agp2p.Test
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
 
-        public static readonly DateTime TestStartAt = new DateTime(2016, 4, 19, 8, 20, 00);/* 开始测试前请设置好实际日期 */
+        public static readonly DateTime TestStartAt = new DateTime(2016, 4, 22, 8, 20, 00);/* 开始测试前请设置好实际日期 */
 
         [ClassInitialize]
         public static void Setup(TestContext context)
