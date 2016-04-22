@@ -52,13 +52,13 @@ function loadData(pageIndex, callback) {
     });
 }
 var renderDetail = template($("#detail-page").html(), templateSettings);
-function loadDetailData(projectId, ticketId) {
+function loadDetailData(projectId) {
     var pageWrapper = $(".receive-plan-detail-page");
     pageWrapper.html("<div class='loading-hint'>加载中...</div>");
     $.ajax({
         type: "POST",
         url: reqFilePath + "/AjaxQueryProjectRepaymentDetail",
-        data: JSON.stringify({ projectId: projectId, ticketId: ticketId }),
+        data: JSON.stringify({ projectId: projectId}),
         contentType: "application/json",
         dataType: "json",
         success: function (msg) {
@@ -147,7 +147,7 @@ $(function(){
 
     $("#pending").on("click", ".project-cell", function () {
         var clicked = $(this);
-        loadDetailData(clicked.attr("data-projectId"), clicked.attr("data-ticketId"));
+        loadDetailData(clicked.attr("data-projectId"));
         location.href = "#projects/1";
     });
 
