@@ -52,6 +52,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -67,6 +68,7 @@
     <Compile Include="UnitTest_P3_3.cs" />
     <Compile Include="UnitTest_P3_2.cs" />
     <Compile Include="UnitTest_P3_1.cs" />
+    <Compile Include="UnitTest_P4_3.cs" />
     <Compile Include="UnitTest_P4_2.cs" />
     <Compile Include="UnitTest_P4_1.cs" />
     <Compile Include="UnitTest_P5_1.cs" />
