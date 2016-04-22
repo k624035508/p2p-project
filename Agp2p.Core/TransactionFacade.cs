@@ -1078,6 +1078,17 @@ namespace Agp2p.Core
 
             apportionAmount = ApportionToClaims(context, needTransferHuoqiClaims, apportionAmount, byPtr, invesTime);
 
+            // 因为是用户之间的债权转让，并且后面投资的用户已经记上了活期的已投金额，所以这里要减去活期项目的已投金额
+            var claimTransferAmountBetweenNormalUserInfo = needTransferHuoqiClaims.GroupBy(c => c.li_projects_profiting)
+                    .ToDictionary(g => g.Key, g => g.SelectMany(
+                        c => c.Children.Where(ch => ch.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid))
+                        .Aggregate(0m, (sum, c) => sum + c.principal));
+
+            claimTransferAmountBetweenNormalUserInfo.ForEach(pair =>
+            {
+                pair.Key.investment_amount -= pair.Value;
+            });
+
             if (0 < apportionAmount)
             {
                 var huoqiBuyableClaims = context.li_claims.Where(
@@ -1961,6 +1972,13 @@ namespace Agp2p.Core
                 // 活期债权（可能是多个活期项目自动投资而产生），需要被原中间人收回
                 var huoqiProfitingClaims = needComplete.Where(c => c.profitingProjectId != c.projectId).ToList(); // 自动投标的项目
 
+                // 减去活期项目的已投金额
+                huoqiProfitingClaims.GroupBy(c => c.li_projects_profiting).ToDictionary(g => g.Key, g => g.Sum(c => c.principal)).ForEach(
+                    pair =>
+                    {
+                        pair.Key.investment_amount -= pair.Value;
+                    });
+
                 // 中间人通过再次投资原定期项目以收回活期债权
                 var recapturedHuoqiClaim = newContext.RecaptureHuoqiClaim(huoqiProfitingClaims, pro.complete_time.Value);
 
@@ -1968,6 +1986,7 @@ namespace Agp2p.Core
                 var completedClaims = recapturedHuoqiClaim.Select(
                         c => c.NewStatusChild(pro.complete_time.Value, Agp2pEnums.ClaimStatusEnum.Completed)).ToList();
                 newContext.li_claims.InsertAllOnSubmit(completedClaims);
+
                 newContext.SubmitChanges();
 
                 // 自动续投
@@ -2062,6 +2081,8 @@ namespace Agp2p.Core
                 var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.AutoInvest);
                 his.li_project_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
+
+                huoqiProject.investment_amount += maxInvestingAmount;
 
                 BuyHuoqiClaims(context, maxInvestingAmount, tr);
             }
