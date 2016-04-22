@@ -202,6 +202,7 @@ namespace Agp2p.Web.admin.audit
                     int id = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
                     string no_order = ((Label)rptList.Items[i].FindControl("lb_order_no")).Text;
                     string pay_type = ((Label)rptList.Items[i].FindControl("lb_pay_type")).Text;
+                    //TODO 丰付支付能否手动审核？
                     if (doConfirm)
                     {
                         //调用汇潮接口查询订单是否已到账

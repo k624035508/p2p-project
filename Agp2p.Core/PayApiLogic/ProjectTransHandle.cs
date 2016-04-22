@@ -205,16 +205,21 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 if (!string.IsNullOrEmpty(req.remarks))
                                 {
-                                    var dic = Utils.UrlParamToData(req.remarks);
-                                    int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                    //生成还款记录
-                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
-                                        Utils.StrToDecimal(msg.Sum, 0));
-                                    //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
-                                    if (!msg.AutoRepay)
+                                    //活期项目不需要生成还款记录
+                                    if (!msg.HuoqiRepay)
                                     {
-                                        RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
-                                            Utils.StrToBool(dic["isEarly"], false), false);
+                                        var dic = Utils.UrlParamToData(req.remarks);
+                                        int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                        //生成还款记录 
+                                        context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
+                                            Utils.StrToDecimal(msg.Sum, 0));
+
+                                        //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
+                                        if (!msg.AutoRepay)
+                                        {
+                                            RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                                Utils.StrToBool(dic["isEarly"], false), false);
+                                        }
                                     }
                                     msg.HasHandle = true;
                                 }
@@ -250,11 +255,15 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
-                        Agp2pDataContext context = new Agp2pDataContext();
-                        if (!msg.IsEarlyPay)
-                            context.ExecuteRepaymentTask(msg.RepayTaskId);
-                        else
-                            context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                        //活期项目不需要执行还款计划
+                        if (!msg.IsHuoqi)
+                        {
+                            Agp2pDataContext context = new Agp2pDataContext();
+                            if (!msg.IsEarlyPay)
+                                context.ExecuteRepaymentTask(msg.RepayTaskId);
+                            else
+                                context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                        }
                         msg.HasHandle = true;
                     }
                 }

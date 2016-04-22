@@ -26,7 +26,7 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查请求处理结果
+                //检查请求处理结果 TODO 失败就取消充值申请记录
                 if (msg.CheckResult())
                 {
                     //检查签名
