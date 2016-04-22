@@ -116,6 +116,7 @@ namespace Agp2p.Web.UI.Page
             var query = context.li_wallet_histories.Where(h => h.user_id == userId);
             query = query.Where(w =>
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess &&
+                        w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess &&
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.Charging &&
                         w.action_type != (int)Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel); // 屏蔽项目满标的历史，没必要展示
 

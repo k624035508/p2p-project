@@ -104,7 +104,7 @@
                                 <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%/if%>
                                 <%if(!projectModel.IsHuoqiProject())%>
-                                <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}<%=Investable.ProjectTermSpanName%></span></li>
+                                <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</span></li>
                                 <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>

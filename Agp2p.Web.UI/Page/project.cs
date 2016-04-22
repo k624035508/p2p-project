@@ -179,7 +179,7 @@ namespace Agp2p.Web.UI.Page
                         user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
                         user_id = pt.dt_users.id,
                         create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                        value = pt.principal.ToString("c0")
+                        value = Investable.IsClaimTransferProject ? pt.principal.ToString("c2") : pt.principal.ToString("c0")
                     }).ToList();
             }
 
@@ -193,7 +193,7 @@ namespace Agp2p.Web.UI.Page
                     user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
                     user_id = pt.dt_users.id,
                     create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                    value = pt.principal.ToString("c0")
+                    value = Investable.IsClaimTransferProject ? pt.principal.ToString("c2") : pt.principal.ToString("c0")
                 }).ToList();
             return project_transactions;
         }

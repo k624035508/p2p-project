@@ -31,18 +31,20 @@ function initPage(){
     });
 
     $("#btnInvest").click(function() {
+        if (!isUserLogin) {
+            $.dialog.tips("请先登录");
+            return;
+        }
         // 初始化投资确认对话框
         let $investingValueInput = $(".invest-action input");
         var investingValue = Number($investingValueInput.val());
-        if (0 >= investingValue || investingValue % 1 !== 0) {
+        if (investingValue <= 0 || (buyClaimId === 0 && investingValue % 1 !== 0)) {
             $.dialog.tips("请输入正整数");
             return;
         } else if (idleMoney < investingValue) {
             $.dialog.tips("您的余额不足 " + investingValue + " 元");
             return;
         }
-        var profit = finalProfitRate * investingValue;
-
         var dlg = $("#dlgInvestConfirm");
         dlg.find("#dlgField_InvestAmount").text(investingValue + " 元");
 
@@ -50,7 +52,7 @@ function initPage(){
             // TODO 新手体验标的临时逻辑
             dlg.find("#dlgField_ProfitPredict").text("10 元");
         } else {
-            dlg.find("#dlgField_ProfitPredict").text(profit.toFixed(2) + " 元");
+            dlg.find("#dlgField_ProfitPredict").text((totalInterest * investingValue / financingAmount).toFixed(2) + " 元");
         }
 
         dlg.find("#dlgField_IdleMoney").text(idleMoney + " 元");

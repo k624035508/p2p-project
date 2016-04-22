@@ -8,12 +8,14 @@
     <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? Investable.Title : projectModel.seo_title%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script>
-        var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
+        var financingAmount = {Investable.FinancingAmount};
+        var totalInterest = {Investable.TotalInterest};
         var idleMoney = {idle_money};
         var investProgress = <%=(Investable.InvestmentProgress*100)%>;
         var projectId = {projectModel.id};
         var projectName = '{Investable.Title}';
         var buyClaimId = '{buyClaimId}';
+        var isUserLogin = "<%=IsUserLogin()%>" === "True";
     </script>
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/fullpage.bundle.js"></script>
@@ -51,7 +53,7 @@
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">项目金额</span>
-                    <p><span class="data-style"><%=Investable.FinancingAmount.ToString("n0")%></span> 元</p>
+                    <p><span class="data-style"><%=Investable.FinancingAmountStr%></span> 元</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <%if(projectModel.IsNewbieProject())%>
@@ -59,14 +61,14 @@
                     <p><span class="data-style">10</span>元</p>
                     <%else%>
                     <span class="title-style">年化收益</span>
-                    <p><span class="data-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%></span> %</p>
+                    <p><span class="data-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%></span> %</p>
                     <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">借款期限</span>
-                    <p><span class="data-style">{projectModel.repayment_term_span_count}</span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></p>
+                    <p><span class="data-style">{Investable.RepaymentTermSpanCount}</span> {Investable.ProjectTermSpanName}</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <span class="title-style">还款方式</span>
@@ -83,7 +85,7 @@
                 <div class="invest-action">
                     <%if(Investable.Status<=Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=projectModel.IsNewbieProject()?"value='100' disabled":""%> >
+                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=Investable.FixInvestAmountString%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>
