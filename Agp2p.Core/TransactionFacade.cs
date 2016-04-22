@@ -2580,6 +2580,11 @@ namespace Agp2p.Core
             if (his.li_bank_transactions != null)
             {
                 var btrType = his.li_bank_transactions.type;
+                if (his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm
+                    || his.action_type == (int)Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess)
+                {
+                    return null;
+                }
                 return btrType == (int) Agp2pEnums.BankTransactionTypeEnum.Charge || btrType == (int) Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan
                     ? (decimal?) null
                     : his.li_bank_transactions.value; // 提现
