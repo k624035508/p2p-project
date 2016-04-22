@@ -38,7 +38,7 @@
 
 <div class="fincategory">
 <div>   
-   
+    
     <div class="top-part content-wrap">
         <div class="select-box">
             <div class="project-time">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more",54)%>'>发标公告</a>。</div>
@@ -53,6 +53,28 @@
                 </ul>
                 </div>-->
                 <%if(SubCategoryIdTitleMap.Any())%>
+                <div class="intro">
+                    <div>
+                        <p>优质合作机构</p>
+                        <p>资产来源</p>
+                    </div>
+                    <div>
+                        <p>4重还款保障</p>
+                        <p>保障方式</p>
+                    </div>
+                    <div>
+                        <p>6.88%-14%</p>
+                        <p>利率范围</p>
+                    </div>
+                    <div>
+                        <p>10天-18个月</p>
+                        <p>产品期限</p>
+                    </div>
+                    <div>
+                        <p>100元起</p>
+                        <p>起投金额</p>
+                    </div>
+                </div>
                 <div class="project-types">
                     <span>项目类型</span>
                     <ul class="list-unstyled">
@@ -73,8 +95,7 @@
                         </li>
                         <%/foreach%>
                     </ul>
-                </div>
-                <%/if%>
+                </div>             
                 <div class="project-profit">
                     <span>项目收益</span>
                     <ul class="list-unstyled list-inline">
@@ -99,7 +120,37 @@
                         <%/foreach%>
                     </ul>
                 </div>
-            </div>
+                <%/if%>
+                <%if(rootCategoryId==claimsCategoryId)%>
+                <div class="project-deadline">
+                    <span>项目期限</span>
+                    <ul class="list-unstyled list-inline">
+                        <%set var claimsTermEnums=Utils.GetEnumValues<Agp2pEnums.ClaimsTermEnum>()%>
+                        <%foreach(var en in claimsTermEnums)%>
+                        <li>
+                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'
+                               class='<%=project_repayment_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+                <div class="project-deadline">
+                    <span>项目状态</span>
+                    <ul class="list-unstyled list-inline">
+                        <%set var staticClaimQueryEnums=Utils.GetEnumValues<Agp2pEnums.StaticClaimQueryEnum>()%>
+                        <%foreach(var en in staticClaimQueryEnums)%>
+                        <li>
+                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,(int)en,1)%>'
+                               class='<%=project_status_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a> 
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+                <%/if%>
+                <%if(rootCategoryId==huoqiCategoryId)%>
+
+                <%/if%>
+                </div>
         </div>
         <div class="novice-guide pull-right">
         
@@ -247,13 +298,7 @@
         </div>
 
     <!--活期宝-->
-    <div class="hidden huoqibao">
-        <a name="huoqibao"></a>
-        <div class="content-wrap">
-            <img src="<%templateskin%>/imgs/projects/002.jpg" />
-                <div>敬请期待</div>
-        </div>
-    </div>
+    <div></div>
 
     <!--文体宝-->
     <div class="hidden wentibao">
