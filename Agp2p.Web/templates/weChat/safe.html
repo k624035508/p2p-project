@@ -34,7 +34,7 @@
             <div class="group">
                 <div class="phone-bind">
                     <span>绑定手机</span>
-                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <a class="toggle-btn" href="javascript:;"><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "设置" : "修改"%></a>
                     <div class="fold">
                         <p><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "（未设置）" : userModel.mobile%></p>
                         <input id="phone" class="input-l" type="text" placeholder="请输入新的手机号码">
@@ -52,7 +52,7 @@
             <div class="group">
                 <div class="user-approve">
                     <span>实名认证</span>
-                    <a class="toggle-btn" href="javascript:;">设置</a>
+                    <a class="toggle-btn" href="javascript:;"><%=string.IsNullOrWhiteSpace(userModel.real_name) ? "设置" : "修改"%></a>
                     <div class="fold">
                         <input id="name" class="input-l" type="text" placeholder="请输入您的真实姓名" value="{userModel.real_name}">
                         <input id="ID" class="input-l" type="text" placeholder="请输入您的身份证号码" value="{userModel.id_card_number}">

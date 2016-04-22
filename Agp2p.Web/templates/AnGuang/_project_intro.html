@@ -7,7 +7,7 @@
     </div>
     <div class="fanwei">
         <span>投资范围</span>
-        <span>由平台推荐的真实借款项目（100%适用于平台风险备用金制度）</span>
+        <span>由平台推荐的真实借款项目</span>
     </div>
     <div class="fanwei">
         <span>期限</span>
@@ -15,7 +15,7 @@
     </div>
     <div class="fanwei">
         <span>预期年化收益</span>
-        <span>3.3%</span>
+        <span><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span>
     </div>
     <div class="fanwei">
         <span>起投金额</span>
@@ -98,7 +98,7 @@
 
 
 
-<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl" && projectModel.dt_article_category.call_index!="huoqi")%>
+<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl"&&projectModel.dt_article_category.call_index!="huoqi"&&(!Investable.IsClaimTransferProject))%>
 <div id="project-summary">
     <span class="title-mark">{hIndex++}.项目简介</span>
     <ul class="list-unstyled">

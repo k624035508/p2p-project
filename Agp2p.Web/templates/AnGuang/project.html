@@ -184,7 +184,7 @@
                 <%if(projectModel.IsNewbieProject())%>
                 <div class="rules-style">10<span> 元</span></div>
                 <%else if(projectModel.IsHuoqiProject())%>
-                <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span>+0.2<span> %</span></div>
+                <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100-.2m)%><span> %</span>+0.2<span> %</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span></div>
                 <%/if%>
@@ -257,7 +257,9 @@
         <%template src="_new_hand.html"%>
         <%template src="_invest_record.html"%>
         <%else if(projectModel.IsHuoqiProject())%>
-
+        <%template src="_project_intro.html"%>
+        <%template src="_invest_record.html"%>
+        <%else if(Investable.IsClaimTransferProject)%>
         <%template src="_project_intro.html"%>
         <%template src="_invest_record.html"%>
         <%else%>
