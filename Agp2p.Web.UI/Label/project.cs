@@ -144,6 +144,10 @@ namespace Agp2p.Web.UI
             public decimal ClaimTransferProfitingAmount => (TransactionFacade.QueryOriginalClaimFinalInterest(NeedTransferClaim) -
                                                              NeedTransferClaim.keepInterest.GetValueOrDefault());
 
+            public decimal TotalInterest => NeedTransferClaim == null
+                        ? Project.li_repayment_tasks.Aggregate(0m, (sum, task) => sum + task.repay_interest)
+                        : ClaimTransferProfitingAmount;
+
             private int RemainDays
             {
                 get
@@ -192,6 +196,10 @@ namespace Agp2p.Web.UI
                     ? linkurl(config, "project", Project.id)
                     : linkurl(config, "project", Project.id, NeedTransferClaim.id);
             }
+
+            public string FixInvestAmountString => NeedTransferClaim == null
+                        ? (Project.IsNewbieProject() ? "value='100' disabled" : "")
+                        : $"value='{FinancingAmount}' disabled";
         }
 
         public static IQueryable<li_projects> QueryingProjects(Agp2pDataContext context, int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
