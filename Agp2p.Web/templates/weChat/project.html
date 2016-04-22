@@ -100,7 +100,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <%if(!projectModel.IsNewbieProject())%>
+                <%if(!projectModel.IsNewbieProject()&&!projectModel.IsHuoqiProject()&&!Investable.IsClaimTransferProject)%>
                 <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <%/if%>
@@ -170,14 +170,14 @@
             <div class="photos-box">
                 <%set var pics=QueryAlbums()%>
                 <%foreach(var picture in pics)%>
-                <div class="photo-cell">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog">
+                <div class="photo-cell" >
+                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog"> 
                 </div>
                 <%/foreach%>
                 <%if(!pics.Any())%>
-                <div class="loading-hint">
-                    <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-                    <p style="color:#ccc">目前没有照片记录</p>
+                <div class="loading-hint" >
+                    <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+                    <p style="color: #ccc">目前没有照片记录</p>              
                 </div>
                 <%/if%>
             </div>

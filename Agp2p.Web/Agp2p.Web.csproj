@@ -1128,6 +1128,8 @@
     <Content Include="templates\weChat\imgs\headshot.png" />
     <Content Include="templates\weChat\imgs\icon-left.png" />
     <Content Include="templates\weChat\imgs\icon-right.png" />
+    <Content Include="templates\weChat\imgs\img-left.png" />
+    <Content Include="templates\weChat\imgs\img-right.png" />
     <Content Include="templates\weChat\imgs\input-icon\amount.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank-card.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank.png" />

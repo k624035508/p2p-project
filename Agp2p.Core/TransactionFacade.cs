@@ -62,7 +62,9 @@ namespace Agp2p.Core
                 value = money,
                 handling_fee = 0,
                 handling_fee_type = (byte) Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,
-                no_order = noOrder.Equals("") ? Utils.GetOrderNumberLonger() : noOrder,
+                no_order = noOrder.Equals("")
+                    ? Utils.GetOrderNumberLonger()
+                    : noOrder,
                 create_time = DateTime.Now,
                 remarks = remark,
                 pay_api = (byte) payApi

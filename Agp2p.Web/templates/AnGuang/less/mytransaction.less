@@ -2,6 +2,7 @@
 @import "common-style";
 @usercenter: "../imgs/usercenter";
 
+
 .controls {
 	font-size: @font13;
 	color: @dark-grey;
@@ -39,7 +40,7 @@
 	}
 }
 .tb-wrap {
-	height: 500px;
+	height: 500px; position:relative;
 	.trade-tb {
 		margin-top: 30px;
 		th, td { text-align: center; }
@@ -60,3 +61,10 @@
 		}
 	}
 }
+.content-body,.content-body-loaner{
+    position:relative;
+}
+.nav{
+    position:absolute; bottom:0; left:0; width:100%;
+}
+
