@@ -8,6 +8,14 @@ $("html").css("font-size", $(window).width() * 0.9 / 20);
 
 //初始化验证表单
 $(function () {
+    $(window).load(function() {
+       if (location.href.indexOf("?xx=www.xxx.com") != -1) {
+           $(".turn-now-wrap").show();
+       } else {
+           $(".turn-now-wrap").hide();
+       }
+    });
+
     //提交表单
     var btnSubmit = $("#btnSubmit");
     btnSubmit.bind("click", function() {
