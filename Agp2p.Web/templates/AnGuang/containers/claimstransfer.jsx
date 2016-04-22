@@ -125,7 +125,7 @@ export default class ClaimsTransfer extends React.Component {
                 success: function(result) {
                     let withdrawClaimFinalInterest = JSON.parse(result.d).withdrawClaimFinalInterest;
                     if (withdrawClaimFinalInterest == 0) {
-                        doClaimTransfer(claimId, 1);
+                        this.doClaimTransfer(claimId, 1);
                     } else {
                         this.refs.legacyInterestPicker.show(withdrawClaimFinalInterest,
                             v => this.doClaimTransfer(claimId, (withdrawClaimFinalInterest - v)/withdrawClaimFinalInterest));
