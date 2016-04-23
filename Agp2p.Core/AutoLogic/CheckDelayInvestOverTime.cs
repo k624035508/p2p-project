@@ -40,7 +40,7 @@ namespace Agp2p.Core.AutoLogic
 
             delayInvested.ForEach(ptr =>
             {
-                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.investor);
+                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, ptr.investor);
                 if (ptr.principal < amount)
                 {
                     TransactionFacade.DelayInvestSuccess(ptr.id);
@@ -68,7 +68,7 @@ namespace Agp2p.Core.AutoLogic
 
             delayInvested.ForEach(ptr =>
             {
-                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.investor);
+                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, ptr.investor);
                 if (ptr.principal < amount)
                 {
                     TransactionFacade.DelayInvestSuccess(ptr.id);
