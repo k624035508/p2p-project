@@ -71,6 +71,11 @@ namespace Agp2p.Core
             return p.dt_article_category.call_index == "huoqi";
         }
 
+        public static bool IsTicketProject(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "ypb" || p.dt_article_category.call_index == "ypl";
+        }
+
         public static li_claims MakeChild(this li_claims parent, DateTime createTime)
         {
             return new li_claims

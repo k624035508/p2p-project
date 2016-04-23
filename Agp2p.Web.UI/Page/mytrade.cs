@@ -116,6 +116,7 @@ namespace Agp2p.Web.UI.Page
             var query = context.li_wallet_histories.Where(h => h.user_id == userId);
             query = query.Where(w =>
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess &&
+                        w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess &&
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.Charging &&
                         w.action_type != (int)Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel); // 屏蔽项目满标的历史，没必要展示
 
@@ -138,18 +139,20 @@ namespace Agp2p.Web.UI.Page
                 remark = QueryRemark(context, h)
             }).ToList();
 
-            if (count != 0)
+            if (history.Count != 0)
             {
                 count += 1; // 总计
                 if (count <= pageIndex * pageSize + pageSize) // 最后一页
                 {
                     var allHis = query.ToList();
+                    var income = allHis.Aggregate(0m, (sum, h) => sum + TransactionFacade.QueryTransactionIncome(h, (a, b) => a.GetValueOrDefault() + b.GetValueOrDefault()));
+                    var outcome = allHis.Aggregate(0m, (sum, h) => sum + h.QueryTransactionOutcome().GetValueOrDefault());
                     history.Add(new
                     {
                         id = 0,
                         type = "总计",
-                        income = allHis.Aggregate(0m, (sum, h) => sum + TransactionFacade.QueryTransactionIncome(h, (a, b) => a.GetValueOrDefault() + b.GetValueOrDefault())).ToString("f2"),
-                        outcome = allHis.Aggregate(0m, (sum, h) => sum + h.QueryTransactionOutcome().GetValueOrDefault()).ToString("f2"),
+                        income = (0 <= income - outcome) ? (income - outcome).ToString("f2") : "",
+                        outcome = (0 < outcome - income) ? (outcome - income).ToString("f2") : "",
                     });
                 }
             }

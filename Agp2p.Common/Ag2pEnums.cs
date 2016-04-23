@@ -357,7 +357,7 @@ namespace Agp2p.Common
         {
             [Description("充值待确认")]
             Charging = 1,
-            [Description("提现待执行")]
+            [Description("提现进行中")]
             Withdrawing = 2,
             [Description("充值成功")]
             ChargeConfirm = 3,
