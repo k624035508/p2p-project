@@ -142,6 +142,7 @@
     <Compile Include="Message\ProjectFinancingCompleteEvenTimeoutMsg.cs" />
     <Compile Include="Message\ProjectFinancingCompletedMsg.cs" />
     <Compile Include="Message\StaticClaimTransferSuccessMsg.cs" />
+    <Compile Include="Message\HuoqiWithdrawMsg.cs" />
     <Compile Include="Message\UserRefundMsg.cs" />
     <Compile Include="Message\ProjectFinancingFailMsg.cs" />
     <Compile Include="Message\BankTransactionCreatedMsg.cs" />
