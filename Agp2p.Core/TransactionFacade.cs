@@ -1006,8 +1006,6 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("您提现的金额不能超出您投资的本金：" + sumOfPrincipal.ToString("c"));
             }
 
-            // TODO 发送中间人金额提醒
-
             if (sumOfPrincipal == withdrawMoney)
             {
                 // 全部提现
@@ -1029,6 +1027,9 @@ namespace Agp2p.Core
             project.investment_amount -= withdrawMoney;
 
             context.SubmitChanges();
+
+            // 发送中间人金额提醒
+            MessageBus.Main.PublishAsync(new HuoqiWithdrawMsg(userId, huoqiProjectId, withdrawMoney));
         }
 
         private static void HuoqiClaimsPartialWithdraw(Agp2pDataContext context, IEnumerable<li_claims> claims, decimal withdrawMoney, DateTime withdrawTime)
