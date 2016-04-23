@@ -203,7 +203,7 @@ namespace Agp2p.Core.PayApiLogic
                                     if (!msg.AutoRepay)
                                     {
                                         RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
-                                            Utils.StrToBool(dic["isEarly"], false));
+                                            Utils.StrToBool(dic["isEarly"], false), false);
                                     }
                                     msg.HasHandle = true;
                                 }
@@ -273,7 +273,7 @@ namespace Agp2p.Core.PayApiLogic
                         var trans = context.li_project_transactions.SingleOrDefault(p => p.no_order == msg.OriginalRequestId);
                         if (trans != null)
                         {
-                            TransactionFacade.BuyClaim(context, trans.li_claims_invested.First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).id, (int) msg.UserIdIdentity,
+                            TransactionFacade.BuyClaim(context, trans.li_claims_invested.OrderByDescending(c => c.createTime).First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer).id, (int) msg.UserIdIdentity,
                                 Utils.StrToDecimal(msg.AssignmentSum, 0));
                             msg.HasHandle = true;
                         }

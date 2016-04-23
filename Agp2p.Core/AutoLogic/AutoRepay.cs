@@ -169,13 +169,13 @@ namespace Agp2p.Core.AutoLogic
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
                 //TODO 特殊项目回款处理
-                if (ta.li_projects.IsHuoqiProject())
+                if (ta.li_projects.IsNewbieProject())
                 {
                     context.ExecuteRepaymentTask(ta.id);
                 }
                 else
                     //调用托管本息到账接口,在本息到账异步响应中执行还款计划
-                    RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false);
+                    RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false, ta.li_projects.IsHuoqiProject());
             });
 
             context.AppendAdminLogAndSave("AutoRepay", "今日待还款项目自动还款：" + shouldRepayTask.Count);
