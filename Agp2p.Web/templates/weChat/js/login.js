@@ -20,7 +20,7 @@ $(function () {
        if (location.href.indexOf("url") != -1) {
            $(".turn-now-wrap").show();
            
-           var RegUrl = getUrlParam('url');
+           var RegUrl = getUrlParam('url')+"&id=" + getUrlParam('id');
            $("#registerBtn").attr("href", "/mobile/register.html?url=" + RegUrl);
        } else {
            $(".turn-now-wrap").hide();
@@ -54,7 +54,7 @@ $(function () {
                 success: function(data, textStatus) {
                     if (data.status == 1) {
                         if(document.URL !== "" && document.URL.indexOf("url") != -1) {
-                            location.href = getUrlParam('url');
+                            location.href = getUrlParam('url')+"&id=" + getUrlParam('id');
                         }
                         else if (typeof(data.url) == "undefined") {
                             location.href = $("#loginform").attr("data-turl");

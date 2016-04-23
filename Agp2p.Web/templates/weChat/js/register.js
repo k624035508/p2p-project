@@ -138,7 +138,7 @@ $(function () {
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
                 if(document.URL !== "" && document.URL.indexOf("url") != -1) {
-                    location.href = getUrlParam('url');
+                    location.href = getUrlParam('url')+"&id=" + getUrlParam('id');
                 }
                 else
                     location.href = "/";
