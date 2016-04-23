@@ -45,7 +45,7 @@ namespace Agp2p.Core.NotifyLogic
 
                 var ptr = context.li_project_transactions.Single(ptr0 => ptr0.id == projectTransactionId);
 
-                var huoqiBuyableClaimsAmount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, agent.id);
+                var huoqiBuyableClaimsAmount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, agent.id);
 
                 var delayInvested = ptr.li_projects.li_project_transactions.Where(
                     tr =>

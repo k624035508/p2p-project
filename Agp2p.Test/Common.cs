@@ -168,7 +168,7 @@ namespace Agp2p.Test
             var context = new Agp2pDataContext();
             var now = DateTime.Now;
 
-            var loaner = context.li_loaners.Single(l => l.dt_users.real_name == "杨长岭");
+            var loaner = context.li_loaners.Single(l => l.dt_users.user_name == "CompanyAccount");
             var huoqiCategory = context.dt_article_category.Single(c => c.call_index == "huoqi");
             var project = new li_projects
             {
