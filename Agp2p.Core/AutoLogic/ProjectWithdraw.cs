@@ -42,16 +42,17 @@ namespace Agp2p.Core.AutoLogic
                 if (!needTransferClaims.Any()) return;
 
                 //根据活期项目发送还款请求
-                needTransferClaims.ToLookup(c => c.li_projects_profiting).ForEach(n =>
+                needTransferClaims.ToLookup(c => c.li_projects_profiting).ForEach(groupByProj =>
                 {
                     //找出活期项目对应的中间人
-                    var loaner = n.Key.li_risks.li_loaners.dt_users;
-                    var needTransferClaimsSum = needTransferClaims.Sum(c => c.principal);
+                    var huoqiProj = groupByProj.Key;
+                    var loaner = huoqiProj.li_risks.li_loaners.dt_users;
+                    var needTransferClaimsSum = groupByProj.Sum(c => c.principal);
                     if (loaner.li_wallets.idle_money < needTransferClaimsSum)
                         throw new InvalidOperationException("警告：中间人的余额不足以接手需要转让的债权");
 
                     //创建自动还款托管接口请求
-                    var autoRepayReqMsg = new AutoRepayReqMsg(loaner.id, n.Key.id, needTransferClaimsSum.ToString("f"));
+                    var autoRepayReqMsg = new AutoRepayReqMsg(loaner.id, huoqiProj.id, needTransferClaimsSum.ToString("f"));
                     MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
                     {
                         //处理请求同步返回结果
@@ -61,7 +62,7 @@ namespace Agp2p.Core.AutoLogic
                         {
                             if(repayRespMsg.HasHandle)
                                 //托管还款完成后才接手转出的债权
-                                context.RecaptureHuoqiClaim(needTransferClaims, DateTime.Now);
+                                context.RecaptureHuoqiClaim(groupByProj.ToList(), DateTime.Now);
                         });
                     });
                 });
@@ -103,6 +104,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 var huoqiProject = pcs.Key;
                 //发送托管本金到账请求成功后才执行转出逻辑
+                // TODO 这里只返本金
                 RequestApiHandle.SendReturnPrinInte(huoqiProject.id, (pcs.Sum(pcsc => pcsc.principal)).ToString("f"), 0, false, true,  
                     () => {
                         pcs.ToLookup(c => c.dt_users).ForEach(ucs =>
