@@ -1052,6 +1052,7 @@
     <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
+    <Content Include="templates\AnGuang\components\custom-dialog.jsx" />
     <None Include="templates\AnGuang\less\success_return.less" />
     <None Include="templates\AnGuang\less\fail_return.less" />
     <Content Include="templates\AnGuang\loan.html" />
