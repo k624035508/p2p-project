@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
@@ -152,9 +153,14 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
-                            //异步返回才放款
+                            //异步返回才放款,内网测试使用同步
+#if DEBUG
+                            if (msg.Sync) {
+#endif
+#if !DEBUG
                             if (!msg.Sync)
                             {
+#endif
                                 //定期项目进入开始还款，活期项目直接向借款人放款
                                 if (pro.IsHuoqiProject())
                                 {

@@ -76,9 +76,15 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         if (msg.CheckSignature())
                         {
-                            //异步返回的结果才是充值已到账
+                            //异步返回才放款,内网测试使用同步
+#if DEBUG
+                            if (msg.Sync)
+                            {
+#endif
+#if !DEBUG
                             if (!msg.Sync)
                             {
+#endif
                                 context.ConfirmBankTransaction(trans.id, null);
                                 //TODO 检查用户资金信息
 
