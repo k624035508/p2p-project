@@ -535,6 +535,25 @@ namespace Agp2p.Common
         }
 
         /// <summary>
+        /// 债权转让期限筛选枚举
+        /// </summary>
+        public enum ClaimsTermEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("1个月以内")]
+            LessThanOneMonth = 1,
+            [Description("1-3个月")]
+            OneToThreeMonth = 2,
+            [Description("4-6个月")]
+            FourToSixMonth = 3,
+            [Description("7-12个月")]
+            SevenToTwelveMonth = 4,
+            [Description("12个月")]
+            TwelveMonth = 5,
+        }
+
+        /// <summary>
         /// 金额筛选枚举
         /// </summary>
         public enum AmountTypeEnum
@@ -873,6 +892,8 @@ namespace Agp2p.Common
 
         public enum StaticClaimQueryEnum
         {
+            [Description("全部")]
+            All = 0,
             [Description("可转让")]
             Profiting = 1,
             [Description("转让中")]
