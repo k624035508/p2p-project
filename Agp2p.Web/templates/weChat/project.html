@@ -100,7 +100,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <%if(!projectModel.IsNewbieProject())%>
+                <%if(!projectModel.IsNewbieProject()&&!projectModel.IsHuoqiProject()&&!Investable.IsClaimTransferProject)%>
                 <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <%/if%>
