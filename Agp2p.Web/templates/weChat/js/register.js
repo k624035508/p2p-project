@@ -123,12 +123,25 @@ $(function () {
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
     }
+
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); 
+        return null; //返回参数值
+    }
+
     //表单提交后
     function showResponse(data, textStatus) {
         if (data.status === 1) { //成功
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
-                location.href = "/";
+                if(document.URL !== "" && document.URL.indexOf("url") != -1) {
+                    location.href = getUrlParam('url');
+                }
+                else
+                    location.href = "/";
             });
         } else { //失败
             $.dialog.alert(data.msg);
