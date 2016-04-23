@@ -126,7 +126,7 @@ namespace Agp2p.Web.UI
 
             public decimal FinancingAmount => NeedTransferClaim == null
                 ? Project.financing_amount
-                : NeedTransferClaim.principal + NeedTransferClaim.legacyInterest.GetValueOrDefault();
+                : NeedTransferClaim.principal + NeedTransferClaim.keepInterest.GetValueOrDefault();
 
             public decimal InvestmentProgress => NeedTransferClaim == null
                 ? Project.GetInvestmentProgress(
