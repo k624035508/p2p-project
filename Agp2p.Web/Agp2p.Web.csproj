@@ -707,6 +707,7 @@
     <Content Include="admin\package.json" />
     <Content Include="admin\pwatch.bat" />
     <Content Include="admin\watch.bat" />
+    <None Include="Properties\PublishProfiles\agrhp2p_test.pubxml" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />

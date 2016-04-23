@@ -152,8 +152,8 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
-                            //TODO 正式后改为异步返回才放款
-                            if (msg.Sync)
+                            //异步返回才放款
+                            if (!msg.Sync)
                             {
                                 //定期项目进入开始还款，活期项目直接向借款人放款
                                 if (pro.IsHuoqiProject())
