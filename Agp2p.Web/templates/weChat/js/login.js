@@ -18,13 +18,9 @@ function getUrlParam(name) {
 $(function () {
     $(window).load(function() {
        if (location.href.indexOf("url") != -1) {
-           $(".turn-now-wrap").show();
-           
            var RegUrl = getUrlParam('url')+"&id=" + getUrlParam('id');
            $("#registerBtn").attr("href", "/mobile/register.html?url=" + RegUrl);
-       } else {
-           $(".turn-now-wrap").hide();
-       }
+       } 
     });
 
     //提交表单

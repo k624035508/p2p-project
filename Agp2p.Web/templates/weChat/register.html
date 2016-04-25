@@ -25,7 +25,7 @@
             </div>
             <div class="pic-code-wrap">
                 <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
-            <span class="pic-code-span pull-right flex flex-center-wrapper">
+                <span class="pic-code-span pull-right flex flex-center-wrapper">
                 <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
             </span><br/>
             </div>
@@ -46,7 +46,8 @@
                 <button type="button" id="register-btn" class="button-l">注 册</button>
             </div>
         </form>
-        <div class="login-now-wrap">已有账号？ <a href="<%linkurl("login")%>">马上登录</a></div>
+        <div class="turn-now-wrap" style="margin-bottom: 15px;">要参加"劳动小当家"活动请先注册</div>
+        <div class="login-now-wrap">已有账号？ <a id="loginBtn" href="<%linkurl("login")%>">马上登录</a></div>
     </div>
     <%template src="_footer.html"%>
 </div>
