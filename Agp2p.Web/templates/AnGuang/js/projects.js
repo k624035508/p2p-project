@@ -40,17 +40,6 @@ $(function(){
         $consume.eq(index).addClass("bluecon").siblings().removeClass("bluecon");   
         $(".fincategory>div").eq(index).removeClass("hidden").siblings().addClass("hidden");
     });
-
-    //票据专区计算
-    var $procate=$(".project-types ul li span");
-    var prolength=$procate.length;
-    var sum=0;
-    for(var i=0;i<prolength;i++){
-        var projectnumber=$procate.eq(i).text();   
-        var numbering=parseInt(projectnumber.slice(1,-1));
-        sum +=numbering;
-    }
-    $(".ticket-area-li p").text(sum);
 }); 
 
 
