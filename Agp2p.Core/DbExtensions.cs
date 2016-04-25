@@ -260,6 +260,22 @@ namespace Agp2p.Core
             return hisClaim;
         }
 
+        public static IEnumerable<li_claims> QueryLeafClaimsAtMoment(this li_claims rootClaim, DateTime? moment = null)
+        {
+            var realMoment = moment ?? DateTime.Now;
+
+            var childClaimsAtMoment = rootClaim.Children.Where(c => c.createTime <= realMoment).ToList();
+            if (childClaimsAtMoment.Any())
+            {
+                return childClaimsAtMoment.SelectMany(c => c.QueryLeafClaimsAtMoment(realMoment));
+            }
+            else if (rootClaim.createTime <= realMoment)
+            {
+                return Enumerable.Repeat(rootClaim, 1);
+            }
+            return Enumerable.Empty<li_claims>();
+        }
+
         public static int GetTotalProfitingDays(this li_repayment_tasks task)
         {
             return (int)(task.should_repay_time.Date - task.GetStartProfitingTime().Date).TotalDays;

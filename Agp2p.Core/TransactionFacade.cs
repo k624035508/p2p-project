@@ -2119,13 +2119,9 @@ namespace Agp2p.Core
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var profitingClaims = proj.li_claims.Where(c => c.IsProfiting(queryTime)).ToList();
-
-            // 由于存在使用了父债权时间的债权，所以上述查询可能会同时查出子债权和父债权，造成比例异常，需要排除掉父债权
-            if (proj.financing_amount < profitingClaims.Aggregate(0m, (sum, c) => sum + c.principal))
-            {
-                profitingClaims = profitingClaims.Where(me => !profitingClaims.Any(otherClaim => otherClaim.IsChildOf(me))).ToList();
-            }
+            var profitingClaims = queryTime == null
+                    ? proj.li_claims.Where(c => c.IsProfiting()).ToList()
+                    : proj.li_claims.Where(c => c.Parent == null).SelectMany(c => c.QueryLeafClaimsAtMoment(queryTime)).ToList();
 
             // 仅针对单个用户的还款
             if (proj.IsNewbieProject())
