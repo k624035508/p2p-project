@@ -149,7 +149,7 @@ namespace Agp2p.Web.UI
                         ? Project.GetFinalProfitRate(Project.publish_time.GetValueOrDefault(DateTime.Now).AddDays(Project.financing_day)) * FinancingAmount
                         : ClaimTransferProfitingAmount;
 
-            private int RemainDays
+            public int RemainDays
             {
                 get
                 {
