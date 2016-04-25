@@ -53,28 +53,6 @@
                 </ul>
                 </div>-->
                 <%if(SubCategoryIdTitleMap.Any())%>
-                <div class="intro">
-                    <div>
-                        <p>优质合作机构</p>
-                        <p>资产来源</p>
-                    </div>
-                    <div>
-                        <p>4重还款保障</p>
-                        <p>保障方式</p>
-                    </div>
-                    <div>
-                        <p>6.88%-14%</p>
-                        <p>利率范围</p>
-                    </div>
-                    <div>
-                        <p>10天-18个月</p>
-                        <p>产品期限</p>
-                    </div>
-                    <div>
-                        <p>100元起</p>
-                        <p>起投金额</p>
-                    </div>
-                </div>
                 <div class="project-types">
                     <span>项目类型</span>
                     <ul class="list-unstyled">
@@ -148,7 +126,34 @@
                 </div>
                 <%/if%>
                 <%if(rootCategoryId==huoqiCategoryId)%>
-
+                <div class="project-profit">
+                    <span>项目收益</span>
+                    <ul class="list-unstyled list-inline">
+                        <%set var interestRateTypeEnums=Utils.GetEnumValues
+                        <Agp2pEnums.InterestRateTypeEnum>
+                            ()%>
+                            <%foreach(var en in interestRateTypeEnums)%>
+                            <li>
+                                <a href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'
+                                   class='<%=project_profit_rate_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
+                            </li>
+                            <%/foreach%>
+                    </ul>
+                </div>
+                <div class="project-deadline">
+                    <span>项目期限</span>
+                    <ul class="list-unstyled list-inline">
+                        <%set var repaymentTermEnums=Utils.GetEnumValues
+                        <Agp2pEnums.RepaymentTermEnum>
+                            ()%>
+                            <%foreach(var en in repaymentTermEnums)%>
+                            <li>
+                                <a href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'
+                                   class='<%=project_repayment_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
+                            </li>
+                            <%/foreach%>
+                    </ul>
+                </div>
                 <%/if%>
                 </div>
         </div>
