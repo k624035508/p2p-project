@@ -1893,7 +1893,7 @@ namespace Agp2p.Core
                     ta.id != repaymentId &&
                     (ta.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid ||
                      ta.status == (int) Agp2pEnums.RepaymentStatusEnum.OverTime));
-            MessageBus.Main.Publish(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息，不能使用异步消息，否则续投活期债权会出现多线程竞争冒险
+            MessageBus.Main.Publish(new ProjectRepaidMsg(repaymentId, projectNeedComplete)); // 广播项目还款的消息，不能使用异步消息，否则续投活期债权会出现多线程竞争风险
 
             return repaymentTask;
         }
