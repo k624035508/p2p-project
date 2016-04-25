@@ -36,8 +36,8 @@ namespace Agp2p.Web.api.payment.sumapay
             //保存响应日志
             ResponseLog = new li_pay_response_log()
             {
-                request_id = Request["requestId"],
-                result = Request["result"],
+                request_id = string.IsNullOrEmpty(Request["requestId"])?null: Request["requestId"],
+                result = string.IsNullOrEmpty(Request["result"])?"" : Request["result"],
                 status = (int)Agp2pEnums.SumapayResponseEnum.Return,
                 response_time = DateTime.Now,
                 response_content = reqStr

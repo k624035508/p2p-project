@@ -46,7 +46,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"userIdIdentity", UserId.ToString()},
                 {"telephone", Telephone},
                 {"name", Name},
-                {"idNumber", IdNumber.ToUpper()},
+                {"idNumber", IdNumber?.ToUpper()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},

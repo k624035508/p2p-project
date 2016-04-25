@@ -264,11 +264,21 @@ namespace Agp2p.Core.PayApiLogic
                         //活期项目不需要执行还款计划
                         if (!msg.IsHuoqi)
                         {
-                            Agp2pDataContext context = new Agp2pDataContext();
-                            if (!msg.IsEarlyPay)
-                                context.ExecuteRepaymentTask(msg.RepayTaskId);
-                            else
-                                context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                            //异步返回才执行,内网测试使用同步
+#if DEBUG
+                            if (msg.Sync)
+                            {
+#endif
+#if !DEBUG
+                            if (!msg.Sync)
+                            {
+#endif
+                                Agp2pDataContext context = new Agp2pDataContext();
+                                if (!msg.IsEarlyPay)
+                                    context.ExecuteRepaymentTask(msg.RepayTaskId);
+                                else
+                                    context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                            }
                         }
                         msg.HasHandle = true;
                     }
