@@ -32,7 +32,6 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
-
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);

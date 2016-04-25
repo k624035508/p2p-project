@@ -25,7 +25,7 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人开户/激活
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
-                    if(!CheckUserLogin(out user)) return;
+                    if(!CheckUserLogin(out user, false)) return;
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
                 case (int)Agp2pEnums.SumapayApiEnum.URegM:

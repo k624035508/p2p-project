@@ -27,6 +27,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public WithdrawRespMsg()
         {
+            Sync = false;
         }
 
         public WithdrawRespMsg(string requestStr, bool sync = false)
