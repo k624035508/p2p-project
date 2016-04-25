@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Agp2p.Core;
+using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Agp2p.Test
@@ -122,6 +124,7 @@ namespace Agp2p.Test
             Common.AssertWalletDelta(UserA, 4.59m, 0, 0, 0, 0, 0, 30000, 4.59m, TestStartAt);
             Common.AssertWalletDelta(UserB, 0m, 0, 0, 0, 0, 0, 50000, 0m, TestStartAt);
             Common.AssertWalletDelta(CompanyAccount, 37.08m, 0, 0, 0, 0, 0, 50000, 41.67m, TestStartAt);
+            Assert.AreEqual(0, new Agp2pDataContext().li_projects.Single(p => p.title == "HP1").investment_amount);
         }
 
         [TestMethod]

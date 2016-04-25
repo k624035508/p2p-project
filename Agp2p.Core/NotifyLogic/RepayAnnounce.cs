@@ -81,22 +81,27 @@ namespace Agp2p.Core.NotifyLogic
             if (ConfigLoader.loadSiteConfig().sendShortMsgAfterRepay != 1) return;
 
             var context = new Agp2pDataContext();
-            var repay = context.li_repayment_tasks.Single(r => r.id == repaymentTaskId);
-            var transactions =
-                context.li_project_transactions.Where(
-                    t => t.project == repay.project && t.type != (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                         && t.create_time == repay.repay_at).ToList();
+            var repayTask = context.li_repayment_tasks.Single(r => r.id == repaymentTaskId);
+            var transactions = context.li_project_transactions.Where(t =>
+                    t.project == repayTask.project &&
+                    t.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor
+                    && t.create_time == repayTask.repay_at).ToLookup(ptr => ptr.dt_users);
 
-            transactions.ForEach(t =>
+            transactions.ForEach(group =>
             {
+                var repayToUser = group.Key;
+                var repayPrincipal = group.Sum(tr => tr.principal);
+                var repayInterest = group.Sum(tr => tr.interest.GetValueOrDefault());
+                var now = DateTime.Now;
+
                 // 检测用户是否接收放款的通知
-                var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == t.investor)
+                var sendNotificationSettings = context.li_notification_settings.Where(n => n.user_id == repayToUser.id)
                     .Select(n => n.type).Cast<Agp2pEnums.DisabledNotificationTypeEnum>();
 
                 try
                 {
                     //找出模板
-                    var smsModel = 0 < t.principal
+                    var smsModel = 0 < repayPrincipal
                         ? context.dt_sms_template.SingleOrDefault(te => te.call_index == "user_repay_all_info")
                         : context.dt_sms_template.SingleOrDefault(te => te.call_index == "user_repay_info");
                     if (smsModel == null) throw new InvalidOperationException("找不到放款提醒模板: user_repay_all_info 或 user_repay_info");
@@ -104,8 +109,8 @@ namespace Agp2p.Core.NotifyLogic
                     //发送短信
                     var msgContent = smsModel.content
                         //.Replace("{user_name}", t.dt_users.user_name)
-                        .Replace("{project_name}", t.li_projects.title)
-                        .Replace("{amount}", (t.principal + t.interest).ToString());
+                        .Replace("{project_name}", repayTask.li_projects.title)
+                        .Replace("{amount}", (repayPrincipal + repayInterest).ToString());
 
                     if (!sendNotificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectRepaidForUserMsg))
                     {
@@ -114,11 +119,11 @@ namespace Agp2p.Core.NotifyLogic
                         {
                             type = 1,
                             post_user_name = "",
-                            accept_user_name = t.dt_users.user_name,
+                            accept_user_name = repayToUser.user_name,
                             title = smsModel.title,
                             content = msgContent,
-                            post_time = t.create_time,
-                            receiver = t.investor
+                            post_time = now,
+                            receiver = repayToUser.id
                         };
                         context.dt_user_message.InsertOnSubmit(userMsg);
                         context.SubmitChanges();
@@ -126,17 +131,17 @@ namespace Agp2p.Core.NotifyLogic
                     if (!sendNotificationSettings.Contains(Agp2pEnums.DisabledNotificationTypeEnum.ProjectRepaidForSms))
                     {
                         var errorMsg = string.Empty;
-                        if (!SMSHelper.SendTemplateSms(t.dt_users.mobile, msgContent, out errorMsg))
+                        if (!SMSHelper.SendTemplateSms(repayToUser.mobile, msgContent, out errorMsg))
                         {
                             context.AppendAdminLogAndSave("RepaymentSms",
-                                string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, t.dt_users.user_name, t.li_projects.title));
+                                string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, repayToUser.user_name, repayTask.li_projects.title));
                         }
                     }
                 }
                 catch (Exception e)
                 {
                     context.AppendAdminLogAndSave("RepaymentSms",
-                        string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", e.GetSimpleCrashInfo(), t.dt_users.user_name, t.li_projects.title));
+                        string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", e.GetSimpleCrashInfo(), repayToUser.user_name, repayTask.li_projects.title));
                 }
             });
         }

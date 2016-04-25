@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
@@ -34,26 +35,19 @@ namespace Agp2p.Core.AutoLogic
 
             // 有中间人买入过的债权才可以进行活期投资
             var agentClaimAppended = context.li_claims.Single(c => c.id == needTransferClaimId)
-                    .Children.Any(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable && c.dt_users.IsAgent());
+                    .Children.Any(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.Transferable && c.dt_users.IsAgent());
             if (!agentClaimAppended) return;
 
-            var huoqiInvestableClaimsAmount = context.GetHuoqiInvestableClaims()
-                .Aggregate(0m, (sum, c) => sum + c.principal);
-
-            if (huoqiInvestableClaimsAmount == 0) return;
-
-            delayInvested.Where(ptr => ptr.principal <= huoqiInvestableClaimsAmount)
-                .OrderBy(ptr => ptr.principal)
-                .Aggregate(huoqiInvestableClaimsAmount, (total, ptr) =>
+            delayInvested.ForEach(ptr =>
+            {
+                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, ptr.investor);
+                if (ptr.principal < amount)
                 {
-                    if (total < ptr.principal) return total;
-
                     TransactionFacade.DelayInvestSuccess(ptr.id);
                     context.AppendAdminLog("Huoqi", $"活期延期投资成功，用户 {ptr.dt_users.GetFriendlyUserName()}，金额 {ptr.principal}");
-                    return total - ptr.principal;
-                });
-
-            context.SubmitChanges();
+                    context.SubmitChanges();
+                }
+            });
         }
 
         public static void DoCheckDelayInvestOverTime(TimerMsg.Type timerType, bool onTime)
@@ -63,8 +57,8 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var delayInvested = context.li_project_transactions.Where(
                 ptr =>
-                    ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending &&
+                    ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
+                    ptr.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Pending &&
                     ptr.create_time < DateTime.Today)
                 .AsEnumerable()
                 .Where(ptr => ptr.li_projects.IsHuoqiProject())
@@ -72,25 +66,21 @@ namespace Agp2p.Core.AutoLogic
 
             if (!delayInvested.Any()) return;
 
-            var huoqiInvestableClaimsAmount = context.GetHuoqiInvestableClaims()
-                .Aggregate(0m, (sum, c) => sum + c.principal);
-            delayInvested.Aggregate(huoqiInvestableClaimsAmount, (total, ptr) =>
+            delayInvested.ForEach(ptr =>
+            {
+                var amount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, ptr.investor);
+                if (ptr.principal < amount)
                 {
-                    if (ptr.principal <= total)
-                    {
-                        TransactionFacade.DelayInvestSuccess(ptr.id);
-                        context.AppendAdminLog("Huoqi", $"活期延期投资成功，用户 {ptr.dt_users.GetFriendlyUserName()}，金额 {ptr.principal}" );
-                        return total - ptr.principal;
-                    }
-                    else
-                    {
-                        TransactionFacade.DelayInvestFailure(ptr.id);
-                        context.AppendAdminLog("Huoqi", $"活期延期投资失败，用户 {ptr.dt_users.GetFriendlyUserName()}，金额 {ptr.principal}" );
-                        return total;
-                    }
-                });
-
-            context.SubmitChanges();
+                    TransactionFacade.DelayInvestSuccess(ptr.id);
+                    context.AppendAdminLog("Huoqi", $"活期延期投资成功，用户 {ptr.dt_users.GetFriendlyUserName()}，金额 {ptr.principal}");
+                }
+                else
+                {
+                    TransactionFacade.DelayInvestFailure(ptr.id);
+                    context.AppendAdminLog("Huoqi", $"活期延期投资失败，用户 {ptr.dt_users.GetFriendlyUserName()}，金额 {ptr.principal}");
+                }
+                context.SubmitChanges();
+            });
         }
     }
 }

@@ -45,8 +45,7 @@ namespace Agp2p.Core.NotifyLogic
 
                 var ptr = context.li_project_transactions.Single(ptr0 => ptr0.id == projectTransactionId);
 
-                var investableHuoqiClaimAmount = context.GetHuoqiInvestableClaims()
-                    .Aggregate(0m, (sum, c) => sum + c.principal);
+                var huoqiBuyableClaimsAmount = TransactionFacade.QueryHuoqiBuyableClaimsAmount(context, ptr.li_projects, agent.id);
 
                 var delayInvested = ptr.li_projects.li_project_transactions.Where(
                     tr =>
@@ -54,7 +53,7 @@ namespace Agp2p.Core.NotifyLogic
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
                     .Aggregate(0m, (sum, tr) => sum + tr.principal);
 
-                var msgContent = $"用户总共延期投资了活期项目 {ptr.li_projects.title} {delayInvested.ToString("c")}，但活期债权本金总额（{investableHuoqiClaimAmount.ToString("c")}）不足，请尽快处理";
+                var msgContent = $"用户总共延期投资了活期项目 {ptr.li_projects.title} {delayInvested.ToString("c")}，但活期债权本金总额（{huoqiBuyableClaimsAmount.ToString("c")}）不足，请尽快处理";
                 var errorMsg = string.Empty;
                 if (!SMSHelper.SendTemplateSms(agent.mobile, msgContent, out errorMsg))
                 {

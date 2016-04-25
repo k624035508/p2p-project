@@ -58,12 +58,13 @@
             </div>
             <%/if%>
 
+            <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
             <%set var totalcount=0%>
-            <%set var investables=QueryInvestables(5,0,out totalcount,0,0,0,0)%>
-            <%foreach(var inv in investables)%>
-            <%set var p=inv.Project%>
-            <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
-                <p class="invest-title">
+        <%set var investables=QueryInvestables(5,0,out totalcount,cid,0,0,0)%>
+        <%foreach(var inv in investables)%>
+        <%set var p=inv.Project%>
+        <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
+            <p class="invest-title">
                 <span class="project-type">{inv.CategoryName}</span>
                 {inv.Title}
                 <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
@@ -74,7 +75,7 @@
                 <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
                 <%/if%>
             </p>
-                <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
+            <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
                 <div class="rate-wrap">
                     <div class="title-style">年化利率</div>
                     <div class="txt-red-s"><span class="txt-red-l"><%=(inv.ProfitRateYearly*100).ToString("f1")%></span> %</div>
@@ -101,7 +102,8 @@
                     <%/if%>
                 </div>
             </div>
-            </div>
+        </div>
+            <%/foreach%>
             <%/foreach%>
         </div>
     </div>

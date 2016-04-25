@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
@@ -7,18 +8,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Agp2p.Test
 {
     [TestClass]
-    public class UnitTest_P4
+    public class UnitTest_P4_3
     {
         private const string UserA = "13535656867";
         private const string UserB = "13590609455";
         private const string CompanyAccount = "CompanyAccount";
         /*
-        P4 测试流程：（测试活期投资）
+        P4 测试流程：（测试活期提现后，中间人接手前，普通用户能否直接接手）
             Day 1
                 发活期标
                 发 4 日标，金额 50000，B 投 50000 放款；B 提现 50000；公司账号接手 50000
-            Day 2
                 A 投资活期 30000
+            Day 2
+                A 提现活期 30000
+                B 投资活期 30000 （进入延期投资）
             Day 3
             Day 4
             Day 5
@@ -52,6 +55,10 @@ namespace Agp2p.Test
             Common.StaticProjectWithdraw("P4", UserB, 50000);
             Common.BuyClaim("P4", CompanyAccount, 50000);
 
+
+            // A 投资活期 30000
+            Common.InvestProject(UserA, "HP1", 30000);
+
             Common.AutoRepaySimulate();
         }
 
@@ -62,8 +69,10 @@ namespace Agp2p.Test
 
             Common.AutoRepaySimulate();
 
-            // A 投资活期 30000
-            Common.InvestProject(UserA, "HP1", 30000);
+            // A 提现活期 30000
+            Common.HuoqiProjectWithdraw("HP1", UserA, 30000);
+            // B 投资活期 30000
+            Common.InvestProject(UserB, "HP1", 30000);
 
             Common.AutoRepaySimulate();
         }
@@ -92,9 +101,10 @@ namespace Agp2p.Test
             // 回款，总数应为 27.78
             Common.AutoRepaySimulate();
 
-            Common.AssertWalletDelta(UserA, 5.5m, 0, 0, 0, 0, 0, 30000, 5.5m, realDate);
-            Common.AssertWalletDelta(UserB, 0m, 0, 0, 0, 0, 0, 50000, 0m, realDate);
+            Common.AssertWalletDelta(UserA, 0m, 0, 0, 0, 0, 0, 30000, 0m, realDate);
+            Common.AssertWalletDelta(UserB, 5.5m, 0, 0, 0, 0, 0, 80000, 5.5m, realDate);
             Common.AssertWalletDelta(CompanyAccount, 22.28m, 0, 0, 0, 0, 0, 50000, 27.78m, realDate);
+
             Assert.AreEqual(0, new Agp2pDataContext().li_projects.Single(p => p.title == "HP1").investment_amount);
         }
 

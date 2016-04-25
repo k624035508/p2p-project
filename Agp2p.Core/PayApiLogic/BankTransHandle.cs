@@ -26,13 +26,12 @@ namespace Agp2p.Core.PayApiLogic
         {
             try
             {
-                //检查请求处理结果
+                //检查请求处理结果 TODO 失败就取消充值申请记录
                 if (msg.CheckResult())
                 {
                     //检查签名
                     if (msg.CheckSignature())
                     {
-
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
@@ -76,9 +75,15 @@ namespace Agp2p.Core.PayApiLogic
                     {
                         if (msg.CheckSignature())
                         {
-                            //TODO 异步返回的结果才是充值已到账
+                            //异步返回才放款,内网测试使用同步
+#if DEBUG
                             if (msg.Sync)
                             {
+#endif
+#if !DEBUG
+                            if (!msg.Sync)
+                            {
+#endif
                                 context.ConfirmBankTransaction(trans.id, null);
                                 //TODO 检查用户资金信息
 
