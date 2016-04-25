@@ -333,11 +333,16 @@ namespace Agp2p.Web.admin.project
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            sumbit();
+                sumbit();
         }
 
-        private void sumbit()
+        private void sumbit() 
         {
+            if (Convert.ToDouble(txt_project_amount) <= 0)
+            {
+                JscriptMsg("借款金额不能为空且大于0！", "", "Error");
+                return;
+            }
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Edit.ToString()); //检查权限
@@ -373,8 +378,17 @@ namespace Agp2p.Web.admin.project
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            save_only = true;
-            sumbit();
+            if(Convert.ToDouble(txt_project_amount) > 0)
+            {
+                save_only = true;
+                sumbit();
+            }
+            else
+            {
+                JscriptMsg("借款金额不能为空且大于0！", "", "Error");
+                return;
+            }
+            
         }
 
         /// <summary>

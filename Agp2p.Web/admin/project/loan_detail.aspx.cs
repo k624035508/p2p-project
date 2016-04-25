@@ -159,7 +159,7 @@ namespace Agp2p.Web.admin.project
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
-            spa_amount.InnerText = _project.financing_amount.ToString("C");//借款金额            
+                      
             spa_repayment.InnerText = _project.repayment_term_span_count +
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
@@ -323,6 +323,13 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入你要延迟发标的准确时间！", "back", "Error");
                 return;
             }
+            DateTime t1 = Convert.ToDateTime(txtPublishTime.Text.Trim());
+            if (t1 <= DateTime.Now)
+            {
+                JscriptMsg("延迟发布时间不能小于当前时间！", "back", "Error");
+                return;
+            }
+
             if (project != null)
             {
                 try
@@ -422,7 +429,7 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入募集顺延天数！", "back", "Error");
                 return;
             }
-
+           
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
