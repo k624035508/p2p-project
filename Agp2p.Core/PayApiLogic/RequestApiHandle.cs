@@ -156,7 +156,7 @@ namespace Agp2p.Core.PayApiLogic
                             //计算平台服务费
                             if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
                             {
-                                loanFee = (decimal)(project.financing_amount * (project.loan_fee_rate / 100));
+                                loanFee = project.investment_amount*(project.loan_fee_rate/100) ?? 0;
                                 context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                                 {
                                     user_id = (int)msg.UserId,
@@ -171,7 +171,7 @@ namespace Agp2p.Core.PayApiLogic
                             //计算风险保证金
                             if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
                             {
-                                bondFee = project.financing_amount * (project.bond_fee_rate / 100) ?? 0;
+                                bondFee = project.investment_amount * (project.bond_fee_rate / 100) ?? 0;
                                 context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                                 {
                                     user_id = (int)msg.UserId,
@@ -209,7 +209,9 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="sum"></param>
         /// <param name="repayTaskId"></param>
         /// <param name="isEarlyPay"></param>
-        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay, bool huoqi)
+        /// <param name="huoqi"></param>
+        /// <param name="callBack"></param>
+        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay, bool huoqi, Action callBack = null)
         {
             var context = new Agp2pDataContext();
             //计算投资者本息明细
@@ -226,7 +228,11 @@ namespace Agp2p.Core.PayApiLogic
                 returnPrinInteRespMsg.Sync = true;
                 returnPrinInteRespMsg.RepayTaskId = repayTaskId;
                 returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
-                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
+                returnPrinInteRespMsg.IsHuoqi = callBack != null;
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
+                {
+                    if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
+                });
             });
         }
     }

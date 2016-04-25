@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
@@ -152,9 +153,14 @@ namespace Agp2p.Core.PayApiLogic
                         var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
                         if (pro != null)
                         {
-                            //TODO 正式后改为异步返回才放款
-                            if (msg.Sync)
+                            //异步返回才放款,内网测试使用同步
+#if DEBUG
+                            if (msg.Sync) {
+#endif
+#if !DEBUG
+                            if (!msg.Sync)
                             {
+#endif
                                 //定期项目进入开始还款，活期项目直接向借款人放款
                                 if (pro.IsHuoqiProject())
                                 {
@@ -205,16 +211,21 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 if (!string.IsNullOrEmpty(req.remarks))
                                 {
-                                    var dic = Utils.UrlParamToData(req.remarks);
-                                    int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                    //生成还款记录
-                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
-                                        Utils.StrToDecimal(msg.Sum, 0));
-                                    //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
-                                    if (!msg.AutoRepay)
+                                    //活期项目不需要生成还款记录
+                                    if (!msg.HuoqiRepay)
                                     {
-                                        RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
-                                            Utils.StrToBool(dic["isEarly"], false), false);
+                                        var dic = Utils.UrlParamToData(req.remarks);
+                                        int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                        //生成还款记录 
+                                        context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
+                                            Utils.StrToDecimal(msg.Sum, 0));
+
+                                        //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
+                                        if (!msg.AutoRepay)
+                                        {
+                                            RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                                Utils.StrToBool(dic["isEarly"], false), false);
+                                        }
                                     }
                                     msg.HasHandle = true;
                                 }
@@ -250,11 +261,25 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
-                        Agp2pDataContext context = new Agp2pDataContext();
-                        if (!msg.IsEarlyPay)
-                            context.ExecuteRepaymentTask(msg.RepayTaskId);
-                        else
-                            context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                        //活期项目不需要执行还款计划
+                        if (!msg.IsHuoqi)
+                        {
+                            //异步返回才执行,内网测试使用同步
+#if DEBUG
+                            if (msg.Sync)
+                            {
+#endif
+#if !DEBUG
+                            if (!msg.Sync)
+                            {
+#endif
+                                Agp2pDataContext context = new Agp2pDataContext();
+                                if (!msg.IsEarlyPay)
+                                    context.ExecuteRepaymentTask(msg.RepayTaskId);
+                                else
+                                    context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
+                            }
+                        }
                         msg.HasHandle = true;
                     }
                 }

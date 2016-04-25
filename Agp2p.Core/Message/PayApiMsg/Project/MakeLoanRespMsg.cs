@@ -15,7 +15,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool Sync { get; set; }//同步标识
 
         public MakeLoanRespMsg()
-        { }
+        {
+            Sync = false;
+        }
 
         public MakeLoanRespMsg(bool sync = false, bool collective = false)
         {

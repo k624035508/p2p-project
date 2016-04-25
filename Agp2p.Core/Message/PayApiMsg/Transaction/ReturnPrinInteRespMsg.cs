@@ -19,8 +19,12 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public int RepayTaskId { get; set; }
         public bool IsEarlyPay { get; set; }
+        public bool IsHuoqi { get; set; }
 
-        public ReturnPrinInteRespMsg() { }
+        public ReturnPrinInteRespMsg()
+        {
+            Sync = false;
+        }
 
         public ReturnPrinInteRespMsg(bool sync = false)
         {

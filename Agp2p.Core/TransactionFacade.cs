@@ -1009,8 +1009,6 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("您提现的金额不能超出您投资的本金：" + sumOfPrincipal.ToString("c"));
             }
 
-            // TODO 发送中间人金额提醒
-
             if (sumOfPrincipal == withdrawMoney)
             {
                 // 全部提现
@@ -1032,6 +1030,9 @@ namespace Agp2p.Core
             project.investment_amount -= withdrawMoney;
 
             context.SubmitChanges();
+
+            // 发送中间人金额提醒
+            MessageBus.Main.PublishAsync(new HuoqiWithdrawMsg(userId, huoqiProjectId, withdrawMoney));
         }
 
         private static void HuoqiClaimsPartialWithdraw(Agp2pDataContext context, IEnumerable<li_claims> claims, decimal withdrawMoney, DateTime withdrawTime)
@@ -1073,7 +1074,7 @@ namespace Agp2p.Core
         {
             var needTransferHuoqiClaims = context.li_claims.Where(
                 c =>
-                    c.dt_users_agent != null &&
+                    c.profitingProjectId == byPtr.project &&
                     c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                     c.userId != byPtr.investor &&
                     !c.Children.Any())
@@ -1081,25 +1082,14 @@ namespace Agp2p.Core
 
             apportionAmount = ApportionToClaims(context, needTransferHuoqiClaims, apportionAmount, byPtr, invesTime);
 
-            // 因为是用户之间的债权转让，并且后面投资的用户已经记上了活期的已投金额，所以这里要减去活期项目的已投金额
-            var claimTransferAmountBetweenNormalUserInfo = needTransferHuoqiClaims.GroupBy(c => c.li_projects_profiting)
-                    .ToDictionary(g => g.Key, g => g.SelectMany(
-                        c => c.Children.Where(ch => ch.status == (int) Agp2pEnums.ClaimStatusEnum.TransferredUnpaid))
-                        .Aggregate(0m, (sum, c) => sum + c.principal));
-
-            claimTransferAmountBetweenNormalUserInfo.ForEach(pair =>
-            {
-                pair.Key.investment_amount -= pair.Value;
-            });
-
             if (0 < apportionAmount)
             {
+                var agentId = byPtr.li_projects.li_risks.li_loaners.user_id;
                 var huoqiBuyableClaims = context.li_claims.Where(
-                    c =>
-                        c.dt_users.dt_user_groups.title == AutoRepay.AgentGroup &&
-                        c.status == (int)Agp2pEnums.ClaimStatusEnum.Transferable &&
-                        c.userId != byPtr.investor &&
-                        !c.Children.Any())
+                    c => c.userId == agentId &&
+                         c.status == (int)Agp2pEnums.ClaimStatusEnum.Transferable &&
+                         c.userId != byPtr.investor &&
+                         !c.Children.Any())
                     .ToList();
                 apportionAmount = ApportionToClaims(context, huoqiBuyableClaims, apportionAmount, byPtr, invesTime);
             }
@@ -1108,18 +1098,21 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("活期债权不足，无法完成这个延期投资；超出：" + apportionAmount);
         }
 
-        public static decimal QueryHuoqiBuyableClaimsAmount(Agp2pDataContext context, int userId)
+        public static decimal QueryHuoqiBuyableClaimsAmount(Agp2pDataContext context, li_projects huoqiProject, int userId)
         {
+            Debug.Assert(huoqiProject.IsHuoqiProject());
             var needTransferHuoqiClaims = context.li_claims.Where(
                 c =>
-                    c.dt_users_agent != null &&
+                    c.profitingProjectId == huoqiProject.id &&
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
                     c.userId != userId &&
                     !c.Children.Any())
                 .ToList();
+
+            var agentId = huoqiProject.li_risks.li_loaners.user_id;
             var huoqiBuyableClaims = context.li_claims.Where(
                 c =>
-                    c.dt_users.dt_user_groups.title == AutoRepay.AgentGroup &&
+                    c.userId == agentId &&
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.Transferable &&
                     c.userId != userId &&
                     !c.Children.Any())
@@ -2010,13 +2003,14 @@ namespace Agp2p.Core
             var user = needContinueInvest.First().Key;
             var investingMoney = needContinueInvest.First().Value;
 
-            var huoqiBuyableClaimsAmount = QueryHuoqiBuyableClaimsAmount(context, user.id);
-
-            var maxInvestingAmount = Math.Min(huoqiBuyableClaimsAmount, investingMoney);
-
             var huoqiProject = context.li_projects.SingleOrDefault(p =>
                         p.dt_article_category.call_index == "huoqi" &&
                         p.status == (int)Agp2pEnums.ProjectStatusEnum.Financing);
+
+            var huoqiBuyableClaimsAmount = QueryHuoqiBuyableClaimsAmount(context, huoqiProject, user.id);
+
+            var maxInvestingAmount = Math.Min(huoqiBuyableClaimsAmount, investingMoney);
+
             if (huoqiProject == null)
             {
                 // 完全没有续投，告诉用户
