@@ -222,9 +222,8 @@
                 </table>
             </div>
 
-            <%if(projectModel.status>(int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout)%>
+            <%if(Investable.Status>Agp2pEnums.ProjectStatusEnum.FinancingTimeout&&!Investable.IsClaimTransferProject)%>
             <div class="interest-way" style="margin-top:-10px;height:128px ;background:url('<%templateskin%>/imgs/index/manbiao.jpg') no-repeat 210px 0; ">
-        
             </div>
             <%else%>
             <div class="interest-way">
@@ -233,6 +232,9 @@
                         <%if (projectModel.IsHuoqiProject()) %>
                         <tr><td style="width:110px;">每人购买限额</td><td>100000.0元</td></tr>
                         <tr><td style="width:110px;">每日提取限额</td><td>50000.0元</td></tr>
+                        <%else if(Investable.IsClaimTransferProject)%>
+                        <tr><td>转让日期</td><td><%=Investable.NeedTransferClaim.createTime.ToString("yyyy-MM-dd")%></td></tr>
+                        <tr><td>还款日期</td><td><%=Investable.NeedTransferClaim.createTime.AddDays(Investable.RemainDays).ToString("yyyy-MM-dd")%></td></tr>
                         <%else%>
                         <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
                         <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
