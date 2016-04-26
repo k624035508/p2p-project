@@ -88,8 +88,8 @@
                         <asp:LinkButton ID="lbt_prepay" runat="server" Text="垫付" OnClientClick="return confirm('确定垫付吗?');" 
                             CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_prepay_OnClick" ></asp:LinkButton> 
                         &nbsp;
-                        <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
-                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick"></asp:LinkButton>
+                        <%--<asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');" 
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick"></asp:LinkButton>--%>
                         <% } %>
                     </td>
                 </tr>

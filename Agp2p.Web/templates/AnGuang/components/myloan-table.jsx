@@ -7,7 +7,7 @@ import confirm from "../components/tips_confirm.js";
 
 const SumapayApiEnum = {
     AcReO : 7,
-    
+    ClRep : 9
 }
 
 class MyloanTable extends React.Component {
@@ -41,14 +41,35 @@ class MyloanTable extends React.Component {
             }.bind(this)
         });
     }
-    applyForAutoRepay(autoRepay) {
+    applyForAutoRepay(projectId, financingAmount) {
         confirm("是否确定开通自动还款", () => {
-            
+            location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.AcReO}&projectCode=${projectId}&repayLimit=${financingAmount}`;
         });
     }
-    applyForCanelAutoRepay(projectId, financingAmount) {
+    applyForCanelAutoRepay(projectId) {
         confirm("是否确定取消自动还款", () => {
-            location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.AcReO}&userId=${userId}&projectCode=${projectId}&repayLimit=${financingAmount}`;
+            location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.ClRep}&projectCode=${projectId}`;
+        });
+    }
+    ManualRepay(projectId){
+        let url = USER_CENTER_ASPX_PATH + "/ManualRepay";
+        ajax({
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({ projectId }),
+            success: function (result) {
+                let {status, msg, url} = JSON.parse(result.d);
+                if(status == 0){
+                    alert(msg);
+                } else{
+                    location.href = url;
+                }
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(url, status, err.toString());
+            }.bind(this)
         });
     }
     render() {
@@ -79,10 +100,9 @@ class MyloanTable extends React.Component {
                                 <td>1/1</td>
                                 <td>
                                     {tr.autoRepay == true
-                                        ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId, tr.investment_amount) }>取消自动还款</a>
-                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay() }>开通自动还款</a> }
-                                    <a href="javascript:">账户还款</a>
-                                    <a href="javascript:">银行卡还款</a>
+                                        ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId) }>取消自动还款</a>
+                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.investment_amount) }>开通自动还款</a> }
+                                    <a href="javascript:" onClick={ev => this.ManualRepay(tr.ptrId)}>手动还款</a>
                                 </td>
                             </tr>
                         ) }
