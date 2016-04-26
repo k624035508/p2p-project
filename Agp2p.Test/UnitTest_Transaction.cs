@@ -81,7 +81,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void CleanAllProjectAndTransactionRecord()
         {
-            //Common.DoSimpleCleanUp(new DateTime(2015,1,1));
+            Common.DoSimpleCleanUp(new DateTime(2015,1,1));
         }
 
         [TestMethod]

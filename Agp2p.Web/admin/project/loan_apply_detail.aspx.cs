@@ -338,7 +338,7 @@ namespace Agp2p.Web.admin.project
 
         private void sumbit() 
         {
-            if (Convert.ToDecimal(txt_project_amount) <= 0)
+            if (Convert.ToDecimal(txt_project_amount.Text.Trim()) <= 0)
             {
                 JscriptMsg("借款金额必须大于0！", "", "Error");
                 return;

@@ -13,7 +13,7 @@ namespace Agp2p.Web.UI.Page
 {
     public partial class myloan : usercenter
     {
-        static readonly protected short PageSize = 8;
+        protected static readonly short PageSize = 8;
         protected int investment_type;
         protected int page;
         protected long time_span_start;
@@ -45,8 +45,8 @@ namespace Agp2p.Web.UI.Page
             var context = new Agp2pDataContext();
 
             var query = context.li_projects.Where(c =>
-                    c.li_risks.li_loaners.user_id == userId
-                     );
+                c.li_risks.li_loaners.user_id == userId
+                );
 
             if (!string.IsNullOrWhiteSpace(startTime))
                 query = query.Where(c => Convert.ToDateTime(startTime) <= c.make_loan_time);
@@ -54,29 +54,32 @@ namespace Agp2p.Web.UI.Page
                 query = query.Where(c => c.make_loan_time <= Convert.ToDateTime(endTime));
 
             if (type == Agp2pEnums.MyLoanQueryTypeEnum.Applying)
-                query = query.Where(c => c.status == (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking);
+                query = query.Where(c => c.status == (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking);
             else if (type == Agp2pEnums.MyLoanQueryTypeEnum.Loaning)
-                query = query.Where(c => c.status < (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
+                query = query.Where(c => c.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
             else if (type == Agp2pEnums.MyLoanQueryTypeEnum.Repaying)
-                query = query.Where(c => c.status == (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
+                query = query.Where(c => c.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying);
             else if (type == Agp2pEnums.MyLoanQueryTypeEnum.Repaid)
-                query = query.Where(c => c.status == (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
+                query = query.Where(c => c.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
 
             count = query.Count();
-            return query.OrderByDescending(h => h.id).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+            return query.OrderByDescending(h => h.id).Skip(pageSize*pageIndex).Take(pageSize).ToList();
         }
+
         [WebMethod]
-        public new static string AjaxQueryLoan(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
+        public new static string AjaxQueryLoan(short type, short pageIndex, short pageSize, string startTime = "",
+            string endTime = "")
         {
             var userInfo = GetUserInfo();
             if (userInfo == null)
             {
                 HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
                 return "ÇëÏÈµÇÂ¼";
             }
             int count;
-            var projects = QueryLoan(userInfo.id, (Agp2pEnums.MyLoanQueryTypeEnum)type, pageIndex, startTime, endTime, pageSize, out count);
+            var projects = QueryLoan(userInfo.id, (Agp2pEnums.MyLoanQueryTypeEnum) type, pageIndex, startTime, endTime,
+                pageSize, out count);
 
             var now = DateTime.Now;
             var config = new BLL.siteconfig().loadConfig();
@@ -89,8 +92,8 @@ namespace Agp2p.Web.UI.Page
                 else
                 {
                     profit = c.profit_rate == 0
-                        ? Math.Round(Convert.ToInt32(risk.income) * c.GetFinalProfitRate(now), 2)
-                        : Math.Round(c.profit_rate * Convert.ToInt32(risk.income), 2);
+                        ? Math.Round(Convert.ToInt32(risk.income)*c.GetFinalProfitRate(now), 2)
+                        : Math.Round(c.profit_rate*Convert.ToInt32(risk.income), 2);
                 }
                 return new
                 {
@@ -105,10 +108,13 @@ namespace Agp2p.Web.UI.Page
                     profit,
                     status = c.GetProjectStatusDesc(),
                     isNewbieProject = c.dt_article_category.call_index == "newbie",
-                    autoRepay=c.autoRepay
+                    autoRepay = c.autoRepay,
+                    c.investment_amount
                 };
             });
-            return JsonConvert.SerializeObject(new { totalCount = count, data = result });
+            return JsonConvert.SerializeObject(new {totalCount = count, data = result});
         }
+
     }
+    
 }

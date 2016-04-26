@@ -225,11 +225,11 @@ namespace Agp2p.Core.PayApiLogic
         /// <param name="isEarlyPay"></param>
         /// <param name="huoqi"></param>
         /// <param name="callBack"></param>
-        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay)
+        public static void SendReturnPrinInte(int projectCode, string sum, int repayTaskId, bool isEarlyPay, bool isHuoqi)
         {
             var context = new Agp2pDataContext();
             //创建本息到账请求并设置分账列表
-            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(projectCode, sum);
+            var returnPrinInteReqMsg = new ReturnPrinInteReqMsg(projectCode, sum, isHuoqi);
             //定期项目需计算全部投资者本息明细
             var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayTaskId);
             var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
