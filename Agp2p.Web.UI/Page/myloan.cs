@@ -115,6 +115,41 @@ namespace Agp2p.Web.UI.Page
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});
         }
 
+        [WebMethod]
+        public static string ManualRepay(int projectId)
+        {
+            var userInfo = GetUserInfo();
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            //最近的还款计划
+            var context = new Agp2pDataContext();
+            var project = context.li_projects.SingleOrDefault(p => p.id == projectId);
+            if (project != null)
+            {
+                var repayTask = project.li_repayment_tasks.OrderBy(r => r.should_repay_time)
+                    .FirstOrDefault(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid
+                                         && r.should_repay_time.Date == DateTime.Today);
+                if (repayTask != null)
+                {
+                    var url = $"/api/payment/sumapay/index.aspx?api={Agp2pEnums.SumapayApiEnum.McRep}&userId={userInfo.id}" +
+                        $"&projectCode={projectId}&sum={(repayTask.repay_principal + repayTask.repay_interest)}&repayTaskId={repayTask.id}";
+                    return JsonHelper.ObjectToJSON(new { status = 1, url});
+                }
+                else
+                {
+                    return JsonHelper.ObjectToJSON(new { status = 0, msg = "今天没有还款任务！" });
+                }
+            }
+            else
+            {
+                return JsonHelper.ObjectToJSON(new {status = 0, msg = "没有找到项目！"});
+            }
+        }
     }
     
 }

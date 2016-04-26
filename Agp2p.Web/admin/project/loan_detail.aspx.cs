@@ -131,7 +131,6 @@ namespace Agp2p.Web.admin.project
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.Financing:
                     btnDrop.Visible = true;
-                    if(isHuoqiProject) btnAutoRepaySign.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout:
                     btnFail.Visible = true;
@@ -142,9 +141,6 @@ namespace Agp2p.Web.admin.project
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess:
                     btnFail.Visible = true;
                     btnMakeLoan.Visible = true;
-                    break;
-                case (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying:
-                    btnAutoRepaySign.Visible = true;
                     break;
             }
         }
@@ -770,21 +766,6 @@ namespace Agp2p.Web.admin.project
                 ws.Range("A1", "C1").Style = titlesStyle;
 
             }, Response);
-        }
-
-        /// <summary>
-        /// 账户自动还款签约
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnAutoRepaySign_OnClick(object sender, EventArgs e)
-        {
-            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
-            var loaner = project.li_risks.li_loaners;
-            //TODO 还款上限
-            if (loaner?.dt_users != null)
-                Response.Write($"<script>window.open(\'/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.AcReO}&userId={loaner.dt_users.id}&projectCode={ProjectId}&repayLimit="+project.financing_amount+
-                               "','_blank')</script>");
         }
     }
 

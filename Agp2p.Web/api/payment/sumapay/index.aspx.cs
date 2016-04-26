@@ -54,11 +54,13 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人自动账户/银行还款开通
                 case (int)Agp2pEnums.SumapayApiEnum.AcReO:
                 case (int)Agp2pEnums.SumapayApiEnum.AbReO:
-                    reqMsg = new AutoRepaySignReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("repayLimit"), requestApi != (int)Agp2pEnums.SumapayApiEnum.AcReO);
+                    if (!CheckUserLogin(out user)) return;
+                    reqMsg = new AutoRepaySignReqMsg(user.id, DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("repayLimit"), requestApi != (int)Agp2pEnums.SumapayApiEnum.AcReO);
                     break;
                 //个人自动还款取消
                 case (int)Agp2pEnums.SumapayApiEnum.ClRep:
-                    reqMsg = new AutoRepayCancelReqMsg(DTRequest.GetQueryInt("userId", 0), DTRequest.GetQueryInt("projectCode"));
+                    if (!CheckUserLogin(out user)) return;
+                    reqMsg = new AutoRepayCancelReqMsg(user.id, DTRequest.GetQueryInt("projectCode"));
                     break;
                 //个人网银充值
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
