@@ -64,16 +64,10 @@ namespace Agp2p.Web.tools
             }
             try
             {
-                var standGuardFee = new Agp2pDataContext().CalcStandGuardFee(userId, Convert.ToDecimal(withdrawValue));
-                if (standGuardFee == 0)
-                {
-                    callback((int)HttpStatusCode.OK, TransactionFacade.DefaultHandlingFee, "提现手续费 " + TransactionFacade.DefaultHandlingFee.ToString("c"));
-                }
-                else
-                {
-                    var finalValue = standGuardFee < TransactionFacade.DefaultHandlingFee ? TransactionFacade.DefaultHandlingFee : standGuardFee;
-                    callback((int)HttpStatusCode.OK, finalValue, "提现手续费 " + finalValue.ToString("c"));
-                }
+                /*var standGuardFee = new Agp2pDataContext().CalcStandGuardFee(userId, Convert.ToDecimal(withdrawValue));
+                var finalValue = Math.Max(TransactionFacade.DefaultHandlingFee, standGuardFee);*/
+                var finalValue = withdrawValue < 100 ? TransactionFacade.DefaultHandlingFee : 0;
+                callback((int)HttpStatusCode.OK, finalValue, "提现手续费 " + finalValue.ToString("c"));
             }
             catch (Exception ex)
             {

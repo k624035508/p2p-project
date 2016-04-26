@@ -134,7 +134,9 @@ namespace Agp2p.Core
                 status = (int) Agp2pEnums.BankTransactionStatusEnum.Acting,
                 value = withdrawMoney,
                 // 防套现手续费公式：未投资金额 * 0.6%；有防提现手续费时不能在数据库里面直接设置默认的手续费(1元)，因为提现取消的时候需要靠这个数来恢复未投资金额
-                handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
+                // handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
+                // 提现小于 100 元收取 DefaultHandlingFee 元手续费
+                handling_fee = withdrawMoney < 100 ? DefaultHandlingFee : 0,
                 handling_fee_type =
                     (byte)
                         (unusedMoney == 0
