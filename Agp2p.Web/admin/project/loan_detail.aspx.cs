@@ -323,8 +323,7 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入你要延迟发标的准确时间！", "back", "Error");
                 return;
             }
-            DateTime t1 = Convert.ToDateTime(txtPublishTime.Text.Trim());
-            if (t1 <= DateTime.Now)
+            if (Convert.ToDateTime(txtPublishTime.Text.Trim()) <= DateTime.Now)
             {
                 JscriptMsg("延迟发布时间不能小于当前时间！", "back", "Error");
                 return;

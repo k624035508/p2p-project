@@ -338,9 +338,9 @@ namespace Agp2p.Web.admin.project
 
         private void sumbit() 
         {
-            if (Convert.ToDouble(txt_project_amount) <= 0)
+            if (Convert.ToDecimal(txt_project_amount) <= 0)
             {
-                JscriptMsg("借款金额不能为空且大于0！", "", "Error");
+                JscriptMsg("借款金额必须大于0！", "", "Error");
                 return;
             }
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
@@ -378,17 +378,8 @@ namespace Agp2p.Web.admin.project
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            if(Convert.ToDouble(txt_project_amount) > 0)
-            {
-                save_only = true;
-                sumbit();
-            }
-            else
-            {
-                JscriptMsg("借款金额不能为空且大于0！", "", "Error");
-                return;
-            }
-            
+            save_only = true;
+            sumbit();
         }
 
         /// <summary>
