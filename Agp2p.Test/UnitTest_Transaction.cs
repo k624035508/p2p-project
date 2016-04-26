@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
@@ -80,7 +81,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void CleanAllProjectAndTransactionRecord()
         {
-            //Common.DoSimpleCleanUp(new DateTime(2015,1,1));
+            Common.DoSimpleCleanUp(new DateTime(2015,1,1));
         }
 
         [TestMethod]
@@ -428,6 +429,52 @@ namespace Agp2p.Test
             Debug.Assert(dict[310070319] == "查无此交易");
             Debug.Assert(dict[110400021] == "项目不存在");
             Debug.Assert(dict[110490001] == "通讯异常，请联系丰付客服");
+        }
+
+        [TestMethod]
+        public void TestQueryLeafClaimsAtMoment()
+        {
+            var baseTime = DateTime.Today;
+
+            using (var ts = new TransactionScope())
+            {
+                var rootClaim = new li_claims { createTime = baseTime };
+                var c2 = rootClaim.MakeChild(baseTime.AddDays(1));
+                var c2c1 = c2.MakeChild(c2.createTime.AddDays(-1));
+
+                var c3 = rootClaim.MakeChild(baseTime.AddDays(2));
+                var c3c4 = c3.MakeChild(c3.createTime.AddDays(1));
+                var c3c3 = c3.MakeChild(c3.createTime);
+
+                var c3c4c5 = c3c4.MakeChild(c3c4.createTime.AddDays(1));
+
+                var d1 = rootClaim.QueryLeafClaimsAtMoment(baseTime).ToList();
+                Assert.AreEqual(1, d1.Count);
+                CollectionAssert.Contains(d1, rootClaim);
+
+                var d2 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(1)).ToList();
+                Assert.AreEqual(1, d2.Count);
+                CollectionAssert.Contains(d2, c2c1);
+
+                var d3 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(2)).ToList();
+                Assert.AreEqual(2, d3.Count);
+                CollectionAssert.Contains(d3, c2c1);
+                CollectionAssert.Contains(d3, c3c3);
+
+                var d4 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(3)).ToList();
+                Assert.AreEqual(3, d4.Count);
+                CollectionAssert.Contains(d4, c2c1);
+                CollectionAssert.Contains(d4, c3c4);
+                CollectionAssert.Contains(d4, c3c3);
+
+                var d5 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(4)).ToList();
+                Assert.AreEqual(3, d5.Count);
+                CollectionAssert.Contains(d5, c2c1);
+                CollectionAssert.Contains(d5, c3c4c5);
+                CollectionAssert.Contains(d5, c3c3);
+
+                ts.Dispose();
+            }
         }
     }
 }

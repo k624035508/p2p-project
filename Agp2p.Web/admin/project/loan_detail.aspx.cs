@@ -131,7 +131,6 @@ namespace Agp2p.Web.admin.project
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.Financing:
                     btnDrop.Visible = true;
-                    if(isHuoqiProject) btnAutoRepaySign.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout:
                     btnFail.Visible = true;
@@ -142,9 +141,6 @@ namespace Agp2p.Web.admin.project
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess:
                     btnFail.Visible = true;
                     btnMakeLoan.Visible = true;
-                    break;
-                case (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying:
-                    btnAutoRepaySign.Visible = true;
                     break;
             }
         }
@@ -159,7 +155,7 @@ namespace Agp2p.Web.admin.project
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
-            spa_amount.InnerText = _project.financing_amount.ToString("C");//借款金额            
+                      
             spa_repayment.InnerText = _project.repayment_term_span_count +
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
@@ -323,6 +319,12 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入你要延迟发标的准确时间！", "back", "Error");
                 return;
             }
+            if (Convert.ToDateTime(txtPublishTime.Text.Trim()) <= DateTime.Now)
+            {
+                JscriptMsg("延迟发布时间不能小于当前时间！", "back", "Error");
+                return;
+            }
+
             if (project != null)
             {
                 try
@@ -422,7 +424,7 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入募集顺延天数！", "back", "Error");
                 return;
             }
-
+           
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
@@ -764,21 +766,6 @@ namespace Agp2p.Web.admin.project
                 ws.Range("A1", "C1").Style = titlesStyle;
 
             }, Response);
-        }
-
-        /// <summary>
-        /// 账户自动还款签约
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnAutoRepaySign_OnClick(object sender, EventArgs e)
-        {
-            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
-            var loaner = project.li_risks.li_loaners;
-            //TODO 还款上限
-            if (loaner?.dt_users != null)
-                Response.Write($"<script>window.open(\'/api/payment/sumapay/index.aspx?api={(int) Agp2pEnums.SumapayApiEnum.AcReO}&userId={loaner.dt_users.id}&projectCode={ProjectId}&repayLimit="+project.financing_amount+
-                               "','_blank')</script>");
         }
     }
 

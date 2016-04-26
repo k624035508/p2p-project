@@ -71,5 +71,21 @@ namespace Agp2p.Core.Message.PayApiMsg
             });
             SubledgerList = JsonHelper.ObjectToJSON(subledgerList);
         }
+
+        public void SetSubledgerList(ILookup<dt_users, li_claims> claimsLookup)
+        {
+            var subledgerList = new List<object>();
+            claimsLookup.ForEach(u =>
+            {
+                subledgerList.Add(new
+                {
+                    roleType = "0",
+                    roleCode = u.Key.id.ToString(),
+                    inOrOut = "0",
+                    sum = (u.Sum(uc => uc.principal)).ToString("f")
+                });
+            });
+            SubledgerList = JsonHelper.ObjectToJSON(subledgerList);
+        }
     }
 }

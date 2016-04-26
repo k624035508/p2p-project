@@ -124,7 +124,7 @@
             <dl>
                 <dt>工作地点</dt>
                 <dd>
-                    <asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.+$/" /><span class="Validform_checktip">* </span></dd>
+                    <asp:TextBox ID="txtWorkingAt" runat="server" CssClass="input normal" datatype="/^.*$/" /><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>工作单位</dt>
@@ -157,7 +157,7 @@
             <dl>
                 <dt>涉诉情况</dt>
                 <dd>
-                    <asp:TextBox ID="txtLawsuit" runat="server" CssClass="input normal" datatype="/^\S+$/" /><span class="Validform_checktip">* </span></dd>
+                    <asp:TextBox ID="txtLawsuit" runat="server" CssClass="input normal" datatype="/^\S*$/" /><span class="Validform_checktip">* </span></dd>
             </dl>
             <dl>
                 <dt>借款额度</dt>

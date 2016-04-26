@@ -136,7 +136,9 @@ namespace Agp2p.Core
                 status = (int) Agp2pEnums.BankTransactionStatusEnum.Acting,
                 value = withdrawMoney,
                 // 防套现手续费公式：未投资金额 * 0.6%；有防提现手续费时不能在数据库里面直接设置默认的手续费(1元)，因为提现取消的时候需要靠这个数来恢复未投资金额
-                handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
+                // handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
+                // 提现小于 100 元收取 DefaultHandlingFee 元手续费
+                handling_fee = withdrawMoney < 100 ? DefaultHandlingFee : 0,
                 handling_fee_type =
                     (byte)
                         (unusedMoney == 0
@@ -2119,13 +2121,9 @@ namespace Agp2p.Core
                 return claims.ToDictionary(c => c, c => c.principal/huoqiProjectInvestmentAmount);
             }
 
-            var profitingClaims = proj.li_claims.Where(c => c.IsProfiting(queryTime)).ToList();
-
-            // 由于存在使用了父债权时间的债权，所以上述查询可能会同时查出子债权和父债权，造成比例异常，需要排除掉父债权
-            if (proj.financing_amount < profitingClaims.Aggregate(0m, (sum, c) => sum + c.principal))
-            {
-                profitingClaims = profitingClaims.Where(me => !profitingClaims.Any(otherClaim => otherClaim.IsChildOf(me))).ToList();
-            }
+            var profitingClaims = queryTime == null
+                    ? proj.li_claims.Where(c => c.IsProfiting()).ToList()
+                    : proj.li_claims.Where(c => c.Parent == null).SelectMany(c => c.QueryLeafClaimsAtMoment(queryTime)).ToList();
 
             // 仅针对单个用户的还款
             if (proj.IsNewbieProject())

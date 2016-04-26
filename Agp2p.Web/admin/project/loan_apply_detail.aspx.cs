@@ -333,11 +333,16 @@ namespace Agp2p.Web.admin.project
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            sumbit();
+                sumbit();
         }
 
-        private void sumbit()
+        private void sumbit() 
         {
+            if (Convert.ToDecimal(txt_project_amount.Text.Trim()) <= 0)
+            {
+                JscriptMsg("借款金额必须大于0！", "", "Error");
+                return;
+            }
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Edit.ToString()); //检查权限

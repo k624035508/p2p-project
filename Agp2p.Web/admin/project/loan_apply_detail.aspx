@@ -151,7 +151,7 @@
                 <dt>
                     <asp:Label ID="div_project_amount_title" runat="server" Text="借款金额" /></dt>
                 <dd>
-                    <asp:TextBox ID="txt_project_amount" runat="server" CssClass="input txt" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                    <asp:TextBox ID="txt_project_amount" runat="server" CssClass="input txt" datatype="/^(([1-9]{1}\d*))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
                     元
                 <asp:Label ID="div_project_amount_tip" runat="server" CssClass="Validform_checktip" />

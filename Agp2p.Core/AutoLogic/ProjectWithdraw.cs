@@ -104,8 +104,7 @@ namespace Agp2p.Core.AutoLogic
             {
                 var huoqiProject = pcs.Key;
                 //发送托管本金到账请求成功后才执行转出逻辑
-                // TODO 这里只返本金
-                RequestApiHandle.SendReturnPrinInte(huoqiProject.id, (pcs.Sum(pcsc => pcsc.principal)).ToString("f"), 0, false, true,  
+                RequestApiHandle.SendReturnPrinInte(huoqiProject.id, pcs,  
                     () => {
                         pcs.ToLookup(c => c.dt_users).ForEach(ucs =>
                         {
