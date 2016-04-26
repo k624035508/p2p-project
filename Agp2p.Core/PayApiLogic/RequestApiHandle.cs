@@ -47,13 +47,13 @@ namespace Agp2p.Core.PayApiLogic
                     case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                         //网银充值
                         context.Charge((int) requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg) msg).Sum, 0),
-                            Agp2pEnums.PayApiTypeEnum.Sumapay, msg.RequestId);
+                            Agp2pEnums.PayApiTypeEnum.Sumapay, "丰付网银支付", msg.RequestId);
                         break;
                     case (int) Agp2pEnums.SumapayApiEnum.WhRec:
                     case (int) Agp2pEnums.SumapayApiEnum.WhReM:
                         //快捷充值
                         context.Charge((int) requestLog.user_id, Utils.StrToDecimal(((WhRechargeReqMsg) msg).Sum, 0),
-                            Agp2pEnums.PayApiTypeEnum.SumapayQ, msg.RequestId);
+                            Agp2pEnums.PayApiTypeEnum.SumapayQ, "丰付一键支付", msg.RequestId);
                         break;
                     case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
                     case (int) Agp2pEnums.SumapayApiEnum.WdraM:

@@ -50,7 +50,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Charge(this Agp2pDataContext context, int userId, decimal money,
-            Agp2pEnums.PayApiTypeEnum payApi, string noOrder = "", string remark = null)
+            Agp2pEnums.PayApiTypeEnum payApi, string remark = null, string noOrder = "")
         {
             // 创建交易记录（充值进行中）
             var tr = new li_bank_transactions
