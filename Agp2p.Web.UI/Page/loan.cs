@@ -149,7 +149,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="income"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string ApplyLoaner(int userId, short age, string native_place, string job, string working_at, string working_company, string educational_background, int marital_status, string income)
+        public static string ApplyLoaner(int userId, short age, string native_place, string job, string working_company, string educational_background, int marital_status, string income)
         {
             try
             {
@@ -160,7 +160,7 @@ namespace Agp2p.Web.UI.Page
                     loaner.age = age;
                     loaner.native_place = native_place;
                     loaner.job = job;
-                    loaner.working_at = working_at;
+                    loaner.working_at = "";
                     loaner.working_company = working_company;
                     loaner.educational_background = educational_background;
                     loaner.marital_status = (byte)marital_status;
@@ -176,7 +176,7 @@ namespace Agp2p.Web.UI.Page
                         age = age,
                         native_place = native_place,
                         job = job,
-                        working_at = working_at,
+                        working_at = "",
                         working_company = working_company,
                         educational_background = educational_background,
                         marital_status = (byte)marital_status,
