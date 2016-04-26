@@ -114,47 +114,23 @@
                 </div>
                 <div class="project-deadline">
                     <span>项目状态</span>
-                    <ul class="list-unstyled list-inline">
-                        <%set var staticClaimQueryEnums=Utils.GetEnumValues<Agp2pEnums.StaticClaimQueryEnum>()%>
-                        <%foreach(var en in staticClaimQueryEnums)%>
+                    <ul class="list-unstyled list-inline">        
                         <li>
-                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,(int)en,1)%>'
-                               class='<%=project_status_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a> 
+                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,0,1)%>'
+                               class='<%=project_status_index==0?"selected":""%>'>全部</a>
                         </li>
-                        <%/foreach%>
+                        <li>
+                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,1,1)%>'
+                               class='<%=project_status_index==1?"selected":""%>'>转让中</a>
+                        </li>
+                         <li>
+                            <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,2,1)%>'
+                               class='<%=project_status_index==2?"selected":""%>'>已转让</a>
+                        </li>
                     </ul>
                 </div>
                 <%/if%>
-                <%if(rootCategoryId==huoqiCategoryId)%>
-                <div class="project-profit">
-                    <span>项目收益</span>
-                    <ul class="list-unstyled list-inline">
-                        <%set var interestRateTypeEnums=Utils.GetEnumValues
-                        <Agp2pEnums.InterestRateTypeEnum>
-                            ()%>
-                            <%foreach(var en in interestRateTypeEnums)%>
-                            <li>
-                                <a href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'
-                                   class='<%=project_profit_rate_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
-                            </li>
-                            <%/foreach%>
-                    </ul>
-                </div>
-                <div class="project-deadline">
-                    <span>项目期限</span>
-                    <ul class="list-unstyled list-inline">
-                        <%set var repaymentTermEnums=Utils.GetEnumValues
-                        <Agp2pEnums.RepaymentTermEnum>
-                            ()%>
-                            <%foreach(var en in repaymentTermEnums)%>
-                            <li>
-                                <a href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'
-                                   class='<%=project_repayment_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
-                            </li>
-                            <%/foreach%>
-                    </ul>
-                </div>
-                <%/if%>
+
                 </div>
         </div>
         <div class="novice-guide pull-right">

@@ -37,7 +37,8 @@ class MyloanTable extends React.Component {
             }.bind(this)
         });
     }
-        applyForAutoRepay(autoRepay){
+        applyForAutoRepay(loanId){
+          
             confirm("是否确定开通自动还款");
         }
         applyForCanelAutoRepay(autoRepay){
@@ -69,9 +70,10 @@ class MyloanTable extends React.Component {
                             <td>{tr.profit}</td>
                             <td>1/1</td>
                             <td>
-                                {tr.autoRepay==true ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay()}>取消自动还款</a> : <a href="javascript:" onClick={ev => this.applyForAutoRepay()}>开通自动还款</a> }
-                                <a href="javascript:">账户还款</a>
-                                <a href="javascript:">银行卡还款</a> 
+                                {tr.autoRepay==true ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay()}>取消自动还款</a> : 
+                     <a onClick={ev => this.applyForAutoRepay()} target="_blank"
+                     href={`/api/payment/sumapay/index.aspx?api=7&projectCode=${tr.ptrId}`} >开通自动还款</a> }
+                                <a href="javascript:">手动还款</a>
                             </td>
             </tr>
         )}
@@ -79,6 +81,6 @@ class MyloanTable extends React.Component {
                 </table>
             </div>
         );
-}
-};
+                     }
+                     };
 export default MyloanTable;

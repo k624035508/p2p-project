@@ -304,10 +304,10 @@ namespace Agp2p.Web.UI
         }
 
         public static IEnumerable<Investable> QueryInvestables(int pageSize, int pageIndex, out int total,
-            int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0)
+            int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0, int claimsIndex = 0)
         {
             var context = new Agp2pDataContext();
-            var projectQuerying = QueryingProjects(context, categoryId, profitRateIndex, repaymentIndex, statusIndex);
+            var projectQuerying = QueryingProjects(context, categoryId, profitRateIndex, repaymentIndex, statusIndex, claimsIndex);
 
             var claimsCategory = context.dt_article_category.Single(ca => ca.call_index == "claims");
 
@@ -316,9 +316,11 @@ namespace Agp2p.Web.UI
                 ? Enumerable.Empty<li_claims>().AsQueryable()
                 : context.li_claims.Where(c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer
-                    && c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount
-                    && !c.Children.Any())
+                    && c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount 
+                    && !c.Children.Any()) 
                     .OrderByDescending(c => c.createTime);
+
+
 
             int projectTotalCount = 0, claimTotalCount = 0;
             var investables = projectQuerying.AsEnumerableAutoPartialQuery(out projectTotalCount, pageSize).Select(p => new Investable {Project = p})

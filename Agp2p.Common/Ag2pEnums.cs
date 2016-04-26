@@ -549,7 +549,7 @@ namespace Agp2p.Common
             FourToSixMonth = 3,
             [Description("7-12个月")]
             SevenToTwelveMonth = 4,
-            [Description("12个月")]
+            [Description("12个月以上")]
             TwelveMonth = 5,
         }
 
