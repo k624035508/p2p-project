@@ -93,6 +93,15 @@ namespace Agp2p.Web.UI
                         p.dt_article_category.call_index == "newbie");
         }
 
+        public static li_projects GetFirstHuoqiProject()
+        {
+            var context = new Agp2pDataContext();
+            return context.li_projects.OrderByDescending(p => p.id)
+                .FirstOrDefault(p =>
+                        (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
+                        p.dt_article_category.call_index == "huoqi");
+        }
+
         public class Investable
         {
             public li_projects Project { get; set; }
