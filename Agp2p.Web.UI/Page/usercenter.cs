@@ -123,7 +123,8 @@ namespace Agp2p.Web.UI.Page
                     invitationCode = userCode == null ? myreward.GetInviteCode(context) : userCode.str_code,
                     hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password),
                     groupName = userInfo.dt_user_groups.title,
-                    isLoaner = userInfo.li_loaners.Any()
+                    isLoaner = userInfo.li_loaners.Any(),
+                    identityId = userInfo.identity_id,
                 }
             });
         }
@@ -643,11 +644,21 @@ namespace Agp2p.Web.UI.Page
             var claimQueryEnum = (Agp2pEnums.StaticClaimQueryEnum)claimQueryType;
 
             var query = context.li_claims.Where(c =>
-                        c.userId == userInfo.id &&
-                        c.projectId == c.profitingProjectId &&
-                        (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= c.li_projects.status &&
-                        StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
-                        !c.Children.Any());
+                    c.userId == userInfo.id &&
+                    c.projectId == c.profitingProjectId &&
+                    (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= c.li_projects.status &&
+                    StaticClaimQueryTypeStatusMap[claimQueryEnum].Cast<int>().ToArray().Contains(c.status) &&
+                    !c.Children.Any());
+
+            if (claimQueryEnum == 0)
+            {
+                query = context.li_claims.Where(c =>
+                      c.userId == userInfo.id &&
+                      c.projectId == c.profitingProjectId &&
+                      (int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying <= c.li_projects.status &&
+                      !c.Children.Any());
+            }
+
 
             var count = query.Count();
             var data =

@@ -30,7 +30,8 @@ const initialState = {
 		invitationCode: "",
 		hasTransactPassword: false,
 		groupName: "",
-        isLoaner: false
+		isLoaner: false,
+	    identityId: ""
 	},
 	bankCards: [],
 }
