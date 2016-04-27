@@ -88,19 +88,19 @@ class UserCenterPage extends React.Component {
 								<li><Link to="/settings" activeClassName="active-link">通知设置</Link></li>
 			                </ul>
 			            </li>
-                        {!this.props.isLoaner ? null :
-                        <li><a className="myloan">借款管理</a>
-			                <ul className="list-unstyled inner-ul">
-								<li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
-			                </ul>
-			            </li> }
-			        </ul>
-			    </div>
-		        {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
-			</div>
-		);
-	}
-}
+								{!this.props.isLoaner ? null :
+                                  <li><a className="myloan">借款管理</a>
+                                      <ul className="list-unstyled inner-ul">
+                                          <li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
+                                      </ul>
+                                  </li> }
+                              </ul>
+                          </div>
+								    {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
+                                </div>
+                            );
+								    }
+								}
 
 function mapStateToProps(state) {
 	var walletInfo = state.walletInfo;

@@ -104,12 +104,13 @@ namespace Agp2p.Web.UI.Page
                     projectProfitRateYearly = c.GetProfitRateYearly(),
                     term = c.repayment_term_span_count + c.GetProjectTermSpanEnumDesc(),
                     investTime = Convert.ToDateTime(c.make_loan_time).ToString("yy/MM/dd"),
-                    investValue = risk.income,
+                    investValue = c.financing_amount,
                     profit,
                     status = c.GetProjectStatusDesc(),
                     isNewbieProject = c.dt_article_category.call_index == "newbie",
                     autoRepay = c.autoRepay,
-                    repayLimit = c.li_repayment_tasks.Sum(r => r.repay_interest + r.repay_principal)
+                    repayLimit = c.li_repayment_tasks.Sum(r => r.repay_interest + r.repay_principal),
+                    type
                 };
             });
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});

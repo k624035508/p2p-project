@@ -6,14 +6,14 @@ import CustomDlg from "../components/custom-dialog.jsx"
 import confirm from "../components/tips_confirm.js";
 
 const SumapayApiEnum = {
-    AcReO : 7,
-    ClRep : 9
+    AcReO: 7,
+    ClRep: 9
 }
 
 class MyloanTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [] };
+        this.state = { data: [], };
     }
     componentWillReceiveProps(nextProps) {
         if (!isEqual(this.props, nextProps)) {
@@ -51,7 +51,7 @@ class MyloanTable extends React.Component {
             location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.ClRep}&projectCode=${projectId}`;
         });
     }
-    ManualRepay(projectId){
+    ManualRepay(projectId) {
         let url = USER_CENTER_ASPX_PATH + "/ManualRepay";
         ajax({
             type: "post",
@@ -61,9 +61,9 @@ class MyloanTable extends React.Component {
             data: JSON.stringify({ projectId }),
             success: function (result) {
                 let {status, msg, url} = JSON.parse(result.d);
-                if(status == 0){
+                if (status == 0) {
                     alert(msg);
-                } else{
+                } else {
                     location.href = url;
                 }
             }.bind(this),
@@ -98,12 +98,13 @@ class MyloanTable extends React.Component {
                                 <td>{tr.investValue}</td>
                                 <td>{tr.profit}</td>
                                 <td>1/1</td>
-                                <td>
-                                    {tr.autoRepay == true
-                                        ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId) }>取消自动还款</a>
-                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.repayLimit) }>开通自动还款</a> }
-                                    <a href="javascript:" onClick={ev => this.ManualRepay(tr.ptrId)}>手动还款</a>
-                                </td>
+                                {this.props.type == 2 ?
+                                    <td>
+                                        {tr.autoRepay == true ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId) }>取消自动还款</a>
+                                            : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.repayLimit) }>开通自动还款</a> }
+                                        <a href="javascript:" onClick={ev => this.ManualRepay(tr.ptrId) }>手动还款</a>
+                                    </td>
+                                    : <td></td>}
                             </tr>
                         ) }
                     </tbody>

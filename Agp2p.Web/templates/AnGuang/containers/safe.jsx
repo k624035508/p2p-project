@@ -319,7 +319,7 @@ class IdentityBinding extends React.Component {
 
 class CustodyAccount extends React.Component {
 	constructor(props) {
-		super(props);		         
+		super(props);	
             }
 	render() {
 		return (
