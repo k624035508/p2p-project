@@ -713,7 +713,7 @@ namespace Agp2p.Web.UI.Page
             var task = withdrawClaim.li_projects.li_repayment_tasks.Last(t => t.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid);
             var remainDays = (int) (task.should_repay_time.Date - withdrawClaim.createTime.Date).TotalDays;
 
-            var staticWithdrawCostPercent = withdrawClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw/100;
+            var staticWithdrawCostPercent = withdrawClaim.dt_users.IsCompanyAccount() ? 0 : ConfigLoader.loadCostConfig().static_withdraw;
 
             return JsonConvert.SerializeObject(new { withdrawClaimFinalInterest, originalClaimFinalInterest, remainDays, staticWithdrawCostPercent });
         }

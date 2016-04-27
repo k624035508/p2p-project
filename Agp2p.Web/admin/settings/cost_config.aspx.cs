@@ -34,7 +34,7 @@ namespace Agp2p.Web.admin.settings
             txt_overtime_cost_bank.Text = (Costconfig.overtime_cost_bank * 1000).ToString("N1");
             txt_recharge_lowest.Text = Costconfig.recharge_lowest.ToString("N0");
             txt_withdraw.Text = Costconfig.withdraw.ToString("N1");
-            txt_static_withdraw.Text = Costconfig.static_withdraw.ToString("N1");
+            txt_static_withdraw.Text = (Costconfig.static_withdraw * 100).ToString("N1");
             txt_recharge_fee_rate.Text = (Costconfig.recharge_fee_rate * 1000).ToString("N1");
             txt_recharge_fee_rate_quick.Text = (Costconfig.recharge_fee_rate_quick * 1000).ToString("N1");
         }
@@ -54,8 +54,8 @@ namespace Agp2p.Web.admin.settings
                 model.overtime_cost2 = Utils.StrToDecimal(txt_overtime_cost2.Text.Trim(), 0)/1000;
                 model.overtime_cost_bank = Utils.StrToDecimal(txt_overtime_cost_bank.Text.Trim(), 0) / 1000;
                 model.recharge_lowest = Utils.StrToDecimal(txt_recharge_lowest.Text.Trim(), 0);
-                model.withdraw = Utils.StrToDecimal(txt_withdraw.Text.Trim(), 0);
-                model.static_withdraw = Utils.StrToDecimal(txt_static_withdraw.Text.Trim(), 0);
+                model.withdraw = Utils.StrToDecimal(txt_withdraw.Text.Trim(), 0) ;
+                model.static_withdraw = Utils.StrToDecimal(txt_static_withdraw.Text.Trim(), 0) / 100;
                 model.recharge_fee_rate = Utils.StrToDecimal(txt_recharge_fee_rate.Text.Trim(), 0) / 1000;
                 model.recharge_fee_rate_quick = Utils.StrToDecimal(txt_recharge_fee_rate_quick.Text.Trim(), 0) / 1000;
 
