@@ -164,7 +164,7 @@ namespace Agp2p.Core.PayApiLogic
                                 //定期项目进入开始还款，活期项目直接向借款人放款
                                 if (pro.IsHuoqiProject())
                                 {
-                                    TransactionFacade.MakeLoan(context, DateTime.Now, msg.ProjectCode, pro.li_risks.li_loaners.user_id, Utils.StrToDecimal(msg.Sum, 0));
+                                    TransactionFacade.MakeLoan(context, DateTime.Now, pro, pro.li_risks.li_loaners.user_id);
                                 }
                                 else
                                 {

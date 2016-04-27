@@ -74,7 +74,7 @@ namespace Agp2p.Core.PayApiLogic
                         creditAssignmentReqMsg.ProjectDescription = claim.li_projects.title;
                         requestLog.project_id = claim.projectId;
                         //计算手续费
-                        var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw/100;
+                        var staticWithdrawCostPercent = ConfigLoader.loadCostConfig().static_withdraw;
                         var finalCost =
                             Math.Round(
                                 Utils.StrToDecimal(creditAssignmentReqMsg.UndertakeSum, 0)*staticWithdrawCostPercent, 2);
@@ -150,54 +150,15 @@ namespace Agp2p.Core.PayApiLogic
                     case (int) Agp2pEnums.SumapayApiEnum.CLoan:
                         var makeLoanReqMsg = (MakeLoanReqMsg) msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
-                        //非活期和新手标项目，以及没有生成过服务费 TODO 只计算？
-                        if (project != null && !project.IsNewbieProject()
-                            && !context.li_company_inoutcome.Any(c => c.project_id == project.id
-                                                                      &&
-                                                                      (c.type ==
-                                                                       (int)
-                                                                           Agp2pEnums.OfflineTransactionTypeEnum
-                                                                               .SumManagementFeeOfLoanning
-                                                                       ||
-                                                                       (c.type ==
-                                                                        (int)
-                                                                            Agp2pEnums.OfflineTransactionTypeEnum
-                                                                                .SumBondFee))))
+                        //非活期和新手标项目计算平台服务费
+                        if (project != null && !project.IsNewbieProject())
                         {
-                            decimal loanFee = 0;
-                            decimal bondFee = 0;
-
-                            //计算平台服务费
-                            if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
-                            {
-                                loanFee = project.investment_amount*(project.loan_fee_rate/100) ?? 0;
-                                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                                {
-                                    user_id = (int) msg.UserId,
-                                    income = loanFee,
-                                    project_id = project.id,
-                                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.SumManagementFeeOfLoanning,
-                                    create_time = DateTime.Now,
-                                    remark = $"借款项目'{project.title}'收取平台服务费"
-                                });
-                            }
-
-                            //计算风险保证金
-                            if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
-                            {
-                                bondFee = project.investment_amount*(project.bond_fee_rate/100) ?? 0;
-                                context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
-                                {
-                                    user_id = (int) msg.UserId,
-                                    income = bondFee,
-                                    project_id = project.id,
-                                    type = (int) Agp2pEnums.OfflineTransactionTypeEnum.SumBondFee,
-                                    create_time = DateTime.Now,
-                                    remark = $"借款项目'{project.title}'收取风险保证金"
-                                });
-                            }
-                            makeLoanReqMsg.SetSubledgerList(loanFee, bondFee);
+                            decimal loanFee = project.investment_amount * (project.loan_fee_rate) ?? 0;
+                            decimal bondFee = project.investment_amount * (project.bond_fee_rate) ?? 0;
+                            makeLoanReqMsg.SetSubledgerList(loanFee + bondFee);
                         }
+                        else
+                            throw new ArgumentNullException("没有找到项目, ID=" + makeLoanReqMsg.ProjectCode);
                         break;
                 }
                 //生成发送报文
