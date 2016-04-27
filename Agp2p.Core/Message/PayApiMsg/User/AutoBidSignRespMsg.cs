@@ -20,8 +20,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            ProtocolCode = map["protocolCode"];
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            ProtocolCode = map.ContainsKey("protocolCode") ? map["protocolCode"] : "";
             ContractFund = map.ContainsKey("contractFund") ? map["contractFund"] : "";
 
         }

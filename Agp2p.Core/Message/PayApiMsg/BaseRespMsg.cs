@@ -52,7 +52,11 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public virtual bool CheckResult()
         {
-            if (!Result.Equals("00000"))
+            if (Result.Equals("00000"))
+                Remarks = "受理成功";
+            else if (Result.Equals("00001"))
+                Remarks = "正在受理";
+            else
             {
                 var errorDict = ConfigLoader.loadSumapayErrorNumberDescDict();
                 var resultCode = Convert.ToInt32(Result);
