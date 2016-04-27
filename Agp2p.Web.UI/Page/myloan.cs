@@ -64,7 +64,7 @@ namespace Agp2p.Web.UI.Page
                 query = query.Where(p => p.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime);
 
             count = query.Count();
-            return query.OrderByDescending(h => h.id).Skip(pageSize*pageIndex).Take(pageSize).ToList();
+            return query.Skip(pageSize*pageIndex).Take(pageSize).ToList();
         }
 
         [WebMethod]
