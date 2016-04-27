@@ -59,7 +59,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                     roleType = "0",
                     roleCode = UserId.ToString(),
                     inOrOut = "0",
-                    sum = (loanSum - fee).ToString("f")
+                    sum = (loanSum - fee).ToString("f2")
                 }
             };
             //平台服务费为0不能发生生成分账列表
@@ -71,7 +71,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                     roleType = "1",
                     roleCode = SumapayConfig.MerchantCode,
                     inOrOut = "0",
-                    sum = fee.ToString("f")
+                    sum = fee.ToString("f2")
                 });
             }
             SubledgerList = JsonHelper.ObjectToJSON(list);

@@ -44,7 +44,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public WebRechargeReqMsg(int userId, string sum, string bankCode, string passThrough = "",
             string payType = "3", string mainAccountType = "", string mainAccountCode = "",
-            string bankCardTypeFlag = "0")
+            string bankCardTypeFlag = "1")
         {
             UserId = userId;
             Sum = sum;

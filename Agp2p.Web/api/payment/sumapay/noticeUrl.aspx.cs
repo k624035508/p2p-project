@@ -36,8 +36,8 @@ namespace Agp2p.Web.api.payment.sumapay
             //保存响应日志
             ResponseLog = new li_pay_response_log()
             {
-                request_id = string.IsNullOrEmpty(Request["requestId"])?null: Request["requestId"],
-                result = string.IsNullOrEmpty(Request["result"])?"" : Request["result"],
+                request_id = string.IsNullOrEmpty(Request["requestId"]) ? null: Request["requestId"],
+                result = string.IsNullOrEmpty(Request["result"]) ? "" : Request["result"],
                 status = (int)Agp2pEnums.SumapayResponseEnum.Return,
                 response_time = DateTime.Now,
                 response_content = reqStr
@@ -59,32 +59,32 @@ namespace Agp2p.Web.api.payment.sumapay
                             case (int)Agp2pEnums.SumapayApiEnum.URegi:
                             case (int)Agp2pEnums.SumapayApiEnum.URegM:
                             case (int) Agp2pEnums.SumapayApiEnum.Activ:
-                                respMsg = isSync ? new UserRegisterRespMsg(reqStr) : BaseRespMsg.NewInstance<UserRegisterRespMsg>(reqStr);
+                                respMsg = new UserRegisterRespMsg(reqStr);
                                 break;
                             //个人自动投标续约
                             case (int) Agp2pEnums.SumapayApiEnum.AtBid:
-                                respMsg = isSync ? new AutoBidSignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
+                                respMsg = new AutoBidSignRespMsg(reqStr);
                                 break;
                             //个人自动投标取消
                             case (int) Agp2pEnums.SumapayApiEnum.ClBid:
-                                respMsg = isSync ? new AutoBidSignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoBidSignRespMsg>(reqStr);
+                                respMsg = new AutoBidSignRespMsg(reqStr);
                                 ((AutoBidSignRespMsg) respMsg).Cancel = true;
                                 break;
                             //个人自动账户/银行还款开通
                             case (int) Agp2pEnums.SumapayApiEnum.AcReO:
                             case (int) Agp2pEnums.SumapayApiEnum.AbReO:
-                                respMsg = isSync ? new AutoRepaySignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoRepaySignRespMsg>(reqStr) ;
+                                respMsg = new AutoRepaySignRespMsg(reqStr);
                                 break;
                             //个人自动还款取消
                             case (int) Agp2pEnums.SumapayApiEnum.ClRep:
-                                respMsg = isSync ? new AutoRepaySignRespMsg(reqStr) : BaseRespMsg.NewInstance<AutoRepaySignRespMsg>(reqStr);
+                                respMsg = new AutoRepaySignRespMsg(reqStr);
                                 ((AutoRepaySignRespMsg) respMsg).Cancel = true;
                                 break;
                             //个人网银/一键充值
                             case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                             case (int) Agp2pEnums.SumapayApiEnum.WhRec:
                             case (int)Agp2pEnums.SumapayApiEnum.WhReM:
-                                respMsg = isSync ? new RechargeRespMsg(reqStr) : BaseRespMsg.NewInstance<RechargeRespMsg>(reqStr);
+                                respMsg = new RechargeRespMsg(reqStr);
                                 break;
                             //个人投标/自动投标 普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaBid:
@@ -93,57 +93,53 @@ namespace Agp2p.Web.api.payment.sumapay
                             case (int)Agp2pEnums.SumapayApiEnum.McBiM:
                             case (int) Agp2pEnums.SumapayApiEnum.AmBid:
                             case (int) Agp2pEnums.SumapayApiEnum.AcBid:
-                                respMsg = isSync ? new BidRespMsg(reqStr) : BaseRespMsg.NewInstance<BidRespMsg>(reqStr);
+                                respMsg = new BidRespMsg(reqStr);
                                 break;
                             //个人撤标
                             case (int) Agp2pEnums.SumapayApiEnum.CaPro:
                             case (int) Agp2pEnums.SumapayApiEnum.CoPro:
-                                respMsg = BaseRespMsg.NewInstance<WithDrawalRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<WithDrawalRespMsg>(reqStr) : new WithDrawalRespMsg(reqStr);
                                 break;
                             //流标普通项目
                             case (int) Agp2pEnums.SumapayApiEnum.RePro:
-                                respMsg = BaseRespMsg.NewInstance<RepealProjectRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<RepealProjectRespMsg>(reqStr) : new RepealProjectRespMsg(reqStr);
                                 break;
                             //普通/集合项目放款
                             case (int) Agp2pEnums.SumapayApiEnum.ALoan:
                             case (int) Agp2pEnums.SumapayApiEnum.CLoan:
-                                respMsg = BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr) : new MakeLoanRespMsg(reqStr);
                                 break;
                             //个人提现
                             case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
                             case (int)Agp2pEnums.SumapayApiEnum.WdraM:
-                                respMsg = isSync ? new WithdrawRespMsg(reqStr, true) : BaseRespMsg.NewInstance<WithdrawRespMsg>(reqStr);
+                                respMsg = new WithdrawRespMsg(reqStr, isSync);
                                 break;
                             //个人存管账户还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.MaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.McRep:
-                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = new RepayRespMsg(reqStr);
                                 break;
                             //个人协议还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.BaRep:
                             case (int) Agp2pEnums.SumapayApiEnum.BcRep:
-                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = new RepayRespMsg(reqStr);
                                 ((RepayRespMsg) respMsg).BankRepay = true;
                                 break;
                             //个人自动还款普通/集合项目
                             case (int) Agp2pEnums.SumapayApiEnum.AcRep:
                             case (int) Agp2pEnums.SumapayApiEnum.AbRep:
-                                respMsg = isSync ? new RepayRespMsg(reqStr) : BaseRespMsg.NewInstance<RepayRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<RepayRespMsg>(reqStr) : new RepayRespMsg(reqStr);
                                 ((RepayRespMsg) respMsg).AutoRepay = true;
                                 break;
                             //普通/集合项目本息到账
                             case (int) Agp2pEnums.SumapayApiEnum.RetPt:
                             case (int) Agp2pEnums.SumapayApiEnum.RetCo:
-                                respMsg = BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(reqStr) : new ReturnPrinInteRespMsg(reqStr);
                                 break;
                             //债权转让
                             case (int) Agp2pEnums.SumapayApiEnum.CreAs:
                             case (int)Agp2pEnums.SumapayApiEnum.CreAM:
-                                respMsg = isSync ? new CreditAssignmentRespMsg(reqStr) : BaseRespMsg.NewInstance<CreditAssignmentRespMsg>(reqStr);
-                                break;
-                            //付款到个人
-                            case (int) Agp2pEnums.SumapayApiEnum.TranU:
-                                respMsg = BaseRespMsg.NewInstance<Transfer2UserRespMsg>(reqStr);
+                                respMsg = isSync ? BaseRespMsg.NewInstance<CreditAssignmentRespMsg>(reqStr) : new CreditAssignmentRespMsg(reqStr);
                                 break;
                             //查询项目
                             case (int)Agp2pEnums.SumapayApiEnum.QuPro:

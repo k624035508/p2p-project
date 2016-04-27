@@ -26,9 +26,23 @@ namespace Agp2p.Core.Message.PayApiMsg
             Sync = false;
         }
 
-        public ReturnPrinInteRespMsg(bool sync = false)
+        public ReturnPrinInteRespMsg(string requestStr)
         {
-            Sync = sync;
+            Sync = true;
+
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
+
+            ProjectCode = map.ContainsKey("projectCode") ? Utils.StrToInt(map["projectCode"], 0) : 0;
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
+            PayType = map.ContainsKey("payType") ? map["payType"] : "";
+            MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
+            MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";
+            RequestTime = map.ContainsKey("requestTime") ? map["requestTime"] : "";
+            AccountBalance = map.ContainsKey("accountBalance") ? map["accountBalance"] : "";
+            DealTime = map.ContainsKey("dealTime") ? map["dealTime"] : "";
         }
 
         public override bool CheckSignature()
