@@ -23,13 +23,13 @@ namespace Agp2p.Core.NotifyLogic
         {
             if (timerType != TimerMsg.Type.AutoRepayTimer) return;
 
-            // 安广融合借款人还款提现：你 3 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。
+            // 安广融合借款人还款提现：你 {remainDays} 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。
             var context = new Agp2pDataContext();
             var willRepayTasks =
                 context.li_repayment_tasks.Where(
                     t =>
                         t.li_projects.dt_article_category.call_index != "newbie" &&
-                        t.should_repay_time.Date == DateTime.Today.AddDays(3) &&
+                        (t.should_repay_time.Date == DateTime.Today.AddDays(3) || t.should_repay_time.Date == DateTime.Today.AddDays(1)) &&
                         t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!willRepayTasks.Any()) return;
 
@@ -52,6 +52,7 @@ namespace Agp2p.Core.NotifyLogic
                 if (alreadySend) return;
 
                 var smsContent = smsTemplate.content
+                    .Replace("{remainDays}", (task.should_repay_time.Date - DateTime.Today).TotalDays.ToString("n0"))
                     .Replace("{project}", task.li_projects.title)
                     .Replace("{termNumber}", task.term.ToString())
                     .Replace("{principal}", task.repay_principal.ToString("c"))
