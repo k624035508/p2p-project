@@ -11,18 +11,22 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string PayType { get; set; }//手续费收取方式
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编        
-        public bool Collective { get; set; }//集合项目标识
         public bool Sync { get; set; }//同步标识
 
-        public MakeLoanRespMsg()
+        public MakeLoanRespMsg(){}
+        public MakeLoanRespMsg(string requestStr)
         {
             Sync = false;
-        }
+            var map = Utils.UrlParamToData(requestStr);
+            RequestId = map["requestId"];
+            Result = map["result"];
+            Signature = map["signature"];
 
-        public MakeLoanRespMsg(bool sync = false, bool collective = false)
-        {
-            Collective = collective;
-            Sync = sync;
+            ProjectCode = map.ContainsKey("projectCode") ? Utils.StrToInt(map["projectCode"], 0) : 0;
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
+            PayType = map.ContainsKey("feeType") ? map["feeType"] : "";
+            MainAccountType = map.ContainsKey("mainRoleType") ? map["mainRoleType"] : "";
+            MainAccountCode = map.ContainsKey("mainRoleCode") ? map["mainRoleCode"] : "";
         }
 
         public override bool CheckSignature()

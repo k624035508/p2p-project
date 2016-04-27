@@ -57,11 +57,11 @@ namespace Agp2p.Core.NotifyLogic
                 var errorMsg = string.Empty;
                 if (!SMSHelper.SendTemplateSms(agent.mobile, msgContent, out errorMsg))
                 {
-                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信成功：" + msgContent);
+                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + errorMsg);
                 }
                 else
                 {
-                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + errorMsg);
+                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信成功：" + msgContent);
                 }
             }
             catch (Exception ex)

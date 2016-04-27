@@ -260,6 +260,8 @@ namespace Agp2p.Web.UI.Page
 
         protected static string GetRemainTime(li_projects proj)
         {
+            if (proj.publish_time == null) return "";
+
             var deadlineDay = proj.publish_time.Value.AddDays(proj.financing_day);
 
             var match = new Regex(@"^(\d{1,2}):(\d{2}):(\d{2})$").Match(ConfigLoader.loadSiteConfig().systemTimerTriggerTime);

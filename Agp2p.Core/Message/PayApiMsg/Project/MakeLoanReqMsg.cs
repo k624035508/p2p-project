@@ -48,9 +48,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             return postStr;
         }
 
-        public void SetSubledgerList(decimal loanFee, decimal bondFee)
+        public void SetSubledgerList(decimal fee)
         {
-            var feeSum = loanFee + bondFee;
             var loanSum = Utils.StrToDecimal(Sum, 0);
             var list = new List<object>
             {
@@ -60,11 +59,11 @@ namespace Agp2p.Core.Message.PayApiMsg
                     roleType = "0",
                     roleCode = UserId.ToString(),
                     inOrOut = "0",
-                    sum = (loanSum - feeSum).ToString("f")
+                    sum = (loanSum - fee).ToString("f2")
                 }
             };
             //平台服务费为0不能发生生成分账列表
-            if (feeSum > 0)
+            if (fee > 0)
             {
                 //平台服务费
                 list.Add(new
@@ -72,7 +71,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                     roleType = "1",
                     roleCode = SumapayConfig.MerchantCode,
                     inOrOut = "0",
-                    sum = (loanFee + bondFee).ToString("f")
+                    sum = fee.ToString("f2")
                 });
             }
             SubledgerList = JsonHelper.ObjectToJSON(list);

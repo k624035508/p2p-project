@@ -93,7 +93,7 @@ namespace Agp2p.Web.UI.Page
                 }
                 return new
                 {
-                    ptrId = c.id,
+                    ptrId = c.li_project_transactions_invest.id,
                     projectId = proj.id,
                     projectUrl = linkurl(config, "project", proj.id),
                     projectName = proj.title,

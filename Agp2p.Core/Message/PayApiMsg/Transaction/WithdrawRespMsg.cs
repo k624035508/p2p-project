@@ -25,12 +25,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public bool Sync { get; set; }
 
-        public WithdrawRespMsg()
-        {
-            Sync = false;
-        }
-
-        public WithdrawRespMsg(string requestStr, bool sync = false)
+        public WithdrawRespMsg(string requestStr, bool sync)
         {
             Sync = sync;
             var map = Utils.UrlParamToData(requestStr);
@@ -38,8 +33,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            Sum = map["sum"];
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
             UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";
             WithdrawableBalance = map.ContainsKey("withdrawableBalance") ? map["withdrawableBalance"] : "";
             FrozenBalance = map.ContainsKey("frozenBalance") ? map["frozenBalance"] : "";

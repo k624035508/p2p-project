@@ -357,7 +357,7 @@ namespace Agp2p.Common
         {
             [Description("充值待确认")]
             Charging = 1,
-            [Description("提现进行中")]
+            [Description("提现")]
             Withdrawing = 2,
             [Description("充值成功")]
             ChargeConfirm = 3,
@@ -426,12 +426,6 @@ namespace Agp2p.Common
 
         public enum OfflineTransactionTypeEnum
         {
-            // 预计收入
-            [Description("预计平台服务费")]
-            SumManagementFeeOfLoanning = 1,
-            [Description("预计风险保证金")]
-            SumBondFee = 2,
-
             // 收入
             [Description("平台服务费")]
             ManagementFeeOfLoanning = 10,
@@ -928,13 +922,13 @@ namespace Agp2p.Common
         public enum MyLoanQueryTypeEnum
         {
             [Description("申请中")]
-            Applying = 0,
+            Applying = 1,
             [Description("借款中")]
-            Loaning = 1,
+            Loaning = 2,
             [Description("还款中")]
-            Repaying = 2,
+            Repaying = 3,
             [Description("已还款")]
-            Repaid = 3,
+            Repaid = 4,
         }
     }
 }

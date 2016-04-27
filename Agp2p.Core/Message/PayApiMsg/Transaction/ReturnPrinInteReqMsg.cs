@@ -66,7 +66,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                         roleType = "0",
                         roleCode = t.investor.ToString(),
                         inOrOut = "0",
-                        sum = (t.interest + t.principal).ToString()
+                        sum = (t.interest + t.principal).GetValueOrDefault(0).ToString("f2")
                     });
             });
             SubledgerList = JsonHelper.ObjectToJSON(subledgerList);
@@ -82,7 +82,7 @@ namespace Agp2p.Core.Message.PayApiMsg
                     roleType = "0",
                     roleCode = u.Key.id.ToString(),
                     inOrOut = "0",
-                    sum = (u.Sum(uc => uc.principal)).ToString("f")
+                    sum = (u.Sum(uc => uc.principal)).ToString("f2")
                 });
             });
             SubledgerList = JsonHelper.ObjectToJSON(subledgerList);

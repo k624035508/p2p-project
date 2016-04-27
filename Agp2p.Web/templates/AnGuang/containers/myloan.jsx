@@ -6,10 +6,17 @@ import DateSpanPicker from "../components/date-span-picker.jsx";
 import Table from "../components/myloan-table.jsx";
 import Pagination from "../components/pagination.jsx";
 
+const MyLoanQueryTypeEnum = {
+    Applying : 1, // 申请中
+    Loaning : 2, // 借款中
+    Repaying : 3, // 还款中
+    Repaid : 4, // 已还款
+}
+
 class MyTransaction extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { type: 0, startTime: "", endTime: "", pageIndex: 0,
+        this.state = { type: MyLoanQueryTypeEnum.Applying, startTime: "", endTime: "", pageIndex: 0,
             onPageLoaded: pageCount => this.setState({ pageCount: pageCount }) };
     }
     render() {

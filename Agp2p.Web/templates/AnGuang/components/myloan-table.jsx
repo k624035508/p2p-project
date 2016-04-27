@@ -10,6 +10,13 @@ const SumapayApiEnum = {
     ClRep: 9
 }
 
+const MyLoanQueryTypeEnum = {
+    Applying : 1, // 申请中
+    Loaning : 2, // 借款中
+    Repaying : 3, // 还款中
+    Repaid : 4, // 已还款
+}
+
 class MyloanTable extends React.Component {
     constructor(props) {
         super(props);
@@ -41,9 +48,9 @@ class MyloanTable extends React.Component {
             }.bind(this)
         });
     }
-    applyForAutoRepay(projectId, financingAmount) {
+    applyForAutoRepay(projectId, repayLimit) {
         confirm("是否确定开通自动还款", () => {
-            location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.AcReO}&projectCode=${projectId}&repayLimit=${financingAmount}`;
+            location.href = `/api/payment/sumapay/index.aspx?api=${SumapayApiEnum.AcReO}&projectCode=${projectId}&repayLimit=${repayLimit}`;
         });
     }
     applyForCanelAutoRepay(projectId) {
@@ -83,28 +90,25 @@ class MyloanTable extends React.Component {
                             <th>还款日期</th>
                             <th>借款金额（元）</th>
                             <th>利息（元）</th>
-                            <th>期数</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.data.length != 0 ? null : <tr><td colSpan="7">暂无数据</td></tr>}
-                        { this.state.data.map(tr =>
-                            <tr className="detailRow" key={tr.ptrId}>
-                                <td><a href={tr.projectUrl} target="_blank"
-                                    title={tr.projectName}>{tr.projectName}</a></td>
-                                <td>{tr.projectProfitRateYearly}</td>
-                                <td>{tr.investTime == "01/01/01" ? "" : tr.investTime}</td>
-                                <td>{tr.investValue}</td>
-                                <td>{tr.profit}</td>
-                                <td>1/1</td>
-                                {this.props.type == 2 ?
-                                    <td>
-                                        {tr.autoRepay == true ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId) }>取消自动还款</a>
-                                            : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.investment_amount) }>开通自动还款</a> }
-                                        <a href="javascript:" onClick={ev => this.ManualRepay(tr.ptrId) }>手动还款</a>
-                                    </td>
-                                    : <td></td>}
+                        {this.state.data.length != 0 ? null : <tr><td colSpan="6">暂无数据</td></tr>}
+                        { this.state.data.map(pr =>
+                            <tr className="detailRow" key={pr.id}>
+                                <td><a href={pr.url} target="_blank" title={pr.name}>{pr.name}</a></td>
+                                <td>{pr.profitRateYearly}</td>
+                                <td>{pr.nextRepayTime}</td>
+                                <td>{pr.financingAmount}</td>
+                                <td>{pr.totalProfit}</td>
+                                {this.props.type != MyLoanQueryTypeEnum.Repaying ? <td /> :
+                                <td>
+                                    {pr.isAutoRepay
+                                        ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(pr.id) }>取消自动还款</a>
+                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay(pr.id, pr.repayLimit) }>开通自动还款</a> }
+                                    <a href="javascript:" onClick={ev => this.ManualRepay(pr.id) }>手动还款</a>
+                                </td>}
                             </tr>
                         ) }
                     </tbody>
