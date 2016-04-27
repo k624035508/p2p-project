@@ -1812,7 +1812,7 @@ namespace Agp2p.Core
         /// <param name="loanerUserId"></param>
         /// <param name="bankAccountId"></param>
         /// <param name="amount"></param>
-        public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int? repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
+        public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
         {
             var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
             if (wallet.idle_money < amount)
@@ -1828,7 +1828,7 @@ namespace Agp2p.Core
                 charger = loanerUserId,
                 value = amount,
                 no_order = "",
-                remarks = repaymentTaskId?.ToString()
+                remarks = repaymentTaskId.ToString()
             };
             // 创建钱包历史
             wallet.idle_money -= amount;
@@ -1841,6 +1841,7 @@ namespace Agp2p.Core
             if (save)
             {
                 context.SubmitChanges();
+                MessageBus.Main.PublishAsync(new GainLoanerRepaymentMsg(gainAt, repaymentTaskId, loanerUserId, amount));
             }
         }
 
@@ -2295,6 +2296,9 @@ namespace Agp2p.Core
             if (!unpaidTasks.Any()) throw new Exception("全部还款计划均已执行，不能进行提前还款");
             if (remainTermPrincipalRatePercent < 0 || 100 < remainTermPrincipalRatePercent)
                 throw new Exception("剩余利息百分比率不正常");
+
+            var now = DateTime.Now;
+
             var remainTermPrincipalRate = remainTermPrincipalRatePercent;
 
             var currentTask = unpaidTasks.First();
@@ -2303,7 +2307,7 @@ namespace Agp2p.Core
             if (!willInvalidTasks.Any())
             {
                 // 向借款人收取还款
-                GainLoanerRepayment(context, DateTime.Now, currentTask.id,
+                GainLoanerRepayment(context, now, currentTask.id,
                     currentTask.li_projects.li_risks.li_loaners.user_id,
                     currentTask.repay_principal + currentTask.repay_interest);
                 context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
@@ -2336,11 +2340,14 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
-            GainLoanerRepayment(context, DateTime.Now, null,
+            GainLoanerRepayment(context, now, currentTask.id,
                 currentTask.li_projects.li_risks.li_loaners.user_id,
-                currentTask.repay_principal + currentTask.repay_interest + earlierRepayTask.repay_principal +
-                earlierRepayTask.repay_interest);
+                currentTask.repay_principal + currentTask.repay_interest);
             context.ExecuteRepaymentTask(currentTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
+
+            GainLoanerRepayment(context, now, earlierRepayTask.id,
+                currentTask.li_projects.li_risks.li_loaners.user_id,
+                earlierRepayTask.repay_principal + earlierRepayTask.repay_interest);
             context.ExecuteRepaymentTask(earlierRepayTask.id, Agp2pEnums.RepaymentStatusEnum.EarlierPaid);
 
             return project;

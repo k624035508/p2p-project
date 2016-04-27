@@ -16,7 +16,33 @@ namespace Agp2p.Core.NotifyLogic
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMessage(m.TimerType, m.OnTime)); // 还款前 3 日发送还款提醒给借款人
+            MessageBus.Main.Subscribe<GainLoanerRepaymentMsg>(m => HandleGainLoanerRepaymentSuccess(m.GainAt, m.RepaymentTaskId, m.LoanerUserId, m.Amount)); // 借款人还款成功后提醒借款人
             MessageBus.Main.Subscribe<ProjectRepaidMsg>(m => HandleProjectRepaidMsg(m.RepaymentTaskId)); // 放款计划执行后发送还款提醒
+        }
+
+        private static void HandleGainLoanerRepaymentSuccess(DateTime gainAt, int repaymentTaskId, int loanerUserId, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+            var loaner = context.dt_users.Single(u => u.id == loanerUserId);
+            var task = context.li_repayment_tasks.Single(r => r.id == repaymentTaskId);
+
+            var repayTaskCount = task.li_projects.li_repayment_tasks.Count(ta => ta.status != (int)Agp2pEnums.RepaymentStatusEnum.Invalid);
+            var smsContent =
+                $"你已于 {gainAt.ToString("yyyy-MM-dd HH:mm")} 成功还款 {amount} 到项目{task.li_projects.title} 的第 {task.term}/{repayTaskCount} 期，包括本金：{task.repay_principal}，利息：{task.repay_interest}";
+            try
+            {
+                var errorMsg = string.Empty;
+                if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
+                {
+                    context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
+                        $"发送还款提醒失败：{errorMsg}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+                }
+            }
+            catch (Exception ex)
+            {
+                context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
+                    $"发送还款提醒失败：{ex.GetSimpleCrashInfo()}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+            }
         }
 
         private static void HandleTimerMessage(TimerMsg.Type timerType, bool onTime)
@@ -45,7 +71,7 @@ namespace Agp2p.Core.NotifyLogic
             {
                 var loaner = task.li_projects.li_risks.li_loaners.dt_users;
                 if(string.IsNullOrEmpty(loaner.mobile)) return;
-                var logTag = string.Format("LoanerRepayHint_{0}_{1}", loaner.id, task.id);
+                var logTag = $"LoanerRepayHint_{loaner.id}_{task.id}";
 
                 // 判断有没有发送过短信
                 var alreadySend = context.dt_manager_log.Any(log => log.action_type == logTag);
@@ -65,14 +91,13 @@ namespace Agp2p.Core.NotifyLogic
                     if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
                     {
                         context.AppendAdminLogAndSave("LoanerRepayHint",
-                            string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", errorMsg, loaner.user_name, task.li_projects.title));
+                            $"发送还款提醒失败：{errorMsg}（借款人ID：{loaner.user_name}，项目名称：{task.li_projects.title}）");
                     }
-                    context.AppendAdminLogAndSave(logTag, string.Format("发送还款提醒成功：{0}", smsContent));
                 }
                 catch (Exception ex)
                 {
                     context.AppendAdminLogAndSave("LoanerRepayHint",
-                        string.Format("发送还款提醒失败：{0}（借款人ID：{1}，项目名称：{2}）", ex.GetSimpleCrashInfo(), loaner.user_name, task.li_projects.title));
+                        $"发送还款提醒失败：{ex.GetSimpleCrashInfo()}（借款人ID：{loaner.user_name}，项目名称：{task.li_projects.title}）");
                 }
             });
         }
@@ -135,14 +160,14 @@ namespace Agp2p.Core.NotifyLogic
                         if (!SMSHelper.SendTemplateSms(repayToUser.mobile, msgContent, out errorMsg))
                         {
                             context.AppendAdminLogAndSave("RepaymentSms",
-                                string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", errorMsg, repayToUser.user_name, repayTask.li_projects.title));
+                                $"发送放款提醒失败：{errorMsg}（客户ID：{repayToUser.user_name}，项目名称：{repayTask.li_projects.title}）");
                         }
                     }
                 }
                 catch (Exception e)
                 {
                     context.AppendAdminLogAndSave("RepaymentSms",
-                        string.Format("发送放款提醒失败：{0}（客户ID：{1}，项目名称：{2}）", e.GetSimpleCrashInfo(), repayToUser.user_name, repayTask.li_projects.title));
+                        $"发送放款提醒失败：{e.GetSimpleCrashInfo()}（客户ID：{repayToUser.user_name}，项目名称：{repayTask.li_projects.title}）");
                 }
             });
         }

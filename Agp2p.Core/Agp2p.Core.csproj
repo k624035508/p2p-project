@@ -114,6 +114,7 @@
     <Compile Include="Message\PayApiMsg\Project\ManualBidReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\BidRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\User\UserRealNameAuthRespMsg.cs" />
+    <Compile Include="Message\GainLoanerRepaymentMsg.cs" />
     <Compile Include="PayApiLogic\SumapayConfig.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteReqMsg.cs" />

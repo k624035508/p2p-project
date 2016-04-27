@@ -47,7 +47,6 @@ namespace Agp2p.Core.NotifyLogic
                             context.AppendAdminLogAndSave("Huoqi",
                                 $"发送中间人金额提醒失败：{errorMsg}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
                         }
-                        context.AppendAdminLogAndSave("Huoqi", $"发送中间人金额提醒成功：{msgContent}");
                     }
                     catch (Exception ex)
                     {
