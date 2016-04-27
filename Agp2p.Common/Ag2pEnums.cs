@@ -922,13 +922,13 @@ namespace Agp2p.Common
         public enum MyLoanQueryTypeEnum
         {
             [Description("申请中")]
-            Applying = 0,
+            Applying = 1,
             [Description("借款中")]
-            Loaning = 1,
+            Loaning = 2,
             [Description("还款中")]
-            Repaying = 2,
+            Repaying = 3,
             [Description("已还款")]
-            Repaid = 3,
+            Repaid = 4,
         }
     }
 }
