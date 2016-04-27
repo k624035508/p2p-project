@@ -220,7 +220,6 @@ namespace Agp2p.Core
                 context.li_wallet_histories.InsertOnSubmit(his);
 
                 //添加充值手续费
-                //汇潮支付
                 if (tr.pay_api != null && tr.pay_api >= (int)Agp2pEnums.PayApiTypeEnum.Ecpss)
                 {
                     decimal feeFate = 0;
@@ -2778,21 +2777,6 @@ namespace Agp2p.Core
                 }
             }
             return "";
-        }
-
-        /// <summary>
-        /// 查询借款人可用额度
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="loaner"></param>
-        /// <returns></returns>
-        public static int QueryLoanerQuota(this Agp2pDataContext context, li_loaners loaner)
-        {
-            return loaner.quota -
-                   (int)
-                       context.li_projects.Where(
-                           l => l.li_risks.li_loaners != null && l.li_risks.li_loaners.id == loaner.id)
-                           .Sum(l => l.financing_amount);
         }
     }
 }

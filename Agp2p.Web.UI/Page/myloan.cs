@@ -109,7 +109,7 @@ namespace Agp2p.Web.UI.Page
                     status = c.GetProjectStatusDesc(),
                     isNewbieProject = c.dt_article_category.call_index == "newbie",
                     autoRepay = c.autoRepay,
-                    c.investment_amount
+                    repayLimit = c.li_repayment_tasks.Sum(r => r.repay_interest + r.repay_principal)
                 };
             });
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});

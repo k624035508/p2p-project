@@ -101,7 +101,7 @@ class MyloanTable extends React.Component {
                                 <td>
                                     {tr.autoRepay == true
                                         ? <a href="javascript:" onClick={ev => this.applyForCanelAutoRepay(tr.ptrId) }>取消自动还款</a>
-                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.investment_amount) }>开通自动还款</a> }
+                                        : <a href="javascript:" onClick={ev => this.applyForAutoRepay(tr.ptrId, tr.repayLimit) }>开通自动还款</a> }
                                     <a href="javascript:" onClick={ev => this.ManualRepay(tr.ptrId)}>手动还款</a>
                                 </td>
                             </tr>
