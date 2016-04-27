@@ -41,8 +41,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            ProjectCode = Utils.StrToInt(map["projectCode"], 0);
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            ProjectCode = map.ContainsKey("projectCode") ? Utils.StrToInt(map["projectCode"], 0) : 0;
 
             //账户还款参数
             UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";

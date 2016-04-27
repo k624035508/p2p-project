@@ -13,7 +13,6 @@ $(function(){
     //.about-nav-bar position fixed
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
-        console.log(scrollTop);
         if (scrollTop >= 130) {
             $(".about-nav-bar").addClass("scroll-style");
         } else {
