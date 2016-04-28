@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDom from "react-dom";
+
 import "bootstrap-webpack!./bootstrap.config.js";
 import "../less/head.less";
 import "../less/loan.less";
@@ -8,138 +11,77 @@ import header from "./header.js";
 
 window['$'] = $;
 
-$(function () {
-    header.setHeaderHighlight(5);
+const LoanApplyStep = {
+    Unlogin : 0, // 未登录
+    UnApplyAsLoaner : 1, // 未申请借款人
+    ApplyAsLoanerAuditting : 2, // 申请借款人审核中
+    UnApplyProject : 3, // 未申请借款项目
+    ProjectAuditting : 4, // 申请借款项目审核中
+    ProjectApplyCompleted : 5, // 完成借款申请
+};
 
-    //data-toggle 初始化
-    $('[data-toggle="popover"]').popover();
-    var { step,userId,userName,loanerId,pendingProjectId,quotaUse } = $("#main").data();
+const LoanerStatusEnum = {
+    IsNotALoaner : -1, // 不是借款人
+    Normal : 1, // 正常
+    Pending : 10, // 待审核
+    PendingFail : 11, // 审核不通过
+    Disable : 20 // 禁用
+};
 
-    var $step1 = $("ul.application-ul li.step1");
-    var $step2 = $("ul.application-ul li.step2");
-    var $step3 = $("ul.application-ul li.step3");
-    var $step4 = $("ul.application-ul li.step4");
-    var $forms = $(".form-wrapper > div");
-    var $login = $(".form-wrapper div.login-form-wrap");
-    var $personalInfo = $(".form-wrapper div.personal-info-form-wrap");
-    var $loanDetail = $(".form-wrapper div.loan-detail-form-wrap");
-    var $wancheng = $(".form-wrapper div.Completion-loan-form-wrap");
-    var ddlSelectIndex = 0;
+// 这个枚举跟服务器上面的不同
+const ProjectStatusEnum = {
+    FinancingApplicationNotExist : -1, // 未申请
+    FinancingApplicationUncommitted : 1, // 提交了申请
+    FinancingApplicationChecking : 2, // 审核中
+    FinancingApplicationCancel : 0, // 审核失败
+};
 
-    $forms.hide();
-    if (step == "1") {
-        //显示登录步骤
-        $login.show();
-    } else if(step.toString().indexOf("2")!=-1) {
-        //显示申请成为借款人步骤
-        var { loanerName,loanerMobile,loanerAge,loanerEducationalBackground,loanerIncome
-            ,loanerJob,loanerMaritalStatus,loanerNativePlace,loanerWorkingAt,loanerWorkingCompany } = $("#loaner").data();
-        $("#name").val(loanerName);
-        $("#phone").val(loanerMobile);
-        $("#birthplace").val(loanerNativePlace);
-        $("#job").val(loanerJob);
-        $("#work-place").val(loanerWorkingAt);
-        $("#employer").val(loanerWorkingCompany);
-        $("#education").val(loanerEducationalBackground);
-        $("#marital-status").val(loanerMaritalStatus);
-        $("#income").val(loanerIncome);
-        $('div.personal-info-form-wrap div.status').hide();
-
-
-        if(step != "2"){
-            $(".form-wrapper form.personal-info-form input").attr("readonly","readonly");
-            $("#marital-status").attr("disabled","disabled");
-            $("#education").attr("disabled","disabled");
-            $('#loanerApplyBtn').hide();
-
-            if(step == "21"){
-                //显示借款人审核中步骤
-                $('#loanerApplyChecking').show();
-            }else if(step == "22"){
-                //显示借款人审核失败，重新提交步骤
-                $('#loanerApplyFailed').show();
-                $(".form-wrapper form.personal-info-form input").removeAttr("readonly");
-                $("#marital-status").removeAttr("disabled");
-                $("#education").removeAttr("disabled");
-                $('#loanerApplyBtn').show();
-            }else if(step == "23"){
-                //显示禁止再申请借款人步骤
-                $('#loanerApplyForbid').show();
-            }
-        }                
-        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
-        $personalInfo.show();
-        if(!loanerName){
-            alert("请先前往会员中心进行实名认证", function(){
-                location.href = '/user/center/index.html#/safe';
-            });
-        }
-    } else if(step == "5") {
-        //显示借款完成步骤
-        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
-        $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
-        $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish.png') no-repeat");
-        $wancheng.show();
-
-        $("#loanApplyAgainBtn").click(function() {
-            //再次申请借款
-            showLoanApplyStep("3", quotaUse);
-            $step4.css("background","url('/templates/AnGuang/imgs/loan/loan-finish-grey.png') no-repeat");
-            $wancheng.hide();
-        });
-
-    } else {
-        //显示申请借款步骤
-        showLoanApplyStep(step, quotaUse);
+class ApplyingStatusPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
     }
+    render () {
+        var step1HighLightStyle = this.props.step >= 1
+            ? {background: 'url("/templates/AnGuang/imgs/loan/personal-info.png") no-repeat'} : null;
+        var step2HighLightStyle = this.props.step >= 2
+            ? {background: 'url("/templates/AnGuang/imgs/loan/loan.png") no-repeat'} : null;
+        var step3HighLightStyle = this.props.step >= 5
+            ? {background: 'url("/templates/AnGuang/imgs/loan/loan-finish.png") no-repeat'} : null;
 
-    function showLoanApplyStep(step, quotaUse) {
-        $step2.css("background","url('/templates/AnGuang/imgs/loan/personal-info.png') no-repeat");
-        $step3.css("background","url('/templates/AnGuang/imgs/loan/loan.png') no-repeat");
-        $loanDetail.show();
-        $('div.loan-detail-form-wrap div.status').hide();
-        var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent } = $("#project").data();
-        //可用额度
-        $("#largest-amount span").html(quotaUse);
-
-        if(step == "3") {            
-            $("#loan-amount").blur(function(){
-                if ($("#loan-amount").val() > quotaUse) {
-                    alert("借款额度不能大于可用额度！");
-                }
-            });
-        } else if(step == "4") {
-            //显示借款审核中步骤
-            $loanDetail.show();
-
-            $('#loanApplyChecking').show();
-
-            $(".form-wrapper form.loan-detail-form textarea").attr("readonly","readonly");
-            $("#loan-amount").attr("readonly","readonly");            
-            //$("#ddl_project_type").attr("disabled","disabled");
-            
-            $("#loan-amount").val(projectAmount);
-            //$("#ddl_project_type").val(projectCategoryId);
-            $("#loan-description").val(projectLoanerContent);
-            $("#loan-usage").val(projectLoanUsage);
-            $("#repayment-source").val(projectSourceOfRepayment);
-
-            $("#loanApplyBtn").hide();
-        } 
+        return (
+            <div className="nav-wrap">
+                <p className="title">借款流程</p>
+                <ul className="list-unstyled list-inline application-ul">
+                    <li className="step1">登录</li>
+                    <li className="next-icon"></li>
+                    <li className="step2" style={step1HighLightStyle} >申请成为借款人</li>
+                    <li className="next-icon"></li>
+                    <li className="step3" style={step2HighLightStyle} >申请借款</li>
+                    <li className="next-icon"></li>
+                    <li className="step4" style={step3HighLightStyle} >完成借款</li>
+                </ul>
+            </div>
+        );
     }
+}
 
-    //登陆
-    $("#loginBtn").click(function(){
+class LoginPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+    doLogin() {
         $.ajax({
             type: "post",
             url: "/tools/submit_ajax.ashx?action=user_login",
             dataType: "json",
             data: {
-                txtUserName: $("#user-name").val(),
-                txtPassword: $("#user-pwd").val(),
+                txtUserName: this.refs.userName.value,
+                txtPassword: this.refs.passwd.value,
                 chkRemember: true
             },
-            success: function(data){
+            success: data => {
                 if(data.status == 1){
                     location.reload();
                 } else {
@@ -149,60 +91,300 @@ $(function () {
             error: function(xhr, status, err){
                 alert("操作超时，请重试。");
             }
-        });        
-    });
+        });
+    }
+    render () {
+        return (
+            <div className="login-form-wrap">
+                <div className="form-title">
+                    <span className="title-style">登录</span>
+                    <span className="pull-right register-btn">如无账号 <a href='/register.html'>快速注册</a></span>
+                </div>
+                <form className="form-horizontal login-form">
+                    <div className="form-group">
+                        <label htmlFor="user-name" className="control-label">用户名：</label>
+                        <input type="text" className="form-control" ref="userName" id="user-name" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="user-pwd" className="control-label">密码：</label>
+                        <input type="text" style={{display: 'none'}} />
+                        <input type="password" className="form-control" ref="passwd" id="user-pwd" autoComplete="off" />
+                    </div>
+                    <div className="form-group">
+                        <button type="button" className="btn btn-default" id="loginBtn" onClick={ev => this.doLogin()}>登 录</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
 
-    //提交借款人申请
-    $("#loanerApplyBtn").click(function(){
+class LoanerApplyingPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = props.value;
+    }
+    componentDidMount() {
+        if(!this.state.loanerName){
+            alert("请先前往会员中心进行实名认证", function(){
+                location.href = '/user/center/index.html#/safe';
+            });
+        }
+    }
+    doLoanerApplySubmit() {
         $.ajax({
             type: "post",
             url: "/aspx/main/loan.aspx/ApplyLoaner",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify({
-                userId:userId,
                 age:0,
-                native_place:$("#birthplace").val(),
-                job:$("#job").val(),
-                working_at:$("#work-place").val(),
-                working_company:$("#employer").val(),
-                educational_background:$("#education").val(),
-                marital_status:$("#marital-status").val(),
-                income:$("#income").val(),
+                nativePlace: this.state.loanerNativePlace,
+                job: this.state.loanerJob,
+                workingCompany: this.state.loanerWorkingCompany,
+                educationalBackground: this.state.loanerEducationalBackground,
+                maritalStatus: this.state.loanerMaritalStatus,
+                income: this.state.loanerIncome
             }),
-            success: function(data){
-                location.reload();
+            success: data => {
+                if (data.d === "ok") location.reload();
             },
             error: function(xhr, status, err){                
                 alert(xhr.responseJSON.Message);
             }
-        });          
-    });
+        });
+    }
+    render () {
+        var { loanerName,loanerMobile,loanerAge,loanerEducationalBackground,loanerIncome, loanerStatus,
+            loanerJob,loanerMaritalStatus,loanerNativePlace,loanerWorkingAt,loanerWorkingCompany } = this.state;
+        var isEditable = loanerStatus == LoanerStatusEnum.IsNotALoaner || loanerStatus == LoanerStatusEnum.PendingFail;
+        return (
+            <div className="personal-info-form-wrap">
+                <div className="form-title">
+                    <span className="title-style">借款人资料</span>
+                </div>
+                {loanerStatus == LoanerStatusEnum.Pending ?
+                <div id="loanerApplyChecking" className="status">
+                    <span className="status-icon checking"></span>
+                    <span className="tips-title">申请借款人审核中</span>
+                    <span className="tips">您提交的申请正在审核中，请耐心等待！</span>
+                </div> : null }
+                {loanerStatus == LoanerStatusEnum.PendingFail ?
+                <div id="loanerApplyFailed" className="status">
+                    <span className="status-icon failed"></span>
+                    <span className="tips-title">申请借款人失败</span>
+                    <span className="tips">您提交的申请资料有误，请重新核对资料后再提交！</span>
+                </div>:null}
+                {loanerStatus == LoanerStatusEnum.Disable ?
+                <div id="loanerApplyForbid" className="status">
+                    <span className="status-icon forbid"></span>
+                    <span className="tips-title">禁止申请借款人</span>
+                    <span className="tips">抱歉！您已被禁止申请成为借款人。</span>
+                </div>:null}
+                <form className="form-horizontal personal-info-form">
+                    <div className="form-group">
+                        <label htmlFor="name" className="control-label">姓名：</label>
+                        <input type="text" id="name" value={loanerName} className="form-control" readOnly />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="phone" className="control-label">手机号码：</label>
+                        <input type="text" id="phone" value={loanerMobile} className="form-control" readOnly />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="birthplace" className="control-label">籍贯：</label>
+                        <input type="text" id="birthplace" className="form-control" readOnly={!isEditable}
+                            value={loanerNativePlace} onChange={ev => this.setState({loanerNativePlace: ev.target.value})} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="job" className="control-label">职业：</label>
+                        <input type="text" id="job" className="form-control" value={loanerJob} readOnly={!isEditable}
+                            onChange={ev => this.setState({loanerJob: ev.target.value})} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="employer" className="control-label">工作单位：</label>
+                        <input type="text" id="employer" className="form-control" value={loanerWorkingCompany} readOnly={!isEditable}
+                            onChange={ev => this.setState({loanerWorkingCompany: ev.target.value})} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="education" className="control-label">学历：</label>
+                        <select id="education" className="form-control" value={loanerEducationalBackground} disabled={!isEditable}
+                            onChange={ev => this.setState({loanerEducationalBackground: ev.target.value})} >
+                            <option value="" style={{display: 'none'}}></option>
+                            <option value="小学及以下">小学及以下</option>
+                            <option value="初中">初中</option>
+                            <option value="高中">高中</option>
+                            <option value="中专">中专</option>
+                            <option value="大专">大专</option>
+                            <option value="本科">本科</option>
+                            <option value="研究生">研究生</option>
+                            <option value="博士及以上">博士及以上</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="marital-status" className="control-label">婚姻状况：</label>
+                        <select id="marital-status" className="form-control" value={loanerMaritalStatus} disabled={!isEditable}
+                            onChange={ev => this.setState({loanerMaritalStatus: ev.target.value})} >
+                            <option style={{display: 'none'}}></option>
+                            <option value="1">未婚</option>
+                            <option value="2">已婚</option>
+                            <option value="3">离异</option>
+                            <option value="4">丧偶</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="income" className="control-label">收入：</label>
+                        <input type="text" id="income" className="form-control" value={loanerIncome} readOnly={!isEditable}
+                            onChange={ev => this.setState({loanerIncome: ev.target.value})} />
+                    </div>
+                    <div className="form-group">
+                        <button type="button" className="btn btn-default" id="loanerApplyBtn" style={isEditable?null:{display:'none'}} onClick={ev => this.doLoanerApplySubmit()}>提 交</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
 
-    //提交借款申请
-    $("#loanApplyBtn").click(function(){
+class ProjectApplyingPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = props.value;
+        this.state.quotaUse = parseFloat(props.quotaUse);
+    }
+    doProjectApply() {
         $.ajax({
             type: "post",
             url: "/aspx/main/loan.aspx/ApplyLoan",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify({
-                loaner_id:loanerId,
-                user_name:userName,
-                loaner_content:$("#loan-description").val(),
-                loan_usage:$("#loan-usage").val(),
-                source_of_repayment:$("#repayment-source").val(),
-                amount:$("#loan-amount").val()
+                loanerContent: this.state.projectLoanerContent,
+                loanUsage: this.state.projectLoanUsage,
+                sourceOfRepayment: this.state.projectSourceOfRepayment,
+                amount: this.state.projectAmount,
             }),
             success: function(data){
-               location.reload();
+                if (data.d === "ok") location.reload();
             },
             error: function(xhr, status, err){                
                 alert(xhr.responseJSON.Message);
             }
-        });          
-    });
- 
- 
+        });
+    }
+    doQuotaCheck() {
+        if (parseFloat(this.state.projectAmount) > this.state.quotaUse) {
+            alert("借款额度不能大于可用额度！");
+        }
+    }
+    render() {
+        var { projectCategoryId,projectAmount,projectLoanUsage,projectSourceOfRepayment,projectLoanerContent,quotaUse, projectStatus } = this.state;
+        var isEditable = projectStatus == ProjectStatusEnum.FinancingApplicationNotExist || projectStatus == ProjectStatusEnum.FinancingApplicationCancel;
+        return (
+            <div className="loan-detail-form-wrap">
+                <div className="form-title">
+                    <span className="title-style">申请借款</span>
+                </div>
+                {projectStatus != ProjectStatusEnum.FinancingApplicationChecking && projectStatus != ProjectStatusEnum.FinancingApplicationUncommitted
+                ? null
+                : <div id="loanApplyChecking" className="status">
+                    <span className="status-icon checking"></span>
+                    <span className="tips-title">申请借款审核中</span>
+                    <span className="tips">您提交的申请正在审核中，请耐心等待！</span>
+                </div>}
+                {projectStatus != ProjectStatusEnum.FinancingApplicationCancel
+                ? null
+                : <div id="loanApplyFailed" className="status">
+                    <span className="status-icon failed"></span>
+                    <span className="tips-title">申请借款失败</span>
+                    <span className="tips">您提交的申请资料有误，请重新核对资料后再提交！</span>
+                </div>}
+                <form className="form-horizontal loan-detail-form">
+                    <div className="form-group">
+                        <label htmlFor="loan-amount" className="control-label">借款金额：</label>
+                        <input type="text" id="loan-amount" className="form-control" value={projectAmount}
+                            onChange={ev => this.setState({projectAmount: ev.target.value})}
+                            readOnly={!isEditable}
+                            onBlur={ev => this.doQuotaCheck()}/>
+                        <span id="largest-amount">{`（可用额度 ${quotaUse}）`}</span>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="loan-description" className="control-label">借款描述：</label>
+                        <textarea id="loan-description" className="form-control" value={projectLoanerContent}
+                            readOnly={!isEditable}
+                            onChange={ev => this.setState({projectLoanerContent: ev.target.value})}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="loan-usage" className="control-label">借款用途：</label>
+                        <textarea id="loan-usage" className="form-control" value={projectLoanUsage}
+                            readOnly={!isEditable}
+                            onChange={ev => this.setState({projectLoanUsage: ev.target.value})}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="repayment-source" className="control-label">还款来源：</label>
+                        <textarea id="repayment-source" className="form-control" value={projectSourceOfRepayment}
+                            readOnly={!isEditable}
+                            onChange={ev => this.setState({projectSourceOfRepayment: ev.target.value})}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <button type="button" className="btn btn-default" id="loanApplyBtn"
+                            style={isEditable?null:{display: 'none'}}
+                            onClick={ev => this.doProjectApply()}>提 交</button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
+
+class CompletePanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+    render () {
+        return (
+            <div className="Completion-loan-form-wrap">
+                <div className="form-title"><span className="title-style">完成借款</span></div>
+                <form className="form-horizontal Completion-loan-form">
+                    <div className="form-group">
+                        <label className="control-label"><img src={require('../imgs/loan/001.png')} /></label><br /><br />
+                        <label className="control-label">恭喜您！您申请的借款已审核通过！</label><br /><br /><br />
+                        <label className="control-label"><input id="loanApplyAgainBtn" type="button" value="申请借款" onClick={ev => this.props.onApplyLoanClick()} /></label>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
+
+class LoanApplying extends React.Component {
+    constructor(props) {
+        super(props);
+        var { step,userId,userName,loanerId,pendingProjectId,quotaUse,status } = $("#main").data();
+        this.state = {step: parseInt(step)};
+    }
+    render () {
+        var step = this.state.step;
+        return (
+            <div className="content-wrap application-form">
+                <ApplyingStatusPanel step={this.state.step} />
+                <div className="form-wrapper">
+                {step == 0 ? <LoginPanel /> : null}
+                {step == 1 || step == 2 ? <LoanerApplyingPanel value={$("#loaner").data()} /> : null}
+                {step == 3 || step == 4 ? <ProjectApplyingPanel value={$("#project").data()} quotaUse={$("#main").data().quotaUse} /> : null}
+                {step == 5 ? <CompletePanel onApplyLoanClick={() => this.setState({step: 3})} /> : null}
+                </div>
+            </div>
+        );
+    }
+}
+
+$(function () {
+    header.setHeaderHighlight(5);
+
+    //data-toggle 初始化
+    $('[data-toggle="popover"]').popover();
+
+    ReactDom.render(<LoanApplying />, document.querySelector('.react-root'));
 });
 

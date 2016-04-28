@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Web.Services;
 using System.Linq;
+using System.Net;
+using System.Web;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
@@ -12,12 +15,15 @@ namespace Agp2p.Web.UI.Page
     /// </summary>
     public partial class loan : Web.UI.BasePage
     {
-        protected string step = "0";
+        protected LoanApplyStep step = LoanApplyStep.Unlogin;
         protected int user_id = 0;
         protected string user_name = "";
         protected int loaner_id = 0;
         protected int pending_project_id = 0;
         protected int quota_use = 0;
+
+        protected li_loaners loaner;
+        protected li_projects project;
 
         protected string loaner_name = "";
         protected string loaner_mobile = "";
@@ -44,21 +50,37 @@ namespace Agp2p.Web.UI.Page
             Init += Page_Init; 
         }
 
+        public enum LoanApplyStep
+        {
+            [Description("未登录")]
+            Unlogin = 0,
+            [Description("未申请借款人")]
+            UnApplyAsLoaner = 1,
+            [Description("申请借款人审核中")]
+            ApplyAsLoanerAuditting = 2,
+            [Description("未申请借款项目")]
+            UnApplyProject = 3,
+            [Description("申请借款项目审核中")]
+            ProjectAuditting = 4,
+            [Description("完成借款申请")]
+            ProjectApplyCompleted = 5,
+        }
+
         void Page_Init(object sender, EventArgs e)
         {
             var user = GetUserInfoByLinq();
             if (user == null)
-                step = "1";//显示登录步骤
+                step = LoanApplyStep.Unlogin;
             else
             {
                 user_id = user.id;
                 user_name = user.user_name;
                 //查看是否已为借款人
                 Agp2pDataContext context = new Agp2pDataContext();
-                var loaner = context.li_loaners.SingleOrDefault(l => l.user_id == user.id);
+                loaner = context.li_loaners.SingleOrDefault(l => l.user_id == user.id);
                 if (loaner == null)
                 {
-                    step = "2"; //显示申请借款人步骤
+                    step = LoanApplyStep.UnApplyAsLoaner;
                     loaner_name = user.real_name;
                     loaner_mobile = user.mobile;
                 }
@@ -77,63 +99,46 @@ namespace Agp2p.Web.UI.Page
                     loaner_working_at = loaner.working_at;
                     loaner_working_company = loaner.working_company;
 
-                    //查看借款人状态
-                    switch (loaner.status)
+                    if (loaner.status != (int) Agp2pEnums.LoanerStatusEnum.Normal)
                     {
-                        case (int)Agp2pEnums.LoanerStatusEnum.Pending:
-                            step = "21";//显示申请借款人审核中
-                            return;
-                        case (int)Agp2pEnums.LoanerStatusEnum.PendingFail:
-                            step = "22";//显示申请借款人失败，重新申请
-                            return;
-                        case (int)Agp2pEnums.LoanerStatusEnum.Disable:
-                            step = "23";//显示禁止再申请借款人
-                            return;
+                        step = LoanApplyStep.ApplyAsLoanerAuditting;
+                        return;
                     }
 
                     //查看是否有在审批中的借款申请
-                    var project = context.li_projects.Where(p => p.li_risks.li_loaners.dt_users.id == user.id && p.status >= (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted
-                    && p.status < (int)Agp2pEnums.ProjectStatusEnum.Financing && p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail
-                    && p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingFail).ToList();
-                    if (project.Any())
+                    project = context.li_projects.FirstOrDefault(p => p.li_risks.li_loaners.dt_users.id == user.id &&
+                                                                      p.status <= (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking);
+                    if (project != null)
                     {
-                        step = "4"; //显示正在审批步骤
-                        var p = project.FirstOrDefault();
-                        if (p != null)
-                        {
-                            project_category_id = p.category_id;
-                            project_amount = (int) p.financing_amount;
-                            project_loan_usage = p.li_risks.loan_usage;
-                            project_source_of_repayment = p.li_risks.source_of_repayment;
-                            project_loaner_content = p.li_risks.loaner_content;
-                        }
+                        step = LoanApplyStep.ProjectAuditting; //显示正在审批步骤
+                        project_category_id = project.category_id;
+                        project_amount = (int)project.financing_amount;
+                        project_loan_usage = project.li_risks.loan_usage;
+                        project_source_of_repayment = project.li_risks.source_of_repayment;
+                        project_loaner_content = project.li_risks.loaner_content;
+                        quota_use = loaner.quota - (int)project.financing_amount;
                     }
                     else
                     {
                         //查询已审核通过的借款
-                        var projectAll =
-                            context.li_projects.Where(
-                                p =>
+                        var projectAll = context.li_projects.Where(p =>
                                     p.li_risks.li_loaners.dt_users.id == user.id &&
-                                    p.status >= (int) Agp2pEnums.ProjectStatusEnum.Financing &&
-                                    p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail &&
-                                    p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail &&
-                                    p.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel);
+                                    (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationSuccess <= p.status &&
+                                    p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail);
                         //查询可用额度
                         if (projectAll.Any())
                         {
-                            step = "5";
-                            quota_use = loaner.quota - (int) projectAll.Sum(p => p.financing_amount);
+                            step = LoanApplyStep.ProjectApplyCompleted;
+                            quota_use = loaner.quota - (int)projectAll.Sum(p => p.financing_amount);
                         }
                         else
                         {
-                            step = "3";
+                            step = LoanApplyStep.UnApplyProject;
                             quota_use = loaner.quota;
                         }
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -149,21 +154,29 @@ namespace Agp2p.Web.UI.Page
         /// <param name="income"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string ApplyLoaner(int userId, short age, string native_place, string job, string working_company, string educational_background, int marital_status, string income)
+        public static string ApplyLoaner(short age, string nativePlace, string job, string workingCompany, string educationalBackground, int maritalStatus, string income)
         {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
-                var loaner = context.li_loaners.FirstOrDefault(l => l.dt_users.id == userId);
+                var loaner = context.li_loaners.FirstOrDefault(l => l.dt_users.id == userInfo.id);
                 if (loaner != null)
                 {
                     loaner.age = age;
-                    loaner.native_place = native_place;
+                    loaner.native_place = nativePlace;
                     loaner.job = job;
                     loaner.working_at = "";
-                    loaner.working_company = working_company;
-                    loaner.educational_background = educational_background;
-                    loaner.marital_status = (byte)marital_status;
+                    loaner.working_company = workingCompany;
+                    loaner.educational_background = educationalBackground;
+                    loaner.marital_status = (byte)maritalStatus;
                     loaner.income = income;
                     loaner.status = (int)Agp2pEnums.LoanerStatusEnum.Pending;
                     loaner.last_update_time = DateTime.Now;
@@ -172,14 +185,14 @@ namespace Agp2p.Web.UI.Page
                 {
                     loaner = new li_loaners()
                     {
-                        user_id = userId,
+                        user_id = userInfo.id,
                         age = age,
-                        native_place = native_place,
+                        native_place = nativePlace,
                         job = job,
                         working_at = "",
-                        working_company = working_company,
-                        educational_background = educational_background,
-                        marital_status = (byte)marital_status,
+                        working_company = workingCompany,
+                        educational_background = educationalBackground,
+                        marital_status = (byte)maritalStatus,
                         income = income,
                         status = (int)Agp2pEnums.LoanerStatusEnum.Pending,
                         last_update_time = DateTime.Now
@@ -193,7 +206,7 @@ namespace Agp2p.Web.UI.Page
                 throw ex;
             }
 
-            return JsonConvert.SerializeObject("ok");
+            return "ok";
         }
 
         /// <summary>
@@ -208,25 +221,47 @@ namespace Agp2p.Web.UI.Page
         /// <param name="amount"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string ApplyLoan(int loaner_id, string user_name, string loaner_content, string loan_usage, string source_of_repayment, int amount)
+        public static string ApplyLoan(string loanerContent, string loanUsage, string sourceOfRepayment, decimal amount)
         {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+
+            var project = context.li_projects.FirstOrDefault(p => p.li_risks.li_loaners.dt_users.id == userInfo.id &&
+                                                              p.status < (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationChecking);
+            if (project != null)
+            {
+                project.li_risks.loaner_content = loanerContent;
+                project.li_risks.loan_usage = loanUsage;
+                project.li_risks.source_of_repayment = sourceOfRepayment;
+                project.financing_amount = amount;
+                project.status = (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted;
+
+                context.SubmitChanges();
+                return "ok";
+            }
+
             try
             {
-                Agp2pDataContext context = new Agp2pDataContext();
                 var risk = new li_risks()
                 {
-                    loaner = loaner_id,
-                    loaner_content = loaner_content,
-                    loan_usage = loan_usage,
-                    source_of_repayment = source_of_repayment,
+                    loaner = userInfo.li_loaners.Single().id,
+                    loaner_content = loanerContent,
+                    loan_usage = loanUsage,
+                    source_of_repayment = sourceOfRepayment,
                     last_update_time = DateTime.Now
                 };
-                var project = new li_projects()
+                project = new li_projects()
                 {
                     li_risks = risk,
                     category_id = 61,
                     financing_amount = amount,
-                    user_name = user_name,
+                    user_name = userInfo.user_name,
                     add_time = DateTime.Now,
                     status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationUncommitted,
                     repayment_type = (int)Agp2pEnums.ProjectRepaymentTypeEnum.DengEr,
@@ -246,7 +281,7 @@ namespace Agp2p.Web.UI.Page
                 throw ex;
             }
 
-            return JsonConvert.SerializeObject("ok");
+            return "ok";
         }
     }
 }
