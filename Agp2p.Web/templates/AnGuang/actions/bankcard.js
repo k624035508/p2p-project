@@ -30,7 +30,7 @@ export function fetchBankCards() {
 	};
 }
 
-export function appendBankCard(cardNumber, bankName, bankLocation, openingBank) {
+export function appendBankCard(cardNumber, bankName) {
 	return function (dispatch) {
 		let url = USER_CENTER_ASPX_PATH + "/AjaxAppendCard";
 		return ajax({
@@ -41,8 +41,6 @@ export function appendBankCard(cardNumber, bankName, bankLocation, openingBank) 
 			data: JSON.stringify({
 				cardNumber,
 				bankName,
-				bankLocation: bankLocation.join(";"),
-				openingBank
 			}),
 			success: function (data) {
 				dispatch(fetchBankCards());
@@ -77,13 +75,13 @@ export function deleteBankCard(cardId) {
 	};
 }
 
-export function modifyBankCard(cardId, bankName, bankLocation, openingBank) {
+export function modifyBankCard(cardId, bankName) {
 	return function (dispatch) {
 		let url = USER_CENTER_ASPX_PATH + "/AjaxModifyCard";
 		return ajax({
 			type: "POST",
 			url: url,
-			data: JSON.stringify({ cardId, bankName, bankLocation: bankLocation.join(";"), openingBank }),
+			data: JSON.stringify({ cardId, bankName }),
 			contentType: "application/json",
 			dataType: "json",
 			success: function (data) {

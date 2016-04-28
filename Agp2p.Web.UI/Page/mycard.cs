@@ -23,7 +23,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public new static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
+        public new static string AjaxAppendCard(string cardNumber, string bankName)
         {
             var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -43,16 +43,6 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行名称格式不正确";
             }
-            if (!new Regex(@"^[\u4e00-\u9fa5;]+$").IsMatch(bankLocation))
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return "银行所在地格式不正确";
-            }
-            if (!new Regex(@"^[^<>\s]+$").IsMatch(openingBank))
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return "开户行名称格式不正确";
-            }
             
             var context = new Agp2pDataContext();
             var alreadyHave = userInfo.li_bank_accounts.Any(c => c.account == cardNumber);
@@ -69,8 +59,6 @@ namespace Agp2p.Web.UI.Page
                 account = cardNumber,
                 bank = bankName,
                 last_access_time = DateTime.Now,
-                location = bankLocation,
-                opening_bank = openingBank,
             };
             context.li_bank_accounts.InsertOnSubmit(card);
             context.SubmitChanges();
@@ -86,7 +74,7 @@ namespace Agp2p.Web.UI.Page
         /// <param name="openingBank"></param>
         /// <returns></returns>
         [WebMethod]
-        public new static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank)
+        public new static string AjaxModifyCard(int cardId, string bankName)
         {
             var userInfo = GetUserInfo();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -108,20 +96,8 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return "银行名称格式不正确";
             }
-            if (!new Regex(@"^[\u4e00-\u9fa5;]+$").IsMatch(bankLocation))
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return "银行所在地格式不正确";
-            }
-            if (!new Regex(@"^[^<>\s]+$").IsMatch(openingBank))
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return "开户行名称格式不正确";
-            }
 
             card.bank = bankName;
-            card.location = bankLocation;
-            card.opening_bank = openingBank;
 
             context.SubmitChanges();
             return "修改成功";
