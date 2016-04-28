@@ -21,13 +21,14 @@ namespace Agp2p.Test
                 var context = new Agp2pDataContext();
                 var user = context.dt_users.Single(u => u.user_name == UserA);
 
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddHours(-1)));
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddHours(-2)));
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddHours(-3)));
+                var now = DateTime.Now;
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddHours(-1));
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddHours(-2));
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddHours(-3));
 
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddDays(-1).AddHours(-1)));
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddDays(-1).AddHours(-2)));
-                context.li_event_records.InsertOnSubmit(NewRecord(user.id, DateTime.Now.AddDays(-1).AddHours(-3)));
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddDays(-1).AddHours(-1));
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddDays(-1).AddHours(-2));
+                context.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, now.AddDays(-1).AddHours(-3));
 
                 context.SubmitChanges();
 
@@ -38,14 +39,5 @@ namespace Agp2p.Test
             }
         }
 
-        private static li_event_records NewRecord(int userId, DateTime occurAt)
-        {
-            return new li_event_records
-            {
-                userId = userId,
-                eventType = Agp2pEnums.EventRecordTypeEnum.IdcardChecking,
-                occurAt = occurAt
-            };
-        }
     }
 }
