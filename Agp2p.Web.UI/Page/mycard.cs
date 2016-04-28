@@ -59,6 +59,8 @@ namespace Agp2p.Web.UI.Page
                 account = cardNumber,
                 bank = bankName,
                 last_access_time = DateTime.Now,
+                opening_bank = "",
+                location = ""
             };
             context.li_bank_accounts.InsertOnSubmit(card);
             context.SubmitChanges();
@@ -106,14 +108,15 @@ namespace Agp2p.Web.UI.Page
         [WebMethod]
         public new static string AjaxDeleteCard(int cardId)
         {
-            var userInfo = GetUserInfo();
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            var context = new Agp2pDataContext();
+
             var card = context.li_bank_accounts.SingleOrDefault(c => c.owner == userInfo.id && c.id == cardId);
             if (card == null)
             {

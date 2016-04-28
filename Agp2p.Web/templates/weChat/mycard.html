@@ -21,9 +21,6 @@
         .inner-scrollable::-webkit-scrollbar { /*隐藏滚动条*/
             width: 0 !important;
         }
-        #dlgSelectArea .modal-body {
-            height: 89%;
-        }
     </style>
 </head>
 <body>
@@ -60,12 +57,6 @@
                         <div class="bank-select-wrap" data-toggle="modal" data-target="#bank-select-dialog">
                             <input type="text" id="bankName" class="input-l" placeholder="请选择银行" readonly="readonly">
                         </div>
-                        <div class="city-select-wrap" data-toggle="modal" data-target="#dlgSelectArea">
-                            <input type="text" id="bankLocation" class="input-l" placeholder="请选择开户行城市" readonly="readonly">
-                        </div>
-                        <div class="bank-name-wrap">
-                            <input type="text" id="openingBank" class="input-l" placeholder="请输入开户行名称">
-                        </div>
                         <div class="submit-btn-wrap">
                             <button type="button" id="submitBtn" class="button-l" >提 交</button>
                             <div class="modify-btns-box">
@@ -75,7 +66,6 @@
                         </div>
                     </form>
                     <span class="glyphicon glyphicon-triangle-bottom" id="for-bank"></span>
-                    <span class="glyphicon glyphicon-triangle-bottom" id="for-city"></span>
                 </div>
             </div>
         </div>
@@ -98,20 +88,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="dlgSelectArea" tabindex="-1" role="dialog" aria-labelledby="dlgSelectAreaLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="dlgSelectAreaLabel">请选择开户行城市</h4>
-      </div>
-        <div class="modal-body">
-            <iframe src="<%templateskin%>/city-selecter.htm" data-src="<%templateskin%>/city-selecter.htm" id="city-selecter"
-                    frameBorder='0' seamless='seamless' style="width: 100%; height: 100%"></iframe>
-        </div>
-    </div>
-  </div>
 </div>
 <!-- Modal end-->
 </body>
