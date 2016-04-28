@@ -730,6 +730,7 @@
       <Association Name="dt_users_li_claims" Member="li_claims" ThisKey="id" OtherKey="userId" Type="li_claims" />
       <Association Name="dt_users_li_claims1" Member="li_claims_byAgent" ThisKey="id" OtherKey="agent" Type="li_claims" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
+      <Association Name="dt_users_li_event_records" Member="li_event_records" ThisKey="id" OtherKey="userId" Type="li_event_records" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -759,6 +760,16 @@
       <Column Name="result" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Association Name="li_pay_request_log_li_pay_response_log" Member="li_pay_request_log" ThisKey="request_id" OtherKey="id" Type="li_pay_request_log" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_event_records" Member="li_event_records">
+    <Type Name="li_event_records">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="eventType" Type="Agp2p.Common.Agp2pEnums.EventRecordTypeEnum" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="occurAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="dt_users_li_event_records" Member="dt_users" ThisKey="userId" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

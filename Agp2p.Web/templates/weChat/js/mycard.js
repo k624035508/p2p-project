@@ -48,8 +48,6 @@ function initCardList() {
     });
     var cardNumberInput = $("#cardNumber");
     var bankNameInput = $("#bankName");
-    var bankLocationInput = $("#bankLocation");
-    var openingBank = $("#openingBank");
     var submitBtn = $("button#submitBtn");
     var modifyBtns = $(".modify-btns-box");
     var cardId = null; // 当前查看的银行卡
@@ -70,10 +68,6 @@ function initCardList() {
             }
             cardNumberInput.val(info.CardNumber);
             bankNameInput.val(info.BankName);
-            bankLocationInput
-                .val(info.BankLocation === null ? "" : info.BankLocation.replace(/;/g, ""))
-                .attr("data-splited-location", info.BankLocation);
-            openingBank.val(info.OpeningBank);
         });
     });
     $(".add-cards").click(function() {
@@ -84,15 +78,11 @@ function initCardList() {
         cardNumberInput[0].readOnly = false;
         cardNumberInput.val("");
         bankNameInput.val("");
-        bankLocationInput.val("").attr("info.BankLocation", "");
-        openingBank.val("");
     });
     submitBtn.click(function() {
         ajaxInvoke("AjaxAppendCard", {
             cardNumber: cardNumberInput.val(),
             bankName: bankNameInput.val(),
-            bankLocation: bankLocationInput.attr("data-splited-location") || "",
-            openingBank: openingBank.val()
         }, function (succ, result) {
             if (!succ) alert(result);
             else {
@@ -108,8 +98,6 @@ function initCardList() {
         ajaxInvoke("AjaxModifyCard", {
             cardId: cardId,
             bankName: bankNameInput.val(),
-            bankLocation: bankLocationInput.attr("data-splited-location"),
-            openingBank: openingBank.val()
         }, function (succ, result) {
             if (!succ) alert(result);
             else {
@@ -143,7 +131,7 @@ function initFullpage() {
         controlArrows: false,
         verticalCentered: false,
         loopHorizontal: false,
-        autoScrolling: false,
+        autoScrolling: true,
         fitToSection: false,
         onSlideLeave: function(){
             $(".scroll").scrollTop(0);
@@ -173,18 +161,6 @@ function fixAndroid2xOverflowCannotScroll($affectedElem) {
     }
 }
 
-function initIframe(iframe) {
-    var dlgPickAddr = $("#dlgSelectArea");
-    iframe.contentWindow.pickDone = function(addr) {
-        $("div.city-select-wrap input").val(addr.replace(/;/g, "")).attr("data-splited-location", addr);
-        dlgPickAddr.modal('hide');
-    }
-    dlgPickAddr.on('hidden.bs.modal', function(e) { // 关闭选择地区对话框后，翻到第一页
-        var loc = iframe.contentWindow.location;
-        loc.href = loc.href.split("#")[0] + "#pager";
-    });
-}
-
 $(function() {
     footerInit();
 
@@ -208,9 +184,5 @@ $(function() {
     $("div.card-cell p").each(function(index, item) {
         var p = $(item);
         p.parent().prev().addClass(classMapping[p.text()]);
-    });
-
-    $("iframe").on("load", ev => {
-        initIframe(ev.target);
     });
 });

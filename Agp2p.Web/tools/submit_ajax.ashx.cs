@@ -2592,6 +2592,17 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
+                if (6 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
+                {
+                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一年内已经进行过 6 次身份认证，不能再继续认证了。如有疑问，请联系客服"}));
+                    return;
+                }
+                if (3 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
+                {
+                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一天内已经进行过 3 次身份认证，请明日再试，并务必填写正确的认证信息"}));
+                    return;
+                }
+
                 //TODO 使用免费接口先核实有效的身份证
                 //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
                 //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
@@ -2599,6 +2610,11 @@ namespace Agp2p.Web.tools
                 //{
                 //    if (resultModel.Resultcode == "200")
                 //    {
+
+                        // 记录接口调用
+                        licontext.MarkEventOccurNotSave(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
+                        licontext.SubmitChanges();
+
                         //调用托管平台实名验证接口
                         var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
                         MessageBus.Main.Publish(msg);

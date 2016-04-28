@@ -371,5 +371,21 @@ namespace Agp2p.Core
                 return project.complete_time.Value;
             }
         }
+
+        public static int QueryEventTimesDuring(this Agp2pDataContext context, int userId, Agp2pEnums.EventRecordTypeEnum eventType, TimeSpan timeSpan)
+        {
+            return context.li_event_records.Count(
+                    r => r.userId == userId && r.eventType == eventType && DateTime.Now - timeSpan <= r.occurAt);
+        }
+
+        public static void MarkEventOccurNotSave(this Agp2pDataContext context, int userId, Agp2pEnums.EventRecordTypeEnum eventType, DateTime occurAt)
+        {
+            context.li_event_records.InsertOnSubmit(new li_event_records
+            {
+                userId = userId,
+                eventType = Agp2pEnums.EventRecordTypeEnum.IdcardChecking,
+                occurAt = occurAt
+            });
+        }
     }
 }
