@@ -78,6 +78,12 @@
       <DependentUpon>Agp2p.dbml</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agp2p.Common\Agp2p.Common.csproj">
+      <Project>{20908989-7773-493b-b1bd-764be322a935}</Project>
+      <Name>Agp2p.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

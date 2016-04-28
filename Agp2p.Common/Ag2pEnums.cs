@@ -822,5 +822,11 @@ namespace Agp2p.Common
             [Description("转出")]
             TransferOut = 3,
         }
+
+        public enum EventRecordTypeEnum
+        {
+            [Description("身份证验证")]
+            IdcardChecking = 1,
+        }
     }
 }

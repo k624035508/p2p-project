@@ -156,6 +156,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_claims(li_claims instance);
     partial void Updateli_claims(li_claims instance);
     partial void Deleteli_claims(li_claims instance);
+    partial void Insertli_event_records(li_event_records instance);
+    partial void Updateli_event_records(li_event_records instance);
+    partial void Deleteli_event_records(li_event_records instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -523,6 +526,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_claims>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_event_records> li_event_records
+		{
+			get
+			{
+				return this.GetTable<li_event_records>();
 			}
 		}
 	}
@@ -9445,6 +9456,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_claims> _li_claims1;
 		
+		private EntitySet<li_event_records> _li_event_records;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -9527,6 +9540,7 @@ namespace Agp2p.Linq2SQL
 			this._li_project_transactions = new EntitySet<li_project_transactions>(new Action<li_project_transactions>(this.attach_li_project_transactions), new Action<li_project_transactions>(this.detach_li_project_transactions));
 			this._li_claims = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims), new Action<li_claims>(this.detach_li_claims));
 			this._li_claims1 = new EntitySet<li_claims>(new Action<li_claims>(this.attach_li_claims1), new Action<li_claims>(this.detach_li_claims1));
+			this._li_event_records = new EntitySet<li_event_records>(new Action<li_event_records>(this.attach_li_event_records), new Action<li_event_records>(this.detach_li_event_records));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -10379,6 +10393,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_event_records", Storage="_li_event_records", ThisKey="id", OtherKey="userId")]
+		public EntitySet<li_event_records> li_event_records
+		{
+			get
+			{
+				return this._li_event_records;
+			}
+			set
+			{
+				this._li_event_records.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -10623,6 +10650,18 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.dt_users_agent = null;
+		}
+		
+		private void attach_li_event_records(li_event_records entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_li_event_records(li_event_records entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
 		}
 	}
 	
@@ -16141,7 +16180,7 @@ namespace Agp2p.Linq2SQL
 		
 		private string _number;
 		
-		private System.Nullable<decimal> _legacyInterest;
+		private System.Nullable<decimal> _keepInterest;
 		
 		private EntitySet<li_project_transactions> _li_project_transactions;
 		
@@ -16446,20 +16485,20 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_legacyInterest", DbType="Decimal(19,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_keepInterest", DbType="Decimal(19,2)")]
 		public System.Nullable<decimal> keepInterest
 		{
 			get
 			{
-				return this._legacyInterest;
+				return this._keepInterest;
 			}
 			set
 			{
-				if ((this._legacyInterest != value))
+				if ((this._keepInterest != value))
 				{
 					this.OnkeepInterestChanging(value);
 					this.SendPropertyChanging();
-					this._legacyInterest = value;
+					this._keepInterest = value;
 					this.SendPropertyChanged("keepInterest");
 					this.OnkeepInterestChanged();
 				}
@@ -16738,6 +16777,205 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.Parent = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_event_records")]
+	public partial class li_event_records : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _userId;
+		
+		private Agp2p.Common.Agp2pEnums.EventRecordTypeEnum _eventType;
+		
+		private System.DateTime _occurAt;
+		
+		private string _remark;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnuserIdChanging(int value);
+    partial void OnuserIdChanged();
+    partial void OneventTypeChanging(Agp2p.Common.Agp2pEnums.EventRecordTypeEnum value);
+    partial void OneventTypeChanged();
+    partial void OnoccurAtChanging(System.DateTime value);
+    partial void OnoccurAtChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    #endregion
+		
+		public li_event_records()
+		{
+			this._dt_users = default(EntityRef<dt_users>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="Int NOT NULL")]
+		public int userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnuserIdChanging(value);
+					this.SendPropertyChanging();
+					this._userId = value;
+					this.SendPropertyChanged("userId");
+					this.OnuserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_eventType", DbType="Int NOT NULL", CanBeNull=false)]
+		public Agp2p.Common.Agp2pEnums.EventRecordTypeEnum eventType
+		{
+			get
+			{
+				return this._eventType;
+			}
+			set
+			{
+				if ((this._eventType != value))
+				{
+					this.OneventTypeChanging(value);
+					this.SendPropertyChanging();
+					this._eventType = value;
+					this.SendPropertyChanged("eventType");
+					this.OneventTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_occurAt", DbType="DateTime NOT NULL")]
+		public System.DateTime occurAt
+		{
+			get
+			{
+				return this._occurAt;
+			}
+			set
+			{
+				if ((this._occurAt != value))
+				{
+					this.OnoccurAtChanging(value);
+					this.SendPropertyChanging();
+					this._occurAt = value;
+					this.SendPropertyChanged("occurAt");
+					this.OnoccurAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(100)")]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_li_event_records", Storage="_dt_users", ThisKey="userId", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.li_event_records.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.li_event_records.Add(this);
+						this._userId = value.id;
+					}
+					else
+					{
+						this._userId = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
