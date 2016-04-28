@@ -62,13 +62,11 @@ namespace Agp2p.Core.AutoLogic
                         var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
                         autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
                         //发送请求
-                        MessageBus.Main.PublishAsync(autoRepayReqMsg, ar =>
-                        {
-                            //处理请求同步返回结果
-                            var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
-                            repayRespMsg.AutoRepay = true;
-                            MessageBus.Main.Publish(repayRespMsg);
-                        });
+                        MessageBus.Main.Publish(autoRepayReqMsg);
+                        //处理请求同步返回结果 TODO 异步消息
+                        var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
+                        repayRespMsg.AutoRepay = true;
+                        MessageBus.Main.Publish(repayRespMsg);
                     }
                 }
                 catch (Exception ex)

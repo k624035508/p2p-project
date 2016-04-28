@@ -21,7 +21,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
             BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
             BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
             Name = map.ContainsKey("name") ? map["name"] : "";

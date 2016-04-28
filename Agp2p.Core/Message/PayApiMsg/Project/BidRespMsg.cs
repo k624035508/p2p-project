@@ -14,8 +14,6 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string RemainInvestmentSum { get; set; }//剩余可投金额
         public string ProtocolCode { get; set; }//自动投标授权协议号
 
-        public BidRespMsg(){}
-
         public BidRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);
@@ -23,9 +21,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            ProjectCode = Utils.StrToInt(map["projectCode"], 0);
-            Sum = map["sum"];
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            ProjectCode = map.ContainsKey("projectCode") ? Utils.StrToInt(map["projectCode"], 0) : 0;
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
             InvestmentSum = map.ContainsKey("investmentSum") ? map["investmentSum"] : "";
             ProjectSum = map.ContainsKey("projectSum") ? map["projectSum"] : "";
             RemainInvestmentSum = map.ContainsKey("remainInvestmentSum") ? map["remainInvestmentSum"] : "";
