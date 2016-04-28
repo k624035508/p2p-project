@@ -27,6 +27,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool AutoRepay { get; set; }//是否自动还款
         public bool HuoqiRepay { get; set; }//是否活期还款
 
+
+        public RepayRespMsg(){}
+    
         public RepayRespMsg(string requestStr, bool bankRepay = false, bool autoRepay = false)
         {
             BankRepay = bankRepay;
