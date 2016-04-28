@@ -15238,7 +15238,7 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loan_fee_rate", DbType="Decimal(9,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_loan_fee_rate", DbType="Decimal(9,4)")]
 		public System.Nullable<decimal> loan_fee_rate
 		{
 			get
@@ -15258,7 +15258,7 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bond_fee_rate", DbType="Decimal(9,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bond_fee_rate", DbType="Decimal(9,4)")]
 		public System.Nullable<decimal> bond_fee_rate
 		{
 			get

@@ -129,7 +129,7 @@ $(function () {
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入开户
-                location.href = "/api/payment/sumapay/index.aspx?api=101&backUrl="+location.href;
+                location.href = "/api/payment/sumapay/index.aspx?api=101";
             });
         } else { //失败
             $.dialog.alert(data.msg);

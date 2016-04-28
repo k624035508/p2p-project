@@ -2167,7 +2167,7 @@ namespace Agp2p.Web.tools
                     else
                     {
                         context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                               (int)Agp2pEnums.SumapayApiEnum.CreAs
+                                               (int)Agp2pEnums.SumapayApiEnum.CreAM
                                                + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
                                                investingAmount + "&backUrl = " + backUrl + "\"}");
                     }
@@ -2184,7 +2184,7 @@ namespace Agp2p.Web.tools
                     }
                     else
                     {
-                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int)Agp2pEnums.SumapayApiEnum.MaBid;
+                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBiM : (int)Agp2pEnums.SumapayApiEnum.MaBiM;
                         context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                                + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" +
                                                investingAmount + "&projectSum=" + projectSum + "&projectDescription=" +
@@ -2368,7 +2368,7 @@ namespace Agp2p.Web.tools
                                        rechargeSum + "\"}");
                 else
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                       (int)Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WhReM + "&userId=" + user.id + "&sum=" +
                                        rechargeSum + "&backUrl=" + backUrl + "\"}");
             }
                 
@@ -2436,7 +2436,7 @@ namespace Agp2p.Web.tools
             else
             {
                 context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                       (int)Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WdraM + "&userId=" + user.id + "&sum=" +
                                        howmany + "&bankId=" + cardId + "&backUrl=" + backUrl + "\"}");
             }
         }

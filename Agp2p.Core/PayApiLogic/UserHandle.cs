@@ -114,6 +114,7 @@ namespace Agp2p.Core.PayApiLogic
                         if (user != null)
                         {
                             user.identity_id = msg.UserId;
+                            user.real_name = msg.Name;
                             msg.HasHandle = true;
                             context.SubmitChanges();
                         }
