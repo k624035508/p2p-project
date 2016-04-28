@@ -93,7 +93,7 @@ namespace Agp2p.Web.UI.Page
                     url = linkurl(config, "project", proj.id),
                     name = proj.title,
                     profitRateYearly = proj.GetProfitRateYearly(),
-                    nextRepayTime = validTask.FirstOrDefault(ta => ta.IsUnpaid())?.should_repay_time.ToString("yyyy-MM-dd"),
+                    nextRepayTime = (validTask.FirstOrDefault(ta => ta.IsUnpaid()) ?? validTask.LastOrDefault())?.should_repay_time.ToString("yyyy-MM-dd"),
                     financingAmount = proj.financing_amount,
                     totalProfit = validTask.Any()
                             ? validTask.Aggregate(0m, (sum, task) => sum + task.repay_interest)
