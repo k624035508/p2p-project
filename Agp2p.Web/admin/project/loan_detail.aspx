@@ -123,14 +123,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>平台服务费率(%)
+                            <th>平台服务费率
                             </th>
                             <td>
                                 <span id="spa_loan_fee" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>风险保证金费率(%)
+                            <th>风险保证金费率
                             </th>
                             <td>
                                 <span id="spa_bond_fee" runat="server"></span>
@@ -535,6 +535,7 @@
                     <% } %>
                     <td><%# Eval("parentClaimId")%></td>
                     <td>
+                        <!--
                         <asp:LinkButton runat="server"
                             ID="btnBecomeTransferable"
                             Text="申请转让"
@@ -543,6 +544,7 @@
                             OnClientClick="return PromptPostBack(this.id.replace(/_/g, '$'), '请输入转让利息比率（0~100）：', '0');"
                             OnClick="btnBecomeTransferable_OnClick"
                             Visible="<%# ((li_claims) Container.DataItem).profitingProjectId == ((li_claims) Container.DataItem).projectId && ((li_claims) Container.DataItem).status == (int) Agp2pEnums.ClaimStatusEnum.Nontransferable && ((li_claims) Container.DataItem).IsLeafClaim() %>" />
+                            -->
                         <!--TODO 提现撤销-->
                     </td>            
                 </tr>

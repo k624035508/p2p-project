@@ -59,25 +59,24 @@ namespace Agp2p.Core.NotifyLogic
                         t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!willRepayTasks.Any()) return;
 
-            var smsTemplate = context.dt_sms_template.SingleOrDefault(te => te.call_index == "loaner_repay_hint");
+            var smsTemplate = context.dt_sms_template.SingleOrDefault(te => te.call_index == "loaner_repay_hint")?.content;
 
             if (smsTemplate == null)
             {
-                context.AppendAdminLogAndSave("LoanerRepayHint", "找不到还款提现模板: loaner_repay_hint");
-                return;
+                context.AppendAdminLogAndSave("LoanerRepayHint", "找不到还款提醒模板: loaner_repay_hint");
+                smsTemplate = "安广融合借款人还款提醒：你 {remainDays} 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。";
             }
 
             willRepayTasks.ForEach(task =>
             {
                 var loaner = task.li_projects.li_risks.li_loaners.dt_users;
                 if(string.IsNullOrEmpty(loaner.mobile)) return;
-                var logTag = $"LoanerRepayHint_{loaner.id}_{task.id}";
 
-                // 判断有没有发送过短信
-                var alreadySend = context.dt_manager_log.Any(log => log.action_type == logTag);
+                // 判断一天内有没有发送过短信
+                var alreadySend = 1 <= context.QueryEventTimesDuring(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, TimeSpan.FromDays(1), task.id.ToString());
                 if (alreadySend) return;
 
-                var smsContent = smsTemplate.content
+                var smsContent = smsTemplate
                     .Replace("{remainDays}", (task.should_repay_time.Date - DateTime.Today).TotalDays.ToString("n0"))
                     .Replace("{project}", task.li_projects.title)
                     .Replace("{termNumber}", task.term.ToString())
@@ -92,6 +91,11 @@ namespace Agp2p.Core.NotifyLogic
                     {
                         context.AppendAdminLogAndSave("LoanerRepayHint",
                             $"发送还款提醒失败：{errorMsg}（借款人ID：{loaner.user_name}，项目名称：{task.li_projects.title}）");
+                    }
+                    else
+                    {
+                        context.MarkEventOccurNotSave(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, DateTime.Now, task.id.ToString());
+                        context.SubmitChanges();
                     }
                 }
                 catch (Exception ex)

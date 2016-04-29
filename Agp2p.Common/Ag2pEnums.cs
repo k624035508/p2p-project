@@ -919,6 +919,7 @@ namespace Agp2p.Common
             [Description("转出")]
             TransferOut = 3,
         }
+
         public enum MyLoanQueryTypeEnum
         {
             [Description("申请中")]
@@ -929,6 +930,15 @@ namespace Agp2p.Common
             Repaying = 3,
             [Description("已还款")]
             Repaid = 4,
+        }
+
+        public enum EventRecordTypeEnum
+        {
+            [Description("身份证验证")]
+            IdcardChecking = 1,
+            [Description("借款人还款提醒")]
+            LoanerRepaymentRemind = 2,
+
         }
     }
 }

@@ -14,8 +14,6 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MobileNo { get; set; }
         public string PayType { get; set; }
 
-        public UserRegisterRespMsg() { }
-
         public UserRegisterRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);
@@ -23,12 +21,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserId = map["userId"];
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            Name = map["name"];
+            UserId = map.ContainsKey("userId") ? map["userId"] : "";
+            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            Name = map.ContainsKey("name") ? map["name"] : "";
             Telephone = map.ContainsKey("telephone") ? map["telephone"] : "";
             MobileNo = map.ContainsKey("mobileNo") ? map["mobileNo"] : "";
-            PayType = map["payType"];
+            PayType = map.ContainsKey("payType") ? map["payType"] : "";
         }
 
         public override bool CheckSignature()

@@ -52,6 +52,9 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"signature", GetSignature()}
             };
             if (!string.IsNullOrEmpty(BackUrl)) sd.Add("backUrl", BackUrl);
+            if (!string.IsNullOrEmpty(BackUrl)) sd.Add("noticeUrl", SumapayConfig.NoticeUrl);
+            if (!string.IsNullOrEmpty(SuccessReturnUrl)) sd.Add("successReturnUrl", SuccessReturnUrl);
+            if (!string.IsNullOrEmpty(FailReturnUrl)) sd.Add("failReturnUrl", FailReturnUrl);
             if (!string.IsNullOrEmpty(RequestType)) sd.Add("requestType", RequestType);
             return sd;
         }

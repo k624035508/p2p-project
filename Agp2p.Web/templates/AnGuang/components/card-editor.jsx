@@ -1,5 +1,4 @@
 import React from "react";
-import CityPicker from "../components/city-picker.jsx";
 import { bankList } from "../js/bank-list.jsx";
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js";
 
@@ -17,30 +16,18 @@ class CardEditor extends React.Component {
 	genStateByValue(val) {
 		var state = {
 			bank: "",
-			selectedLocation: [],
-			openingBank: "",
 			cardNumber: "",
 			cardNumber2: ""
 		};
 		if (val) {
 			state.bank = val.bankName;
 			state.cardNumber = val.cardNumber;
-			state.openingBank = val.openingBank;
-			state.selectedLocation = val.bankLocation.split(";");
 		}
 		return state;
 	}
 	doSaveCard() {
 		if (!this.state.bank) {
 			alert("请先选择银行");
-			return;
-		}
-		if (this.state.selectedLocation.length < 2) {
-			alert("请先选择开户行所在地");
-			return;
-		}
-		if (!this.state.openingBank) {
-			alert("请先填写开户行");
 			return;
 		}
 		if (!this.state.cardNumber) {
@@ -52,11 +39,10 @@ class CardEditor extends React.Component {
 				alert("两次输入的卡号不一致");
 				return;
 			}
-			var promise = this.props.dispatch(appendBankCard(this.state.cardNumber, this.state.bank, this.state.selectedLocation, this.state.openingBank));
+			var promise = this.props.dispatch(appendBankCard(this.state.cardNumber, this.state.bank));
 			promise.done(this.props.onOperationSuccess);
 		} else {
-			var promise = this.props.dispatch(modifyBankCard(
-				this.props.value.cardId, this.state.bank, this.state.selectedLocation, this.state.openingBank));
+			var promise = this.props.dispatch(modifyBankCard(this.props.value.cardId, this.state.bank));
 			promise.done(this.props.onOperationSuccess);
 		}
 	}
@@ -72,19 +58,13 @@ class CardEditor extends React.Component {
 						<option value="">请选择银行</option>
 						{bankList.map(b => <option value={b} key={b}>{b}</option>)}
 						</select></li>
-					<li><span>开户行所在地：</span>
-						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})}
-							disabled={!this.props.realName} />
-					</li>
-					<li><span>开户行名称：</span><input type="text" value={this.state.openingBank}
-						onChange={ev => this.setState({openingBank: ev.target.value})} disabled={!this.props.realName} /></li>
 					{editingCard
 						? <li><span>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
 						: <li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
-						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>}
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
 					{editingCard ? null :
 					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
-						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /></li>}
+						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
 				</ul>
 				{creatingCard ? null :
 					<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}

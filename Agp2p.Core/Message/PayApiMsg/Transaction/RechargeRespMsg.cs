@@ -20,10 +20,6 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BankName { get; set; }//银行名称
         public string Name { get; set; }//用户姓名
 
-        public RechargeRespMsg()
-        {
-        }
-
         public RechargeRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);
@@ -31,8 +27,8 @@ namespace Agp2p.Core.Message.PayApiMsg
             Result = map["result"];
             Signature = map["signature"];
 
-            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            Sum = map["sum"];
+            UserIdIdentity = map.ContainsKey("userBalance") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
+            Sum = map.ContainsKey("sum") ? map["sum"] : "";
             UserBalance = map.ContainsKey("userBalance") ? map["userBalance"] : "";
             WithdrawableBalance = map.ContainsKey("withdrawableBalance") ? map["withdrawableBalance"] : "";
             FrozenBalance = map.ContainsKey("frozenBalance") ? map["frozenBalance"] : "";

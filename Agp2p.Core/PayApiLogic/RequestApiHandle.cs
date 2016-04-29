@@ -196,17 +196,15 @@ namespace Agp2p.Core.PayApiLogic
             var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
             returnPrinInteReqMsg.SetSubledgerList(transList);
             //发送请求
-            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, ar =>
-            {
-                //处理请求同步返回结果
-                var returnPrinInteRespMsg =
-                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-                returnPrinInteRespMsg.Sync = true;
-                returnPrinInteRespMsg.RepayTaskId = repayTaskId;
-                returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
-                returnPrinInteRespMsg.IsHuoqi = false;
-                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
-            });
+            MessageBus.Main.Publish(returnPrinInteReqMsg);
+            //处理请求同步返回结果  TODO 异步消息
+            var returnPrinInteRespMsg =
+                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+            returnPrinInteRespMsg.Sync = true;
+            returnPrinInteRespMsg.RepayTaskId = repayTaskId;
+            returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
+            returnPrinInteRespMsg.IsHuoqi = false;
+            MessageBus.Main.Publish(returnPrinInteRespMsg);
         }
 
         /// <summary>
@@ -223,19 +221,16 @@ namespace Agp2p.Core.PayApiLogic
             //生成分账列表（每个转出用户的本金）
             returnPrinInteReqMsg.SetSubledgerList(grouping.ToLookup(c => c.dt_users));
             //发送请求
-            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, ar =>
+            MessageBus.Main.Publish(returnPrinInteReqMsg);
+            //处理请求同步返回结果
+            var returnPrinInteRespMsg =
+                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
+            returnPrinInteRespMsg.Sync = true;
+            returnPrinInteRespMsg.IsHuoqi = true;
+            MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
             {
-                //处理请求同步返回结果
-                var returnPrinInteRespMsg =
-                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-                returnPrinInteRespMsg.Sync = true;
-                returnPrinInteRespMsg.IsHuoqi = true;
-                MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
-                {
-                    if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
-                });
+                if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
             });
-
         }
     }
 }

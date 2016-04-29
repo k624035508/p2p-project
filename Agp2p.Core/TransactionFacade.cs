@@ -227,14 +227,15 @@ namespace Agp2p.Core
                     switch (tr.pay_api)
                     {
                         case (int)Agp2pEnums.PayApiTypeEnum.EcpssQ:
-                            feeFate = 0.005m;
+                            feeFate = tr.value * 0.005m;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.Ecpss:
                         case (int)Agp2pEnums.PayApiTypeEnum.Sumapay:
-                            feeFate = feeConfig.recharge_fee_rate;
+                            feeFate = tr.value * feeConfig.recharge_fee_rate;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.SumapayQ:
-                            feeFate = feeConfig.recharge_fee_rate_quick;
+                            feeFate = tr.value * feeConfig.recharge_fee_rate_quick;
+                            if (feeFate < 3) feeFate = 3;
                             break;
                     }
 
@@ -242,7 +243,7 @@ namespace Agp2p.Core
                     {
                         create_time = DateTime.Now,
                         user_id = (int) tr.charger,
-                        outcome = tr.value* feeFate,
+                        outcome = feeFate,
                         type = (int)Agp2pEnums.OfflineTransactionTypeEnum.ReChangeFee,
                         remark = Utils.GetAgp2pEnumDes((Agp2pEnums.PayApiTypeEnum)tr.pay_api) + "充值手续费"
                     };

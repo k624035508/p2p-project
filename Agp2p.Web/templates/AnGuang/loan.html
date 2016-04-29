@@ -10,6 +10,7 @@
     <![endif]-->
     <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/react.bundle.js"></script>
     <script src="<%templateskin%>/build/loan.bundle.js"></script>
     <script type="text/javascript">
         function change_bg(obj)
@@ -27,189 +28,10 @@
     <!--head-->
     <%template src="_header.html"%>
     <!--head end-->
-    
-    <div class="content-wrap application-form">
-        <div class="nav-wrap">
-            <p class="title">借款流程</p>
-            <ul class="list-unstyled list-inline application-ul">
-                <li class="step1">登录</li>
-                <li class="next-icon"></li>
-                <li class="step2">申请成为借款人</li>
-                <li class="next-icon"></li>
-                <li class="step3">申请借款</li>
-                <li class="next-icon"></li>
-                <li class="step4">完成借款</li>
-            </ul>
-        </div>
-
-        <div class="form-wrapper">
-          <div class="login-form-wrap">
-                <div class="form-title">
-                    <span class="title-style">登录</span>
-                    <span class="pull-right register-btn">如无账号 <a href='<%linkurl("register")%>'>快速注册</a></span>
-                </div>
-                <form class="form-horizontal login-form">
-                    <div class="form-group">
-                        <label for="user-name" class="control-label">用户名：</label>
-                        <input type="text" class="form-control" id="user-name" />
-                    </div>
-                    <div class="form-group">
-                        <label for="user-pwd" class="control-label">密码：</label>
-                        <input type="text" style="display:none" />
-                        <input type="password" class="form-control" id="user-pwd" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-default" id="loginBtn">登 录</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="personal-info-form-wrap" style="display: none">
-                <div class="form-title">
-                    <span class="title-style">借款人资料</span>
-                </div>
-                <div id="loanerApplyChecking" class="status">
-                    <span class="status-icon checking"></span>
-                    <span class="tips-title">申请借款人审核中</span>
-                    <span class="tips">您提交的申请正在审核中，请耐心等待！</span>
-                </div>
-                <div id="loanerApplyFailed" class="status">
-                    <span class="status-icon failed"></span>
-                    <span class="tips-title">申请借款人失败</span>
-                    <span class="tips">您提交的申请资料有误，请重新核对资料后再提交！</span>
-                </div>
-                <div id="loanerApplyForbid" class="status">
-                    <span class="status-icon forbid"></span>
-                    <span class="tips-title">禁止申请借款人</span>
-                    <span class="tips">抱歉！您已被禁止申请成为借款人。</span>
-                </div>
-                <form class="form-horizontal personal-info-form">
-                    <div class="form-group">
-                        <label for="name" class="control-label">姓名：</label>
-                        <input type="text" id="name" class="form-control" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone" class="control-label">手机号码：</label>
-                        <input type="text" id="phone" class="form-control" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label for="birthplace" class="control-label">籍贯：</label>
-                        <input type="text" id="birthplace" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="job" class="control-label">职业：</label>
-                        <input type="text" id="job" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="employer" class="control-label">工作单位：</label>
-                        <input type="text" id="employer" class="form-control" />
-                    </div>
-                    <!--<div class="form-group">
-                        <label for="work-place" class="control-label">工作地点：</label>
-                        <input type="text" id="work-place" class="form-control" />
-                    </div>-->
-                    <div class="form-group">
-                        <label for="education" class="control-label">学历：</label>
-                        <select id="education" class="form-control">
-                            <option value="" style="display: none"></option>
-                            <option value="小学及以下">小学及以下</option>
-                            <option value="初中">初中</option>
-                            <option value="高中">高中</option>
-                            <option value="中专">中专</option>
-                            <option value="大专">大专</option>
-                            <option value="本科">本科</option>
-                            <option value="研究生">研究生</option>
-                            <option value="博士及以上">博士及以上</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="marital-status" class="control-label">婚姻状况：</label>
-                        <select id="marital-status" class="form-control">
-                            <option style="display: none"></option>
-                            <option value="1">未婚</option>
-                            <option value="2">已婚</option>
-                            <option value="3">离异</option>
-                            <option value="4">丧偶</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="income" class="control-label">收入：</label>
-                        <input type="text" id="income" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-default" id="loanerApplyBtn">提 交</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="loan-detail-form-wrap" style="display: none">
-                <div class="form-title">
-                    <span class="title-style">申请借款</span>
-                </div>
-                <div id="loanApplyChecking" class="status">
-                    <span class="status-icon checking"></span>
-                    <span class="tips-title">申请借款审核中</span>
-                    <span class="tips">您提交的申请正在审核中，请耐心等待！</span>
-                </div>
-                <div id="loanApplyFailed" class="status">
-                    <span class="status-icon failed"></span>
-                    <span class="tips-title">申请借款失败</span>
-                    <span class="tips">您提交的申请资料有误，请重新核对资料后再提交！</span>
-                </div>
-                <form class="form-horizontal loan-detail-form">
-                    <!--<div class="form-group margin-left">
-                        <label for="ddl_project_type" class="control-label">借款类别：</label>
-                        <select id="ddl_project_type" class="form-control">
-                            <option style="display: none"></option>
-                            <option value="61">小贷宝</option>
-                            <option value="58">房盈宝</option>
-                            <option value="57">融通宝</option>
-                        </select>
-                    </div>-->
-                    <div class="form-group">
-                        <label for="loan-amount" class="control-label">借款金额：</label>
-                        <input type="text" id="loan-amount" class="form-control" />
-                        <span id="largest-amount">（可用额度 <span></span>）</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="loan-description" class="control-label">借款描述：</label>
-                        <textarea id="loan-description" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="loan-usage" class="control-label">借款用途：</label>
-                        <textarea id="loan-usage" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="repayment-source" class="control-label">还款来源：</label>
-                        <textarea id="repayment-source" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-default" id="loanApplyBtn">提 交</button>
-                    </div>
-                </form>
-            </div>
-
-       <div class="Completion-loan-form-wrap">
-                <div class="form-title">
-                    <span class="title-style">完成借款</span>
-                   
-               </div>
-                <form class="form-horizontal Completion-loan-form">
-                    <div class="form-group">
-
-                        <label class="control-label"><img src="<%templateskin%>/imgs/loan/001.png" /></label><br /><br />
-                        <label class="control-label">恭喜您！您申请的借款已审核通过！</label><br /><br /><br />
-                        <label class="control-label"><input id="loanApplyAgainBtn" type="button" value="申请借款"></label>
-
-                    </div>
-                </form>
-            </div>
-       
-        </div>
-    </div>
+    <div class="react-root"></div>
 
     <div id="main"
-         data-step="<%=step%>"
+         data-step="<%=((int)step)%>"
          data-user-id="<%=user_id%>"
          data-user-name="<%=user_name%>"
          data-loaner-id="<%=loaner_id%>"
@@ -229,6 +51,7 @@
          data-loaner-educational-background="<%=loaner_educational_background%>"
          data-loaner-marital-status="<%=loaner_marital_status%>"
          data-loaner-income="<%=loaner_income%>"
+         data-loaner-status="<%=(loaner==null?-1:loaner.status)%>"
          >
     </div>
 
@@ -238,6 +61,7 @@
          data-project-loan-usage="<%=project_loan_usage%>"
          data-project-source-of-repayment="<%=project_source_of_repayment%>"
          data-project-loaner-content="<%=project_loaner_content%>"
+         data-project-status="<%=(project==null?-1:project.status)%>"
          >
     </div>
 

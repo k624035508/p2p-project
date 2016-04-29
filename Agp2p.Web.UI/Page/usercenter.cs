@@ -149,15 +149,15 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxAppendCard(string cardNumber, string bankName, string bankLocation, string openingBank)
+        public static string AjaxAppendCard(string cardNumber, string bankName)
         {
-            return mycard.AjaxAppendCard(cardNumber, bankName, bankLocation, openingBank);
+            return mycard.AjaxAppendCard(cardNumber, bankName);
         }
 
         [WebMethod]
-        public static string AjaxModifyCard(int cardId, string bankName, string bankLocation, string openingBank)
+        public static string AjaxModifyCard(int cardId, string bankName)
         {
-            return mycard.AjaxModifyCard(cardId, bankName, bankLocation, openingBank);
+            return mycard.AjaxModifyCard(cardId, bankName);
         }
 
         [WebMethod]
