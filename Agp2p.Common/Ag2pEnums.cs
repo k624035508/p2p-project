@@ -936,6 +936,9 @@ namespace Agp2p.Common
         {
             [Description("身份证验证")]
             IdcardChecking = 1,
+            [Description("借款人还款提醒")]
+            LoanerRepaymentRemind = 2,
+
         }
     }
 }
