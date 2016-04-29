@@ -17,6 +17,12 @@ const MyLoanQueryTypeEnum = {
     Repaid : 4, // 已还款
 }
 
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
 class MyloanTable extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +34,9 @@ class MyloanTable extends React.Component {
         }
     }
     componentDidMount() {
-        this.fetch(this.props.type, this.props.pageIndex);
+        this.fetch(
+           getUrlParam("loanstatus") == 3 ? 3: getUrlParam("loanstatus") == 4 ? 4: 2,           
+            this.props.pageIndex);
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLoan", pageSize = 15;

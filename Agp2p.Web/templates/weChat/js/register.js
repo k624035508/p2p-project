@@ -29,6 +29,13 @@ function getUrlParameter(sParam) {
 }
 //=====================初始化代码======================
 $(function () {
+    var { step,result } = $("#step").data();
+    if (step == "2") {
+        //实名验证
+        $(".register-step").eq(1).show().siblings().hide();
+    } else {
+        $(".register-step").eq(0).show().siblings().hide();
+    }
     // 初始化邀请码 input
     var inviteCode = getUrlParameter("inviteCode");
     if (inviteCode != null) {
@@ -158,6 +165,24 @@ $(function () {
                 success: showResponse,
                 error: showError,
                 url: "/tools/submit_ajax.ashx?action=user_register",
+                type: "post",
+                dataType: "json",
+                timeout: 60000
+            });
+            return false;
+        }
+    });
+
+    $("#realNameForm").Validform({
+        btnSubmit: "register-identity-btn",
+        tipSweep: true,
+        tiptype:3,
+        callback:function(form) {
+            $(form).ajaxSubmit({
+                beforeSubmit: showRequest,
+                success: showResponse,
+                error: showError,
+                url: "/tools/submit_ajax.ashx?action=bind_idcard",
                 type: "post",
                 dataType: "json",
                 timeout: 60000

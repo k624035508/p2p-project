@@ -80,28 +80,69 @@ border-right:6px solid transparent;
     }
 }
 
-.top-part {
-	& > div {
-		.inline-block;
-		height: 210px;
-		background: @white;
-	}
-	.select-box {
-		width: 780px;
-		* {
-			font-size: @font15;
-			color: @dark-grey;
-		}
+.ticket-head{
+    background:@white; height:60px;
+    margin-top:20px;
+    ul{
+        padding:0;
+        li{
+            width:220px;
+            float:left;
+            list-style:none;
+            div{
+                height:45px;
+                margin:8px 0 7px 0;
+                border-right:1px solid @body-color;
+                text-align:center;
+                p.ticket-first{
+                    margin-top:5px;
+                    font-size:@font15;
+                    color:@darker-grey;
+                    margin-bottom:3px;
+                    a{
+                        display:inline-block;
+                        width:45px; height:20px; margin-left:2px;
+                        border:1px solid #37aaf0; border-radius:4px;
+                        font-size:13px; color:#37aaf0;
+                        text-decoration:none; cursor:pointer;
+                    }
+                }
+                p.ticket-second{
+                    font-size:@font13;
+                    color:#aaaaaa;
+                }
+            }
+        }
+    }
+}
+
 		.project-time {
+            img{
+                margin-right:13px;
+            }
             background:@body-color;
-			height: 50px;
-			line-height: 50px;
-			padding: 0 30px;
+            text-align:right;
+            padding-top:10px;
+			height:30px;
+			line-height: 40px;
 			border:none;
+            font-size:15px;
 			a {
 				color: @blue;
 				text-decoration: none;
 			}
+		}
+
+.top-part {
+	& > div {
+		.inline-block;
+		background: @white;
+	}
+	.select-box {
+		width: 780px; margin-top:20px; height:160px;
+		* {
+			font-size: @font15;
+			color: @dark-grey;
 		}
 		.type-select {
 			padding: 0 0 0 30px;
@@ -133,7 +174,7 @@ border-right:6px solid transparent;
 	}
 	.novice-guide {
 		width: 300px; height:160px;
-        margin-top:50px;
+        margin-top:20px;
 		* { font-size: @font15; }
 		.guide-list {
 			list-style-type: square;

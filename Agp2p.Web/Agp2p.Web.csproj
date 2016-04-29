@@ -724,6 +724,7 @@
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
+    <Content Include="templates\AnGuang\imgs\projects\003.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\006.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
@@ -1018,6 +1019,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\smile.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\test_01.jpg" />
     <Content Include="templates\AnGuang\imgs\usercenter\unread.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add.png" />

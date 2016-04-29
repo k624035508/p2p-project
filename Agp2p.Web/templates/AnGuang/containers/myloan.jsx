@@ -13,10 +13,16 @@ const MyLoanQueryTypeEnum = {
     Repaid : 4, // 已还款
 }
 
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
 class MyTransaction extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { type: MyLoanQueryTypeEnum.Applying, startTime: "", endTime: "", pageIndex: 0,
+        this.state = { type: getUrlParam("loanstatus") == 3 ? 3: getUrlParam("loanstatus") == 4 ? 4: 2, startTime: "", endTime: "", pageIndex: 0,
             onPageLoaded: pageCount => this.setState({ pageCount: pageCount }) };
     }
     render() {
