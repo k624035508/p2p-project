@@ -123,14 +123,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>平台服务费率(%)
+                            <th>平台服务费率
                             </th>
                             <td>
                                 <span id="spa_loan_fee" runat="server"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>风险保证金费率(%)
+                            <th>风险保证金费率
                             </th>
                             <td>
                                 <span id="spa_bond_fee" runat="server"></span>

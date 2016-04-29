@@ -166,8 +166,8 @@ namespace Agp2p.Web.admin.project
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
             spa_make_loan_time.InnerText = _project.make_loan_time?.ToString("yyyy-MM-dd HH:mm:ss");//放款时间
-            spa_bond_fee.InnerText = _project.bond_fee_rate?.ToString("N2");
-            spa_loan_fee.InnerText = _project.loan_fee_rate?.ToString("N2");
+            spa_bond_fee.InnerText = _project.bond_fee_rate?.ToString("N4");
+            spa_loan_fee.InnerText = _project.loan_fee_rate?.ToString("N4");
             spa_contact_no.InnerText = _project.contract_no;
 
             ShowRiskInfo(_project);
@@ -570,8 +570,8 @@ namespace Agp2p.Web.admin.project
                 p.profit_rate_year.ToString("n1"),
                 p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
                 p.GetProjectRepaymentTypeDesc(),
-                p.loan_fee_rate?.ToString("n2"),
-                p.bond_fee_rate?.ToString("n2")
+                p.loan_fee_rate?.ToString("n4"),
+                p.bond_fee_rate?.ToString("n4")
             };
 
             var loanerInfoField = new[]

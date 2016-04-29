@@ -170,9 +170,8 @@ namespace Agp2p.Core.PayApiLogic
                                 {
                                     context.StartRepayment(pro.id);
                                 }
-                                
-                                msg.HasHandle = true;
                             }
+                            msg.HasHandle = true;
                         }
                         else
                         {

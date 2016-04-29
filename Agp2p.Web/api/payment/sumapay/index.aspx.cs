@@ -30,7 +30,8 @@ namespace Agp2p.Web.api.payment.sumapay
                     break;
                 case (int)Agp2pEnums.SumapayApiEnum.URegM:
                     if (!CheckUserLogin(out user, false)) return;
-                    reqMsg = new UserRegisterMoblieReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token, DTRequest.GetQueryString("backUrl"));
+                    reqMsg = new UserRegisterMoblieReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token,
+                        HttpContext.Current.Request.UrlReferrer.ToString().ToLower());
                     break;
                 //跳转托管账户
                 case (int)Agp2pEnums.SumapayApiEnum.Accou:
@@ -39,7 +40,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     break;
                 case (int)Agp2pEnums.SumapayApiEnum.AccoM:
                     if (!CheckUserLogin(out user)) return;
-                    reqMsg = new UserToAccountReqMsg(user.id, DTRequest.GetQueryString("backUrl"));
+                    reqMsg = new UserToAccountReqMsg(user.id, HttpContext.Current.Request.UrlReferrer.ToString().ToLower());
                     break;
                 //个人自动投标续约
                 case (int)Agp2pEnums.SumapayApiEnum.AtBid:
@@ -145,7 +146,7 @@ namespace Agp2p.Web.api.payment.sumapay
                 Response.Write("对不起，用户尚未登录或已超时！");
                 return false;
             }
-            if (checkToken && string.IsNullOrEmpty(user.token))
+            if (checkToken && string.IsNullOrEmpty(user.identity_id))
             {
                 Response.Write("请先开通托管账户！");
                 return false;

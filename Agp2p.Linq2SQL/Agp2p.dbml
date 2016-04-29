@@ -666,8 +666,8 @@
       <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="loan_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="loan_fee_rate" Type="System.Decimal" DbType="Decimal(9,4)" CanBeNull="true" />
+      <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,4)" CanBeNull="true" />
       <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="autoRepay" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="li_projects_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="project_id" Type="li_company_inoutcome" />
