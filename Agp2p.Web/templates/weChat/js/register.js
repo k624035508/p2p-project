@@ -48,6 +48,7 @@ $(function () {
     var chkAgree = $("#agreement");
     var btnSendCode = $("#get-auth-code-btn");
     var btnSubmit = $("#register-btn");
+    var btnSubmitName = $("#register-identity-btn");
 
     chkAgree.click(function () {
         if ($(this).is(":checked")) {
@@ -130,13 +131,14 @@ $(function () {
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
     }
-    //表单提交后
+    //注册表单提交后
     function showResponse(data, textStatus) {
         if (data.status === 1) { //成功
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
-                //注册成功后进入开户
-                location.href = "/api/payment/sumapay/index.aspx?api=101";
+                //注册成功后进入实名认证
+                // location.href = "/api/payment/sumapay/index.aspx?api=101";
+                location.href="register.html?action=2";
             });
         } else { //失败
             $.dialog.alert(data.msg);
@@ -145,13 +147,35 @@ $(function () {
             chkAgree.prop("disabled", false);
         }
     }
+
+    //实名认证表单提交后
+    function showResponseName(data, textStatus) {
+        if (data.status === 1) { //成功
+            //location.href = data.url;
+            $.dialog.alert(data.msg, function() {
+                //注册成功后进入开户
+                 location.href = "/api/payment/sumapay/index.aspx?api=101";
+            });
+        } else { //失败
+            $.dialog.alert(data.msg);
+            btnSubmitName.val("再次提交");
+            btnSubmitName.prop("disabled", false);
+        }
+    }
+
     //表单提交出错
     function showError(xmlHttpRequest, textStatus, errorThrown) {
         $.dialog.alert("状态：" + textStatus + "；出错提示：" + errorThrown);
         btnSubmit.val("再次提交");
         btnSubmit.prop("disabled", false);
         chkAgree.prop("disabled", false);
-    } 
+    }
+    
+    function showErrorName(xmlHttpRequest, textStatus, errorThrown) {
+        $.dialog.alert("状态：" + textStatus + "；出错提示：" + errorThrown);
+        btnSubmitName.val("再次提交");
+        btnSubmitName.prop("disabled", false);
+    }
 
     //初始化验证表单
     $("#regform").Validform({
@@ -174,14 +198,13 @@ $(function () {
     });
 
     $("#realNameForm").Validform({
-        btnSubmit: "register-identity-btn",
+        btnSubmit: "#register-identity-btn",
         tipSweep: true,
         tiptype:3,
         callback:function(form) {
             $(form).ajaxSubmit({
-                beforeSubmit: showRequest,
-                success: showResponse,
-                error: showError,
+                success: showResponseName,
+                error: showErrorName,
                 url: "/tools/submit_ajax.ashx?action=bind_idcard",
                 type: "post",
                 dataType: "json",
