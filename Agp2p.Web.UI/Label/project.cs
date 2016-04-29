@@ -302,7 +302,7 @@ namespace Agp2p.Web.UI
                 : context.li_claims.Where(c =>
                     c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer
                     && c.Parent.dt_users.dt_user_groups.title != AutoRepay.CompanyAccount
-                    && !c.Children.Any());
+                    && !c.Children.Any()).OrderByDescending(c => c.createTime); ;
 
             int projectTotalCount = 0, claimTotalCount = 0;
             var claimInvestables = claimQuerying.AsEnumerableAutoPartialQuery(out claimTotalCount, pageSize)
@@ -343,8 +343,6 @@ namespace Agp2p.Web.UI
                         break;                       
                 }
             }
-
-            claimQuerying = claimQuerying.OrderByDescending(c => c.createTime);
 
             var investables = projectQuerying.AsEnumerableAutoPartialQuery(out projectTotalCount, pageSize).Select(p => new Investable {Project = p})
                 .Concat(claimInvestables);
