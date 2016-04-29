@@ -73,7 +73,7 @@ namespace Agp2p.Core.NotifyLogic
                 if(string.IsNullOrEmpty(loaner.mobile)) return;
 
                 // 判断一天内有没有发送过短信
-                var alreadySend = 1 <= context.QueryEventTimesDuring(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, TimeSpan.FromDays(1));
+                var alreadySend = 1 <= context.QueryEventTimesDuring(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, TimeSpan.FromDays(1), task.id.ToString());
                 if (alreadySend) return;
 
                 var smsContent = smsTemplate
@@ -94,7 +94,7 @@ namespace Agp2p.Core.NotifyLogic
                     }
                     else
                     {
-                        context.MarkEventOccurNotSave(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, DateTime.Now);
+                        context.MarkEventOccurNotSave(loaner.id, Agp2pEnums.EventRecordTypeEnum.LoanerRepaymentRemind, DateTime.Now, task.id.ToString());
                         context.SubmitChanges();
                     }
                 }
