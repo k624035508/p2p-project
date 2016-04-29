@@ -16,21 +16,38 @@ window.ToggleCode = function(obj, codeurl) {
     return false;
 }
 
-function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam) {
-            return sParameterName[1];
-        }
-    }
-    return null;
+//function getUrlParameter(sParam) {
+//    var sPageURL = window.location.search.substring(1);
+//    var sURLVariables = sPageURL.split('&');
+//    for (var i = 0; i < sURLVariables.length; i++) {
+//        var sParameterName = sURLVariables[i].split('=');
+//        if (sParameterName[0] == sParam) {
+//            return sParameterName[1];
+//        }
+//    }
+//    return null;
+//}
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); 
+    return null; //返回参数值
 }
+
 //=====================初始化代码======================
 $(function () {
+    //活动链接临时逻辑
+    if (location.href.indexOf("url") != -1) {
+        $(".turn-now-wrap").show();
+        var regUrl = getUrlParam('url')+"&id=" + getUrlParam('id');
+        $("#loginBtn").attr("href", "/mobile/login.html?url=" + regUrl);
+    }else {
+        $(".turn-now-wrap").hide();
+    }
+
     // 初始化邀请码 input
-    var inviteCode = getUrlParameter("inviteCode");
+    var inviteCode = getUrlParam("inviteCode");
     if (inviteCode != null) {
         var inviterInput = $("#recommend-one");
         inviterInput.val(inviteCode);
@@ -124,21 +141,13 @@ $(function () {
         chkAgree.prop("disabled", true);
     }
 
-    //获取url中的参数
-    function getUrlParam(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-        if (r != null) return unescape(r[2]); 
-        return null; //返回参数值
-    }
-
     //表单提交后
     function showResponse(data, textStatus) {
         if (data.status === 1) { //成功
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
                 if(document.URL !== "" && document.URL.indexOf("url") != -1) {
-                    location.href = getUrlParam('url');
+                    location.href = getUrlParam('url')+"&id=" + getUrlParam('id');
                 }
                 else
                     location.href = "/";
