@@ -64,7 +64,9 @@ namespace Agp2p.Web.admin.repayment
                     .OrderByDescending(r => r.request_time)
                     .AsQueryable();
 
-            var responseList = query.AsEnumerable().
+            TotalCount = query.Count();
+
+            var responseList = query.AsEnumerable().Skip(PageSize * (PageIndex - 1)).Take(PageSize).
                 Zip(Utils.Infinite(1), (req, index) => new { req, index })
                 .SelectMany(r =>
             {
@@ -112,9 +114,7 @@ namespace Agp2p.Web.admin.repayment
                 }
                 return respList;
             }).AsQueryable();
-            
-            TotalCount = responseList.Count();
-            return responseList.Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
+            return responseList.ToList();
         }       
         #endregion
 

@@ -77,7 +77,6 @@ namespace Agp2p.Core.AutoLogic
                             : ex.GetSimpleCrashInfo());
                 }
             });
-            context.SubmitChanges();
         }
 
         public static void CheckStaticProjectWithdrawOvertime(TimerMsg.Type timerType, bool onTime)
