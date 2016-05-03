@@ -5,6 +5,10 @@ using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Agp2p.Core.Message;
+using TinyMessenger;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Agp2p.Test
 {
@@ -39,5 +43,14 @@ namespace Agp2p.Test
             }
         }
 
+        [TestMethod]
+        public void TestMsgCallback()
+        {
+            MessageBus.Main.Subscribe<GenericTinyMessage<string>>(m => Debug.WriteLine("Handling msg: " + m.Content));
+            MessageBus.Main.PublishAsync(new GenericTinyMessage<string>("sender", "123"), msg => {
+                Debug.WriteLine("async callback: " + msg.Content);
+            });
+            Thread.Sleep(1000);
+        }
     }
 }
