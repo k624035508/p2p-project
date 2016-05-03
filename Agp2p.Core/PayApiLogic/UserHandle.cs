@@ -108,6 +108,11 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
+#if !DEBUG
+                    //同步返回平台不做处理
+                    if (msg.Result.Equals("00001")) return;
+#endif
+
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
                         var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
@@ -145,6 +150,11 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
+#if !DEBUG
+                    //同步返回平台不做处理
+                    if (msg.Result.Equals("00001")) return;
+#endif
+
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的平台账户，更新用户信息
                         var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
@@ -182,6 +192,11 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
+#if !DEBUG
+                    //同步返回平台不做处理
+                    if (msg.Result.Equals("00001")) return;
+#endif
+
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的项目
                         var reqMsg = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);

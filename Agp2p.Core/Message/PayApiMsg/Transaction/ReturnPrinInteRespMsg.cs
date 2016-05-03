@@ -17,18 +17,14 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string AccountBalance { get; set; }//项目还款账户余额
         public string DealTime { get; set; }//处理时间   
 
-        public int RepayTaskId { get; set; }
-        public bool IsEarlyPay { get; set; }
-        public bool IsHuoqi { get; set; }
-
         public ReturnPrinInteRespMsg()
         {
-            Sync = false;
+            Sync = true;
         }
 
         public ReturnPrinInteRespMsg(string requestStr)
         {
-            Sync = true;
+            Sync = false;
 
             var map = Utils.UrlParamToData(requestStr);
             RequestId = map["requestId"];

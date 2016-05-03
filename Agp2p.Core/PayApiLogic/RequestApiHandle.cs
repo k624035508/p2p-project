@@ -164,10 +164,11 @@ namespace Agp2p.Core.PayApiLogic
                 //生成发送报文
                 msg.RequestContent = msg.GetPostPara();
                 requestLog.request_content = msg.RequestContent;
-                msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
                 //保存日志
                 context.li_pay_request_log.InsertOnSubmit(requestLog);
                 context.SubmitChanges();
+                //发送请求
+                msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
             }
             catch (Exception ex)
             {
@@ -195,15 +196,13 @@ namespace Agp2p.Core.PayApiLogic
             var repayRask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayTaskId);
             var transList = TransactionFacade.GenerateRepayTransactions(repayRask, DateTime.Now);
             returnPrinInteReqMsg.SetSubledgerList(transList);
+            returnPrinInteReqMsg.Remarks = $"isEarly=false&repayTaskId={repayTaskId}&isHuoqi={isHuoqi}";
             //发送请求
             MessageBus.Main.Publish(returnPrinInteReqMsg);
             //处理请求同步返回结果  TODO 异步消息
             var returnPrinInteRespMsg =
                 BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
             returnPrinInteRespMsg.Sync = true;
-            returnPrinInteRespMsg.RepayTaskId = repayTaskId;
-            returnPrinInteRespMsg.IsEarlyPay = isEarlyPay;
-            returnPrinInteRespMsg.IsHuoqi = false;
             MessageBus.Main.Publish(returnPrinInteRespMsg);
         }
 
@@ -226,7 +225,7 @@ namespace Agp2p.Core.PayApiLogic
             var returnPrinInteRespMsg =
                 BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
             returnPrinInteRespMsg.Sync = true;
-            returnPrinInteRespMsg.IsHuoqi = true;
+            returnPrinInteReqMsg.Remarks = "isEarly=false&isHuoqi=true";
             MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
             {
                 if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
