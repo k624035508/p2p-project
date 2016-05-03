@@ -23,12 +23,12 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public ReturnPrinInteRespMsg()
         {
-            Sync = false;
+            Sync = true;
         }
 
         public ReturnPrinInteRespMsg(string requestStr)
         {
-            Sync = true;
+            Sync = false;
 
             var map = Utils.UrlParamToData(requestStr);
             RequestId = map["requestId"];

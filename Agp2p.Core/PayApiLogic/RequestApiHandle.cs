@@ -161,13 +161,13 @@ namespace Agp2p.Core.PayApiLogic
                             throw new ArgumentNullException("没有找到项目, ID=" + makeLoanReqMsg.ProjectCode);
                         break;
                 }
+                //保存日志
+                context.li_pay_request_log.InsertOnSubmit(requestLog);
+                context.SubmitChanges();
                 //生成发送报文
                 msg.RequestContent = msg.GetPostPara();
                 requestLog.request_content = msg.RequestContent;
                 msg.SynResult = Utils.HttpPostGbk(msg.ApiInterface, requestLog.request_content);
-                //保存日志
-                context.li_pay_request_log.InsertOnSubmit(requestLog);
-                context.SubmitChanges();
             }
             catch (Exception ex)
             {
