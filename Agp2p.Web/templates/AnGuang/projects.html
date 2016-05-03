@@ -38,7 +38,10 @@
 
 <div class="fincategory">
 <div>
-    <%if(SubCategoryIdTitleMap.Any())%>
+<%if(SubCategoryIdTitleMap.Any())%>
+<div class="content-wrap project-time">
+    <img src="<%templateskin%>/imgs/projects/003.png">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more","43,54")%>'>发标公告</a>。
+</div>
 <div class="top-part content-wrap">
     <div class="select-box">
         <div class="type-select">
@@ -112,7 +115,7 @@
         </ul>
     </div>
 </div>
-    <div class="content-wrap project-time"><img src="<%templateskin%>/imgs/projects/003.png">理财项目发布时间：工作日10:00、15:00；非工作日可查看 <a href='<%=linkurl("about_more","43,54")%>'>发标公告</a>。</div>
+   
                 <%/if%>
                 <%if(rootCategoryId==claimsCategoryId)%>
                 <div class="top-part content-wrap">
@@ -147,6 +150,20 @@
                                         <a href='<%linkurl("projects",category_id,project_profit_rate_index,project_repayment_index,2,1)%>'
                                            class='<%=project_status_index==2?"selected":""%>'>已转让</a>
                                     </li>
+                                </ul>
+                            </div>
+                            <div class="project-profit">
+                                <span>项目收益</span>
+                                <ul class="list-unstyled list-inline">
+                                    <%set var interestRateTypeEnums=Utils.GetEnumValues
+                                    <Agp2pEnums.InterestRateTypeEnum>
+                                        ()%>
+                                        <%foreach(var en in interestRateTypeEnums)%>
+                                        <li>
+                                            <a href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'
+                                               class='<%=project_profit_rate_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
+                                        </li>
+                                        <%/foreach%>
                                 </ul>
                             </div>
                         </div>
@@ -184,7 +201,7 @@
             </li>
             <li>
                 <div>
-                    <p class="ticket-first" style="margin-left: 50px;">10天-18个月 <a>可转让</a></p>
+                    <p class="ticket-first" style="margin-left: 50px;">10天-18个月 <a >可转让</a></p>
                     <p class="ticket-second">产品期限</p>
                 </div>
             </li>

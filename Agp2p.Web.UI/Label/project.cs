@@ -288,7 +288,7 @@ namespace Agp2p.Web.UI
         }
 
         public static IEnumerable<Investable> QueryInvestables(int pageSize, int pageIndex, out int total,
-            int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0, int claimsIndex = 0, int claimsStatusIndex = 0)
+            int categoryId = 0, int profitRateIndex = 0, int repaymentIndex = 0, int statusIndex = 0, int claimsIndex = 0, int claimsStatusIndex = 0, int claimsProfitRateIndex = 0)
         {
             var context = new Agp2pDataContext();
             var projectQuerying = QueryingProjects(context, categoryId, profitRateIndex, repaymentIndex, statusIndex);
@@ -331,7 +331,7 @@ namespace Agp2p.Web.UI
                 }
             }
 
-            if (0 < claimsStatusIndex)
+            if (0 < claimsStatusIndex) //债权转让状态条件
             {
                 switch ((Agp2pEnums.StaticClaimQueryEnum)claimsStatusIndex)
                 {
@@ -341,6 +341,22 @@ namespace Agp2p.Web.UI
                     case Agp2pEnums.StaticClaimQueryEnum.Transferred:
                         claimInvestables = claimInvestables.Where(c => c.Status > Agp2pEnums.ProjectStatusEnum.Financing);
                         break;                       
+                }
+            }
+
+            if (0 < claimsProfitRateIndex) //债权转让年化利率条件
+            {
+                switch ((Agp2pEnums.InterestRateTypeEnum)claimsProfitRateIndex)
+                {
+                    case Agp2pEnums.InterestRateTypeEnum.LessThanSix:
+                        claimInvestables = claimInvestables.Where(c => c.ProfitRateYearly < 6);
+                        break;
+                    case Agp2pEnums.InterestRateTypeEnum.SixToTen:
+                        claimInvestables = claimInvestables.Where(c => 6 <= c.ProfitRateYearly && c.ProfitRateYearly < 10);
+                        break;
+                    case Agp2pEnums.InterestRateTypeEnum.TenToFifteen:
+                        claimInvestables = claimInvestables.Where(c => 10 <= c.ProfitRateYearly && c.ProfitRateYearly <= 15);
+                        break;
                 }
             }
 
