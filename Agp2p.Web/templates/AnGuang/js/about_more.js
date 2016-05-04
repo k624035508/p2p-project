@@ -10,10 +10,11 @@ $(function(){
     header.setHeaderHighlight(4);
 
     //加入我们 招聘列表开关样式
-    var $office = $(".join-us-wrap .content-body .office ul li");
-    $office.click(function(){
+    var $office = $(".join-us-wrap .content-body .office > ul > li");
+    $office.click(function() {
+        var index = $office.index(this);
         $(this).find("i").toggleClass("glyphicon-menu-up");
-        $(this).children(".office-detail").toggle();
+        $(".office-detail").eq(index).toggle();
     });
     $('[data-toggle="popover"]').popover();
 });
