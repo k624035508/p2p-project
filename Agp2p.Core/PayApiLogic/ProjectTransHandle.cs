@@ -43,15 +43,15 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
 #if !DEBUG
-                    //同步返回平台不做处理
-                    if (msg.Result.Equals("00001")) return;
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
 #endif
                         //查找对应的交易流水
                         //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         //if (trans != null)
                         //{
                         //TODO 检查用户资金信息
-                        TransactionFacade.Invest((int) msg.UserIdIdentity, msg.ProjectCode,
+                        TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode,
                             Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
                         msg.HasHandle = true;
                         //}
@@ -83,8 +83,8 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
 #if !DEBUG
-                    //同步返回平台不做处理
-                    if (msg.Result.Equals("00001")) return;
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
 #endif
 
                         Agp2pDataContext context = new Agp2pDataContext();
@@ -123,8 +123,8 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
 #if !DEBUG
-                    //同步返回平台不做处理
-                    if (msg.Result.Equals("00001")) return;
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
 #endif
 
                         Agp2pDataContext context = new Agp2pDataContext();
@@ -214,48 +214,52 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
-#if !DEBUG
-                    //同步返回平台不做处理
-                    if (msg.Result.Equals("00001")) return;
-#endif
-
                         Agp2pDataContext context = new Agp2pDataContext();
-                        //查找对应的项目
-                        var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
-                        if (pro != null)
+                        //异步返回才执行,内网测试使用同步
+#if DEBUG
+                        if (msg.Sync)
                         {
+#endif
+#if !DEBUG
+                        if (!msg.Sync)
+                        {
+#endif
                             var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
                             if (req != null)
                             {
-                                if (!string.IsNullOrEmpty(req.remarks))
+                                //查找对应的项目
+                                var pro = context.li_projects.SingleOrDefault(p => p.id == msg.ProjectCode);
+                                if (pro != null)
                                 {
-                                    //活期项目不需要生成还款记录
-                                    if (!msg.HuoqiRepay)
+                                    if (!string.IsNullOrEmpty(req.remarks))
                                     {
-                                        var dic = Utils.UrlParamToData(req.remarks);
-                                        int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                        //生成还款记录 
-                                        context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
-                                            Utils.StrToDecimal(msg.Sum, 0));
-
-                                        //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
-                                        if (!msg.AutoRepay)
+                                        //活期项目不需要生成还款记录
+                                        if (!msg.HuoqiRepay)
                                         {
-                                            RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
-                                                Utils.StrToBool(dic["isEarly"], false), false);
+                                            var dic = Utils.UrlParamToData(req.remarks);
+                                            int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                            //生成还款记录 
+                                            context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity,
+                                                Utils.StrToDecimal(msg.Sum, 0));
+
+                                            //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
+                                            if (!msg.AutoRepay)
+                                            {
+                                                RequestApiHandle.SendReturnPrinInte(msg.ProjectCode, msg.Sum, repayId,
+                                                    Utils.StrToBool(dic["isEarly"], false), false);
+                                            }
                                         }
+                                        msg.HasHandle = true;
                                     }
-                                    msg.HasHandle = true;
+                                    else
+                                        msg.Remarks = "请求没有包含还款计划信息！";
                                 }
                                 else
-                                    msg.Remarks = "请求没有包含还款计划信息！";
-
+                                    msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                             }
                             else
                                 msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
                         }
-                        else
-                            msg.Remarks = "没有找到平台项目，项目编号为：" + msg.ProjectCode;
                     }
                 }
             }
@@ -279,23 +283,24 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
-                        Agp2pDataContext context = new Agp2pDataContext();
-                        var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
-                        if (req != null)
-                        {
-                            var dic = Utils.UrlParamToData(req.remarks);
-                            //活期项目不需要执行还款计划
-                            if (!Utils.StrToBool(dic["isHuoqi"], false))
-                            {
-                                //异步返回才执行,内网测试使用同步
+                        //异步返回才执行,内网测试使用同步
 #if DEBUG
-                            if (msg.Sync)
-                            {
+                        if (msg.Sync)
+                        {
 #endif
 #if !DEBUG
-                                if (!msg.Sync)
-                                {
+                        if (!msg.Sync)
+                        {
 #endif
+                            Agp2pDataContext context = new Agp2pDataContext();
+                            var req = context.li_pay_request_log.SingleOrDefault(r => r.id == msg.RequestId);
+                            if (req != null)
+                            {
+                                var dic = Utils.UrlParamToData(req.remarks);
+                                //活期项目不需要执行还款计划
+                                if (!Utils.StrToBool(dic["isHuoqi"], false))
+                                {
+
                                     if (!Utils.StrToBool(dic["isEarly"], false))
                                         context.ExecuteRepaymentTask(Utils.StrToInt(dic["repayTaskId"], 0));
                                     else
@@ -303,10 +308,10 @@ namespace Agp2p.Core.PayApiLogic
                                             ConfigLoader.loadCostConfig().earlier_pay);
                                 }
                             }
+                            else
+                                msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
                             msg.HasHandle = true;
                         }
-                        else
-                            msg.Remarks = "没有找到对应的还款请求，请求编号为：" + msg.RequestId;
                     }
                 }
             }
@@ -331,8 +336,8 @@ namespace Agp2p.Core.PayApiLogic
                     if (msg.CheckSignature())
                     {
 #if !DEBUG
-                    //同步返回平台不做处理
-                    if (msg.Result.Equals("00001")) return;
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
 #endif
 
                         Agp2pDataContext context = new Agp2pDataContext();
@@ -343,8 +348,8 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             TransactionFacade.BuyClaim(context,
                                 trans.li_claims_invested.OrderByDescending(c => c.createTime)
-                                    .First(c => c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer)
-                                    .id, (int) msg.UserIdIdentity,
+                                    .First(c => c.status == (int)Agp2pEnums.ClaimStatusEnum.NeedTransfer)
+                                    .id, (int)msg.UserIdIdentity,
                                 Utils.StrToDecimal(msg.AssignmentSum, 0));
                             msg.HasHandle = true;
                         }

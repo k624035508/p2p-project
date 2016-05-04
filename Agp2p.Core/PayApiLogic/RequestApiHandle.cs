@@ -203,7 +203,6 @@ namespace Agp2p.Core.PayApiLogic
                 //处理请求同步返回结果
                 var returnPrinInteRespMsg =
                     BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(msg.SynResult);
-                returnPrinInteRespMsg.Sync = true;
                 MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
             });
         }

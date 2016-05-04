@@ -26,12 +26,18 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool BankRepay { get; set; }//是否协议还款
         public bool AutoRepay { get; set; }//是否自动还款
         public bool HuoqiRepay { get; set; }//是否活期还款
+        public bool Sync { get; set; }//同步标识
 
 
-        public RepayRespMsg(){}
+        public RepayRespMsg()
+        {
+            Sync = true;
+        }
     
         public RepayRespMsg(string requestStr, bool bankRepay = false, bool autoRepay = false)
         {
+            Sync = false;
+
             BankRepay = bankRepay;
             AutoRepay = autoRepay;
 
