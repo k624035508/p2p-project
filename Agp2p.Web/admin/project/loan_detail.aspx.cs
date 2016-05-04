@@ -361,6 +361,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
+                    //TODO　对接托管接口
                     ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Edit.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel;
                     LqContext.SubmitChanges();
@@ -506,16 +507,12 @@ namespace Agp2p.Web.admin.project
             {
                 ChkAdminLevel("make_loan_audit", DTEnums.ActionEnum.Audit.ToString());
                 var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
-                //LqContext.StartRepayment(project.id);
-                //return;
-
                 //调用托管平台实名验证接口
                 if (project != null)
                 {
                     var msg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, ProjectId, project.investment_amount.ToString("F"));
                     MessageBus.Main.Publish(msg);
                     var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(msg.SynResult);
-                    msgResp.Sync = true;
                     MessageBus.Main.Publish(msgResp);
                     if (msgResp.HasHandle)
                     {

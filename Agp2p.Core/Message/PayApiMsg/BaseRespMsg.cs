@@ -17,6 +17,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public bool HasHandle { get; set; }
         public string Remarks { get; set; }
         public string Signature { get; set; }
+        public int ResponseId { get; set; }
 
         public BaseRespMsg()
         {

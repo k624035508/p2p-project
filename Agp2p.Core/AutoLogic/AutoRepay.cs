@@ -53,28 +53,34 @@ namespace Agp2p.Core.AutoLogic
 
             shouldRepayTask.ForEach(t =>
             {
-                var loaner = t.li_projects.li_risks.li_loaners;
-                try
+                var project = context.li_projects.SingleOrDefault(p => p.id == t.project);
+                if (project != null)
                 {
-                    if (t.li_projects.IsHuoqiProject() || (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay))
+                    var loaner = project.li_risks.li_loaners;
+                    try
                     {
-                        //创建自动还款托管接口请求
-                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
-                        autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
-                        //发送请求
-                        MessageBus.Main.Publish(autoRepayReqMsg);
-                        //处理请求同步返回结果 TODO 异步消息
-                        var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
-                        repayRespMsg.AutoRepay = true;
-                        MessageBus.Main.Publish(repayRespMsg);
+                        if (project.IsHuoqiProject() || (project.autoRepay != null && (bool)project.autoRepay))
+                        {
+                            //创建自动还款托管接口请求
+                            var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
+                            autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
+                            //发送请求
+                            MessageBus.Main.PublishAsync(autoRepayReqMsg, msg =>
+                            {
+                                //处理请求同步返回结果
+                                var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(msg.SynResult);
+                                repayRespMsg.AutoRepay = true;
+                                MessageBus.Main.PublishAsync(repayRespMsg);
+                            });
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    context.AppendAdminLog("GainLoanerRepayment",
-                        ex.Message == "借款人的余额不足"
-                            ? $"借款人 {loaner.dt_users.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
-                            : ex.GetSimpleCrashInfo());
+                    catch (Exception ex)
+                    {
+                        context.AppendAdminLog("GainLoanerRepayment",
+                            ex.Message == "借款人的余额不足"
+                                ? $"借款人 {loaner.dt_users.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
+                                : ex.GetSimpleCrashInfo());
+                    }
                 }
             });
         }

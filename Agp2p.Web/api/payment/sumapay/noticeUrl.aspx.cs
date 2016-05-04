@@ -6,6 +6,7 @@ using Agp2p.Linq2SQL;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Model.DTO;
@@ -31,28 +32,27 @@ namespace Agp2p.Web.api.payment.sumapay
         /// <param name="isSync">是否同步返回</param>
         protected void DoResponse(bool isSync = false)
         {
-            string reqStr = ReadReqStr();
             Agp2pDataContext context = new Agp2pDataContext();
-            //保存响应日志
-            ResponseLog = new li_pay_response_log()
+            try
             {
-                request_id = string.IsNullOrEmpty(Request["requestId"]) ? null: Request["requestId"],
-                result = string.IsNullOrEmpty(Request["result"]) ? "" : Request["result"],
-                status = (int)Agp2pEnums.SumapayResponseEnum.Return,
-                response_time = DateTime.Now,
-                response_content = reqStr
-            };
-            if (!string.IsNullOrEmpty(ResponseLog.request_id))
-            {
-                //根据响应报文找到对应的request，生成处理消息，对应各种消息处理逻辑
-                RequestLog =
-                    context.li_pay_request_log.SingleOrDefault(r => r.id == ResponseLog.request_id);
-                if (RequestLog != null)
+                string reqStr = ReadReqStr();
+                ResponseLog = new li_pay_response_log()
                 {
-                    //检查请求是否已经处理过
-                    if (RequestLog.status == (int) Agp2pEnums.SumapayRequestEnum.Waiting)
+                    request_id = string.IsNullOrEmpty(Request["requestId"]) ? null : Request["requestId"],
+                    result = string.IsNullOrEmpty(Request["result"]) ? "" : Request["result"],
+                    status = (int)Agp2pEnums.SumapayResponseEnum.Return,
+                    response_time = DateTime.Now,
+                    response_content = reqStr
+                };
+                if (!string.IsNullOrEmpty(ResponseLog.request_id))
+                {
+                    //根据响应报文找到对应的request，生成处理消息，对应各种消息处理逻辑
+                    RequestLog =
+                        context.li_pay_request_log.SingleOrDefault(r => r.id == ResponseLog.request_id);
+                    if (RequestLog != null)
                     {
-                        try
+                        //检查请求是否已经处理过
+                        if (RequestLog.status == (int)Agp2pEnums.SumapayRequestEnum.Waiting)
                         {
                             BaseRespMsg respMsg = null;
                             switch (RequestLog.api)
@@ -69,8 +69,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                     break;
                                 //个人自动投标取消
                                 case (int)Agp2pEnums.SumapayApiEnum.ClBid:
-                                    respMsg = new AutoBidSignRespMsg(reqStr);
-                                    ((AutoBidSignRespMsg)respMsg).Cancel = true;
+                                    respMsg = new AutoBidSignRespMsg(reqStr, true);
                                     break;
                                 //个人自动账户/银行还款开通
                                 case (int)Agp2pEnums.SumapayApiEnum.AcReO:
@@ -79,8 +78,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                     break;
                                 //个人自动还款取消
                                 case (int)Agp2pEnums.SumapayApiEnum.ClRep:
-                                    respMsg = new AutoRepaySignRespMsg(reqStr);
-                                    ((AutoRepaySignRespMsg)respMsg).Cancel = true;
+                                    respMsg = new AutoRepaySignRespMsg(reqStr, true);
                                     break;
                                 //个人网银/一键充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
@@ -100,16 +98,16 @@ namespace Agp2p.Web.api.payment.sumapay
                                 //个人撤标
                                 case (int)Agp2pEnums.SumapayApiEnum.CaPro:
                                 case (int)Agp2pEnums.SumapayApiEnum.CoPro:
-                                    respMsg = isSync ? BaseRespMsg.NewInstance<WithDrawalRespMsg>(reqStr) : new WithDrawalRespMsg(reqStr);
+                                    respMsg = new WithDrawalRespMsg(reqStr);
                                     break;
                                 //流标普通项目
                                 case (int)Agp2pEnums.SumapayApiEnum.RePro:
-                                    respMsg = isSync ? BaseRespMsg.NewInstance<RepealProjectRespMsg>(reqStr) : new RepealProjectRespMsg(reqStr);
+                                    respMsg = new RepealProjectRespMsg(reqStr);
                                     break;
                                 //普通/集合项目放款
                                 case (int)Agp2pEnums.SumapayApiEnum.ALoan:
                                 case (int)Agp2pEnums.SumapayApiEnum.CLoan:
-                                    respMsg = isSync ? BaseRespMsg.NewInstance<MakeLoanRespMsg>(reqStr) : new MakeLoanRespMsg(reqStr);
+                                    respMsg = new MakeLoanRespMsg(reqStr);
                                     break;
                                 //个人提现
                                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
@@ -124,19 +122,17 @@ namespace Agp2p.Web.api.payment.sumapay
                                 //个人协议还款普通/集合项目
                                 case (int)Agp2pEnums.SumapayApiEnum.BaRep:
                                 case (int)Agp2pEnums.SumapayApiEnum.BcRep:
-                                    respMsg = new RepayRespMsg(reqStr);
-                                    ((RepayRespMsg)respMsg).BankRepay = true;
+                                    respMsg = new RepayRespMsg(reqStr, true);
                                     break;
                                 //个人自动还款普通/集合项目
                                 case (int)Agp2pEnums.SumapayApiEnum.AcRep:
                                 case (int)Agp2pEnums.SumapayApiEnum.AbRep:
-                                    respMsg = isSync ? BaseRespMsg.NewInstance<RepayRespMsg>(reqStr) : new RepayRespMsg(reqStr);
-                                    ((RepayRespMsg)respMsg).AutoRepay = true;
+                                    respMsg = new RepayRespMsg(reqStr, false, true);
                                     break;
                                 //普通/集合项目本息到账
                                 case (int)Agp2pEnums.SumapayApiEnum.RetPt:
                                 case (int)Agp2pEnums.SumapayApiEnum.RetCo:
-                                    respMsg = isSync ? BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(reqStr) : new ReturnPrinInteRespMsg(reqStr);
+                                    respMsg = new ReturnPrinInteRespMsg(reqStr);
                                     break;
                                 //债权转让
                                 case (int)Agp2pEnums.SumapayApiEnum.CreAs:
@@ -152,49 +148,48 @@ namespace Agp2p.Web.api.payment.sumapay
                                     break;
                             }
 
+                            //保存响应日志
+                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
+                            context.SubmitChanges();
+                            respMsg.ResponseId = ResponseLog.id;
                             //发送响应消息异步处理
                             MessageBus.Main.PublishAsync(respMsg, s =>
                             {
-                                ResponseLog.user_id = respMsg.UserIdIdentity;
-                                ResponseLog.project_id = respMsg.ProjectCode;
-                                RequestLog.complete_time = DateTime.Now;
+                                RequestLog = context.li_pay_request_log.SingleOrDefault(r => r.id == s.RequestId);
+                                ResponseLog = context.li_pay_response_log.SingleOrDefault(r => r.id == s.ResponseId);
+                                if (RequestLog != null && ResponseLog != null)
+                                {
+                                    ResponseLog.user_id = s.UserIdIdentity;
+                                    ResponseLog.project_id = s.ProjectCode;
+                                    RequestLog.complete_time = DateTime.Now;
 
-                                if (respMsg.HasHandle)
-                                {
-                                    ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
-                                    RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+                                    if (s.HasHandle)
+                                    {
+                                        ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
+                                        RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+                                    }
+                                    else
+                                    {
+                                        ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
+                                        RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
+                                        //记录失败信息
+                                        ResponseLog.remarks += s.Remarks + ";";
+                                    }
+                                    //更新日志信息
+                                    context.SubmitChanges();
                                 }
-                                else
-                                {
-                                    ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
-                                    RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
-                                //记录失败信息
-                                ResponseLog.remarks += respMsg.Remarks + ";";
-                                }
-                                context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                                context.SubmitChanges();
                             });
                         }
-                        catch (Exception ex)
-                        {
-                            ResponseLog.remarks = "内部错误:" + ex.Message;
-                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                            context.SubmitChanges();
-                        }
                     }
+                    else
+                        context.AppendAdminLogAndSave("SumaPayNotic", "没有找到对应的请求，RequestID:" + ResponseLog.request_id);
                 }
                 else
-                {
-                    ResponseLog.remarks = "没有找到对应的请求流水号，RequestID:" + ResponseLog.request_id;
-                    context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                    context.SubmitChanges();
-                }
+                    context.AppendAdminLogAndSave("SumaPayNotic", "请求流水号为空！");
             }
-            else
+            catch (Exception ex)
             {
-                ResponseLog.remarks = "请求流水号为空！";
-                context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                context.SubmitChanges();
+                context.AppendAdminLogAndSave("SumaPayNotic", "内部错误:" + ex.Message);
             }
         }
 

@@ -1757,7 +1757,7 @@ namespace Agp2p.Core
             // 计算平台服务费
             if (project.loan_fee_rate != null && project.loan_fee_rate > 0)
             {
-                loanFeeSum += project.investment_amount * project.loan_fee_rate.GetValueOrDefault(0);
+                loanFeeSum = decimal.Round(project.investment_amount * project.loan_fee_rate.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
                 context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                 {
                     user_id = loanerUserId,
@@ -1771,7 +1771,7 @@ namespace Agp2p.Core
             //计算风险保证金
             if (project.bond_fee_rate != null && project.bond_fee_rate > 0)
             {
-                bondFeeSum += project.investment_amount * project.bond_fee_rate.GetValueOrDefault(0);
+                bondFeeSum = decimal.Round(project.investment_amount * project.bond_fee_rate.GetValueOrDefault(0), 2, MidpointRounding.AwayFromZero);
                 context.li_company_inoutcome.InsertOnSubmit(new li_company_inoutcome
                 {
                     user_id = loanerUserId,
@@ -1783,7 +1783,7 @@ namespace Agp2p.Core
                 });
             }
 
-            decimal amount = project.investment_amount - loanFeeSum - bondFeeSum;
+            decimal amount = decimal.Round(project.investment_amount - loanFeeSum - bondFeeSum, 2, MidpointRounding.AwayFromZero);
             var btr = new li_bank_transactions
             {
                 handling_fee_type = (byte)Agp2pEnums.BankTransactionHandlingFeeTypeEnum.NoHandlingFee,

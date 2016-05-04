@@ -13,7 +13,10 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编        
         public bool Sync { get; set; }//同步标识
 
-        public MakeLoanRespMsg(){}
+        public MakeLoanRespMsg()
+        {
+            Sync = true;
+        }
         public MakeLoanRespMsg(string requestStr)
         {
             Sync = false;

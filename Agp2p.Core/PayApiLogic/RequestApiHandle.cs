@@ -153,8 +153,8 @@ namespace Agp2p.Core.PayApiLogic
                         //非活期和新手标项目计算平台服务费
                         if (project != null && !project.IsNewbieProject())
                         {
-                            decimal loanFee = project.investment_amount * (project.loan_fee_rate) ?? 0;
-                            decimal bondFee = project.investment_amount * (project.bond_fee_rate) ?? 0;
+                            decimal loanFee = decimal.Round(project.investment_amount * (project.loan_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);
+                            decimal bondFee = decimal.Round(project.investment_amount * (project.bond_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);
                             makeLoanReqMsg.SetSubledgerList(loanFee + bondFee);
                         }
                         else
@@ -198,12 +198,13 @@ namespace Agp2p.Core.PayApiLogic
             returnPrinInteReqMsg.SetSubledgerList(transList);
             returnPrinInteReqMsg.Remarks = $"isEarly=false&repayTaskId={repayTaskId}&isHuoqi={isHuoqi}";
             //发送请求
-            MessageBus.Main.Publish(returnPrinInteReqMsg);
-            //处理请求同步返回结果  TODO 异步消息
-            var returnPrinInteRespMsg =
-                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-            returnPrinInteRespMsg.Sync = true;
-            MessageBus.Main.Publish(returnPrinInteRespMsg);
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, msg =>
+            {
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg =
+                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(msg.SynResult);
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
+            });
         }
 
         /// <summary>
@@ -220,16 +221,19 @@ namespace Agp2p.Core.PayApiLogic
             //生成分账列表（每个转出用户的本金）
             returnPrinInteReqMsg.SetSubledgerList(grouping.ToLookup(c => c.dt_users));
             //发送请求
-            MessageBus.Main.Publish(returnPrinInteReqMsg);
-            //处理请求同步返回结果
-            var returnPrinInteRespMsg =
-                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-            returnPrinInteRespMsg.Sync = true;
-            returnPrinInteReqMsg.Remarks = "isEarly=false&isHuoqi=true";
-            MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, msg =>
             {
-                if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg =
+                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(msg.SynResult);
+                returnPrinInteRespMsg.Sync = true;
+                returnPrinInteReqMsg.Remarks = "isEarly=false&isHuoqi=true";
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
+                {
+                    if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
+                });
             });
+            
         }
     }
 }
