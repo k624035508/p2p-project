@@ -72,4 +72,11 @@ $(function(){
 	), document.getElementById("app"));
 	
 	header.setHeaderHighlight(2);
+	$("ul.inner-ul").hide();
+
+	$(".outside-ul>li>a").click(function(){
+	    $(this).find("div").toggleClass("jian");
+	    $(this).next("ul.inner-ul").toggle();
+	});
+	
 });

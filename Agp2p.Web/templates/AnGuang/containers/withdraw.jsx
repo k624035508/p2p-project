@@ -126,7 +126,7 @@ class WithdrawPage extends React.Component {
 					                <p className="bank-name">{c.bankName}</p>
 					                <p className="card-num">{"尾号 " + c.last4Char + " 储蓄卡"}</p>
 					                {this.state.selectedCardIndex == index
-					                	? <img src={TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected.png"} />
+					                	? <img src={TEMPLATE_PATH + "/imgs/usercenter/withdraw-icons/selected2.png"} />
 					                	: null
 					                }
 					            </li>
@@ -139,9 +139,9 @@ class WithdrawPage extends React.Component {
 				    </div>
 				    <div className="balance-withdraw"><span>可用余额：</span>{"￥" + this.props.idleMoney.toString()}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
-				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw}
-				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span className="hidden">{"实际到账：" + this.state.realityWithdraw + " 元"}</span></div>
-				    <div className="recorded-date"><span>预计到账日期：</span>{this.state.moneyReceivingDay + " （1-2个工作日内到账，双休日和法定节假日除外）"}</div>
+				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw} placeholder="最低提现100元"
+				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span className="hidden">{"实际到账：" + this.state.realityWithdraw + " 元"}</span>
+				    <span className="withComp">预计到账日期：</span>{this.state.moneyReceivingDay + " （1-2个工作日内到账，双休日和法定节假日除外）"}</div>
 				        {/* <div className="psw-withdraw"><span><i>*</i>交易密码：</span>
 					    <input type="password"
 					    	onFocus={ev => this.setState({passwordReadonly: false})}
@@ -150,14 +150,17 @@ class WithdrawPage extends React.Component {
 					    	disabled={!this.props.hasTransactPassword}
 					    	placeholder={this.props.hasTransactPassword ? "" : "（请先设置交易密码）"} />
 			    	</div>*/}
+                    <div className="fees">现平台暂时不收取管理费、提现手续费、充值手续费，如有资费变动将另行通知。</div>
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
 				</div>
 				<div className="bank-chose-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
-				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
-				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
-				    <p>3. 提现金额每笔最小100元，最大50000元。</p>
-				    <p>4. 如果充值金额没有及时到账，请拨打客服电话：400-8878-200。</p>
+				    <p>1、提现时务必使用与您的身份证信息一致的银行卡，且确保填写的银行卡姓名及手机号码与平台预留信息一致，否则导致提现失败。</p>
+				    <p>2、推广期间暂不收取充值、提现、管理费用，具体收费时间以平台公示为准。</p>
+				    <p>3、同一注册帐号提现次数一天不超3次，每次提现额度最高50万元。</p>
+				    <p>4、为了保障您的账户及资金安全，本平台不会以任何方式索取您的账户密码，请妥善保管您的帐户密码信息。</p>
+                    <p>5、用户提交提现申请，资金会在1-2个工作日到帐，具体时间以银行到帐时间为准，提现仅限银行借记卡，不支持存折、信用卡及其他卡种。</p>
+                    <p>6、提现过程如有疑问，请在工作日08：30-18：00联系平台客服。</p>
 				</div>
 			</div>
 		);

@@ -4,7 +4,7 @@
 @withdraw: "../imgs/usercenter/withdraw-icons";
 
 .withdraw {
-	height: 513px;
+	height: 470px;
 	& > div {
 		margin-bottom: 30px;
 		& > * { display: inline-block; }
@@ -19,6 +19,7 @@
 				vertical-align: top;
 				font-size: @font18;
 				font-weight: bolder;
+                font-style:normal;
 				color: @red;
 				margin-right: 8px;
 			}
@@ -77,8 +78,8 @@
 			.add-card {
 				text-align: center;
 				line-height: 50px;
-				color: @red;
-				background: url("@{withdraw}/add.png") no-repeat;
+				color: @blue;
+				background: url("@{withdraw}/add2.png") no-repeat;
 			}
 		}
 		#addCards {
@@ -95,5 +96,12 @@
 			}
 		}
 	}
+    .amount-withdraw{
+       color:@red; font-size:13px;width:820px;
+       span.withComp{color:#aaaaaa; margin-right:6px;}
+    }
+    .fees{ color:#aaaaaa; font-size:13px; height:25px; padding-left:48px;}
 }
-.bank-chose-tips { .th-grey-style; }
+.bank-chose-tips { .th-grey-style; 
+                   span{border-bottom-color:@blue;}
+}

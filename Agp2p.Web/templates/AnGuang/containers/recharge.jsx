@@ -75,7 +75,7 @@ class RechargePage extends React.Component {
 						return (
 							<li id={classMapping[k]} key={classMapping[k]} onClick={ev => this.setState({selectedBankId: classMapping[k]})}>
 							{this.state.selectedBankId == classMapping[k]
-								? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png"} />
+								? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected2.png"} />
 								: null}
 							</li>);
 					})}
@@ -89,9 +89,11 @@ class RechargePage extends React.Component {
                 <a onClick={ev => this.doCharge(ev)}>确认充值</a></div>
 				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
-				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
-				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
-				    <p>3. 如果充值金额没有及时到账，请拨打客服电话：400-8878-200。</p>
+				    <p>1. 为了保障账户及资金安全，请在充值前在“个人中心”完成安全认证以及提现密码设置。</p>
+				    <p>2. 充值过程中请不要关闭浏览器，请您耐心等待；充值成功后金额将及时汇入您的账户中。</p>
+				    <p>3. 请注意您的银行卡充值限制，以免造成不便；每日的充值限额依据各银行限额为准。</p>
+                    <p>4. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用</p>
+                    <p>5. 如果充值金额没有及时到账，请您拨打客服电话400-8878-200，或联系在线客服确认</p>
 				</div>
 				<div className="modal fade" id="waitforPaymentDialog" tabIndex="-1" role="dialog" aria-labelledby="waitforPaymentDialogLabel"
 					data-backdrop="static" data-keyboard="false">

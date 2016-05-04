@@ -14,12 +14,16 @@
 			color: @dark-grey;
 			text-decoration: none;
 			padding-bottom: 7px;
-			&.active { border-bottom: 2px solid @red; }
+			&.active { border-bottom: 2px solid @blue; }
 		}
 	}
 }
 
-.warm-tips { .th-grey-style; }
+.warm-tips { .th-grey-style; 
+             span{
+                 border-bottom-color:@blue;
+             }
+}
 .bank-select {
 	padding: 5px 15px 5px 135px;
 	li {
