@@ -321,6 +321,10 @@ namespace Agp2p.Core.PayApiLogic
                     }
                 }
             }
+            catch (ChangeConflictException)
+            {
+                MessageBus.Main.Publish(msg);
+            }
             catch (Exception ex)
             {
                 msg.Remarks = "内部错误：" + ex.Message;
