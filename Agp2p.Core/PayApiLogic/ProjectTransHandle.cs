@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.Data.Linq;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
@@ -169,7 +173,8 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             //异步返回才放款,内网测试使用同步
 #if DEBUG
-                            if (msg.Sync) {
+                            if (msg.Sync)
+                            {
 #endif
 #if !DEBUG
                             if (!msg.Sync)
@@ -238,8 +243,7 @@ namespace Agp2p.Core.PayApiLogic
                                         {
                                             var dic = Utils.UrlParamToData(req.remarks);
                                             int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
-                                            //生成还款记录 
-                                            context.GainLoanerRepayment(DateTime.Now, repayId, (int)msg.UserIdIdentity,
+                                            context.GainLoanerRepayment(DateTime.Now, repayId, (int) msg.UserIdIdentity,
                                                 Utils.StrToDecimal(msg.Sum, 0));
 
                                             //如果是手动还款立刻发送本息到账请求 TODO 是否需要？
@@ -262,6 +266,10 @@ namespace Agp2p.Core.PayApiLogic
                         }
                     }
                 }
+            }
+            catch (ChangeConflictException)
+            {
+                MessageBus.Main.Publish(msg);
             }
             catch (Exception ex)
             {
@@ -300,12 +308,10 @@ namespace Agp2p.Core.PayApiLogic
                                 //活期项目不需要执行还款计划
                                 if (!Utils.StrToBool(dic["isHuoqi"], false))
                                 {
-
                                     if (!Utils.StrToBool(dic["isEarly"], false))
                                         context.ExecuteRepaymentTask(Utils.StrToInt(dic["repayTaskId"], 0));
                                     else
-                                        context.EarlierRepayAll(msg.ProjectCode,
-                                            ConfigLoader.loadCostConfig().earlier_pay);
+                                        context.EarlierRepayAll(msg.ProjectCode, ConfigLoader.loadCostConfig().earlier_pay);
                                 }
                             }
                             else
