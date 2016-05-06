@@ -1821,7 +1821,13 @@ namespace Agp2p.Core
         /// <param name="amount"></param>
         public static void GainLoanerRepayment(this Agp2pDataContext context, DateTime gainAt, int repaymentTaskId, int loanerUserId, decimal amount, bool save = true)
         {
-            context.Log = Console.Out;
+            //查找是否已经生成还款记录
+            if(context.li_bank_transactions.Any(t => t.type == (int)Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay 
+            && t.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm
+            && t.remarks == repaymentTaskId.ToString()))
+                throw new InvalidOperationException("借款人已经还款");
+
+
             var wallet = context.li_wallets.Single(w => w.user_id == loanerUserId);
             if (wallet.idle_money < amount)
                 throw new InvalidOperationException("借款人的余额不足");
