@@ -148,48 +148,46 @@ namespace Agp2p.Web.api.payment.sumapay
                                     break;
                             }
 
-                            //保存响应日志
-                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
-                            context.SubmitChanges();
-                            respMsg.ResponseId = ResponseLog.id;
-                            //发送响应消息异步处理
-                            MessageBus.Main.PublishAsync(respMsg, s =>
+                            //发送响应消息处理
+                            MessageBus.Main.Publish(respMsg);
+                            //更新日志信息
+                            ResponseLog.user_id = respMsg.UserIdIdentity;
+                            ResponseLog.project_id = respMsg.ProjectCode;
+                            RequestLog.complete_time = DateTime.Now;
+                            if (respMsg.HasHandle)
                             {
-                                RequestLog = context.li_pay_request_log.SingleOrDefault(r => r.id == s.RequestId);
-                                ResponseLog = context.li_pay_response_log.SingleOrDefault(r => r.id == s.ResponseId);
-                                if (RequestLog != null && ResponseLog != null)
-                                {
-                                    ResponseLog.user_id = s.UserIdIdentity;
-                                    ResponseLog.project_id = s.ProjectCode;
-                                    RequestLog.complete_time = DateTime.Now;
-
-                                    if (s.HasHandle)
-                                    {
-                                        ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
-                                        RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
-                                    }
-                                    else
-                                    {
-                                        ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
-                                        RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
-                                        //记录失败信息
-                                        ResponseLog.remarks += s.Remarks + ";";
-                                    }
-                                    //更新日志信息
-                                    context.SubmitChanges();
-                                }
-                            });
+                                ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
+                                RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
+                            }
+                            else
+                            {
+                                ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Invalid;
+                                RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Fail;
+                                //记录失败信息
+                                ResponseLog.remarks += respMsg.Remarks;
+                            }
+                            context.li_pay_response_log.InsertOnSubmit(ResponseLog);
                         }
                     }
                     else
-                        context.AppendAdminLogAndSave("SumaPayNotic", "没有找到对应的请求，RequestID:" + ResponseLog.request_id);
+                        context.AppendAdminLog("SumaPayNotic", "没有找到对应的请求，RequestID:" + ResponseLog.request_id);
                 }
                 else
-                    context.AppendAdminLogAndSave("SumaPayNotic", "请求流水号为空！");
+                    context.AppendAdminLog("SumaPayNotic", "请求流水号为空！");
             }
             catch (Exception ex)
             {
-                context.AppendAdminLogAndSave("SumaPayNotic", "内部错误:" + ex.Message);
+                context.AppendAdminLog("SumaPayNotic", "noticeUrl 内部错误:" + ex.Message);
+            }
+            //解决错误“找不到行或已修改”
+            try
+            {
+                context.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+            }
+            catch (System.Data.Linq.ChangeConflictException ex)
+            {
+                //不再提交数据更新
+                new Agp2pDataContext().AppendAdminLogAndSave("SumaPayNotic", "noticeUrl 找不到行或已修改:" + ex.Message);
             }
         }
 
