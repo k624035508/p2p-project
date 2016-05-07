@@ -14,7 +14,7 @@ let selectedTabByHash = () => {
 };
 
 $(function(){
-    header.setHeaderHighlight(3);
+    header.setHeaderHighlight(4);
 
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();

@@ -53,18 +53,18 @@ class CardEditor extends React.Component {
 				<ul className="list-unstyled">
 					<li><span>开户名：</span><span style={this.props.realName ? null : {color: "red"}} >
 						{this.props.realName || "（请先到 “个人中心 -> 安全中心” 进行实名认证）"}</span></li>
-					<li><span>选择银行：</span><select className="bankSelect" value={this.state.bank}
+					<li><span><i>*</i>选择银行：</span><select className="bankSelect" value={this.state.bank}
 						onChange={ev => this.setState({bank: ev.target.value})} disabled={!this.props.realName}>
 						<option value="">请选择银行</option>
 						{bankList.map(b => <option value={b} key={b}>{b}</option>)}
 						</select></li>
 					{editingCard
-						? <li><span>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
-						: <li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
-						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
+						? <li><span><i>*</i>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
+						: <li><span><i>*</i>银行卡号：</span><input type="text" value={this.state.cardNumber} placeholder="请输入银行卡号"
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '15px'}}>必须使用开户信息与实名认证信息一致的银行卡</span></li>}
 					{editingCard ? null :
-					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
-						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
+					<li><span><i>*</i>确认卡号：</span><input type="text" value={this.state.cardNumber2} placeholder="请再次输入银行卡号"
+						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}></span></li>}
 				</ul>
 				{creatingCard ? null :
 					<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}

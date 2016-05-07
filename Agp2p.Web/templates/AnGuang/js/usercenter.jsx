@@ -71,12 +71,20 @@ $(function(){
 		</Provider>
 	), document.getElementById("app"));
 	
-	header.setHeaderHighlight(2);
+	header.setHeaderHighlight(3);
 	$("ul.inner-ul").hide();
 
-	$(".outside-ul>li>a").click(function(){
-	    $(this).find("div").toggleClass("jian");
-	    $(this).next("ul.inner-ul").toggle();
+	$("ul.outside-ul>li.listing").click(function(){
+	    $(this).find("a").find("div").addClass("jian");
+	    $(this).siblings().find("a").find("div").removeClass("jian");
+	    $(this).find("ul.inner-ul").show(300);
+	    $(this).siblings().find("ul.inner-ul").hide(300);
+	});
+	
+	$(".fees-img2").hover(function(){
+	    $(".fees-tip").css("zIndex","10");
+	},function(){
+	    $(".fees-tip").css("zIndex","-10");
 	});
 	
 });

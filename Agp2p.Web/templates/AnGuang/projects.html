@@ -1,4 +1,6 @@
-﻿<%namespace "Agp2p.Core"%>
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
+<%namespace "Agp2p.Core"%>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -255,12 +257,22 @@
                         <%/if%>
                         <span class="back-way">{p.GetProjectRepaymentTypeDesc()}</span>
                         <span class="progress-wrap">
+                            <%if(inv.InvestmentProgress.ToString("p1")=="100.0%") %>
                             <div class="progress progress-custom">
                                 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%=(inv.InvestmentProgress*100)%>"
                                      aria-valuemin="0" aria-valuemax="100" style='width: 0'>
                                     <%=inv.InvestmentProgress.ToString("p1")%>
                                 </div>
                             </div>
+                            <%else%>
+                            <div class="progress progress-custom">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%=(inv.InvestmentProgress*100)%>"
+                                     aria-valuemin="0" aria-valuemax="100" style='width: 0'>
+                                    <%=inv.InvestmentProgress.ToString("p1")%>
+                                </div>
+                            </div>
+                            <div class="caninvest">可投金额：<%=inv.InvestmentBalance.ToString("n0")%>元</div>
+                            <%/if%>
                         </span>
                         <span class="btn-wrap pull-right">
                             <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>

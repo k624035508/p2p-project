@@ -57,14 +57,14 @@ class UserCenterPage extends React.Component {
 			        </div>
 			        <ul className="list-unstyled outside-ul">
 			            <li><Link to="/myaccount" className={"account-link " + (!this.props.children ? "" : "active")} activeClassName="active">账户总览</Link></li>
-			            <li><a className="funds">资金管理<div></div></a>
+			            <li className="listing"><a className="funds">资金管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/mytransaction" activeClassName="active-link">交易明细</Link></li>
 			                    <li><Link to="/recharge" activeClassName="active-link">我要充值</Link></li>
 			                    <li><Link to="/withdraw" activeClassName="active-link">我要提现</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="investing">投资管理<div></div></a>
+			            <li className="listing"><a className="investing">投资管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/myinvest" activeClassName="active-link">我的投资</Link></li>
 			                    <li><Link to="/current" activeClassName="active-link">安融活期</Link></li>
@@ -73,7 +73,7 @@ class UserCenterPage extends React.Component {
 			                    <li><Link to="/myrepayments" activeClassName="active-link">回款计划</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="account">账户管理<div></div></a>
+			            <li className="listing"><a className="account">账户管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/safe" activeClassName="active-link">个人中心</Link></li>
 			                    <li><Link to="/bankaccount" activeClassName="active-link">银行账户</Link></li>
@@ -81,20 +81,30 @@ class UserCenterPage extends React.Component {
 			                    <li><Link to="/mylottery" activeClassName="active-link">我的奖券</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="news">消息管理<div></div></a>
+			            <li className="listing"><a className="news">消息管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 								<li><Link to="/mynews" activeClassName="active-link">我的消息</Link></li>
 								<li><Link to="/settings" activeClassName="active-link">通知设置</Link></li>
 			                </ul>
 			            </li>
 								{!this.props.isLoaner ? null :
-                                  <li><a className="myloan">借款管理<div></div></a>
+                                  <li className="listing"><a className="myloan">借款管理<div></div></a>
                                       <ul className="list-unstyled inner-ul">
                                           <li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
                                       </ul>
                                   </li> }
                               </ul>
-                          </div>
+					  
+                        <div className="hot-act">
+                            <div className="hot-title">热门活动</div>
+                            <div className="hot-img">
+                                <a href="https://www.agrhp2p.com/article/384.html" target="_blank"></a>                              
+                                <div>
+                                    劳动小当家 
+                                </div>
+                            </div>
+                        </div>
+                </div>
 								    {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
                                 </div>
                             );

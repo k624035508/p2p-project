@@ -724,6 +724,14 @@
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events2.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team1.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team2.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team3.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team4.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\bottomhover.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\manbiao2.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\tophover.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\006.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
@@ -824,7 +832,6 @@
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
     <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\bottomhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
     <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
@@ -861,7 +868,6 @@
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\top.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\tophover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
@@ -972,6 +978,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\008.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\activity1.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-border.png" />
@@ -1050,6 +1057,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\pufa.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\selected.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\selected2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\wenahao.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\xingye.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\youzheng.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhaohang.png" />

@@ -334,7 +334,7 @@ class CustodyAccount extends React.Component {
                     {this.props.identityId? 
                     <a href={"/api/payment/sumapay/index.aspx?api=4"} target="_blank">查看</a> 
                     :
-                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >立即开通</a>}
+                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >设置</a>}
                     </span>
 				</div>
 			</li>

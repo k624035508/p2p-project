@@ -63,11 +63,11 @@ body { background: @body-color; }
 				margin-top: 55px;
 				background: url("@{images}/agrh-bg.png") no-repeat left center;
 				.description {
-					width: 645px;
-					color: @darker-grey;
-					font-size: @font15;
-					text-indent: 2em;
-					line-height: 28px;
+                    margin-top:22px;
+					width: 630px;
+					color: @dark-grey;
+					font-size: 18px;
+					line-height: 39px;
 				}
 			}
 		}
@@ -99,16 +99,15 @@ body { background: @body-color; }
 	/*大事记*/
 	#events {
 		height: 600px;
-		padding-top: 40px;
+		padding-top: 24px;
 		background: url("@{images}/events-bg.jpg") no-repeat center;
 		.title {
 			height: 110px;
 			background: url("@{images}/events-title.png") no-repeat center;
 		}
 		.description {
-			height: 310px;
-			margin-top: 80px;
-			background: url("@{images}/events.png") no-repeat center;
+			height: 380px;
+			background: url("@{images}/events2.png") no-repeat center;
 		}
 	}
 	/*高管团队*/
@@ -331,14 +330,18 @@ body { background: @body-color; }
 				background: url("@{images}/strategy-title.png") no-repeat center;
 			}
 			.description {
-				margin-top: 50px;
+				margin-top: 70px;
 				.strategy-content {
-					height: 110px;
+					height: 90px;
 					line-height: 118px;
 					color: @grey;
 					font-size: @font22;
 					text-align: center;
-					border: @border;
+					& > div{ width:245px; height:70px; display:inline-block; margin-right:33px;}
+                    .team-con1 { background:url("@{images}/team1.jpg");}
+                    .team-con2 { background:url("@{images}/team2.jpg");}
+                    .team-con3 { background:url("@{images}/team3.jpg");}
+                    .team-con4 { background:url("@{images}/team4.jpg"); margin-right:0;}
 				}
 			}
 		}
@@ -362,7 +365,7 @@ body { background: @body-color; }
 					float: left;
 				}
 				.add-wrap {
-					margin-right: 110px;
+					width:600px;
 					address {
 						color: @white;
 						font-size: @font20;
@@ -398,6 +401,7 @@ body { background: @body-color; }
 		}
 	}
 }
+
 
 .unselectable {
 	-webkit-user-select: none;

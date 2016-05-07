@@ -4,7 +4,7 @@
 @withdraw: "../imgs/usercenter/withdraw-icons";
 
 .withdraw {
-	height: 470px;
+	height: 420px;
 	& > div {
 		margin-bottom: 30px;
 		& > * { display: inline-block; }
@@ -40,6 +40,7 @@
 	}
 	.withdrawBtn {
 		margin-left: 132px;
+        margin-top:35px;
 		margin-bottom: 0;
 		a {
 			display: inline-block;
@@ -97,11 +98,45 @@
 		}
 	}
     .amount-withdraw{
-       color:@red; font-size:13px;width:820px;
+       color:@red; font-size:13px;width:820px; margin-bottom:12px;
        span.withComp{color:#aaaaaa; margin-right:6px;}
     }
-    .fees{ color:#aaaaaa; font-size:13px; height:25px; padding-left:48px;}
+   .fees{
+      margin :0 0 5px 145px; font-size:@font13;
+      .fees-title{display:inline-block; width:163px; text-align:left; font-size:@font13;}
+      .fees-num{color:@red;}   
+      .fees-img2{display:inline-block; margin-left:11px; width:15px; height:15px; cursor:pointer;}
+   }
+     .fees-img{background:url("@{withdraw}/wenahao.png") no-repeat 205px 2px;}
 }
+.fees-tip{
+    position:absolute; z-index:-10; top:153px; left:223px;
+    width:318px; height:50px; font-size:13px; color:#e37003; background:#fffcef; border:1px solid #ffbb76; padding-left:8px; padding-top:3px; line-height:22px; 
+    em{
+            display:block; 
+    width:0; 
+    height:0; 
+    border-width:10px 10px 0 10px; 
+    border-style:solid; 
+    border-color:#ffbb76 transparent transparent  transparent; 
+    position:absolute; 
+    top:48px; 
+    left:50%;/* 三角形居中显示 */
+    margin-left:-10px;/* 三角形居中显示 */
+    i{
+    display:block; 
+    width:0; 
+    height:0; 
+    border-width:10px 10px 0 10px; 
+    border-style:solid; 
+    border-color:#fffcef transparent transparent transparent; 
+    position:absolute; 
+    top:-11px; 
+    left:-10px;
+    }
+    }
+    }
+
 .bank-chose-tips { .th-grey-style; 
                    span{border-bottom-color:@blue;}
 }
