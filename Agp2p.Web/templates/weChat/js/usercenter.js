@@ -9,6 +9,11 @@ var viewportWidth = $(window).width();
 var fontSizeUnit = viewportWidth / 20;
 $("html").css("font-size", fontSizeUnit);
 
-$(function(){
+$(function() {
+    //TODO 停止充值临时逻辑
+    $("#reChargeBtn").click(function() {
+        alert("您暂时无法充值：安广融合平台正在切换第三方资金托管，具体全面开放请留意官网公告。");
+    });
+
     footerInit();
 });
