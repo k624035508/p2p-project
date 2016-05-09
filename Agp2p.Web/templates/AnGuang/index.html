@@ -131,22 +131,22 @@
             <li>
                 <a href='<%linkurl("safe_defence")%>' class="funds-icon"></a>
                 <div>
-                    <p>资金存管</p>
-                    <p>坚持中介本质</p>
+                    <p style="font-size: 18px; font-weight: bold">合规性原则</p>
+                    <p>经营合规合法</p>
                 </div>
             </li>
             <li>
                 <a href='<%linkurl("safe_defence")%>' class="acceptance-icon"></a>
                 <div>
-                    <p>银行承兑</p>
-                    <p>低风险、短期高收益</p>
+                    <p style="font-size: 18px; font-weight: bold">专业性原则</p>
+                    <p>专业化的管理及团队</p>
                 </div>
             </li>
             <li>
                 <a href='<%linkurl("safe_defence")%>' class="guarantee-icon"></a>
                 <div>
-                    <p>风控措施</p>
-                    <p>专业严谨</p>
+                    <p style="font-size: 18px; font-weight: bold">稳健性原则</p>
+                    <p>精选稳健的资产</p>
                 </div>
             </li>
         </ul>
@@ -247,7 +247,7 @@
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
                     <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <p class="amount-status"><span class="invested"><%=p.investment_amount.ToString("n0")%> 元</span><span class="hr">/</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
+                    <p class="amount-status"><span class="invested">可投金额：</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
                     <%else if(p.status<(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
                         <p class="amount-status"><span class="invested">融资结束</span></p>
                         <%else %>

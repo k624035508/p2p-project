@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -37,8 +36,6 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,7 +49,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -133,20 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\audit\make_loan_audit.aspx" />
-    <Content Include="admin\claims\agent_buyed_claims.aspx" />
-    <Content Include="admin\claims\agent_buying_claims.aspx" />
     <Content Include="admin\dialog\dialog_picture.aspx" />
     <Content Include="admin\js\bootstrap.config.js" />
-    <Content Include="admin\js\bootstrap.config.less" />
     <Content Include="admin\js\common.js" />
-    <Content Include="admin\js\dropdown-picker.jsx" />
     <Content Include="admin\js\jquery.skygqOneDblClick.1.1.js" />
     <Content Include="admin\js\layindex.js" />
     <Content Include="admin\js\laymain.js" />
-    <Content Include="admin\js\layout.js" />
-    <Content Include="admin\js\manager-messages.jsx" />
-    <Content Include="admin\js\pagination.jsx" />
-    <Content Include="admin\js\pinyin.js" />
     <Content Include="admin\js\uploader.js" />
     <Content Include="admin\loaner\_creditSituationInfoTemplate.html" />
     <Content Include="admin\loaner\guarantor_edit.aspx" />
@@ -186,6 +175,8 @@
     <Content Include="admin\dialog\dialog_rewrite.aspx" />
     <Content Include="admin\ie6update.html" />
     <Content Include="admin\index.aspx" />
+    <Content Include="admin\js\layout.js" />
+    <Content Include="admin\js\pinyin.js" />
     <Content Include="admin\loaner\loaner_list.aspx" />
     <Content Include="admin\login.aspx" />
     <Content Include="admin\manager\manager_edit.aspx" />
@@ -217,7 +208,6 @@
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
     <Content Include="admin\settings\plugin_list.aspx" />
-    <Content Include="admin\settings\pay_api_log.aspx" />
     <Content Include="admin\settings\sys_config.aspx" />
     <Content Include="admin\settings\templet_file_edit.aspx" />
     <Content Include="admin\settings\templet_file_list.aspx" />
@@ -257,7 +247,6 @@
     <Content Include="admin\transact\bank_transaction_charge.aspx" />
     <Content Include="admin\transact\bank_transaction_list_account.aspx" />
     <Content Include="admin\transact\bank_transaction_withdraw.aspx" />
-    <Content Include="admin\transact\huoqi_withdraw.aspx" />
     <Content Include="admin\transact\project_investment_list.aspx" />
     <Content Include="admin\transact\project_list.aspx" />
     <Content Include="admin\transact\project_recently_repay_list.aspx" />
@@ -339,10 +328,6 @@
     <Content Include="api\payment\lianlianpay\notify_url.aspx" />
     <Content Include="api\payment\lianlianpay\prepositPay.aspx" />
     <Content Include="api\payment\lianlianpay\urlReturn.aspx" />
-    <Content Include="api\payment\sumapay\failReturnUrl.aspx" />
-    <Content Include="api\payment\sumapay\index.aspx" />
-    <Content Include="api\payment\sumapay\noticeUrl.aspx" />
-    <Content Include="api\payment\sumapay\successReturnUrl.aspx" />
     <Content Include="api\payment\tenpay\index.aspx" />
     <Content Include="api\payment\tenpay\notify_url.aspx" />
     <Content Include="api\payment\tenpay\return_url.aspx" />
@@ -704,11 +689,14 @@
     <Content Include="scripts\webuploader\webuploader.min.js" />
     <Content Include="templates\AnGuang\.babelrc" />
     <Content Include="templates\AnGuang\about.xml" />
+    <Content Include="admin\js\dropdown-picker.jsx" />
+    <Content Include="admin\js\manager-messages.jsx" />
     <Content Include="admin\.babelrc" />
     <Content Include="admin\package.json" />
+    <Content Include="admin\js\pagination.jsx" />
     <Content Include="admin\pwatch.bat" />
     <Content Include="admin\watch.bat" />
-    <None Include="Properties\PublishProfiles\agrhp2p_test.pubxml" />
+    <Content Include="admin\js\bootstrap.config.less" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
@@ -724,16 +712,6 @@
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
-    <Content Include="templates\AnGuang\imgs\aboutus\events2.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\team1.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\team2.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\team3.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\team4.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\bottomhover.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\manbiao2.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\tophover.jpg" />
-    <Content Include="templates\AnGuang\imgs\projects\003.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\006.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
@@ -751,6 +729,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\events-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\events-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\events2.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\lawyer-yingke.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
@@ -760,6 +739,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\office-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001big.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office02-bg.png" />
@@ -795,6 +776,10 @@
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team1.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team2.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team3.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team4.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
     <Content Include="templates\AnGuang\imgs\help\charge.png" />
@@ -829,9 +814,11 @@
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-04.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-05.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
-    <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\calIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
     <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
     <Content Include="templates\AnGuang\imgs\index\floating-icon.png" />
@@ -850,9 +837,9 @@
     <Content Include="templates\AnGuang\imgs\index\ios-btn-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\jian.png" />
+    <Content Include="templates\AnGuang\imgs\index\kefu.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
-    <Content Include="templates\AnGuang\imgs\index\manbiao.jpg" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\news-ring.png" />
@@ -860,6 +847,7 @@
     <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\qqIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\slider-arrow.png" />
@@ -867,55 +855,17 @@
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
-    <Content Include="templates\AnGuang\imgs\index\top.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\topIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\wechatblue.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
+    <Content Include="templates\AnGuang\imgs\index\weiboblue.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
-    <Content Include="templates\AnGuang\imgs\loan\001-1.png" />
-    <Content Include="templates\AnGuang\imgs\register\001-hover.png" />
-    <Content Include="templates\AnGuang\imgs\register\001.png" />
-    <Content Include="templates\AnGuang\imgs\register\002-hover.png" />
-    <Content Include="templates\AnGuang\imgs\register\002.png" />
-    <Content Include="templates\AnGuang\imgs\register\003-hover.png" />
-    <Content Include="templates\AnGuang\imgs\register\003.png" />
-    <Content Include="templates\AnGuang\imgs\register\004.png" />
-    <Content Include="templates\AnGuang\imgs\register\005.png" />
-    <Content Include="templates\AnGuang\imgs\register\006.png" />
-    <Content Include="templates\AnGuang\imgs\register\007.png" />
-    <Content Include="templates\AnGuang\imgs\register\008.png" />
-    <Content Include="templates\AnGuang\imgs\register\009-1.png" />
-    <Content Include="templates\AnGuang\imgs\register\009.png" />
-    <Content Include="templates\AnGuang\imgs\register\010.png" />
-    <Content Include="templates\AnGuang\imgs\register\012-1.png" />
-    <Content Include="templates\AnGuang\imgs\register\012.png" />
-    <Content Include="templates\AnGuang\imgs\register\11.png" />
     <Content Include="templates\AnGuang\imgs\loan\001.png" />
-    <Content Include="templates\AnGuang\imgs\loan\0011.png" />
-    <Content Include="templates\AnGuang\imgs\loan\002-1.png" />
-    <Content Include="templates\AnGuang\imgs\loan\002.png" />
-    <Content Include="templates\AnGuang\imgs\loan\003-1.png" />
-    <Content Include="templates\AnGuang\imgs\loan\003.png" />
-    <Content Include="templates\AnGuang\imgs\loan\004-1.png" />
-    <Content Include="templates\AnGuang\imgs\loan\005-1.png" />
-    <Content Include="templates\AnGuang\imgs\loan\005.png" />
-    <Content Include="templates\AnGuang\imgs\loan\006-1.png" />
-    <Content Include="templates\AnGuang\imgs\loan\006.png" />
-    <Content Include="templates\AnGuang\imgs\loan\007-1.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\008-1.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\008.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\009-1.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\009.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\010-1.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\010.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\011-1.jpg" />
+    <Content Include="templates\AnGuang\imgs\loan\0011.jpg" />
     <Content Include="templates\AnGuang\imgs\loan\011.png" />
-    <Content Include="templates\AnGuang\imgs\loan\012-1.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\012.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\014.png" />
-    <Content Include="templates\AnGuang\imgs\loan\021.jpg" />
-    <Content Include="templates\AnGuang\imgs\loan\blue.png" />
     <Content Include="templates\AnGuang\imgs\loan\checking-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\failed-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\forbid-icon.png" />
@@ -927,13 +877,10 @@
     <Content Include="templates\AnGuang\imgs\loan\next-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info-grey.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info.png" />
-    <Content Include="templates\AnGuang\imgs\projects\001.png" />
-    <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
-    <Content Include="templates\AnGuang\imgs\register\loading.gif" />
     <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
     <Content Include="templates\AnGuang\imgs\register\pic-code.png" />
@@ -969,28 +916,9 @@
     <Content Include="templates\AnGuang\imgs\sitemap\invest.png" />
     <Content Include="templates\AnGuang\imgs\sitemap\others.png" />
     <Content Include="templates\AnGuang\imgs\sitemap\safe.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\001.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\002.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\003.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\004.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\005.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\007.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\008.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\account2.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\activity1.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\current-icon-border.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\funds2.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\investing2.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\jia.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\jian.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\myloan.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\myloan2.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\news2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\overview2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\read.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\guangda.png" />
@@ -1003,7 +931,6 @@
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\pingan.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\pufa.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\selected.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\selected2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\xingye.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\youzheng.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\zhaohang.png" />
@@ -1023,13 +950,6 @@
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\sinaweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\tencentweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\wechat.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\013.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\014.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\015.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\016.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\018.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\custody-grey.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\safe\custody.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\mail.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\name-grey.png" />
@@ -1040,11 +960,9 @@
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\smile.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\test_01.jpg" />
     <Content Include="templates\AnGuang\imgs\usercenter\unread.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\add2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\guangda.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\guangfa.png" />
@@ -1056,8 +974,6 @@
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\pingan.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\pufa.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\selected.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\selected2.png" />
-    <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\wenahao.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\xingye.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\youzheng.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\withdraw-icons\zhaohang.png" />
@@ -1067,8 +983,6 @@
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
-    <Content Include="templates\AnGuang\js\coop.js" />
-    <Content Include="templates\AnGuang\js\fail_return.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
@@ -1077,12 +991,8 @@
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
-    <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
-    <Content Include="templates\AnGuang\components\custom-dialog.jsx" />
-    <None Include="templates\AnGuang\less\success_return.less" />
-    <None Include="templates\AnGuang\less\fail_return.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
@@ -1142,6 +1052,7 @@
     <Content Include="templates\weChat\imgs\banks-icon.png" />
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\banner\banner-2.png" />
+    <Content Include="templates\weChat\imgs\banner\banner-3.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\cordova-back.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
@@ -1156,8 +1067,6 @@
     <Content Include="templates\weChat\imgs\headshot.png" />
     <Content Include="templates\weChat\imgs\icon-left.png" />
     <Content Include="templates\weChat\imgs\icon-right.png" />
-    <Content Include="templates\weChat\imgs\img-left.png" />
-    <Content Include="templates\weChat\imgs\img-right.png" />
     <Content Include="templates\weChat\imgs\input-icon\amount.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank-card.png" />
     <Content Include="templates\weChat\imgs\input-icon\bank.png" />
@@ -1358,18 +1267,9 @@
     <Content Include="templates\weChat\less\mylottery.less" />
     <Content Include="templates\weChat\less\myinvest.less" />
     <Content Include="templates\weChat\less\receive-plan.less" />
-    <Content Include="scripts\jquery-2.2.1.min.map" />
     <Content Include="templates\AnGuang\less\loan.less" />
-    <Content Include="templates\AnGuang\containers\agcurrent.jsx" />
-    <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
-    <Content Include="templates\AnGuang\less\agcurrent.less" />
-    <Content Include="templates\AnGuang\less\claimstransfer.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
     <Content Include="templates\AnGuang\less\coop.less" />
-    <Content Include="templates\AnGuang\containers\myloan.jsx" />
-    <Content Include="templates\AnGuang\components\myloan-table.jsx" />
-    <Content Include="templates\AnGuang\less\myloan.less" />
-    <None Include="Properties\PublishProfiles\minson_98.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
@@ -1378,18 +1278,6 @@
     </Compile>
     <Compile Include="admin\audit\make_loan_audit.aspx.designer.cs">
       <DependentUpon>make_loan_audit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\claims\agent_buyed_claims.aspx.cs">
-      <DependentUpon>agent_buyed_claims.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\claims\agent_buyed_claims.aspx.designer.cs">
-      <DependentUpon>agent_buyed_claims.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\claims\agent_buying_claims.aspx.cs">
-      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\claims\agent_buying_claims.aspx.designer.cs">
-      <DependentUpon>agent_buying_claims.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\dialog\dialog_picture.aspx.cs">
       <DependentUpon>dialog_picture.aspx</DependentUpon>
@@ -1838,13 +1726,6 @@
     <Compile Include="admin\settings\plugin_list.aspx.designer.cs">
       <DependentUpon>plugin_list.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\settings\pay_api_log.aspx.cs">
-      <DependentUpon>pay_api_log.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\settings\pay_api_log.aspx.designer.cs">
-      <DependentUpon>pay_api_log.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\settings\sys_config.aspx.cs">
       <DependentUpon>sys_config.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1989,12 +1870,6 @@
     </Compile>
     <Compile Include="admin\transact\bank_transaction_withdraw.aspx.designer.cs">
       <DependentUpon>bank_transaction_withdraw.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\transact\huoqi_withdraw.aspx.cs">
-      <DependentUpon>huoqi_withdraw.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\transact\huoqi_withdraw.aspx.designer.cs">
-      <DependentUpon>huoqi_withdraw.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\transact\project_investment_list.aspx.cs">
       <DependentUpon>project_investment_list.aspx</DependentUpon>
@@ -2457,22 +2332,6 @@
       <DependentUpon>urlReturn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="api\payment\sumapay\failReturnUrl.aspx.cs">
-      <DependentUpon>failReturnUrl.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\sumapay\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\sumapay\noticeUrl.aspx.cs">
-      <DependentUpon>noticeUrl.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\sumapay\successReturnUrl.aspx.cs">
-      <DependentUpon>successReturnUrl.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="api\payment\tenpay\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2564,7 +2423,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Core\Agp2p.Core.csproj">
       <Project>{D13BC3EC-928C-4086-AB16-EC62A86FEB85}</Project>
-      <Name>Agp2p.Core.csproj1</Name>
+      <Name>Agp2p.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Linq2SQL\Agp2p.Linq2SQL.csproj">
       <Project>{D02BF08D-240F-4233-9B83-B22429E5F3A0}</Project>
@@ -2627,15 +2486,11 @@
     <Content Include="tools\mobile_verify.ashx" />
     <Content Include="tools\trade_pwd.ashx" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

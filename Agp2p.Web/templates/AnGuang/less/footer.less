@@ -8,7 +8,7 @@ div.footer-wrap {
         width: @min-width;
         height: 175px;
         margin: 0 auto;
-        padding: 27px 35px 27px 30px;
+        padding: 27px 0 27px 30px;
         & > div { .inline-block; }
         .content-left {
             border-right:1px solid @body-color; width:375px;  height:130px;
@@ -46,6 +46,28 @@ div.footer-wrap {
                 background: url("../imgs/index/service-code.png") no-repeat center top;
             }
             .subscribe { background: url("../imgs/index/subscribe-code.png") no-repeat center top; }
+        }
+        .serviceCall{
+            height:145px; float:right;
+            p{ 
+                text-align:right;     
+                } 
+            .service-phone{
+                font-size:20px; color:#aaaaaa; margin-bottom:5px;
+                span{ font-size:25px; color:@blue; font-weight:bold;}
+            }     
+             .service-time{
+                 font-size:15px; color:#aaaaaa;  margin-bottom:5px;
+             } 
+             .service-line{
+                  font-size:15px; color:@blue; height:25px;  margin-bottom:5px;
+                  background:url("../imgs/index/kefu.png") no-repeat 170px 0;
+             } 
+             .service-icon{
+                 height:35px;
+                 span{ display:inline-block; width:35px; height:35px; background:url("../imgs/index/wechatblue.png") no-repeat ; margin-left:14px;}
+                 a{  display:inline-block; width:35px; height:35px; background:url("../imgs/index/weiboblue.png") no-repeat ;}
+             }
         }
     }
     .footer-links {

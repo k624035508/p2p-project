@@ -23,14 +23,14 @@
     <!--head end-->
     <!--面包屑导航-->
     <div class="breadcrumbs">
-        <a href="/">首页</a>
+        <a href='<%linkurl("projects")%>'>投资理财</a>
         <span> > </span>
-        <span>我要理财</span>
+        <span>项目详情</span>
     </div>
     <!--面包屑导航 end-->
     <div class="content-wrap consume">
         <ul>
-            <li class='<%=rootCategoryId==tickerCategoryId?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">票据专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
+            <li class='<%=rootCategoryId==tickerCategoryId?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">定期专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
             <li class='<%=rootCategoryId==claimsCategoryId?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",claimsCategoryId)%>'">债权转让<span></span></li>
             <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li>
             <li class="wentibao-li">文体宝<span></span></li>
@@ -181,40 +181,41 @@
                     </div>
 <%/if%>
     <%if(rootCategoryId==huoqiCategoryId)%>
-    <div class="content-wrap ticket-head">
-        <ul>
-            <li>
-                <div>
-                    <p class="ticket-first">优质合作机构</p>
-                    <p class="ticket-second">资产来源</p>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p class="ticket-first">4重还款保障</p>
-                    <p class="ticket-second">保障方式</p>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p class="ticket-first">6.88%-14%</p>
-                    <p class="ticket-second">利率范围</p>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p class="ticket-first" style="margin-left: 50px;">10天-18个月 <a >可转让</a></p>
-                    <p class="ticket-second">产品期限</p>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <p class="ticket-first">100元起</p>
-                    <p class="ticket-second">起投金额</p>
-                </div>
-            </li>
-        </ul>
-    </div>
+<!-- <div class="content-wrap ticket-head">
+    <ul>
+        <li>
+            <div>
+                <p class="ticket-first">优质合作机构</p>
+                <p class="ticket-second">资产来源</p>
+            </div>
+        </li>
+        <li>
+            <div>
+                <p class="ticket-first">4重还款保障</p>
+                <p class="ticket-second">保障方式</p>
+            </div>
+        </li>
+        <li>
+            <div>
+                <p class="ticket-first">6.88%-14%</p>
+                <p class="ticket-second">利率范围</p>
+            </div>
+        </li>
+        <li>
+            <div>
+                <p class="ticket-first" style="margin-left: 50px;">10天-18个月 <a >可转让</a></p>
+                <p class="ticket-second">产品期限</p>
+            </div>
+        </li>
+        <li>
+            <div>
+                <p class="ticket-first">100元起</p>
+                <p class="ticket-second">起投金额</p>
+            </div>
+        </li>
+    </ul>
+</div>
+    -->
     <%/if%>
     <div class="invest-list content-wrap">
                     <div class="list-head">
