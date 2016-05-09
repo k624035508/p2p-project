@@ -511,14 +511,32 @@ div.announcement-wrap {
 
             .funds-icon {
                 background: url("@{images}/001.png");
+                transition: transform 0.5s;
+                &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
+                }
             }
 
             .acceptance-icon {
                 background: url("@{images}/002.png");
+                 transition: transform 0.5s;
+                 &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
+                }
             }
 
             .guarantee-icon {
                 background: url("@{images}/003.png");
+                 transition: transform 0.5s;
+                &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
+                }
             }
 
             div {
@@ -1028,7 +1046,7 @@ div.dynamic-wrap {
                     width: 5px;
                     height: 5px;
                     margin-right: 8px;
-                    background: @grey;
+                    background: #fa7878;
                 }
 
                 &:hover {

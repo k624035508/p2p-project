@@ -712,10 +712,17 @@
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
+    <Content Include="templates\AnGuang\imgs\aboutus\001.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\002.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\003.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\004.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\005.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agency-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bank-nanyue.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\beian-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\beian.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\chenmaoqiang.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\codeCard-bg.png" />
@@ -733,7 +740,9 @@
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\lawyer-yingke.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license-bg2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
@@ -789,13 +798,18 @@
     <Content Include="templates\AnGuang\imgs\help\diagram-04.png" />
     <Content Include="templates\AnGuang\imgs\help\diagram-05.png" />
     <Content Include="templates\AnGuang\imgs\help\guide.png" />
+    <Content Include="templates\AnGuang\imgs\help\guide2.png" />
     <Content Include="templates\AnGuang\imgs\help\problems.png" />
+    <Content Include="templates\AnGuang\imgs\help\problems2.png" />
     <Content Include="templates\AnGuang\imgs\help\step-01.png" />
     <Content Include="templates\AnGuang\imgs\help\step-02.png" />
     <Content Include="templates\AnGuang\imgs\help\step-03.png" />
     <Content Include="templates\AnGuang\imgs\help\step-04.png" />
     <Content Include="templates\AnGuang\imgs\help\step-05.png" />
     <Content Include="templates\AnGuang\imgs\help\verified-steps.png" />
+    <Content Include="templates\AnGuang\imgs\index\001.png" />
+    <Content Include="templates\AnGuang\imgs\index\002.png" />
+    <Content Include="templates\AnGuang\imgs\index\003.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\acceptance.png" />
     <Content Include="templates\AnGuang\imgs\index\activity-android-btn-hover.png" />
@@ -803,6 +817,7 @@
     <Content Include="templates\AnGuang\imgs\index\activity-ios-btn-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\activity-ios-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\activity_apps_bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\activity_apps_bg2.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_new_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\activity_rewards_bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\android-btn-hover.png" />
@@ -983,6 +998,8 @@
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
+    <Content Include="templates\AnGuang\js\coop.js" />
+    <Content Include="templates\AnGuang\js\fail_return.js" />
     <Content Include="templates\AnGuang\js\help.js" />
     <Content Include="templates\AnGuang\js\jquery.superslide.2.1.1.js" />
     <Content Include="templates\AnGuang\js\json2.js" />
@@ -991,6 +1008,7 @@
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
+    <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
     <Content Include="templates\AnGuang\loan.html" />
@@ -1270,6 +1288,9 @@
     <Content Include="templates\AnGuang\less\loan.less" />
     <Content Include="scripts\jquery-2.2.1.min.map" />
     <Content Include="templates\AnGuang\less\coop.less" />
+    <Content Include="templates\AnGuang\containers\myloan.jsx" />
+    <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
+    <Content Include="templates\AnGuang\containers\agcurrent.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
