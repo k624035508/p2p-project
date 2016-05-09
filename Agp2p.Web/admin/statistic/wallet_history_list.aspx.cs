@@ -32,7 +32,7 @@ namespace Agp2p.Web.admin.statistic
         //过滤充值、提现的申请待确定和取消状态
         readonly int[] _ignoringHistoryTypesSpecificUser =
             {
-                (int) Agp2pEnums.WalletHistoryTypeEnum.Withdrawing, (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawCancel,
+                (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawCancel,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
                 (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,

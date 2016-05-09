@@ -415,5 +415,54 @@ namespace Agp2p.Test
                 ts.Dispose();
             }
         }
+
+
+
+        [TestMethod]
+        public void FindOutIncorrectTransactionHistoies()
+        {
+            var context = new Agp2pDataContext();
+
+            // 当代收本金为 0 时：
+            // 累计充值 + 累计支付利息 == 累计提现 + 站岗资金 
+
+            // 看看是那个用户的金额出现了问题
+            var userDelta = context.li_wallets.Where(w => w.dt_users.user_name == "13500251271").AsEnumerable().Select(w =>
+            {
+                return new { delta = w.total_charge + w.total_profit - w.total_withdraw - w.idle_money, user = w.dt_users };
+            }).Where(o => o.delta != 0).ToList();
+
+            userDelta.ForEach(d =>
+            {
+                Debug.WriteLine($"{d.user.GetFriendlyUserName()} 偏差 {d.delta}");
+
+                var hises = d.user.li_wallet_histories.ToList();
+                hises.Where(h => h.investing_money == 0)
+                .Select(h => {
+                    return new { delta = QueryTotalCharge(context, h) + h.total_profit - QueryTotalWithdraw(context, h) - h.idle_money, createTime = h.create_time };
+                }).Where(de => de.delta != 0).ForEach(h2 =>
+                {
+                    Debug.WriteLine($"{h2.createTime.ToString("yyyy-MM-dd HH:mm:ss")} 偏差 {h2.delta}");
+                });
+            });
+        }
+
+        private decimal QueryTotalWithdraw(Agp2pDataContext context, li_wallet_histories h)
+        {
+            return h.dt_users.li_bank_accounts.Select(ac =>
+            {
+                return ac.li_bank_transactions.Where(btr => btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm
+                && btr.create_time <= h.create_time).AsEnumerable().Aggregate(0m, (sum, tr) => sum + tr.value);
+            }).Sum();
+        }
+
+        private decimal QueryTotalCharge(Agp2pDataContext context, li_wallet_histories h)
+        {
+            return context.li_bank_transactions.Where(btr => btr.charger == h.user_id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Charge
+                && btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm
+                && btr.create_time <= h.create_time).AsEnumerable().Aggregate(0m, (sum, tr) => sum + tr.value);
+        }
     }
 }
