@@ -10,7 +10,6 @@ import alert from "../components/tips_alert.js";
 window['$'] = $;
 
 
-
 class AppendingCardDialog extends React.Component {
 	constructor(props) {
 		super(props);
@@ -112,6 +111,11 @@ class WithdrawPage extends React.Component {
 		if (this.props.cards.length == 0) {
 			this.props.dispatch(fetchBankCards());
 		}
+		$(".fees-img2").hover(function(){
+		    $(".fees-tip").css("zIndex","10");
+		},function(){
+		    $(".fees-tip").css("zIndex","-10");
+		});
     }
 	render() {
 		return (
@@ -154,12 +158,12 @@ class WithdrawPage extends React.Component {
 					    	placeholder={this.props.hasTransactPassword ? "" : "（请先设置交易密码）"} />
 			    	</div>*/}
                     <div className="fees fees-img"><span className="fees-title">扣除资金托管费：</span><span className="fees-num">0</span>元
-                        <span className="fees-img2" onFocus={ev => this.setState({toWithdraw: ev.target.value})}></span>
+                        <span className="fees-img2" ></span>
                     </div>
                     <div className="fees fees-img"><span className="fees-title">扣除提现手续费：</span><span className="fees-num">0</span>元
                         <span className="fees-img2"></span>
                     </div>
-                    <div className="fees"><span className="fees-title">银行卡实际到账金额：</span><span className="fees-num">0</span>元</div> 
+                    <div className="fees"><span className="fees-title">银行卡实际到账金额：</span><span  className="fees-num">{this.state.realityWithdraw}</span>元</div> 
 				    <div className="withdrawBtn"><a href="javascript:;" onClick={this.doWithdraw.bind(this)}>确认提交</a></div>
                     <div className="fees-tip"><em><i></i></em>现平台暂时不收取管理费、提现手续费、充值手续费，如有资费变动将另行通知。</div>
                    

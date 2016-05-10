@@ -784,6 +784,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\sumapay.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\supply-chain-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\team1.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\team2.jpg" />
@@ -833,6 +834,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
+    <Content Include="templates\AnGuang\imgs\index\calhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\calIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
     <Content Include="templates\AnGuang\imgs\index\empty-box.png" />
@@ -855,6 +857,7 @@
     <Content Include="templates\AnGuang\imgs\index\kefu.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
+    <Content Include="templates\AnGuang\imgs\index\manbiao2.jpg" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
     <Content Include="templates\AnGuang\imgs\index\news-ring.png" />
@@ -862,6 +865,7 @@
     <Content Include="templates\AnGuang\imgs\index\pro-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\profit-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\purchase-bg.png" />
+    <Content Include="templates\AnGuang\imgs\index\qqhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\qqIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
@@ -870,7 +874,10 @@
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\top.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\tophover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\topIcon.png" />
+    <Content Include="templates\AnGuang\imgs\index\topIconhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\wechat-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\wechatblue.png" />
     <Content Include="templates\AnGuang\imgs\index\weibo-hover.png" />
