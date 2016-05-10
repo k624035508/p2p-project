@@ -748,8 +748,6 @@
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\office-title.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\picWall\001big.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office02-bg.png" />
@@ -762,6 +760,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office05.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\office07-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\office07.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02-bg.png" />
@@ -1298,6 +1298,13 @@
     <Content Include="templates\AnGuang\containers\myloan.jsx" />
     <Content Include="templates\AnGuang\containers\claimstransfer.jsx" />
     <Content Include="templates\AnGuang\containers\agcurrent.jsx" />
+    <Content Include="templates\AnGuang\components\custom-dialog.jsx" />
+    <Content Include="templates\AnGuang\components\myloan-table.jsx" />
+    <Content Include="templates\AnGuang\less\myloan.less" />
+    <Content Include="templates\AnGuang\less\fail_return.less" />
+    <Content Include="templates\AnGuang\less\claimstransfer.less" />
+    <Content Include="templates\AnGuang\less\agcurrent.less" />
+    <Content Include="templates\AnGuang\less\success_return.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">
