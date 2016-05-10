@@ -61,10 +61,10 @@ class CardEditor extends React.Component {
 					{editingCard
 						? <li><span><i>*</i>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
 						: <li><span><i>*</i>银行卡号：</span><input type="text" value={this.state.cardNumber} placeholder="请输入银行卡号"
-						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '25px',marginTop: '10px' , display:'inline-block'}}>必须使用开户信息与实名认证信息一致的银行卡</span></li>}
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: '#ff414b', marginLeft: '25px',marginTop: '10px' , display:'inline-block'}}>必须使用开户信息与实名认证信息一致的银行卡</span></li>}
 					{editingCard ? null :
 					<li><span><i>*</i>确认卡号：</span><input type="text" value={this.state.cardNumber2} placeholder="请再次输入银行卡号"
-						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}></span></li>}
+						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: '#ff414b', marginLeft: '10px'}}></span></li>}
 				</ul>
 				{creatingCard ? null :
 					<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}
