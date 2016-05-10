@@ -830,10 +830,10 @@
     <Content Include="templates\AnGuang\imgs\index\banner-02.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-03.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-04.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\banner-05.jpg" />
-    <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
+    <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\bottomhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\calhover.jpg" />
     <Content Include="templates\AnGuang\imgs\index\calIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\corner.png" />
@@ -857,6 +857,7 @@
     <Content Include="templates\AnGuang\imgs\index\kefu.png" />
     <Content Include="templates\AnGuang\imgs\index\link-mark-icon.png" />
     <Content Include="templates\AnGuang\imgs\index\logo.png" />
+    <Content Include="templates\AnGuang\imgs\index\manbiao.jpg" />
     <Content Include="templates\AnGuang\imgs\index\manbiao2.jpg" />
     <Content Include="templates\AnGuang\imgs\index\newhand-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\newhand-hr.png" />
