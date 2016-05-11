@@ -2,6 +2,9 @@
 @import "common-style";
 @import "usercenter-common-style.less";
 
+.content-body{
+    min-height:1000px;
+}
 .bank-account-wrap {
 	.cards-list-th, .add-cards-th, .th-grey-style { .th-grey-style;
                          
@@ -24,9 +27,16 @@
 		}
 	}
 	.add-cards-wrap {
-		
         .add-cards-form;
+        		ul {
+		    &>li {
+			&>span:first-child {
+                width:120px;
+                }
+            }
+        }
 		padding: 10px 0 0 55px;
+
 		.cancel-btn {
 			color: @dark-grey;
 			background: @light-grey;
