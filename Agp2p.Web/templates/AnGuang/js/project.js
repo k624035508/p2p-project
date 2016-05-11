@@ -32,9 +32,7 @@ $(function () {
         }
     });
 
-    var index = (location.href).slice(-8,-5);
-    $("#show-invest-contract2").attr("href",
-            `/tools/submit_ajax.ashx?action=generate_user_invest_contract&projectId=${index}`);
+
 
     header.setHeaderHighlight(1);
 
