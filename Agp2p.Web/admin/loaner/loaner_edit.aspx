@@ -68,7 +68,7 @@
                 <dt>用户状态</dt>
                 <dd>
                     <div class="rule-multi-radio">
-                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" Enabled="False">
                         </asp:RadioButtonList>
                     </div>
                     <span class="Validform_checktip">*禁用账户无法再发起申请为借款人</span>

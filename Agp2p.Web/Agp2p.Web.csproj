@@ -207,6 +207,7 @@
     <Content Include="admin\settings\cost_config.aspx" />
     <Content Include="admin\settings\nav_edit.aspx" />
     <Content Include="admin\settings\nav_list.aspx" />
+    <Content Include="admin\settings\pay_api_log.aspx" />
     <Content Include="admin\settings\plugin_list.aspx" />
     <Content Include="admin\settings\sys_config.aspx" />
     <Content Include="admin\settings\templet_file_edit.aspx" />
@@ -1844,6 +1845,13 @@
     </Compile>
     <Compile Include="admin\settings\nav_list.aspx.designer.cs">
       <DependentUpon>nav_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\settings\pay_api_log.aspx.cs">
+      <DependentUpon>pay_api_log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\settings\pay_api_log.aspx.designer.cs">
+      <DependentUpon>pay_api_log.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\settings\plugin_list.aspx.cs">
       <DependentUpon>plugin_list.aspx</DependentUpon>
