@@ -70,6 +70,7 @@ namespace Lip2p.Core.ActivityLogic
 
                 var wallet = tr.dt_users.li_wallets;
                 wallet.idle_money += tr.value;
+                wallet.total_profit += tr.value;
                 wallet.last_update_time = projectCompleteTime;
 
                 var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
