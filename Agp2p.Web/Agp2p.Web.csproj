@@ -937,6 +937,7 @@
     <Content Include="templates\AnGuang\imgs\loan\next-icon.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info-grey.png" />
     <Content Include="templates\AnGuang\imgs\loan\personal-info.png" />
+    <Content Include="templates\AnGuang\imgs\loan\yinpiao.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />
