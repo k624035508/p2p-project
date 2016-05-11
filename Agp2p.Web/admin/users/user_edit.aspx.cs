@@ -52,6 +52,21 @@ namespace Agp2p.Web.admin.users
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
                 {
                     ShowInfo(id);
+
+#if !DEBUG
+                    txtPassword.ReadOnly = true;
+                    txtPassword1.ReadOnly = true;
+                    txtEmail.ReadOnly = true;
+                    txtNickName.ReadOnly = true;
+                    txtRealName.ReadOnly = true;
+                    rblSex.Enabled = false;
+                    txtBirthday.ReadOnly = true;
+                    txtMobile.ReadOnly = true;
+                    txtTelphone.ReadOnly = true;
+                    txtQQ.ReadOnly = true;
+                    txtAddress.ReadOnly = true;
+                    txtIdCard.ReadOnly = true;
+#endif
                 }
                 if (!string.IsNullOrEmpty(_action) && _action == "Pageinviter")
                 {
