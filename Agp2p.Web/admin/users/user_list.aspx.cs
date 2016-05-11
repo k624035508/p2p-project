@@ -261,7 +261,7 @@ namespace Agp2p.Web.admin.users
                 .Select(
                     u => new
                     {
-                        u.user_name,
+                        u.id,
                         u.real_name,
                         u.reg_time,
                         u.dt_user_groups.title,
