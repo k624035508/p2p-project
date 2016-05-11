@@ -32,6 +32,10 @@ $(function () {
         }
     });
 
+    var index = (location.href).slice(-8,-5);
+    $("#show-invest-contract2").attr("href",
+            `/tools/submit_ajax.ashx?action=generate_user_invest_contract&projectId=${index}`);
+
     header.setHeaderHighlight(1);
 
    
@@ -53,6 +57,8 @@ $(function () {
         var projectSum = $investBtn.data()["projectSum"];
         var projectDescription = $investBtn.data()["projectDescription"];
         var huoqi  = $investBtn.data()["projectHuoqi"];
+
+
         $investBtn.click(function () {
             var investBtnData = $investBtn.data();
             var hasIdentification = investBtnData["hasIdentification"] == "True";
