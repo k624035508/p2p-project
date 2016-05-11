@@ -34,16 +34,12 @@ namespace Agp2p.Web.admin.statistic
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
-                (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
         readonly int[] _ignoringHistoryTypes =
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,
-                (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
 
         protected void Page_Load(object sender, EventArgs e)

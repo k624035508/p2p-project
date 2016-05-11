@@ -228,7 +228,7 @@ namespace Agp2p.Web.UI
         {
             var context = new Agp2pDataContext();
             var categoryIdArr = categoryIds.Split(',').Select(str => Convert.ToInt32(str)).ToArray();
-            var queryable = context.dt_article.Where(a => categoryIdArr.Contains(a.category_id));
+            var queryable = context.dt_article.Where(a => categoryIdArr.Contains(a.category_id) && a.status == 0);
             totalCount = queryable.Count();
             return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time)
                 .Skip(pageSize*pageIndex)
@@ -243,7 +243,7 @@ namespace Agp2p.Web.UI
         protected dt_article GetNewestAnnounce()
         {
             var context = new Agp2pDataContext();
-            var queryable = context.dt_article.Where(a => a.category_id == 42 || (a.category_id == 43 && a.is_top == 1));
+            var queryable = context.dt_article.Where(a => a.status == 0 && (a.category_id == 42 || (a.category_id == 43 && a.is_top == 1)));
             return queryable.OrderBy(a => a.sort_id).ThenByDescending(a => a.add_time).FirstOrDefault();
         }
 
