@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js";
 import StatusContainer from "../containers/user-status.jsx";
 import MyAccountPage from "../containers/myaccount.jsx";
+import confirm from "../components/tips_confirm.js";
 
 /**
  * Number.prototype.format(n, x)
@@ -30,11 +31,11 @@ class UserCenterPage extends React.Component {
 		this.state = {};
 	}
 	componentDidUpdate() {
-		$(".inner-ul li.nav-active").removeClass("nav-active");
-		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
+	    $(".inner-ul li.nav-active").removeClass("nav-active");
+	    $(".inner-ul li:has(> a.active-link)").addClass("nav-active");	
 	}
 	componentDidMount() {
-		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner} = $("#app").data();
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
 		var walletInfo = {
 			idleMoney : idleMoney.toNum(),
 			lockedMoney : lockedMoney.toNum(),
@@ -43,7 +44,12 @@ class UserCenterPage extends React.Component {
 			lotteriesValue : lotteriesValue.toNum()
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
-		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True" }));
+		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));	
+		if (this.props.identityId == null){
+		    confirm("请到个人中心开通资金托管",() => {
+		        location.href="/api/payment/sumapay/index.aspx?api=1";
+		    });	
+		}	
 	}
 	render() {
 		return (

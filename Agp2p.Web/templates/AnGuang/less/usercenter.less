@@ -3,15 +3,14 @@
 @usercenter: "../imgs/usercenter";
 
 body { background: @body-color; }
-div.usercenter {
+div.usercenter {       
 	tr.detailRow { cursor:default; }
 	.expandable-table tr.detailRow { cursor: pointer;}
 	
-	& > div {
+	& > div.nav-left, &>div.content-right, &>div.personal-info-content{
 		display: inline-block;
 		.ie7-inline-block;
 		vertical-align: top;
-		min-height: 947px;
 	}
 
 	.nav-left {	
@@ -180,11 +179,11 @@ div.usercenter {
 
 		.content-body {
 			padding: 30px 25px 0 25px;
-			height: 767px;
+			height: 887px;
 		}
         .content-body-loaner {
 			padding: 30px 25px 0 25px;
-			height: 857px;
+			height: 887px;
 		}
 	}
 	//会员中心翻页页码样式

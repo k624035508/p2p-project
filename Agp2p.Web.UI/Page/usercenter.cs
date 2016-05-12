@@ -39,6 +39,11 @@ namespace Agp2p.Web.UI.Page
             return userModel.li_loaners.Any();
         }
 
+        protected bool IsIdentity()
+        {
+            return userModel.identity_id == null;
+        }
+
         /// <summary>
         /// 重写虚方法,此方法在Init事件执行
         /// </summary>
@@ -125,6 +130,7 @@ namespace Agp2p.Web.UI.Page
                     groupName = userInfo.dt_user_groups.title,
                     isLoaner = userInfo.li_loaners.Any(),
                     identityId = userInfo.identity_id,
+                    isIdentity = userInfo.identity_id == null
                 }
             });
         }

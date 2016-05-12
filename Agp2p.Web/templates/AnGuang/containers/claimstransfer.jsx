@@ -5,7 +5,7 @@ import Pagination from "../components/pagination.jsx";
 import "../less/claimstransfer.less";
 import confirm from "../components/tips_confirm.js";
 import alert from "../components/tips_alert.js";
-import CustomDlg from "../components/custom-dialog.jsx"
+import CustomDlg from "../components/custom-dialog.jsx";
 
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
