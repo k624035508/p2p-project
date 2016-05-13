@@ -233,8 +233,11 @@ namespace Agp2p.Core
                             feeFate = tr.value * 0.005m;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.Ecpss:
+                            feeFate = tr.value * feeConfig.recharge_fee_rate;
+                            break;
                         case (int)Agp2pEnums.PayApiTypeEnum.Sumapay:
                             feeFate = tr.value * feeConfig.recharge_fee_rate;
+                            if (feeFate < 3) feeFate = 3;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.SumapayQ:
                             feeFate = tr.value * feeConfig.recharge_fee_rate_quick;
