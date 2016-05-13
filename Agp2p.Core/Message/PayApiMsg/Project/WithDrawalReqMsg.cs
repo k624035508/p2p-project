@@ -22,7 +22,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             BidRequestId = bidRequestId;
             WithdrawalFund = withdrawalFund;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CoPro : (int) Agp2pEnums.SumapayApiEnum.CaPro;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_withdrawal" : "main/TransactionForFT_withdrawal");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_withdrawal" : "main/TransactionForFT_withdrawal");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }

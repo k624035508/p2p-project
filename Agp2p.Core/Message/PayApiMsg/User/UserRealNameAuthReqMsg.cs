@@ -24,7 +24,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             PayType = "1";
             Api = (int)Agp2pEnums.SumapayApiEnum.UAuth;
-            ApiInterface = SumapayConfig.TestApiUrl + "main/UserForFT_realNameAuth";
+            ApiInterface = SumapayConfig.ApiUrl + "main/UserForFT_realNameAuth";
             RequestId = Agp2pEnums.SumapayApiEnum.UAuth.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

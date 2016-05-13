@@ -56,7 +56,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             PassThrough = passThrough;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/webBankRecharge_toRecharge";
+            ApiInterface = SumapayConfig.ApiUrl + "user/webBankRecharge_toRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

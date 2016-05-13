@@ -33,7 +33,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             GiftFlag = giftFlag;
 
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.McRep : (int) Agp2pEnums.SumapayApiEnum.MaRep;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "user/collectiveRepay_toRepayDetail" : "user/repay_toRepayDetail");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }

@@ -26,7 +26,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Sum = sum;
             FeeType = fayType;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.AbRep : (int) Agp2pEnums.SumapayApiEnum.AcRep;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_repay" : "main/TransactionForFT_repay");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_repay" : "main/TransactionForFT_repay");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }
