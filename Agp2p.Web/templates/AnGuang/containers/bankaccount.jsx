@@ -28,7 +28,6 @@ class BankAccount extends React.Component {
     	this.setState({selectedCardIndex: this.state.selectedCardIndex == index ? -1 : index});
     }
     render() {
-        var shouldShowCardEditor = this.props.cards.length !== 0 && this.state.selectedCardIndex != -1 || this.props.cards.length === 0;
         return (
             <div className="bank-account-wrap">
                 <div className="cards-list-th"><span>银行卡列表</span></div>
@@ -47,16 +46,18 @@ class BankAccount extends React.Component {
                 </ul>
                 </div>
 
-                {/* 限制不能添加多于一张银行卡 */}
-                <div style={shouldShowCardEditor ? null: {display: 'none'}} className="add-cards-th">
+                <div className="add-cards-th">
                     <span>{this.state.selectedCardIndex == -1 ? "新增银行卡" : "修改银行卡"}</span></div>
-                <CardEditor rootClass="add-cards-wrap" style={shouldShowCardEditor ? null: {display: 'none'}}
+                <CardEditor rootClass="add-cards-wrap"
                     onOperationSuccess={() => this.setState({selectedCardIndex: -1})}
                     value={this.state.selectedCardIndex == -1 ? null : this.props.cards[this.state.selectedCardIndex]}/>
 
                 <div className="th-grey-style"><span>温馨提示</span></div>
                 <div className="warm-tips-style">
-                    <p>1. 如不知道开户行名称，可以填“某城市分行”。</p>
+                    <p>1、银行卡开户信息须与您实名认证信息一致（姓名、身份证等），不支持绑定信用卡；</p>
+                    <p>2、绑定时请认真核对您的银行卡信息，相关信息填写错误将导致您无法充值、提现；</p>                    
+                    <p>3、变更银行卡需要上传手持身份证照片、新绑定银行卡照片，客服审核之后，将在7个工作日内为您更换</p>
+                    <p>4、如您银行卡变更申请未通过审核，提现银行卡则默认为原绑定银行卡。</p>
                 </div>
             </div>
         );

@@ -1,6 +1,7 @@
-//资金明细内容
+/*mytransaction.less(浼氬憳涓績浜ゆ槗鏄庣粏)*/
 @import "common-style";
 @usercenter: "../imgs/usercenter";
+
 
 .controls {
 	font-size: @font13;
@@ -39,7 +40,7 @@
 	}
 }
 .tb-wrap {
-	height: 500px;
+	height: 500px; position:relative;
 	.trade-tb {
 		margin-top: 30px;
 		th, td { text-align: center; }
@@ -52,15 +53,18 @@
 			color: @dark-grey;
 			border-bottom: 1px solid @blue;
 		}
-		tbody tr {
-			&:hover { background: #f1f5ff; }
-		}
-		.detailMark{
-			td {
-				text-align: left;
-				background: #f9f9f9;
-				cursor: default;
-			}
+		tbody tr { &:hover { background: #f1f5ff; } }
+		.detailMark td {
+			text-align: left;
+			background: #f9f9f9;
+			cursor: default;
 		}
 	}
 }
+.content-body,.content-body-loaner{
+    position:relative;
+}
+.nav{
+    position:absolute; bottom:0; left:0; width:100%;
+}
+

@@ -1,3 +1,4 @@
+/*usercenter-common-style.less*/
 @import "common-style";
 @withdraw: "../imgs/usercenter/withdraw-icons";
 
@@ -9,7 +10,7 @@
 		font-size: @font18;
 		color: @dark-grey;
 		padding-bottom: 7px;
-		border-bottom: 2px solid @red;
+		border-bottom: 2px solid @blue;
 	}
 }
 
@@ -64,6 +65,10 @@
 				margin-right: 20px;
 				font-size: @font15;
 				color: @dark-grey;
+                i{
+                     display:inline-block;
+                     margin-right:15px; color:@red; font-style:normal; 
+                }
 			}
 			.bankSelect, input {
 				width: 200px;
@@ -102,19 +107,19 @@
 }
 
 //银行卡图标-大，应用于提现页面以及银行账户页面
-.BOCSH { background: url("@{withdraw}/zhonghang.png"); }
-.ICBC { background: url("@{withdraw}/gonghang.png"); }
-.CCB { background: url("@{withdraw}/jianhang.png"); }
-.ABC { background: url("@{withdraw}/nonghang.png"); }
-.CMB { background: url("@{withdraw}/zhaohang.png"); }
-.PSBC { background: url("@{withdraw}/youzheng.png"); }
-.CEB { background: url("@{withdraw}/guangda.png"); }
-.CNCB { background: url("@{withdraw}/zhongxin.png"); }
-.SPDB { background: url("@{withdraw}/pufa.png"); }
-.CMBC { background: url("@{withdraw}/minsheng.png"); }
-.GDB { background: url("@{withdraw}/guangfa.png"); }
-.CIB { background: url("@{withdraw}/xingye.png"); }
-.PAB { background: url("@{withdraw}/pingan.png"); }
-.BOCOM { background: url("@{withdraw}/jiaohang.png"); }
-.HXB { background: url("@{withdraw}/huaxia.png"); }
+.boc { background: url("@{withdraw}/zhonghang.png"); }
+.icbc { background: url("@{withdraw}/gonghang.png"); }
+.ccb { background: url("@{withdraw}/jianhang.png"); }
+.abc { background: url("@{withdraw}/nonghang.png"); }
+.cmb { background: url("@{withdraw}/zhaohang.png"); }
+.psbc { background: url("@{withdraw}/youzheng.png"); }
+.ceb { background: url("@{withdraw}/guangda.png"); }
+.cncb { background: url("@{withdraw}/zhongxin.png"); }
+.spdb { background: url("@{withdraw}/pufa.png"); }
+.cmsb { background: url("@{withdraw}/minsheng.png"); }
+.cgb { background: url("@{withdraw}/guangfa.png"); }
+.cib { background: url("@{withdraw}/xingye.png"); }
+.pab { background: url("@{withdraw}/pingan.png"); }
+.comm { background: url("@{withdraw}/jiaohang.png"); }
+.hxb { background: url("@{withdraw}/huaxia.png"); }
 

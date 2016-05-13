@@ -1,3 +1,4 @@
+/*aboutus.less（关于我们）*/
 @import "common-style";
 @images: "../imgs/aboutus";
 @picWall: "../imgs/aboutus/picWall";
@@ -62,11 +63,11 @@ body { background: @body-color; }
 				margin-top: 55px;
 				background: url("@{images}/agrh-bg.png") no-repeat left center;
 				.description {
+                    margin-top:22px;
 					width: 630px;
-					color: @darker-grey;
-					font-size: @font17;					
-					line-height: 40px;
-                    padding-top:20px;
+					color: @dark-grey;
+					font-size: 18px;
+					line-height: 39px;
 				}
 			}
 		}
@@ -87,7 +88,7 @@ body { background: @body-color; }
 				padding-top: 35px;
 				background: url("@{images}/culture-icon.png") no-repeat right center;
 				.description {
-					width: 490px;
+					width: 420px;
 					color: @white;
 					font-size: 17px;
 					line-height: 40px;
@@ -98,15 +99,15 @@ body { background: @body-color; }
 	/*大事记*/
 	#events {
 		height: 600px;
-		padding-top: 30px;
+		padding-top: 24px;
 		background: url("@{images}/events-bg.jpg") no-repeat center;
 		.title {
 			height: 110px;
 			background: url("@{images}/events-title.png") no-repeat center;
 		}
 		.description {
-			height: 380px;		
-			background: url("@{images}/bigevents.jpg") no-repeat center;
+			height: 380px;
+			background: url("@{images}/events2.png") no-repeat center;
 		}
 	}
 	/*高管团队*/
@@ -191,7 +192,7 @@ body { background: @body-color; }
 					display: inline-block;
 					vertical-align: top;
 					width: 40%;
-					.bank-nanyue {
+					.sumapay {
 						height: 175px;
 						margin-bottom: 25px;
 						background: url("@{images}/sumapay.jpg") no-repeat center;
@@ -282,9 +283,9 @@ body { background: @body-color; }
 						margin-left: 0%;
 						li {
 							padding: 0 .5px;
-							a, a span { width: 270px; }
+							a, a span { width: 270px;  }
 						}
-						.office01 { background: url("@{picWall}/001.jpg") center; }
+						.office01 { background: url("@{picWall}/office07-bg.jpg") center; }
 						.office02 { background: url("@{picWall}/office02-bg.png") center; }
 						.office03 { background: url("@{picWall}/office03-bg.png") center; }
 						.office04 { background: url("@{picWall}/office04-bg.png") center; }
@@ -297,7 +298,7 @@ body { background: @body-color; }
 	}
 	/*公司资质*/
 	#qualification {
-		height: 610px;
+		height: 664px;
 		padding-top: 40px;
 		background: url("@{images}/culture-bg.png");
 		.content-wrap {
@@ -308,12 +309,20 @@ body { background: @body-color; }
 			.description {
 				text-align: center;
 				margin-top: 50px;
-				div {
-					display: inline-block;
+				.business-license {
+                    display:inline-block;
 					width: 248px;
 					height: 350px;
 					cursor: pointer;
-					background: url("@{images}/license-bg.jpg") no-repeat;
+					background: url("@{images}/license-bg3.jpg") no-repeat;
+				}
+                .business-beian {
+                    margin-top:35px;
+                    margin-left:425px;					
+					width: 248px;
+					height: 23px;
+					cursor: pointer;
+					background: url("@{images}/beian-bg2.jpg") no-repeat;
 				}
 			}
 		}
@@ -329,14 +338,18 @@ body { background: @body-color; }
 				background: url("@{images}/strategy-title.png") no-repeat center;
 			}
 			.description {
-				margin-top: 50px;
+				margin-top: 70px;
 				.strategy-content {
-					height: 110px;
+					height: 90px;
 					line-height: 118px;
 					color: @grey;
 					font-size: @font22;
 					text-align: center;
-					border: @border;
+					& > div{ width:245px; height:70px; display:inline-block; margin-right:33px;}
+                    .team-con1 { background:url("@{images}/team1.jpg");}
+                    .team-con2 { background:url("@{images}/team2.jpg");}
+                    .team-con3 { background:url("@{images}/team3.jpg");}
+                    .team-con4 { background:url("@{images}/team4.jpg"); margin-right:0;}
 				}
 			}
 		}
@@ -360,7 +373,7 @@ body { background: @body-color; }
 					float: left;
 				}
 				.add-wrap {
-					margin-right: 110px;
+					width:600px;
 					address {
 						color: @white;
 						font-size: @font20;
@@ -397,6 +410,7 @@ body { background: @body-color; }
 	}
 }
 
+
 .unselectable {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -412,6 +426,7 @@ body { background: @body-color; }
 		.modal-content .modal-body img { max-width: 100%; }
 	}
 }
+
 
 #picWall {
 	* { .unselectable; }

@@ -387,7 +387,9 @@ namespace TinyMessenger
         /// <typeparam name="TMessage">Type of message</typeparam>
         /// <param name="message">Message to deliver</param>
         /// <param name="callback">AsyncCallback called on completion</param>
-        void PublishAsync<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage;
+        //void PublishAsync<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage;
+
+        void PublishAsync<TMessage>(TMessage message, Action<TMessage> callback) where TMessage : class, ITinyMessage;
     }
     #endregion
 
@@ -696,7 +698,12 @@ namespace TinyMessenger
         /// <typeparam name="TMessage">Type of message</typeparam>
         /// <param name="message">Message to deliver</param>
         /// <param name="callback">AsyncCallback called on completion</param>
-        public void PublishAsync<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage
+        /*public void PublishAsync<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage
+        {
+            PublishAsyncInternal<TMessage>(message, callback);
+        }*/
+
+        public void PublishAsync<TMessage>(TMessage message, Action<TMessage> callback) where TMessage : class, ITinyMessage
         {
             PublishAsyncInternal<TMessage>(message, callback);
         }
@@ -789,11 +796,21 @@ namespace TinyMessenger
             });
         }
 
-        private void PublishAsyncInternal<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage
+        /*private void PublishAsyncInternal<TMessage>(TMessage message, AsyncCallback callback) where TMessage : class, ITinyMessage
         {
             Action publishAction = () => { PublishInternal<TMessage>(message); };
 
             publishAction.BeginInvoke(callback, null);
+        }*/
+
+        private void PublishAsyncInternal<TMessage>(TMessage message, Action<TMessage> callback) where TMessage : class, ITinyMessage
+        {
+            Action publishAction = () => { PublishInternal<TMessage>(message); };
+
+            publishAction.BeginInvoke(acb => {
+                if (callback != null)
+                    callback(message);
+            }, null);
         }
 
         private void PublishDelayInternal<TMessage>(TMessage message, AsyncCallback callback, TimeSpan delay) where TMessage : class, ITinyMessage

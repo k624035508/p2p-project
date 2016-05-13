@@ -1,147 +1,426 @@
+/*register.less*/
 @import "common-style";
 @images: "../imgs/register";
 
-body { background: @body-color; }
+body {
+    background: @body-color;
+}
 
-.top-bar #register { color: @red !important; }
+.top-bar #register {
+    color: @blue !important;
+}
+
+.register-icon {
+    background: @white;
+
+    .ul-wrap {
+        margin-top: 30px;
+        text-align: center;
+        padding-top: 30px;
+
+        .steps-list {
+            li {
+                height: 80px;
+                width: 80px;
+                margin: 0 35px;
+            }
+
+            .hr {
+                width: 25px;
+                height: 45px;
+                margin: 17px 62px;
+                ;
+                background: url("@{images}/004.png") no-repeat center;
+            }
+
+            .step1 {
+                background: url("@{images}/001-hover.png");
+            }
+
+            .step2 {
+                background: url("@{images}/002.png");
+            }
+
+            .step3 {
+                background: url("@{images}/003.png");
+            }
+        }
+    }
+
+    .steps-tips {
+        margin: 13px 60px 0 80px;
+        padding: 0 100px 32px 113px;
+        border-bottom: @border;
+
+        span {
+            .inline-block;
+            color: @dark-grey;
+            font-size: @font15;
+        }
+
+        .tips1 {
+            margin-left: 17px;
+        }
+
+        .tips2 {
+            margin: 0 237px 0 220px;
+            width: 108px;
+            text-align: center;
+        }
+
+        .tips-red {
+            color: @blue;
+        }
+    }
+}
+
 
 div.register-box {
-	margin-top: 25px;
-	padding: 25px 10px 22px 30px;
-	height: 620px;
-	border: @border;
-	background: @white;
-	& > div {
-		.inline-block;
-		height: 575px;
-	}
-	.register-left {
-		width: 615px;
-		.title-tips {            
-			font-size: @font25;
-			color: @red;
-			margin-bottom: 30px;
-			padding-bottom: 12px;
-			border-bottom: @border;
-			span {
-				font-size: @font14;
-				color: @grey;
-				a {
-					color: @blue;
-					line-height: 35px;
-				}
-			}
-		}
-		.form-box {
-			margin-top: 20px;
-			*margin-top: 0px;
-			label {
-				margin-right: 15px;
-				width: 95px;
-				font-size: @font15;
-				font-weight: normal;
-				color: @dark-grey;
-				text-align: right;
-			}
-			input {
-				padding-left: 50px;
-				height: 45px;
-				line-height: 45px;
-				border: @border;
-				border-radius: 5px;
-				&:focus { outline-color: @red; }
-			}
-			.input-l { width: 300px; }
-			.input-s {
-				width: 200px;
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-			#account { background: url("@{images}/account.png") no-repeat; }
-			#psw, #psw2 { background: url("@{images}/psw.png") no-repeat; }
-			#pic-code { background: url("@{images}/pic-code.png") no-repeat; }
-			#sms-code { background: url("@{images}/sms-code.png") no-repeat; }
-			#recommended { background: url("@{images}/recommended.png") no-repeat; }
-			span { .inline-block; }
-			.pic-code-wrap {
-				width: 100px;
-				height: 45px;
-				overflow: hidden;
-				border: @border;
-				border-left: none;
-				border-top-right-radius: 5px;
-				border-bottom-right-radius: 5px;
-				vertical-align: bottom;
+    min-height: 500px;
+    padding: 30px 60px 30px 80px;
+    margin-bottom: 45px;
+    background: @white;
+
+    & > div {
+        .inline-block;
+    }
+
+    .register-left {
+        width: 615px;
+        height: auto;
+
+        .title-tips {
+            width: 400px;
+            border-bottom: 1px solid #e6e6e6;
+            margin-bottom: 35px;
+
+            span.register-msg {
+                font-size: @font25;
+                color: @blue;
+                padding-bottom: 16px;
+                border-bottom: 2px solid @blue;
+            }
+
+            padding-bottom: 16px;
+
+            span {
+                font-size: @font14;
+                color: @grey;
+
+                a {
+                    color: @blue;
+                    line-height: 35px;
+                }
+            }
+
+            span.pull-right {
+                margin-top: 10px;
+            }
+
+            a.skip {
+                margin-top: 15px;
+                cursor: pointer;
+            }
+        }
+
+        .form-box {
+            margin-top: 20px;
+            *margin-top: 18px;
+
+            input {
+                padding-left: 65px;
+                height: 45px;
+                line-height: 45px;
+                border: @border;
+                border-radius: 5px;
+
+                &:focus {
+                    outline-color: @blue;
+                }
+            }
+
+            .input-l {
+                width: 400px;
+            }
+
+            .input-s {
+                width: 300px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            #account {
+                background: url("@{images}/account.png") no-repeat;
+            }
+
+            #psw, #psw2 {
+                background: url("@{images}/psw.png") no-repeat;
+            }
+
+            #pic-code {
+                background: url("@{images}/pic-code.png") no-repeat;
+            }
+
+            #sms-code {
+                background: url("@{images}/sms-code.png") no-repeat;
+            }
+
+            #recommended {
+                background: url("@{images}/recommended.png") no-repeat;
+            }
+
+            #realname {
+                background: url("@{images}/account.png") no-repeat;
+            }
+
+            #identify {
+                background: url("@{images}/008.png") no-repeat;
+            }
+
+            span {
+                .inline-block;
+            }
+
+            .pic-code-wrap {
+                width: 100px;
+                height: 45px;
+                overflow: hidden;
+                border: @border;
+                border-left: none;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                vertical-align: bottom;
+
                 img {
                     width: 100%;
                     margin: 8% 1%;
                     cursor: pointer;
                 }
-			}
-			button {
-				width: 100px;
-				height: 45px;
-				font-size: @font15;
-				color: @white;
-				background: @red;
-				border: none;
-				vertical-align: bottom;
-				border-top-right-radius: 5px;
-				border-bottom-right-radius: 5px;
-			}
-			.status {
-				margin-left: 30px;
-				width: 170px;
-				height: 15px;
-				line-height: 14px;
-				padding-left: 25px;
-				font-size: @font12;
-				color: @red;
-			}
+            }
+
+            button {
+                width: 100px;
+                height: 45px;
+                font-size: @font15;
+                color: @white;
+                background: @red;
+                border: none;
+                vertical-align: bottom;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            .status {
+                margin-left: 30px;
+                width: 170px;
+                height: 15px;
+                line-height: 14px;
+                padding-left: 25px;
+                font-size: @font12;
+                color: @red;
+            }
+
             .psw-tips {
                 color: @dark-grey !important;
                 padding-left: 0 !important;
+            }
+
+            .error-tips {
+                background: url("@{images}/error.png") no-repeat;
+            }
+
+            .right-tips {
+                background: url("@{images}/blue-tick.png") no-repeat;
+            }
+        }
+
+        .agreement {
+            color: @grey;
+            margin-top: 25px;
+
+            input {
+                -webkit-appearance: none;
+                width: 15px;
+                height: 15px;
+                border: @border;
+                border-radius: 0;
+                outline: none;
+
+                &:checked {
+                    background: url("@{images}/red-tick.png") no-repeat;
                 }
-			.error-tips { background: url("@{images}/error.png") no-repeat; }
-			.right-tips { background: url("@{images}/blue-tick.png") no-repeat; }
-		}
-		.agreement {
-			color: @grey;
-			margin-top: 30px;
-			padding-left: 110px;
-			input {
-				-webkit-appearance: none;
-				width: 15px;
-				height: 15px;
-				border: @border;
-				border-radius: 0;
-				outline: none;
-				&:checked { background: url("@{images}/red-tick.png") no-repeat; }
-			}
-			label { font-weight: normal; }
-			a { color: @red; }
-		}
-		.register-btn {
-			margin-top: 15px;
-			padding-left: 110px;
-			button {
-				width: 300px;
-				height: 45px;
-				color: @white;
-				font-size: 22px;
-				background: @red;
-				border-radius: 4px;
-				border: none;
-			}
-		}
-	}
-	.dividing-hr {
-		margin-left: 30px;
-		width: 1px;
-		background: @light-grey;
-	}
-	.register-right {
-		width: 400px;
-		background: url("@{images}/login-bg.jpg") no-repeat center;
-	}
+            }
+
+            label {
+                font-weight: normal;
+            }
+
+            a {
+                color: @blue;
+            }
+        }
+
+        .register-btn {
+            margin-top: 11px;
+
+            button {
+                width: 400px;
+                height: 45px;
+                color: @white;
+                font-size: 22px;
+                background: @red;
+                border-radius: 4px;
+                border: none;
+            }
+
+            a {
+                padding: 6px 0 0 155px;
+                margin: 20px 0 46px 0;
+                display: inline-block;
+                width: 400px;
+                height: 45px;
+                color: @white;
+                font-size: 22px;
+                background: @red;
+                border-radius: 4px;
+                border: none;
+                text-decoration: none;
+            }
+        }
+
+        .invited {
+            font-size: @font14;
+            cursor: pointer;
+            width: 250px;
+            color: #37aaf0;
+            letter-spacing: 1px;
+
+            span {
+                width: 20px;
+                height: 20px;
+                background: url("@{images}/010.png") no-repeat center;
+                margin-right: 8px;
+            }
+        }
+
+        #tuoguanBtn {
+            padding: 6px 0 0 135px;
+        }
+        #realNameAuthBtn, #tuoguanBtn {
+            margin: 20px 0 46px 0;
+        }
+
+        .warm-tips {
+            width: 400px;
+            border-bottom: 1px solid #e6e6e6;
+            font-size: 18px;
+            color: #646464;
+            font-weight: bold;
+            padding-bottom: 7px;
+            margin-bottom: 21px;
+
+            span {
+                padding-bottom: 7px;
+                border-bottom: 2px solid @blue;
+            }
+        }
+
+        p {
+            font-size: @font15;
+            color: #646464;
+        }
+    }
+
+    .register-right {
+        width: 320px;
+        margin-top: 12%;
+
+        & > div {
+            display: inline-block;
+        }
+
+        .img-show {
+            overflow: hidden;
+            height: 262px;
+        }
+
+        .left-icon {
+            width: 25px;
+            height: 25px;
+            background: url("@{images}/009-1.png") no-repeat center;
+            cursor: pointer;
+            margin-bottom: 120px;
+
+            &:hover {
+                background: url("@{images}/012-1.png") no-repeat center;
+            }
+        }
+
+        .right-icon {
+            width: 25px;
+            height: 25px;
+            background: url("@{images}/009.png") no-repeat center;
+            cursor: pointer;
+            margin-bottom: 120px;
+
+            &:hover {
+                background: url("@{images}/012.png") no-repeat center;
+            }
+        }
+
+        .register-img {
+            width: 260px;
+
+            .register-bkg {
+                height: 165px;
+                background: url("@{images}/005.png") no-repeat center;
+            }
+
+            .register-bkg2 {
+                height: 165px;
+                background: url("@{images}/006.png") no-repeat center;
+            }
+
+            .register-bkg3 {
+                height: 165px;
+                background: url("@{images}/007.png") no-repeat center;
+            }
+
+            p {
+                font-size: 18px;
+                color: #464646;
+                font-weight: bold;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            div {
+                font-size: @font15;
+                color: #646464;
+                text-align: center;
+            }
+        }
+    }
+
+    .successRegister {
+        margin: 100px 160px;
+        color: @red;
+        font-size: @font40;
+    }
+}
+
+div.nameLoading {
+    position: absolute;
+    top: 160px;
+    left: 402px;
+    background: @white;
+    opacity: 0.8;
+    height: 663px;
+    z-index: -2;
+    text-align: center;
+
+    img {
+        margin-top: 220px;
+    }
 }

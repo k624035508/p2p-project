@@ -24,7 +24,10 @@ namespace Agp2p.Model
         private decimal _overtime_cost2 = 0;
         private decimal _overtime_cost_bank = 0;
         private decimal _withdraw = 0;
+        private decimal _static_withdraw = 0;
         private decimal _recharge_lowest = 0;
+        private decimal _recharge_fee_rate = 0;
+        private decimal _recharge_fee_rate_quick = 0;
 
         public decimal loan_fee_rate
         {
@@ -156,6 +159,12 @@ namespace Agp2p.Model
             }
         }
 
+        public decimal static_withdraw
+        {
+            get { return _static_withdraw; }
+            set { _static_withdraw = value; }
+        }
+
         public decimal recharge_lowest
         {
             get
@@ -167,6 +176,18 @@ namespace Agp2p.Model
             {
                 _recharge_lowest = value;
             }
+        }
+
+        public decimal recharge_fee_rate
+        {
+            get { return _recharge_fee_rate; }
+            set { _recharge_fee_rate = value; }
+        }
+
+        public decimal recharge_fee_rate_quick
+        {
+            get { return _recharge_fee_rate_quick; }
+            set { _recharge_fee_rate_quick = value; }
         }
     }
 }

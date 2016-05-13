@@ -1,16 +1,8 @@
-﻿/*网站导航样式*/
+﻿/*head.less*/
 @import "common-style.less";
 @images: "../imgs/index";
 
 body { font-family: "Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif; }
-
-@font-face {font-family: 'iconfont';
-    src: url('@{images}/iconfont.eot'); /* IE9*/
-    src: url('@{images}/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('@{images}/iconfont.woff') format('woff'), /* chrome、firefox */
-    url('@{images}/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ 
-    url('@{images}/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
-}
 
 div.ltie8 {
     position: fixed;
@@ -53,7 +45,7 @@ div.top-bar-wrap {
         .head-hot-line-icon { background-position: -15px -15px; }
 
         .weibo-icon {
-            margin-left: 80px;
+            margin-left: 40px;
             background-position: -15px -127px;
             &:hover { background: url("../imgs/index/weibo-hover.png"); }
         }
@@ -75,12 +67,13 @@ div.top-bar-wrap {
                 li {
                     display: inline-block;
                     vertical-align: top;
-                    padding: 0 0 0 20px;
+                    padding: 0 0 0 10px;
                     a {
                         color: @dark-grey;
                         text-decoration: none;
-                        &:hover, &:focus { color: @red; }
+                        &:hover, &:focus { color: @blue; }
                     }
+                   
                     #apps {
                         display: inline-block;
                         width: 80px;
@@ -99,6 +92,7 @@ div.top-bar-wrap {
                         height: 13px;
                         line-height: 12px;
                         top: -7px;
+                        left:12px;
                         text-align: center;
                         font-size: @font12;
                         color: @white;
@@ -115,14 +109,16 @@ div.nav-bar-wrap {
     height: 90px;
     background: #fff;
     .nav-active {
-        color: #ff414b !important;
-        border-bottom: 2px solid #ff414b;
+        color: @blue !important;
+        border-bottom: 2px solid @blue;                                                            
     }
+
     .nav-bar {
         width: @min-width;
         font-size: @font17;
         line-height: 60px;
         margin: 0 auto;
+                              
         nav.pull-right {
             margin-top: 15px;
             ul.list-inline {
@@ -132,25 +128,44 @@ div.nav-bar-wrap {
                         color: @darker-grey;
                         padding-bottom: 13px;
                         text-decoration: none;
+                        .arrowsituation{width:16px; height:16px; .inline-block;
+                              background:url("../imgs/index/bottom.jpg");
+                              margin-left:-3px;
+                         }
                     }
-
-
+                       a.nav-active{
+                        .arrowsituation{
+                             background:url("../imgs/index/bottomhover.jpg");
+                        }
+                    }
+                    &:hover{
+                        a{
+                            .arrowsituation{
+                                background:url("../imgs/index/top.jpg");
+                            }
+                        }
+                    }
                  }
+                li.li-active{
+                        &:hover{
+                        a.nav-active{
+                            .arrowsituation{
+                                background:url("../imgs/index/tophover.jpg");
+                            }
+                        }
+                    }
+                }
                 li:first-child { padding-left: 0;
                 }
-                 & > li > a:hover, & > li > a:focus { .nav-active;}
-                 #myAccount{
-                     a{
-                         i{margin-left:-3px;}
-                         i.iconfont{
-                              font-family:"iconfont" !important;
-                                 font-size:16px;font-style:normal;
-                             -webkit-font-smoothing: antialiased;
-                              -webkit-text-stroke-width: 0.2px;
-                             -moz-osx-font-smoothing: grayscale;
-                         }
-                     }
+
+                 & > li > a:hover, & > li > a:focus {
+                     .nav-active;
+                       .arrowsituation{
+                            background:url("../imgs/index/tophover.jpg");
+                        }
                  }
+                 
+
                  .dropdown-menu-custom {
                     top: 88%;
                     left: 30%;
@@ -169,12 +184,13 @@ div.nav-bar-wrap {
                         }
 
                     }
-                    & li:first-child { border-top:2px solid #ff414b; }
+                    & li:first-child { border-top:2px solid @blue; }
 
                  }
             }
         }
         #myAccount:hover > .dropdown-menu-custom { display: block; }
+        #financial:hover > .dropdown-menu-custom { display: block; }
     }
 }
 
@@ -213,17 +229,17 @@ div.floating-wrap {
     .floating-icon {
         width: 50px;
         height: 53px;
-        background: url("../imgs/index/floating-icon.png") no-repeat;
+        
     }
 
-    .qq-icon {background-position: -15px -181px;}
-    .qqHover-icon {background-position: -15px -264px;}
+    .qq-icon {background: url("../imgs/index/qqIcon.png") no-repeat;}
+    .qqHover-icon {background: url("../imgs/index/qqhover.jpg") no-repeat;}
 
-    .cal-icon {background-position: -15px -15px;}
-    .calHover-icon {background-position: -15px -98px;}
+    .cal-icon {background: url("../imgs/index/calIcon.png") no-repeat ;}
+    .calHover-icon {background: url("../imgs/index/calhover.jpg") no-repeat;}
 
-    .top-icon {background-position: -15px -347px;}
-    .topHover-icon {background-position: -15px -430px;}
+    .top-icon {background: url("../imgs/index/topIcon.png") no-repeat ;}
+    .topHover-icon {background: url("../imgs/index/topIconhover.jpg") no-repeat;}
 
     //计算器
     .cal-btn { padding: 0; }

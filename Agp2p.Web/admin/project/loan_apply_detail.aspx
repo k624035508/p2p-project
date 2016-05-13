@@ -90,10 +90,9 @@
             <div id="floatHead" class="content-tab">
                 <div class="content-tab-ul-wrap">
                     <ul>
-                        <% %>
                         <li><a href="javascript:;" id="a_item_base" onclick="tabs(this);" class="selected">基本信息</a></li>
-                        <li><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
-                        <li><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>
+                        <li id="li_mortgages" runat="server"><a href="javascript:;" id="a_item_mortgages" onclick="tabs(this);">标的信息</a></li>
+                        <li id="li_risk" runat="server"><a href="javascript:;" onclick="tabs(this);">风控信息</a></li>
                         <li><a href="javascript:;" onclick="tabs(this);">SEO选项</a></li>
                     </ul>
                 </div>
@@ -152,13 +151,13 @@
                 <dt>
                     <asp:Label ID="div_project_amount_title" runat="server" Text="借款金额" /></dt>
                 <dd>
-                    <asp:TextBox ID="txt_project_amount" runat="server" CssClass="input txt" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                    <asp:TextBox ID="txt_project_amount" runat="server" CssClass="input txt" datatype="/^(([1-9]{1}\d*))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
                     元
                 <asp:Label ID="div_project_amount_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
-            <dl id="div_project_profit_rate">
+            <dl id="div_project_profit_rate" runat="server">
                 <dt>
                     <asp:Label ID="div_project_profit_rate_title" runat="server" Text="年化利率" /></dt>
                 <dd>
@@ -168,7 +167,7 @@
                 <asp:Label ID="div_project_profit_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
-            <dl id="div_project_repayment_number">
+            <dl id="div_project_repayment_number" runat="server">
                 <dt>
                     <asp:Label ID="div_project_repayment_number_title" runat="server" Text="还款期限" /></dt>
                 <dd>
@@ -185,7 +184,7 @@
                     <asp:Label ID="div_project_repayment_number_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
-            <dl id="div_project_repayment_type">
+            <dl id="div_project_repayment_type" runat="server">
                 <dt>
                     <asp:Label ID="div_project_repayment_type_title" runat="server" Text="还款方式" /></dt>
                 <dd>
@@ -195,12 +194,13 @@
                             <asp:ListItem Value="10" Selected="True">先息后本</asp:ListItem>
                             <asp:ListItem Value="20">等额本息</asp:ListItem>
                             <asp:ListItem Value="30">到期还本付息</asp:ListItem>
+                            <asp:ListItem Value="40">每日收益</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
                     <asp:Label ID="div_project_repayment_type_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
-            <dl id="div_loan_fee_rate">
+            <dl id="div_loan_fee_rate" runat="server">
                 <dt>
                     <asp:Label ID="Label1" runat="server" Text="平台服务费率" /></dt>
                 <dd>
@@ -210,7 +210,7 @@
                 <asp:Label ID="Label2" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
-            <dl id="div_bond_fee_rate">
+            <dl id="div_bond_fee_rate" runat="server">
                 <dt>
                     <asp:Label ID="Label3" runat="server" Text="风险保证金费率" /></dt>
                 <dd>
@@ -256,7 +256,7 @@
             </dl>
         </div>
         <%-- 标的信息 --%>
-        <div class="tab-content" style="display: none" id="div_mortgages_info">
+        <div class="tab-content" style="display: none" id="div_mortgages_info" runat="server">
             <dl>
                 <dl>
                     <dt>选择借款人</dt>
@@ -404,7 +404,7 @@
             </dl>
         </div>
         <%-- 风控信息 --%>
-        <div class="tab-content" style="display: none" id="div_risks_info">
+        <div class="tab-content" style="display: none" id="div_risks_info" runat="server">
             <dl id="dl_creditor" runat="server" Visible="False">
                 <dt>债权人</dt>
                 <dd>

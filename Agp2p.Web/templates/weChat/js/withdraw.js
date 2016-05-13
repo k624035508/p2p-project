@@ -56,11 +56,13 @@ $(function() {
         $.post("/tools/submit_ajax.ashx?action=withdraw", {
             cardId: $("input#select-card").attr("data-cardId"),
             howmany: withdrawVal,
-            transactPassword: $("input#trade-psw").val()
+            transactPassword: $("input#trade-psw").val(),
+            backUrl: location.href
         }, function(data) {
-            alert(data.msg);
             if (data.status === 1) {
-                location.href = userCenterUrl;
+                location.href = data.url;
+            }else{
+                alert(data.msg);
             }
         }, "json").fail(function() {
             alert("提交失败，请重试");

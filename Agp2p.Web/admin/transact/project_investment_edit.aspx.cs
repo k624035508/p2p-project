@@ -77,7 +77,7 @@ namespace Agp2p.Web.admin.transact
                     return false;
                 }
 
-                context.Invest(userId, projectId, investingMoney);
+                TransactionFacade.Invest(userId, projectId, investingMoney);
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), ddlInvestor.SelectedItem.Text + " 被添加投资信息: " + investingMoney); //记录日志
                 return true;
             }

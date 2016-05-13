@@ -16,38 +16,28 @@ window.ToggleCode = function(obj, codeurl) {
     return false;
 }
 
-//function getUrlParameter(sParam) {
-//    var sPageURL = window.location.search.substring(1);
-//    var sURLVariables = sPageURL.split('&');
-//    for (var i = 0; i < sURLVariables.length; i++) {
-//        var sParameterName = sURLVariables[i].split('=');
-//        if (sParameterName[0] == sParam) {
-//            return sParameterName[1];
-//        }
-//    }
-//    return null;
-//}
-
-function getUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-    if (r != null) return unescape(r[2]); 
-    return null; //返回参数值
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+    return null;
 }
-
 //=====================初始化代码======================
 $(function () {
-    //活动链接临时逻辑
-    if (location.href.indexOf("url") != -1) {
-        $(".turn-now-wrap").show();
-        var regUrl = getUrlParam('url')+"&id=" + getUrlParam('id');
-        $("#loginBtn").attr("href", "/mobile/login.html?url=" + regUrl);
-    }else {
-        $(".turn-now-wrap").hide();
+    var { step,result } = $("#step").data();
+    if (step == "2") {
+        //实名验证
+        $(".register-step").eq(1).show().siblings().hide();
+    } else {
+        $(".register-step").eq(0).show().siblings().hide();
     }
-
     // 初始化邀请码 input
-    var inviteCode = getUrlParam("inviteCode");
+    var inviteCode = getUrlParameter("inviteCode");
     if (inviteCode != null) {
         var inviterInput = $("#recommend-one");
         inviterInput.val(inviteCode);
@@ -58,6 +48,7 @@ $(function () {
     var chkAgree = $("#agreement");
     var btnSendCode = $("#get-auth-code-btn");
     var btnSubmit = $("#register-btn");
+    var btnSubmitName = $("#register-identity-btn");
 
     chkAgree.click(function () {
         if ($(this).is(":checked")) {
@@ -140,17 +131,14 @@ $(function () {
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
     }
-
-    //表单提交后
+    //注册表单提交后
     function showResponse(data, textStatus) {
         if (data.status === 1) { //成功
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
-                if(document.URL !== "" && document.URL.indexOf("url") != -1) {
-                    location.href = getUrlParam('url')+"&id=" + getUrlParam('id');
-                }
-                else
-                    location.href = "/";
+                //注册成功后进入实名认证
+                // location.href = "/api/payment/sumapay/index.aspx?api=101";
+                location.href="register.html?action=2";
             });
         } else { //失败
             $.dialog.alert(data.msg);
@@ -159,13 +147,35 @@ $(function () {
             chkAgree.prop("disabled", false);
         }
     }
+
+    //实名认证表单提交后
+    function showResponseName(data, textStatus) {
+        if (data.status === 1) { //成功
+            //location.href = data.url;
+            $.dialog.alert(data.msg, function() {
+                //注册成功后进入开户
+                 location.href = "/api/payment/sumapay/index.aspx?api=101";
+            });
+        } else { //失败
+            $.dialog.alert(data.msg);
+            btnSubmitName.val("再次提交");
+            btnSubmitName.prop("disabled", false);
+        }
+    }
+
     //表单提交出错
     function showError(xmlHttpRequest, textStatus, errorThrown) {
         $.dialog.alert("状态：" + textStatus + "；出错提示：" + errorThrown);
         btnSubmit.val("再次提交");
         btnSubmit.prop("disabled", false);
         chkAgree.prop("disabled", false);
-    } 
+    }
+    
+    function showErrorName(xmlHttpRequest, textStatus, errorThrown) {
+        $.dialog.alert("状态：" + textStatus + "；出错提示：" + errorThrown);
+        btnSubmitName.val("再次提交");
+        btnSubmitName.prop("disabled", false);
+    }
 
     //初始化验证表单
     $("#regform").Validform({
@@ -179,6 +189,23 @@ $(function () {
                 success: showResponse,
                 error: showError,
                 url: "/tools/submit_ajax.ashx?action=user_register",
+                type: "post",
+                dataType: "json",
+                timeout: 60000
+            });
+            return false;
+        }
+    });
+
+    $("#realNameForm").Validform({
+        btnSubmit: "#register-identity-btn",
+        tipSweep: true,
+        tiptype:3,
+        callback:function(form) {
+            $(form).ajaxSubmit({
+                success: showResponseName,
+                error: showErrorName,
+                url: "/tools/submit_ajax.ashx?action=bind_idcard",
                 type: "post",
                 dataType: "json",
                 timeout: 60000

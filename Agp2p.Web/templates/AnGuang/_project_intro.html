@@ -1,4 +1,104 @@
-﻿<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl")%>
+﻿<%if(projectModel.dt_article_category.call_index=="huoqi")%>
+<div class="project-detail-huoqi">
+    <span class="title-mark">{hIndex++}.产品介绍</span>
+    <div class="pro">
+        <p>项目介绍</p>
+        <p>活期宝是安广融合旗下的一款活期理财产品，以高安全性银行承兑汇票为还款保障，实现随买随赎需求，没有期限限制，具有收益稳健，天天结算，理财灵活等特点。</p>
+    </div>
+    <div class="fanwei">
+        <span>投资范围</span>
+        <span>由平台推荐的真实借款项目</span>
+    </div>
+    <div class="fanwei">
+        <span>期限</span>
+        <span>活期</span>
+    </div>
+    <div class="fanwei">
+        <span>预期年化收益</span>
+        <span><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span>
+    </div>
+    <div class="fanwei">
+        <span>起投金额</span>
+        <span>100元</span>
+    </div>
+    <div class="fanwei">
+    <span>资产总规模</span>
+    <span>100万元</span>
+    </div>
+
+    <div class="fanwei1">
+        <span>购买规则</span>
+        <span >1、起投金额为100元；</span>
+        </div>
+    <div class="fanwei1 " style="border-top:white;" >
+        <span>&nbsp;&nbsp;</span>
+        <span>2、当日购买，次日可提取；</span>
+        </div>
+    <div class="fanwei1" style="border-top:white;">
+        <span>&nbsp;&nbsp;</span>
+        <span>3、用户可以在限额内进行重复购买，单个用户的购买限额为10万元。</span>
+    </div>
+
+    <div class="fanwei1">
+        <span>赎回规则</span>
+        <span>1、每人每日赎回总金额不得超过5万元；</span>
+    </div>
+    <div class="fanwei1" style="border-top:white;">
+        <span>&nbsp;</span>
+        <span>2、每日可申请赎回3次，超限每次收取0.25%赎回费（不足一元按一元计算）；</span>
+    </div>
+    <div class="fanwei1" style="border-top:white;">
+        <span>&nbsp;</span>
+        <span>3、平台会根据流动性情况对可提取额度进行调整，一般情况下，均能满足用户实际赎回需求。</span>
+    </div>
+
+    <div class="fanwei">
+        <span>提取到账时间</span>
+        <span>T+1个工作日（节假日顺延）提取至用户的安广融合账户中</span>
+    </div>
+
+    <div class="fanwei1">
+        <span>收益方式</span>
+        <span>1、T日购买，T+1日计息，T+2日显示收益（T为自然日）；</span>
+    </div>
+    <div class="fanwei1" style="border-top:white;">
+        <span>&nbsp;</span>
+        <span>2、获得的收益不按复利结算；</span>
+    </div>
+    <div class="fanwei1" style="border-top:white;">
+        <span>&nbsp;</span>
+        <span>3、周末及节假日转入计息照常。</span>
+    </div>
+    <div class="fanwei" >
+        <span>费用</span>
+        <span>购买费用：0元，提取费用：0元</span>
+    </div>
+</div>
+<%/if%>
+
+<%if(Investable.IsClaimTransferProject)%>
+<div class="project-detail-claim">
+<span class="title-mark">{hIndex++}.债权介绍</span>
+<div class="claims-detail">
+   <div class="claims-left">
+       <div><span>债权总额</span><span><%=Investable.FinancingAmount.ToString("n2")%>元</span></div>
+       <div><span>转让债权年化收益</span><span><%=Investable.ProfitRateYearly.ToString("p1")%></span></div>
+       <div><span>债权剩余期限</span><span>{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</span></div>
+       <div><span>转让债权预期收益</span><span><%=Investable.ClaimTransferProfitingAmount.ToString("n")%>元</span></div>
+   </div>
+   <div class="claims-right">
+       <div><span>原债权规模</span><span><%=Investable.NeedTransferClaim.Parent.principal.ToString("n2")%>元</span></div>
+       <div><span>原年化收益</span><span><%=(Investable.Project.profit_rate_year/100).ToString("p1")%></span></div>
+       <div><span>还款方式</span><span>到期还本付息</span></div>
+       <div><a href='<%linkurl("project",Investable.Project.id)%>'>查看原项目详情 ></a></div>
+   </div>
+</div>
+</div>
+<%/if%>
+
+
+
+<%if(projectModel.dt_article_category.call_index!="ypb"&&projectModel.dt_article_category.call_index!="ypl"&&projectModel.dt_article_category.call_index!="huoqi"&&(!Investable.IsClaimTransferProject))%>
 <div id="project-summary">
     <span class="title-mark">{hIndex++}.项目简介</span>
     <ul class="list-unstyled">
@@ -8,3 +108,4 @@
     </ul>
 </div>
 <%/if%>
+

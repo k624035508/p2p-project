@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <title >状态激活</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <script src="<%templateskin%>/js/json2.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/react.bundle.js"></script>
+    <script src="<%templateskin%>/build/success_return.bundle.js"></script>
+    <script>
+        var linkRecord = '<%linkurl("usercenter","index")%>#/invest-record';
+        var linkAccount = '<%linkurl("usercenter","index")%>';
+        var linkMyloan = '<%linkurl("usercenter","index")%>#/myloan';
+        var linkMyloan3 = '<%linkurl("usercenter","index")%>?loanstatus=3#/myloan';
+        var linkMyloan4 = '<%linkurl("usercenter","index")%>?loanstatus=4#/myloan';
+        var linkRecharge = '<%linkurl("usercenter","index")%>#/recharge';
+        var linkProject = '<%linkurl("projects")%>';
+        var linkWithdraw = '<%linkurl("usercenter","index")%>#/withdraw';
+        var linkClaimRecord = '<%linkurl("usercenter","index")%>?status=record#/claims?';
+        var linkClaimAgain = '<%linkurl("usercenter","index")%>?status=again#/claims?';
+    </script>
+</head>
+<body>
+    <!--head-->
+    <%template src="_header.html"%>
+    <!--head end-->
+
+    <div id="returnSuccess"></div>
+
+    <!--footer-->
+    <%template src="_footerSmall.html"%>
+    <!--footer end-->
+</body>
+</html>

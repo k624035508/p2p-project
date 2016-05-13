@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Caching;
@@ -17,26 +18,29 @@ namespace Agp2p.Web
 {
     public class Global : HttpApplication
     {
-        private static DailyTimer dailyTimer;
 
-        public static void SchaduleDailyTimer(int hours, int minutes = 0, int seconds = 0, bool todayExecuted = false)
+        public static Dictionary<TimerMsg.Type, DailyTimer> TimerDict = new Dictionary<TimerMsg.Type, DailyTimer>();
+
+        public static void SchaduleDailyTimer(TimerMsg.Type timerType, int hours, int minutes = 0, int seconds = 0, bool todayExecuted = false)
         {
+            var dailyTimer = TimerDict.GetValueOrDefault(timerType, (DailyTimer) null);
             if (dailyTimer != null && dailyTimer.Running)
             {
                 dailyTimer.Release();
             }
             dailyTimer = new DailyTimer(hours, minutes, seconds, callBackEnum =>
             {
-                MessageBus.Main.Publish(new TimerMsg(onTime: callBackEnum == CallBackEnum.OnTime));
+                MessageBus.Main.Publish(new TimerMsg(timerType, onTime: callBackEnum == CallBackEnum.OnTime));
                 if (callBackEnum == CallBackEnum.OnTime)
                 {
-                    new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器执行了一次");
+                    new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器执行了一次：" + timerType);
                 }
             }, ex =>
             {
                 new Agp2pDataContext().AppendAdminLogAndSave("Timer", "全局定时器报错：" + ex.GetSimpleCrashInfo());
                 //if (Utils.IsDebugging()) throw ex;
             });
+            TimerDict[timerType] = dailyTimer;
         }
 
         /// <summary>
@@ -62,13 +66,16 @@ namespace Agp2p.Web
             linqContext.SubmitChanges();
         }
 
-        public static void InitDailyTimer(string autoRepayTime = null)
+        public static void InitDailyTimer(TimerMsg.Type timerType, string autoRepayTime)
         {
-            autoRepayTime = autoRepayTime ?? ConfigLoader.loadSiteConfig().systemTimerTriggerTime;
             var match = new Regex(@"^(\d{1,2}):(\d{2}):(\d{2})$").Match(autoRepayTime);
             if (match.Success)
             {
-                SchaduleDailyTimer(Convert.ToInt32(match.Groups[1].Value), Convert.ToInt32(match.Groups[2].Value), Convert.ToInt32(match.Groups[3].Value));
+                SchaduleDailyTimer(timerType, Convert.ToInt32(match.Groups[1].Value), Convert.ToInt32(match.Groups[2].Value), Convert.ToInt32(match.Groups[3].Value));
+            }
+            else
+            {
+                throw new InvalidOperationException("不正确的日期格式：" + autoRepayTime);
             }
         }
 
@@ -78,7 +85,9 @@ namespace Agp2p.Web
             {
                 new Agp2pDataContext().AppendAdminLogAndSave("MessageBusError", ex.GetSimpleCrashInfo());
             };
-            InitDailyTimer();
+            InitDailyTimer(TimerMsg.Type.AutoRepayTimer, ConfigLoader.loadSiteConfig().systemTimerTriggerTime);
+            InitDailyTimer(TimerMsg.Type.LoanerRepayTimer, ConfigLoader.loadSiteConfig().loanerRepayTime);
+            InitDailyTimer(TimerMsg.Type.AutoMakeLoanTimer, "24:00:00");
             DelayedRelease();
         }
 

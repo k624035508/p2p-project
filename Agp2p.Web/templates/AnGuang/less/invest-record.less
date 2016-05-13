@@ -1,4 +1,4 @@
-//投资记录内容
+/*invest-record.less锛堟姇璧勮褰曪級*/
 @import "common-style";
 
 #typePicker {
@@ -17,10 +17,10 @@
 	& li:first-child { border-left: @border; }
 	.active {
 		color: @white;
-		background: @red;
+		background: @blue;
 	}
 }
-.investRecord-tb {
+.trade-tb {
 	margin-top: 30px;
 	th, td {
 		text-align: center;
@@ -47,4 +47,11 @@
 			color: @blue;
 		}
 	}
+}
+
+.content-body,.content-body-loaner{
+    position:relative;
+     .nav{
+             position:absolute; bottom:0; left:0; width:100%;          
+        }
 }

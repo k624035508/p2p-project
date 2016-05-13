@@ -13,7 +13,7 @@
                 <li class="hr-line">|</li>
                 <li><a id="register" href='<%linkurl("register")%>'>注册</a></li>
                 <%else%>
-                <li><a href='<%linkurl("usercenter","index")%>'>欢迎，<%=Utils.GetUserNameHidden(_userModel.user_name)%></a></li>
+                <li><a href='<%linkurl("usercenter","index")%>'>您好，<%=Utils.GetUserNameHidden(_userModel.user_name)%></a></li>
                 <%set var _userUnreadMsgCount=GetUserUnreadMessage(_userModel.id)%>
                 <%if(_userUnreadMsgCount!=0)%>
                 <li class="news-ring" onclick="window.open('<%linkurl("usercenter","index")%>#/mynews','_blank')"><span><%=GetUserUnreadMessage(_userModel.id)%></span></li>
@@ -23,6 +23,10 @@
                 <%/if%>
                 <li class="hr-line">|</li>
                 <li><a id="help" href='<%=linkurl("help")%>'>帮助</a></li>
+                <li class="hr-line">|</li>
+                <li><a id="help" href='<%=linkurl("coop")%>'>融资合作</a></li>
+                <li class="hr-line">|</li>
+                <li><a id="help" href='<%=linkurl("about")%>'>关于我们</a></li>
                 <li class="hr-line">|</li>
                 <li><a id="apps" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" data-content="<img style='width:95px' src='<%templateskin%>/imgs/index/top-bar-app-code.png'/>" href='<%linkurl("activity_apps")%>' target="_blank"></a></li>
             </ul>
@@ -39,13 +43,24 @@
         <nav class="pull-right">
             <ul class="list-inline in-header">
                 <li><a href="/">首页</a></li>
-                <li><a href='<%linkurl("projects")%>'>我要理财</a></li>
+                <li role="presentation" id="financial" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" onclick="location.href = this.getAttribute('href');" href='<%linkurl("projects")%>'
+                       role="button" aria-haspopup="true" aria-expanded="false">
+                        投资理财 <span class="arrowsituation"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-custom">
+                        <li><a href='<%linkurl("projects",67)%>'>定期专区</a></li>
+                        <li><a href='<%linkurl("projects",68)%>'>债权转让</a></li>
+                        <li><a href='<%linkurl("projects",69)%>'>活期宝</a></li>
+                        <li><a href='<%linkurl("projects")%>#wentibao'>文体宝</a></li>
+                        <li><a href='<%linkurl("projects")%>#consumefin'>消费金融</a></li>
+                    </ul>
+                </li>
+                <li><a href='<%linkurl("loan")%>'>我要借款</a></li> 
                 <li role="presentation" id="myAccount" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" onclick="location.href = this.getAttribute('href');" href='<%linkurl("usercenter","index")%>'
                         role="button" aria-haspopup="true" aria-expanded="false">
-                        我的账户
-                    <!--<span class="caret"></span>-->
-                        <i class="iconfont">&#xe695;</i>
+                        我的账户 <span class="arrowsituation"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-custom">
                         <li><a href='<%linkurl("usercenter","index")%>#'>账户总览</a></li>
@@ -55,9 +70,7 @@
                         <li><a href='<%linkurl("usercenter","index")%>#/safe'>个人中心</a></li>
                     </ul>
                 </li>
-                <li><a href='<%linkurl("safe_defence")%>'>安全保障</a></li>
-                <li><a href='<%linkurl("about")%>'>关于我们</a></li>
-               <!-- <li><a href='<%linkurl("loan")%>'>我要借款</a></li> -->
+                <li><a href='<%linkurl("safe_defence")%>'>安全保障</a></li>               
             </ul>
         </nav>
         <a href='<%linkurl("index")%>'><img src="<%templateskin%>/imgs/index/logo.png" /></a>

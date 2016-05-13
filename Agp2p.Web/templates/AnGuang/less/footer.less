@@ -1,4 +1,4 @@
-/*首页footer样式*/
+/*footer.less*/
 @import "common-style.less";
 
 div.footer-wrap {
@@ -6,56 +6,88 @@ div.footer-wrap {
     background: @white;
     .footer-top {
         width: @min-width;
-        height: 150px;
+        height: 175px;
         margin: 0 auto;
-        padding: 27px 35px;
+        padding: 27px 0 27px 30px;
         & > div { .inline-block; }
         .content-left {
-            ul {
-                li {
-                    padding: 0 22px;
-                    border-right: @border;
-                    a {
-                        font-size: @font18;
-                        color: @darker-grey;
-                        text-decoration: none;
-                        &:hover { color: @red; }
+            border-right:1px solid @body-color; width:375px;  height:130px;
+            .foot-about{
+                font-size:@font15; 
+                margin-bottom:25px;
+                span{ display:inline-block; width:115px; 
+                      a{color:@darker-grey; text-decoration:none;
+                        &:hover{ color:@blue;}
+                      }
+                }
+            }
+            .foot-about-join{
+                font-size:@font14;
+                & > div { 
+                    display:inline-block;  width:115px;  
+                    p{margin-bottom:7px;
+                      a{ color:@dark-grey; text-decoration:none;
+                          &:hover{ color:@blue;}
+                      }
                     }
                 }
-                & li:first-child { border-left: @border; }
-            }
-            p, p a {
-                font-size: @font14;
-                color: @grey;
-                margin: 0;
-            }
-            .contacts {
-                margin: 25px 0 5px 0;
-                span { margin-left: 20px; }
-            }
-            .links a {
-                padding-right: 10px;
             }
         }
         .qrcode {
+            margin-left:59px; 
+            width:290px;  height:130px; border-right:1px solid @body-color; padding-top:3px;
             & > div {
                 display: inline-block;
                 width: 95px;
                 height: 120px;
                 padding-top: 100px;
                 text-align: center;
-                color: @grey;
-                font-size: @font13;
+                color: @dark-grey;
+                font-size: @font14;
             }
             .service {
-                margin-right: 30px;
+                margin-right: 40px;
                 background: url("../imgs/index/service-code.png") no-repeat center top;
             }
             .subscribe { background: url("../imgs/index/subscribe-code.png") no-repeat center top; }
         }
+        .serviceCall{
+            height:145px; float:right;
+            p{ 
+                text-align:right;     
+                } 
+            .service-phone{
+                font-size:20px; color:#aaaaaa; margin-bottom:5px;
+                span{ font-size:25px; color:@blue; font-weight:bold;}
+            }     
+             .service-time{
+                 font-size:15px; color:#aaaaaa;  margin-bottom:5px;
+             } 
+             .service-line{
+                  font-size:15px; color:@blue; height:25px;  margin-bottom:5px;
+                  background:url("../imgs/index/kefu.png") no-repeat 170px 0;
+             } 
+             .service-icon{
+                 height:35px;
+                 span{ display:inline-block; width:35px; height:35px; background:url("../imgs/index/wechatblue.png") no-repeat ; margin-left:14px;}
+                 a{  display:inline-block; width:35px; height:35px; background:url("../imgs/index/weiboblue.png") no-repeat ;}
+             }
+        }
+    }
+    .footer-links {
+        height:40px;
+        font-size:14px; color:@dark-grey;
+        background:@body-color;
+        p.links{
+            width:@min-width;
+            margin:0 auto; padding-top:10px; padding-left:30px; color:@dark-grey;
+            a{
+                color:@dark-grey; margin-right:18px;
+            }
+            a.link-hr{border-left:1px solid @dark-grey; }
+        }
     }
     .footer-bottom {
-        height: 126px;
         padding: 15px 0;
         text-align: center;
         background: #dcdcdc;
@@ -90,13 +122,10 @@ div.footer-wrap {
         }
         p {
             color: @white;
-            font-size: 17px;
+            font-size: 15px;
             text-align: center;
             margin-top: 10px;
-        }
-        p.attention{
-            margin-top:-10px;
-             font-size: @font13;
+            span{margin-left:55px;}
         }
     }
 }

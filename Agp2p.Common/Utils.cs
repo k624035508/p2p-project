@@ -10,6 +10,7 @@ using System.Web;
 using System.Security.Cryptography;
 using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -1324,9 +1325,75 @@ namespace Agp2p.Common
             }
             return _url + DelLastChar(urlParams.ToString(), "&");
         }
+
+        /// <summary>
+        /// 解析Url参数
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> UrlParamToData(string param)
+        {
+            Regex re = new Regex(@"(^|&)?(\w+)=([^&]+)(&|$)?", RegexOptions.Compiled);
+            MatchCollection mc = re.Matches(param);
+            return mc.Cast<Match>().ToDictionary(m => m.Result("$2"), m => m.Result("$3"));
+        }
+
         #endregion
 
         #region URL请求数据
+        public static string HttpPostGbk(string url, string param)
+        {
+            byte[] data = Encoding.ASCII.GetBytes(param);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded;charset=GBK";
+            request.ContentLength = data.Length;
+            request.Accept = "*/*";
+            //TODO 测试暂时取消
+            //request.Timeout = 20000;
+            request.AllowAutoRedirect = false;
+
+            Stream requestStream = null;
+            WebResponse response = null;
+            string responseStr = null;
+
+            try
+            {
+                //如果是发送HTTPS请求,则需要校验证书  
+                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    SumaPayUtils.SetCertificatePolicy();//屏蔽证书问题
+                    //X509Certificate cert = X509Certificate.CreateFromCertFile(@"E:\Project\Payment\p2pmerchant_access.net\p2pmerchant_access.net\bin\zhengshu.crt");
+                    //myRequest.ClientCertificates.Add(cert);
+                }
+
+                requestStream = request.GetRequestStream();
+                requestStream.Write(data, 0, data.Length);
+                requestStream.Close();
+
+                response = request.GetResponse();
+                if (response != null)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GBK"));
+                    responseStr = reader.ReadToEnd();
+                    reader.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                request = null;
+                requestStream = null;
+                response = null;
+            }
+
+            return responseStr;
+        }
+
         /// <summary>
         /// HTTP POST方式请求数据
         /// </summary>
@@ -1737,9 +1804,28 @@ namespace Agp2p.Common
             return null;
         }
 
+        /// <summary>
+        /// 完整分割 10 / 3 => 3.33 + 3.33 + 3.34
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="splitCount"></param>
+        /// <param name="toFixed"></param>
+        /// <returns></returns>
+        public static IEnumerable<decimal> GetPerfectSplitStream(this decimal amount, int splitCount, int toFixed = 2)
+        {
+            if (splitCount <= 0)
+            {
+                throw new Exception("无法分割为 0 份");
+            }
+            var part = Math.Round(amount/splitCount, toFixed);
+            var finalPart = Math.Round(amount - part*(splitCount - 1), toFixed);
+            return Enumerable.Repeat(part, splitCount - 1).Concat(Enumerable.Repeat(finalPart, 1));
+        }
+
         public static List<decimal> GetPerfectRounding(List<decimal> original, decimal forceSum, int decimals)
         {
             var rounded = original.Select(x => Math.Round(x, decimals)).ToList();
+            Debug.Assert(Math.Round(forceSum, decimals) == forceSum);
             var delta = forceSum - rounded.Sum();
             if (delta == 0) return rounded;
             var deltaUnit = Convert.ToDecimal(Math.Pow(0.1, decimals)) * Math.Sign(delta);
@@ -1799,6 +1885,85 @@ namespace Agp2p.Common
                 return ex.InnerException.GetSimpleCrashInfo();
             }
             return ex.Message + "\n" + ex.StackTrace?.Split(Environment.NewLine.ToCharArray()).FirstOrDefault(s => s.Contains("行号"));
+        }
+
+        public static Dictionary<TKey, TVal> ReplaceKey<TKey, TVal>(this Dictionary<TKey, TVal> src, TKey originalKey, TKey replacement)
+        {
+            return src.Concat(Enumerable.Repeat(new KeyValuePair<TKey, TVal>(replacement, src[originalKey]), 1))
+                .Where(p => !EqualityComparer<TKey>.Default.Equals(p.Key, originalKey))
+                .ToDictionary(p => p.Key, p => p.Value);
+
+        }
+
+        class DebugTextWriter : TextWriter
+        {
+            private int writeCount = 0;
+            private DateTime startAt = DateTime.Now;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new string(buffer, index, count);
+                Debug.Write(str);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                    Debug.WriteLine("Times: " + writeCount + " Elapse(s): " + (DateTime.Now - startAt).TotalSeconds);
+                }
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        public static TextWriter GetDbDebugLogger()
+        {
+            return new DebugTextWriter();
+        }
+
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+        {
+            TValue value;
+            return dictionary.TryGetValue(key, out value) ? value : defaultValue;
+        }
+
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> defaultValueProvider)
+        {
+            TValue value;
+            return dictionary.TryGetValue(key, out value) ? value : defaultValueProvider();
+        }
+
+        public static IEnumerable<Match> MatchSteam(this string src, Regex pattern)
+        {
+            var match = pattern.Match(src);
+            while (match.Success)
+            {
+                yield return match;
+                match = match.NextMatch();
+            }
+        }
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/3314140/how-to-read-embedded-resource-text-file
+        /// </summary>
+        /// <param name="executingAssembly"></param>
+        /// <param name="resourceName"></param>
+        /// <returns></returns>
+        public static string[] ReadAllLinesFromResource(Assembly executingAssembly, string resourceName)
+        {
+            var list = new List<string>();
+            using(var resourceStream = executingAssembly.GetManifestResourceStream(resourceName))
+            using (var streamReader = new StreamReader(resourceStream, Encoding.UTF8))
+            {
+                string str;
+                while ((str = streamReader.ReadLine()) != null)
+                    list.Add(str);
+            }
+
+            return list.ToArray();
         }
     }
 }

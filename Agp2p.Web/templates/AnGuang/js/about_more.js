@@ -7,7 +7,7 @@ import header from "./header.js";
 window['$'] = $;
 
 $(function(){
-    header.setHeaderHighlight(4);
+    
 
     //加入我们 招聘列表开关样式
     var $office = $(".join-us-wrap .content-body .office ul li");

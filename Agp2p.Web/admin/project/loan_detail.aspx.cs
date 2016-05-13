@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using ClosedXML.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -58,10 +59,56 @@ namespace Agp2p.Web.admin.project
                     return;
                 }
                 Loan = new BLL.loan(LqContext);
-                ShowByStatus();
-                ShowInfo(project);
+                ShowProjectInfo(project);
+                if (project.IsHuoqiProject())
+                {
+                    ShowProfitingClaimInfo(project);
+                }
+                else
+                {
+                    ShowClaimsInfo(project);
+                }
                 LoanType = project.type;
+                ShowByStatus();
             }
+        }
+
+        protected bool isHuoqiProject;
+
+        private void ShowProfitingClaimInfo(li_projects project)
+        {
+            isHuoqiProject = true;
+            rptClaimList.DataSource = project.li_claims_profiting.AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
+        private void ShowClaimsInfo(li_projects project)
+        {
+            isHuoqiProject = false;
+            rptClaimList.DataSource = project.li_claims.AsEnumerable();
+            rptClaimList.DataBind();
+        }
+
+        protected void btnBecomeTransferable_OnClick(object sender, EventArgs e)
+        {
+            var transferAmount = Request["__EVENTARGUMENT"];
+            int claimId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
+            var claim = LqContext.li_claims.Single(c => c.id == claimId);
+
+            var remark = string.Format("将项目【{0}】的债权 {1} 设置为可转让", claim.li_projects.title, claimId);
+            LqContext.AppendAdminLog(DTEnums.ActionEnum.Edit.ToString(), remark, false);
+            TransactionFacade.StaticProjectWithdraw(LqContext, claimId, 1 - Convert.ToDecimal(transferAmount)/100);
+
+            ShowClaimsInfo(claim.li_projects);
+
+            JscriptMsg(remark, "");
+        }
+
+        protected static string GetFriendlyUserName(dt_users user)
+        {
+            return string.IsNullOrWhiteSpace(user.real_name)
+                ? user.user_name
+                : $"{user.user_name}({user.real_name})";
         }
 
         private void ShowByStatus()
@@ -102,13 +149,13 @@ namespace Agp2p.Web.admin.project
         /// 显示项目信息
         /// </summary>
         /// <param name="_project"></param>
-        public virtual void ShowInfo(li_projects _project)
+        public virtual void ShowProjectInfo(li_projects _project)
         {
             spa_category.InnerText = new article_category().GetTitle(_project.category_id);//项目类别
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
-            spa_amount.InnerText = _project.financing_amount.ToString("C");//借款金额            
+                      
             spa_repayment.InnerText = _project.repayment_term_span_count +
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
@@ -119,8 +166,8 @@ namespace Agp2p.Web.admin.project
             spa_add_time.InnerText = _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             spa_publish_time.InnerText = _project.publish_time?.ToString("yyyy-MM-dd HH:mm:ss");//发布时间
             spa_make_loan_time.InnerText = _project.make_loan_time?.ToString("yyyy-MM-dd HH:mm:ss");//放款时间
-            spa_bond_fee.InnerText = _project.bond_fee_rate?.ToString("N2");
-            spa_loan_fee.InnerText = _project.loan_fee_rate?.ToString("N2");
+            spa_bond_fee.InnerText = _project.bond_fee_rate?.ToString("N4");
+            spa_loan_fee.InnerText = _project.loan_fee_rate?.ToString("N4");
             spa_contact_no.InnerText = _project.contract_no;
 
             ShowRiskInfo(_project);
@@ -164,6 +211,7 @@ namespace Agp2p.Web.admin.project
         /// <param name="riskId"></param>
         private void ShowLoanerInfo(li_loaners loaner, int riskId)
         {
+            if (loaner == null) return;
             //借款人信息
             sp_loaner_name.InnerText = loaner?.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner?.dt_users.sex;
@@ -271,6 +319,12 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入你要延迟发标的准确时间！", "back", "Error");
                 return;
             }
+            if (Convert.ToDateTime(txtPublishTime.Text.Trim()) <= DateTime.Now)
+            {
+                JscriptMsg("延迟发布时间不能小于当前时间！", "back", "Error");
+                return;
+            }
+
             if (project != null)
             {
                 try
@@ -307,6 +361,7 @@ namespace Agp2p.Web.admin.project
             {
                 try
                 {
+                    //TODO　对接托管接口
                     ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Edit.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel;
                     LqContext.SubmitChanges();
@@ -332,23 +387,24 @@ namespace Agp2p.Web.admin.project
         /// <param name="e"></param>
         protected void btnFail_OnClick(object sender, EventArgs e)
         {
+            ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
-                try
+                var msg = new RepealProjectReqMsg(ProjectId, project.investment_amount.ToString("F"));
+                MessageBus.Main.Publish(msg);
+                var msgResp = BaseRespMsg.NewInstance<RepealProjectRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
                 {
-                    ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Delete.ToString());
                     project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingFail;
-                    //TODO 资金原路退回投资者账户
-                    LqContext.ProjectFinancingFail(project.id);
-                    LqContext.SubmitChanges();
-                    JscriptMsg("借款流标操作成功！",
+                    JscriptMsg("流标操作成功！",
                         Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
-                            ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+                            ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
                 }
-                catch (Exception ex)
+                else
                 {
-                    JscriptMsg("借款流标操作失败：" + ex.Message, "back", "Error");
+                    JscriptMsg("流标操作失败：" + msgResp.Remarks, "back", "Error");
                 }
             }
             else
@@ -369,7 +425,7 @@ namespace Agp2p.Web.admin.project
                 JscriptMsg("请输入募集顺延天数！", "back", "Error");
                 return;
             }
-
+           
             var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
             if (project != null)
             {
@@ -450,11 +506,30 @@ namespace Agp2p.Web.admin.project
             try
             {
                 ChkAdminLevel("make_loan_audit", DTEnums.ActionEnum.Audit.ToString());
-                //TODO 资金打入借款人账户
-                LqContext.StartRepayment(ProjectId);
-                JscriptMsg("放款操作成功！",
-                    Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
-                        ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
+                var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+                //调用托管平台实名验证接口
+                if (project != null)
+                {
+                    var msg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, ProjectId, project.investment_amount.ToString("F"));
+                    MessageBus.Main.Publish(msg);
+                    var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(msg.SynResult);
+                    MessageBus.Main.Publish(msgResp);
+                    if (msgResp.HasHandle)
+                    {
+                        JscriptMsg("放款操作成功！",
+                            Utils.CombUrlTxt("../audit/make_loan_audit.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                                ((int)Agp2pEnums.ProjectStatusEnum.ProjectRepaying).ToString()));
+                    }
+                    else
+                    {
+                        JscriptMsg("放款操作失败：" + msgResp.Remarks, "back", "Error");
+                    }
+                }
+                else
+                {
+                    JscriptMsg("放款操作失败，没有找到项目！", "back", "Error");
+                }
+                
             }
             catch (Exception ex)
             {
@@ -492,8 +567,8 @@ namespace Agp2p.Web.admin.project
                 p.profit_rate_year.ToString("n1"),
                 p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
                 p.GetProjectRepaymentTypeDesc(),
-                p.loan_fee_rate?.ToString("n2"),
-                p.bond_fee_rate?.ToString("n2")
+                p.loan_fee_rate?.ToString("n4"),
+                p.bond_fee_rate?.ToString("n4")
             };
 
             var loanerInfoField = new[]
@@ -689,7 +764,6 @@ namespace Agp2p.Web.admin.project
 
             }, Response);
         }
-
     }
 
 }

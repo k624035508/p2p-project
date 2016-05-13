@@ -4,12 +4,14 @@ import "../less/login.less";
 import "../less/footerSmall.less";
 
 import alert from "../components/tips_alert.js";
+import header from "./header.js";
 
 $(function(){
 	$("#account").focus();
 
 	//弹出窗popover初始化
 	$('[data-toggle="popover"]').popover();
+	header.setHeaderHighlight(3);
 
 	$("#loginBtn").click(function(){
 		$.ajax({

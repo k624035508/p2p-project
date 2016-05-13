@@ -14,8 +14,10 @@ using Agp2p.Linq2SQL;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Newtonsoft.Json;
 using Agp2p.Model.DTO;
 
@@ -140,14 +142,14 @@ namespace Agp2p.Web.tools
                 case "add_bank_card":   //新增银行卡
                     add_bank_card(context);
                     break;
+                case "recharge":   //客户充值
+                    recharge(context);
+                    break;
                 case "withdraw":   //客户提现
                     withdraw(context);
                     break;
                 case "user_bank_card_delete": //删除客户银行卡
                     user_bank_card_delete(context);
-                    break;
-                case "user_bank_card_show": //显示客户银行卡
-                    user_bank_card_show(context);
                     break;
                 case "bind_idcard": // 实名认证
                     bind_idcard(context);
@@ -321,7 +323,6 @@ namespace Agp2p.Web.tools
         {
             string code = DTRequest.GetFormString("txtVerifyCode").Trim();
             string invitecode = DTRequest.GetFormString("txtInviteCode").Trim();
-            string inviteNo = DTRequest.GetFormString("txtInviteNo").Trim();
             //string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
             string username = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string password = DTRequest.GetFormString("txtPassword").Trim();
@@ -473,12 +474,10 @@ namespace Agp2p.Web.tools
 
                 #region 邀请信息
                 //如果有邀请人手机或用户名、邀请码则记录邀请信息
-                if (!string.IsNullOrEmpty(inviteNo) || !string.IsNullOrEmpty(invitecode))
+                if (!string.IsNullOrWhiteSpace(invitecode))
                 {
-                    dt_users inviteUser = null;
-                    if (!string.IsNullOrEmpty(inviteNo))
-                        inviteUser = linqContext.dt_users.FirstOrDefault(u => u.user_name == inviteNo || u.mobile == inviteNo);
-                    else
+                    dt_users inviteUser = linqContext.dt_users.FirstOrDefault(u => u.user_name == invitecode || u.mobile == invitecode);
+                    if(inviteUser == null)
                     {
                         var invitecodeModel = linqContext.dt_user_code.FirstOrDefault(c => c.str_code == invitecode && c.type == DTEnums.CodeEnum.Register.ToString());
                         if (invitecodeModel != null)
@@ -2130,32 +2129,68 @@ namespace Agp2p.Web.tools
         {
             var linqContext = new Agp2pDataContext();
             var user = BasePage.GetUserInfoByLinq(linqContext);
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (user == null)
             {
-                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心设置交易密码", status = 0}));
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            if (string.IsNullOrWhiteSpace(user.real_name) || string.IsNullOrWhiteSpace(user.id_card_number))
+            if (string.IsNullOrEmpty(user.mobile))
             {
-                context.Response.Write(JsonConvert.SerializeObject(new {msg = "请先到安全中心进行实名认证", status = 0}));
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
             try
             {
-                var investingMoney = DTRequest.GetFormDecimal("investingAmount", 0);
+                var investingAmount = DTRequest.GetFormDecimal("investingAmount", 0);
                 var projectId = DTRequest.GetFormInt("projectId", 0);
-                var pw = DTRequest.GetFormString("transactPassword");
-                if (Utils.MD5(pw).Equals(user.pay_password))
-                {
-                    linqContext.Invest(user.id, projectId, investingMoney);
+                var buyClaimId = DTRequest.GetFormInt("buyClaimId", 0);
+                var projectSum = DTRequest.GetFormDecimal("projectSum", 0);
+                var projectDescription = DTRequest.GetFormString("projectDescription");
+                var huoqi = DTRequest.GetFormString("huoqi");
+                var backUrl = DTRequest.GetFormString("backUrl");
 
-                    /*if (DateTime.Now.Date <= new DateTime(2015, 7, 12) && proj.tag != (int)Agp2pEnums.ProjectTagEnum.Trial)
-                            context.Response.Write("{\"status\":3, \"msg\":\"<div style='height:50px; line-height:50px;'><font style='font-size:16px;'>投资成功！恭喜亲【" + user.user_name + "】您通过活动期间投资项目" + investingMoney + "元获得了" + investingMoney + "元的天标卷！<br>活动期间投多少返多少，天天秒标天天领奖券！</font></div>\"}");
-                        else*/
-                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "投资成功！", status = 1}));
+                if (buyClaimId != 0)
+                {
+                    //债权转让
+                    if (string.IsNullOrEmpty(backUrl))
+                    {
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                               (int) Agp2pEnums.SumapayApiEnum.CreAs
+                                               + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
+                                               investingAmount + "\"}");
+                    }
+                    else
+                    {
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                               (int)Agp2pEnums.SumapayApiEnum.CreAM
+                                               + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
+                                               investingAmount + "&backUrl = " + backUrl + "\"}");
+                    }
                 }
                 else
-                    context.Response.Write(JsonConvert.SerializeObject(new {msg = "交易密码错误！", status = 0}));
+                {
+                    if (string.IsNullOrEmpty(backUrl))
+                    {
+                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int)Agp2pEnums.SumapayApiEnum.MaBid;
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
+                                           + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
+                                           + "&projectSum=" + projectSum + "&projectDescription=" +
+                                           projectDescription + "\"}");
+                    }
+                    else
+                    {
+                        int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBiM : (int)Agp2pEnums.SumapayApiEnum.MaBiM;
+                        context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
+                                               + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" +
+                                               investingAmount + "&projectSum=" + projectSum + "&projectDescription=" +
+                                               projectDescription + "&backUrl = " + backUrl + "\"}");
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -2281,15 +2316,15 @@ namespace Agp2p.Web.tools
         }
 
         /// <summary>
-        /// 客户提现
+        /// 充值
         /// </summary>
         /// <param name="context"></param>
-        private void withdraw(HttpContext context)
-        {            
+        private void recharge(HttpContext context)
+        {
             var user = BasePage.GetUserInfoByLinq();
-            if (string.IsNullOrEmpty(user.pay_password))
+            if (user == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心设置交易密码！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
             if (string.IsNullOrEmpty(user.mobile))
@@ -2297,72 +2332,113 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
-            
-            try
-            {
-                var cardId = DTRequest.GetFormInt("cardId", 0);
-                var howmany = DTRequest.GetFormDecimal("howmany", 0);
-                var pw = DTRequest.GetFormString("transactPassword");
 
-                if (cardId <= 0)
+            var bankCode = DTRequest.GetFormString("bankCode");
+            var rechargeSum = DTRequest.GetFormString("rechargeSum");
+            var quickPayment = bool.Parse(DTRequest.GetFormString("quickPayment"));
+            var backUrl = DTRequest.GetFormString("backUrl");
+            if (string.IsNullOrWhiteSpace(rechargeSum))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
+            }
+            if (!quickPayment)
+            {
+                if (string.IsNullOrWhiteSpace(bankCode))
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
                     return;
                 }
-                if (howmany <= 0)
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
-                    return;
-                }
-                if (string.IsNullOrEmpty(pw))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"请输入交易密码！\"}");
-                    return;
-                }
-                if (!Utils.MD5(pw).Equals(user.pay_password))
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"交易密码错误！\"}");
-                    return;
-                }
-                    
-                new Agp2pDataContext().Withdraw(cardId, howmany);
-
-                //发送提现短信
-                //var smsModel = new sms_template().GetModel("user_withdraw_info");
-                //if (smsModel != null)
-                //{
-                //    try
-                //    {
-                //        //替换模板内容
-                //        //var siteConfig = new BLL.siteconfig().loadConfig();
-                //        var msgContent = smsModel.content;
-                //        msgContent = msgContent.Replace("{user_name}", user.user_name);
-                //        msgContent = msgContent.Replace("{date}", DateTime.Now.ToString("MM月dd日 HH:mm:ss"));
-                //        msgContent = msgContent.Replace("{amount}", howmany.ToString());
-
-                //        string errorMsg = string.Empty;
-                //        if (!SMSHelper.SendTemplateSms(user.mobile, msgContent, out errorMsg))
-                //        {
-                //            new BLL.manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + errorMsg + "（客户ID：" + user.user_name + "）");
-                //        }
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        new manager_log().Add(1, "admin", "WithDrawSms", "发送提现信息失败：" + e.Message + "（客户ID：" + user.user_name + "）");
-                //    }
-                //}
-
-                context.Response.Write("{\"status\":1, \"msg\":\"提现申请提交成功！\"}");                       
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "&bankCode=" +
+                                       bankCode + "\"}");
             }
-            catch (Exception e)
+            else
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"提现申请提交失败：" + e.Message + "\"}");
-            }                
+                //有返回地址参数的是移动端请求
+                if(string.IsNullOrEmpty(backUrl))
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "\"}");
+                else
+                    context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WhReM + "&userId=" + user.id + "&sum=" +
+                                       rechargeSum + "&backUrl=" + backUrl + "\"}");
+            }
+                
+        }
+
+        /// <summary>
+        /// 客户提现
+        /// </summary>
+        /// <param name="context"></param>
+        private void withdraw(HttpContext context)
+        {            
+            var user = BasePage.GetUserInfoByLinq();
+            if (user == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.mobile))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
+                return;
+            }
+            if (string.IsNullOrEmpty(user.identity_id))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
+                return;
+            }
+
+            var cardId = DTRequest.GetFormInt("cardId", 0);
+            var bankName = DTRequest.GetFormString("bankName");
+            var bankAccount = DTRequest.GetFormString("bankAccount");
+            var howmany = DTRequest.GetFormDecimal("howmany", 0);
+            var backUrl = DTRequest.GetFormString("backUrl");
+            // 提现 100 起步，5w 封顶
+            if (howmany < 100)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最低 100 元！\"}");
+                return;
+            }
+            if (howmany > 50000)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 50000 元！\"}");
+                return;
+            }
+            if (cardId <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
+                return;
+            }
+            if (howmany <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
+            }
+            //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
+            if (string.IsNullOrEmpty(backUrl))
+            {
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int) Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                       howmany + "&bankId=" +
+                                       cardId + "&bankName=" +
+                                       bankName + "&bankAccount=" +
+                                       bankAccount + "\"}");
+            }
+            else
+            {
+                context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WdraM + "&userId=" + user.id + "&sum=" +
+                                       howmany + "&bankId=" + cardId + "&backUrl=" + backUrl + "\"}");
+            }
         }
 
         /// <summary>
@@ -2404,40 +2480,6 @@ namespace Agp2p.Web.tools
             }
 
             context.Response.Write("{\"status\":1, \"msg\":\"删除银行卡成功！\"}");
-        }
-
-        /// <summary>
-        /// TODO 展示银行卡信息
-        /// </summary>
-        /// <param name="context"></param>
-        private void user_bank_card_show(HttpContext context)
-        {
-            try
-            {
-                int card_id = DTRequest.GetFormInt("cardId", 0);
-                var linqContext = new Agp2pDataContext();
-                var card = linqContext.li_bank_accounts.FirstOrDefault(b => b.id == card_id);
-                if (card == null)
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"查询银行卡信息失败！\"}");
-                    return;
-                }
-                context.Response.ContentType = "application/json";
-                var json = JsonConvert.SerializeObject(
-                    new
-                    {
-                        status = 1,
-                        cardNo = card.account,
-                        bankName = card.bank,
-                        opening_bank = card.opening_bank,
-                        location = card.location
-                    });
-                context.Response.Write(json);
-            }
-            catch (Exception ex)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"删除银行卡失败！银行卡有提现记录不允许删除。（" + ex.Message + "）\"}");
-            }            
         }
 
         /// <summary>
@@ -2550,29 +2592,50 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
+                if (6 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
+                {
+                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一年内已经进行过 6 次身份认证，不能再继续认证了。如有疑问，请联系客服"}));
+                    return;
+                }
+                if (3 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
+                {
+                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一天内已经进行过 3 次身份认证，请明日再试，并务必填写正确的认证信息"}));
+                    return;
+                }
+
+                //使用免费接口先核实有效的身份证
                 var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
                 var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
                 if (resultModel != null)
                 {
                     if (resultModel.Resultcode == "200")
                     {
-                        var user = licontext.dt_users.Single(u => u.id == model.id);
-                        user.real_name = truename;
-                        user.id_card_number = idcard;
-                        user.address = resultModel.Result.Area;
-                        user.sex = resultModel.Result.Sex;
-                        user.birthday = DateTime.Parse(resultModel.Result.Birthday);                        
+                        // 记录接口调用
+                        licontext.MarkEventOccurNotSave(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
                         licontext.SubmitChanges();
 
-                        context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
+                        //调用托管平台实名验证接口
+                        var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
+                        MessageBus.Main.Publish(msg);
+                        //处理实名验证返回结果
+                        var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
+                        MessageBus.Main.Publish(msgResp);
+                        if (msgResp.HasHandle)
+                        {
+                            context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
+                        }
+                        else
+                        {
+                            context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
+                        }
                     }
                     else
                         context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败！请输入正确的身份证号码\"}");
+                throw ex;
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿import React from "react";
 import { Link } from 'react-router';
 import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js";
-
 import StatusContainer from "../containers/user-status.jsx";
 import MyAccountPage from "../containers/myaccount.jsx";
+import confirm from "../components/tips_confirm.js";
 
 /**
  * Number.prototype.format(n, x)
@@ -31,11 +31,11 @@ class UserCenterPage extends React.Component {
 		this.state = {};
 	}
 	componentDidUpdate() {
-		$(".inner-ul li.nav-active").removeClass("nav-active");
-		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
+	    $(".inner-ul li.nav-active").removeClass("nav-active");
+	    $(".inner-ul li:has(> a.active-link)").addClass("nav-active");	
 	}
 	componentDidMount() {
-		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue} = $("#app").data();
+		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
 		var walletInfo = {
 			idleMoney : idleMoney.toNum(),
 			lockedMoney : lockedMoney.toNum(),
@@ -44,7 +44,12 @@ class UserCenterPage extends React.Component {
 			lotteriesValue : lotteriesValue.toNum()
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
-		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime }));
+		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));	
+		if (this.props.identityId == null){
+		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活托管账户。",() => {
+		        location.href="/api/payment/sumapay/index.aspx?api=3";
+		    });	
+		}	
 	}
 	render() {
 		return (
@@ -57,22 +62,24 @@ class UserCenterPage extends React.Component {
 			            	: Math.floor(this.props.totalMoney).format()}<span>&nbsp;元</span></p>
 			        </div>
 			        <ul className="list-unstyled outside-ul">
-			            <li><Link to="/myaccount" className={"account-link " + (!!this.props.children ? "" : "active")} activeClassName="active">账户总览</Link></li>
-			            <li><a className="funds">资金管理</a>
+			            <li><Link to="/myaccount" className={"account-link " + (!this.props.children ? "" : "active")} activeClassName="active">账户总览</Link></li>
+			            <li className="listing"><a className="funds">资金管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
-			                    <li><Link to="/mytrade" activeClassName="active-link">交易明细</Link></li>
+			                    <li><Link to="/mytransaction" activeClassName="active-link">交易明细</Link></li>
 			                    <li><Link to="/recharge" activeClassName="active-link">我要充值</Link></li>
 			                    <li><Link to="/withdraw" activeClassName="active-link">我要提现</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="investing">投资管理</a>
+			            <li className="listing"><a className="investing">投资管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/myinvest" activeClassName="active-link">我的投资</Link></li>
+			                    {/*<li><Link to="/current" activeClassName="active-link">安融活期</Link></li>
+			                    <li><Link to="/claims" activeClassName="active-link">债权转让</Link></li> */}
 			                    <li><Link to="/invest-record" activeClassName="active-link">投资记录</Link></li>
 			                    <li><Link to="/myrepayments" activeClassName="active-link">回款计划</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="account">账户管理</a>
+			            <li className="listing"><a className="account">账户管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 			                    <li><Link to="/safe" activeClassName="active-link">个人中心</Link></li>
 			                    <li><Link to="/bankaccount" activeClassName="active-link">银行账户</Link></li>
@@ -80,24 +87,41 @@ class UserCenterPage extends React.Component {
 			                    <li><Link to="/mylottery" activeClassName="active-link">我的奖券</Link></li>
 			                </ul>
 			            </li>
-			            <li><a className="news">消息管理</a>
+			            <li className="listing"><a className="news">消息管理<div></div></a>
 			                <ul className="list-unstyled inner-ul">
 								<li><Link to="/mynews" activeClassName="active-link">我的消息</Link></li>
 								<li><Link to="/settings" activeClassName="active-link">通知设置</Link></li>
 			                </ul>
 			            </li>
-			        </ul>
-			    </div>
-		        {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
-			</div>
-		);
-	}
-}
+								{!this.props.isLoaner ? null :
+                                  <li className="listing"><a className="myloan">借款管理<div></div></a>
+                                      <ul className="list-unstyled inner-ul">
+                                          <li><Link to="/myloan" activeClassName="active-link">我的借款</Link></li>
+                                      </ul>
+                                  </li> }
+                              </ul>
+					  
+                        <div className="hot-act">
+                            <div className="hot-title">热门活动</div>
+                            <div className="hot-img">
+                                <a href="https://www.agrhp2p.com/article/384.html" target="_blank"></a>                              
+                                <div>
+                                    劳动小当家 
+                                </div>
+                            </div>
+                        </div>
+                </div>
+								    {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
+                                </div>
+                            );
+								    }
+								}
 
 function mapStateToProps(state) {
 	var walletInfo = state.walletInfo;
 	return {
-		totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney
+	    totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney,
+        isLoaner: state.userInfo.isLoaner
 	};
 }
 

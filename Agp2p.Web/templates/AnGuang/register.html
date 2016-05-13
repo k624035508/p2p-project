@@ -13,32 +13,107 @@
     <script src="<%templateskin%>/build/register.bundle.js"></script>
 </head>
 <body>
-<!--head-->
-<%template src="_header.html"%>
-<!--head end-->
+    <!--head-->
+    <%template src="_header.html"%>
+    <!--head end-->
+    <!--register box-->
 
-<!--register box-->
-<div class="content-wrap register-box" data-need-sms-verify='<%=uconfig.regstatus==2?"true":"false"%>'>
-    <div class="register-right pull-right"></div>
-    <div class="register-left">
-        <div class="title-tips">免费注册 <span class="pull-right">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a></span></div>
-        <div class="form-box"><label for="account">手机号码 ：</label><input id="account" class="input-l" type="text"/><span class="status"></span></div>
-        <div class="form-box"><label for="psw">登录密码 ：</label><input id="psw" class="input-l" type="password"/><span class="status psw-tips">请输入6~16位密码</span></div>
-        <div class="form-box"><label for="psw2">确认密码 ：</label><input id="psw2" class="input-l" type="password"/><span class="status"></span></div>
-        <div class="form-box"><label for="pic-code">验证码 ：</label><input id="pic-code" class="input-s" type="text"/><span class="pic-code-wrap"><img src="/tools/verify_code.ashx"/></span><span class="status"></span></div>
-        <%if(uconfig.regstatus==2)%>
-        <div class="form-box"><label for="sms-code">短信验证码 ：</label><input id="sms-code" class="input-s" type="text"/><button id="get-sms-btn" type="button">获取验证码</button><span class="status"></span></div>
-        <%/if%>
-        <div class="form-box"><label for="recommended">推荐人号码 ：</label><input id="recommended" class="input-l" type="text"/></div>
-        <div class="agreement"><input type="checkbox" id="agreement"/> <label for="agreement">我已经阅读并同意</label> <a href="<%templateskin%>/register-agreement.html" target="_blank">《注册协议》</a></div>
-        <div class="register-btn"><button id="registerBtn" type="button">注 册</button></div>
+    <div class="content-wrap register-icon">
+        <div class="ul-wrap">
+            <ul class="list-unstyled list-inline steps-list">
+                <li class="step1"></li>
+                <li class="hr"></li>
+                <li class="step2"></li>
+                <li class="hr"></li>
+                <li class="step3"></li>
+            </ul>
+        </div>
+        <div class="steps-tips">
+            <span class="tips1 tips-red">验证手机</span>
+            <span class="tips2">实名认证</span>
+            <span class="tips3">完成</span>
+        </div>
     </div>
-    <div class="dividing-hr"></div>
-</div>
-<!--register box end-->
+    <div class="content-wrap register-box" data-need-sms-verify='<%=uconfig.regstatus==2?"true":"false"%>'>
 
-<!--footer-->
-<%template src="_footerSmall.html"%>
-<!--footer end-->
+        <div class="register-right pull-right">
+            <div class="left-icon"></div>
+            <div class="img-show">
+                <div class="register-img ">
+                    <div class="register-bkg"></div>
+                    <p>技术保障</p>
+                    <!--<div>3000万风险备用金</div>
+                    <div>本金收益多重保障</div>-->
+                    <div>卓越IT技术，保障资金安全</div>
+                </div>
+                <div class="register-img">
+                    <div class="register-bkg2"></div>
+                    <p>第三方账户资金托管</p>
+                    <!--<div>南粤银行资金托管</div>-->
+                    <div>第三方支付平台监管</div>
+                </div>
+                <div class="register-img">
+                    <div class="register-bkg3"></div>
+                    <p>完善的风控措施</p>
+                    <div>专业的调查团队和严格的信贷政策</div>
+                    <div>对融资项目进行全方位实地尽职调查</div>
+                </div>
+            </div>
+            <div class="right-icon"></div>
+        </div>
+       <div> 
+        <div class="register-left">
+            <div class="title-tips"><span class="register-msg">免费注册</span> <span class="pull-right">已有账号？ <a href='<%linkurl("login")%>'>立即登录</a> </span></div>
+            <div class="form-box"><input id="account" class="input-l" type="text" placeholder="请输入手机号码" /><span class="status"></span></div>
+            <div class="form-box"><input id="psw" class="input-l" type="password" placeholder="请输入登录密码" /><span class="status psw-tips"></span></div>
+            <div class="form-box"><input id="psw2" class="input-l" type="password" placeholder="请再次输入登录密码" /><span class="status"></span></div>
+            <div class="form-box"><input id="pic-code" class="input-s" type="text" placeholder="请输入验证码" /><span class="pic-code-wrap"><img src="/tools/verify_code.ashx" /></span><span class="status"></span></div>
+            <%if(uconfig.regstatus==2)%>
+            <div class="form-box"><input id="sms-code" class="input-s" type="text" placeholder="请输入短信验证码" /><button id="get-sms-btn" type="button">获取验证码</button><span class="status"></span></div>
+            <%/if%>
+            <div class="form-box invited "><span></span>推荐人手机码（选填）</div>
+            <div class="form-box invite2 "><input id="recommended" class="input-l" type="text" placeholder="推荐人号码" /></div>
+            <div class="agreement "><input type="checkbox" id="agreement" /> <label for="agreement">我已经阅读并同意</label> <a href="<%templateskin%>/register-agreement.html" target="_blank">《注册协议》</a></div>
+            <div class="register-btn "><button id="registerBtn" type="button">注 册</button></div>
+        </div>
+
+        <div class="register-left hidden">
+            <div class="title-tips"><span class="register-msg">实名认证</span> <span class="pull-right"><a href='<%linkurl("usercenter","index")%>#'>跳过此步</a> </span></div>
+            <div class="form-box"><input id="realname" class="input-l" type="text" placeholder="请输入真实姓名" /><span class="status"></span></div>
+            <div class="form-box"><input id="identify" class="input-l" type="text" placeholder="请输入身份证号码" /><span class="status"></span></div>
+            <div class="register-btn"><button id="realNameAuthBtn" type="button">实名认证</button></div>                 
+            <div class="warm-tips"><span>温馨提示</span></div>
+            <p>1.安广融合不会在任何地方泄漏您的信息。</p>
+            <p>2.每天实名认证不能超过3次，一年不能超过6次，请认真核对信息。</p>
+        </div>
+           <div class="register-left hidden">
+               <div class="title-tips"><span class="register-msg">托管账户开通</span> <span class="pull-right"><a href='<%linkurl("usercenter","index")%>#'>跳过此步</a> </span></div>
+               <div class="form-box" style="margin-top: 40px;">实名验证成功，请开通第三方托管账户：</div>
+               <div class="register-btn "><a id="tuoguanBtn" href="/api/payment/sumapay/index.aspx?api=1" target="_blank">开通托管账户</a>
+               </div>
+               <div class="warm-tips"><span>温馨提示</span></div>
+               <p>1.为了保障您的资金安全，请开通第三方托管账户。</p>
+           </div>     
+        <div class="register-left hidden">
+            <div class="form-box" style="margin-top:80px;">第三方托管开户成功</div>
+            <div class="register-btn "><a  href="/">返回首页</a></div>
+            <div class="register-btn "><a  href='<%linkurl("projects")%>'>开始投资</a></div>
+        </div>  
+           <div class="register-left hidden">
+               <div class="form-box" style="margin-top:80px;">第三方托管开户失败</div>
+           </div> 
+           </div>       
+    </div>
+  <!--ajax图片加载  <div class="nameLoading content-wrap"></div>  -->
+    <!--register box end-->
+
+<div id="step"
+     data-step="<%=action%>"
+     data-result="<%=result%>">
+    </div>
+
+    <!--footer-->
+    <%template src="_footerSmall.html"%>
+    <!--footer end-->
 </body>
 </html>

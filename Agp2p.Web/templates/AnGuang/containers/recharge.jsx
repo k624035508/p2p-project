@@ -39,8 +39,30 @@ class RechargePage extends React.Component {
 			alert("请输入正确的金额");
 			ev.preventDefault();
 			return;
-		}
-		$("#waitforPaymentDialog").modal('show');
+		}		
+
+		$.ajax({
+            type: "post",
+            url: "/tools/submit_ajax.ashx?action=recharge",
+            dataType: "json",
+            data: {
+                rechargeSum: this.state.chargingAmount,
+                bankCode: this.state.selectedBankId,
+                quickPayment: this.state.selectedBankId == "NOCARD"
+            },
+            success: function(data){
+                if(data.status == "0"){
+                    alert(data.msg)
+                }else{
+                    //$("#waitforPaymentDialog").modal('show');
+                    //跳转到托管充值地址
+                    location.href = data.url;
+                }
+            },
+            error: function(xhr, status, err){
+                alert("操作超时，请重试。");
+            }
+        }); 
 	}
 	render() { //我要充值 内容
 		let quickPayment = this.state.selectedBankId == "NOCARD";
@@ -58,7 +80,7 @@ class RechargePage extends React.Component {
 						return (
 							<li id={classMapping[k]} key={classMapping[k]} onClick={ev => this.setState({selectedBankId: classMapping[k]})}>
 							{this.state.selectedBankId == classMapping[k]
-								? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected.png"} />
+								? <img src={TEMPLATE_PATH + "/imgs/usercenter/recharge-icons/selected2.png"} />
 								: null}
 							</li>);
 					})}
@@ -69,14 +91,14 @@ class RechargePage extends React.Component {
 				    <input type="text" value={this.state.chargingAmount} onChange={ev => this.setState({chargingAmount: ev.target.value})}/>
 				</div>
 				<div className="rechargeBtn">
-                <a target="_blank"
-                	href={`/api/payment/ecpss/index.aspx?bankcode=${this.state.selectedBankId}&amount=${this.state.chargingAmount}`}
-                	onClick={ev => this.doCharge(ev)}>确认充值</a></div>
+                <a onClick={ev => this.doCharge(ev)}>确认充值</a></div>
 				<div className="warm-tips"><span>温馨提示</span></div>
 				<div className="rechargeTips">
-				    <p>1. 为保障账户及资金安全，请在充值前完成安全认证以及提现密码设置。</p>
-				    <p>2. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
-				    <p>3. 如果充值金额没有及时到账，请拨打客服电话：400-8878-200。</p>
+				    <p>1. 为了保障账户及资金安全，请在充值前在“个人中心”完成安全认证以及提现密码设置。</p>
+				    <p>2. 充值过程中请不要关闭浏览器，请您耐心等待；充值成功后金额将及时汇入您的账户中。</p>
+				    <p>3. 请注意您的银行卡充值限制，以免造成不便；每日的充值限额依据各银行限额为准。</p>
+                    <p>4. 本平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
+                    <p>5. 如果充值金额没有及时到账，请您拨打客服电话400-8878-200，或联系在线客服确认。</p>
 				</div>
 				<div className="modal fade" id="waitforPaymentDialog" tabIndex="-1" role="dialog" aria-labelledby="waitforPaymentDialogLabel"
 					data-backdrop="static" data-keyboard="false">

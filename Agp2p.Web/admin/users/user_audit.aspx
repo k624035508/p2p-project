@@ -33,6 +33,7 @@
       <ul class="icon-list">
         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
         <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="save" OnClientClick="return ExePostBack('btnAudit','审核通过后会员正常使用，是否继续？');" onclick="btnAudit_Click"><i></i><span>审核通过</span></asp:LinkButton></li>
+        <li><asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExePostBack('btnDelete');" onclick="btnDelete_Click"><i></i><span>删除</span></asp:LinkButton></li>
       </ul>
     </div>
     <div class="r-list">
@@ -49,11 +50,11 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
     <th width="8%">选择</th>
-    <th align="left" colspan="2">用户名</th>
-    <th align="left" width="12%">会员组</th>
-    <th align="left" width="12%">邮箱</th>
-    <th width="8%">积分</th>
-    <th width="8%">状态</th>
+    <th align="left" >用户名</th>
+    <th align="left" >申请时间</th>
+    <th align="left" >合作类型</th>
+    <th >手机号码</th>
+    <th >状态</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -62,25 +63,10 @@
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
-    <td width="64">
-      <a href="user_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>">
-        <%#Eval("avatar").ToString() != "" ? "<img width=\"64\" height=\"64\" src=\"" + Eval("avatar") + "\" />" : "<b class=\"user-avatar\"></b>"%>
-      </a>
-    </td>
-    <td>
-      <div class="user-box">
-        <h4><b><%#Eval("user_name")%></b> (昵称：<%#Eval("nick_name")%>)</h4>
-        <i>注册时间：<%#string.Format("{0:g}",Eval("reg_time"))%></i>
-        <span>
-          <a class="amount" href="amount_log.aspx?keywords=<%#Eval("user_name")%>" title="消费记录">余额</a>
-          <a class="point" href="point_log.aspx?keywords=<%#Eval("user_name")%>" title="积分记录">积分</a>
-          <a class="msg" href="message_list.aspx?keywords=<%#Eval("user_name")%>" title="消息记录">短消息</a>
-        </span>
-      </div>
-    </td>
-    <td><%#new Agp2p.BLL.user_groups().GetTitle(Convert.ToInt32(Eval("group_id")))%></td>
-    <td><%#Eval("email")%></td>
-    <td align="center"><%#Eval("point")%></td>
+    <td><%#Eval("user_name")%></td>
+    <td><%#string.Format("{0:g}",Eval("reg_time"))%></td>
+    <td><%#Eval("area")%></td>
+    <td align="center"><%#Eval("mobile")%></td>
     <td align="center"><%#GetUserStatus(Convert.ToInt32(Eval("status")))%></td>
   </tr>
 </ItemTemplate>

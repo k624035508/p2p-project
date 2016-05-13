@@ -32,6 +32,8 @@ $(function () {
         }
     });
 
+
+
     header.setHeaderHighlight(1);
 
    
@@ -49,17 +51,23 @@ $(function () {
         // 打开投资对话框
         var $investBtn = $("button.investing-btn");
         var projectId = $investBtn.data()["projectId"];
+        var buyClaimId = $investBtn.data()["buyClaimId"];
+        var projectSum = $investBtn.data()["projectSum"];
+        var projectDescription = $investBtn.data()["projectDescription"];
+        var huoqi  = $investBtn.data()["projectHuoqi"];
+
+
         $investBtn.click(function () {
             var investBtnData = $investBtn.data();
-            var hasPayPassword = investBtnData["hasPayPassword"] == "True";
             var hasIdentification = investBtnData["hasIdentification"] == "True";
+            /*var hasPayPassword = investBtnData["hasPayPassword"] == "True";
             if (!hasPayPassword) {
                 confirm("您需要先设置交易密码，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
                     location.href = link;
                 });
                 return;
-            }
+            }*/
             if (!hasIdentification) {
                 confirm("您需要先进行身份认证，是否现在转到‘安全中心’？", () => {
                     var link = $("#link-recharge").attr("href").replace("#/recharge", "#/safe");
@@ -73,11 +81,11 @@ $(function () {
                 alert("对不起，最少100元起投！");
                 return;
             }
-            if (investAmount != ~~investAmount) {
+            if (buyClaimId === 0 && investAmount != ~~investAmount) {
                 alert("对不起，请输入整数金额！");
                 return;
             }
-            if (parseFloat($(this).data()["idleMoney"]) < investAmount) {
+            if (parseFloat(investBtnData["idleMoney"]) < investAmount) {
                 alert("余额不足，请先充值！");
                 return;
             }
@@ -88,7 +96,10 @@ $(function () {
                 $("span.profit").text("10 元");
             } else {
                 // 计算预期收益
-                var profit = parseFloat($(this).data()["profitRate"]) * investAmount;
+                var totalInterest = parseFloat(investBtnData["totalInterest"]);
+                var financingAmount = parseFloat(investBtnData["financingAmount"]);
+
+                var profit = totalInterest * investAmount / financingAmount;
                 $("span.profit").text(profit.toFixed(2) + " 元");
             }
 
@@ -102,11 +113,11 @@ $(function () {
 
         // 进行投资操作
         $("button.confirm-btn").click(function () {
-        	var transactPassword = $("div.pswInput input[type=password]").val();
+        	/*var transactPassword = $("div.pswInput input[type=password]").val();
         	if (transactPassword == "") {
         		alert("请先填写支付密码");
         		return;
-        	}
+        	}*/
         	if (!$("div.agreement input[type=checkbox]")[0].checked) {
         		alert("请先同意投资协议");
         		return;
@@ -116,14 +127,14 @@ $(function () {
         		type: "post",
         		dataType: "json",
         		url: "/tools/submit_ajax.ashx?action=invest_project",
-        		data: {investingAmount: investAmount, projectId, transactPassword: transactPassword},
+        		data: {investingAmount: investAmount, projectId, buyClaimId, projectSum: projectSum, projectDescription: projectDescription,huoqi},
         		timeout: 10000,
         		success: function(result) {
-        			alert(result.msg, () => {
-                        if (result.status == 1) {
-                            location.reload();
-                        }
-                    });
+        		    if (result.status == 0) {
+		                alert(result.msg);
+		            } else {
+        		        location.href = result.url;
+		            }
         		}.bind(this),
         		error: function(xhr, status, err) {
         			alert("操作失败，请重试");

@@ -73,6 +73,7 @@ namespace Agp2p.Model
         private string _sysencryptstring = "Agp2p";
 
         private string _systemTimerTriggerTime = "9:00:00";
+        private string _loanerRepayTime = "9:00:00";
         private int _enableAutoRepay = 0;
         private int _sendShortMsgAfterRepay = 1;
         private int _sendRepayAnnounceAfterRepay = 1;
@@ -536,6 +537,16 @@ namespace Agp2p.Model
             get { return _systemTimerTriggerTime; }
             set { _systemTimerTriggerTime = value; }
         }
+
+        /// <summary>
+        /// 定时器2触发时间
+        /// </summary>
+        public string loanerRepayTime
+        {
+            get { return _loanerRepayTime; }
+            set { _loanerRepayTime = value; }
+        }
+
         /// <summary>
         /// 是否自动发送放款通知短信
         /// </summary>

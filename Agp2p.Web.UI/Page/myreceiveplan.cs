@@ -58,18 +58,15 @@ namespace Agp2p.Web.UI.Page
         /// <returns></returns>
         public static List<MyRepayment> QueryProjectRepayments(dt_users user, Agp2pEnums.MyRepaymentQueryTypeEnum type, string startTime = "", string endTime = "")
         {
-            var investedProjectValueMap = user.li_project_transactions.Where(
-                tr =>
-                    tr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                    tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
-                .GroupBy(inv => inv.li_projects)
-                .ToDictionary(g => g.Key, g => g.Sum(tr => tr.principal));
+            var myRepayingProjects = user.li_claims.Where(c =>
+                        c.projectId == c.profitingProjectId && c.IsLeafClaim() &&
+                        c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToLookup(cg => cg.li_projects);
 
             Model.siteconfig config = new siteconfig().loadConfig();
 
-            var unsorted = investedProjectValueMap.Select(p =>
+            var unsorted = myRepayingProjects.Select(p =>
             {
-                var ratio = TransactionFacade.GetInvestRatio(p.Key)[user];
+                var ratio = p.Sum(c => c.principal)/p.Key.investment_amount;
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
                     .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
 
@@ -108,7 +105,7 @@ namespace Agp2p.Web.UI.Page
                     Id = p.Key.id,
                     Name = p.Key.title,
                     Link = linkurl(config, "project", p.Key.id),
-                    InvestValue = investedProjectValueMap[p.Key],
+                    InvestValue = p.Sum(c => c.principal),
                     ProfitRateYear = p.Key.GetProfitRateYearly(),
                     InvestCompleteTime = p.Key.invest_complete_time
                 };
@@ -139,66 +136,46 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
+
             var context = new Agp2pDataContext();
 
             var stat = (Agp2pEnums.MyInvestRadioBtnTypeEnum) projectStatus;
             // 查出投资过的项目
-            var investedProjects = context.li_project_transactions.Where(ptr =>
-                ptr.investor == userInfo.id && ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
-                ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success).AsEnumerable()
-                .Where(ptr =>
-                {
-                    if (ptr.li_projects.dt_article_category.call_index == "newbie")
-                    {
-                        if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
-                        {
-                            return false;
-                        }
-                        return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete && ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_at != null;
-                    }
-                    if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
-                    {
-                        return ptr.li_projects.status < (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
-                    }
-                    return stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete
-                        ? ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime
-                        : ptr.li_projects.status == (int) Agp2pEnums.ProjectStatusEnum.ProjectRepaying;
-                })
-                .GroupBy(ptr => ptr.li_projects).ToDictionary(g => g.Last().create_time, g => g.Key);
+            var query = context.li_claims.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any());
+            if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete)
+            {
+                query = query.Where(c => (int) Agp2pEnums.ClaimStatusEnum.Completed <= c.status);
+            }
+            else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying)
+            {
+                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed);
+            }
+            else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
+            {
+                query = query.Where(c => c.li_projects.make_loan_time == null);
+            }
 
-            var result = investedProjects
-                    .OrderByDescending(p => p.Key)
+            var groupBy = query.ToLookup(c => c.li_projects);
+            var projInvestments = groupBy.ToDictionary(g => g.Key, g => g.Sum(c => c.li_project_transactions_invest.principal));
+            var projInvestTime = groupBy.ToDictionary(g => g.Key, g => g.Max(c => c.createTime));
+
+            var result = projInvestments
+                    .OrderByDescending(p => projInvestTime[p.Key])
                     .Skip(pageSize * pageIndex)
                     .Take(pageSize)
-                    .Select(p =>
+                    .Select(p => new
                     {
-                        decimal investedValue;
-                        int? ticketId = null;
-                        if (investedProjects.ContainsKey(p.Key))
-                        {
-                            investedValue = QueryInvestAmount(investedProjects[p.Key], userInfo.id);
-                        }
-                        else
-                        {
-                            var atr = context.li_wallet_histories.Single(h => h.create_time == p.Key && h.user_id == userInfo.id).li_activity_transactions;
-                            ticketId = atr.id;
-                            investedValue = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value");
-                        }
-                        return new
-                        {
-                            InvestTime = p.Key.ToString("yyyy-MM-dd HH:mm"),
-                            ProjectTitle = p.Value.title,
-                            InvestValue = investedValue.ToString("c"),
-                            ProjectId = p.Value.id,
-                            TicketId = ticketId
-                        };
+                        InvestTime = projInvestTime[p.Key].ToString("yyyy-MM-dd HH:mm"),
+                        ProjectName = p.Key.title,
+                        InvestValue = p.Value,
+                        ProjectId = p.Key.id
                     });
 
             return JsonConvert.SerializeObject(result);
         }
 
         [WebMethod]
-        public static string AjaxQueryProjectRepaymentDetail(short projectId, short? ticketId) // 微信端用到此 api
+        public static string AjaxQueryProjectRepaymentDetail(short projectId) // 微信端用到此 api
         {
             var context = new Agp2pDataContext();
             var userInfo = GetUserInfoByLinq(context);
@@ -208,58 +185,40 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            if (ticketId == null)
+
+            var project = context.li_projects.Single(p => p.id == projectId);
+            var investAmount = context.li_claims.Where(c =>
+                c.userId == userInfo.id && c.projectId == projectId &&
+                c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any())
+                .ToList()
+                .Aggregate(0m, (sum, c) => sum + c.li_project_transactions_invest.principal);
+
+            var claims = userInfo.li_claims.Where(c => c.profitingProjectId == projectId).ToList();
+            var investRatio = claims.Sum(c => c.principal) / project.investment_amount;
+
+            var profitAmount = project.dt_article_category.call_index == "newbie"
+                ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
+                : (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
+                    ? project.li_repayment_tasks.Sum(
+                        ta =>
+                            Math.Round(investRatio * ta.repay_principal, 2) +
+                            Math.Round(investRatio * ta.repay_interest, 2)).ToString("c") // 模拟放款累计
+                    : "(未满标)";
+            var result = new
             {
-                var project = context.li_projects.Single(p => p.id == projectId);
-                var investAmount = QueryInvestAmount(project, userInfo.id);
-                var investRatio = TransactionFacade.GetInvestRatio(project)[userInfo];
-                var profitAmount = project.dt_article_category.call_index == "newbie"
-                    ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
-                    : (int) Agp2pEnums.ProjectStatusEnum.Financing < project.status
-                        ? project.li_repayment_tasks.Sum(
-                            ta =>
-                                Math.Round(investRatio*ta.repay_principal, 2) +
-                                Math.Round(investRatio*ta.repay_interest, 2)).ToString("c") // 模拟放款累计
-                        : "(未满标)";
-                var result = new
+                Title = project.title,
+                ProfitingAmount = profitAmount,
+                ProfitRateYear = project.GetProfitRateYearly(),
+                InvestedValue = investAmount.ToString("c"),
+                TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new
                 {
-                    Title = project.title,
-                    ProfitingAmount = profitAmount,
-                    ProfitRateYear = project.GetProfitRateYearly(),
-                    InvestedValue = investAmount.ToString("c"),
-                    TermsData = project.li_repayment_tasks.Where(t => t.only_repay_to == null || t.only_repay_to == userInfo.id).Select(ta => new
-                    {
-                        RepayInterest = Math.Round(investRatio * ta.repay_interest, 2).ToString("c"),
-                        RepayPrincipal = Math.Round(investRatio * ta.repay_principal, 2).ToString("c"),
-                        ShouldRepayTime = ta.should_repay_time.ToString("yyyy-MM-dd"),
-                        RepayTotal = (Math.Round(investRatio * ta.repay_interest, 2) + Math.Round(investRatio * ta.repay_principal, 2)).ToString("c")
-                    })
-                };
-                return JsonConvert.SerializeObject(result);
-            }
-            else
-            {
-                var project = context.li_projects.Single(p => p.id == projectId);
-                var atr = context.li_activity_transactions.Single(tr => tr.id == ticketId);
-                var result = new
-                {
-                    Title = project.title,
-                    ProfitingAmount = atr.value.ToString("c"),
-                    ProfitRateYear = project.GetProfitRateYearly(),
-                    InvestedValue = ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("c"),
-                    TermsData = new[]
-                    {
-                        new
-                        {
-                            RepayInterest = atr.value.ToString("c"),
-                            RepayPrincipal = 0.ToString("c"),
-                            ShouldRepayTime = ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("RepayTime").ToString("yyyy-MM-dd"),
-                            RepayTotal = atr.value.ToString("c")
-                        }
-                    }
-                };
-                return JsonConvert.SerializeObject(result);
-            }
+                    RepayInterest = Math.Round(investRatio * ta.repay_interest, 2).ToString("c"),
+                    RepayPrincipal = Math.Round(investRatio * ta.repay_principal, 2).ToString("c"),
+                    ShouldRepayTime = ta.should_repay_time.ToString("yyyy-MM-dd"),
+                    RepayTotal = (Math.Round(investRatio * ta.repay_interest, 2) + Math.Round(investRatio * ta.repay_principal, 2)).ToString("c")
+                })
+            };
+            return JsonConvert.SerializeObject(result);
         }
     }
 }

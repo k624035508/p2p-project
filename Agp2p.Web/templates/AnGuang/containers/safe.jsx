@@ -137,7 +137,7 @@ class EmailBinding extends React.Component {
 					<span className="mail"></span>
 					<span className="list-th">邮箱认证</span>
 					<span className="list-tips">绑定邮箱，获取更多理财信息。</span>
-					<span className="pull-right"><a href="javascript:;" style={this.props.email ? null : {color: "red"}}
+					<span className="pull-right"><a href="javascript:;" 
 						onClick={ev => this.setState({bindingEmail: !this.state.bindingEmail})}>{this.props.email ? "重新绑定" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingEmail ? null :
@@ -205,7 +205,7 @@ class MobileBinding extends React.Component {
 					<span className="phone"></span>
 					<span className="list-th">手机认证</span>
 					<span className="list-tips">绑定手机，账户资金变动实时通知。</span>
-					<span className="pull-right"><a href="javascript:;" style={this.props.mobile ? null : {color: "red"}}
+					<span className="pull-right"><a href="javascript:;"
 						onClick={ev => this.setState({bindingMobile: !this.state.bindingMobile})}>{this.props.mobile ? "修改" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingMobile ? null :
@@ -281,12 +281,12 @@ class IdentityBinding extends React.Component {
 	}
 	render() {
 		return (
-			<li>
+			<li>    
 				<div className="list-cell">
 					<span className="name"></span>
 					<span className="list-th">实名认证</span>
 					<span className="list-tips">保障账户资金安全，请使用本人身份证，提现时银行卡开户名与姓名一致。</span>
-					<span className="pull-right"><a href="javascript:" style={this.props.realName ? null : {color: "red"}}
+					<span className="pull-right"><a href="javascript:" 
 						onClick={ev => this.setState({bindingIdCard: !this.state.bindingIdCard})}>{this.props.realName ? "查看" : "立即认证"}</a></span>
 				</div>
 				{!this.state.bindingIdCard ? null :
@@ -309,13 +309,38 @@ class IdentityBinding extends React.Component {
 								defaultValue={mask(this.props.idCardNumber)} disabled={this.props.idCardNumber} />
 						</div>
 						<div className="btn-wrap" style={this.props.realName ? {display: "none"} : null}><a href="javascript:"
-							onClick={ev => this.bindIdentity()}>提 交</a></div>
+							onClick={ev => this.bindIdentity()}>提 交</a></div>                        
 					</div>
+                    <div className="real-name-th"><span>温馨提示</span></div>
+                    <p className="warmTip-realName">为了保障您的信息安全，请务必认真填写个人信息，若信息填写错误达3次以上，您的账户将被系统自动锁定，请及时与客服联系，谢谢。</p>
 				</div>}
 			</li>
 		);
 	}
 }
+
+class CustodyAccount extends React.Component {
+	constructor(props) {
+		super(props);	
+            }
+	render() {
+		return (
+			<li>
+				<div className="list-cell">
+					<span className="custody"></span>
+					<span className="list-th">资金托管</span>
+					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方托管、监管</span>
+					<span className="pull-right">
+                    {this.props.identityId? 
+                    <a href={"/api/payment/sumapay/index.aspx?api=4"} target="_blank">查看</a> 
+                    :
+                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >设置</a>}
+                    </span>
+				</div>
+			</li>
+		);
+			}
+	}
 
 class ResetLoginPassword extends React.Component {
 	constructor(props) {
@@ -487,24 +512,40 @@ class SafeCenter extends React.Component {
 	}
 	render() {
 		return (
-			<div className="personal-info-content">
+			<div className="personal-info-content"  >
+                
 				<UserInfoEditor {...this.props} />
-				<div className="safe-center">
-					<div className="safe-center-th"><span>安全中心</span></div>
+	{!this.props.isLoaner ?
+       <div className="safe-center"> 
+                <div className="safe-center-th"><span>安全中心</span></div>
 					<div className="setting-list">
-						<ul className="list-unstyled">
-							<EmailBinding {...this.props} />
+						<ul className="list-unstyled">							
 							<MobileBinding {...this.props} />
 							<IdentityBinding {...this.props} />
+                            <CustodyAccount {...this.props} />
+                            <EmailBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
-							<ResetTransactPassword {...this.props} />
-						</ul>
+                    {/*<ResetTransactPassword {...this.props} />*/}
+                </ul>
 					</div>
-				</div>
+				   </div>
+     : <div className="safe-center-loaner" > 
+                <div className="safe-center-th"><span>安全中心</span></div>
+					<div className="setting-list">
+						<ul className="list-unstyled">							
+							<MobileBinding {...this.props} />
+							<IdentityBinding {...this.props} />
+                            <CustodyAccount {...this.props} />
+                            <EmailBinding {...this.props} />
+							<ResetLoginPassword {...this.props} />
+                {/*<ResetTransactPassword {...this.props} />*/}
+    </ul>
+					</div>
+				   </div>  }
 			</div>
 		);
-	}
-}
+					}
+                }
 
 function mapStateToProps(state) {
 	return state.userInfo;

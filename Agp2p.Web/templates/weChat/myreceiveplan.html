@@ -21,9 +21,9 @@
 
     <script type="text/html" id="repaying-project-fragment">
         @{ items.forEach(function(item, index, list){ }@
-        <div class="project-cell flex flex--align-items--center flex--flex-grow-first" data-projectId="@{=item.ProjectId}@" data-ticketId="@{=item.TicketId}@">
+        <div class="project-cell flex flex--align-items--center flex--flex-grow-first" data-projectId="@{=item.ProjectId}@">
             <div class="title-box">
-                <div class="receiveplan-title">@{=item.ProjectTitle}@</div>
+                <div class="receiveplan-title">@{=item.ProjectName}@</div>
                 <span style="color:#d9d9d9">@{=item.InvestTime}@</span>
             </div>
             <div class="amount-box">

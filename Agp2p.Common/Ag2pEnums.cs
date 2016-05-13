@@ -217,6 +217,12 @@ namespace Agp2p.Common
             Charge = 1,
             [Description("提现")]
             Withdraw = 2,
+
+            // 借款人相关
+            [Description("向借款人放款")]
+            LoanerMakeLoan = 10,
+            [Description("收取借款人还款")]
+            GainLoanerRepay = 11,
         }
 
         /// <summary>
@@ -287,13 +293,27 @@ namespace Agp2p.Common
         /// </summary>
         public enum ProjectTransactionTypeEnum
         {
-            // 线上（关联投资者）
+            // 投资者 相关
             [Description("投标")]
             Invest = 1,
             [Description("返还给投资者")]
             RepayToInvestor = 2,
             [Description("返还逾期罚息")]
             RepayOverdueFine = 3,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdraw = 4,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 5,
+            [Description("中间人收回垫付利息")]
+            AgentGainPaidInterest = 6,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 7,
+            [Description("自动续投")]
+            AutoInvest = 8,
+            [Description("债权转出")]
+            ClaimTransferredOut = 9,
+            [Description("债权买入")]
+            ClaimTransferredIn = 10,
         }
 
         /// <summary>
@@ -337,7 +357,7 @@ namespace Agp2p.Common
         {
             [Description("充值待确认")]
             Charging = 1,
-            [Description("提现待执行")]
+            [Description("提现")]
             Withdrawing = 2,
             [Description("充值成功")]
             ChargeConfirm = 3,
@@ -354,6 +374,8 @@ namespace Agp2p.Common
             InvestSuccess = 11,
             [Description("投资撤销")]
             InvestorRefund = 12,
+            [Description("活期推迟投资成功")]
+            DelayInvestSuccess = 13,
 
             [Description("利息收益")]
             RepaidInterest = 20,
@@ -363,6 +385,24 @@ namespace Agp2p.Common
             RepaidPrincipalAndInterest = 22,
             [Description("返还逾期罚息")]
             RepaidOverdueFine = 23,
+            [Description("活期项目提现")]
+            HuoqiProjectWithdrawSuccess = 24,
+            [Description("中间人垫付利息")]
+            AgentPaidInterest = 25,
+            [Description("中间人收回垫付利息")]
+            AgentGainPaidInterest = 26,
+            [Description("中间人收回活期债权")]
+            AgentRecaptureHuoqiClaims = 27,
+            [Description("自动续投")]
+            AutoInvest = 28,
+            [Description("债权转出")]
+            ClaimTransferredOut = 29,
+            [Description("债权买入")]
+            ClaimTransferredIn = 30,
+            [Description("债权买入成功")] /* 指的是定期债权 */
+            ClaimTransferredInSuccess = 31,
+            [Description("债权买入失败")] /* 指的是定期债权 */
+            ClaimTransferredInFail = 32,
 
             [Description("获得金钱待确认")]
             Gaining = 40,
@@ -376,6 +416,12 @@ namespace Agp2p.Common
             GainCancel = 44,
             [Description("取消扣取金钱")]
             LostCancel = 45,
+
+            // 借款人相关
+            [Description("向借款人放款成功")]
+            LoanerMakeLoanSuccess = 50,
+            [Description("收取借款人还款成功")]
+            LoanerRepaySuccess = 51,
         }
 
         public enum OfflineTransactionTypeEnum
@@ -387,6 +433,8 @@ namespace Agp2p.Common
             ManagementFeeOfOverTime = 11,
             [Description("风险保证金")]
             BondFee = 12,
+            [Description("债权转让管理费")]
+            StaticClaimTransfer = 13,
 
             // 支出
             [Description("充值手续费")]
@@ -426,7 +474,11 @@ namespace Agp2p.Common
             [Description("汇潮网银支付")]
             Ecpss = 4,
             [Description("汇潮快捷支付")]
-            EcpssQ = 5
+            EcpssQ = 5,
+            [Description("丰付网银支付")]
+            Sumapay = 6,
+            [Description("丰付一键支付")]
+            SumapayQ = 7,
         }
 
         /// <summary>
@@ -474,6 +526,25 @@ namespace Agp2p.Common
             OneToThreeMonth = 2,
             [Description("3-6个月")]
             ThreeToSixMonth = 3,
+        }
+
+        /// <summary>
+        /// 债权转让期限筛选枚举
+        /// </summary>
+        public enum ClaimsTermEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("1个月以内")]
+            LessThanOneMonth = 1,
+            [Description("1-3个月")]
+            OneToThreeMonth = 2,
+            [Description("4-6个月")]
+            FourToSixMonth = 3,
+            [Description("7-12个月")]
+            SevenToTwelveMonth = 4,
+            [Description("12个月以上")]
+            TwelveMonth = 5,
         }
 
         /// <summary>
@@ -646,40 +717,40 @@ namespace Agp2p.Common
         }
 
         /// <summary>
-        /// 汇潮支付银行代码枚举
+        /// 丰付支付银行代码枚举
         /// </summary>
-        public enum EcpssBankCodeEnum
+        public enum SumapayBankCodeEnum
         {
-            [Description("工商银行")]
-            ICBC = 1,
-            [Description("建设银行")]
-            CCB = 2,
-            [Description("农业银行")]
-            ABC = 3,
+            [Description("中国工商银行")]
+            icbc = 1,
+            [Description("中国建设银行")]
+            ccb = 2,
+            [Description("中国农业银行")]
+            abc = 3,
             [Description("招商银行")]
-            CMB = 4,
+            cmb = 4,
             [Description("交通银行")]
-            BOCOM = 5,
+            comm = 5,
             [Description("中国银行")]
-            BOCSH = 6,
-            [Description("光大银行")]
-            CEB = 7,
-            [Description("民生银行")]
-            CMBC = 8,
+            boc = 6,
+            [Description("中国光大银行")]
+            ceb = 7,
+            [Description("中国民生银行")]
+            cmsb = 8,
             [Description("兴业银行")]
-            CIB = 9,
+            cib = 9,
             [Description("中信银行")]
-            CNCB = 10,
+            cncb = 10,
             [Description("广发银行")]
-            GDB = 11,
+            cgb = 11,
             [Description("浦发银行")]
-            SPDB = 12,
+            spdb = 12,
             [Description("平安银行")]
-            PAB = 13,
+            pab = 13,
             [Description("华夏银行")]
-            HXB = 14,
-            [Description("中国邮政银行")]
-            PSBC = 15
+            hxb = 14,
+            [Description("中国邮政储蓄银行")]
+            psbc = 15
         }
 
         /// <summary>
@@ -711,16 +782,22 @@ namespace Agp2p.Common
 
         public enum ClaimStatusEnum
         {
-            [Description("失效")]
-            Invalid = 1,
-            [Description("不可转让")]
-            Nontransferable = 10,
-            [Description("可转让")]
-            Transferable = 11,
-            [Description("需要转让")]
-            NeedTransfer = 20,
+            [Description("未转让")]
+            Nontransferable = 1,
+            [Description("可转让")] /* 被中间人持有，可以被活期买入 */
+            Transferable = 2,
+            [Description("需要转让")] // 标记为提现中的债权
+            NeedTransfer = 3,
+            [Description("完成")]
+            Completed = 10,
+            [Description("已完成未回款")] // 提现 T + 1，债权在提现后被完成，则设置为这个状态（现在没有使用）
+            CompletedUnpaid = 11,
             [Description("已转让")]
-            Transferred = 30,
+            Transferred = 20,
+            [Description("已转让未回款")] // 提现 T + 1，债权在提现后被转让，则设置为这个状态
+            TransferredUnpaid = 21,
+            [Description("失效")] // 项目流标 / 投资退款 / 债权拆分（提现时发生，旧债权的本金不变，标记为失效，创建一个新的债权，债权编号不变）
+            Invalid = 30,
         }
 
         public enum LoanerStatusEnum
@@ -733,6 +810,135 @@ namespace Agp2p.Common
             PendingFail = 11,
             [Description("禁用")]
             Disable = 20
+        }
+
+        public enum SumapayRequestEnum
+        {
+            [Description("等待响应")]
+            Waiting = 1,
+            [Description("已失败")]
+            Fail = 2,
+            [Description("已完成")]
+            Complete = 3
+        }
+
+        public enum SumapayResponseEnum
+        {
+            [Description("已返回")]
+            Return = 1,
+            [Description("无效")]
+            Invalid = 2,
+            [Description("已完成")]
+            Complete = 3
+        }
+
+        public enum SumapayApiEnum
+        {
+            [Description("实名开户")] URegi = 1,
+            [Description("实名认证")] UAuth = 2,
+            [Description("用户激活")] Activ = 3,
+            [Description("账户管理")] Accou = 4,
+            [Description("自动投标续约")] AtBid = 5,
+            [Description("取消自动投标")] ClBid = 6,
+            [Description("开通存管账户自动还款")] AcReO = 7,
+            [Description("开通银行账户自动还款")] AbReO = 8,
+            [Description("关闭用户自动还款")] ClRep = 9,
+            [Description("网银充值")] WeRec = 10,
+            [Description("一键充值")] WhRec = 11,
+            [Description("投标普通项目")] MaBid = 12,
+            [Description("投标集合项目")] McBid = 13,
+            [Description("自动投标普通项目")] AmBid = 14,
+            [Description("自动投标集合项目")] AcBid = 15,
+            [Description("撤标普通项目")] CaPro = 16,
+            [Description("撤标集合项目")] CoPro = 17,
+            [Description("流标普通项目")] RePro = 18,
+            [Description("普通项目放款")] ALoan = 19,
+            [Description("集合项目放款")] CLoan = 20,
+            [Description("用户提现")] Wdraw = 21,
+            [Description("存管账户还款(普通项目)")] MaRep = 22,
+            [Description("存管账户还款(集合项目)")] McRep = 23,
+            [Description("银行账户还款(普通项目)")] BaRep = 24,
+            [Description("银行账户还款(集合项目)")] BcRep = 25,
+            [Description("自动还款(普通项目)")] AcRep = 26,
+            [Description("自动还款(集合项目)")] AbRep = 27,
+            [Description("本息到账(普通项目)")] RetPt = 28,
+            [Description("本息到账(集合项目)")] RetCo = 29,
+            [Description("债权转让")] CreAs = 30,
+            [Description("单笔付款至个人")] TranU = 31,
+            [Description("用户签约银行卡查询")] QuBan = 32,
+            [Description("商户项目查询")] QuPro = 33,
+
+            [Description("移动端实名开户")]
+            URegM = 101,
+            [Description("移动端账户管理")]
+            AccoM = 104,
+            [Description("移动端移动端充值")]
+            WhReM = 111,
+            [Description("移动端提现")]
+            WdraM = 121,
+            [Description("移动端投标普通项目")]
+            MaBiM = 112,
+            [Description("移动端投标集合项目")]
+            McBiM = 113,
+            [Description("移动端债权转让")]
+            CreAM = 130
+        }
+
+        public enum StaticClaimQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("可转让")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已转让")]
+            Transferred = 3,
+        }
+
+        public enum HuoqiClaimQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益中")]
+            Profiting = 1,
+            [Description("转让中")]
+            Transfering = 2,
+            [Description("已结束")]
+            Completed = 3,
+        }
+
+        public enum HuoqiTransactionQueryEnum
+        {
+            [Description("全部")]
+            All = 0,
+            [Description("收益")]
+            Profiting = 1,
+            [Description("买入")]
+            BuyIn = 2,
+            [Description("转出")]
+            TransferOut = 3,
+        }
+
+        public enum MyLoanQueryTypeEnum
+        {
+            [Description("申请中")]
+            Applying = 1,
+            [Description("借款中")]
+            Loaning = 2,
+            [Description("还款中")]
+            Repaying = 3,
+            [Description("已还款")]
+            Repaid = 4,
+        }
+
+        public enum EventRecordTypeEnum
+        {
+            [Description("身份证验证")]
+            IdcardChecking = 1,
+            [Description("借款人还款提醒")]
+            LoanerRepaymentRemind = 2,
+
         }
     }
 }

@@ -29,7 +29,9 @@ const initialState = {
 		address: "",
 		invitationCode: "",
 		hasTransactPassword: false,
-		groupName: ""
+		groupName: "",
+		isLoaner: false,
+	    identityId: ""
 	},
 	bankCards: [],
 }

@@ -1,11 +1,11 @@
-//个人中心
+/*safe.less(浼氬憳涓績涓汉涓績)*/
 @import "../less/common-style.less";
 @import "../less/usercenter-common-style.less";
 @safe: "../imgs/usercenter/safe";
 
 .personal-info-content {
 	width: 855px;
-	.submitBtn { //个人中心页面提交按钮样式
+	.submitBtn {
 		display: inline-block;
 		margin: 13px auto;
 		width: 135px;
@@ -27,6 +27,9 @@
 		.personal-info-th {
 			.th-red-style;
 			color: @red;
+            span{
+            border-bottom-color:@blue;
+            }
 			a {
 				padding: 3px 8px;
 				text-decoration: none;
@@ -79,12 +82,16 @@
 			a { .submitBtn; }
 		}
 	}
-	.safe-center {
-		min-height: 562px;
+	.safe-center , .safe-center-loaner {
+		min-height:632px;
 		margin-top: 25px;
 		padding: 15px 20px 56px 20px;
 		* { font-size: @font15; }
-		.safe-center-th { .th-red-style; }
+		.safe-center-th { .th-red-style; 
+                           span{
+            border-bottom-color:@blue;
+            }
+		}
 		.setting-list {
 			ul {
 				li {
@@ -99,10 +106,11 @@
 							margin-right: 40px;
 							background-position: center;
 						}
-						.mail { background: url("@{safe}/mail.png") no-repeat; }
-						.phone { background: url("@{safe}/phone.png") no-repeat; }
-						.name { background: url("@{safe}/name.png") no-repeat; }
-						.psw-login { background: url("@{safe}/psw-login.png") no-repeat; }
+						.mail { background: url("@{safe}/013.png") no-repeat; }
+						.phone { background: url("@{safe}/014.png") no-repeat; }
+						.name { background: url("@{safe}/015.png") no-repeat; }
+                        .custody{ background: url("@{safe}/018.png") no-repeat;}
+						.psw-login { background: url("@{safe}/016.png") no-repeat; }
 						.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
 						.list-th {
 							color: @dark-grey;
@@ -119,7 +127,6 @@
 						}
 					}
 
-					//设置弹窗
 					.setting-wrap {
 						.cancel {
 							line-height: 30px;
@@ -144,12 +151,12 @@
 						.settings {
 							padding: 25px 0;
 							text-align: center;
-							.label-style { //设置label样式
+							.label-style {
 								color: @dark-grey;
 								font-weight: normal;
 								margin-right: 10px;
 							}
-							.input-style { //设置input公共样式
+							.input-style {
 								height: 30px;
 								line-height: 28px;
 								padding-left: 10px;
@@ -223,6 +230,7 @@
 								}
 							}
 						}
+
 					}
 					#email-setting .settings .btn-wrap { padding-left: 10px !important; }
 					#phone-setting .settings .btn-wrap { padding-left: 35px !important; }
@@ -247,4 +255,16 @@
 			}
 		}
 	}
+     .safe-center-loaner{min-height:722px;}
+                             .real-name-th{.th-red-style; 
+                           span{
+            font-size:16px;
+            border-bottom-color:@blue;
+            }
+                        }
+                             .warmTip-realName{
+                                 height:48px; padding-top:17px; padding-left:24px; font-size:@font13;  color:@dark-grey;
+                             }
 }
+
+

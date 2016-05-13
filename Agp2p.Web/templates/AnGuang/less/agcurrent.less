@@ -1,0 +1,174 @@
+/*agcurrent.less（会员中心安广活期）*/
+@import "common-style";
+@usercenter: "../imgs/usercenter";
+
+.agCurrentPage {
+	width: 855px;
+
+	& > div {
+		width: 100%;
+		border: @border;
+		background: @white;
+	}
+
+	.top-wrapper {
+		height: 360px;
+		margin-bottom: 27px;
+		padding: 25px 20px 30px 20px;
+
+		.topic-icon {
+			position: absolute;
+			width: 50px;
+			height: 120px;
+			margin-top: -10px;
+			margin-left: 25px;
+			background: url("@{usercenter}/current-icon-bg.png");
+
+			span {
+				display: inline-block;
+				width: 20px;
+				margin-top: 13px;
+				margin-left: 10px;
+				color: @white;
+				font-size: @font18;
+				line-height: 20px;
+				text-align: center;
+			}
+		}
+
+		.profit-container {
+			height: 225px;
+			padding: 25px 40px 30px 115px;
+			background: #38aaf0;
+			text-align: center;
+			& * { color: @white; }
+
+			& > p { padding-right: 65px; }
+
+			.expected-profit-title {
+				font-size: @font20;
+				margin-bottom: 0;
+
+				.current-protocol {
+					position: absolute;
+					display: inline-block;
+					width: 120px;
+					height: 30px;
+					margin-left: 180px;
+					line-height: 29px;
+					font-size: @font15;
+					background: url("@{usercenter}/current-icon-border.png");
+				}
+			}
+
+			.expected-profit {
+				font-size: @font35;
+				padding-bottom: 19px;
+				border-bottom: 1px solid @white;
+
+				.profit-unit { font-size: @font15; }
+			}
+
+			.profit-db {
+				text-align: left;
+				margin-top: 26px;
+
+				li { width: 30%; }
+			}
+		}
+
+		.btn-container {
+			text-align: center;
+			padding: 30px 0;
+
+			button {
+				width: 130px;
+				height: 45px;
+				color: @white;
+				font-size: @font20;
+				border: none;
+				border-radius: 4px;
+			}
+
+			.btn-in {
+				background: @red;
+				margin-right: 20px;
+			}
+
+			.btn-out { background: @blue; }
+		}
+	}
+
+	.bottom-wrapper , .bottom-wrapper-loaner {
+
+		padding: 30px 20px;
+		text-align: center;
+        position:relative;
+		.select-bar {
+			#typeSel {
+				position: absolute;
+				margin-left: -322px;
+				width: 70px;
+				height: 35px;
+				border: @border;
+				padding-left: 8px;
+			}
+
+			a {
+				display: inline-block;
+				width: 85px;
+				height: 30px;
+				line-height: 30px;
+				color: @dark-grey;
+				font-size: @font15;
+				text-align: center;
+				text-decoration: none;
+				background: @body-color;
+			}
+
+			a:hover, a.active {
+				color: @white;
+				background: @blue;
+			}
+		}
+
+		.tb-container {
+			margin-top: 28px;
+			margin-bottom: 30px;
+			height: 325px;
+
+			table {
+				thead > tr > th { border-bottom: 2px solid @blue !important; }
+
+				tbody > tr {
+					&:hover { background: #f1f5ff; }
+
+					& > td {
+						padding: 10px 0;
+						border-bottom: 1px solid @blue !important;
+					}
+				}
+			}
+
+			.tradeRecord-tb {
+				text-align: left;
+
+				thead > tr > th, tbody > tr > td {
+					width: 33.33%;
+					padding-left: 70px !important;
+				}
+			}
+
+			.assetsDetail-tb  thead > tr > th { text-align: center; }
+		}
+        .nav{
+             position:absolute; bottom:0; left:0; width:100%;
+        }
+	}
+      .bottom-wrapper {
+    		height: 560px;
+            }
+    .bottom-wrapper-loaner {
+		height: 650px;
+        }
+}

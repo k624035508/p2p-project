@@ -65,10 +65,10 @@
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-second">
     <div class="invest-nav">
-        <a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
-        <%foreach(var kvp in CategoryIdTitleMap)%>
-        <a href='<%linkurl("projects",kvp.Key)%>' class='<%=kvp.Key==category_id?"nav-active nav-border-active":""%>'>{kvp.Value}<span class="divider">|</span></a>
-        <%/foreach%>
+        <!--<a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>-->
+        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>票据专区<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",claimsCategoryId)%>' class='<%=claimsCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",huoqiCategoryId)%>' class='<%=huoqiCategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a>
     </div>
     <div class="invest-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div id="pending"></div>

@@ -1,0 +1,170 @@
+/*claimstransfer.less（会员中心债权转让）*/
+@import "common-style";
+@images: "../imgs/register";
+
+.rc-tooltip {
+	z-index: 2000 !important;
+}
+#customDialog {
+	.modal-dialog {
+		width: 560px;
+		.modal-content {
+			.modal-header {
+				padding: 13px 31px;
+				h4 {
+					margin-left: 8px;
+					font-size: 16px;
+				}
+			}
+			.modal-body {
+				padding: 30px 15px 20px 15px;
+				.container {
+					width: 100%;
+					.row {
+						text-align: left;
+						padding-bottom: 13px;
+						& > div {
+							padding-left: 0px;
+						}
+						& > div:first-child {
+							text-align: right;
+						}
+						.rc-slider {
+							margin: 9px 0;
+						}
+						.span-desc {
+							padding: 0;
+							font-size: 12px;
+							line-height: 22px;
+						}
+						.warning {
+							color: #ff454f;
+						}
+						.pink {
+							color: #ff676f;
+						}
+					}
+				}
+			}
+			.modal-footer {
+				border-top: 1px solid #e5e5e5;
+				background-color: #fff;
+				.agreement-issue {
+					text-align: left;
+					padding-left: 38px;
+					color: #bfbfbf;
+					input[type=checkbox] {
+						-webkit-appearance: none;
+						width: 15px;
+						height: 15px;
+						border: @border;
+						border-radius: 0;
+						outline: none;
+						margin: 0px 10px 0 0;
+						vertical-align: -3px;
+						&:checked { background: url("@{images}/red-tick.png") no-repeat; };
+					}
+					label {
+						font-size: 12px;
+						margin-top: 10px;
+					}
+					.claimTransferAgreement {
+						color: #ff7077;
+					}
+				}
+				button {
+					margin: 20px 0 35px 0;
+					width: 88px;
+					height: 30px;
+				}
+				.confirm-btn {
+					margin-right: 30px;
+
+				}
+				.cancel-btn {
+					margin-right: 0px;
+				}
+			}
+		}
+	}
+}
+
+.claimsTransferPage {
+	width: 855px;
+    height:702px;
+	& > div {
+		width: 100%;
+		border: @border;
+		background: @white;
+	}
+
+	.top-wrapper {
+		height: 220px;
+		margin-bottom: 25px;
+		padding: 25px 20px;
+
+		.blue-container {
+			height: 100%;
+			padding: 21px 35px 30px 35px;
+			background: @blue;
+
+			* {
+				color: @white;
+				font-size: @font15;
+			}
+
+			.whatFor {
+				padding-bottom: 22px;
+				border-bottom: 1px solid;
+
+				& > a { text-decoration: none; }
+			}
+
+			.claims-db {
+				margin-top: 25px;
+
+				li { width: 25%; }
+			}
+		}
+	}
+
+	.bottom-wrapper , .bottom-wrapper-loaner {
+		padding: 25px;
+        height:702px;
+        position:relative;
+		ul {
+			float: none !important;
+			margin-top: 30px;
+			margin-left: 0;
+		}
+
+		.tb-container {
+			margin-top: 28px;
+			height: 407px;
+
+			table {
+				text-align: center;
+
+				thead > tr > th {
+					text-align: center;
+					border-bottom: 2px solid @blue !important;
+				}
+
+				tbody > tr {
+					&:hover { background: #f1f5ff; }
+
+					& > td {
+						padding: 10px 0;
+						border-bottom: 1px solid @blue !important;
+					}
+				}
+			}
+		}
+             .nav{
+             position:absolute; bottom:0; left:0; width:100%;          
+        }
+	}
+    .bottom-wrapper-loaner{
+         height:792px;
+         }
+}

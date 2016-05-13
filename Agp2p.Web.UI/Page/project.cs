@@ -20,7 +20,8 @@ namespace Agp2p.Web.UI.Page
     {
         Agp2pDataContext context = new Agp2pDataContext();
         protected int project_id;         //项目id
-        protected li_projects projectModel = new li_projects();//项目
+        protected li_projects projectModel;
+        protected Investable Investable;
         protected int invsetorCount = 0;//投资人数
         protected string investmentBalance = string.Empty;//剩余金额
         protected li_loaners loaner = new li_loaners();//借款人
@@ -31,9 +32,12 @@ namespace Agp2p.Web.UI.Page
         protected List<li_repayment_tasks> repayment_tasks = new List<li_repayment_tasks>();//还款计划
         protected decimal idle_money = 0;//客户可用余额
         protected bool has_email = false;
+        protected decimal projectSum;//项目总额
+        protected string projectDescription;//项目描述
 
         protected static readonly short PageSize = 20;
         protected int page;
+        protected int buyClaimId;
 
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
@@ -44,6 +48,7 @@ namespace Agp2p.Web.UI.Page
 
             project_id = DTRequest.GetQueryInt("project_id");
             page = Math.Max(1, DTRequest.GetQueryInt("page"));
+            buyClaimId = DTRequest.GetQueryInt("buyClaimId");
 
             if (project_id <= 0) return;
             projectModel = context.li_projects.FirstOrDefault(p => p.id == project_id);
@@ -52,6 +57,18 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
                 return;
             }
+            li_claims preBuyClaim = null;
+            if (buyClaimId != 0)
+            {
+                preBuyClaim = context.li_claims.SingleOrDefault(c => c.id == buyClaimId);
+                if (preBuyClaim == null)
+                {
+                    HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                    return;
+                }
+            }
+            Investable = new Investable {NeedTransferClaim = preBuyClaim, Project = projectModel};
+
             // 浏览次数 + 1
             projectModel.click += 1;
             context.SubmitChanges();
@@ -69,12 +86,28 @@ namespace Agp2p.Web.UI.Page
             mortgages = projectModel.li_risks.li_risk_mortgage.Select(rm => rm.li_mortgages).ToList();
 
             invsetorCount = projectModel.GetInvestedUserCount();
+            projectSum = projectModel.financing_amount;
+            projectDescription = projectModel.title;
 
             //还款计划
             repayment_tasks = projectModel.li_repayment_tasks
                 .Where(task => task.only_repay_to == null)
                 .OrderBy(rt => rt.should_repay_time)
                 .ToList();
+
+            if (Investable.NeedTransferClaim != null)
+            {
+                var ratio = Investable.NeedTransferClaim.principal/projectModel.financing_amount;
+                repayment_tasks = repayment_tasks.Select(src => new li_repayment_tasks
+                {
+                    repay_principal = Math.Round(src.repay_principal*ratio, 2),
+                    repay_interest = Investable.NeedTransferClaim.Parent.GetProfitingSectionDays(src,
+                            (claimBeforeProfitingDays, claimProfitingDays, claimInvalidDays) =>
+                                Math.Round(src.repay_interest*ratio*claimInvalidDays/(claimBeforeProfitingDays + claimProfitingDays + claimInvalidDays), 2)),
+                should_repay_time = src.should_repay_time,
+                term = src.term
+                }).ToList();
+            }
         }
 
         protected IEnumerable<li_albums> QueryAlbums()
@@ -134,6 +167,22 @@ namespace Agp2p.Web.UI.Page
         //投标记录
         protected List<ProjectTransactions> QueryProjectTransactions()
         {
+            if (Investable.NeedTransferClaim != null)
+            {
+                return Investable.NeedTransferClaim.li_project_transactions_profiting.Where(
+                    ptr =>
+                        ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.ClaimTransferredIn &&
+                        ptr.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Rollback)
+                    .Select(pt => new ProjectTransactions
+                    {
+                        id = pt.id,
+                        user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
+                        user_id = pt.dt_users.id,
+                        create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
+                        value = Investable.IsClaimTransferProject ? pt.principal.ToString("c2") : pt.principal.ToString("c0")
+                    }).ToList();
+            }
+
             project_transactions = projectModel.li_project_transactions
                 .Where(pt => pt.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest && pt.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success)
                 .OrderByDescending(pt => pt.create_time)
@@ -144,7 +193,7 @@ namespace Agp2p.Web.UI.Page
                     user_name = Utils.GetUserNameHidden(pt.dt_users.user_name),
                     user_id = pt.dt_users.id,
                     create_time = pt.create_time.ToString("yyyy-MM-dd HH:mm:ss"),
-                    value = pt.principal.ToString("c0")
+                    value = Investable.IsClaimTransferProject ? pt.principal.ToString("c2") : pt.principal.ToString("c0")
                 }).ToList();
             return project_transactions;
         }
@@ -211,6 +260,8 @@ namespace Agp2p.Web.UI.Page
 
         protected static string GetRemainTime(li_projects proj)
         {
+            if (proj.publish_time == null) return "";
+
             var deadlineDay = proj.publish_time.Value.AddDays(proj.financing_day);
 
             var match = new Regex(@"^(\d{1,2}):(\d{2}):(\d{2})$").Match(ConfigLoader.loadSiteConfig().systemTimerTriggerTime);

@@ -5,14 +5,19 @@
     <meta charset="UTF-8">
     <meta content="{projectModel.seo_keywords}" name="keywords" />
     <meta content="{projectModel.seo_description}" name="description" />
-    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? projectModel.title : projectModel.seo_title%></title>
+    <title><%=string.IsNullOrEmpty(projectModel.seo_title) ? Investable.Title : projectModel.seo_title%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script>
-        var finalProfitRate = <%=projectModel.GetFinalProfitRate(projectModel.publish_time.GetValueOrDefault(DateTime.Now).AddDays(projectModel.financing_day))%>;
+        var financingAmount = {Investable.FinancingAmount};
+        var totalInterest = {Investable.TotalInterest};
         var idleMoney = {idle_money};
-        var investProgress = <%=(projectModel.GetInvestmentProgressPercent()*100)%>;
+        var investProgress = <%=(Investable.InvestmentProgress*100)%>;
         var projectId = {projectModel.id};
-        var projectName = '{projectModel.title}';
+        var projectSum = {projectModel.financing_amount};
+        var huoqi = '{projectModel.IsHuoqiProject()}';
+        var projectName = '{Investable.Title}';
+        var buyClaimId = '{buyClaimId}';
+        var isUserLogin = "<%=IsUserLogin()%>" === "True";
     </script>
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/fullpage.bundle.js"></script>
@@ -41,31 +46,31 @@
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
             <div class="top-screen">
-                <div class="project-title"><span class="project-type">{projectModel.dt_article_category.title}</span><span>{projectModel.title}</span></div>
+                <div class="project-title"><span class="project-type">{Investable.CategoryName}</span><span>{Investable.Title}</span></div>
                 <div class="flex flex--align-items--center flex--column flex--justify-content--space-between">
                     <div class="indicatorContainer flex flex-center-wrapper"></div>
-                    <p class="amount-left">剩余金额{investmentBalance}</p>
+                    <p class="amount-left">剩余金额 {Investable.InvestmentBalance}</p>
                 </div>
             </div>
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">项目金额</span>
-                    <p><span class="data-style"><%=string.Format("{0:N0}", projectModel.financing_amount)%></span> 元</p>
+                    <p><span class="data-style"><%=Investable.FinancingAmountStr%></span> 元</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
-                    <%if(projectModel.dt_article_category.call_index=="newbie")%>
+                    <%if(projectModel.IsNewbieProject())%>
                     <span class="title-style">项目收益</span>
                     <p><span class="data-style">10</span>元</p>
                     <%else%>
                     <span class="title-style">年化收益</span>
-                    <p><span class="data-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%></span> %</p>
+                    <p><span class="data-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%></span> %</p>
                     <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
                 <span class="border-right flex flex--column flex-center-wrapper">
                     <span class="title-style">借款期限</span>
-                    <p><span class="data-style">{projectModel.repayment_term_span_count}</span> <%=Utils.GetAgp2pEnumDes((Agp2p.Common.Agp2pEnums.ProjectRepaymentTermSpanEnum)projectModel.repayment_term_span)%></p>
+                    <p><span class="data-style">{Investable.RepaymentTermSpanCount}</span> {Investable.ProjectTermSpanName}</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
                     <span class="title-style">还款方式</span>
@@ -80,9 +85,9 @@
                     <a href="<%linkurl("recharge")%>" class="charge-link">[充值]</a>
                 </div>
                 <div class="invest-action">
-                    <%if(projectModel.status<=(int)Agp2pEnums.ProjectStatusEnum.Financing)%>
+                    <%if(Investable.Status<=Agp2pEnums.ProjectStatusEnum.Financing)%>
                     <div class="investing">
-                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=projectModel.dt_article_category.call_index=="newbie"?"value='100' disabled":""%> >
+                        <input type="text" placeholder="请输入投资金额（不小于 100）" <%=Investable.FixInvestAmountString%> >
                         <button type="button" id="btnInvest">投 资</button>
                     </div>
                     <%else%>
@@ -95,7 +100,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <%if(projectModel.dt_article_category.call_index!="newbie")%>
+                <%if(!projectModel.IsNewbieProject()&&!projectModel.IsHuoqiProject()&&!Investable.IsClaimTransferProject)%>
                 <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <%/if%>
@@ -104,8 +109,14 @@
     </div>
     <div class="slide" data-anchor="details">
         <div class="project-detail-page inner-scrollable">
+            <%if(projectModel.IsNewbieProject())%>
             <%template src="_project_intro.html"%>
-            <%if(projectModel.dt_article_category.call_index!="newbie")%>
+            <%else if(projectModel.IsHuoqiProject())%>
+            <%template src="_project_intro.html"%>
+            <%else if(Investable.IsClaimTransferProject)%>
+            <%template src="_project_intro.html"%>
+            <%else%>
+            <%template src="_project_intro.html"%>
             <%template src="_loaner_info.html"%>
             <%template src="_ticket_info.html"%>
             <%template src="_ticket_intro.html"%>
@@ -159,14 +170,14 @@
             <div class="photos-box">
                 <%set var pics=QueryAlbums()%>
                 <%foreach(var picture in pics)%>
-                <div class="photo-cell">
-                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog">
+                <div class="photo-cell" >
+                    <img src="{picture.thumb_path}" data-origin-src="{picture.original_path}" data-toggle="modal" data-target="#photo-enlarge-dialog"> 
                 </div>
                 <%/foreach%>
                 <%if(!pics.Any())%>
-                <div class="loading-hint">
-                    <img src="<%templateskin%>/imgs/empty-box.png" style="width:30%;margin:70px auto 10px auto;"/>
-                    <p style="color:#ccc">目前没有照片记录</p>
+                <div class="loading-hint" >
+                    <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
+                    <p style="color: #ccc">目前没有照片记录</p>              
                 </div>
                 <%/if%>
             </div>
@@ -221,7 +232,11 @@
                                     <span id="dlgField_InvestAmount"></span>
                                 </li>
                                 <li>
+                                    <%if(!projectModel.IsHuoqiProject())%>
                                     <span>预计收益</span>
+                                    <%else%>
+                                    <span>预计每日收益</span>
+                                    <%/if%>
                                     <span id="dlgField_ProfitPredict"></span>
                                 </li>
                                 <li>
@@ -229,7 +244,7 @@
                                     <span id="dlgField_IdleMoney"></span>
                                 </li>                                
                             </ul>
-                            <input type="password" id="transactPwd" class="form-control" placeholder="请输入交易密码">
+                            <!--<input type="password" id="transactPwd" class="form-control" placeholder="请输入交易密码">-->
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.loaner
@@ -19,32 +20,45 @@ namespace Agp2p.Web.admin.loaner
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string _action = DTRequest.GetQueryString("action");
-            if (!string.IsNullOrEmpty(_action) && _action == DTEnums.ActionEnum.Edit.ToString())
+            ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.View.ToString()); //检查权限
+            action = DTRequest.GetQueryString("action");
+            if (!int.TryParse(Request.QueryString["id"], out id))
             {
-                action = DTEnums.ActionEnum.Edit.ToString();//修改类型
-                if (!int.TryParse(Request.QueryString["id"], out id))
-                {
-                    JscriptMsg("传输参数不正确！", "back", "Error");
-                    return;
-                }
-                var loaner = context.li_loaners.FirstOrDefault(q => q.id == id);
-                if (loaner == null)
-                {
-                    JscriptMsg("记录不存在或已被删除！", "back", "Error");
-                    return;
-                }
+                JscriptMsg("传输参数不正确！", "back", "Error");
+                return;
             }
-            else // Add
-            {
-                txtName.Enabled = true;
-            }
+
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.View.ToString()); //检查权限
-                if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
+                if (!string.IsNullOrEmpty(action) && (action == DTEnums.ActionEnum.Edit.ToString() || action == DTEnums.ActionEnum.Audit.ToString()))
                 {
+                    var loaner = context.li_loaners.FirstOrDefault(q => q.id == id);
+                    if (loaner == null)
+                    {
+                        JscriptMsg("记录不存在或已被删除！", "back", "Error");
+                        return;
+                    }
+
+                    if (action == DTEnums.ActionEnum.Audit.ToString())
+                    {
+                        rblStatus.Enabled = true;
+                        txtAge.Enabled = false;
+                        txtCencus.Enabled = false;
+                        txtJob.Enabled = false;
+                        txtWorkingAt.Enabled = false;
+                        txtWorkingUnit.Enabled = false;
+                        txtEducationalBackground.Enabled = false;
+                        rblMaritalStatus.Enabled = false;
+                        txtIncome.Enabled = false;
+                        txtLawsuit.Enabled = false;
+                        txtQuota.Enabled = false;
+                    }
+
                     ShowInfo(id);
+                }
+                else // Add
+                {
+                    txtName.Enabled = true;
                 }
             }
         }
@@ -203,7 +217,17 @@ namespace Agp2p.Web.admin.loaner
                     JscriptMsg("保存过程中发生错误！", "", "Error");
                     return;
                 }
-                JscriptMsg("修改借贷人信息成功！", "loaner_list.aspx", "Success");
+                JscriptMsg("修改借款人信息成功！", "loaner_list.aspx", "Success");
+            }
+            else if (action == DTEnums.ActionEnum.Audit.ToString()) //审核
+            {
+                ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.Audit.ToString()); //检查权限
+                if (!DoEdit(id))
+                {
+                    JscriptMsg("保存过程中发生错误！", "", "Error");
+                    return;
+                }
+                JscriptMsg("审核借款人信息成功！", "loaner_list.aspx", "Success");
             }
             else //添加
             {
@@ -213,7 +237,7 @@ namespace Agp2p.Web.admin.loaner
                     JscriptMsg("保存过程中发生错误！", "", "Error");
                     return;
                 }
-                JscriptMsg("添加借贷人信息成功！", "loaner_list.aspx", "Success");
+                JscriptMsg("添加借款人信息成功！", "loaner_list.aspx", "Success");
             }
         }
     }

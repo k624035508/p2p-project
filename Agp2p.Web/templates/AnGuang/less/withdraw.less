@@ -1,10 +1,10 @@
-//��Ҫ��������
+/*withdraw.less(会员中心我要提现)*/
 @import "../less/common-style.less";
 @import "../less/usercenter-common-style.less";
 @withdraw: "../imgs/usercenter/withdraw-icons";
 
 .withdraw {
-	height: 513px;
+	height: 420px;
 	& > div {
 		margin-bottom: 30px;
 		& > * { display: inline-block; }
@@ -19,11 +19,12 @@
 				vertical-align: top;
 				font-size: @font18;
 				font-weight: bolder;
+                font-style:normal;
 				color: @red;
 				margin-right: 8px;
 			}
 		}
-		input {
+		& > input {
 			width: 200px;
 			height: 40px;
 			line-height: 40px;
@@ -39,6 +40,7 @@
 	}
 	.withdrawBtn {
 		margin-left: 132px;
+        margin-top:35px;
 		margin-bottom: 0;
 		a {
 			display: inline-block;
@@ -77,8 +79,8 @@
 			.add-card {
 				text-align: center;
 				line-height: 50px;
-				color: @red;
-				background: url("@{withdraw}/add.png") no-repeat;
+				color: @blue;
+				background: url("@{withdraw}/add2.png") no-repeat;
 			}
 		}
 		#addCards {
@@ -95,5 +97,51 @@
 			}
 		}
 	}
+    .amount-withdraw{
+       color:@red; font-size:13px;width:820px; margin-bottom:12px;
+       span.withComp{color:#aaaaaa; margin-right:6px;}
+       input{ color:@dark-grey;}
+    }
+   .fees{
+      margin :0 0 5px 145px; font-size:@font13;
+      .fees-title{display:inline-block; width:163px; text-align:left; font-size:@font13;}
+      .fees-num{color:@red;}   
+      .fees-img2{display:inline-block; margin-left:11px; width:15px; height:15px; cursor:pointer;}
+   }
+     .fees-img{background:url("@{withdraw}/wenhao2.png") no-repeat 205px 2px;}
 }
-.bank-chose-tips { .th-grey-style; }
+.fees-tip{
+    position:absolute; z-index:-10; top:153px; left:223px;
+    width:318px; height:50px; font-size:13px; color:#e37003; background:#fffcef; border:1px solid #ffbb76; padding-left:8px; padding-top:3px; line-height:22px; 
+    em{
+            display:block; 
+    width:0; 
+    height:0; 
+    border-width:10px 10px 0 10px; 
+    border-style:solid; 
+    border-color:#ffbb76 transparent transparent  transparent; 
+    position:absolute; 
+    top:48px; 
+    left:50%;/* 三角形居中显示 */
+    margin-left:-10px;/* 三角形居中显示 */
+    i{
+    display:block; 
+    width:0; 
+    height:0; 
+    border-width:10px 10px 0 10px; 
+    border-style:solid; 
+    border-color:#fffcef transparent transparent transparent; 
+    position:absolute; 
+    top:-11px; 
+    left:-10px;
+    }
+    }
+    }
+
+.bank-chose-tips { .th-grey-style; 
+                   span{border-bottom-color:@blue;}
+}
+
+.recTipsOther{
+    padding-left:25px;
+}

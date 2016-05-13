@@ -20,7 +20,7 @@
             <div class="group">
                 <div class="email-approve">
                     <span>邮箱认证</span>
-                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <a class="toggle-btn" href="javascript:;"><%=string.IsNullOrWhiteSpace(userModel.email) ? "设置" : "修改"%></a>
                     <div class="fold">
                         <p><%=string.IsNullOrWhiteSpace(userModel.email) ? "（未设置）" : userModel.email%></p>
                         <input id="email" class="input-l" type="text" placeholder="请输入新邮箱">
@@ -34,7 +34,7 @@
             <div class="group">
                 <div class="phone-bind">
                     <span>绑定手机</span>
-                    <a class="toggle-btn" href="javascript:;">修改</a>
+                    <a class="toggle-btn" href="javascript:;"><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "设置" : "修改"%></a>
                     <div class="fold">
                         <p><%=string.IsNullOrWhiteSpace(userModel.mobile) ? "（未设置）" : userModel.mobile%></p>
                         <input id="phone" class="input-l" type="text" placeholder="请输入新的手机号码">
@@ -52,13 +52,24 @@
             <div class="group">
                 <div class="user-approve">
                     <span>实名认证</span>
-                    <a class="toggle-btn" href="javascript:;">设置</a>
+                    <a class="toggle-btn" href="javascript:;"><%=string.IsNullOrWhiteSpace(userModel.real_name) ? "设置" : "修改"%></a>
                     <div class="fold">
                         <input id="name" class="input-l" type="text" placeholder="请输入您的真实姓名" value="{userModel.real_name}">
                         <input id="ID" class="input-l" type="text" placeholder="请输入您的身份证号码" value="{userModel.id_card_number}">
                         <div class="tips"><span>*</span>&nbsp;实名认证是您平台账户操作的重要凭证，若因盗用他人信息注册认证导致您的账户资金无法提现，平台除锁定该账户外，必要时将依法提交至执法部门处理！</div>
                         <button type="button" class="button-l long-btn" id="btnBindIdCard">提 交</button>
                     </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="user-approve">
+                    <span>资金托管</span>
+                    <%if(string.IsNullOrWhiteSpace(userModel.identity_id))%>
+                    <a href="/api/payment/sumapay/index.aspx?api=101">开通</a>
+                    <%else%>
+                    <a href="/api/payment/sumapay/index.aspx?api=104">查看</a>
+                    <%/if%>
                 </div>
             </div>
 
@@ -76,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="group">
+            <!--<div class="group">
                 <div class="trade-pwd">
                     <span>交易密码</span>
                     <a class="toggle-btn" href="javascript:;">修改</a>
@@ -88,7 +99,7 @@
                         <button type="button" class="button-l long-btn">提 交</button>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
     <%template src="_footer.html"%>

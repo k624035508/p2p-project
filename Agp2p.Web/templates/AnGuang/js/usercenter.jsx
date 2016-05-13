@@ -28,6 +28,9 @@ import MyNewsPage from "../containers/mynews.jsx"
 import SettingsPage from "../containers/settings.jsx"
 import MyLotteryPage from "../containers/mylottery.jsx"
 import MyInvestPage from "../containers/myinvest.jsx"
+import AgCurrentPage from "../containers/agcurrent.jsx"
+import ClaimsTransferPage from "../containers/claimstransfer.jsx"
+import MyLoanPage from "../containers/myloan.jsx"
 
 import header from "./header.js"
 window['$'] = $;
@@ -46,7 +49,7 @@ $(function(){
 			<Router>
 				<Route path="/" component={UserCenterPage}>
 					<Route path="/status" component={StatusContainer}>
-						<Route path="/mytrade" component={MyTransaction}/>
+						<Route path="/mytransaction" component={MyTransaction}/>
 						<Route path="/recharge" component={RechargePage}/>
 						<Route path="/withdraw" component={WithdrawPage}/>
 						<Route path="/invest-record" component={InvestRecordPage}/>
@@ -58,12 +61,30 @@ $(function(){
 						<Route path="/settings" component={SettingsPage}/>
 						<Route path="/mylottery" component={MyLotteryPage}/>
 						<Route path="/myinvest" component={MyInvestPage}/>
+						<Route path="/myloan" component={MyLoanPage}/>
 					</Route>
 					<Route path="/safe" component={SafeCenterPage}/>
+					<Route path="/current" component={AgCurrentPage}/>
+					<Route path="/claims" component={ClaimsTransferPage}/>
 				</Route>
 			</Router>
 		</Provider>
 	), document.getElementById("app"));
 	
-	header.setHeaderHighlight(2);
+	header.setHeaderHighlight(3);
+	$("ul.inner-ul").hide();
+
+	$("ul.outside-ul>li.listing").click(function(){
+	    $(this).find("a").find("div").addClass("jian");
+	    $(this).siblings().find("a").find("div").removeClass("jian");
+	    $(this).find("ul.inner-ul").show(300);
+	    $(this).siblings().find("ul.inner-ul").hide(300);
+	});
+	
+	$(".fees-img2").hover(function(){
+	    $(".fees-tip").css("zIndex","10");
+	},function(){
+	    $(".fees-tip").css("zIndex","-10");
+	});
+	
 });

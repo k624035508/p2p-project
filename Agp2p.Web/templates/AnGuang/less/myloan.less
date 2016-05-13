@@ -1,0 +1,51 @@
+/*myloan.less（我的借款）*/
+@import "common-style";
+
+#typePicker {
+  float: left;
+  & > li {
+	width: 65px;
+	height: 35px;
+	line-height: 34px;
+	text-align: center;
+	border-top: @border;
+	border-right: @border;
+	border-bottom: @border;
+	cursor: pointer;
+	outline: none;
+  }
+  & li:first-child { border-left: @border; }
+  .active {
+	color: @white;
+	background: @blue;
+  }
+}
+.loan-tb {
+  margin-top: 30px;
+  th, td {
+	text-align: center;
+  }
+  th {
+	color: @darker-grey;
+	border-bottom: 2px solid @blue !important;
+  }
+  td {
+	height: 39px;
+	color: @dark-grey;
+	border-bottom: 1px solid @blue;
+  }
+  tbody tr{
+	&:hover { background: #f1f5ff; }
+	a {
+	  display: inline-block;
+	  vertical-align: top;
+	  max-width: 165px;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	  white-space: nowrap;
+	  text-decoration: none;
+	  color: @blue;
+      margin-left:8px;
+	}
+  }
+}

@@ -8,12 +8,10 @@ import alert from "../components/tips_alert.js";
 window['$'] = $;
 
 $(function(){
-    header.setHeaderHighlight(4);
 
     //.about-nav-bar position fixed
     $(window).scroll(function () {
         var scrollTop = $(window).scrollTop();
-        console.log(scrollTop);
         if (scrollTop >= 130) {
             $(".about-nav-bar").addClass("scroll-style");
         } else {
@@ -30,6 +28,14 @@ $(function(){
     $smallPic.click(function(){
         var picSrc = $(this).data("pic");
         $bigPic.attr("src", picSrc);
+    });
+
+    //公司网站备案点击放大
+    var $smallPic2 = $("#qualification .business-beian");
+    var $bigPic2 = $("#picModal .modal-body img");
+    $smallPic2.click(function(){
+        var picSrc2 = $(this).data("pic");
+        $bigPic2.attr("src", picSrc2);
     });
 
     //员工风采、办公环境照片墙点击放大浏览

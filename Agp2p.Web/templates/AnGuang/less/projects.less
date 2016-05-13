@@ -1,32 +1,152 @@
+/*projects.less(我要理财)*/
 @import "common-style";
+@projects: "../imgs/projects";
 
 body { background: @body-color; }
 
-.top-part {
-	& > div {
-		.inline-block;
-		height: 210px;
-		border: @border;
-		background: @white;
-	}
-	.select-box {
-		width: 775px;
-		* {
-			font-size: @font15;
-			color: @dark-grey;
-		}
+.consume{
+    height:50px;
+
+    ul{
+        padding:0;
+        li{
+            position:relative;
+            width:220px; height:50px;
+            list-style:none;
+            float:left;
+            background:@white;
+            color:#464646;
+            font-size:@font15;
+            border-left:1px solid @body-color;
+            text-align:center;
+            padding-top:16px;
+            cursor:pointer;
+            &:hover{ background:@blue; color:@white;
+                     p{background:@blue; color:@white; border-color:@white;}
+                      span{
+                position:absolute;
+               bottom:0; left:106px;
+                width:0;
+height:0;
+border-top:6px solid transparent;
+border-left:6px solid transparent;
+border-bottom:6px solid @body-color;
+border-right:6px solid transparent;
+            }
+            }
+            span{
+                position:absolute;
+               bottom:0; left:106px;
+                width:0;
+height:0;
+border-top:6px solid transparent;
+border-left:6px solid transparent;
+border-bottom:6px solid @white;
+border-right:6px solid transparent;
+            }
+            p{
+                display:inline-block;
+                width:28px; 
+                font-size:13px; line-height:17px;
+                color:#464646;
+                background:@white;
+                border:1px solid #464646;
+                border-radius:7px;
+                margin-left:9px;
+            }
+        }
+        li:first-child{
+            border-left:none;
+        }
+        .bluecon{
+               background:@blue;
+            color:@white;
+            p{
+                 color:@white;
+                background:@blue;
+                border-color: @white;
+            }
+             span{
+                position:absolute;
+               bottom:0; left:106px;
+                width:0;
+height:0;
+border-top:6px solid transparent;
+border-left:6px solid transparent;
+border-bottom:6px solid @body-color;
+border-right:6px solid transparent;
+            }
+        }
+    }
+}
+
+.ticket-head{
+    background:@white; height:60px;
+    margin-top:20px;
+    ul{
+        padding:0;
+        li{
+            width:220px;
+            float:left;
+            list-style:none;
+            div{
+                height:45px;
+                margin:8px 0 7px 0;
+                border-right:1px solid @body-color;
+                text-align:center;
+                p.ticket-first{
+                    margin-top:5px;
+                    font-size:@font15;
+                    color:@darker-grey;
+                    margin-bottom:3px;
+                    a{
+                        display:inline-block;
+                        width:45px; height:20px; margin-left:2px;
+                        border:1px solid #37aaf0; border-radius:4px;
+                        font-size:13px; color:#37aaf0;
+                        text-decoration:none; cursor:pointer;
+                    }
+                }
+                p.ticket-second{
+                    font-size:@font13;
+                    color:#aaaaaa;
+                }
+            }
+        }
+    }
+}
+
 		.project-time {
-			height: 50px;
-			line-height: 50px;
-			padding: 0 30px;
-			border-bottom: @border;
+            img{
+                margin-right:13px;
+            }
+            background:@body-color;
+            text-align:left;
+            padding-top:9px;
+			height:40px;
+			line-height: 40px;
+			border:none;
+            font-size:15px;
 			a {
 				color: @blue;
 				text-decoration: none;
 			}
 		}
+
+.top-part {
+	& > div {
+		.inline-block;
+		background: @white;
+	}
+	.select-box {
+		width: 780px; margin-top:20px; height:160px;
+		* {
+			font-size: @font15;
+			color: @dark-grey;
+		}
 		.type-select {
 			padding: 0 0 0 30px;
+
 			& > div {
 				margin: 23px 0;
 				& > * { .inline-block; }
@@ -39,11 +159,11 @@ body { background: @body-color; }
 							text-decoration: none;
 							padding: 2px 8px;
 							color: #000;
-                            &:hover{color:@red;}
+                            &:hover{color:@blue;}
 						}
 						.selected {
 							color: white;
-							background-color: @red;
+							background-color: @blue;
                             &:hover{color:white;}
 						}
                         
@@ -53,25 +173,14 @@ body { background: @body-color; }
 		}
 	}
 	.novice-guide {
-		width: 305px;
+		width: 300px; height:160px;
+        margin-top:20px;
 		* { font-size: @font15; }
-		.topic-title {
-			line-height: 50px;
-			padding-left: 30px;
-			margin-bottom: 0;
-			border-bottom: @border;
-			a {
-				color: @blue;
-				text-decoration: none;
-			}
-		}
 		.guide-list {
 			list-style-type: square;
-			color: @grey;
-			margin: 13px auto auto -10px;
+			color: @blue;
 			li {
-				line-height: 30px;
-                list-style:none;
+                margin-top:14px;
 				a {
 					.inline-block;
 					max-width: 260px;
@@ -79,6 +188,7 @@ body { background: @body-color; }
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					color: @dark-grey;
+                    font-size:@font13;
 					text-decoration: none;
                 &:hover{color:@red;}
 				}
@@ -89,7 +199,7 @@ body { background: @body-color; }
 }
 
 .invest-list {
-	margin-top: 20px !important;
+	margin-top: 30px !important;
 	.list-head {
 		padding: 0 30px;
 		background: #fff5ed;
@@ -105,7 +215,7 @@ body { background: @body-color; }
 		height: 50px;
 		background: @white;
 		margin-bottom: 5px;
-		padding: 12.5px 30px;
+		padding: 11px 30px;
 		&:hover { background: #f1f5ff; }
 		& > * { .inline-block; }
 		& > span { }
@@ -148,7 +258,6 @@ body { background: @body-color; }
 		}
 		.back-way { color: @dark-grey; }
 		.progress-wrap {
-
 			.progress-custom {
 				width: 125px;
 				height: 15px;
@@ -162,6 +271,9 @@ body { background: @body-color; }
 					background-color: #38aaf0 !important;
 				}
 			}
+            .caninvest{
+                font-size:13px; margin-top:3px; text-align:left;
+            }
 		}
 		.btn-wrap {
 			a {
@@ -247,6 +359,29 @@ body { background: @body-color; }
 	a { text-decoration: none; }
 	.current {
 		color: @white;
-		background: @red;
+		background: @blue;
 	}
 }
+
+.zhaiquan{
+    .empty-box{
+    min-height:490px;
+    }
+}
+
+.consumefin , .wentibao , .huoqibao{
+    margin:25px 0 30px 0;
+    text-align:center;
+    .content-wrap{
+        height:490px;
+        background:@white;
+    padding-top:137px;           
+        div{
+        font-size:20px;
+        text-align:center;
+        color:#464646;
+        padding-right:35px;
+        margin-top:15px;
+    }
+        }
+    }

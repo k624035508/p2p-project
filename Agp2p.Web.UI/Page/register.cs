@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 using Agp2p.Common;
 
 namespace Agp2p.Web.UI.Page
@@ -11,6 +8,7 @@ namespace Agp2p.Web.UI.Page
         protected string action = string.Empty;
         protected string username = string.Empty;
         protected string invite_code = string.Empty;
+        protected string result = string.Empty;
 
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
@@ -20,6 +18,7 @@ namespace Agp2p.Web.UI.Page
             action = DTRequest.GetQueryString("action");
             username = DTRequest.GetQueryString("username");
             invite_code = DTRequest.GetQueryString("invite_code");
+            result = DTRequest.GetQueryString("result");
             username = Utils.DropHTML(username);
             //检查是否关闭会员注册服务
             if (action == "" && uconfig.regstatus == 0)

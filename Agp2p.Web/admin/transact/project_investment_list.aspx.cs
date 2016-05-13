@@ -5,6 +5,8 @@ using System.Web.UI.WebControls;
 using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Core;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.transact
@@ -73,10 +75,25 @@ namespace Agp2p.Web.admin.transact
             try
             {
                 int projectTransactionId = Convert.ToInt32(((Button)sender).CommandArgument);
-                var bt = context.Refund(projectTransactionId);
-                var remark = "撤销投资成功, 涉及金额: " + bt.principal;
-                AddAdminLog(DTEnums.ActionEnum.Cancel.ToString(), remark); //记录日志
-                JscriptMsg(remark, Utils.CombUrlTxt("project_investment_list.aspx", "project_id={0}", project_id), "Success");
+                var proTran = context.li_project_transactions.SingleOrDefault(t => t.id == projectTransactionId);
+                if (proTran == null) throw new ArgumentNullException(nameof(proTran));
+                var msg = new WithDrawalReqMsg(proTran.project, proTran.li_projects.investment_amount.ToString("f"), proTran.no_order, proTran.principal.ToString("f"));
+                MessageBus.Main.Publish(msg);
+                var msgResp = BaseRespMsg.NewInstance<WithDrawalRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
+                {
+                    var remark = "撤销投资成功, 涉及金额: " + proTran.principal;
+                    AddAdminLog(DTEnums.ActionEnum.Cancel.ToString(), remark); //记录日志
+                    JscriptMsg(remark, Utils.CombUrlTxt("project_investment_list.aspx", "project_id={0}", project_id), "Success");
+                }
+                else
+                {
+                    JscriptMsg("撤销投资失败：" + msgResp.Remarks, "back", "Error");
+                }
+
+                var bt = context.Refund(projectTransactionId, DateTime.Now);
+                
             }
             catch (Exception ex)
             {

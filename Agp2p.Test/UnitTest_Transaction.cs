@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Transactions;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Agp2p.Test
 {
@@ -42,6 +44,7 @@ namespace Agp2p.Test
         }
 
         #region 附加测试特性
+
         //
         // 编写测试时，可以使用以下附加特性:
         //
@@ -61,26 +64,13 @@ namespace Agp2p.Test
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
         #endregion
 
         // 在运行每个测试之前，使用 TestInitialize 来运行代码
-        [TestInitialize]
-        public void MyTestInitialize()
+        [ClassInitialize]
+        public static void MyTestInitialize(TestContext testContext)
         {
-            // 创建测试用户
-            // 为其充值
-            // 充值确认
-            // 创建测试项目，设置期限、期数和还款类型
-
-        }
-
-        private static readonly string str = "server=192.168.5.98;uid=sa;pwd=Zxcvbnm,;database=agrh;";
-
-        private static string GetFriendlyUserName(dt_users user)
-        {
-            return string.IsNullOrWhiteSpace(user.real_name)
-                ? user.user_name
-                : string.Format("{0}({1})", user.user_name, user.real_name);
         }
 
         private static string GetUserPassword(dt_users user)
@@ -91,66 +81,13 @@ namespace Agp2p.Test
         [TestMethod]
         public void CleanAllProjectAndTransactionRecord()
         {
-            var context = new Agp2pDataContext(str);
-            var now = DateTime.Now;
-
-            context.li_projects.ForEach(p =>
-            {
-                context.li_repayment_tasks.DeleteAllOnSubmit(p.li_repayment_tasks);
-
-                p.li_project_transactions.ForEach(ptr =>
-                {
-                    context.li_invitations.DeleteAllOnSubmit(ptr.li_invitations);
-                    context.li_wallet_histories.DeleteAllOnSubmit(ptr.li_wallet_histories);
-                });
-                context.li_project_transactions.DeleteAllOnSubmit(p.li_project_transactions);
-            });
-            context.li_projects.DeleteAllOnSubmit(context.li_projects);
-
-            context.dt_users.ForEach(u =>
-            {
-                var wallet = u.li_wallets;
-                wallet.idle_money = 0;
-                wallet.investing_money = 0;
-                wallet.unused_money = 0;
-                wallet.locked_money = 0;
-                wallet.profiting_money = 0;
-                wallet.last_update_time = now;
-                wallet.total_charge = 0;
-                wallet.total_withdraw = 0;
-                wallet.total_investment = 0;
-                wallet.total_profit = 0;
-
-                u.li_bank_transactions.ForEach(chargeRecord =>
-                {
-                    context.li_wallet_histories.DeleteAllOnSubmit(chargeRecord.li_wallet_histories);
-                });
-                context.li_bank_transactions.DeleteAllOnSubmit(u.li_bank_transactions);
-
-                u.li_bank_accounts.ForEach(account =>
-                {
-                    account.li_bank_transactions.ForEach(withdrawRecord =>
-                    {
-                        context.li_wallet_histories.DeleteAllOnSubmit(withdrawRecord.li_wallet_histories);
-                    });
-                    context.li_bank_transactions.DeleteAllOnSubmit(account.li_bank_transactions);
-                });
-
-                u.li_activity_transactions.ForEach(atr =>
-                {
-                    context.li_wallet_histories.DeleteAllOnSubmit(atr.li_wallet_histories);
-                });
-                context.li_activity_transactions.DeleteAllOnSubmit(u.li_activity_transactions);
-            });
-
-            context.dt_manager_log.DeleteAllOnSubmit(context.dt_manager_log);
-            //context.SubmitChanges();
+            //Common.DoSimpleCleanUp(new DateTime(2015,1,1));
         }
 
         [TestMethod]
         public void RemoveTransactPassword()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var dtUsers = context.dt_users.Single(u => u.user_name == "13535656867");
             dtUsers.pay_password = null;
             context.SubmitChanges();
@@ -159,8 +96,8 @@ namespace Agp2p.Test
         [TestMethod]
         public void TestRepayNotice()
         {
-            var context = new Agp2pDataContext(str);
-            var rt =  context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
+            var context = new Agp2pDataContext();
+            var rt = context.li_repayment_tasks.OrderByDescending(t => t.id).Take(5).ToList();
             Core.AutoLogic.AutoRepay.SendRepayNotice(rt, context);
         }
 
@@ -181,23 +118,23 @@ namespace Agp2p.Test
 
 
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 13.626332m, 47.989636m, 9.596008m, 28.788024m }, 100, 0),
+                new List<decimal> {13.626332m, 47.989636m, 9.596008m, 28.788024m}, 100, 0),
                 new List<decimal> {14, 48, 9, 29});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 16.666m, 16.666m, 16.666m, 16.666m, 16.666m, 16.666m }, 100, 0),
-                new List<decimal> { 17, 17, 17, 17, 16, 16 });
+                new List<decimal> {16.666m, 16.666m, 16.666m, 16.666m, 16.666m, 16.666m}, 100, 0),
+                new List<decimal> {17, 17, 17, 17, 16, 16});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 33.333m, 33.333m, 33.333m }, 100, 0),
-                new List<decimal> { 34, 33, 33 });
+                new List<decimal> {33.333m, 33.333m, 33.333m}, 100, 0),
+                new List<decimal> {34, 33, 33});
             CollectionAssert.AreEqual(Utils.GetPerfectRounding(
-                new List<decimal> { 33.3m, 33.3m, 33.3m, 0.1m }, 100, 0),
-                new List<decimal> { 34, 33, 33, 0 });
+                new List<decimal> {33.3m, 33.3m, 33.3m, 0.1m}, 100, 0),
+                new List<decimal> {34, 33, 33, 0});
         }
 
         [TestMethod]
         public void FixRepaymentTaskByRepaidSum()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             int count = 0;
             context.li_repayment_tasks.Where(t => t.status >= (int) Agp2pEnums.RepaymentStatusEnum.ManualPaid)
                 .AsEnumerable()
@@ -210,7 +147,8 @@ namespace Agp2p.Test
                         if (task.repay_interest != sumOfRepaidInterest)
                         {
                             count++;
-                            Debug.WriteLine($"Fix project（{task.li_projects.title}） repayment task（{task.term}）, from {task.repay_interest} to {sumOfRepaidInterest}");
+                            Debug.WriteLine(
+                                $"Fix project（{task.li_projects.title}） repayment task（{task.term}）, from {task.repay_interest} to {sumOfRepaidInterest}");
                             task.repay_interest = sumOfRepaidInterest;
                         }
                     });
@@ -255,9 +193,9 @@ namespace Agp2p.Test
                 Debug.WriteLine(string.Format("修正 {0} 用户从 {1} 开始出现待收益偏差：{2}，影响历史记录 {3} 条",
                     his.dt_users.GetFriendlyUserName(), his.create_time, deltaProfiting, prefixHis.Count));
                 prefixHis.ForEach(h =>
-                    {
-                        h.profiting_money += deltaProfiting;
-                    });
+                {
+                    h.profiting_money += deltaProfiting;
+                });
             }
         }
 
@@ -274,7 +212,7 @@ namespace Agp2p.Test
                 修正 13612512742（陈茂强） 用户从 2016/1/26 16:25:53 开始出现待收益偏差：-0.01，影响历史记录 51 条
                 修正 13612512742（陈茂强） 用户从 2016/1/28 15:11:21 开始出现待收益偏差：0.01，影响历史记录 39 条
             */
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             var biasSources = context.li_wallet_histories.Where(h => new DateTime(2016, 1, 18) < h.create_time)
                 .Where(h => h.action_type == (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess).ToList();
 
@@ -286,7 +224,7 @@ namespace Agp2p.Test
         [TestMethod]
         public void FixNewbieProjectMissGenerateRepaymentTask()
         {
-            var context = new Agp2pDataContext(str);
+            var context = new Agp2pDataContext();
             context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
             {
                 var investments = p.li_project_transactions.Where(
@@ -294,7 +232,9 @@ namespace Agp2p.Test
                         ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest &&
                         ptr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success)
                     .ToDictionary(ptr => ptr.investor);
-                var repayments = p.li_repayment_tasks.Where(r => r.only_repay_to != null).ToDictionary(r => r.only_repay_to.GetValueOrDefault());
+                var repayments =
+                    p.li_repayment_tasks.Where(r => r.only_repay_to != null)
+                        .ToDictionary(r => r.only_repay_to.GetValueOrDefault());
                 if (repayments.Count < investments.Count)
                 {
                     investments.Keys.Except(repayments.Keys).ForEach(userId =>
@@ -302,7 +242,7 @@ namespace Agp2p.Test
                         try
                         {
                             TrialActivity.CheckNewbieInvest(investments[userId].id);
-                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + GetFriendlyUserName(investments[userId].dt_users));
+                            Debug.WriteLine("补充遗漏的新手标还款计划，投资人：" + investments[userId].dt_users.GetFriendlyUserName());
                         }
                         catch (Exception ex)
                         {
@@ -311,6 +251,279 @@ namespace Agp2p.Test
                     });
                 }
             });
+        }
+
+        [TestMethod]
+        public void TestSumapayApi()
+        {
+            //1.请求前台接口
+            //1.1发送请求
+            var msgReq = new UserRegisterReqMsg(1030, "18681406981", "罗明星", "440233198602010019", "0");
+            MessageBus.Main.Publish(msgReq);
+            //正式请求时，进行如下异步调用
+            //MessageBus.Main.PublishAsync(msgReq, s =>
+            //{
+            //    Utils.HttpPost(msgReq.ApiInterface, msgReq.RequestContent);
+            //});
+
+            //1.2模拟响应返回
+            Agp2pDataContext context = new Agp2pDataContext();
+            var responseLog = new li_pay_response_log()
+            {
+                request_id = msgReq.RequestId,
+                result = "00000",
+                status = (int) Agp2pEnums.SumapayResponseEnum.Return,
+                response_time = DateTime.Now,
+                response_content = "{request:'" + msgReq.RequestId + "',result:'00000'}"
+            };
+            context.li_pay_response_log.InsertOnSubmit(responseLog);
+            //1.3发送响应消息
+            var respMsg = BaseRespMsg.NewInstance<UserRegisterRespMsg>(responseLog.response_content);
+            MessageBus.Main.PublishAsync(respMsg,
+                s =>
+                {
+                    if (respMsg.HasHandle)
+                    {
+                        var req = context.li_pay_request_log.SingleOrDefault(r => r.id == responseLog.request_id);
+                        req.complete_time = DateTime.Now;
+                        req.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
+
+                        responseLog.user_id = respMsg.UserIdIdentity;
+                        responseLog.status = (int) Agp2pEnums.SumapayResponseEnum.Complete;
+                    }
+                    responseLog.remarks = respMsg.Remarks;
+                    context.SubmitChanges();
+                    //Assert.IsTrue(s.IsCompleted);
+                });
+        }
+
+        [TestMethod]
+        public void GenerateClaimFromOldData()
+        {
+            // 补充旧的债权
+            var context = new Agp2pDataContext();
+
+            // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
+            var ptrs =
+                context.li_project_transactions.Where(
+                    ptr => ptr.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                    .ToList();
+
+            int count = 0;
+            ptrs.ForEach(ptr =>
+            {
+                if (ptr.li_claims_invested.Any()) return;
+
+                var claimFromInvestment = new li_claims
+                {
+                    principal = ptr.principal,
+                    projectId = ptr.project,
+                    profitingProjectId = ptr.project,
+                    createFromInvestment = ptr.id,
+                    createTime = ptr.create_time,
+                    userId = ptr.investor,
+                    status = (byte) Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                    number = Utils.HiResNowString,
+                };
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
+                count += 1;
+
+                if (ptr.li_projects.IsNewbieProject())
+                {
+                    var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
+                    if (task.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)
+                    {
+                        var claim = claimFromInvestment.NewStatusChild(task.repay_at.Value,
+                            Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
+                    }
+                }
+                else
+                {
+                    if (ptr.li_projects.complete_time.HasValue)
+                    {
+                        var claim = claimFromInvestment.NewStatusChild(ptr.li_projects.complete_time.Value,
+                            Agp2pEnums.ClaimStatusEnum.Completed);
+                        context.li_claims.InsertOnSubmit(claim);
+                        count += 1;
+                    }
+                }
+            });
+            //context.SubmitChanges();
+            Debug.WriteLine("创建债权：" + count);
+        }
+
+        [TestMethod]
+        public void TestHiResTimeTickUtil()
+        {
+            Enumerable.Range(0, 10)
+                .Select(i => Utils.HiResNowString)
+                .ToList()
+                .ForEach(time => Debug.WriteLine(time));
+        }
+
+        [TestMethod]
+        public void DoChargeTestAccount()
+        {
+            var now = DateTime.Now;
+            Common.DeltaDay(now, -1);
+            Common.MakeSureHaveIdleMoney("13535656867", 10*10000);
+            Common.MakeSureHaveIdleMoney("13590609455", 10*10000);
+            Common.MakeSureHaveIdleMoney("CompanyAccount", 10*10000);
+            Common.DeltaDay(now, 0);
+        }
+
+        private class DebugTextWriter : TextWriter
+        {
+            public int writeCount = 0;
+
+            public override void Write(char[] buffer, int index, int count)
+            {
+                var str = new String(buffer, index, count);
+                if (str.Contains("-- Context"))
+                {
+                    writeCount += 1;
+                }
+                // Debug.Write(str);
+            }
+
+            public override void Write(string value)
+            {
+                Debug.Write(value);
+            }
+
+            public override Encoding Encoding => Encoding.Default;
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            var users = context.dt_users.AsEnumerableAutoPartialQuery().Skip(1000).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
+
+        [TestMethod]
+        public void TestAutoPartialQuery2()
+        {
+            var debugTextWriter = new DebugTextWriter();
+            var context = new Agp2pDataContext {Log = debugTextWriter};
+
+            int totalCount = 0;
+            var users = context.dt_users.AsEnumerableAutoPartialQuery(out totalCount).ToList();
+            Debug.WriteLine("Query count: " + debugTextWriter.writeCount);
+            Debug.WriteLine("Entities count: " + users.Count);
+        }
+
+        [TestMethod]
+        public void TestMatchSteam()
+        {
+            var dict = ConfigLoader.loadSumapayErrorNumberDescDict();
+            Debug.Assert(dict[110170006] == "请求流水为空或不符合规范");
+            Debug.Assert(dict[200200002] == "支付系统异常，请联系管理员4008908970");
+            Debug.Assert(dict[110170055] == "付款总笔数不符合规范");
+            Debug.Assert(dict[310070319] == "查无此交易");
+            Debug.Assert(dict[110400021] == "项目不存在");
+            Debug.Assert(dict[110490001] == "通讯异常，请联系丰付客服");
+        }
+
+        [TestMethod]
+        public void TestQueryLeafClaimsAtMoment()
+        {
+            var baseTime = DateTime.Today;
+
+            using (var ts = new TransactionScope())
+            {
+                var rootClaim = new li_claims { createTime = baseTime };
+                var c2 = rootClaim.MakeChild(baseTime.AddDays(1));
+                var c2c1 = c2.MakeChild(c2.createTime.AddDays(-1));
+
+                var c3 = rootClaim.MakeChild(baseTime.AddDays(2));
+                var c3c4 = c3.MakeChild(c3.createTime.AddDays(1));
+                var c3c3 = c3.MakeChild(c3.createTime);
+
+                var c3c4c5 = c3c4.MakeChild(c3c4.createTime.AddDays(1));
+
+                var d1 = rootClaim.QueryLeafClaimsAtMoment(baseTime).ToList();
+                Assert.AreEqual(1, d1.Count);
+                CollectionAssert.Contains(d1, rootClaim);
+
+                var d2 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(1)).ToList();
+                Assert.AreEqual(1, d2.Count);
+                CollectionAssert.Contains(d2, c2c1);
+
+                var d3 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(2)).ToList();
+                Assert.AreEqual(2, d3.Count);
+                CollectionAssert.Contains(d3, c2c1);
+                CollectionAssert.Contains(d3, c3c3);
+
+                var d4 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(3)).ToList();
+                Assert.AreEqual(3, d4.Count);
+                CollectionAssert.Contains(d4, c2c1);
+                CollectionAssert.Contains(d4, c3c4);
+                CollectionAssert.Contains(d4, c3c3);
+
+                var d5 = rootClaim.QueryLeafClaimsAtMoment(baseTime.AddDays(4)).ToList();
+                Assert.AreEqual(3, d5.Count);
+                CollectionAssert.Contains(d5, c2c1);
+                CollectionAssert.Contains(d5, c3c4c5);
+                CollectionAssert.Contains(d5, c3c3);
+
+                ts.Dispose();
+            }
+        }
+
+
+
+        [TestMethod]
+        public void FindOutIncorrectTransactionHistoies()
+        {
+            var context = new Agp2pDataContext();
+
+            // 当代收本金为 0 时：
+            // 累计充值 + 累计支付利息 == 累计提现 + 站岗资金 
+
+            // 看看是那个用户的金额出现了问题
+            var userDelta = context.li_wallets.Where(w => w.dt_users.user_name == "13500251271").AsEnumerable().Select(w =>
+            {
+                return new { delta = w.total_charge + w.total_profit - w.total_withdraw - w.idle_money, user = w.dt_users };
+            }).Where(o => o.delta != 0).ToList();
+
+            userDelta.ForEach(d =>
+            {
+                Debug.WriteLine($"{d.user.GetFriendlyUserName()} 偏差 {d.delta}");
+
+                var hises = d.user.li_wallet_histories.ToList();
+                hises.Where(h => h.investing_money == 0)
+                .Select(h => {
+                    return new { delta = QueryTotalCharge(context, h) + h.total_profit - QueryTotalWithdraw(context, h) - h.idle_money, createTime = h.create_time };
+                }).Where(de => de.delta != 0).ForEach(h2 =>
+                {
+                    Debug.WriteLine($"{h2.createTime.ToString("yyyy-MM-dd HH:mm:ss")} 偏差 {h2.delta}");
+                });
+            });
+        }
+
+        private decimal QueryTotalWithdraw(Agp2pDataContext context, li_wallet_histories h)
+        {
+            return h.dt_users.li_bank_accounts.Select(ac =>
+            {
+                return ac.li_bank_transactions.Where(btr => btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm
+                && btr.create_time <= h.create_time).AsEnumerable().Aggregate(0m, (sum, tr) => sum + tr.value);
+            }).Sum();
+        }
+
+        private decimal QueryTotalCharge(Agp2pDataContext context, li_wallet_histories h)
+        {
+            return context.li_bank_transactions.Where(btr => btr.charger == h.user_id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Charge
+                && btr.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm
+                && btr.create_time <= h.create_time).AsEnumerable().Aggregate(0m, (sum, tr) => sum + tr.value);
         }
     }
 }

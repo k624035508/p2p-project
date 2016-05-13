@@ -42,18 +42,29 @@ namespace Agp2p.Web.UI.Page
             return outcome == null ? "" : outcome.Value.ToString();
         }
 
-        protected static string QueryRemark(li_wallet_histories his)
+        protected static string QueryRemark(Agp2pDataContext context, li_wallet_histories his)
         {
             if (his.li_project_transactions != null)
             {
-                return
-                    string.Format(
-                        his.li_project_transactions.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest
-                            ? "投资项目 [{0}]"
-                            : "还款 [{0}]  {1}", his.li_project_transactions.li_projects.title, his.li_project_transactions.remark);
+                return !string.IsNullOrWhiteSpace(his.li_project_transactions.remark)
+                    ? his.li_project_transactions.remark
+                    : "关联项目 " + his.li_project_transactions.li_projects.title;
             }
             if (his.li_bank_transactions != null)
+            {
+                if (his.li_bank_transactions.type == (int)Agp2pEnums.BankTransactionTypeEnum.LoanerMakeLoan)
+                {
+                    var projectId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    return $"放款项目 {context.li_projects.Single(p => p.id == projectId).title}";
+                }
+                if (his.li_bank_transactions.type == (int)Agp2pEnums.BankTransactionTypeEnum.GainLoanerRepay)
+                {
+                    var repaymentTaskId = Convert.ToInt32(his.li_bank_transactions.remarks);
+                    var task = context.li_repayment_tasks.Single(p => p.id == repaymentTaskId);
+                    return $"关联还款计划 {task.li_projects.title} 第 {task.term} 期";
+                }
                 return his.li_bank_transactions.remarks;
+            }
             return his.li_activity_transactions != null ? his.li_activity_transactions.remarks : "";
         }
 
@@ -105,6 +116,7 @@ namespace Agp2p.Web.UI.Page
             var query = context.li_wallet_histories.Where(h => h.user_id == userId);
             query = query.Where(w =>
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess &&
+                        w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.ClaimTransferredInSuccess &&
                         w.action_type != (int) Agp2pEnums.WalletHistoryTypeEnum.Charging &&
                         w.action_type != (int)Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel); // 屏蔽项目满标的历史，没必要展示
 
@@ -124,21 +136,23 @@ namespace Agp2p.Web.UI.Page
                 outcome = QueryTransactionOutcome(h),
                 idleMoney = h.idle_money.ToString("n"),
                 createTime = h.create_time.ToString("yy/MM/dd HH:mm"),
-                remark = QueryRemark(h)
+                remark = QueryRemark(context, h)
             }).ToList();
 
-            if (count != 0)
+            if (history.Count != 0)
             {
                 count += 1; // 总计
                 if (count <= pageIndex * pageSize + pageSize) // 最后一页
                 {
                     var allHis = query.ToList();
+                    var income = allHis.Aggregate(0m, (sum, h) => sum + TransactionFacade.QueryTransactionIncome(h, (a, b) => a.GetValueOrDefault() + b.GetValueOrDefault()));
+                    var outcome = allHis.Aggregate(0m, (sum, h) => sum + h.QueryTransactionOutcome().GetValueOrDefault());
                     history.Add(new
                     {
                         id = 0,
                         type = "总计",
-                        income = allHis.Aggregate(0m, (sum, h) => sum + TransactionFacade.QueryTransactionIncome(h, (a, b) => a.GetValueOrDefault() + b.GetValueOrDefault())).ToString("f2"),
-                        outcome = allHis.Aggregate(0m, (sum, h) => sum + h.QueryTransactionOutcome().GetValueOrDefault()).ToString("f2"),
+                        income = (0 <= income - outcome) ? (income - outcome).ToString("f2") : "",
+                        outcome = (0 < outcome - income) ? (outcome - income).ToString("f2") : "",
                     });
                 }
             }

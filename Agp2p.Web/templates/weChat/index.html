@@ -58,13 +58,15 @@
             </div>
             <%/if%>
 
+            <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
             <%set var totalcount=0%>
-            <%set var projects=QueryProjects(5,0,out totalcount,0,0,0,0)%>
-            <%foreach(var p in projects)%>
-            <div class="invest-project" onclick="location.href='<%linkurl("project",p.id)%>#project'">
-                <p class="invest-title">
-                <span class="project-type">{p.dt_article_category.title}</span>
-                {p.title}
+        <%set var investables=QueryInvestables(5,0,out totalcount,cid,0,0,0)%>
+        <%foreach(var inv in investables)%>
+        <%set var p=inv.Project%>
+        <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
+            <p class="invest-title">
+                <span class="project-type">{inv.CategoryName}</span>
+                {inv.Title}
                 <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
                 <span class="book-icon">约标</span>
                 <%/if%>
@@ -73,34 +75,35 @@
                 <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
                 <%/if%>
             </p>
-                <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
+            <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
                 <div class="rate-wrap">
                     <div class="title-style">年化利率</div>
-                    <div class="txt-red-s"><span class="txt-red-l"><%=p.profit_rate_year.ToString("f1")%></span> %</div>
+                    <div class="txt-red-s"><span class="txt-red-l"><%=(inv.ProfitRateYearly*100).ToString("f1")%></span> %</div>
                 </div>
                 <div class="time-wrap">
                     <div class="title-style">期限</div>
-                    <div><span class="txt-darkgrey-l">{p.repayment_term_span_count}</span> {p.GetProjectTermSpanEnumDesc()}</div>
+                    <div><span class="txt-darkgrey-l">{inv.RepaymentTermSpanCount}</span> {inv.ProjectTermSpanName}</div>
                 </div>
                 <div class="amount-wrap">
                     <div class="title-style">借款金额</div>
-                    <div><span class="txt-darkgrey-l"><%=p.financing_amount.ToString("n0")%></span> 元</div>
+                    <div><span class="txt-darkgrey-l"><%=inv.FinancingAmountStr%></span> 元</div>
                 </div>
                 <div class="invest-status flex flex-center-wrapper">
-                    <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                    <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <div class="status-wrap"><div class="over-icon">待发标</div></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <div class="indicatorContainer" data-progress="<%=(p.GetInvestmentProgressPercent()*100)%>"></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                    <div class="indicatorContainer" data-progress="<%=(inv.InvestmentProgress*100)%>"></div>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
                     <div class="status-wrap"><div class="over-icon">审核中</div></div>
-                    <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
                     <div class="status-wrap"><div class="over-icon">还款中</div></div>
-                    <%else if(p.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                    <%else if(inv.Status>=Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
                     <div class="status-wrap"><div class="over-icon">已结束</div></div>
                     <%/if%>
                 </div>
             </div>
-            </div>
+        </div>
+            <%/foreach%>
             <%/foreach%>
         </div>
     </div>

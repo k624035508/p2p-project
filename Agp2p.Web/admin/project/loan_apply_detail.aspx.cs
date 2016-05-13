@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Agp2p.Core;
+using Agp2p.Core.AutoLogic;
 
 namespace Agp2p.Web.admin.project
 {
@@ -46,7 +48,7 @@ namespace Agp2p.Web.admin.project
                 BindControls();
 
                 if (!string.IsNullOrEmpty(action) && (action == DTEnums.ActionEnum.Edit.ToString() || action == DTEnums.ActionEnum.Copy.ToString()))
-                {                    
+                {
                     if (this.project_id == 0)
                     {
                         JscriptMsg("传输参数不正确！", "back", "Error");
@@ -128,6 +130,7 @@ namespace Agp2p.Web.admin.project
         public virtual void ShowInfo(li_projects _project)
         {
             ddlCategoryId.SelectedValue = _project.category_id.ToString();//项目类别
+            BindDDlCategory();
             rbl_project_type.SelectedValue = _project.type.ToString();//借款主体
 
             txtSeoTitle.Text = _project.seo_title;
@@ -144,8 +147,8 @@ namespace Agp2p.Web.admin.project
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
             txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N1");//年化利率
             txtAddTime.Text = action == DTEnums.ActionEnum.Copy.ToString() ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
-            txt_bond_fee_rate.Text = _project.bond_fee_rate.ToString();
-            txt_loan_fee_rate.Text = _project.loan_fee_rate.ToString();
+            txt_bond_fee_rate.Text = (_project.bond_fee_rate * 100).ToString();
+            txt_loan_fee_rate.Text = (_project.loan_fee_rate * 100).ToString();
             txt_contact_no.Text = _project.contract_no;
 
             ShowRiskInfo(_project);
@@ -164,7 +167,7 @@ namespace Agp2p.Web.admin.project
                 ddlLoaner.SelectedValue = risk.loaner.ToString();
                 ShowLoanerInfo(risk.li_loaners);
                 //债权人信息
-                if (rbl_project_type.SelectedValue == ((int) Agp2pEnums.LoanTypeEnum.Creditor).ToString())
+                if (rbl_project_type.SelectedValue == ((int)Agp2pEnums.LoanTypeEnum.Creditor).ToString())
                 {
                     ddlCreditor.SelectedValue = risk.creditor.ToString();
                     txtCreditorContent.Text = risk.creditor_content;
@@ -192,6 +195,7 @@ namespace Agp2p.Web.admin.project
         /// <param name="loaner_id"></param>
         private void ShowLoanerInfo(li_loaners loaner)
         {
+            if(loaner == null) return;
             //借款人信息
             sp_loaner_name.InnerText = loaner.dt_users.real_name;
             sp_loaner_gender.InnerText = loaner.dt_users.sex;
@@ -221,7 +225,7 @@ namespace Agp2p.Web.admin.project
         /// </summary>
         /// <param name="project"></param>
         private void SetProjectModel(li_projects project)
-        {       
+        {
             project.seo_title = txtSeoTitle.Text.Trim();
             project.seo_keywords = txtSeoKeywords.Text.Trim();
             project.seo_description = txtSeoDescription.Text.Trim();
@@ -229,7 +233,7 @@ namespace Agp2p.Web.admin.project
             project.click = Utils.StrToInt(txtClick.Text.Trim(), 0);
             project.img_url = txtImgUrl.Text.Trim();
             project.add_time = string.IsNullOrEmpty(txtAddTime.Text.Trim()) ? DateTime.Now : Utils.StrToDateTime(txtAddTime.Text.Trim());
-            project.user_name = GetAdminInfo().user_name;                                                          
+            project.user_name = GetAdminInfo().user_name;
             project.category_id = Utils.StrToInt(ddlCategoryId.SelectedValue, 0);
             project.title = txtTitle.Text.Trim();
             project.type = Utils.StrToInt(rbl_project_type.SelectedValue, 10);
@@ -239,8 +243,8 @@ namespace Agp2p.Web.admin.project
             project.repayment_term_span = Utils.StrToInt(txt_project_repayment_term.SelectedValue, 20);
             project.repayment_type = Utils.StrToInt(txt_project_repayment_type.SelectedValue, 10);
             project.profit_rate_year = Utils.StrToDecimal(txt_project_profit_rate.Text.Trim(), 0);
-            project.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0);
-            project.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0);
+            project.bond_fee_rate = Utils.StrToDecimal(txt_bond_fee_rate.Text.Trim(), 0)/100;
+            project.loan_fee_rate = Utils.StrToDecimal(txt_loan_fee_rate.Text.Trim(), 0)/100;
             project.contract_no = txt_contact_no.Text.Trim();
 
             //提交操作则状态为待初审            
@@ -253,9 +257,12 @@ namespace Agp2p.Web.admin.project
         /// <param name="risk"></param>
         private void SetRiskModel(li_risks risk)
         {
+            risk.last_update_time = DateTime.Now;
+            if (string.IsNullOrEmpty(ddlLoaner.SelectedValue)) return;
+
             risk.loaner = Utils.StrToInt(ddlLoaner.SelectedValue, 0);
             //债权人信息
-            if (rbl_project_type.SelectedValue == ((int) Agp2pEnums.LoanTypeEnum.Creditor).ToString())
+            if (rbl_project_type.SelectedValue == ((int)Agp2pEnums.LoanTypeEnum.Creditor).ToString())
             {
                 risk.creditor = Utils.StrToInt(ddlCreditor.SelectedValue, 0);
                 risk.creditor_content = txtCreditorContent.Text;
@@ -264,13 +271,13 @@ namespace Agp2p.Web.admin.project
             risk.loan_usage = txtLoanUse.Text;
             risk.source_of_repayment = txtRepaymentSource.Text;
             risk.risk_content = txtRiskContent.Value;
-            risk.last_update_time = DateTime.Now;
             if (ddl_guarantor.SelectedIndex > 0)
                 risk.guarantor_id = Utils.StrToInt(ddl_guarantor.SelectedValue, 0);
             //相关图片资料
             Loan.LoadAlbum(risk, Agp2pEnums.AlbumTypeEnum.LoanAgreement, 0, Request);
             Loan.LoadAlbum(risk, Agp2pEnums.AlbumTypeEnum.MortgageContract, 1, Request);
             Loan.LoadAlbum(risk, Agp2pEnums.AlbumTypeEnum.LienCertificate, 2, Request);
+
         }
 
         private bool DoAdd()
@@ -279,15 +286,15 @@ namespace Agp2p.Web.admin.project
             var risk = new li_risks();
             project.li_risks = risk;
             SetRiskModel(risk);
-            SetProjectModel(project);            
+            SetProjectModel(project);
             BindMortgages(risk);
             //项目编号
-            var latestProject = LqContext.li_projects.Where(p => p.category_id == project.category_id).OrderByDescending(p => p.add_time).FirstOrDefault();
+            var latestProject = LqContext.li_projects.Where(p => p.category_id == project.category_id && !p.title.Equals("")).OrderByDescending(p => p.id).FirstOrDefault();
             int prjectCount = latestProject == null ? 0 : Utils.StrToInt(latestProject.title.Substring(latestProject.title.Length - 5), 0);
             project.title += new BLL.article_category().GetModel(project.category_id).call_index.ToUpper() + (prjectCount + 1).ToString("00000");
 
             LqContext.li_risks.InsertOnSubmit(risk);
-            LqContext.li_projects.InsertOnSubmit(project);           
+            LqContext.li_projects.InsertOnSubmit(project);
             try
             {
                 LqContext.SubmitChanges();
@@ -295,8 +302,7 @@ namespace Agp2p.Web.admin.project
             }
             catch (Exception ex)
             {
-                //JscriptMsg(ex.Message, "back", "Error");
-                return false;
+                throw ex;
             }
 
             return true;
@@ -327,11 +333,16 @@ namespace Agp2p.Web.admin.project
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            sumbit();
+                sumbit();
         }
 
-        private void sumbit()
+        private void sumbit() 
         {
+            if (Convert.ToDecimal(txt_project_amount.Text.Trim()) <= 0)
+            {
+                JscriptMsg("借款金额必须大于0！", "", "Error");
+                return;
+            }
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Edit.ToString()); //检查权限
@@ -342,7 +353,7 @@ namespace Agp2p.Web.admin.project
                 }
                 JscriptMsg("修改信息成功！", String.Format("loan_apply.aspx?channel_id={0}", this.channel_id), "Success");
             }
-            else if(action == DTEnums.ActionEnum.Copy.ToString()) //复制
+            else if (action == DTEnums.ActionEnum.Copy.ToString()) //复制
             {
                 txtTitle.Text = "";
                 ChkAdminLevel("loan_apply", DTEnums.ActionEnum.Copy.ToString()); //检查权限
@@ -370,13 +381,14 @@ namespace Agp2p.Web.admin.project
             save_only = true;
             sumbit();
         }
-        
+
         /// <summary>
         /// 绑定抵押物
         /// </summary>
         /// <param name="risk"></param>
         private void BindMortgages(li_risks risk)
         {
+            if (string.IsNullOrEmpty(ddlLoaner.SelectedValue)) return;
             var selectedLoaner = Convert.ToInt32(ddlLoaner.SelectedValue);
             if (risk.loaner != selectedLoaner) // 更换借款人后，之前的抵押物绑定需要全部删除
             {
@@ -465,10 +477,11 @@ namespace Agp2p.Web.admin.project
             }
         }
 
-        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        private void BindDDlCategory()
         {
             var category =
                 LqContext.dt_article_category.Single(c => c.id == Utils.StrToInt(ddlCategoryId.SelectedValue, 0));
+            //银票项目
             if (category != null && category.call_index.Contains("yp"))
             {
                 txt_project_repayment_term.Items.Clear();
@@ -479,8 +492,41 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
                 txt_project_repayment_type.SelectedIndex = 0;
 
-                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank*100).ToString("N2");
+                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank * 100).ToString("N2");
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
+            }
+            //新手项目
+            else if (category != null && category.call_index.Equals("newbie"))
+            {
+                div_risks_info.Visible = false;
+                div_mortgages_info.Visible = false;
+                div_loan_fee_rate.Visible = false;
+                div_bond_fee_rate.Visible = false;
+                div_project_profit_rate.Visible = false;
+                li_mortgages.Visible = false;
+                li_risk.Visible = false;
+
+                txt_project_repayment_type.Items.Clear();
+                txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+                txt_project_repayment_type.SelectedIndex = 0;
+
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 0;
+            }
+            //活期项目
+            else if (category != null && category.call_index.Equals("huoqi"))
+            {
+                div_loan_fee_rate.Visible = false;
+                div_bond_fee_rate.Visible = false;
+
+                txt_project_repayment_type.Items.Clear();
+                txt_project_repayment_type.Items.Add(new ListItem("每日收益", "40"));
+                txt_project_repayment_type.SelectedIndex = 0;
+
+                txt_project_repayment_term.Items.Clear();
+                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
+                txt_project_repayment_term.SelectedIndex = 0;
             }
             else
             {
@@ -491,15 +537,28 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_term.SelectedIndex = 1;
 
                 txt_project_repayment_type.Items.Clear();
-                if (!category.call_index.Equals("newbie"))
-                {
-                    txt_project_repayment_type.Items.Add(new ListItem("先息后本", "10"));
-                    txt_project_repayment_type.Items.Add(new ListItem("等额本息", "20"));
-                }
+                txt_project_repayment_type.Items.Add(new ListItem("先息后本", "10"));
+                txt_project_repayment_type.Items.Add(new ListItem("等额本息", "20"));
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
+
                 txt_project_repayment_type.SelectedIndex = 0;
                 txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N0");
+            }
+        }
+
+        protected void ddlCategoryId_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ddlCategoryId.SelectedValue))
+            {
+                div_risks_info.Visible = true;
+                div_mortgages_info.Visible = true;
+                div_loan_fee_rate.Visible = true;
+                div_bond_fee_rate.Visible = true;
+                div_project_profit_rate.Visible = true;
+                li_mortgages.Visible = true;
+                li_risk.Visible = true;
+                BindDDlCategory();
             }
         }
     }

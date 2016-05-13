@@ -22,6 +22,38 @@ namespace Agp2p.Core.NotifyLogic
             MessageBus.Main.Subscribe<ProjectFinancingCompleteEvenTimeoutMsg>(t => HandleProjectFinancingCompleteEvenTimeoutMsg(t.ProjectId));
             MessageBus.Main.Subscribe<ProjectFinancingFailMsg>(t => HandleProjectFinancingFailMsg(t.ProjectId));
             MessageBus.Main.Subscribe<ProjectRepaidMsg>(t => HandleProjectRepaidMsg(t.RepaymentTaskId));
+
+            MessageBus.Main.Subscribe<HuoqiWithdrawMsg>(t => HandleHuoqiWithdraw(t.UserId, t.ProjectId, t.Amount));
+        }
+
+        private static void HandleHuoqiWithdraw(int userId, int projectId, decimal amount)
+        {
+            var context = new Agp2pDataContext();
+
+            // 找出所有需要赎回的债权，判断中间人的余额是否足够支付，并提醒中间人
+            var needTransferClaims = context.li_claims.Where(c =>
+                    c.profitingProjectId == projectId && c.status == (int) Agp2pEnums.ClaimStatusEnum.NeedTransfer &&
+                    !c.Children.Any()).ToList();
+
+            needTransferClaims.GroupBy(c => c.dt_users_agent).ToDictionary(g => g.Key, g => g.Sum(c => c.principal)).ForEach(
+                pair =>
+                {
+                    var msgContent = $"有用户进行了活期提现，目前总提现金额为 {pair.Value}，您的余额为 {pair.Key.li_wallets.idle_money}，请于一日内保持账号内的余额足以赎回活期债权";
+                    try
+                    {
+                        var errorMsg = string.Empty;
+                        if (!SMSHelper.SendTemplateSms(pair.Key.mobile, msgContent, out errorMsg))
+                        {
+                            context.AppendAdminLogAndSave("Huoqi",
+                                $"发送中间人金额提醒失败：{errorMsg}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        context.AppendAdminLogAndSave("Huoqi",
+                            $"发送中间人金额提醒失败：{ex.GetSimpleCrashInfo()}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
+                    }
+                });
         }
 
         private static IQueryable<dt_manager> GetMessageSubscribers(Agp2pDataContext context, Agp2pEnums.ManagerMessageSourceEnum source)

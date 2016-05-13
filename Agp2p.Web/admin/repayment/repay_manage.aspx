@@ -132,11 +132,18 @@
                     <td><%#string.Format("{0:0.0}", Eval("ProfitRate"))%></td>
                     <td><%#Eval("RepaymentType")%></td>
                     <td align="center">
-                        <% if (rblStatus.SelectedValue == "0")
+                        <%--<% if (rblStatus.SelectedValue == "0")
                             { %>
-                        <asp:LinkButton ID="lbt_repay" runat="server" Text="还款" OnClientClick="return confirm('确定还款吗?');"
+                        <asp:LinkButton ID="lbt_repay" runat="server" Text="账户还款" OnClientClick="return confirm('确定还款吗?');"
                             CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_repay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton>
-                        <% } %>
+                        <br/>
+                        <asp:LinkButton ID="lby_bankrepay" runat="server" Text="协议还款" OnClientClick="return confirm('确定还款吗?');"
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lby_bankrepay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton>
+                        
+                        <br/>
+                        <asp:LinkButton ID="lbt_earlyPay" runat="server" Text="提前还款" OnClientClick="return confirm('确定提前还款吗?');"
+                            CommandArgument='<%#Eval("RepayId")%>' OnClick="lbt_earlyPay_OnClick" Visible='<%#Convert.ToInt16(Eval("RepayStatus")) != (int)Agp2pEnums.RepaymentStatusEnum.OverTime%>'></asp:LinkButton>
+                        <% } %>--%>
                     </td>
                 </tr>
             </ItemTemplate>

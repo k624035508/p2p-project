@@ -23,15 +23,32 @@ $(function(){
     }
    
     $(window).scroll(function(){
-       
-            var windowtop = $(window).scrollTop();     
-             if(windowtop>100){
+        var windowtop = $(window).scrollTop();     
+        if(windowtop>100){
             for( var j=0;j<(prog.length);j++){
                 var changdu2=parseInt(prog.eq(j).html())/100;              
                 prog.eq(j).width(changdu2*changdu1);        
             }
-        }
-         
-            
+        }           
     });
+
+    //头部导航条
+    var $consume=$(".consume ul li");
+    var index=0;
+    $consume.click(function(){
+       index=$consume.index(this);
+        $consume.eq(index).addClass("bluecon").siblings().removeClass("bluecon");   
+        $(".fincategory>div").eq(index).removeClass("hidden").siblings().addClass("hidden");
+    });
+}); 
+
+
+$(window).load(function(){
+    var thisurl=document.location.href;
+    var thisnameindex=thisurl.indexOf("#")+1;
+    var thisname=thisurl.substring(thisnameindex);
+    var nameclass="."+thisname;
+    var linameclass="."+thisname+"-li";
+    $(nameclass).removeClass("hidden").siblings().addClass("hidden");
+    $(linameclass).addClass("bluecon").siblings().removeClass("bluecon");  
 });

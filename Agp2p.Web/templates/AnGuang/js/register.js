@@ -9,6 +9,46 @@ $(function() {
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
 
+    //根据步骤显示
+    var { step,result } = $("#step").data();
+    if (step == "2") {
+        //实名验证
+        $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+        $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+        $(".tips2").addClass("tips-red");
+    } else if (step == "3"){
+        //托管开户
+        $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+        $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+        $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+        $(".tips2,.tips3").addClass("tips-red");
+    } else if (step == "4") {
+        //开户结果处理显示
+        if (result=="success"){
+            $(".register-left").eq(step-1).removeClass("hidden").siblings().addClass("hidden");
+            $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+            $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+            $(".tips2,.tips3").addClass("tips-red");
+        } else{
+            $(".register-left").eq(step).removeClass("hidden").siblings().addClass("hidden");
+            $(".step2").css("background","url('templates/AnGuang/imgs/register/002-hover.png')");
+            $(".step3").css("background","url('templates/AnGuang/imgs/register/003-hover.png')");
+            $(".tips2,.tips3").addClass("tips-red");
+        }
+    }
+
+    //邀请码选填 
+    $("div.invite2").hide();
+    $("div.invited").click(function(){      
+        if($("div.invite2").is(":visible")) {
+            $("div.invite2").hide();
+            $("div.invited span").css("transform","rotate(360deg)");
+        }else{            
+            $("div.invite2").show();
+            $("div.invited span").css("transform","rotate(90deg)");
+        }
+    });
+
     // 检测邀请码
     var matchInvitationUrl = location.search.match(/inviteCode=([^&]+)/);
     if (matchInvitationUrl) {
@@ -46,7 +86,7 @@ $(function() {
             $status.text("请输入6~16位密码");
         }
     });
-
+ 
     //确认密码格式判断
     $("#psw2").blur(function() {
         var psw = $("#psw").val();
@@ -139,7 +179,7 @@ $(function() {
                     if (data.status == 1) {
                         intervalControlLogic();
                     } else {
-                    	refreshPicVerifyCode();
+                        refreshPicVerifyCode();
                     }
                 },
                 error: function (data) {
@@ -148,6 +188,33 @@ $(function() {
             });
         }
     });
+  
+    //图片滚动
+    var leng=$(".register-img").length;
+    var index=0;
+    var adTimer;
+    $(".left-icon").click(function(){
+        index--;
+        if(index<0) {index=leng-1;}
+        showImg(index);
+    });
+    $(".right-icon").click(function(){
+        index++;
+        if(index==leng) {index=0;}
+        showImg(index);
+    });
+    $('.register-right').hover(function(){
+        clearInterval(adTimer);
+    },function(){
+        adTimer = setInterval(function() {
+            showImg(index);
+            index++;
+            if(index==leng){index=0;}
+        } , 5000);
+    }).trigger("mouseleave");
+    function showImg(index){
+        $(".register-img").eq(index).fadeIn(200).siblings().fadeOut(200);
+    }
 
     // 注册
     $("#registerBtn").click(function() {
@@ -156,13 +223,15 @@ $(function() {
             return;
         }
         var txtPw1 = $("#psw").val(), txtPw2 = $("#psw2").val();
+       
         if (txtPw1 != txtPw2) {
             alert("两次输入的密码不一致");
             return;
         } else if ($(".error-tips").length != 0) {
-        	alert("请先填写好表单");
-        	return;
+            alert("请先填写好表单");
+            return;
         }
+
         var verifyCode = $(".register-box").data("needSmsVerify") ? $("#sms-code").val() : $("#pic-code").val();
         $.ajax({
             url: "/tools/submit_ajax.ashx?action=user_register",
@@ -177,9 +246,10 @@ $(function() {
             success: function(data) {
                 alert(data.msg);
                 if (data.status == 1) {
-                    location.href="/";
+                    //注册成功到实名验证步骤
+                    location.href="register.html?action=2";
                 } else {
-                	refreshPicVerifyCode();
+                    refreshPicVerifyCode();
                 }
             },
             error: function(data) {
@@ -187,4 +257,34 @@ $(function() {
             }
         });
     });
+
+    //实名认证
+    $("#realNameAuthBtn").click(function(){  
+        $.ajax({
+            url:"/tools/submit_ajax.ashx?action=bind_idcard",
+            type: "post",
+            dataType: "json",
+            data: {
+                idCardNumber: $("#identify").val(),
+                trueName: $("#realname").val()
+            },
+            beforeSend:function(XMLHttpRequest){ 
+                //在后台返回success之前显示loading图标
+                $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
+            }, 
+            success: function(data) {        
+                $(".nameLoading").empty().css("z-index","-2");
+                if (data.status == 1) {
+                    //实名验证成功，进入开户步骤
+                    location.href="register.html?action=3";
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function(data) {             
+                $(".nameLoading").empty().css("z-index","-2");
+                alert("操作超时，请重试");
+            }
+        });
+    }); 
 });

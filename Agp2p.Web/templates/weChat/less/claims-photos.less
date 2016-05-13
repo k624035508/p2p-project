@@ -48,7 +48,15 @@ div.photos-box {
     padding: 0 2%;
 }
 
-div.photo-cell {
+div.img-left{
+   position:absolute; z-index:2; left:0; top:50%;
+}
+
+div.img-right{
+    position:absolute; z-index:2; right:0; top:50%;
+}
+
+div.photo-cell {    
     float: left;
     width: 33.33%;
     text-align: center;
@@ -98,14 +106,13 @@ div.photo-enlarge-body img {
         height: 1.7rem;
         top:50%;
         margin-top: -0.85rem;
-        opacity: 0.6;
      }
     .leftBtn {
-        background: url("../imgs/icon-left.png") no-repeat;
+        background: url("../imgs/img-left.png") no-repeat;
         background-size: contain;
     }
     .rightBtn {
-        background: url("../imgs/icon-right.png") no-repeat;
+        background: url("../imgs/img-right.png") no-repeat;
         background-size: contain;
         right: 0;
     }

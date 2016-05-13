@@ -13,41 +13,68 @@
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
     <div class="register-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
-        <form id="regform" autocomplete="off">
-            <div class="account-wrap">
-                <input type="text" id="account" class="input-l" name="txtMobile" placeholder="请输入手机号码" datatype="m" errormsg="手机号码格式不正确">
-            </div>
-            <div class="psw-wrap">
-                <input type="password" id="psw" class="input-l" name="txtPassword" placeholder="请输入密码" datatype="*" errormsg="请输入6-16位的密码，不能有空格">
-            </div>
-            <div class="psw2-wrap">
-                <input type="password" id="psw2" class="input-l" name="txtPassword1" placeholder="请再次输入密码" recheck="txtPassword" errormsg="两次输入的密码不一致">
-            </div>
-            <div class="pic-code-wrap">
-                <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
-                <span class="pic-code-span pull-right flex flex-center-wrapper">
+        <div class="register-step">
+            <form id="regform" autocomplete="off">
+                <div class="account-wrap">
+                    <input type="text" id="account" class="input-l" name="txtMobile" placeholder="请输入手机号码" datatype="m" errormsg="手机号码格式不正确">
+                </div>
+                <div class="psw-wrap">
+                    <input type="password" id="psw" class="input-l" name="txtPassword" placeholder="请输入密码" datatype="*" errormsg="请输入6-16位的密码，不能有空格">
+                </div>
+                <div class="psw2-wrap">
+                    <input type="password" id="psw2" class="input-l" name="txtPassword1" placeholder="请再次输入密码" recheck="txtPassword" errormsg="两次输入的密码不一致">
+                </div>
+                <div class="pic-code-wrap">
+                    <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
+                    <span class="pic-code-span pull-right flex flex-center-wrapper">
                 <img style="cursor: pointer" src="{config.webpath}tools/verify_code.ashx" onclick="return ToggleCode(this, '{config.webpath}tools/verify_code.ashx');" />
             </span><br/>
+                </div>
+                <%if(uconfig.regstatus==2)%>
+                <div class="auth-code-wrap">
+                    <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
+                    <button type="button" id="get-auth-code-btn" class="button-s pull-right">获 取</button><br/>
+                </div>
+                <%/if%>
+                <div class="recommend-one-wrap">
+                    <input type="text" id="recommend-one" class="input-l" name="txtInviteCode" placeholder="推荐码/推荐人账号（可不填）">
+                </div>
+                <div class="agreement-wrap">
+                    <input type="checkbox" id="agreement" checked>
+                    <label for="agreement">同意 《<a href="<%templateskin%>/../AnGuang/register-agreement.html">注册协议</a>》</label>
+                </div>
+                <div class="register-btn-wrap">
+                    <button type="button" id="register-btn" class="button-l">注 册</button>
+                </div>
+            </form>
+            <div class="login-now-wrap">已有账号？ <a href="<%linkurl("login")%>">马上登录</a>
             </div>
-            <%if(uconfig.regstatus==2)%>
-            <div class="auth-code-wrap">
-                <input type="text" id="auth-code" class="input-s" name="txtVerifyCode" placeholder="请输入短信验证码" datatype="*" errormsg="请输入短信验证码">
-                <button type="button" id="get-auth-code-btn" class="button-s pull-right">获 取</button><br/>
+        </div>
+        <div class="register-step">
+            <form id="realNameForm" autocomplete="off">
+                <div class="realName-wrap">
+                    <input type="text" id="realName" class="input-l" name="trueName" placeholder="请输入您的真实姓名" datatype="*" errormsg="请输入正确的中文姓名">
+                </div>
+                <div class="identityId-wrap">
+                    <input type="text" id="identityId" class="input-l" name="idCardNumber" placeholder="请输入您的身份证号码" datatype="*" errormsg="请输入正确的18位身份证号码">
+                </div>
+                <div class="register-btn-wrap">
+                    <button type="button" id="register-identity-btn" class="button-l">实名认证</button>
+                </div>
+            </form>
+            <div class="skip-now-wrap">
+                暂不实名认证 <a href="<%linkurl("index")%>">跳过</a>
             </div>
-            <%/if%>
-            <div class="recommend-one-wrap">
-                <input type="text" id="recommend-one" class="input-l" name="txtInviteCode" placeholder="推荐码/推荐人账号（可不填）">
+            <div class="warm-tips">
+                <div class="tiphead"><span>温馨提示</span></div>
+                <p>1.安广融合不会在任何地方泄漏您的信息。</p>
+                <p>2.每天实名认证不能超过3次，一年不能超过6次，请认真核对信息。</p>
             </div>
-            <div class="agreement-wrap">
-                <input type="checkbox" id="agreement" checked>
-                <label for="agreement">同意 《<a href="<%templateskin%>/../AnGuang/register-agreement.html">注册协议</a>》</label>
             </div>
-            <div class="register-btn-wrap">
-                <button type="button" id="register-btn" class="button-l">注 册</button>
-            </div>
-        </form>
-        <div class="turn-now-wrap" style="margin-bottom: 15px;">要参加"劳动小当家"活动请先注册</div>
-        <div class="login-now-wrap">已有账号？ <a id="loginBtn" href="<%linkurl("login")%>">马上登录</a></div>
+    </div>
+    <div id="step"
+         data-step="<%=action%>"
+         data-result="<%=result%>">
     </div>
     <%template src="_footer.html"%>
 </div>
