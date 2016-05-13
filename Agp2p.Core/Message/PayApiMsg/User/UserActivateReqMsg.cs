@@ -12,7 +12,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string PayType { get; set; }
 
-        public UserActivateReqMsg(int userId, string payType)
+        public UserActivateReqMsg(int userId, string payType = "1")
         {
             UserId = userId;
             PayType = payType;
