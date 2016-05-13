@@ -9,11 +9,11 @@
 </head>
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="usercenter-page scroll" style="height:0"> <!--/ ios flex box bug hack /-->
+    <div class="usercenter-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div class="account-amount flex-center-wrapper">
             <div class="vertical-align">
                 <span style="font-size: 1.2em">账户总额（元）</span>
-                <p style="font-size: 2.5em;margin-top: 1vw;"><%=(userModel.li_wallets.idle_money+userModel.li_wallets.locked_money+userModel.li_wallets.investing_money+userModel.li_wallets.profiting_money+GetLotteriesValue()).ToString("n2")%></p>
+                <p style="font-size: 2.5em; margin-top: 1vw;"><%=(userModel.li_wallets.idle_money+userModel.li_wallets.locked_money+userModel.li_wallets.investing_money+userModel.li_wallets.profiting_money+GetLotteriesValue()).ToString("n2")%></p>
             </div>
         </div>
         <div class="amount-detail">
@@ -32,8 +32,10 @@
         </div>
         <div style="clear: both"></div>
         <div class="operate-btns">
-            <div><a id="reChargeBtn">充值</a></div>
-            <div><a href="<%linkurl("withdraw")%>">提现</a></div>
+            <div><a id="reChargeBtn">充值</a>
+            </div>
+            <div><a href="<%linkurl("withdraw")%>">提现</a>
+            </div>
         </div>
         <div style="clear: both"></div>
         <div class="invest-amount-detail">
@@ -68,18 +70,22 @@
         </div>
         <div style="clear: both"></div>
         <div class="invest-record">
-            <div class="trade-record flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("mytrade","mytrade")%>'">
+            <div class="trade-record flex flex--align-items--center flex--flex-grow-second" onclick="location.href = '<%linkurl("mytrade","mytrade")%>'">
                 <i class="trade-record-icon"></i>
                 <span class="span-style">交易记录</span>
                 <span class="glyphicon glyphicon-menu-right"></span>
             </div>
-            <div class="my-invest flex flex--align-items--center flex--flex-grow-second" onclick="location.href='<%linkurl("myreceiveplan","myreceiveplan",1,0,0,0)%>#projects'">
+            <div class="my-invest flex flex--align-items--center flex--flex-grow-second" onclick="location.href = '<%linkurl("myreceiveplan","myreceiveplan",1,0,0,0)%>#projects'">
                 <i class="my-invest-icon"></i>
                 <span class="span-style">我的投资</span>
                 <span class="glyphicon glyphicon-menu-right"></span>
             </div>
         </div>
     </div>
+    <div id="app"
+         data-user-identity="<%=IsIdentity()%>"></div>
+
+
     <%template src="_footer.html"%>
 </div>
 </body>
