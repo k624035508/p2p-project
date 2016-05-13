@@ -66,7 +66,9 @@ namespace Agp2p.Web.tools
             {
                 /*var standGuardFee = new Agp2pDataContext().CalcStandGuardFee(userId, Convert.ToDecimal(withdrawValue));
                 var finalValue = Math.Max(TransactionFacade.DefaultHandlingFee, standGuardFee);*/
-                var finalValue = withdrawValue < 100 ? TransactionFacade.DefaultHandlingFee : 0;
+                //TODO 暂时不收取
+                //var finalValue = withdrawValue < 100 ? TransactionFacade.DefaultHandlingFee : 0;
+                var finalValue = 0;
                 callback((int)HttpStatusCode.OK, finalValue, "提现手续费 " + finalValue.ToString("c"));
             }
             catch (Exception ex)

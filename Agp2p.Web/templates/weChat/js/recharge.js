@@ -15,7 +15,6 @@ $(() => {
             alert("请输入正确的金额");
             return;
         }
-        //location.href = "/api/payment/ecpss/index.aspx?bankcode=NOCARD&amount=" + $("#amount").val();
 
         $.ajax({
             type: "post",
