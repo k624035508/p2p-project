@@ -87,22 +87,30 @@
             <p>2.每天实名认证不能超过3次，一年不能超过6次，请认真核对信息。</p>
         </div>
            <div class="register-left hidden">
-               <div class="title-tips"><span class="register-msg">托管账户开通</span> <span class="pull-right"><a href='<%linkurl("usercenter","index")%>#'>跳过此步</a> </span></div>
-               <div class="form-box" style="margin-top: 40px;">实名验证成功，请开通第三方托管账户：</div>
-               <div class="register-btn "><a id="tuoguanBtn" href="/api/payment/sumapay/index.aspx?api=1" target="_blank">开通托管账户</a>
+               <div class="title-tips" style="margin-bottom: 40px;"><span class="register-msg">托管账户开通</span> <span class="pull-right"><a href='<%linkurl("usercenter","index")%>#'>跳过此步</a> </span></div>
+               <div class="form-box" style=" height: 50px;"><img src="<%templateskin%>/imgs/register/rightBlue.jpg" style="margin-right: 20px;">实名验证成功，请开通第三方托管账户：</div>
+               <div class="register-btn " style="margin-top: 30px;"><a id="tuoguanBtn" href="/api/payment/sumapay/index.aspx?api=1" target="_blank">开通托管账户</a>
                </div>
                <div class="warm-tips"><span>温馨提示</span></div>
                <p>1.为了保障您的资金安全，请开通第三方托管账户。</p>
            </div>     
         <div class="register-left hidden">
-            <div class="form-box" style="margin-top:80px;">第三方托管开户成功</div>
-            <div class="register-btn "><a  href="/">返回首页</a></div>
-            <div class="register-btn "><a  href='<%linkurl("projects")%>'>开始投资</a></div>
+            <div class="title-tips" style="margin-bottom: 80px;"><span class="register-msg">托管账户开通</span> <span class="pull-right"></span></div>
+            <p style="font-size: 18px; line-height: 18px;"><img src="<%templateskin%>/imgs/register/rightBlue.jpg" style="margin-right: 20px;">恭喜您，开通丰付托管账户成功！</p>
+            <div class="register-btn" style="margin-top: 50px;">
+                <a style="width: 150px; padding-left: 32px;" href="/">返回首页</a>
+                <a style="width: 150px; padding-left: 32px; margin-left: 30px;" href='<%linkurl("projects")%>'>开始投资</a>
+            </div>                       
         </div>  
-           <div class="register-left hidden">
-               <div class="form-box" style="margin-top:80px;">第三方托管开户失败</div>
-           </div> 
-           </div>       
+        <div class="register-left hidden">
+            <div class="title-tips" style="margin-bottom: 80px;"><span class="register-msg">托管账户开通</span> <span class="pull-right"></span></div>
+            <p style="font-size: 18px; line-height: 18px;"><img src="<%templateskin%>/imgs/register/errorBlue.jpg" style="margin-right: 20px;">抱歉，开通丰付托管账户失败！</p>
+            <div class="register-btn" style="margin-top: 50px;">
+                <a style="width: 150px; padding-left: 53px; cursor: pointer;" onclick="history.go(-1);">重试</a>
+                <a style="width: 150px; padding-left: 32px; margin-left: 30px;" href='/'>返回首页</a>
+            </div>
+        </div> 
+        </div>       
     </div>
   <!--ajax图片加载  <div class="nameLoading content-wrap"></div>  -->
     <!--register box end-->

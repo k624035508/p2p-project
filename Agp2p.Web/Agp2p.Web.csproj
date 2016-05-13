@@ -961,6 +961,7 @@
     <Content Include="templates\AnGuang\imgs\register\account.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
+    <Content Include="templates\AnGuang\imgs\register\errorBlue.jpg" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\loading.gif" />
     <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
@@ -972,6 +973,7 @@
     <Content Include="templates\AnGuang\imgs\register\red-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\red-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\register-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\register\rightBlue.jpg" />
     <Content Include="templates\AnGuang\imgs\register\smileface.png" />
     <Content Include="templates\AnGuang\imgs\register\sms-code.png" />
     <Content Include="templates\AnGuang\imgs\safe\data-01.png" />
