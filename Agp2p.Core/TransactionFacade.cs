@@ -104,6 +104,7 @@ namespace Agp2p.Core
                 throw new InvalidOperationException("操作失败：提现金额最低 100 元");
             if (50000 < withdrawMoney)
                 throw new InvalidOperationException("操作失败：提现金额最高 50000 元");
+
             // 查询可用余额，足够的话才能提现
             var account = context.li_bank_accounts.Single(b => b.id == bankAccountId);
             var user = account.dt_users;
@@ -138,8 +139,9 @@ namespace Agp2p.Core
                 value = withdrawMoney,
                 // 防套现手续费公式：未投资金额 * 0.6%；有防提现手续费时不能在数据库里面直接设置默认的手续费(1元)，因为提现取消的时候需要靠这个数来恢复未投资金额
                 // handling_fee = unusedMoney == 0 ? DefaultHandlingFee : unusedMoney*StandGuardFeeRate,
-                // 提现小于 100 元收取 DefaultHandlingFee 元手续费
-                handling_fee = withdrawMoney < 100 ? DefaultHandlingFee : 0,
+                // 提现小于 100 元收取 DefaultHandlingFee 元手续费 TODO 暂时不使用
+                //handling_fee = withdrawMoney < 100 ? DefaultHandlingFee : 0,
+                handling_fee = 0,
                 handling_fee_type =
                     (byte)
                         (unusedMoney == 0
@@ -231,8 +233,11 @@ namespace Agp2p.Core
                             feeFate = tr.value * 0.005m;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.Ecpss:
+                            feeFate = tr.value * feeConfig.recharge_fee_rate;
+                            break;
                         case (int)Agp2pEnums.PayApiTypeEnum.Sumapay:
                             feeFate = tr.value * feeConfig.recharge_fee_rate;
+                            if (feeFate < 3) feeFate = 3;
                             break;
                         case (int)Agp2pEnums.PayApiTypeEnum.SumapayQ:
                             feeFate = tr.value * feeConfig.recharge_fee_rate_quick;

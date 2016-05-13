@@ -22,9 +22,8 @@ namespace Agp2p.Web.api.payment.sumapay
             int requestApi = DTRequest.GetQueryInt("api", 0);
             switch (requestApi)
             {
-                //个人开户/激活
+                //个人开户
                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
-                case (int)Agp2pEnums.SumapayApiEnum.Activ:
                     if(!CheckUserLogin(out user, false)) return;
                     reqMsg = new UserRegisterReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token);
                     break;
@@ -32,6 +31,11 @@ namespace Agp2p.Web.api.payment.sumapay
                     if (!CheckUserLogin(out user, false)) return;
                     reqMsg = new UserRegisterMoblieReqMsg(user.id, user.mobile, user.real_name, user.id_card_number, user.token,
                         HttpContext.Current.Request.UrlReferrer.ToString().ToLower());
+                    break;
+                //个人账户激活
+                case (int)Agp2pEnums.SumapayApiEnum.Activ:
+                    if (!CheckUserLogin(out user, false)) return;
+                    reqMsg = new UserActivateReqMsg(user.id);
                     break;
                 //跳转托管账户
                 case (int)Agp2pEnums.SumapayApiEnum.Accou:
