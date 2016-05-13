@@ -19,7 +19,6 @@ $(() => {
             alert("充值金额必须100元或以上");
             return;
         }
-        //location.href = "/api/payment/ecpss/index.aspx?bankcode=NOCARD&amount=" + $("#amount").val();
 
         $.ajax({
             type: "post",

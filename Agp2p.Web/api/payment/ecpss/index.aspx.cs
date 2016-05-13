@@ -11,6 +11,9 @@ namespace Agp2p.Web.api.payment.ecpss
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //TODO 暂停充值临时
+            throw new ArgumentNullException("您暂时无法充值：安广融合平台正在切换第三方资金托管，具体全面开放请留意官网公告！");
+
             Model.users model = HttpContext.Current.Session[DTKeys.SESSION_USER_INFO] as Model.users;
             if(model == null)
                 throw new ArgumentNullException("用户信息为空！");
