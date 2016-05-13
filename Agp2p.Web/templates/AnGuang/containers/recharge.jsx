@@ -36,10 +36,18 @@ class RechargePage extends React.Component {
 		}
 		var amount = parseFloat(this.state.chargingAmount || "0");
 		if (isNaN(amount) || amount <= 0) {
-			alert("请输入正确的金额");
-			ev.preventDefault();
-			return;
-		}		
+		    alert("请输入正确的金额");
+		    ev.preventDefault();
+		    return;
+		}
+		if ( amount < 100){
+			    alert("充值金额必须100元或以上");
+			    ev.preventDefault();
+			    return;
+			}
+			
+
+        
 
 		$.ajax({
             type: "post",

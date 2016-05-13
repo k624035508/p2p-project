@@ -15,6 +15,10 @@ $(() => {
             alert("请输入正确的金额");
             return;
         }
+        if (amount < 100) {
+            alert("充值金额必须100元或以上");
+            return;
+        }
 
         $.ajax({
             type: "post",
