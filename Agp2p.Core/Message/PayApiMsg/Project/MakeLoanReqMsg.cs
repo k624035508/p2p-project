@@ -28,7 +28,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
 
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CLoan : (int)Agp2pEnums.SumapayApiEnum.ALoan;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_loan" : "main/TransactionForFT_loan");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_loan" : "main/TransactionForFT_loan");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

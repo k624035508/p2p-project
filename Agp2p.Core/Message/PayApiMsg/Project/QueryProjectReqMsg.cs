@@ -28,7 +28,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectCode = projectCode;
             TradeType = tradeType;
             Api = (int) Agp2pEnums.SumapayApiEnum.QuPro;
-            ApiInterface = SumapayConfig.TestApiUrl + "main/TransactionForFT_projectQuery";
+            ApiInterface = SumapayConfig.ApiUrl + "main/TransactionForFT_projectQuery";
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

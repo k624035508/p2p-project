@@ -27,7 +27,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             PayType = "0";
             Api = (int) Agp2pEnums.SumapayApiEnum.URegi;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/register_toRegister";
+            ApiInterface = SumapayConfig.ApiUrl + "user/register_toRegister";
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

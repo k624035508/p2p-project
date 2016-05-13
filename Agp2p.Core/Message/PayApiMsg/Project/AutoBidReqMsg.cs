@@ -26,7 +26,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
 
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.AcBid : (int) Agp2pEnums.SumapayApiEnum.AmBid;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_autoBidding" : "main/TransactionForFT_autoBidding");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_autoBidding" : "main/TransactionForFT_autoBidding");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

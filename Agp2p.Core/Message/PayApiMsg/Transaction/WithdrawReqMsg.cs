@@ -57,7 +57,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             SetBankCodeAccount(bankCode, bankAccount);
 
             Api = (int) Agp2pEnums.SumapayApiEnum.Wdraw;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/withdraw_toWithdraw";
+            ApiInterface = SumapayConfig.ApiUrl + "user/withdraw_toWithdraw";
             RequestId = Agp2pEnums.SumapayApiEnum.Wdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -73,7 +73,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0002";
             Api = (int)Agp2pEnums.SumapayApiEnum.WdraM;
-            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.ApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.WdraM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

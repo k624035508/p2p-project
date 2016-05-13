@@ -31,12 +31,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!cancel)
             {
                 Api = (int)Agp2pEnums.SumapayApiEnum.AtBid;
-                ApiInterface = SumapayConfig.TestApiUrl + "user/autoBid_toAutoSign";
+                ApiInterface = SumapayConfig.ApiUrl + "user/autoBid_toAutoSign";
             }
             else
             {
                 Api = (int)Agp2pEnums.SumapayApiEnum.ClBid;
-                ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoBid_toCancelAutoBid";
+                ApiInterface = SumapayConfig.ApiUrl + "user/cancelAutoBid_toCancelAutoBid";
             }
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }

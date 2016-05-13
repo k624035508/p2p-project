@@ -34,7 +34,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountCode = mainAccountCode;
 
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.RetCo : (int) Agp2pEnums.SumapayApiEnum.RetPt;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_returnPrinInte" : "main/TransactionForFT_returnPrinInte");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_returnPrinInte" : "main/TransactionForFT_returnPrinInte");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }

@@ -35,7 +35,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectDescription = projectDescription;
             GiftFlag = giftFlag;
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.BcRep : (int) Agp2pEnums.SumapayApiEnum.BaRep;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "user/collectiveWithholdingRepay_toWithholdingRepay" : "user/withholdingRepay_toWithholdingRepay");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
             Collective = collective;
         }
