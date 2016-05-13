@@ -44,6 +44,10 @@ $(function() {
         });
     });
     $("#submit-btn").click(function() {
+        //TODO 停止充值临时逻辑
+        //alert("您暂时无法提现：安广融合平台正在切换第三方资金托管，具体全面开放请留意官网公告。");
+        //return;
+
         var withdrawVal = Number(txtHowmany.val());
         if (idleMoney < withdrawVal) {
             alert("您提现的金额超出了您的余额，您的余额为：" + idleMoney);

@@ -2347,6 +2347,11 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                 return;
             }
+            if (Utils.StrToDecimal(rechargeSum, 0) < 100)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"抱歉，最低充值100元！\"}");
+                return;
+            }
             if (!quickPayment)
             {
                 if (string.IsNullOrWhiteSpace(bankCode))
