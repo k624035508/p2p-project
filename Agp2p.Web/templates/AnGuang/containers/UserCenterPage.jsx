@@ -30,6 +30,13 @@ class UserCenterPage extends React.Component {
 		super(props);
 		this.state = {};
 	}
+    componentWillMount() {
+        if (this.props.identityId == null){
+            confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活托管账户。", () => {
+                location.href="/api/payment/sumapay/index.aspx?api=3";
+            });	
+        }	
+    }
 	componentDidUpdate() {
 	    $(".inner-ul li.nav-active").removeClass("nav-active");
 	    $(".inner-ul li:has(> a.active-link)").addClass("nav-active");	
@@ -45,11 +52,6 @@ class UserCenterPage extends React.Component {
 		};
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));	
-		if (this.props.identityId == null){
-		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活托管账户。",() => {
-		        location.href="/api/payment/sumapay/index.aspx?api=3";
-		    });	
-		}	
 	}
 	render() {
 		return (
