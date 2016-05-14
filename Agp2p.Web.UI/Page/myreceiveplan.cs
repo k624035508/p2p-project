@@ -148,11 +148,11 @@ namespace Agp2p.Web.UI.Page
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying)
             {
-                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed);
+                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.li_projects.make_loan_time != null);
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
             {
-                query = query.Where(c => c.li_projects.make_loan_time == null);
+                query = query.Where(c => c.li_projects.make_loan_time == null && c.li_projects.dt_article_category.call_index != "newbie");
             }
 
             var groupBy = query.ToLookup(c => c.li_projects);
