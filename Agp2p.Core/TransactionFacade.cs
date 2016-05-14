@@ -222,7 +222,7 @@ namespace Agp2p.Core
                 his.li_bank_transactions = tr;
                 context.li_wallet_histories.InsertOnSubmit(his);
 
-                //添加充值手续费
+                //添加充值手续费 TODO 提现手续费？ 
                 if (tr.pay_api != null && tr.pay_api >= (int)Agp2pEnums.PayApiTypeEnum.Ecpss)
                 {
                     decimal feeFate = 0;

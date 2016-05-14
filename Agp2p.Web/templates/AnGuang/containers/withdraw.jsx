@@ -68,9 +68,6 @@ class WithdrawPage extends React.Component {
         });
 	}
 	doWithdraw(ev) {
-	    //TODO 停止充值临时逻辑
-	    //alert("您暂时无法提现：安广融合平台正在切换第三方资金托管，具体全面开放请留意官网公告。");
-	    //return;
 		if (this.state.selectedCardIndex == -1) {
 			alert("请先选择银行卡.");
 			return;

@@ -16,7 +16,7 @@ $(() => {
             return;
         }
         if (amount < 100) {
-            alert("充值金额必须100元或以上");
+            alert("充值金额最低为100元");
             return;
         }
 
