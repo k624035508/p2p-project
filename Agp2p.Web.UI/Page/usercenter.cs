@@ -41,7 +41,8 @@ namespace Agp2p.Web.UI.Page
 
         protected bool IsIdentity()
         {
-            return userModel.identity_id == null;
+            //5月13号托管更新前的用户才需要激活操作
+            return userModel.identity_id == null && userModel.reg_time <= DateTime.Parse("2016-5-13");
         }
 
         /// <summary>
@@ -129,8 +130,7 @@ namespace Agp2p.Web.UI.Page
                     hasTransactPassword = !string.IsNullOrWhiteSpace(userInfo.pay_password),
                     groupName = userInfo.dt_user_groups.title,
                     isLoaner = userInfo.li_loaners.Any(),
-                    identityId = userInfo.identity_id,
-                    isIdentity = userInfo.identity_id == null
+                    identityId = userInfo.identity_id
                 }
             });
         }
