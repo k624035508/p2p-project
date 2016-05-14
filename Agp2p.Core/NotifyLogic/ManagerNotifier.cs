@@ -38,20 +38,20 @@ namespace Agp2p.Core.NotifyLogic
             needTransferClaims.GroupBy(c => c.dt_users_agent).ToDictionary(g => g.Key, g => g.Sum(c => c.principal)).ForEach(
                 pair =>
                 {
-                    var msgContent = $"有用户进行了活期提现，目前总提现金额为 {pair.Value}，您的余额为 {pair.Key.li_wallets.idle_money}，请于一日内保持账号内的余额足以赎回活期债权";
+                    var msgContent = $"有用户进行了活期转出，目前总转出金额为 {pair.Value}，您的余额为 {pair.Key.li_wallets.idle_money}，请于一日内保证账号内的余额足以赎回活期债权";
                     try
                     {
                         var errorMsg = string.Empty;
                         if (!SMSHelper.SendTemplateSms(pair.Key.mobile, msgContent, out errorMsg))
                         {
                             context.AppendAdminLogAndSave("Huoqi",
-                                $"发送中间人金额提醒失败：{errorMsg}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
+                                $"发送活期转出提醒失败：{errorMsg}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
                         }
                     }
                     catch (Exception ex)
                     {
                         context.AppendAdminLogAndSave("Huoqi",
-                            $"发送中间人金额提醒失败：{ex.GetSimpleCrashInfo()}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
+                            $"发送活期转出提醒失败：{ex.GetSimpleCrashInfo()}，中间人：{pair.Key.GetFriendlyUserName()}，短信内容：{msgContent}");
                     }
                 });
         }

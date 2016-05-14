@@ -35,13 +35,13 @@ namespace Agp2p.Core.NotifyLogic
                 if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
                 {
                     context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
-                        $"发送还款提醒失败：{errorMsg}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+                        $"发送还款成功信息失败：{errorMsg}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
                 }
             }
             catch (Exception ex)
             {
                 context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
-                    $"发送还款提醒失败：{ex.GetSimpleCrashInfo()}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+                    $"发送还款成功信息失败：{ex.GetSimpleCrashInfo()}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
             }
         }
 

@@ -53,20 +53,20 @@ namespace Agp2p.Core.NotifyLogic
                         tr.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
                     .Aggregate(0m, (sum, tr) => sum + tr.principal);
 
-                var msgContent = $"用户总共延期投资了活期项目 {ptr.li_projects.title} {delayInvested.ToString("c")}，但活期债权本金总额（{huoqiBuyableClaimsAmount.ToString("c")}）不足，请尽快处理";
+                var msgContent = $"用户总共投资了活期项目 {ptr.li_projects.title} {delayInvested.ToString("c")}，但活期债权本金总额（{huoqiBuyableClaimsAmount.ToString("c")}）不足，请尽快处理";
                 var errorMsg = string.Empty;
                 if (!SMSHelper.SendTemplateSms(agent.mobile, msgContent, out errorMsg))
                 {
-                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + errorMsg);
+                    context.AppendAdminLogAndSave("Agent", "发送提醒中间人买入债权短信失败：" + errorMsg);
                 }
                 else
                 {
-                    context.AppendAdminLogAndSave("Agent", "发送中间人提现短信成功：" + msgContent);
+                    context.AppendAdminLogAndSave("Agent", "发送提醒中间人买入债权短信成功：" + msgContent);
                 }
             }
             catch (Exception ex)
             {
-                context.AppendAdminLogAndSave("Agent", "发送中间人提现短信失败：" + ex.GetSimpleCrashInfo());
+                context.AppendAdminLogAndSave("Agent", "发送提醒中间人买入债权短信失败：" + ex.GetSimpleCrashInfo());
             }
         }
 
