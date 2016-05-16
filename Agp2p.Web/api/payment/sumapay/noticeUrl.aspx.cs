@@ -22,6 +22,8 @@ namespace Agp2p.Web.api.payment.sumapay
         protected void Page_Load(object sender, EventArgs e)
         {
             DoResponse();
+            //通知托管平台已收到异步消息
+            Response.Write("success");
         }
 
         /// <summary>
@@ -156,8 +158,6 @@ namespace Agp2p.Web.api.payment.sumapay
                             {
                                 ResponseLog.status = (int)Agp2pEnums.SumapayResponseEnum.Complete;
                                 RequestLog.status = (int)Agp2pEnums.SumapayRequestEnum.Complete;
-                                //通知托管平台已收到异步消息
-                                Response.Write("success");
                             }
                             else
                             {
