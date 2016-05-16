@@ -115,7 +115,8 @@ namespace Agp2p.Core
 
             // 判断提现次数，每人每日的提现次数不能超过 3 次
             var withdrawTimesToday = context.li_bank_transactions.Count(btr => btr.li_bank_accounts.owner == user.id
-                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw && btr.create_time.Date == DateTime.Today);
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status != (int)Agp2pEnums.BankTransactionStatusEnum.Cancel && btr.create_time.Date == DateTime.Today);
 
             if (3 <= withdrawTimesToday)
             {
