@@ -59,8 +59,9 @@ namespace Agp2p.Core.PayApiLogic
                     case (int) Agp2pEnums.SumapayApiEnum.WdraM:
                         //提现
                         var withdrawReqMsg = (WithdrawReqMsg) msg;
-                        context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
-                            Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
+                        msg.Remarks = withdrawReqMsg.BankId;
+                        //context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
+                        //    Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
                         break;
                     //债权转让
                     case (int) Agp2pEnums.SumapayApiEnum.CreAs:
