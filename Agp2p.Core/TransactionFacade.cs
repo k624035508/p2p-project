@@ -97,7 +97,7 @@ namespace Agp2p.Core
         /// <param name="remark"></param>
         /// <returns></returns>
         public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId,
-            decimal withdrawMoney, string noOrder = "", string remark = null)
+            decimal withdrawMoney, string remark = null, string noOrder = "")
         {
             // 提现 100 起步，50w 封顶
             if (withdrawMoney < 100)

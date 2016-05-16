@@ -108,7 +108,7 @@ namespace Agp2p.Core.PayApiLogic
                                 msg.HasHandle = true;
                             }
                         }
-                        //TODO 取消提现
+                        //TODO 自动取消提现 暂人工取消
                         //if (!msg.HasHandle)
                         //    context.CancelBankTransaction(trans.id, 1);
                     }
