@@ -92,7 +92,7 @@ namespace Agp2p.Core.PayApiLogic
                         }
                     }
                     //取消提现
-                    if (!msg.HasHandle)
+                    if (!msg.HasHandle && !msg.Sync)
                         context.CancelBankTransaction(trans.id, 1);
                 }
                 else
