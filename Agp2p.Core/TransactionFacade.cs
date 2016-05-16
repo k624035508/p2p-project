@@ -102,8 +102,9 @@ namespace Agp2p.Core
             // 提现 100 起步，5w 封顶
             if (withdrawMoney < 100)
                 throw new InvalidOperationException("操作失败：提现金额最低 100 元");
-            if (50000 < withdrawMoney)
-                throw new InvalidOperationException("操作失败：提现金额最高 50000 元");
+
+            if (50 * 10000 < withdrawMoney)
+                throw new InvalidOperationException("操作失败：提现金额最高 500000 元");
 
             // 查询可用余额，足够的话才能提现
             var account = context.li_bank_accounts.Single(b => b.id == bankAccountId);
@@ -112,10 +113,13 @@ namespace Agp2p.Core
             if (wallet.idle_money < withdrawMoney)
                 throw new InvalidOperationException("操作失败：用户 " + user.user_name + " 的账户余额小于需要提现的金额");
 
-            // 判断提现次数，每日每张卡的提现次数不能超过 3 次
-            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today) && !Utils.IsDebugging())
+            // 判断提现次数，每人每日的提现次数不能超过 3 次
+            var withdrawTimesToday = context.li_bank_transactions.Count(btr => btr.li_bank_accounts.owner == user.id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw && btr.create_time.Date == DateTime.Today);
+
+            if (3 <= withdrawTimesToday)
             {
-                throw new InvalidOperationException("每日每张卡的提现次数不能超过 3 次");
+                throw new InvalidOperationException("每人每日的提现次数不能超过 3 次");
             }
 
             // 计算出产生防套现手续费的部分 (空闲 - 未投资 = 回款，提现回款金额无需手续费)
