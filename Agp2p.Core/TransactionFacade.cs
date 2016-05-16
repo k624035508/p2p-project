@@ -99,7 +99,7 @@ namespace Agp2p.Core
         public static li_bank_transactions Withdraw(this Agp2pDataContext context, int bankAccountId,
             decimal withdrawMoney, string noOrder = "", string remark = null)
         {
-            // 提现 100 起步，5w 封顶
+            // 提现 100 起步，50w 封顶
             if (withdrawMoney < 100)
                 throw new InvalidOperationException("操作失败：提现金额最低 100 元");
 

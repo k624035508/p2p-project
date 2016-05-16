@@ -2418,7 +2418,7 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"提现金额最低 100 元！\"}");
                 return;
             }
-            if (howmany > 50000)
+            if (howmany > 500000)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 500000 元！\"}");
                 return;
@@ -2428,17 +2428,15 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
                 return;
             }
-            // 查询可用余额，足够的话才能提现
-            var account = new Agp2pDataContext().li_bank_accounts.Single(b => b.id == cardId);
-            var wallet = user.li_wallets;
-            if (wallet.idle_money < howmany)
-                context.Response.Write("{\"status\":0, \"msg\":\"账户余额小于提现的金额！\"}");
-            // 判断提现次数，每日每张卡的提现次数不能超过 3 次
-            if (3 <= account.li_bank_transactions.Count(card => card.create_time.Date == DateTime.Today && card.status == (int)Agp2pEnums.BankTransactionStatusEnum.Confirm) && !Utils.IsDebugging())
+            // 判断提现次数，每人每日的提现次数不能超过 3 次
+            var withdrawTimesToday = new Agp2pDataContext().li_bank_transactions.Count(btr => btr.li_bank_accounts.owner == user.id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status != (int)Agp2pEnums.BankTransactionStatusEnum.Cancel && btr.create_time.Date == DateTime.Today);
+            if (3 <= withdrawTimesToday)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"每日每张卡的提现次数不能超过 3 次！\"}");
             }
-            
+
             //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
             if (string.IsNullOrEmpty(backUrl))
             {
