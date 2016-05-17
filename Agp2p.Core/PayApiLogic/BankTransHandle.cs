@@ -67,37 +67,64 @@ namespace Agp2p.Core.PayApiLogic
             try
             {
                 Agp2pDataContext context = new Agp2pDataContext();
-                //查找对应的交易流水
-                var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                if (trans != null)
+                //同步返回是正在提现申请受理(忽略)，异步返回才是提现处理
+#if DEBUG
+                if (msg.Sync)
                 {
+#endif
+#if !DEBUG
+                if (!msg.Sync)
+                {
+#endif
                     if (msg.CheckResult())
                     {
                         if (msg.CheckSignature())
                         {
-                            //异步返回才放款,内网测试使用同步
-#if DEBUG
-                            if (msg.Sync)
+                            //当noticeType＝0时，00000代表受理成功；当noticeType＝1时，00000代表提现成功；
+                            if (msg.NoticeType == "1")
                             {
-#endif
-#if !DEBUG
-                            if (!msg.Sync)
+                                //查找对应的交易流水
+                                var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                                if (trans != null)
+                                {
+                                    context.ConfirmBankTransaction(trans.id, null);//TODO 检查用户资金信息
+                                    msg.HasHandle = true;
+                                }
+                                else
+                                {
+                                    msg.Remarks = "提现已处理成功，但没有找到对应的交易记录，交易流水号为：" + msg.RequestId;
+                                }
+                            }
+                            else
                             {
-#endif
-                                context.ConfirmBankTransaction(trans.id, null);
-                                //TODO 检查用户资金信息
-
-                                msg.HasHandle = true;
+                                //查找对应的请求
+                                var requestLog = context.li_pay_request_log.SingleOrDefault(u => u.id == msg.RequestId);
+                                if (requestLog != null)
+                                {
+                                    var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                                    if (trans == null)
+                                    {
+                                        //创建提现申请记录
+                                        context.Withdraw(Utils.StrToInt(requestLog.remarks, 0),
+                                        Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                                        //TODO 提现完成特殊处理
+                                        //msg.HasHandle = true;
+                                    }
+                                    else
+                                    {
+                                        msg.Remarks = "提现已受理，但已生成过交易记录，交易流水号为：" + msg.RequestId;
+                                    }
+                                }
+                                else
+                                {
+                                    msg.Remarks = "提现已受理，但没有找到对应的请求，请求流水号为：" + msg.RequestId;
+                                }
                             }
                         }
                     }
-                    //取消提现
-                    if (!msg.HasHandle && !msg.Sync)
-                        context.CancelBankTransaction(trans.id, 1);
-                }
-                else
-                {
-                    msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                    //TODO 自动取消提现 暂人工取消
+                    //if (!msg.HasHandle)
+                    //    context.CancelBankTransaction(trans.id, 1);
                 }
             }
             catch (Exception ex)

@@ -28,7 +28,7 @@ class ReturnCondition extends React.Component {
                 <p>
                     <img src="templates/AnGuang/imgs/usercenter/005.png" />
                     恭喜您, {
-                        this.props.returnId == "invested" ? "投资" : this.props.returnId == "recharge" ? "充值" : this.props.returnId == "withdraw" ? "提现" : this.props.returnId == "repay" ? "还款" :
+                        this.props.returnId == "invested" ? "投资" : this.props.returnId == "recharge" ? "充值" : this.props.returnId == "withdraw" ? "提现申请" : this.props.returnId == "repay" ? "还款" :
                             this.props.returnId == "tranClaim" ? "债权转让认购" : this.props.returnId == "autoTender" ? "自动投标续约" : this.props.returnId == "autoTenderCancel" ? "自动投标解约" :
                                 this.props.returnId == "autoAccount" ? "自动还款开通" : this.props.returnId == "autoAccountCancel" ? "自动还款取消" : null
                     }成功！
