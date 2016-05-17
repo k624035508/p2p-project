@@ -39,7 +39,8 @@ namespace Agp2p.Web.UI.Page
                 last4Char = a.account.Substring(a.account.Length - 4),
                 cardNumber = a.account,
                 openingBank = a.opening_bank,
-                bankLocation = a.location
+                bankLocation = a.location,
+                type = a.type
             });
             return JsonConvert.SerializeObject(data);
         }

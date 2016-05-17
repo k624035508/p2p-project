@@ -2248,7 +2248,8 @@ namespace Agp2p.Web.tools
                     opening_bank = branch_name,
                     location = province + ";" + city + ";" + area,
                     last_access_time = DateTime.Now,
-                    owner = user.id
+                    owner = user.id,
+                    type = (int)Agp2pEnums.BankAccountType.Unknown,
                 };
                 linq_context.li_bank_accounts.InsertOnSubmit(bank);
                 linq_context.SubmitChanges();

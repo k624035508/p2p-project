@@ -938,7 +938,16 @@ namespace Agp2p.Common
             IdcardChecking = 1,
             [Description("借款人还款提醒")]
             LoanerRepaymentRemind = 2,
+        }
 
+        public enum BankAccountType
+        {
+            [Description("未知")]
+            Unknown = 1,
+            [Description("快捷支付")]
+            QuickPay = 2,
+            [Description("网银支付")]
+            WebBank = 3,
         }
     }
 }

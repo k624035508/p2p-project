@@ -4,6 +4,7 @@ import CardEditor from "../components/card-editor.jsx";
 import { fetchBankCards } from "../actions/bankcard.js";
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js";
 import { ajax } from "jquery";
+import some from "lodash/collection/some";
 
 import "../less/withdraw.less";
 import alert from "../components/tips_alert.js";
@@ -181,16 +182,23 @@ class WithdrawPage extends React.Component {
 				</div>
 			</div>
 		);
-		}
-		}
+	}
+}
 
+const BankAccountType = {
+    Unknown: 1, // 未知
+    QuickPay: 2, // 快捷支付
+    WebBank: 3, // 网银支付
+}
 
 function mapStateToProps(state) {
 	return {
-				        realName: state.userInfo.realName,
+		realName: state.userInfo.realName,
 		idleMoney: state.walletInfo.idleMoney,
 		hasTransactPassword: state.userInfo.hasTransactPassword,
-		cards: state.bankCards,
+		cards: some(state.bankCards, {type: BankAccountType.QuickPay})
+			? state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
+			: state.bankCards
 	};
 }
 
