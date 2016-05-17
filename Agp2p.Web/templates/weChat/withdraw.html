@@ -57,7 +57,7 @@
                 </div>
                 <div class="bank-select-body">
                     <%set var bank_accounts=get_bank_accounts(userModel.id)%>
-                    <%foreach(var bank_account in bank_accounts)%>
+                    <%foreach(var bank_account in bank_accounts.Where(ac=>ac.type!=(int)Agp2pEnums.BankAccountType.QuickPay))%>
                     <div data-dismiss="modal" data-cardId="{bank_account.id}" data-bankName="{bank_account.bank}">
                         <i class="sprite-dlg"></i>
                         <span>{bank_account.bank} （<%=bank_account.account.Substring(bank_account.account.Length - 4)%>）</span>
