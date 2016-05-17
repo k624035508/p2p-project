@@ -77,7 +77,11 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = Agp2pEnums.SumapayApiEnum.WdraM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
-        private void SetBankCodeAccount(string bankCode, string bankAccount)
+        protected WithdrawReqMsg()
+        {
+        }
+
+        protected void SetBankCodeAccount(string bankCode, string bankAccount)
         {
             if (!string.IsNullOrEmpty(bankCode))
             {

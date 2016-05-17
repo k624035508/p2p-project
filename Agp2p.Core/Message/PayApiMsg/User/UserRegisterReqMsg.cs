@@ -31,6 +31,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = Agp2pEnums.SumapayApiEnum.URegi.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
+        protected UserRegisterReqMsg()
+        {
+        }
+
         public override string GetSignature()
         {
             return SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + SuccessReturnUrl + FailReturnUrl +
@@ -39,21 +43,22 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public override SortedDictionary<string, string> GetSubmitPara()
         {
-            return new SortedDictionary<string, string>
+            var sd = new SortedDictionary<string, string>
             {
                 {"requestId", RequestId},
                 {"merchantCode", SumapayConfig.MerchantCode},
                 {"userIdIdentity", UserId.ToString()},
-                {"telephone", Telephone},
-                {"name", Name},
-                {"idNumber", IdNumber?.ToUpper()},
                 {"successReturnUrl", SuccessReturnUrl},
                 {"failReturnUrl", FailReturnUrl},
                 {"noticeUrl", SumapayConfig.NoticeUrl},
-                {"token", Token},
-                {"payType", PayType},
                 {"signature", GetSignature()}
             };
+            if (!string.IsNullOrEmpty(Telephone)) sd.Add("telephone", Telephone);
+            if (!string.IsNullOrEmpty(Name)) sd.Add("name", Name);
+            if (!string.IsNullOrEmpty(IdNumber)) sd.Add("idNumber", IdNumber);
+            if (!string.IsNullOrEmpty(Token)) sd.Add("token", Token);
+            if (!string.IsNullOrEmpty(PayType)) sd.Add("payType", PayType);
+            return sd;
         }
     }
 }

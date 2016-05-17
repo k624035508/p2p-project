@@ -38,6 +38,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
         }
 
+        protected AccountRepayReqMsg()
+        {            
+        }
+
         public override string GetSignature()
         {
             return

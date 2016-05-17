@@ -57,10 +57,11 @@ namespace Agp2p.Web.api.payment.sumapay
                             BaseRespMsg respMsg = null;
                             switch (RequestLog.api)
                             {
-                                //个人开户/激活
+                                //个人/企业 开户/激活
                                 case (int)Agp2pEnums.SumapayApiEnum.URegi:
                                 case (int)Agp2pEnums.SumapayApiEnum.URegM:
                                 case (int)Agp2pEnums.SumapayApiEnum.Activ:
+                                case (int)Agp2pEnums.SumapayApiEnum.CRegi:
                                     respMsg = new UserRegisterRespMsg(reqStr);
                                     break;
                                 //个人自动投标续约
@@ -71,17 +72,20 @@ namespace Agp2p.Web.api.payment.sumapay
                                 case (int)Agp2pEnums.SumapayApiEnum.ClBid:
                                     respMsg = new AutoBidSignRespMsg(reqStr, true);
                                     break;
-                                //个人自动账户/银行还款开通
+                                //个人/企业 自动账户/银行还款开通
                                 case (int)Agp2pEnums.SumapayApiEnum.AcReO:
+                                case (int)Agp2pEnums.SumapayApiEnum.CcReO:
                                 case (int)Agp2pEnums.SumapayApiEnum.AbReO:
                                     respMsg = new AutoRepaySignRespMsg(reqStr);
                                     break;
-                                //个人自动还款取消
+                                //个人/企业 自动还款取消
                                 case (int)Agp2pEnums.SumapayApiEnum.ClRep:
+                                case (int)Agp2pEnums.SumapayApiEnum.CancR:
                                     respMsg = new AutoRepaySignRespMsg(reqStr, true);
                                     break;
-                                //个人网银/一键充值
+                                //企业/个人网银/一键充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
+                                case (int)Agp2pEnums.SumapayApiEnum.CeRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.WhReM:
                                     respMsg = new RechargeRespMsg(reqStr);
@@ -109,14 +113,17 @@ namespace Agp2p.Web.api.payment.sumapay
                                 case (int)Agp2pEnums.SumapayApiEnum.CLoan:
                                     respMsg = new MakeLoanRespMsg(reqStr);
                                     break;
-                                //个人提现
+                                //个人/企业提现
                                 case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                                case (int)Agp2pEnums.SumapayApiEnum.Cdraw:
                                 case (int)Agp2pEnums.SumapayApiEnum.WdraM:
                                     respMsg = new WithdrawRespMsg(reqStr, isSync);
                                     break;
-                                //个人存管账户还款普通/集合项目
+                                //个人/企业 存管账户还款普通/集合项目
                                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:
                                 case (int)Agp2pEnums.SumapayApiEnum.McRep:
+                                case (int)Agp2pEnums.SumapayApiEnum.CaRep:
+                                case (int)Agp2pEnums.SumapayApiEnum.CoRep:
                                     respMsg = new RepayRespMsg(reqStr);
                                     break;
                                 //个人协议还款普通/集合项目
@@ -127,6 +134,8 @@ namespace Agp2p.Web.api.payment.sumapay
                                 //个人自动还款普通/集合项目
                                 case (int)Agp2pEnums.SumapayApiEnum.AcRep:
                                 case (int)Agp2pEnums.SumapayApiEnum.AbRep:
+                                case (int)Agp2pEnums.SumapayApiEnum.CcRep:
+                                case (int)Agp2pEnums.SumapayApiEnum.CbRep:
                                     respMsg = new RepayRespMsg(reqStr, false, true);
                                     break;
                                 //普通/集合项目本息到账
