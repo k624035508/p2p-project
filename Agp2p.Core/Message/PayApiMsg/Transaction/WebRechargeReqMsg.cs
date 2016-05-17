@@ -18,6 +18,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
+        public string BankType { get; set; }//银行类型 0：个人网银1：企业网银
         //分账列表
         private string subledgerList;
         public string SubledgerList
@@ -60,6 +61,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
+        protected WebRechargeReqMsg()
+        {
+        }
+
         public override string GetSignature()
         {
             return
@@ -87,6 +92,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);
             if (!string.IsNullOrEmpty(MainAccountCode)) sd.Add("mainAccountCode", MainAccountCode);
             if (!string.IsNullOrEmpty(PassThrough)) sd.Add("passThrough", PassThrough);
+            if (!string.IsNullOrEmpty(BankType)) sd.Add("bankType", BankType);
 
             return sd;
         }

@@ -33,6 +33,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = Agp2pEnums.SumapayApiEnum.AccoM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
+        protected UserToAccountReqMsg()
+        {
+        }
+
         public override string GetSignature()
         {
             return !string.IsNullOrEmpty(RequestType)

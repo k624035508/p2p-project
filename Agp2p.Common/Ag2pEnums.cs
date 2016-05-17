@@ -835,15 +835,20 @@ namespace Agp2p.Common
         public enum SumapayApiEnum
         {
             [Description("实名开户")] URegi = 1,
+            [Description("企业实名开户")] CRegi = 201,
             [Description("实名认证")] UAuth = 2,
             [Description("用户激活")] Activ = 3,
             [Description("账户管理")] Accou = 4,
+            [Description("企业账户管理")] CAcco = 204,
             [Description("自动投标续约")] AtBid = 5,
             [Description("取消自动投标")] ClBid = 6,
             [Description("开通存管账户自动还款")] AcReO = 7,
+            [Description("企业开通存管账户自动还款")] CcReO = 207,
             [Description("开通银行账户自动还款")] AbReO = 8,
             [Description("关闭用户自动还款")] ClRep = 9,
+            [Description("关闭企业自动还款")] CancR = 209,
             [Description("网银充值")] WeRec = 10,
+            [Description("企业网银充值")] CeRec = 210,
             [Description("一键充值")] WhRec = 11,
             [Description("投标普通项目")] MaBid = 12,
             [Description("投标集合项目")] McBid = 13,
@@ -854,13 +859,18 @@ namespace Agp2p.Common
             [Description("流标普通项目")] RePro = 18,
             [Description("普通项目放款")] ALoan = 19,
             [Description("集合项目放款")] CLoan = 20,
-            [Description("用户提现")] Wdraw = 21,
+            [Description("个人用户提现")] Wdraw = 21,
+            [Description("企业用户提现")] Cdraw = 221,
             [Description("存管账户还款(普通项目)")] MaRep = 22,
+            [Description("企业存管账户还款(普通项目)")] CaRep = 222,
             [Description("存管账户还款(集合项目)")] McRep = 23,
+            [Description("企业存管账户还款(集合项目)")] CoRep = 223,
             [Description("银行账户还款(普通项目)")] BaRep = 24,
             [Description("银行账户还款(集合项目)")] BcRep = 25,
             [Description("自动还款(普通项目)")] AcRep = 26,
+            [Description("企业自动还款(普通项目)")] CcRep = 226,
             [Description("自动还款(集合项目)")] AbRep = 27,
+            [Description("企业自动还款(集合项目)")] CbRep = 227,
             [Description("本息到账(普通项目)")] RetPt = 28,
             [Description("本息到账(集合项目)")] RetCo = 29,
             [Description("债权转让")] CreAs = 30,
@@ -868,20 +878,13 @@ namespace Agp2p.Common
             [Description("用户签约银行卡查询")] QuBan = 32,
             [Description("商户项目查询")] QuPro = 33,
 
-            [Description("移动端实名开户")]
-            URegM = 101,
-            [Description("移动端账户管理")]
-            AccoM = 104,
-            [Description("移动端移动端充值")]
-            WhReM = 111,
-            [Description("移动端提现")]
-            WdraM = 121,
-            [Description("移动端投标普通项目")]
-            MaBiM = 112,
-            [Description("移动端投标集合项目")]
-            McBiM = 113,
-            [Description("移动端债权转让")]
-            CreAM = 130
+            [Description("移动端实名开户")] URegM = 101,
+            [Description("移动端账户管理")] AccoM = 104,
+            [Description("移动端移动端充值")] WhReM = 111,
+            [Description("移动端提现")] WdraM = 121,
+            [Description("移动端投标普通项目")] MaBiM = 112,
+            [Description("移动端投标集合项目")] McBiM = 113,
+            [Description("移动端债权转让")] CreAM = 130
         }
 
         public enum StaticClaimQueryEnum
