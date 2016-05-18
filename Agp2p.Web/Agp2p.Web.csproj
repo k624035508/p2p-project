@@ -844,6 +844,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-04.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-05.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-newYPB.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
     <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
