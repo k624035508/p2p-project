@@ -121,7 +121,8 @@ namespace Agp2p.Web.UI.Page
                     a.type == (int) Agp2pEnums.AlbumTypeEnum.PropertyCertificate ||
                     a.type == (int) Agp2pEnums.AlbumTypeEnum.LienCertificate));
 
-            var loanerIdCard = loaner?.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard) ?? Enumerable.Empty<li_albums>();
+            // 借款人身份证
+            //var loanerIdCard = loaner?.li_albums.Where(a => a.type == (int)Agp2pEnums.AlbumTypeEnum.IdCard) ?? Enumerable.Empty<li_albums>();
 
             var creditorIdCard = Enumerable.Empty<li_albums>();
             if (risk.li_creditors?.dt_users != null)
@@ -151,7 +152,7 @@ namespace Agp2p.Web.UI.Page
             var guarantorPics = projectModel.li_risks?.li_guarantors?.li_albums ?? Enumerable.Empty<li_albums>();
 
             return
-                new[] { companyPics, pictures, certificates, loanerIdCard, creditorIdCard, mortgagePics, guarantorPics}.SelectMany(s => s);
+                new[] { companyPics, pictures, certificates, creditorIdCard, mortgagePics, guarantorPics}.SelectMany(s => s);
         } 
 
         void Project_Init(object sender, EventArgs e)
