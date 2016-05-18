@@ -56,6 +56,7 @@ class UserCenterPage extends React.Component {
 		var adTimer;
 		$(".hot-li li").hover(function(){
 		    index=$(".hot-li li").index(this);
+		    $(this).addClass("current-li").siblings().removeClass("current-li");
 		    $(".hot-img").eq(index).show().siblings().hide();
 		});
 	}
@@ -126,7 +127,7 @@ class UserCenterPage extends React.Component {
                             </div>
                           </div>
                           <ul className="list-unstyled hot-li">
-                              <li>●</li>
+                              <li className="current-li">●</li>  
                               <li>●</li>
                           </ul>
                         </div>
