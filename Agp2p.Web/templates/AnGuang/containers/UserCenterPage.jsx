@@ -50,6 +50,15 @@ class UserCenterPage extends React.Component {
 		        location.href="/api/payment/sumapay/index.aspx?api=3";
 		    });	
 		}	
+		$(".hot-img").eq(0).show().siblings().hide();
+		var leng=$(".hot-img").length;
+		var index=0;
+		var adTimer;
+		$(".hot-li li").hover(function(){
+		    index=$(".hot-li li").index(this);
+		    $(this).addClass("current-li").siblings().removeClass("current-li");
+		    $(".hot-img").eq(index).show().siblings().hide();
+		});
 	}
 	render() {
 		return (
@@ -103,12 +112,24 @@ class UserCenterPage extends React.Component {
 					  
                         <div className="hot-act">
                             <div className="hot-title">热门活动</div>
-                            <div className="hot-img">
+                          <div>
+                            <div className="hot-img hot-img-bg1">
                                 <a href="https://www.agrhp2p.com/article/384.html" target="_blank"></a>                              
                                 <div>
                                     劳动小当家 
                                 </div>
                             </div>
+                            <div className="hot-img hot-img-bg2">
+                                <a href="https://www.agrhp2p.com/article/403.html" target="_blank"></a>                              
+                                <div>
+                                    升级版“银票宝” 
+                                </div>
+                            </div>
+                          </div>
+                          <ul className="list-unstyled hot-li">
+                              <li className="current-li">●</li>  
+                              <li>●</li>
+                          </ul>
                         </div>
                 </div>
 								    {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
