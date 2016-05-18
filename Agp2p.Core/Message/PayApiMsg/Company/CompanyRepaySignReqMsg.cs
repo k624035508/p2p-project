@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 using TinyMessenger;
 
 
@@ -11,7 +12,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// </summary>
     public class CompanyRepaySignReqMsg : AutoRepaySignReqMsg
     {
-        public CompanyRepaySignReqMsg(int userId, int projectCode, string repayLimit, string cycle = "")
+        public CompanyRepaySignReqMsg(int userId, int projectCode, string repayLimit, string cycle = " ")
         {
             UserId = userId;
             ProjectCode = projectCode;
