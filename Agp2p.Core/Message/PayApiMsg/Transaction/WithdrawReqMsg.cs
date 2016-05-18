@@ -22,7 +22,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BackUrl { get; set; }
         public string RequestType { get; set; }
         //分账列表
-        private string subledgerList;
+        protected string subledgerList;
         public string SubledgerList
         {
             get

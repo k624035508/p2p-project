@@ -25,6 +25,18 @@ namespace Agp2p.Core.Message.PayApiMsg
             Api = (int)Agp2pEnums.SumapayApiEnum.Cdraw;
             ApiInterface = SumapayConfig.ApiUrl + "businessUser/withdraw_toWithdraw";
             RequestId = Agp2pEnums.SumapayApiEnum.Cdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+
+            subledgerList = JsonHelper.ObjectToJSON(new List<object>()
+                    {
+                        new
+                        {
+                            roleType = "3",
+                            roleCode = UserId.ToString(),
+                            inOrOut = "1",
+                            bizFlag = "0",
+                            sum = Sum
+                        }
+                    });
         }
     }
 }

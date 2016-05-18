@@ -86,12 +86,22 @@ namespace Agp2p.Web.api.payment.sumapay
                 //个人一键充值
                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                     if (!CheckUserLogin(out user)) return;
+                    if (user.dt_user_groups.title.Equals(GroupName))
+                    {
+                        Response.Write("对不起，企业用户不能使用快捷充值！");
+                        return;
+                    }
                     reqMsg = new WhRechargeReqMsg(user.id,
                             DTRequest.GetQueryString("sum"));
                     break;
                 //个人移动端一键充值
                 case (int)Agp2pEnums.SumapayApiEnum.WhReM:
                     if (!CheckUserLogin(out user)) return;
+                    if (user.dt_user_groups.title.Equals(GroupName))
+                    {
+                        Response.Write("对不起，企业用户不能使用快捷充值！");
+                        return;
+                    }
                     reqMsg = new WhRechargeReqMsg(user.id,
                             DTRequest.GetQueryString("sum"), DTRequest.GetQueryString("backUrl"), "", "3", "", "");
                     break;
