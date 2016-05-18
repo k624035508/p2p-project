@@ -29,7 +29,8 @@ class ReturnFailCondition extends React.Component {
                 </div>
                 {this.props.returnId == "rechargeFail" ? <a href={linkrecharge} className="returnBtn">重试</a> :
                     this.props.returnId == "withdrawFail" ? <a href={linkwithdraw} className="returnBtn">重试</a> :
-                        this.props.returnId == "repayFail" ? <a href={linkmyloan} className="returnBtn">重试</a> :
+                    this.props.returnId == "repayFail" ? <a href={linkmyloan} className="returnBtn">重试</a> :
+                    this.props.returnId == "investedFail" ? <a href={linkaccount} className="returnBtn">我的账户</a> :
                             <a href={linkrecord} className="returnBtn">重试</a>
                 }
                 <a href="/" className="closeBtn">首页</a>
