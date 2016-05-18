@@ -98,6 +98,14 @@
     <Compile Include="Message\PayApiMsg\BackEndReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\BaseReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyAutoRepayCancelReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyRepaySignReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyAccountRepayReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyAutoRepayReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyWithdrawReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyWebRechargeReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyToAccountReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Company\CompanyRegisterReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\User\UserRegisterMoblieReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\QueryProjectRespMsg.cs" />

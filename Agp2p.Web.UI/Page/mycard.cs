@@ -60,7 +60,8 @@ namespace Agp2p.Web.UI.Page
                 bank = bankName,
                 last_access_time = DateTime.Now,
                 opening_bank = "",
-                location = ""
+                location = "",
+                type = (int) Common.Agp2pEnums.BankAccountType.Unknown,
             };
             context.li_bank_accounts.InsertOnSubmit(card);
             context.SubmitChanges();

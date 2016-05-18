@@ -17,19 +17,6 @@
       <Association Name="dt_users_li_activity_transactions" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.li_bank_accounts" Member="li_bank_accounts">
-    <Type Name="li_bank_accounts">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="bank" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
-      <Column Name="opening_bank" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="account" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
-      <Column Name="last_access_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="location" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="withdraw_account" Type="li_bank_transactions" />
-      <Association Name="dt_users_li_bank_accounts" Member="dt_users" ThisKey="owner" OtherKey="id" Type="dt_users" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.li_bank_transactions" Member="li_bank_transactions">
     <Type Name="li_bank_transactions">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -48,9 +35,9 @@
       <Column Name="remarks" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="ip" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
       <Association Name="li_bank_transactions_li_wallet_histories" Member="li_wallet_histories" ThisKey="id" OtherKey="bank_transaction" Type="li_wallet_histories" />
-      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_accounts" ThisKey="withdraw_account" OtherKey="id" Type="li_bank_accounts" IsForeignKey="true" />
       <Association Name="dt_manager_li_bank_transactions" Member="dt_manager" ThisKey="approver" OtherKey="id" Type="dt_manager" IsForeignKey="true" />
       <Association Name="dt_users_li_bank_transactions" Member="dt_users" ThisKey="charger" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_accounts" ThisKey="withdraw_account" OtherKey="id" Type="li_bank_accounts" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_invitations" Member="li_invitations">
@@ -711,7 +698,6 @@
       <Column Name="identity_id" Type="System.String" DbType="VarChar(18)" CanBeNull="true" />
       <Column Name="protocolCode" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
       <Association Name="dt_users_li_activity_transactions" Member="li_activity_transactions" ThisKey="id" OtherKey="user_id" Type="li_activity_transactions" />
-      <Association Name="dt_users_li_bank_accounts" Member="li_bank_accounts" ThisKey="id" OtherKey="owner" Type="li_bank_accounts" />
       <Association Name="dt_users_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="charger" Type="li_bank_transactions" />
       <Association Name="dt_users_li_invitations" Member="li_invitations" ThisKey="id" OtherKey="user_id" Type="li_invitations" Cardinality="One" />
       <Association Name="dt_users_li_invitations1" Member="li_invitations1" ThisKey="id" OtherKey="inviter" Type="li_invitations" />
@@ -731,6 +717,7 @@
       <Association Name="dt_users_li_claims1" Member="li_claims_byAgent" ThisKey="id" OtherKey="agent" Type="li_claims" />
       <Association Name="dt_users_li_project_transactions" Member="li_project_transactions" ThisKey="id" OtherKey="investor" Type="li_project_transactions" />
       <Association Name="dt_users_li_event_records" Member="li_event_records" ThisKey="id" OtherKey="userId" Type="li_event_records" />
+      <Association Name="dt_users_li_bank_accounts" Member="li_bank_accounts" ThisKey="id" OtherKey="owner" Type="li_bank_accounts" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -770,6 +757,20 @@
       <Column Name="occurAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="remark" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Association Name="dt_users_li_event_records" Member="dt_users" ThisKey="userId" OtherKey="id" Type="dt_users" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.li_bank_accounts" Member="li_bank_accounts">
+    <Type Name="li_bank_accounts">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="owner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bank" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="opening_bank" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="account" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="last_access_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="location" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="type" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="li_bank_accounts_li_bank_transactions" Member="li_bank_transactions" ThisKey="id" OtherKey="withdraw_account" Type="li_bank_transactions" />
+      <Association Name="dt_users_li_bank_accounts" Member="dt_users" ThisKey="owner" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

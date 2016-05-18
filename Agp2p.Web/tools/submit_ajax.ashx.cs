@@ -2248,7 +2248,8 @@ namespace Agp2p.Web.tools
                     opening_bank = branch_name,
                     location = province + ";" + city + ";" + area,
                     last_access_time = DateTime.Now,
-                    owner = user.id
+                    owner = user.id,
+                    type = (int)Agp2pEnums.BankAccountType.Unknown,
                 };
                 linq_context.li_bank_accounts.InsertOnSubmit(bank);
                 linq_context.SubmitChanges();
@@ -2407,15 +2408,20 @@ namespace Agp2p.Web.tools
             var bankAccount = DTRequest.GetFormString("bankAccount");
             var howmany = DTRequest.GetFormDecimal("howmany", 0);
             var backUrl = DTRequest.GetFormString("backUrl");
-            // 提现 100 起步，5w 封顶
+            if (howmany <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
+            }
+            // 提现 100 起步，50w 封顶
             if (howmany < 100)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"提现金额最低 100 元！\"}");
                 return;
             }
-            if (howmany > 50000)
+            if (howmany > 500000)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 50000 元！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 500000 元！\"}");
                 return;
             }
             if (cardId <= 0)
@@ -2423,11 +2429,15 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
                 return;
             }
-            if (howmany <= 0)
+            // 判断提现次数，每人每日的提现次数不能超过 3 次
+            var withdrawTimesToday = new Agp2pDataContext().li_bank_transactions.Count(btr => btr.li_bank_accounts.owner == user.id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status != (int)Agp2pEnums.BankTransactionStatusEnum.Cancel && btr.create_time.Date == DateTime.Today);
+            if (3 <= withdrawTimesToday)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
-                return;
+                context.Response.Write("{\"status\":0, \"msg\":\"每日每张卡的提现次数不能超过 3 次！\"}");
             }
+
             //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
             if (string.IsNullOrEmpty(backUrl))
             {

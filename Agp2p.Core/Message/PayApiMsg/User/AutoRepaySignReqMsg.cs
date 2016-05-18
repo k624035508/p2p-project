@@ -26,6 +26,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
+        protected AutoRepaySignReqMsg()
+        {
+        }
+
         public override string GetSignature()
         {
             return
