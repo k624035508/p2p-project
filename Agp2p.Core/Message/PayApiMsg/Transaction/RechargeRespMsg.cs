@@ -25,7 +25,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             var map = Utils.UrlParamToData(requestStr);
             RequestId = map["requestId"];
             Result = map["result"];
-            Signature = map["signature"];
+            Signature = map.ContainsKey("signature") ? map["signature"] : "";
 
             UserIdIdentity = map.ContainsKey("userBalance") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
             Sum = map.ContainsKey("sum") ? map["sum"] : "";

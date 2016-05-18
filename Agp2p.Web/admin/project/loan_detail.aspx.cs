@@ -510,7 +510,9 @@ namespace Agp2p.Web.admin.project
                 //调用托管平台实名验证接口
                 if (project != null)
                 {
-                    var msg = new MakeLoanReqMsg(project.li_risks.li_loaners.user_id, ProjectId, project.investment_amount.ToString("F"));
+                    var user = project.li_risks.li_loaners.dt_users;
+                    //TODO 是否集合项目
+                    var msg = new MakeLoanReqMsg(user.id, ProjectId, project.investment_amount.ToString("F"), false, user.dt_user_groups.title.Equals("融资合作组"));
                     MessageBus.Main.Publish(msg);
                     var msgResp = BaseRespMsg.NewInstance<MakeLoanRespMsg>(msg.SynResult);
                     MessageBus.Main.Publish(msgResp);

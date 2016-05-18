@@ -45,6 +45,7 @@ namespace Agp2p.Core.PayApiLogic
                 switch (requestLog.api)
                 {
                     case (int) Agp2pEnums.SumapayApiEnum.WeRec:
+                    case (int) Agp2pEnums.SumapayApiEnum.CeRec:
                         //网银充值
                         context.Charge((int) requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg) msg).Sum, 0),
                             Agp2pEnums.PayApiTypeEnum.Sumapay, "丰付网银支付", msg.RequestId);
@@ -56,6 +57,7 @@ namespace Agp2p.Core.PayApiLogic
                             Agp2pEnums.PayApiTypeEnum.SumapayQ, "丰付一键支付", msg.RequestId);
                         break;
                     case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
+                    case (int) Agp2pEnums.SumapayApiEnum.Cdraw:
                     case (int) Agp2pEnums.SumapayApiEnum.WdraM:
                         //提现
                         var withdrawReqMsg = (WithdrawReqMsg) msg;
