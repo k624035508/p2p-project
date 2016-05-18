@@ -1123,7 +1123,6 @@
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
     <Content Include="templates\AnGuang\loan.html" />
-    <Content Include="templates\AnGuang\npm-debug.log" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
