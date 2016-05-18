@@ -102,7 +102,23 @@ namespace Agp2p.Web.Plugin.Advert.admin
                     return "其它";
             }
         }
+        protected string GetStatusName(int statusId)
+        {
+            switch (statusId)
+            {
+                case 0:
+                    return "正常";
+                case 1:
+                    return "待审核";
+                case 2:
+                    return "不显示";
+                default:
+                    return "其它";
+            }
+        }
         #endregion
+
+
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)

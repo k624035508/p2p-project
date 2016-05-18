@@ -72,6 +72,7 @@
     <th width="10%" align="left">尺寸</th>
     <th width="10%" align="left">链接目标</th>
     <th width="15%" align="left">添加时间</th>
+    <th width="10%" align="left">状态</th>
     <th width="15%">操作</th>
   </tr>
 </HeaderTemplate>
@@ -88,6 +89,7 @@
     <td><%#Eval("view_width")%>×<%#Eval("view_height")%></td>
     <td><%#Eval("target")%></td>
     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
+    <td><%#GetStatusName(Int32.Parse(Eval("status").ToString()))%></td>
     <td align="center">
       <a href="bar_list.aspx?aid=<%#Eval("id")%>">内容</a>&nbsp;
       <a href="adv_view.aspx?id=<%#Eval("id")%>">调用</a>&nbsp;

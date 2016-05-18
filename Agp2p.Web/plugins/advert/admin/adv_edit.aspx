@@ -55,12 +55,12 @@
     <dd>
       <div class="rule-multi-radio">
           <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-            <asp:ListItem Selected="True" Value="1">文字</asp:ListItem>
-            <asp:ListItem Value="2">图片</asp:ListItem>
-            <asp:ListItem Value="3">幻灯片</asp:ListItem>
-            <asp:ListItem Value="4">动画</asp:ListItem>
-            <asp:ListItem Value="5">FLV视频</asp:ListItem>
-            <asp:ListItem Value="6">代码 </asp:ListItem>
+             <asp:ListItem Selected="True" Value="1">文字</asp:ListItem>
+             <asp:ListItem Value="2">图片</asp:ListItem>
+             <asp:ListItem Value="3">幻灯片</asp:ListItem>
+             <asp:ListItem Value="4">动画</asp:ListItem>
+             <asp:ListItem Value="5">FLV视频</asp:ListItem>
+             <asp:ListItem Value="6">代码 </asp:ListItem>
            </asp:RadioButtonList>
        </div>
     </dd>
@@ -96,6 +96,18 @@
         <asp:RadioButtonList ID="rblTarget" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Selected="True" Value="_blank">新窗口</asp:ListItem>
             <asp:ListItem Value="_self">原窗口</asp:ListItem>
+        </asp:RadioButtonList>
+      </div>
+    </dd>
+  </dl>
+  <dl>
+    <dt>显示状态</dt>
+    <dd>
+      <div class="rule-multi-radio">
+        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+        <asp:ListItem Value="0">正常</asp:ListItem>
+        <asp:ListItem Value="1" Selected="True">待审核</asp:ListItem>
+        <asp:ListItem Value="2">不显示</asp:ListItem>
         </asp:RadioButtonList>
       </div>
     </dd>

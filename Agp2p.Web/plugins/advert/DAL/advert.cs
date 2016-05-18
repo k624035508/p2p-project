@@ -58,20 +58,23 @@ namespace Agp2p.Web.Plugin.Advert.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into " + databaseprefix + "advert(");
-            strSql.Append("title,type,price,remark,view_num,view_width,view_height,target,add_time)");
+            strSql.Append("title,type,price,remark,view_num,view_width,view_height,target,add_time,status)");
             strSql.Append(" values (");
-            strSql.Append("@title,@type,@price,@remark,@view_num,@view_width,@view_height,@target,@add_time)");
+            strSql.Append("@title,@type,@price,@remark,@view_num,@view_width,@view_height,@target,@add_time,@status)");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
-					new SqlParameter("@title", SqlDbType.NVarChar,100),
-					new SqlParameter("@type", SqlDbType.TinyInt,1),
-					new SqlParameter("@price", SqlDbType.Decimal,9),
-					new SqlParameter("@remark", SqlDbType.NVarChar,255),
-					new SqlParameter("@view_num", SqlDbType.Int,4),
-					new SqlParameter("@view_width", SqlDbType.Int,4),
-					new SqlParameter("@view_height", SqlDbType.Int,4),
-					new SqlParameter("@target", SqlDbType.NVarChar,30),
-					new SqlParameter("@add_time", SqlDbType.DateTime)};
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@title", SqlDbType.NVarChar, 100),
+                new SqlParameter("@type", SqlDbType.TinyInt, 1),
+                new SqlParameter("@price", SqlDbType.Decimal, 9),
+                new SqlParameter("@remark", SqlDbType.NVarChar, 255),
+                new SqlParameter("@view_num", SqlDbType.Int, 4),
+                new SqlParameter("@view_width", SqlDbType.Int, 4),
+                new SqlParameter("@view_height", SqlDbType.Int, 4),
+                new SqlParameter("@target", SqlDbType.NVarChar, 30),
+                new SqlParameter("@add_time", SqlDbType.DateTime),
+                new SqlParameter("@status", SqlDbType.Int, 4)
+            };
             parameters[0].Value = model.title;
             parameters[1].Value = model.type;
             parameters[2].Value = model.price;
@@ -81,6 +84,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
             parameters[6].Value = model.view_height;
             parameters[7].Value = model.target;
             parameters[8].Value = model.add_time;
+            parameters[9].Value = model.status;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -108,6 +112,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
             strSql.Append("view_height=@view_height,");
             strSql.Append("target=@target,");
             strSql.Append("add_time=@add_time");
+            strSql.Append("status=@status");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@title", SqlDbType.NVarChar,100),
@@ -119,7 +124,8 @@ namespace Agp2p.Web.Plugin.Advert.DAL
 					new SqlParameter("@view_height", SqlDbType.Int,4),
 					new SqlParameter("@target", SqlDbType.NVarChar,30),
 					new SqlParameter("@add_time", SqlDbType.DateTime),
-					new SqlParameter("@id", SqlDbType.Int,4)};
+                    new SqlParameter("@status", SqlDbType.Int,4),
+                    new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.title;
             parameters[1].Value = model.type;
             parameters[2].Value = model.price;
@@ -129,7 +135,8 @@ namespace Agp2p.Web.Plugin.Advert.DAL
             parameters[6].Value = model.view_height;
             parameters[7].Value = model.target;
             parameters[8].Value = model.add_time;
-            parameters[9].Value = model.id;
+            parameters[9].Value = model.status;
+            parameters[10].Value = model.id;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -183,7 +190,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
         public Model.advert GetModel(int id)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 id,title,type,price,remark,view_num,view_width,view_height,target,add_time from " + databaseprefix + "advert ");
+            strSql.Append("select  top 1 id,title,type,price,remark,view_num,view_width,view_height,target,add_time,status from " + databaseprefix + "advert ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)};
@@ -230,6 +237,11 @@ namespace Agp2p.Web.Plugin.Advert.DAL
                 {
                     model.add_time = DateTime.Parse(ds.Tables[0].Rows[0]["add_time"].ToString());
                 }
+                if (ds.Tables[0].Rows[0]["status"] != null && ds.Tables[0].Rows[0]["status"].ToString() != "")
+                {
+                    model.status = int.Parse(ds.Tables[0].Rows[0]["status"].ToString());
+                }
+
                 return model;
             }
             else
@@ -244,7 +256,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select id,title,type,price,remark,view_num,view_width,view_height,target,add_time ");
+            strSql.Append("select id,title,type,price,remark,view_num,view_width,view_height,target,add_time,status ");
             strSql.Append(" FROM " + databaseprefix + "advert ");
             if (strWhere.Trim() != "")
             {
@@ -264,7 +276,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" id,title,type,price,remark,view_num,view_width,view_height,target,add_time ");
+            strSql.Append(" id,title,type,price,remark,view_num,view_width,view_height,target,add_time,status ");
             strSql.Append(" FROM " + databaseprefix + "advert ");
             if (strWhere.Trim() != "")
             {
