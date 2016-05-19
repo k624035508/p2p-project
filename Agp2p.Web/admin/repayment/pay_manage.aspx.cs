@@ -143,7 +143,7 @@ namespace Agp2p.Web.admin.repayment
                         PayId = p.id,
                         //投资协议
                         AgreeNo =
-                            $"<a href='/tools/submit_ajax.ashx?action=generate_user_invest_contract&id={p.id}&user_id={p.investor}' target='_blank'>{p.agree_no}</a>"
+                            $"<a href='/tools/submit_ajax.ashx?action=generate_user_invest_contract&id={p.id}&user_id={p.investor}&allowExportDoc=True' target='_blank'>{p.agree_no}</a>"
                     });
                 }).AsQueryable();
 
