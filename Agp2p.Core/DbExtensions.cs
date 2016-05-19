@@ -384,7 +384,7 @@ namespace Agp2p.Core
             context.li_event_records.InsertOnSubmit(new li_event_records
             {
                 userId = userId,
-                eventType = Agp2pEnums.EventRecordTypeEnum.IdcardChecking,
+                eventType = eventType,
                 occurAt = occurAt,
                 remark = remark
             });
