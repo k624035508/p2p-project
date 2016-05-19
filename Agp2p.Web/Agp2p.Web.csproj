@@ -1019,6 +1019,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\account.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\account2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\activity1.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\activity2.jpg" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-border.png" />
