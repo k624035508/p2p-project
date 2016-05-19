@@ -52,6 +52,12 @@ namespace Agp2p.Web.UI.Page
                 return "你已经添加了卡号为 " + cardNumber + " 的银行卡，不能重复添加";
             }
 
+            if (3 <= userInfo.li_bank_accounts.Count)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return "最多只能添加 3 张银行卡";
+            }
+
             var user = context.dt_users.Single(u => u.id == userInfo.id);
             var card = new li_bank_accounts
             {
