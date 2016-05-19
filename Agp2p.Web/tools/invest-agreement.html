@@ -74,13 +74,29 @@
     <script src="/scripts/FileSaver.min.js"></script>
     <script src="/scripts/jquery/jquery.wordexport.js"></script>
     <script>
-        $(function() {
-            $("button").css("display", "block");
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+        $(function () {
+            if (getUrlParameter('allowExportDoc') == 'True') {
+                $("button").css("display", "block");
+            }
         });
     </script>
 </head>
 <body>
-<button onclick="$('.agreementPage').wordExport('投资协议')">导出 Word 文档</button>
+<button onclick="$('.agreementPage').wordExport('投资协议')" style="display: none">导出 Word 文档</button>
 <div class="agreementPage">
     <h2>质押借款协议</h2>
     <p class="number">协议编号：{contract_no}</p>
