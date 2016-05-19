@@ -147,8 +147,8 @@ namespace Agp2p.Web.admin.project
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
             txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N1");//年化利率
             txtAddTime.Text = action == DTEnums.ActionEnum.Copy.ToString() ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
-            txt_bond_fee_rate.Text = (_project.bond_fee_rate * 100).ToString();
-            txt_loan_fee_rate.Text = (_project.loan_fee_rate * 100).ToString();
+            txt_bond_fee_rate.Text = ((decimal) (_project.bond_fee_rate*100)).ToString("F2");
+            txt_loan_fee_rate.Text = ((decimal) (_project.loan_fee_rate*100)).ToString("F2");
             txt_contact_no.Text = _project.contract_no;
 
             ShowRiskInfo(_project);
