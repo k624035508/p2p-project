@@ -880,7 +880,7 @@ namespace Agp2p.Common
 
             [Description("移动端实名开户")] URegM = 101,
             [Description("移动端账户管理")] AccoM = 104,
-            [Description("移动端移动端充值")] WhReM = 111,
+            [Description("移动端充值")] WhReM = 111,
             [Description("移动端提现")] WdraM = 121,
             [Description("移动端投标普通项目")] MaBiM = 112,
             [Description("移动端投标集合项目")] McBiM = 113,

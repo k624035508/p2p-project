@@ -120,7 +120,7 @@ namespace Agp2p.Core.PayApiLogic
                         {
                             user.identity_id = msg.UserId;
                             //TODO 丰付企业认证返回anonymous
-                            user.real_name = !msg.Name.Equals("anonymous") ? msg.Name : "";
+                            user.real_name = !msg.Name.Equals("anonymous") ? msg.Name : user.real_name;
                             msg.HasHandle = true;
                             context.SubmitChanges();
                         }

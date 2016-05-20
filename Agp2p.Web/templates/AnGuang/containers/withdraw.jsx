@@ -86,9 +86,9 @@ class WithdrawPage extends React.Component {
 			type: "POST",
 			url: "/tools/submit_ajax.ashx?action=withdraw",
 			data: {
-			    cardId: this.props.cards[this.state.selectedCardIndex].cardId,
-			    bankName:this.props.cards[this.state.selectedCardIndex].bankName,
-			    bankAccount:this.props.cards[this.state.selectedCardIndex].cardNumber,
+			    cardId: this.props.withdrawableCards[this.state.selectedCardIndex].cardId,
+			    bankName:this.props.withdrawableCards[this.state.selectedCardIndex].bankName,
+			    bankAccount:this.props.withdrawableCards[this.state.selectedCardIndex].cardNumber,
 				howmany: this.state.toWithdraw,
 				transactPassword: this.state.transactPassword
 			},
@@ -119,6 +119,7 @@ class WithdrawPage extends React.Component {
 		});
     }
 	render() {
+		var {withdrawableCards, cards, dispatch, realName, idleMoney} = this.props;
 		return (
 			<div>
 				{/* hack auto-complete */}
@@ -128,7 +129,7 @@ class WithdrawPage extends React.Component {
 				    <div className="bank-select-withdraw"><span><i>*</i>选择银行卡：</span>
 					    <div>
 					        <ul className="list-unstyled list-inline ul-withdraw">
-					        {this.props.cards.map((c, index) =>
+					        {withdrawableCards.map((c, index) =>
 					            <li className={"card " + classMapping[c.bankName]} key={c.cardId}
 						            onClick={ev => this.setState({selectedCardIndex: index})}>
 					                <p className="bank-name">{c.bankName}</p>
@@ -139,13 +140,15 @@ class WithdrawPage extends React.Component {
 					                }
 					            </li>
 				        	)}
+				        	{3 <= cards.length || withdrawableCards.length != cards.length ? null :
 					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
+				        	}
 					        </ul>
-							<AppendingCardDialog dispatch={this.props.dispatch} realName={this.props.realName}
+							<AppendingCardDialog dispatch={dispatch} realName={realName}
 								onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
 					    </div>
 				    </div>
-				    <div className="balance-withdraw"><span>可用余额：</span>{"￥" + this.props.idleMoney.toString()}</div>
+				    <div className="balance-withdraw"><span>可用余额：</span>{"￥" + idleMoney.toString()}</div>
 				    <div className="amount-withdraw"><span><i>*</i>提现金额：</span>
 				    	<input type="text" onChange={ev => this.setState({toWithdraw: ev.target.value})} value={this.state.toWithdraw} placeholder="最低提现100元"
 				    		onBlur={ev => this.onWithdrawAmountSetted(ev)}/><span className="hidden">{"实际到账：" + this.state.realityWithdraw + " 元"}</span>
@@ -196,7 +199,8 @@ function mapStateToProps(state) {
 		realName: state.userInfo.realName,
 		idleMoney: state.walletInfo.idleMoney,
 		hasTransactPassword: state.userInfo.hasTransactPassword,
-		cards: some(state.bankCards, {type: BankAccountType.QuickPay})
+		cards: state.bankCards,
+		withdrawableCards: some(state.bankCards, {type: BankAccountType.QuickPay})
 			? state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
 			: state.bankCards
 	};
