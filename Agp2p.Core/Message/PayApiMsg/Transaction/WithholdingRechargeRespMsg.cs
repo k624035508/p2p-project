@@ -4,9 +4,9 @@ using Agp2p.Common;
 namespace Agp2p.Core.Message.PayApiMsg
 {
     /// <summary>
-    /// 个人网银充值响应
+    /// 个人快捷充值响应
     /// </summary>
-    public class RechargeRespMsg : BaseRespMsg
+    public class WithholdingRechargeRespMsg : BaseRespMsg
     {
         public string Sum { get; set; }//充值金额
         public string UserBalance { get; set; }//账户总额
@@ -16,8 +16,11 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string PayType { get; set; }//手续费收取方式
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
+        public string BankAccount { get; set; }//银行账号
+        public string BankName { get; set; }//银行名称
+        public string Name { get; set; }//用户姓名
 
-        public RechargeRespMsg(string requestStr)
+        public WithholdingRechargeRespMsg(string requestStr)
         {
             var map = Utils.UrlParamToData(requestStr);
             RequestId = map["requestId"];
@@ -33,6 +36,9 @@ namespace Agp2p.Core.Message.PayApiMsg
             PayType = map.ContainsKey("payType") ? map["payType"] : "";
             MainAccountType = map.ContainsKey("mainAccountType") ? map["mainAccountType"] : "";
             MainAccountCode = map.ContainsKey("mainAccountCode") ? map["mainAccountCode"] : "";
+            BankAccount = map.ContainsKey("bankAccount") ? map["bankAccount"] : "";
+            BankName = map.ContainsKey("bankName") ? map["bankName"] : "";
+            Name = map.ContainsKey("name") ? map["name"] : "";
         }
 
         public override bool CheckSignature()
