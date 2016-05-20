@@ -4,7 +4,7 @@ import CardEditor from "../components/card-editor.jsx";
 import { fetchBankCards } from "../actions/bankcard.js";
 import { fetchWalletAndUserInfo } from "../actions/usercenter.js";
 import { ajax } from "jquery";
-import some from "lodash/collection/some";
+import every from 'lodash/collection/every';
 
 import "../less/withdraw.less";
 import alert from "../components/tips_alert.js";
@@ -119,7 +119,7 @@ class WithdrawPage extends React.Component {
 		});
     }
 	render() {
-		var {withdrawableCards, cards, dispatch, realName, idleMoney} = this.props;
+		var {withdrawableCards, cards, dispatch, realName, idleMoney, extraHint} = this.props;
 		return (
 			<div>
 				{/* hack auto-complete */}
@@ -143,6 +143,7 @@ class WithdrawPage extends React.Component {
 				        	{1 <= cards.length || withdrawableCards.length != cards.length ? null :
 					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        	}
+				        	{extraHint ? <li style={{width: '300px'}}>{extraHint}</li> : null}
 					        </ul>
 							<AppendingCardDialog dispatch={dispatch} realName={realName}
 								onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
@@ -195,14 +196,30 @@ const BankAccountType = {
 }
 
 function mapStateToProps(state) {
+	var quickPayCards = state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
+
+	var withdrawableCards = null, extraHint = null;
+
+	if (quickPayCards.length === 1) {
+		withdrawableCards = quickPayCards
+	} else if (every(state.bankCards, c => c.type == BankAccountType.Unknown)) {
+		withdrawableCards = state.bankCards;
+		extraHint = '尊敬的会员，因您未在丰付平台中绑定银行卡，所以在丰付平台提现时需要手动输入银行卡号。'
+	} else if (every(state.bankCards, c => c.type == BankAccountType.WebBank)) {
+		withdrawableCards = [];
+		extraHint = '尊敬的会员，因您在安广融合平台绑定的银行卡与丰付平台绑定的银行卡不一致，请重新绑定。'
+	} else {
+		withdrawableCards = [];
+		extraHint = '查询银行卡出错，请联系客服'
+	}
+
 	return {
 		realName: state.userInfo.realName,
 		idleMoney: state.walletInfo.idleMoney,
 		hasTransactPassword: state.userInfo.hasTransactPassword,
 		cards: state.bankCards,
-		withdrawableCards: some(state.bankCards, {type: BankAccountType.QuickPay})
-			? state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
-			: state.bankCards
+		withdrawableCards,
+		extraHint
 	};
 }
 
