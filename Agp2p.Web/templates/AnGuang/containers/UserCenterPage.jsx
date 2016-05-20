@@ -59,6 +59,19 @@ class UserCenterPage extends React.Component {
 		    $(this).addClass("current-li").siblings().removeClass("current-li");
 		    $(".hot-img").eq(index).show().siblings().hide();
 		});
+		$('.hot-img').hover(function(){
+		    clearInterval(adTimer);
+		},function(){
+		    adTimer = setInterval(function() {
+		        showImg(index);
+		        index++;
+		        if(index==leng){index=0;}
+		    } , 4000);
+		}).trigger("mouseleave");
+		function showImg(index){
+		    $(".hot-img").eq(index).show().siblings().hide();
+		    $(".hot-li li").eq(index).addClass("current-li").siblings().removeClass("current-li");
+		}
 	}
 	render() {
 		return (

@@ -18,7 +18,6 @@
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
     <script src="<%templateskin%>/js/jquery.superslide.2.1.1.js"></script>
-
 </head>
 <body>
     <!--head-->
@@ -72,32 +71,37 @@
         <div class="prev"></div>
         <div class="next"></div>
 
+        
         <ul class="hd">
-            <li>●</li>
-            <li>●</li>
-            <li>●</li>
-            <li>●</li>
+           <%set var ba=QueryBanner()%>
+            <%set var balen=ba.Count()%>
+            <%for(var a=0;a<balen;a++)%>
+                      <li>●</li>
+            <%/for%>
+                               <li>●</li>
+                               <li>●</li>
         </ul>
 
         <div class="bd">
             <ul>
-                <li class="bannerNewYPB">
-                    <a target="_blank" href="https://www.agrhp2p.com/article/403.html"></a>
-                </li>
-                <li class="banner5">
-                    <a target="_blank" href="https://www.agrhp2p.com/article/384.html"></a>
-                </li>
-                <li class="banner3">
-                    <a style="margin-top: -20px;" target="_blank" href='<%linkurl("activity_apps")%>'></a>
-                    <div class="apps-btns">
-                        <a href="/download/android-v1.0.apk" class="android-btn" target="_blank"></a>
-                        <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
-                    </div>
-                </li>
-                <li class="banner4">
-                    <a style="margin-top: -20px;" target="_blank" href='<%linkurl("safe_defence")%>'></a>
-                </li>
-            </ul>
+                <%for(var b=0;b
+                <balen;b++)%>
+                    <%set var index=ba.Skip(b).First()%>
+                    <li style='background:url("<%=index.file_path%>");'>
+                        <a href="<%=index.link_url%>" target="_blank"> </a>
+                    </li>
+                <%/for%>
+                    <li class="banner3">
+                        <a style="margin-top: -20px;" target="_blank" href='<%linkurl("activity_apps")%>'></a>
+                        <div class="apps-btns">
+                            <a href="/download/android-v1.0.apk" class="android-btn" target="_blank"></a>
+                            <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
+                        </div>
+                    </li>
+                    <li class="banner4">
+                        <a style="margin-top: -20px;" target="_blank" href='<%linkurl("safe_defence")%>'></a>
+                    </li>
+</ul>
         </div>
     </div>
 

@@ -20,7 +20,6 @@ namespace Agp2p.Web.Plugin.Advert.Model
         private int _view_num = 0;
         private int _view_width = 0;
         private int _view_height = 0;
-        private int _status = 0;
         private string _target;
         private DateTime _add_time = DateTime.Now;
         /// <summary>
@@ -48,14 +47,6 @@ namespace Agp2p.Web.Plugin.Advert.Model
             get { return _type; }
         }
 
-        /// <summary>
-        /// 广告位状态0正常1未审核2锁定
-        /// </summary>
-        public int status
-        {
-            set { _status = value; }
-            get { return _status; }
-        }
         /// <summary>
         /// 广告位价格
         /// </summary>

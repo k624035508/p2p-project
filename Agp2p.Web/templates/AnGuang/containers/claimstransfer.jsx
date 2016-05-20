@@ -7,8 +7,8 @@ import confirm from "../components/tips_confirm.js";
 import alert from "../components/tips_alert.js";
 import CustomDlg from "../components/custom-dialog.jsx";
 
-import "rc-slider/assets/index.css";
-import Slider from "rc-slider";
+/* import "rc-slider/assets/index.css";
+import Slider from "rc-slider"; */
 
 import find from "lodash/collection/find";
 import assign from "lodash/object/assign";

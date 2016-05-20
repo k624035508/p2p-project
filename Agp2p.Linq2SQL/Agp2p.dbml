@@ -773,4 +773,36 @@
       <Association Name="dt_users_li_bank_accounts" Member="dt_users" ThisKey="owner" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_advert" Member="dt_advert">
+    <Type Name="dt_advert">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="view_num" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="view_width" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="view_height" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="target" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_advert_dt_advert_banner" Member="dt_advert_banner" ThisKey="id" OtherKey="aid" Type="dt_advert_banner" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_advert_banner" Member="dt_advert_banner">
+    <Type Name="dt_advert_banner">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="aid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="start_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="end_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="file_path" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="link_url" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="sort_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="is_lock" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="dt_advert_dt_advert_banner" Member="dt_advert" ThisKey="aid" OtherKey="id" Type="dt_advert" IsForeignKey="true" />
+    </Type>
+  </Table>
 </Database>

@@ -15,6 +15,18 @@ namespace Agp2p.Web.UI.Page
             new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
                 .ToDictionary(c => c.id, c => c.title);
 
+        protected List<dt_advert_banner> QueryBanner()
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.aid == 15)
+                    .OrderByDescending(a => a.start_time).ToList();
+                   
+            return invokeBanner;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //微信自动登录
@@ -28,7 +40,7 @@ namespace Agp2p.Web.UI.Page
             }
         }
 
-        /*protected li_projects QueryFirstTrialProject()
+        protected li_projects QueryFirstTrialProject()
         {
             var context = new Agp2pDataContext();
             var trialProject =
@@ -39,8 +51,8 @@ namespace Agp2p.Web.UI.Page
                     .OrderByDescending(p => p.publish_time)
                     .FirstOrDefault();
             return trialProject;
-        }*/
-
+        }
+        
     }
 
 }
