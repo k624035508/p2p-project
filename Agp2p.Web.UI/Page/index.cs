@@ -15,13 +15,13 @@ namespace Agp2p.Web.UI.Page
             new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
                 .ToDictionary(c => c.id, c => c.title);
 
-        protected List<dt_advert_banner> QueryBanner()
+        protected List<dt_advert_banner> QueryBanner(int aid)
         {
             var context = new Agp2pDataContext();
             var invokeBanner =
                 context.dt_advert_banner.Where(
                     a =>
-                        a.is_lock == 0 && a.aid == 15)
+                        a.is_lock == 0 && a.aid == aid)
                     .OrderByDescending(a => a.start_time).ToList();
                    
             return invokeBanner;

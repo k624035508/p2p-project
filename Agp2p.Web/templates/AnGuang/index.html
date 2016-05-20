@@ -73,13 +73,13 @@
 
         
         <ul class="hd">
-           <%set var ba=QueryBanner()%>
+           <%set var ba=QueryBanner(15)%>
             <%set var balen=ba.Count()%>
             <%for(var a=0;a<balen;a++)%>
                       <li>●</li>
             <%/for%>
-                               <li>●</li>
-                               <li>●</li>
+                               
+                              
         </ul>
 
         <div class="bd">
@@ -91,7 +91,7 @@
                         <a href="<%=index.link_url%>" target="_blank"> </a>
                     </li>
                 <%/for%>
-                    <li class="banner3">
+                <!--    <li class="banner3">
                         <a style="margin-top: -20px;" target="_blank" href='<%linkurl("activity_apps")%>'></a>
                         <div class="apps-btns">
                             <a href="/download/android-v1.0.apk" class="android-btn" target="_blank"></a>
@@ -100,7 +100,7 @@
                     </li>
                     <li class="banner4">
                         <a style="margin-top: -20px;" target="_blank" href='<%linkurl("safe_defence")%>'></a>
-                    </li>
+                    </li>   -->
 </ul>
         </div>
     </div>
