@@ -140,7 +140,7 @@ class WithdrawPage extends React.Component {
 					                }
 					            </li>
 				        	)}
-				        	{3 <= cards.length || withdrawableCards.length != cards.length ? null :
+				        	{1 <= cards.length || withdrawableCards.length != cards.length ? null :
 					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        	}
 					        </ul>

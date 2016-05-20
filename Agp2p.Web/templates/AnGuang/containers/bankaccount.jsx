@@ -28,7 +28,7 @@ class BankAccount extends React.Component {
     	this.setState({selectedCardIndex: this.state.selectedCardIndex == index ? -1 : index});
     }
     render() {
-        var canAddCard = this.props.cards.length < 3;
+        var canAddCard = this.props.cards.length < 1;
         var editingACard = this.state.selectedCardIndex != -1;
         var shouldShowCardEditor = editingACard || canAddCard;
         return (
