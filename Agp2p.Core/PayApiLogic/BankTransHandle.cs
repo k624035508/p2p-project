@@ -83,13 +83,14 @@ namespace Agp2p.Core.PayApiLogic
                                 context.ConfirmBankTransaction(trans.id, null);
                                 //一键充值后自动更新银行卡类型（同卡进出只能使用绑定卡提现）
                                 var charger = trans.dt_users;
-                                var bindCardNo = msg.BankAccount.Substring(msg.BankAccount.Length - 4, 4);//快捷充值卡的后四位
+                                var bindCardLastNo = msg.BankAccount.Substring(msg.BankAccount.Length - 4, 4);//快捷充值卡的后四位
+                                var bindCardFristNo = msg.BankAccount.Substring(0, 4);//快捷充值卡的前四位 
                                 if (charger.li_bank_accounts.Any())
                                 {
                                     charger.li_bank_accounts.ForEach(b =>
                                     {
-                                        if (b.bank.Contains(msg.BankName) &&
-                                            b.account.Substring(b.account.Length - 4, 4).Equals(bindCardNo))
+                                        if (b.account.Substring(0, 4).Equals(bindCardFristNo) &&
+                                            b.account.Substring(b.account.Length - 4, 4).Equals(bindCardLastNo))
                                         {
                                             b.type = (int)Agp2pEnums.BankAccountType.QuickPay;
                                         }

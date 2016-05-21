@@ -14,8 +14,9 @@ namespace Agp2p.Core.Message.PayApiMsg.Transaction
     {
         public string QueryType { get; set; }//查询类型 0：全部1：用户提现2：一键充值3：协议还款
 
-        public SignBankCardQueryRequest(string queryType = "2")
+        public SignBankCardQueryRequest(int userId, string queryType = "2")
         {
+            UserId = userId;
             QueryType = queryType;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.QCard;

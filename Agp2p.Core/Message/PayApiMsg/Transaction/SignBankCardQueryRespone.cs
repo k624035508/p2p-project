@@ -13,26 +13,11 @@ namespace Agp2p.Core.Message.PayApiMsg.Transaction
     public class SignBankCardQueryRespone : BaseRespMsg
     {
         public string WithdrawBankList { get; set; } //用户提现卡列表
-        public string RechargeProtocolList { get; set; } //一键充值卡列表
-        public List<RechargeProtocol> RechargeProtocols { get; set; }
+        public List<RechargeProtocol> RechargeProtocolList { get; set; } //一键充值卡列表
         public string RepayProtocolList { get; set; } //协议还款卡列表
 
-        public SignBankCardQueryRespone(string requestStr)
+        public SignBankCardQueryRespone()
         {
-            var map = Utils.UrlParamToData(requestStr);
-            RequestId = map["requestId"];
-            Result = map["result"];
-            Signature = map.ContainsKey("signature") ? map["signature"] : "";
-
-            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
-            WithdrawBankList = map.ContainsKey("withdrawBankList") ? map["withdrawBankList"] : "";
-            //获取一键充值卡列表
-            RechargeProtocolList = map.ContainsKey("rechargeProtocolList") ? map["rechargeProtocolList"] : "";
-            if (!string.IsNullOrEmpty(RechargeProtocolList))
-            {
-                RechargeProtocols = JsonHelper.JSONToObject<List<RechargeProtocol>>(RechargeProtocolList);
-            }
-            RepayProtocolList = map.ContainsKey("repayProtocolList") ? map["repayProtocolList"] : "";
         }
 
         public override bool CheckSignature()
@@ -46,5 +31,33 @@ namespace Agp2p.Core.Message.PayApiMsg.Transaction
             public string BankAccount { get; set; }
             public string ProtocolNo { get; set; }
         }
+
+        /// <summary>
+        /// 检查在丰付平台绑定的银行卡是否一致
+        /// </summary>
+        /// <param name="bankAccount"></param>
+        /// <returns></returns>
+        public bool CheckRechargeProtocol(string bankName, string bankAccount)
+        {
+            if (CheckResult())
+            {
+                if (CheckSignature())
+                {
+                    if (RechargeProtocolList != null && RechargeProtocolList.Any())
+                    {
+                        //丰付同卡进出，只能绑定一张卡，所以正式环境只需要拿第一张卡
+                        var rechargeProtocol = RechargeProtocolList.FirstOrDefault();
+                        if (rechargeProtocol != null)
+                        {
+                            return rechargeProtocol.BankName.Equals(bankName) && rechargeProtocol.BankAccount.Substring(0, 4).Equals(bankAccount.Substring(0, 4)) &&
+                                rechargeProtocol.BankAccount.Substring(rechargeProtocol.BankAccount.Length - 4, 4)
+                                    .Equals(bankAccount.Substring(bankAccount.Length - 4, 4));
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
     }
 }
