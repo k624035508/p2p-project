@@ -52,7 +52,7 @@ namespace Agp2p.Web.api.payment.sumapay
                     if (RequestLog != null)
                     {
                         //检查请求是否已经处理过
-                        if (RequestLog.status == (int)Agp2pEnums.SumapayRequestEnum.Waiting)
+                        if (RequestLog.status != (int)Agp2pEnums.SumapayRequestEnum.Complete)
                         {
                             BaseRespMsg respMsg = null;
                             switch (RequestLog.api)
@@ -83,12 +83,15 @@ namespace Agp2p.Web.api.payment.sumapay
                                 case (int)Agp2pEnums.SumapayApiEnum.CancR:
                                     respMsg = new AutoRepaySignRespMsg(reqStr, true);
                                     break;
-                                //企业/个人网银/一键充值
+                                //企业/个人网银充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.CeRec:
+                                    respMsg = new RechargeRespMsg(reqStr);
+                                    break;
+                                //个人一键充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.WhReM:
-                                    respMsg = new RechargeRespMsg(reqStr);
+                                    respMsg = new WithholdingRechargeRespMsg(reqStr);
                                     break;
                                 //个人投标/自动投标 普通/集合项目
                                 case (int)Agp2pEnums.SumapayApiEnum.MaBid:

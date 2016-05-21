@@ -107,6 +107,9 @@
     <Compile Include="Message\PayApiMsg\Company\CompanyToAccountReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Company\CompanyRegisterReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\SignBankCardQueryRespone.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\SignBankCardQueryRequest.cs" />
+    <Compile Include="Message\PayApiMsg\Transaction\WithholdingRechargeRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\User\UserRegisterMoblieReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\QueryProjectRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Project\QueryProjectReqMsg.cs" />
