@@ -60,7 +60,7 @@ namespace Agp2p.Web.UI
                 string fileExt = Utils.GetFileExt(postedFile.FileName); //文件扩展名，不含“.”
                 int fileSize = postedFile.ContentLength; //获得文件大小，以字节为单位
                 string fileName = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf(@"\") + 1); //取得原文件名
-                string newFileName = Utils.GetRamCode() + "." + fileExt; //随机生成新的文件名
+                string newFileName = Utils.GetRamCode() + "." + fileExt;  //随机生成新的文件名
                 string newThumbnailFileName = "thumb_" + newFileName; //随机生成缩略图文件名
                 string upLoadPath = GetUpLoadPath(); //上传目录相对路径
                 string fullUpLoadPath = Utils.GetMapPath(upLoadPath); //上传目录的物理路径
@@ -192,10 +192,10 @@ namespace Agp2p.Web.UI
             string path = siteConfig.webpath + siteConfig.filepath + "/"; //站点目录+上传目录
             switch (this.siteConfig.filesave)
             {
-                case 1: //按年月日每天一个文件夹
+                case 1: //按年月每天一个文件夹
                     path += DateTime.Now.ToString("yyyyMMdd");
                     break;
-                default: //按年月/日存入不同的文件夹
+                default: //按年/月存入不同的文件夹
                     path += DateTime.Now.ToString("yyyyMM") + "/" + DateTime.Now.ToString("dd");
                     break;
             }

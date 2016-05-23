@@ -61,7 +61,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
             txtViewWidth.Text = model.view_width.ToString();
             txtViewHeight.Text = model.view_height.ToString();
             rblTarget.SelectedValue = model.target;
-            rblStatus.SelectedValue = model.status.ToString();
+           
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
             model.view_width = int.Parse(txtViewWidth.Text.Trim());
             model.view_height = int.Parse(txtViewHeight.Text.Trim());
             model.target = rblTarget.SelectedValue;
-            model.status = int.Parse(rblStatus.SelectedValue);
+           
 
             if (bll.Add(model) >0)
             {
@@ -100,7 +100,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
 
             model.title = txtTitle.Text.Trim();
             model.type = int.Parse(rblType.SelectedValue);
-            model.status = int.Parse(rblStatus.SelectedValue);
+            
             model.price = decimal.Parse(txtPrice.Text.Trim());
             model.remark = txtRemark.Text.Trim();
             model.view_num = int.Parse(txtViewNum.Text.Trim());

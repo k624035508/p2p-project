@@ -179,6 +179,7 @@ namespace Agp2p.Web.admin.popularize
                 is_msg = 0,
                 is_slide = 0,
                 user_name = GetAdminInfo().user_name,
+                status = 0
             };
 
             var articleAttr = new dt_article_attribute_value

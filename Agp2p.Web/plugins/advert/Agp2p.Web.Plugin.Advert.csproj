@@ -125,9 +125,7 @@
     <Content Include="admin\index.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="admin\adv_edit.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    <Content Include="admin\adv_edit.aspx" />
     <Content Include="admin\bar_list.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>

@@ -28,7 +28,7 @@ class BankAccount extends React.Component {
     	this.setState({selectedCardIndex: this.state.selectedCardIndex == index ? -1 : index});
     }
     render() {
-        var canAddCard = this.props.cards.length < 3;
+        var canAddCard = this.props.cards.length < 1;
         var editingACard = this.state.selectedCardIndex != -1;
         var shouldShowCardEditor = editingACard || canAddCard;
         return (
@@ -67,10 +67,28 @@ class BankAccount extends React.Component {
     }
 }
 
+import every from 'lodash/collection/every';
+
+const BankAccountType = {
+    Unknown: 1, // 未知
+    QuickPay: 2, // 快捷支付
+    WebBank: 3, // 网银支付
+}
+
 function mapStateToProps(state) {
-    return {
-        cards: state.bankCards,
-    };
+    var cards = null;
+    var quickPayCards = state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
+
+    if (quickPayCards.length === 1) {
+        cards = quickPayCards;
+    } else if (every(state.bankCards, c => c.type == BankAccountType.Unknown)) {
+        cards = state.bankCards
+    } else if (every(state.bankCards, c => c.type == BankAccountType.WebBank)) {
+        cards = []
+    } else {
+        alert('查询银行卡出错，请联系客服')
+    }
+    return { cards };
 }
 
 import { connect } from 'react-redux';

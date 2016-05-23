@@ -42,6 +42,7 @@ namespace Agp2p.Web.UI.Page
                 bankLocation = a.location,
                 type = a.type
             });
+
             return JsonConvert.SerializeObject(data);
         }
 

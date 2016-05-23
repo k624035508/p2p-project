@@ -16,7 +16,7 @@ Number.prototype.format = function(n, x) {
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
 };
 
-Number.prototype.toNum = function () {
+Number.prototype.toNum = function () {  
 	return this;
 }
 
@@ -59,6 +59,19 @@ class UserCenterPage extends React.Component {
 		    $(this).addClass("current-li").siblings().removeClass("current-li");
 		    $(".hot-img").eq(index).show().siblings().hide();
 		});
+		$('.hot-img').hover(function(){
+		    clearInterval(adTimer);
+		},function(){
+		    adTimer = setInterval(function() {
+		        showImg(index);
+		        index++;
+		        if(index==leng){index=0;}
+		    } , 4000);
+		}).trigger("mouseleave");
+		function showImg(index){
+		    $(".hot-img").eq(index).show().siblings().hide();
+		    $(".hot-li li").eq(index).addClass("current-li").siblings().removeClass("current-li");
+		}
 	}
 	render() {
 		return (
@@ -113,12 +126,6 @@ class UserCenterPage extends React.Component {
                         <div className="hot-act">
                             <div className="hot-title">热门活动</div>
                           <div>
-                            <div className="hot-img hot-img-bg1">
-                                <a href="https://www.agrhp2p.com/article/384.html" target="_blank"></a>                              
-                                <div>
-                                    劳动小当家 
-                                </div>
-                            </div>
                             <div className="hot-img hot-img-bg2">
                                 <a href="https://www.agrhp2p.com/article/403.html" target="_blank"></a>                              
                                 <div>
@@ -128,7 +135,6 @@ class UserCenterPage extends React.Component {
                           </div>
                           <ul className="list-unstyled hot-li">
                               <li className="current-li">●</li>  
-                              <li>●</li>
                           </ul>
                         </div>
                 </div>

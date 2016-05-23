@@ -3,6 +3,7 @@ using System.Linq;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Transaction;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.PayApiLogic
@@ -15,18 +16,19 @@ namespace Agp2p.Core.PayApiLogic
         internal static void DoSubscribe()
         {
             MessageBus.Main.Subscribe<RechargeRespMsg>(Recharge);
+            MessageBus.Main.Subscribe<WithholdingRechargeRespMsg>(WithholdingRecharge);
             MessageBus.Main.Subscribe<WithdrawRespMsg>(WithDraw);
         }
 
         /// <summary>
-        /// 网银/一键充值 响应
+        /// 网银充值 响应
         /// </summary>
         /// <param name="msg"></param>
         private static void Recharge(RechargeRespMsg msg)
         {
             try
             {
-                //检查请求处理结果 TODO 一键充值只处理异步
+                //检查请求处理结果
                 if (msg.CheckResult())
                 {
                     //检查签名
@@ -40,8 +42,67 @@ namespace Agp2p.Core.PayApiLogic
                             if (trans.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
                             {
                                 context.ConfirmBankTransaction(trans.id, null);
+                                //TODO 检查用户资金信息
+                                msg.HasHandle = true;
+                            }
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
 
-                                //TODO 检查用户资金信息 一键充值后自动取消注销银行卡（同卡进出只能使用绑定卡提现）
+        /// <summary>
+        /// 一键充值 响应
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void WithholdingRecharge(WithholdingRechargeRespMsg msg)
+        {
+            try
+            {
+                //检查请求处理结果
+                if (msg.CheckResult())
+                {
+                    //检查签名
+                    if (msg.CheckSignature())
+                    {
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        //查找对应的交易流水
+                        var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        if (trans != null)
+                        {
+                            if (trans.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                            {
+                                context.ConfirmBankTransaction(trans.id, null);
+                                //一键充值后自动更新银行卡类型（同卡进出只能使用绑定卡提现）
+                                var charger = trans.dt_users;
+                                var bindCardLastNo = msg.BankAccount.Substring(msg.BankAccount.Length - 4, 4);//快捷充值卡的后四位
+                                var bindCardFristNo = msg.BankAccount.Substring(0, 4);//快捷充值卡的前四位 
+                                if (charger.li_bank_accounts.Any())
+                                {
+                                    charger.li_bank_accounts.ForEach(b =>
+                                    {
+                                        if (b.account.Substring(0, 4).Equals(bindCardFristNo) &&
+                                            b.account.Substring(b.account.Length - 4, 4).Equals(bindCardLastNo))
+                                        {
+                                            b.type = (int)Agp2pEnums.BankAccountType.QuickPay;
+                                        }
+                                        else
+                                        {
+                                            b.type = (int) Agp2pEnums.BankAccountType.WebBank;
+                                        }
+                                    });
+                                    context.SubmitChanges();
+                                }
+
+                                //TODO 检查用户资金信息 
                                 msg.HasHandle = true;
                             }
                         }
@@ -106,7 +167,7 @@ namespace Agp2p.Core.PayApiLogic
                                     {
                                         //创建提现申请记录
                                         context.Withdraw(Utils.StrToInt(requestLog.remarks, 0),
-                                        Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                                        Utils.StrToDecimal(msg.Sum, 0), "丰付提现处理中", msg.RequestId);
                                         //TODO 提现完成特殊处理
                                         //msg.HasHandle = true;
                                     }
