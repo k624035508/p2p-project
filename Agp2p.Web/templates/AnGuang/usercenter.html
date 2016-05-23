@@ -33,6 +33,7 @@
 </div>
 <!--面包屑导航 end-->
 
+   
 <div id="app"
      data-user-name="<%=userModel.user_name%>"
      data-prev-login-time="{pre_login_time}"
@@ -46,6 +47,17 @@
      >
 </div>
 
+    <div id="bannerAdv"
+        data-is-identity='<%=IsIdentity()%>'
+        data-advert-count='<%=QueryBanner(17)%>'
+        <%set var len=QueryBanner(17)%>
+        <%for(var i=0;i<len;i++)%>
+            data-advert-title-<%=i%>='<%=QueryBannerList(17).Skip(i).FirstOrDefault().title%>'
+            data-advert-img-<%=i%>='<%=QueryBannerList(17).Skip(i).FirstOrDefault().file_path%>'
+            data-advert-href-<%=i%>='<%=QueryBannerList(17).Skip(i).FirstOrDefault().link_url%>'
+            <%/for%>
+        >
+</div>
 <%template src="_floating.html"%>
 <!--footer-->
 <%template src="_footerSmall.html"%>

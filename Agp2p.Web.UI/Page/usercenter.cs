@@ -45,6 +45,30 @@ namespace Agp2p.Web.UI.Page
             return userModel.identity_id == null && userModel.reg_time <= DateTime.Parse("2016-5-13");
         }
 
+        protected int QueryBanner(int aid)
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.aid == aid && a.end_time >= DateTime.Today)
+                    .OrderBy(a => a.sort_id).ToList();
+
+            return invokeBanner.Count();
+        }
+
+        protected List<dt_advert_banner> QueryBannerList(int aid)
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.aid == aid && a.end_time >= DateTime.Today)
+                    .OrderBy(a => a.sort_id).ToList();
+
+            return invokeBanner;
+        }
+
         /// <summary>
         /// 重写虚方法,此方法在Init事件执行
         /// </summary>

@@ -21,7 +21,7 @@ namespace Agp2p.Web.UI.Page
             var invokeBanner =
                 context.dt_advert_banner.Where(
                     a =>
-                        a.is_lock == 0 && a.aid == aid)
+                        a.is_lock == 0 && a.aid == aid && a.end_time >= DateTime.Today)
                     .OrderBy(a => a.sort_id).ToList();
                    
             return invokeBanner;
