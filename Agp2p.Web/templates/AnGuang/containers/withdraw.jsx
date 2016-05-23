@@ -119,7 +119,7 @@ class WithdrawPage extends React.Component {
 		});
     }
 	render() {
-		var {withdrawableCards, cards, dispatch, realName, idleMoney, extraHint} = this.props;
+		var {withdrawableCards, cards, dispatch, realName, idleMoney, extraHint, canAddCard} = this.props;
 		return (
 			<div>
 				{/* hack auto-complete */}
@@ -140,10 +140,10 @@ class WithdrawPage extends React.Component {
 					                }
 					            </li>
 				        	)}
-				        	{1 <= cards.length || withdrawableCards.length != cards.length ? null :
+				        	{!canAddCard ? null :
 					            <li className="add-card" key="append-card" data-toggle="modal" data-target="#addCards">添加银行卡</li>
 				        	}
-				        	{extraHint ? <li style={{width: '300px'}}>{extraHint}</li> : null}
+				        	{extraHint ? <li style={{width: '300px', color: '#ff414b', cursor: 'default'}}>{extraHint}</li> : null}
 					        </ul>
 							<AppendingCardDialog dispatch={dispatch} realName={realName}
 								onAppendSuccess={() => this.props.dispatch(fetchBankCards())} />
@@ -198,28 +198,32 @@ const BankAccountType = {
 function mapStateToProps(state) {
 	var quickPayCards = state.bankCards.filter(c => c.type == BankAccountType.QuickPay)
 
-	var withdrawableCards = null, extraHint = null;
+	var withdrawableCards = null, extraHint = null, canAddCard = false;
 
 	if (quickPayCards.length === 1) {
-		withdrawableCards = quickPayCards
+		withdrawableCards = quickPayCards;
+		canAddCard = false;
 	} else if (every(state.bankCards, c => c.type == BankAccountType.Unknown)) {
 		withdrawableCards = state.bankCards;
 		extraHint = '尊敬的会员，因您未在丰付平台中绑定银行卡，所以在丰付平台提现时需要手动输入银行卡号。'
+		canAddCard = state.bankCards.length < 1;
 	} else if (every(state.bankCards, c => c.type == BankAccountType.WebBank)) {
 		withdrawableCards = [];
 		extraHint = '尊敬的会员，因您在安广融合平台绑定的银行卡与丰付平台绑定的银行卡不一致，请重新绑定。'
+		canAddCard = true;
 	} else {
 		withdrawableCards = [];
 		extraHint = '查询银行卡出错，请联系客服'
+		canAddCard = false;
 	}
-
 	return {
 		realName: state.userInfo.realName,
 		idleMoney: state.walletInfo.idleMoney,
 		hasTransactPassword: state.userInfo.hasTransactPassword,
 		cards: state.bankCards,
 		withdrawableCards,
-		extraHint
+		extraHint,
+		canAddCard
 	};
 }
 
