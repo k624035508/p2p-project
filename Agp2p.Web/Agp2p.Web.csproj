@@ -555,16 +555,12 @@
     <Content Include="plugins\advert\admin\bar_edit.aspx" />
     <Content Include="plugins\advert\admin\bar_list.aspx" />
     <Content Include="plugins\advert\admin\index.aspx" />
+    <Content Include="plugins\advert\advert_js.ashx" />
     <Content Include="plugins\advert\Agp2p.Web.Plugin.Advert.csproj" />
+    <Content Include="plugins\advert\app.config" />
     <Content Include="plugins\advert\focus.swf" />
-    <Content Include="plugins\advert\obj\Debug\Agp2p.Web.Plugin.Advert.csproj.FileListAbsolute.txt" />
-    <Content Include="plugins\advert\obj\Debug\Agp2p.Web.Plugin.Advert.dll" />
-    <Content Include="plugins\advert\obj\Debug\Agp2p.Web.Plugin.Advert.pdb" />
-    <Content Include="plugins\advert\obj\Debug\Lip2p.Web.Plugin.Advert.csproj.FileListAbsolute.txt" />
-    <Content Include="plugins\advert\obj\Debug\Lip2p.Web.Plugin.Advert.dll" />
-    <Content Include="plugins\advert\obj\Debug\Lip2p.Web.Plugin.Advert.pdb" />
-    <Content Include="plugins\advert\obj\Release\Agp2p.Web.Plugin.Advert.csproj.FileListAbsolute.txt" />
     <Content Include="plugins\advert\player.swf" />
+    <Content Include="plugins\advert\plugin.config" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -717,15 +713,6 @@
     <Content Include="admin\pwatch.bat" />
     <Content Include="admin\watch.bat" />
     <Content Include="admin\js\bootstrap.config.less" />
-    <Content Include="plugins\advert\advert_js.ashx" />
-    <Content Include="plugins\advert\app.config" />
-    <Content Include="plugins\advert\obj\Debug\Agp2p.Web.Plugin.Advert.csprojResolveAssemblyReference.cache" />
-    <Content Include="plugins\advert\obj\Debug\build.force" />
-    <Content Include="plugins\advert\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="plugins\advert\obj\Debug\Lip2p.Web.Plugin.Advert.csprojResolveAssemblyReference.cache" />
-    <Content Include="plugins\advert\obj\Release\build.force" />
-    <Content Include="plugins\advert\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="plugins\advert\plugin.config" />
     <None Include="Properties\PublishProfiles\anguang-deploy.pubxml" />
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
@@ -2605,13 +2592,6 @@
     <Compile Include="plugins\advert\DAL\advert_banner.cs" />
     <Compile Include="plugins\advert\Model\advert.cs" />
     <Compile Include="plugins\advert\Model\advert_banner.cs" />
-    <Compile Include="plugins\advert\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="plugins\advert\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="plugins\advert\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="plugins\advert\obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="plugins\advert\obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="plugins\advert\obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="plugins\advert\Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup1.cs" />
     <Compile Include="tools\admin_ajax.ashx.cs">
@@ -2664,6 +2644,10 @@
       <Project>{D13BC3EC-928C-4086-AB16-EC62A86FEB85}</Project>
       <Name>Agp2p.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agp2p.DBUtility\Agp2p.DBUtility.csproj">
+      <Project>{2cfdfca0-a3fc-4dde-8448-1769a6e24825}</Project>
+      <Name>Agp2p.DBUtility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agp2p.Linq2SQL\Agp2p.Linq2SQL.csproj">
       <Project>{D02BF08D-240F-4233-9B83-B22429E5F3A0}</Project>
       <Name>Agp2p.Linq2SQL</Name>
@@ -2683,9 +2667,6 @@
     <Folder Include="aspx\plugin\" />
     <Folder Include="html\" />
     <Folder Include="images\" />
-    <Folder Include="plugins\advert\bin\Release\zh-Hans\" />
-    <Folder Include="plugins\advert\obj\Debug\TempPE\" />
-    <Folder Include="plugins\advert\obj\Release\TempPE\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
