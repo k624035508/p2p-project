@@ -550,6 +550,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
+    <Content Include="plugins\advert\plugin.config" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -2608,7 +2609,6 @@
     <Folder Include="aspx\plugin\" />
     <Folder Include="html\" />
     <Folder Include="images\" />
-    <Folder Include="plugins\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
