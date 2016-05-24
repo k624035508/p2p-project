@@ -85,6 +85,11 @@ namespace Agp2p.Web.api.payment.sumapay
                         break;
                 }
             }
+            else
+            {
+                //同步返回报文错误，提示操作失败
+                Response.Redirect("http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/fail_return.html#default");
+            }
         }
     }
 }
