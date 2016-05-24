@@ -438,7 +438,9 @@ namespace Agp2p.Common
 
             // 支出
             [Description("充值手续费")]
-            ReChangeFee = 20
+            ReChangeFee = 20,
+            [Description("个人实名认证费")]
+            UserAuthFee = 21
         }
 
         /// <summary>
