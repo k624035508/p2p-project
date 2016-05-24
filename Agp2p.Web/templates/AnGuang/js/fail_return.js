@@ -46,7 +46,11 @@ $(function () {
     var url = window.location.href;
     var index = url.indexOf("#");
     var returnId = url.substring(index + 1);
-
+    var titlevalue = (returnId == "investedFail" ? "投资" : returnId == "rechargeFail" ? "充值" : returnId == "withdrawFail" ? "提现" : returnId == "repayFail" ? "还款" :
+       returnId == "tranClaimFail" ? "债权转让认购" : returnId == "autoTenderFail" ? "自动投标续约" : returnId == "autoTenderCancelFail" ? "自动投标解约" :
+           returnId == "autoAccountFail" ? "自动还款开通" : "自动还款取消") + "失败";
+    //$("title").text(titlevalue);  IE8不适用
+    $(document).attr("title",titlevalue);  //IE8修改title值
     ReactDom.render(<ReturnFailCondition returnId={returnId} />, document.getElementById("returnFail"));
 });
 

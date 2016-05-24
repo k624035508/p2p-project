@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import { Link } from 'react-router';
-import { updateWalletInfo, updateUserInfo } from "../actions/usercenter.js";
+import { ajax } from "jquery";
+import { updateWalletInfo, updateUserInfo} from "../actions/usercenter.js";
 import StatusContainer from "../containers/user-status.jsx";
 import MyAccountPage from "../containers/myaccount.jsx";
 import confirm from "../components/tips_confirm.js";
@@ -28,14 +29,18 @@ String.prototype.toNum = function () {
 class UserCenterPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {  pageIndex: 0};
 	}
+
+
+
 	componentDidUpdate() {
 	    $(".inner-ul li.nav-active").removeClass("nav-active");
 	    $(".inner-ul li:has(> a.active-link)").addClass("nav-active");	
 	}
 	componentDidMount() {
-		var { idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
+	    var {idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
+	    
 		var walletInfo = {
 			idleMoney : idleMoney.toNum(),
 			lockedMoney : lockedMoney.toNum(),
@@ -43,6 +48,7 @@ class UserCenterPage extends React.Component {
 			profitingMoney : profitingMoney.toNum(),
 			lotteriesValue : lotteriesValue.toNum()
 		};
+				
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));	
 		if (isIdentity == "True"){
@@ -72,6 +78,24 @@ class UserCenterPage extends React.Component {
 		    $(".hot-img").eq(index).show().siblings().hide();
 		    $(".hot-li li").eq(index).addClass("current-li").siblings().removeClass("current-li");
 		}
+		
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryBanner" ,pageIndex = this.state.pageIndex ;
+		    $.ajax({
+		        type: "post",
+		        dataType: "json",
+		        contentType: "application/json",
+		        url: url,
+		        data: JSON.stringify({pageIndex:pageIndex}),
+		        success: function(result) {
+		            let {totalCount, title, advUrl, advImg} = JSON.parse(result.d);
+		            this.setState({title: title, advUrl: advUrl, advImg: advImg});
+		            this.setState({totalCount: totalCount});
+		        }.bind(this),
+		        error: function(xhr, status, err) {
+		            console.error(url, status, err.toString());
+		        }.bind(this)
+		    }); 
+		
 	}
 	render() {
 		return (
@@ -123,20 +147,25 @@ class UserCenterPage extends React.Component {
                                   </li> }
                               </ul>
 					  
-                        <div className="hot-act">
+                                          {this.state.totalCount == 0 ? null :   
+                                     
+                             <div className="hot-act">
                             <div className="hot-title">热门活动</div>
                           <div>
                             <div className="hot-img hot-img-bg2">
-                                <a href="https://www.agrhp2p.com/article/403.html" target="_blank"></a>                              
+                                <a href={this.state.advUrl} target="_blank"> <img src={this.state.advImg}/></a>                              
                                 <div>
-                                    升级版“银票宝” 
+                                   {this.state.title}
                                 </div>
                             </div>
                           </div>
+
+
                           <ul className="list-unstyled hot-li">
-                              <li className="current-li">●</li>  
+                          <li className="current-li">●</li>  
                           </ul>
                         </div>
+                                          }
                 </div>
 								    {this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
                                 </div>
@@ -145,10 +174,11 @@ class UserCenterPage extends React.Component {
 								}
 
 function mapStateToProps(state) {
-	var walletInfo = state.walletInfo;
+    var walletInfo = state.walletInfo;    
 	return {
 	    totalMoney: walletInfo.idleMoney + walletInfo.lockedMoney + walletInfo.investingMoney + walletInfo.profitingMoney,
-        isLoaner: state.userInfo.isLoaner
+	    isLoaner: state.userInfo.isLoaner,
+        
 	};
 }
 

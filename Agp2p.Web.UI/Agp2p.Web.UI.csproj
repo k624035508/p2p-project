@@ -104,6 +104,9 @@
     <Compile Include="ManagePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\advert.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\article.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -7,7 +7,7 @@ import "../less/footerSmall.less";
 import React from "react";
 import ReactDom from "react-dom";
 import header from "./header.js";
-
+import { ajax } from "jquery";
 import alert from "../components/tips_alert.js";
 
 
@@ -59,13 +59,14 @@ class ReturnCondition extends React.Component {
 $(function () {
     //弹出窗popover初始化
     $('[data-toggle="popover"]').popover();
-    var url = window.location.href;
+        var url = window.location.href;
     var index = url.indexOf("#");
     var returnId = url.substring(index + 1);
     var titlevalue = (returnId == "invested" ? "投资" : returnId == "recharge" ? "充值" : returnId == "withdraw" ? "提现" : returnId == "repay" ? "还款" :
         returnId == "tranClaim" ? "债权转让认购" : returnId == "autoTender" ? "自动投标续约" : returnId == "autoTenderCancel" ? "自动投标解约" :
             returnId == "autoAccount" ? "自动还款开通" : "自动还款取消") + "确认";
-    $("title").text(titlevalue);
+        //$("title").text(titlevalue);  IE8不适用
+        $(document).attr("title",titlevalue);  //IE8修改title值
     ReactDom.render(<ReturnCondition returnId={returnId} />, document.getElementById("returnSuccess"));
-});
+    });
 
