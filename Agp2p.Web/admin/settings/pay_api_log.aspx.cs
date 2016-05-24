@@ -198,17 +198,19 @@ namespace Agp2p.Web.admin.repayment
                     case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                     case (int) Agp2pEnums.SumapayApiEnum.WhRec:
                     case (int) Agp2pEnums.SumapayApiEnum.WhReM:
+#if DEBUG
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == requestId);
-                        if (trans?.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        if (trans?.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
                             context.ConfirmBankTransaction(trans.id, null);
                         }
+#endif
                         break;
                     //个人提现
                     case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
                     case (int)Agp2pEnums.SumapayApiEnum.WdraM:
                         var transT = context.li_bank_transactions.SingleOrDefault(u => u.no_order == requestId);
-                        if (transT?.status == (int)Agp2p.Common.Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        if (transT?.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
                             context.ConfirmBankTransaction(transT.id, null);
                         }

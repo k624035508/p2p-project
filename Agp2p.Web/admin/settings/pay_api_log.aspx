@@ -70,7 +70,7 @@
                     <td align="left"><%#Eval("ResponseResult") %></td>
                     <td align="left"><%#Eval("ResponseRemark") %></td>
                     <td align="center">
-                        <asp:LinkButton runat="server" ID="excBtn" OnClick="excBtn_OnClick" OnClientClick="return confirm('确定执行平台操作吗?');" CommandArgument='<%#Eval("RequestLog.RequestId")%>' Visible='<%#!Eval("RequestLog.Status").ToString().Equals("已完成")%>'>执行</asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="excBtn" OnClick="excBtn_OnClick" OnClientClick="return confirm('确定执行平台操作吗?');" CommandArgument='<%#Eval("RequestLog.RequestId")%>' Visible='<%#Eval("RequestLog.Status") != null && !Eval("RequestLog.Status").ToString().Equals("已完成")%>'>执行</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>

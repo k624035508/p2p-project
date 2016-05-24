@@ -550,6 +550,17 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
+    <Content Include="plugins\advert\admin\adv_edit.aspx" />
+    <Content Include="plugins\advert\admin\adv_view.aspx" />
+    <Content Include="plugins\advert\admin\bar_edit.aspx" />
+    <Content Include="plugins\advert\admin\bar_list.aspx" />
+    <Content Include="plugins\advert\admin\index.aspx" />
+    <Content Include="plugins\advert\advert_js.ashx" />
+    <Content Include="plugins\advert\Agp2p.Web.Plugin.Advert.csproj" />
+    <Content Include="plugins\advert\app.config" />
+    <Content Include="plugins\advert\focus.swf" />
+    <Content Include="plugins\advert\player.swf" />
+    <Content Include="plugins\advert\plugin.config" />
     <Content Include="scripts\artdialog\dialog-min.js" />
     <Content Include="scripts\artdialog\dialog-plus-min.js" />
     <Content Include="scripts\artdialog\ui-dialog.css" />
@@ -2537,6 +2548,50 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="plugins\advert\admin\adv_edit.aspx.cs">
+      <DependentUpon>adv_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\advert\admin\adv_edit.aspx.designer.cs">
+      <DependentUpon>adv_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\admin\adv_view.aspx.cs">
+      <DependentUpon>adv_view.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\advert\admin\adv_view.aspx.designer.cs">
+      <DependentUpon>adv_view.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\admin\bar_edit.aspx.cs">
+      <DependentUpon>bar_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\advert\admin\bar_edit.aspx.designer.cs">
+      <DependentUpon>bar_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\admin\bar_list.aspx.cs">
+      <DependentUpon>bar_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\advert\admin\bar_list.aspx.designer.cs">
+      <DependentUpon>bar_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\admin\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\advert\admin\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\advert_js.ashx.cs">
+      <DependentUpon>advert_js.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\advert\BLL\advert.cs" />
+    <Compile Include="plugins\advert\BLL\advert_banner.cs" />
+    <Compile Include="plugins\advert\DAL\advert.cs" />
+    <Compile Include="plugins\advert\DAL\advert_banner.cs" />
+    <Compile Include="plugins\advert\Model\advert.cs" />
+    <Compile Include="plugins\advert\Model\advert_banner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup1.cs" />
     <Compile Include="tools\admin_ajax.ashx.cs">
@@ -2589,6 +2644,10 @@
       <Project>{D13BC3EC-928C-4086-AB16-EC62A86FEB85}</Project>
       <Name>Agp2p.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Agp2p.DBUtility\Agp2p.DBUtility.csproj">
+      <Project>{2cfdfca0-a3fc-4dde-8448-1769a6e24825}</Project>
+      <Name>Agp2p.DBUtility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agp2p.Linq2SQL\Agp2p.Linq2SQL.csproj">
       <Project>{D02BF08D-240F-4233-9B83-B22429E5F3A0}</Project>
       <Name>Agp2p.Linq2SQL</Name>
@@ -2608,7 +2667,6 @@
     <Folder Include="aspx\plugin\" />
     <Folder Include="html\" />
     <Folder Include="images\" />
-    <Folder Include="plugins\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>

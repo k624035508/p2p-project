@@ -185,7 +185,7 @@ namespace Agp2p.Web.api.payment.sumapay
                         context.AppendAdminLog("SumaPayNotic", "没有找到对应的请求，RequestID:" + ResponseLog.request_id);
                 }
                 else
-                    context.AppendAdminLog("SumaPayNotic", "请求流水号为空！");
+                    context.AppendAdminLog("SumaPayNotic", "请求流水号为空！返回报文为：" + reqStr);
             }
             catch (Exception ex)
             {

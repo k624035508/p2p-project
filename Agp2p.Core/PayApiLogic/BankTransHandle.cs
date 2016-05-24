@@ -167,7 +167,7 @@ namespace Agp2p.Core.PayApiLogic
                                     {
                                         //创建提现申请记录
                                         context.Withdraw(Utils.StrToInt(requestLog.remarks, 0),
-                                        Utils.StrToDecimal(msg.Sum, 0), "丰付提现处理中", msg.RequestId);
+                                        Utils.StrToDecimal(msg.Sum, 0), "丰付提现处理", msg.RequestId);
                                         //TODO 提现完成特殊处理
                                         //msg.HasHandle = true;
                                     }

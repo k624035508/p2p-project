@@ -14,8 +14,14 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public FrontEndReqMsg()
         {
+#if !DEBUG
+            SuccessReturnUrl = "https://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/successReturnUrl.aspx";
+            FailReturnUrl = "https://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/failReturnUrl.aspx";
+#endif
+#if DEBUG
             SuccessReturnUrl = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/successReturnUrl.aspx";
             FailReturnUrl = "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + "/api/payment/sumapay/failReturnUrl.aspx";
+#endif
         }
 
         public override string GetSignature()
