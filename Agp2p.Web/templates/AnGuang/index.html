@@ -253,7 +253,10 @@
                     <%if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
                     <p class="amount-status"><span class="invested">发标时间：<%=string.Format("{0:yyyy-MM-dd HH:mm}",p.publish_time)%></span></p>
                     <%else if(p.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <p class="amount-status"><span class="invested">可投金额：</span><span class="total"><%=p.financing_amount.ToString("n0")%> 元</span></p>
+                    <p class="amount-status">
+                        <span class="invested">可投金额：</span>
+                        <span class="total"><%=(p.financing_amount-p.investment_amount).ToString("n0")%> 元</span>
+                    </p>
                     <%else if(p.status<(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying)%>
                         <p class="amount-status"><span class="invested">融资结束</span></p>
                         <%else %>
@@ -293,120 +296,120 @@
 
 
     <!--dynamic boards-->
-<div class="container-fluid">
-    <div class="dynamic-wrap">
-        <!--公司动态-->
-        <div class="company-news">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more",42)%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">公司动态</span>
-                </a>
-            </div>
-            <div class="news-wrap">
-                <%set var inc_news_ls=GetArticles(42, 4)%>
-                <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
-                <%if(inc_news_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>' target="_blank">
-                    <img src="{inc_news_first.img_url}" alt=""/>
-                </a>
-                <div class="img-title">{inc_news_first.title}</div>
-                <%else%>
-                <div style="text-align: center">暂无内容</div>
-                <%/if%>
-                <div class="news-list">
-                    <ul class="list-unstyled">
-                        <%foreach(var a in inc_news_ls.Skip(1))%>
-                        <li>
-                            <span class="list-title-wrap">
+    <div class="container-fluid">
+        <div class="dynamic-wrap">
+            <!--公司动态-->
+            <div class="company-news">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more",42)%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">公司动态</span>
+                    </a>
+                </div>
+                <div class="news-wrap">
+                    <%set var inc_news_ls=GetArticles(42, 4)%>
+                    <%set var inc_news_first=inc_news_ls.FirstOrDefault()%>
+                    <%if(inc_news_first!=null)%>
+                    <a class="img-wrap" href='<%linkurl("article_show",inc_news_first.id)%>' target="_blank">
+                        <img src="{inc_news_first.img_url}" alt="" />
+                    </a>
+                    <div class="img-title">{inc_news_first.title}</div>
+                    <%else%>
+                    <div style="text-align: center">暂无内容</div>
+                    <%/if%>
+                    <div class="news-list">
+                        <ul class="list-unstyled">
+                            <%foreach(var a in inc_news_ls.Skip(1))%>
+                            <li>
+                                <span class="list-title-wrap">
                                     <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                         <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                         <span class="list-mark"></span>
                                         <span class="list-title"><%=a.title%></span>
                                     </a>
                                 </span>
-                        </li>
-                        <%/foreach%>
-                    </ul>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--媒体报道-->
-        <div class="media-report">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more",44)%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">媒体报道</span>
-                </a>
-            </div>
-            <div class="report-wrap">
-                <%set var media_dt_ls=GetArticles(44, 4)%>
-                <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
-                <%if(media_dt_first!=null)%>
-                <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>' target="_blank">
-                    <img src="{media_dt_first.img_url}" alt=""/>
-                </a>
-                <div class="img-title">{media_dt_first.title}</div>
-                <%else%>
-                <div style="text-align: center">暂无内容</div>
-                <%/if%>
-                <div class="report-list">
-                    <ul class="list-unstyled">
-                        <%foreach(var a in media_dt_ls.Skip(1))%>
-                        <li>
-                            <span class="list-title-wrap">
+            <!--媒体报道-->
+            <div class="media-report">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more",44)%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">媒体报道</span>
+                    </a>
+                </div>
+                <div class="report-wrap">
+                    <%set var media_dt_ls=GetArticles(44, 4)%>
+                    <%set var media_dt_first=media_dt_ls.FirstOrDefault()%>
+                    <%if(media_dt_first!=null)%>
+                    <a class="img-wrap" href='<%linkurl("article_show",media_dt_first.id)%>' target="_blank">
+                        <img src="{media_dt_first.img_url}" alt="" />
+                    </a>
+                    <div class="img-title">{media_dt_first.title}</div>
+                    <%else%>
+                    <div style="text-align: center">暂无内容</div>
+                    <%/if%>
+                    <div class="report-list">
+                        <ul class="list-unstyled">
+                            <%foreach(var a in media_dt_ls.Skip(1))%>
+                            <li>
+                                <span class="list-title-wrap">
                                     <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                         <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                         <span class="list-mark"></span>
                                         <span class="list-title"><%=a.title%></span>
                                     </a>
                                 </span>
-                        </li>
-                        <%/foreach%>
-                    </ul>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!--网站公告-->
-        <div class="company-placard">
-            <div class="dynamic-title-wrap">
-                <a href='<%=linkurl("about_more","43,54")%>'>
-                    <span class="link-mark pull-right"></span>
-                    <span class="dynamic-title">公司公告</span>
-                </a>
-            </div>
-            <ul class="list-unstyled">
-                <%set var announces_ls=GetArticles("43,54", 10, 0)%>
-                <%foreach(var a in announces_ls)%>
-                <li>
-                    <span class="list-title-wrap">
+            <!--网站公告-->
+            <div class="company-placard">
+                <div class="dynamic-title-wrap">
+                    <a href='<%=linkurl("about_more","43,54")%>'>
+                        <span class="link-mark pull-right"></span>
+                        <span class="dynamic-title">公司公告</span>
+                    </a>
+                </div>
+                <ul class="list-unstyled">
+                    <%set var announces_ls=GetArticles("43,54", 10, 0)%>
+                    <%foreach(var a in announces_ls)%>
+                    <li>
+                        <span class="list-title-wrap">
                             <a href='<%linkurl("article_show",a.id)%>' target="_blank" class="dark-grey14px">
                                 <span class="pull-right"><%=string.Format("{0:yyyy-MM-dd}", a.add_time)%></span>
                                 <span class="list-mark"></span>
                                 <span class="list-title"><%=a.title%></span>
                             </a>
                         </span>
-                </li>
-                <%/foreach%>
-            </ul>
+                    </li>
+                    <%/foreach%>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
     <!--战略合作-->
-<div class="strategy-coop">
-    <div class="strategy-title">
-        <span>战略合作</span>
+    <div class="strategy-coop">
+        <div class="strategy-title">
+            <span>战略合作</span>
+        </div>
+        <div class="strategy-con">
+            <div class="strategory-img1"></div>
+            <div class="strategory-img2"></div>
+            <div class="strategory-img3"></div>
+            <div class="strategory-img4"></div>
+        </div>
     </div>
-    <div class="strategy-con">
-        <div class="strategory-img1"></div>
-        <div class="strategory-img2"></div>
-        <div class="strategory-img3"></div>
-        <div class="strategory-img4"></div>
-    </div>
-</div>
     <!--dynamic boards end-->
     <%template src="_floating.html"%>
 
