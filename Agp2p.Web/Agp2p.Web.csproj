@@ -766,6 +766,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\license3.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\mazong.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\office-title.png" />

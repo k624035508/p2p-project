@@ -44,7 +44,12 @@ class UserCenterPage extends React.Component {
         });
 		$(".inner-ul li.nav-active").removeClass("nav-active");
 		$(".inner-ul li:has(> a.active-link)").addClass("nav-active");
-	}
+    }
+
+    componentWillMount() {
+        this.props.dispatch(fetchBannerInfo());
+    }
+
 	componentDidMount() {
 	   
 		var {idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
@@ -60,7 +65,7 @@ class UserCenterPage extends React.Component {
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));
 		
-			this.props.dispatch(fetchBannerInfo());
+			
 		
 		if (isIdentity == "True") {
 			confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活托管账户。", () => {
