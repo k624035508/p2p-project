@@ -166,23 +166,10 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryBanner(int pageIndex)
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryBanner()
         {
-            var context = new Agp2pDataContext();
-            var userInfo = GetUserInfoByLinq(context);
-            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-            if (userInfo == null)
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return "请先登录";
-            }
-
-            var invokeBanner = context.dt_advert_banner.Where(a =>a.is_lock == 0 && a.aid == 1 && a.end_time >= DateTime.Today).OrderBy(a => a.sort_id).ToList();
-            var totalCount = invokeBanner.Count();
-            var title =  invokeBanner.Skip(pageIndex).FirstOrDefault().title;
-            var advUrl = invokeBanner.Skip(pageIndex).FirstOrDefault().link_url;
-            var advImg = invokeBanner.Skip(pageIndex).FirstOrDefault().file_path;
-            return JsonConvert.SerializeObject(new { totalCount = totalCount, title = title, advUrl = advUrl, advImg = advImg });
+            return advert.AjaxQueryBanner();
         }
 
         [WebMethod]
