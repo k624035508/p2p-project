@@ -54,11 +54,13 @@ class CardEditor extends React.Component {
 				<ul className="list-unstyled">
 					<li><span>开户名：</span><span style={this.props.realName ? null : {color: "red"}} >
 						{this.props.realName || "（请先到 “个人中心 -> 安全中心” 进行实名认证）"}</span></li>
-					<li><span><i>*</i>选择银行：</span><select className="bankSelect" value={this.state.bank}
-						onChange={ev => this.setState({bank: ev.target.value})} disabled={!this.props.realName}>
+					<li><span><i>*</i>选择银行：</span>
+                    <select className="bankSelect" value={this.state.bank} style={!(this.props.realName && creatingCard) ? {"backgroundColor": "#f2f2f2"} : null}
+						onChange={ev => this.setState({bank: ev.target.value})} disabled={!(this.props.realName && creatingCard)} >
 						<option value="">请选择银行</option>
 						{bankList.map(b => <option value={b} key={b}>{b}</option>)}
-						</select></li>
+					</select>
+                    </li>
                     <li><span>开户行所在城市：</span>
 						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})}
 							disabled={!this.props.realName} />

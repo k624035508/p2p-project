@@ -269,11 +269,17 @@ class IdentityBinding extends React.Component {
 					idCardNumber: this.state.idCardNumber,
 				},
 				dataType: "json",
+				    beforeSend:function(XMLHttpRequest){ 
+				        //在后台返回success之前显示loading图标
+                        $(".btn-wrap a").css("background","#f2f2f2");
+				    }, 
 				success: data => {
 					alert(data.msg);
+                    $(".btn-wrap a").css("background","#ff414b");
 					this.props.dispatch(fetchWalletAndUserInfo());
 				},
 				error: jqXHR => {
+                    $(".btn-wrap a").css("background","#ff414b");
 					alert(jqXHR.responseJSON.msg);
 				}
 			});
