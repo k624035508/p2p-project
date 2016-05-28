@@ -72,8 +72,8 @@ $(function(){
 	), document.getElementById("app"));
 	
 	header.setHeaderHighlight(3);
-	$("ul.inner-ul").hide();
-
+	$("ul.inner-ul").hide();   
+	    $("li.nav-active").parent().show();
 	$("ul.outside-ul>li.listing").click(function(){
 	    $(this).find("a").find("div").addClass("jian");
 	    $(this).siblings().find("a").find("div").removeClass("jian");
@@ -81,10 +81,6 @@ $(function(){
 	    $(this).siblings().find("ul.inner-ul").hide(300);
 	});
 	
-	$(".fees-img2").hover(function(){
-	    $(".fees-tip").css("zIndex","10");
-	},function(){
-	    $(".fees-tip").css("zIndex","-10");
-	});
+
 	
 });

@@ -976,6 +976,7 @@
     <Content Include="templates\AnGuang\imgs\register\012.png" />
     <Content Include="templates\AnGuang\imgs\register\11.png" />
     <Content Include="templates\AnGuang\imgs\register\account.png" />
+    <Content Include="templates\AnGuang\imgs\register\blue-circle.png" />
     <Content Include="templates\AnGuang\imgs\register\blue-tick.png" />
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\errorBlue.jpg" />
@@ -1194,13 +1195,18 @@
     <Content Include="templates\weChat\imgs\banner\banner-1.png" />
     <Content Include="templates\weChat\imgs\banner\banner-2.png" />
     <Content Include="templates\weChat\imgs\banner\banner-3.png" />
+    <Content Include="templates\weChat\imgs\banner\banner-phone.jpg" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\cordova-back.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
     <Content Include="templates\weChat\imgs\footer\index-active.png" />
     <Content Include="templates\weChat\imgs\footer\index.png" />
+    <Content Include="templates\weChat\imgs\footer\indexBlue.png" />
     <Content Include="templates\weChat\imgs\footer\invest-active.png" />
     <Content Include="templates\weChat\imgs\footer\invest.png" />
+    <Content Include="templates\weChat\imgs\footer\my.png" />
+    <Content Include="templates\weChat\imgs\footer\projects.png" />
+    <Content Include="templates\weChat\imgs\footer\set.png" />
     <Content Include="templates\weChat\imgs\footer\setting-active.png" />
     <Content Include="templates\weChat\imgs\footer\setting.png" />
     <Content Include="templates\weChat\imgs\footer\usercenter-active.png" />

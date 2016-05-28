@@ -334,13 +334,14 @@ class CustodyAccount extends React.Component {
 			<li>
 				<div className="list-cell">
 					<span className="custody"></span>
-					<span className="list-th">资金托管</span>
-					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方托管、监管</span>
-					<span className="pull-right">
+					<span className="list-th">资金存管</span>
+					<span className="list-tips">用户拥有独立的专用账户，交易资金第三方存管、监管</span>
+                    <span className="pull-right">
                     {this.props.identityId? 
                     <a href={"/api/payment/sumapay/index.aspx?api=4"} target="_blank">查看</a> 
                     :
-                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >设置</a>}
+                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >设置</a>
+	                    }
                     </span>
 				</div>
 			</li>

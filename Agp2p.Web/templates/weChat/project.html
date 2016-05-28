@@ -46,7 +46,9 @@
     <div class="slide">
         <div class="invest-detail-page inner-scrollable">
             <div class="top-screen">
-                <div class="project-title"><span class="project-type">{Investable.CategoryName}</span><span>{Investable.Title}</span></div>
+                <div class="project-title"><span class="project-type">{Investable.CategoryName}</span><span>{Investable.Title}</span>
+                <span class="pro-contract" onclick='window.location.href="/tools/submit_ajax.ashx?action=generate_user_invest_contract&projectId={Investable.Project.id}"' >投资协议（范本）</span>
+                </div>
                 <div class="flex flex--align-items--center flex--column flex--justify-content--space-between">
                     <div class="indicatorContainer flex flex-center-wrapper"></div>
                     <p class="amount-left">剩余金额 {Investable.InvestmentBalance}</p>
@@ -62,7 +64,7 @@
                     <span class="title-style">项目收益</span>
                     <p><span class="data-style">10</span>元</p>
                     <%else%>
-                    <span class="title-style">年化收益</span>
+                    <span class="title-style">预期年化率</span>
                     <p><span class="data-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%></span> %</p>
                     <%/if%>
                 </span>

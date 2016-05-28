@@ -162,9 +162,6 @@ class WithdrawPage extends React.Component {
 					    	disabled={!this.props.hasTransactPassword}
 					    	placeholder={this.props.hasTransactPassword ? "" : "（请先设置交易密码）"} />
 			    	</div>*/}
-                    <div className="fees fees-img"><span className="fees-title">扣除资金托管费：</span><span className="fees-num">0</span>元
-                        <span className="fees-img2" ></span>
-                    </div>
                     <div className="fees fees-img"><span className="fees-title">扣除提现手续费：</span><span className="fees-num">0</span>元
                         <span className="fees-img2"></span>
                     </div>
