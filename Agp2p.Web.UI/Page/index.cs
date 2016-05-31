@@ -21,7 +21,7 @@ namespace Agp2p.Web.UI.Page
             var invokeBanner =
                 context.dt_advert_banner.Where(
                     a =>
-                        a.is_lock == 0 && a.title.Contains("首页") && a.end_time >= DateTime.Today)
+                        a.is_lock == 0 && a.dt_advert.title.Contains("首页") && a.end_time >= DateTime.Today)
                     .OrderBy(a => a.sort_id).ToList();
                    
             return invokeBanner;

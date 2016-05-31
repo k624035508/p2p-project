@@ -177,6 +177,7 @@ namespace Agp2p.Web.admin.repayment
                 var project = context.li_projects.SingleOrDefault(p => p.id == request.project_id);
                 switch (request.api)
                 {
+#if DEBUG
                     //个人自动账户/银行还款开通
                     case (int)Agp2pEnums.SumapayApiEnum.AcReO:
                     case (int)Agp2pEnums.SumapayApiEnum.AbReO:
@@ -198,13 +199,11 @@ namespace Agp2p.Web.admin.repayment
                     case (int) Agp2pEnums.SumapayApiEnum.WeRec:
                     case (int) Agp2pEnums.SumapayApiEnum.WhRec:
                     case (int) Agp2pEnums.SumapayApiEnum.WhReM:
-#if DEBUG
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == requestId);
                         if (trans?.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
                         {
                             context.ConfirmBankTransaction(trans.id, null);
                         }
-#endif
                         break;
                     //个人提现
                     case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
@@ -260,6 +259,7 @@ namespace Agp2p.Web.admin.repayment
                             }
                         }
                         break;
+#endif
                     default:
                         throw new NotImplementedException("该接口操作暂不能在平台单方面执行。");
                 }

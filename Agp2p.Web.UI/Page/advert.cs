@@ -32,7 +32,7 @@ namespace Agp2p.Web.UI.Page
             }
 
             var context = new Agp2pDataContext();
-            var data = context.dt_advert_banner.Where(a => a.is_lock == 0 && a.title.Contains("个人") && a.end_time >= DateTime.Today).Select(a => new
+            var data = context.dt_advert_banner.Where(a => a.is_lock == 0 && a.dt_advert.title.Contains("个人") && a.end_time >= DateTime.Today).Select(a => new
             {
                 banId = a.id,
                 banTitle = a.title,
