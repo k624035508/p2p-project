@@ -140,16 +140,6 @@ namespace Agp2p.Web.admin.repayment
                 txtKeywords.Text, Tpye.ToString()));
         }
 
-        //批量删除
-        protected void btnDelete_Click(object sender, EventArgs e)
-        {
-            ChkAdminLevel("manager_log", DTEnums.ActionEnum.Delete.ToString()); //检查权限
-            BLL.manager_log bll = new BLL.manager_log();
-            int sucCount = bll.Delete(7);
-            AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除资金托管日志" + sucCount + "条"); //记录日志
-            JscriptMsg("删除日志" + sucCount + "条", Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
-        }
-
         public class RequestLog
         {
             public int Index { get; set; }
@@ -176,6 +166,25 @@ namespace Agp2p.Web.admin.repayment
         protected void rblStatus_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             RptBind();
+        }
+
+        //批量删除
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            ChkAdminLevel("manager_log", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            
+            var deleteReq = context.li_pay_request_log.Where(r => r.request_time <= DateTime.Now.AddDays(-15)).ToList();          
+            int delCount = deleteReq.Count();
+            for (var i = 0; i < delCount; i++)
+            {
+                var deleteRes = context.li_pay_response_log.Where(s => s.request_id == deleteReq.Skip(i).First().id);
+                context.li_pay_response_log.DeleteAllOnSubmit(deleteRes);
+                context.SubmitChanges();
+            }
+            context.li_pay_request_log.DeleteAllOnSubmit(deleteReq);
+            context.SubmitChanges();
+            AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除资金托管日志" + delCount + "条"); //记录日志
+            JscriptMsg("删除日志" + delCount + "条", Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
         }
 
         protected void excBtn_OnClick(object sender, EventArgs e)

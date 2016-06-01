@@ -30,7 +30,7 @@
                 <div class="l-list">
                 <ul class="icon-list">
                     <li>
-                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExeNoCheckPostBack('btnDelete','删除7天前的资金托管日志，你确定吗?');"
+                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExeNoCheckPostBack('btnDelete','删除15天前的资金托管日志，你确定吗?');"
                             OnClick="btnDelete_Click"><i></i><span>删除日志</span></asp:LinkButton>
                     </li>                    
                 </ul>
