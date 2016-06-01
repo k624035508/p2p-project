@@ -17,7 +17,7 @@ $(function() {
 
     var { userIdentity } = $("#app").data();
     if (userIdentity == "True") {
-        if(confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。"))
+        if(confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。 "))
         {
             location.href="/api/payment/sumapay/index.aspx?api=3";
         }
