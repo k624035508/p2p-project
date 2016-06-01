@@ -870,6 +870,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-04.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-05.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-apps.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-newYPB.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-safe.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
@@ -998,6 +999,7 @@
     <Content Include="templates\AnGuang\imgs\register\error.png" />
     <Content Include="templates\AnGuang\imgs\register\errorBlue.jpg" />
     <Content Include="templates\AnGuang\imgs\register\grey-circle.png" />
+    <Content Include="templates\AnGuang\imgs\register\grey-circle2.png" />
     <Content Include="templates\AnGuang\imgs\register\loading.gif" />
     <Content Include="templates\AnGuang\imgs\register\login-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\register\phone.png" />
