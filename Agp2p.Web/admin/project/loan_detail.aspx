@@ -570,6 +570,7 @@
                 <asp:Button ID="btnFail" runat="server" Text="流标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnFail','是否确定流标操作，确定后会把所有资金退回给投资者！');" OnClick="btnFail_OnClick" Visible="False" />
                 <asp:Button ID="btnActivate" runat="server" Text="激活" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnActivate','是否确定重新激活该项目？');" OnClick="btnActivate_OnClick" Visible="False" />
                 <asp:Button ID="btnCut" runat="server" Text="截标" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnCut','是否确定对改项目进行截标？');" OnClick="btnCut_OnClick" Visible="False" />
+                <asp:Button ID="btnCancel" runat="server" Text="作废" CssClass="btn" OnClientClick="return ExeNoCheckPostBack('btnCancel','是否确定作废该项目？');" OnClick="btnCancel_OnClick" Visible="False" />
                 <%--<asp:Button ID="btnAutoRepaySign" runat="server" Text="开通自动还款" CssClass="btn" OnClick="btnAutoRepaySign_OnClick" Visible="False"/>--%>
                 <input name="btnReturn" type="button" value="返回上一页" class="btn yellow"
                     onclick="location.href = 'javascript:history.back(-1);'" />

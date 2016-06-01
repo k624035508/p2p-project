@@ -121,7 +121,7 @@ class MyAccount extends React.Component {
 					<div className="invest-content">
 						<div className="apr">
 							<div className="red25px margin-bottom10px">{pro.profit_rate_year}<span className="red15px">%</span></div>
-							<div className="grey13px">年化利率</div>
+							<div className="grey13px">预期年化率</div>
 						</div>
 						<div className="deadline">
 							<div className="grey25px margin-bottom10px">{pro.repayment_number}<span className="grey15px">{pro.repayment_term}</span></div>

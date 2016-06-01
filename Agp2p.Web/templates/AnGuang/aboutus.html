@@ -26,14 +26,31 @@
             <li><a href="#company">公司简介</a></li>
             <li><a href="#culture">企业文化</a></li>
             <li><a href="#events">大事记</a></li>
-            <li><a href="#manager">高管团队</a></li>
+            <li>
+                <a href="#manager" class="li-leader" style="line-height:20px;">                 
+                管理团队 <br/>
+                &nbsp;&nbsp;&nbsp; &nbsp;及 <br/>
+                顾问团队                   
+                </a>
+            </li>
             <li><a href="#agency">合作机构</a></li>
             <li><a href="#staff">员工风采</a></li>
             <li><a href="#office">办公环境</a></li>
             <li><a href="#qualification">公司资质</a></li>
             <li><a href="#strategy">战略合作</a></li>
             <li><a href="#contact">联系方式</a></li>
-            <li><a class="more" href='<%=linkurl("about_more")%>' target="_blank">更多</a></li>
+            <li  role="presentation" id="aboutmore" class="dropdown" style="padding:0;">
+                <a style="width:90px; text-align:center;" class="dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href = this.getAttribute('href');"  href='<%=linkurl("about_more")%>' target="_blank">
+                更多 <span class="arrowsituation"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-custom">
+                    <li><a href='<%=linkurl("about_more")%>' target="_blank">产品介绍</a></li>
+                    <li><a href='<%=linkurl("about_more","43,54")%>' target="_blank">平台公告</a></li>
+                    <li><a href='<%=linkurl("about_more",42)%>' target="_blank">最新动态</a></li>
+                    <li><a href='<%=linkurl("about_more",44)%>' target="_blank">媒体报道</a></li>
+                    <li><a href='<%=linkurl("about_more",-1)%>' target="_blank">加入我们</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>
@@ -104,6 +121,32 @@
             </div>
         </div>
     </div>
+    <!--顾问团队-->
+    <div id="advisor">
+        <div class="content-wrap">
+            <div class="title"></div>
+            <div class="description">
+                <div>
+                    <div class="xuan"></div>
+                    <div class="personal-info">
+                        <p class="name">禤景辉</p>
+                        <p class="position">广东安广融合 风控顾问</p>
+                        <p class="introduce">佛山大学金融系国际金融专业，学士学位；华南理工大学工商管理学院EMBA学位。曾任职多家银行信贷部经理；曾任职融资担保公司、小额贷款公司副总经理。有十多年的信贷业务管理工作和风控运营经验。</p>
+                    </div>
+                </div>
+             <!--   <span class="hr"></span>
+                <div>
+                    <div class="lawer"></div>
+                    <div class="personal-info">
+                        <p class="name">刘勇</p>
+                        <p class="position">广东安广融合 法律顾问</p>
+                        <p class="position">京市盈科（佛山）律师事务所股权高级合伙人</p>
+                        <p class="introduce">毕业于江南大学法学专业，法学士。在佛山从事法律工作15年，办理了大量公司、金融、行政诉讼及非诉案件。主要资历有：上市公司独立董事资格、广东股交中心路演项目评审专家、佛山中小企业法律顾问网首席律师、中国家族财富传承联盟理事等。</p>
+                    </div>
+                </div>  -->
+            </div>
+        </div>
+    </div>
     <!--合作机构-->
     <div id="agency">
         <div class="content-wrap">
@@ -136,14 +179,13 @@
             <div class="title"></div>
             <div class="description">
                 <ul class="list-unstyled list-inline picWall">
-                    <li><a class="staff01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff01.png"><span class="mask"></span></a></li>
-                    <li><a class="staff02" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff02.png"><span class="mask"></span></a></li>
-                    <li><a class="staff03" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff03.png"><span class="mask"></span></a></li>
-                    <li><a class="staff04" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff04.png"><span class="mask"></span></a></li>
-                    <li><a class="staff05" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff05.png"><span class="mask"></span></a></li>
-                    <li><a class="staff06" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff06.png"><span class="mask"></span></a></li>
-                    <li><a class="staff07" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff07.png"><span class="mask"></span></a></li>
-                    <li><a class="staff08" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff08.png"><span class="mask"></span></a></li>
+                   
+                    <li><a class="staff01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff02.png"><span class="mask"></span></a></li>                   
+                    <li><a class="staff02" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff04.png"><span class="mask"></span></a></li>
+                    <li><a class="staff03" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff05.png"><span class="mask"></span></a></li>
+                    <li><a class="staff04" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff06.png"><span class="mask"></span></a></li>
+                    <li><a class="staff05" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff07.png"><span class="mask"></span></a></li>
+                    <li><a class="staff06" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff08.png"><span class="mask"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -172,7 +214,7 @@
             <div class="title"></div>
             <div class="description">
                 <div class="business-license" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/license3.jpg"></div>
-                <div class="business-beian" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/beian2.jpg"></div>
+                <div class="business-beian" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/beian3.jpg"></div>
             </div>
         </div>
     </div>
@@ -186,6 +228,7 @@
                     <div class="team-con2"></div>
                     <div class="team-con3"></div>
                     <div class="team-con4"></div>
+                    <div class="team-con5"></div>
                 </div>
             </div>
         </div>

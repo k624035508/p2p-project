@@ -737,12 +737,15 @@
     <Content Include="templates\AnGuang\imgs\aboutus\agrh-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\announcement.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\bank-nanyue.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\beian-bg3.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\beian3.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\bigevents.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\beian-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\beian-bg2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\beian.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\beian2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\bills-icon.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\bottom.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\chenmaoqiang.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\codeCard-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\company-title.png" />
@@ -766,6 +769,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\license3.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\manager-title2.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\manager-title3.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mazong.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\micro-finance-icon.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\mortgage-icon.png" />
@@ -788,16 +793,22 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office07.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff02B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff03-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff03.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff03B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff04-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff04.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff04B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff05B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff06B-bg .png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff07.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff08-bg.png" />
@@ -814,6 +825,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\team2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\team3.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\team4.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\team5.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\top.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
     <Content Include="templates\AnGuang\imgs\help\charge.png" />
@@ -848,6 +861,7 @@
     <Content Include="templates\AnGuang\imgs\index\android-btn-hover.png" />
     <Content Include="templates\AnGuang\imgs\index\android-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\announce-icon.png" />
+    <Content Include="templates\AnGuang\imgs\index\apps-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\index\apps-bg.png" />
     <Content Include="templates\AnGuang\imgs\index\back.png" />
     <Content Include="templates\AnGuang\imgs\index\bank.png" />
@@ -857,6 +871,7 @@
     <Content Include="templates\AnGuang\imgs\index\banner-05.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-06.jpg" />
     <Content Include="templates\AnGuang\imgs\index\banner-newYPB.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\banner-safe.jpg" />
     <Content Include="templates\AnGuang\imgs\index\bg404.png" />
     <Content Include="templates\AnGuang\imgs\index\bgbanner.png" />
     <Content Include="templates\AnGuang\imgs\index\bottom.jpg" />
@@ -898,10 +913,11 @@
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
     <Content Include="templates\AnGuang\imgs\index\slider-arrow.png" />
-    <Content Include="templates\AnGuang\imgs\index\strategory1.png" />
-    <Content Include="templates\AnGuang\imgs\index\strategory2.png" />
-    <Content Include="templates\AnGuang\imgs\index\strategory3.png" />
-    <Content Include="templates\AnGuang\imgs\index\strategory4.png" />
+    <Content Include="templates\AnGuang\imgs\index\strategory1.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\strategory2.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\strategory3.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\strategory4.jpg" />
+    <Content Include="templates\AnGuang\imgs\index\strategory5.jpg" />
     <Content Include="templates\AnGuang\imgs\index\subscribe-code.png" />
     <Content Include="templates\AnGuang\imgs\index\tianyingbao-geo.png" />
     <Content Include="templates\AnGuang\imgs\index\top-bar-app-code.png" />
@@ -916,6 +932,7 @@
     <Content Include="templates\AnGuang\imgs\index\weiboblue.png" />
     <Content Include="templates\AnGuang\imgs\index\xin.png" />
     <Content Include="templates\AnGuang\imgs\index\yinpiaobao-geo.png" />
+    <Content Include="templates\AnGuang\imgs\index\yinpiaobao.jpg" />
     <Content Include="templates\AnGuang\imgs\index\yue.png" />
     <Content Include="templates\AnGuang\imgs\loan\001-1.png" />
     <Content Include="templates\AnGuang\imgs\loan\001.png" />
@@ -1013,6 +1030,8 @@
     <Content Include="templates\AnGuang\imgs\safe\project-02.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-03.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-04.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-05.png" />
+    <Content Include="templates\AnGuang\imgs\safe\project-06.png" />
     <Content Include="templates\AnGuang\imgs\safe\project-icon.png" />
     <Content Include="templates\AnGuang\imgs\safe\projectblue.png" />
     <Content Include="templates\AnGuang\imgs\sitemap\aboutus.png" />
@@ -1233,6 +1252,20 @@
     <Content Include="templates\weChat\imgs\loading.svg" />
     <Content Include="templates\weChat\imgs\logo.png" />
     <Content Include="templates\weChat\imgs\newhand-mark.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\hegui1.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\hegui2.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\hegui3.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\wenjian1.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\wenjian2.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\wenjian3.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye1.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye2.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye3.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye4.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye5.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye6.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye7.png" />
+    <Content Include="templates\weChat\imgs\safe_defence\zhuanye8.png" />
     <Content Include="templates\weChat\imgs\settings\about-icon.png" />
     <Content Include="templates\weChat\imgs\settings\bank-icon.png" />
     <Content Include="templates\weChat\imgs\settings\exit-icon.png" />
@@ -1264,6 +1297,7 @@
     <Content Include="templates\weChat\js\recharge.js" />
     <Content Include="templates\weChat\js\register.js" />
     <Content Include="templates\weChat\js\safe.js" />
+    <Content Include="templates\weChat\js\safe_defence.js" />
     <Content Include="templates\weChat\js\settings.js" />
     <Content Include="templates\weChat\js\usercenter.js" />
     <Content Include="templates\weChat\js\withdraw.js" />
@@ -1291,6 +1325,7 @@
     <Content Include="templates\weChat\recharge.html" />
     <Content Include="templates\weChat\register.html" />
     <Content Include="templates\weChat\safe.html" />
+    <Content Include="templates\weChat\safe_defence.html" />
     <Content Include="templates\weChat\settings.html" />
     <Content Include="templates\weChat\usercenter.html" />
     <Content Include="templates\weChat\verified.html" />
@@ -1429,6 +1464,7 @@
     <Content Include="templates\AnGuang\less\claimstransfer.less" />
     <Content Include="templates\AnGuang\less\agcurrent.less" />
     <Content Include="templates\AnGuang\less\success_return.less" />
+    <Content Include="templates\weChat\less\safe_defence.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\audit\make_loan_audit.aspx.cs">

@@ -136,6 +136,7 @@ namespace Agp2p.Web.admin.project
                     btnFail.Visible = true;
                     btnActivate.Visible = true;
                     btnCut.Visible = true;
+                    btnCancel.Visible = true;
                     div_financing_add_day.Visible = true;
                     break;
                 case (int)Agp2pEnums.ProjectStatusEnum.FinancingSuccess:
@@ -155,11 +156,12 @@ namespace Agp2p.Web.admin.project
             spa_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.LoanTypeEnum)_project.type);//借款主体
             spa_title.InnerText = _project.title;
             spa_no.InnerText = _project.no;
-                      
+            spa_amount.InnerText = _project.financing_amount.ToString();//借款金额
             spa_repayment.InnerText = _project.repayment_term_span_count +
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString("N1");//年化利率
+            
             if (_project.tag != null)
                 spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum)_project.tag);
             spa_financing_day.InnerText = _project.financing_day.ToString();
@@ -493,6 +495,44 @@ namespace Agp2p.Web.admin.project
             catch (Exception ex)
             {
                 JscriptMsg("借款截标操作失败：" + ex.Message, "back", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 作废项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCancel_OnClick(object sender, EventArgs e)
+        {
+            var project = LqContext.li_projects.SingleOrDefault(p => p.id == ProjectId);
+            if (project != null)
+            {
+                if (project.investment_amount == 0)
+                {
+                    try
+                    {
+                        //TODO　对接托管接口
+                        ChkAdminLevel("loan_financing", DTEnums.ActionEnum.Edit.ToString());
+                        project.status = (int)Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel;
+                        LqContext.SubmitChanges();
+                        JscriptMsg("项目作废成功！",
+                            Utils.CombUrlTxt("loan_financing.aspx", "channel_id={0}&status={1}", this.ChannelId.ToString(),
+                                ((int)Agp2pEnums.ProjectStatusEnum.Financing).ToString()));
+                    }
+                    catch (Exception ex)
+                    {
+                        JscriptMsg("项目作废失败：" + ex.Message, "back", "Error");
+                    }
+                }
+                else
+                {
+                    JscriptMsg("已有投资者投标，不能作废！", "back", "Error");
+                }
+            }
+            else
+            {
+                JscriptMsg("项目不存在或已被删除！", "back", "Error");
             }
         }
 

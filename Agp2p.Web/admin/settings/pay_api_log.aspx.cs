@@ -140,6 +140,16 @@ namespace Agp2p.Web.admin.repayment
                 txtKeywords.Text, Tpye.ToString()));
         }
 
+        //批量删除
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            ChkAdminLevel("manager_log", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            BLL.manager_log bll = new BLL.manager_log();
+            int sucCount = bll.Delete(7);
+            AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除资金托管日志" + sucCount + "条"); //记录日志
+            JscriptMsg("删除日志" + sucCount + "条", Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
+        }
+
         public class RequestLog
         {
             public int Index { get; set; }

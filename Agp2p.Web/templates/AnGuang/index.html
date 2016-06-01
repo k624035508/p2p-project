@@ -103,12 +103,7 @@
                       <a target="_blank" href="https://www.agrhp2p.com/article/403.html"></a>                     
                   </li>
                     <li class="banner3">
-                     <a style="margin-top: -20px;" target="_blank" href='<%linkurl("activity_apps")%>'></a>
-                      <div class="apps-btns">
-                            <a href="/download/android-v1.0.apk" class="android-btn" target="_blank"></a>
-                            <a href="https://itunes.apple.com/cn/app/guang-rong-he-p2p-wang-dai/id1080838161?mt=8" class="ios-btn" target="_blank"></a>
-                            
-                        </div>                       
+                     <a style="margin-top: -20px;" target="_blank" href='<%linkurl("activity_apps")%>'></a>                     
                     </li>
                     <li class="banner4">
                         <a style="margin-top: -20px;" target="_blank" href='<%linkurl("safe_defence")%>'></a>                      
@@ -227,26 +222,23 @@
     </div>
     <%/if%>
 
-    <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
+    <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60).OrderByDescending(c=>c))%>
     <%set var totalcount0=0%>
-    <div class='<%=cid==62?"tianyingbao":"yinpiaobao"%> tender content-wrap'>
+    <div class="yinpiaobao tender content-wrap">
         <div class="tender-left">
+          <div class="tender-left-img">
             <p class="white35px"><%=CategoryIdTitleMap[cid]%></p>
-            <%if(cid==62)%>
-            <p class="white18px"><span>定期理财</span><span>收益稳定</span></p>
-            <%/if%>
-            <%if(cid==60)%>
-            <p class="white18px"><span>票据托管</span><span>到期承兑</span></p>
-            <%/if%>
-            <p class="white13px">　</p>
-            <p class="white13px">　</p>
-            <div class="geometry-icon"></div>
+            <p class="white18px">票据托管&nbsp;&nbsp;到期承兑</p>
+            <p class="white13px">　</p> 
+          </div>
+          <div class="tender-left-more">         
             <a href='<%linkurl("projects",cid,0,0,0,1)%>' target="_blank">查看更多</a>
+          </div>
         </div>
         <div class="tender-right">
             <div class="icon-corner"></div>
             <div class="content-bottom">
-                <%set var investables=QueryInvestables(4,0,out totalcount0,cid,0,0,0)%>
+                <%set var investables=QueryInvestables(8,0,out totalcount0,cid,0,0,0)%>
                 <%foreach(var p in investables.Select(i=>i.Project))%>
                 <div class="tender-cell">
                     <div class="title-wrap">
@@ -429,6 +421,7 @@
             <div class="strategory-img2"></div>
             <div class="strategory-img3"></div>
             <div class="strategory-img4"></div>
+            <div class="strategory-img5"></div>
         </div>
     </div>
     <!--dynamic boards end-->
