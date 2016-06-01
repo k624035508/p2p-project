@@ -2574,8 +2574,9 @@ namespace Agp2p.Web.tools
             try
             {
                 //检查用户是否登录
-                Model.users model = BasePage.GetUserInfo();
-                if (model == null)
+                var dataContext = new Agp2pDataContext();
+                var user = BasePage.GetUserInfoByLinq(dataContext);
+                if (user == null)
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                     return;
@@ -2583,17 +2584,17 @@ namespace Agp2p.Web.tools
 
                 var idcard = DTRequest.GetFormString("idCardNumber");
                 var truename = DTRequest.GetFormString("trueName");
-                var licontext = new Agp2pDataContext();
+
                 // 判断身份证是否重复
-                var count = licontext.dt_users.Count(u => u.id != model.id && u.id_card_number == idcard);
+                var count = dataContext.dt_users.Count(u => u.id != user.id && u.id_card_number == idcard);
                 if (count != 0)
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"对不起，身份证号已经存在！\"}");
                     return;
                 }
                 // 判断是否已锁定，锁定后不能再改
-                var dtUsers = licontext.dt_users.Single(u => u.id == model.id);
-                if (!string.IsNullOrWhiteSpace(dtUsers.real_name) && !string.IsNullOrWhiteSpace(dtUsers.id_card_number))
+                //var dtUsers = dataContext.dt_users.Single(u => u.id == user.id);
+                if (!string.IsNullOrWhiteSpace(user.real_name) && !string.IsNullOrWhiteSpace(user.id_card_number))
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"你已经认证过了\"}");
                     return;
@@ -2609,44 +2610,48 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                if (6 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
+                if (6 <= dataContext.QueryEventTimesDuring(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
                 {
                     context.Response.Write(JsonConvert.SerializeObject(new { status = 0, msg = "你在一年内已经进行过 6 次身份认证，不能再继续认证了。如有疑问，请联系客服" }));
                     return;
                 }
-                if (3 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
+                if (3 <= dataContext.QueryEventTimesDuring(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
                 {
                     context.Response.Write(JsonConvert.SerializeObject(new { status = 0, msg = "你在一天内已经进行过 3 次身份认证，请明日再试，并务必填写正确的认证信息" }));
                     return;
                 }
 
-                //使用免费接口先核实有效的身份证
 #if !DEBUG
+                //使用免费接口先核实有效的身份证
                 var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
                 var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
                 if (resultModel != null)
                 {
                     if (resultModel.Resultcode == "200")
                     {
+                        //保存地区信息
+                        user.area = resultModel.Result.Area;
+                        user.sex = resultModel.Result.Sex;
+                        user.birthday = DateTime.Parse(resultModel.Result.Birthday);
 #endif
-                // 记录接口调用
-                licontext.MarkEventOccurNotSave(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
-                licontext.SubmitChanges();
+                        // 记录接口调用
+                        dataContext.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
+                        dataContext.SubmitChanges();
 
-                //调用托管平台实名验证接口
-                var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
-                MessageBus.Main.Publish(msg);
-                //处理实名验证返回结果
-                var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
-                MessageBus.Main.Publish(msgResp);
-                if (msgResp.HasHandle)
-                {
-                    context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
-                }
-                else
-                {
-                    context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
-                }
+                        //调用托管平台实名验证接口
+                        var msg = new UserRealNameAuthReqMsg(user.id, truename, idcard);
+                        MessageBus.Main.Publish(msg);
+                        //处理实名验证返回结果
+                        var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
+                        MessageBus.Main.Publish(msgResp);
+                        if (msgResp.HasHandle)
+                        {
+                            context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
+                        }
+                        else
+                        {
+                            context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
+                        }
 #if !DEBUG
                     }
                     else
@@ -2656,7 +2661,7 @@ namespace Agp2p.Web.tools
             }
             catch (Exception ex)
             {
-                throw ex;
+                context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + ex.Message + "\"}");
             }
         }
 

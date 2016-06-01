@@ -72,30 +72,19 @@
         <div class="prev"></div>
         <div class="next"></div>
 
-       <ul class="hd">
-           <!--  <%set var ba=QueryBanner()%>
-    <%set var balen=ba.Count()%>
-    <%for(var a=0;a<balen;a++)%>
-        <li>●</li>
-    <%/for%>   -->
+        <ul class="hd">
+            <li>●</li>
+            <li>●</li>
+            <li>●</li>
 
-           <li>●</li>
-           <li>●</li>
-           <li>●</li>
+            <%set var ba=QueryBanner()%>
+            <%set var balen=ba.Count()%>
+            <%for(var a=0;a<balen;a++)%>
+                <li>●</li>
+                <%/for%>
         </ul>
 
         <div class="bd">
-            <!-- <ul>
-         <%for(var b=0;b
-         <balen;b++)%>
-             <%set var index=ba.Skip(b).First()%>
-             <li style='background:url("<%=index.file_path%>");'>
-                 <a href="<%=index.link_url%>" target="_blank">
-
-                 </a>
-             </li>
-             <%/for%>
-    </ul>  -->
 
 
               <ul>
@@ -107,12 +96,18 @@
                     </li>
                     <li class="banner4">
                         <a style="margin-top: -20px;" target="_blank" href='<%linkurl("safe_defence")%>'></a>                      
-                    </li>                   
-            </ul>
+                    </li>   
+                 
+                 <%for(var b=0;b<balen;b++)%>
+                     <%set var index=ba.Skip(b).First()%>
+                     <li style='background:url("<%=index.file_path%>");'>
+                         <a href="<%=index.link_url%>" target="_blank"></a>
+                     </li>
+                <%/for%>
 
-            
+            </ul>
         </div>
-         
+
     </div>
 
     <!--announcement-->
