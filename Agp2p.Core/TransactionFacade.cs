@@ -507,16 +507,22 @@ namespace Agp2p.Core
                 // 限制对新手体验标的投资，只能投资 100，只能投 1 次
                 if (pr.IsNewbieProject())
                 {
-                    if (investingMoney != 100)
+                    if (investingMoney < 100)
                     {
-                        throw new InvalidOperationException("新手体验标规定只能投 100 元");
+                        throw new InvalidOperationException("新手体验标规定最低只能投 100 元");
                     }
-                    if (wallet.dt_users.li_project_transactions.Any(tra =>
-                        tra.li_projects.dt_article_category.call_index == "newbie"
-                        && tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success
-                        && tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest))
+                    if (10000 < wallet.total_investment)
                     {
-                        throw new InvalidOperationException("你已经投资过新手体验标，不能再投资");
+                        throw new InvalidOperationException("你的累计投资金额已经超过 10000，不能再投资新手标");
+                    }
+                    var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
+                            tra.li_projects.dt_article_category.call_index == "newbie" &&
+                            tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                            tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                        .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
+                    if (10000 < newbieProjectInvested + investingMoney)
+                    {
+                        throw new InvalidOperationException($"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}");
                     }
                 }
                 else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 10 w
