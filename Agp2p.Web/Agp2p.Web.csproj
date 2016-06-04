@@ -121,6 +121,30 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -243,6 +267,7 @@
     <Content Include="admin\statistic\project_investor_detail.aspx" />
     <Content Include="admin\statistic\investment_rank_list.aspx" />
     <Content Include="admin\statistic\offline_transact_timeline.aspx" />
+    <Content Include="admin\transact\all_bank_account_list.aspx" />
     <Content Include="admin\transact\bank_account_edit.aspx" />
     <Content Include="admin\transact\bank_account_list.aspx" />
     <Content Include="admin\transact\bank_transaction_charge.aspx" />
@@ -2039,6 +2064,13 @@
     </Compile>
     <Compile Include="admin\statistic\offline_transact_timeline.aspx.designer.cs">
       <DependentUpon>offline_transact_timeline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\transact\all_bank_account_list.aspx.cs">
+      <DependentUpon>all_bank_account_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\transact\all_bank_account_list.aspx.designer.cs">
+      <DependentUpon>all_bank_account_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\transact\bank_account_edit.aspx.cs">
       <DependentUpon>bank_account_edit.aspx</DependentUpon>
