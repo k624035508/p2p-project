@@ -41,8 +41,13 @@ namespace Agp2p.Web.UI.Page
 
         protected bool IsIdentity()
         {
+#if DEBUG
+            return false;
+#endif
+#if !DEBUG
             //5月13号托管更新前的用户才需要激活操作
             return userModel.identity_id == null && userModel.reg_time <= DateTime.Parse("2016-5-13");
+#endif
         }
 
         protected int QueryBanner(int aid)
