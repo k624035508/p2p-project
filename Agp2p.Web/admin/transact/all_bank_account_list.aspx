@@ -41,22 +41,27 @@
 <HeaderTemplate>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
   <tr>
-    <th width="3%" align="left" >序号</th>
+    <th width="3%" align="left" style="padding-left:.5%;">序号</th>
     <th align="left" width="10%">用户名</th>
     <th align="left" width="10%">银行</th>
     <th align="left" width="20%">开户行</th>
     <th align="left" width="20%">银行账户</th>
     <th align="left" width="10%">交易记录</th>
+    <th align="left" width="20%">银行卡状态</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
    <tr>
-    <td><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td> 
+    <td align="left" style="padding-left:.5%;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td> 
     <td><%# Eval("dt_users.real_name") != null && Eval("dt_users.real_name") != "" ? Eval("dt_users.real_name") : Eval("dt_users.user_name")%></td>     
     <td><%# Eval("bank") %>
     <td><%# Eval("opening_bank") %></td>
     <td><%# Eval("account") %></td>
     <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
+    <td>
+        <%# GetTypeName(Eval("type").ToString()) %>
+        <%# Eval("type").ToString() == "2" ? "<a>解绑</a>" : "" %>
+    </td>
   </tr>
 
 </ItemTemplate>

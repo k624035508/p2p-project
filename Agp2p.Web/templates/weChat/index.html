@@ -58,7 +58,7 @@
             </div>
             <%/if%>
 
-            <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
+            <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderBy(c=>c))%>
             <%set var totalcount=0%>
         <%set var investables=QueryInvestables(5,0,out totalcount,cid,0,0,0)%>
         <%foreach(var inv in investables)%>
