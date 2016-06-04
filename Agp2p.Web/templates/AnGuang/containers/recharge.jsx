@@ -8,7 +8,7 @@ import "../less/recharge.less";
 class RechargePage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectedBankId: "", chargingAmount: "" };
+        this.state = { selectedBankId: "NOCARD", chargingAmount: "" };
     }
     componentDidMount () {
         $("#waitforPaymentDialog").on("hide.bs.modal", ev => {
@@ -73,10 +73,10 @@ class RechargePage extends React.Component {
         return (
 			<div>
 				<div className="bank-chose-th">
-					<span><a href="javascript:" onClick={ev => this.setState({selectedBankId: ""})}
-        className={quickPayment?"":"active"}>网银支付</a></span>
     <span><a href="javascript:" onClick={ev => this.setState({selectedBankId: "NOCARD"})}
-        className={quickPayment?"active":""}>快捷支付</a></span>
+    className={quickPayment?"active":""}>快捷支付</a></span>
+        <span><a href="javascript:" onClick={ev => this.setState({selectedBankId: ""})}
+        className={quickPayment?"":"active"}>网银支付</a></span>
 </div>
         {quickPayment ? null :
         <ul className="list-unstyled list-inline bank-select">

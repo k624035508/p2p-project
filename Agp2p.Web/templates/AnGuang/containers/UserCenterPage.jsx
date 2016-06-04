@@ -68,7 +68,7 @@ class UserCenterPage extends React.Component {
 			
 		
 		if (isIdentity == "True") {
-			confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活托管账户。", () => {
+		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。", () => {
 				location.href = "/api/payment/sumapay/index.aspx?api=3";
 			});
 		}
