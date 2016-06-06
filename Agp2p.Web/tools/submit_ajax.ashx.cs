@@ -2630,7 +2630,7 @@ namespace Agp2p.Web.tools
                     if (resultModel.Resultcode == "200")
                     {
                         //保存地区信息
-                        user.area = resultModel.Result.Area;
+                        user.address = resultModel.Result.Area;
                         user.sex = resultModel.Result.Sex;
                         user.birthday = DateTime.Parse(resultModel.Result.Birthday);
 #endif
