@@ -785,6 +785,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\events.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\events2.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\joinus.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\lawer.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lawyer-yingke.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license-bg2.jpg" />
