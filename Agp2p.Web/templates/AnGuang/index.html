@@ -149,7 +149,7 @@
                     </div>
                     <div class="content-body">
                         <div class="left-part">
-                            <p class="grey13px">项目收益<span class="dark-grey25px margin-left30">7.09</span><span class="dark-grey15px"> %</span></p>
+                            <p class="grey13px">项目收益<span class="dark-grey25px margin-left30"><%=np.profit_rate_year.ToString("f1")%></span><span class="dark-grey15px"> %</span></p>
                             <div class="progress progress-custom">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="<%=(np.GetInvestmentProgressPercent()*100)%>"
                                      aria-valuemin="0" aria-valuemax="100" style='width:0 ;'>
@@ -167,7 +167,9 @@
                             <%/if%>
                         </div>
                     </div>
+                    <%if(np.status!=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                     <div class="status-icon"></div>
+                    <%/if%>
                 </div>
                 <div class="rules" onclick="window.open('/activity_apps.html', '_blank')">
                     <p>安广融合移动端</p>
