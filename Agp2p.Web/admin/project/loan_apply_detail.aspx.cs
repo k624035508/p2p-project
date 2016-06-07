@@ -496,13 +496,12 @@ namespace Agp2p.Web.admin.project
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
             }
             //新手项目
-            else if (category != null && category.call_index.Equals("newbie"))
+            else if (category != null && category.call_index.Contains("newbie"))
             {
                 div_risks_info.Visible = false;
                 div_mortgages_info.Visible = false;
                 div_loan_fee_rate.Visible = false;
                 div_bond_fee_rate.Visible = false;
-                div_project_profit_rate.Visible = false;
                 li_mortgages.Visible = false;
                 li_risk.Visible = false;
 

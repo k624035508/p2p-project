@@ -111,7 +111,7 @@
                                 <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
-                                <li><span>保障方式：</span><span>本金 + 利息</span></li>
+                                <!--<li><span>保障方式：</span><span>本金 + 利息</span></li>-->
                             </ul>
                         </div>
                         <div class="profit-wrap">
@@ -167,7 +167,7 @@
         <div class="invest-rules">
             <div class="sum">
 
-                <div><%=projectModel.IsNewbieProject() ? "项目金额" : (Investable.IsClaimTransferProject ? "预期年化收益率" : "借款金额")%></div>
+                <div><%=(Investable.IsClaimTransferProject ? "预期年化收益率" : "借款金额")%></div>
                 <%if(Investable.IsClaimTransferProject)%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", projectModel.profit_rate_year)%><span> %</span></div>
                 <%else%>
@@ -183,10 +183,8 @@
                 <%/if%>
             </div>
             <div class="apr">
-                <div><%=projectModel.IsNewbieProject()?"项目收益":"预期年化率"%></div>
-                <%if(projectModel.IsNewbieProject())%>
-                <div class="rules-style">10<span> 元</span></div>
-                <%else if(projectModel.IsHuoqiProject())%>
+                <div>预期年化率</div>
+                <%if(projectModel.IsHuoqiProject())%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100-.2m)%><span> %</span>+0.2<span> %</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span></div>

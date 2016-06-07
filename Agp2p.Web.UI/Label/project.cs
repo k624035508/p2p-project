@@ -90,7 +90,7 @@ namespace Agp2p.Web.UI
             return context.li_projects.OrderByDescending(p => p.id)
                 .FirstOrDefault(p =>
                         (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
-                        p.dt_article_category.call_index == "newbie");
+                        p.dt_article_category.call_index == "newbie2");
         }
 
         public static li_projects GetFirstHuoqiProject()

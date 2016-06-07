@@ -63,7 +63,7 @@ namespace Agp2p.Core
 
         public static bool IsNewbieProject(this li_projects p)
         {
-            return p.dt_article_category.call_index == "newbie";
+            return p.dt_article_category.call_index == "newbie2";
         }
 
         public static bool IsHuoqiProject(this li_projects p)
