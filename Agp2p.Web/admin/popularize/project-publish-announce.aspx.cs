@@ -156,7 +156,7 @@ namespace Agp2p.Web.admin.popularize
             {
                 var p = projects[i];
                 return string.Format(trTemplate, i + 1, p.dt_article_category.title, p.title, p.financing_amount, p.repayment_term_span_count + p.GetProjectTermSpanEnumDesc(),
-                    (p.profit_rate_year / 100).ToString("p1"), p.GetProjectRepaymentTypeDesc(), publishTime);
+                    (p.profit_rate_year / 100).ToString("p2"), p.GetProjectRepaymentTypeDesc(), publishTime);
             });
 
             var tableContent = tableTemplate.Replace("{trs}", string.Join("", trAll));
