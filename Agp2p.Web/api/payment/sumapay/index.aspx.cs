@@ -76,6 +76,10 @@ namespace Agp2p.Web.api.payment.sumapay
                         new CompanyAutoRepayCancelReqMsg(user.id, DTRequest.GetQueryInt("projectCode")) :
                         new AutoRepayCancelReqMsg(user.id, DTRequest.GetQueryInt("projectCode"));
                     break;
+                case (int)Agp2pEnums.SumapayApiEnum.CanCard:
+                    if (!CheckUserLogin(out user)) return;
+                    reqMsg = new RemoveCardReqMsg(user.id, DTRequest.GetQueryString("userName"), DTRequest.GetQueryString("idNumber"), DTRequest.GetQueryString("telephone"), DTRequest.GetQueryString("email"), DTRequest.GetQueryString("reason"));
+                    break;
                 //个人网银充值
                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                     if (!CheckUserLogin(out user)) return;

@@ -60,7 +60,9 @@
     <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
     <td>
         <%# GetTypeName(Eval("type").ToString()) %>
-        <%# Eval("type").ToString() == "2" ? "<a>解绑</a>" : "" %>
+        <%if (Eval("type").ToString() == "2") { %>
+                <a> 解绑 </a>
+                    <% }%>
     </td>
   </tr>
 
