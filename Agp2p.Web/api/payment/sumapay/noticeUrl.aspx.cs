@@ -88,6 +88,10 @@ namespace Agp2p.Web.api.payment.sumapay
                                 case (int)Agp2pEnums.SumapayApiEnum.CeRec:
                                     respMsg = new RechargeRespMsg(reqStr);
                                     break;
+                                //银行卡解绑
+                                case (int)Agp2pEnums.SumapayApiEnum.CanCard:
+                                    respMsg = new RemoveCardRespMsg(reqStr);
+                                    break;
                                 //个人一键充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.WhReM:

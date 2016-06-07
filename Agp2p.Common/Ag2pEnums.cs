@@ -880,6 +880,7 @@ namespace Agp2p.Common
             [Description("用户签约银行卡查询")] QuBan = 32,
             [Description("商户项目查询")] QuPro = 33,
             [Description("个人用户签约银行卡查询")] QCard = 34,
+            [Description("变更银行卡")] CanCard = 35,
 
             [Description("移动端实名开户")] URegM = 101,
             [Description("移动端账户管理")] AccoM = 104,
