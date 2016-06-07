@@ -482,7 +482,7 @@ namespace Agp2p.Web.admin.project
             var category =
                 LqContext.dt_article_category.Single(c => c.id == Utils.StrToInt(ddlCategoryId.SelectedValue, 0));
             //银票项目
-            if (category != null && category.call_index.Contains("yp"))
+            if (category != null && (category.call_index.Contains("yp") || category.call_index.Equals("newbie2")))
             {
                 txt_project_repayment_term.Items.Clear();
                 txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
@@ -494,24 +494,6 @@ namespace Agp2p.Web.admin.project
 
                 txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate_bank * 100).ToString("N2");
                 txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate_bank * 100).ToString("N2");
-            }
-            //新手项目
-            else if (category != null && category.call_index.Contains("newbie"))
-            {
-                div_risks_info.Visible = false;
-                div_mortgages_info.Visible = false;
-                div_loan_fee_rate.Visible = false;
-                div_bond_fee_rate.Visible = false;
-                li_mortgages.Visible = false;
-                li_risk.Visible = false;
-
-                txt_project_repayment_type.Items.Clear();
-                txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
-                txt_project_repayment_type.SelectedIndex = 0;
-
-                txt_project_repayment_term.Items.Clear();
-                txt_project_repayment_term.Items.Add(new ListItem("日", "30"));
-                txt_project_repayment_term.SelectedIndex = 0;
             }
             //活期项目
             else if (category != null && category.call_index.Equals("huoqi"))
