@@ -101,7 +101,7 @@
                         <div class="modal-body">
                             <ul class="list-unstyled">
                                 <li><span>项目标题：</span><span><%=Investable.Title%></span></li>
-                                <%if(projectModel.IsNewbieProject())%>
+                                <%if(projectModel.IsNewbieProject2())%>
                                 <li><span>预期年化率：</span><span class="rate"><%=string.Format("{0:0.00}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%else%>
                                 <li><span>预期年化率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
@@ -125,7 +125,7 @@
                         <!--<div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>-->
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意
-                            <%if(!projectModel.IsNewbieProject())%>
+                            <%if(!projectModel.IsNewbieProject2())%>
                             </label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a> <span>和 
                             <%/if%>
                             <a href="<%templateskin%>/risk-tips.html" target="_blank">《风险说明书》</a></span>
@@ -186,7 +186,7 @@
                 <div>预期年化率</div>
                 <%if(projectModel.IsHuoqiProject())%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100-.2m)%><span> %</span>+0.2<span> %</span></div>
-                <%else if(projectModel.IsNewbieProject())%>
+                <%else if(projectModel.IsNewbieProject2())%>
                 <div class="rules-style"><%=string.Format("{0:0.00}", Investable.ProfitRateYearly*100)%><span> %</span></div>
                 <%else%>
                 <div class="rules-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%><span> %</span></div>
@@ -258,7 +258,7 @@
 <%set var hIndex=1%>
 <div class="project-content-wrap clearfix">
     <div class="project-content-left">
-        <%if(projectModel.IsNewbieProject())%>
+        <%if(projectModel.IsNewbieProject2())%>
         <%template src="_new_hand.html"%>
         <%template src="_invest_record.html"%>
         <%else if(projectModel.IsHuoqiProject())%>
