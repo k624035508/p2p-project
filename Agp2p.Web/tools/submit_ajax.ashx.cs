@@ -2175,6 +2175,28 @@ namespace Agp2p.Web.tools
                 }
                 else
                 {
+                    //新手标二期前端限制
+                    var pr = linqContext.li_projects.SingleOrDefault(p => p.id == projectId);
+                    if (pr.IsNewbieProject2())
+                    {
+                        var wallet = linqContext.li_wallets.Single(w => w.user_id == user.id);
+                        if (10000 < wallet.total_investment)
+                        {
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = "对不起，您的累计投资金额已经超过10000，不能再投资新手标！", status = 0 }));
+                            return;
+                        }
+                        var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
+                            tra.li_projects.IsNewbieProject2() &&
+                            tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                            tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                            .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
+                        if (10000 < newbieProjectInvested + investingAmount)
+                        {
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = $"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}元", status = 0 }));
+                            return;
+                        }
+                    }
+
                     if (string.IsNullOrEmpty(backUrl))
                     {
                         int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int)Agp2pEnums.SumapayApiEnum.MaBid;
