@@ -71,11 +71,11 @@ namespace Agp2p.Web.admin.transact
                     JscriptMsg("该用户没有设置交易密码，无法投资", "", "Error");
                     return false;
                 }
-                //if (!string.Equals(user.pay_password, Utils.MD5(txtTransactPassword.Text)))
-                //{
-                //    JscriptMsg("交易密码错误", "", "Error");
-                //    return false;
-                //}
+                if (!string.Equals(user.pay_password, Utils.MD5(txtTransactPassword.Text)))
+                {
+                    JscriptMsg("交易密码错误", "", "Error");
+                    return false;
+                }
 
                 TransactionFacade.Invest(userId, projectId, investingMoney);
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), ddlInvestor.SelectedItem.Text + " 被添加投资信息: " + investingMoney); //记录日志
