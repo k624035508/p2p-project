@@ -145,7 +145,7 @@ namespace Agp2p.Web.admin.project
             txt_project_repayment_number.Text = _project.repayment_term_span_count.ToString();//借款期限
             txt_project_repayment_term.SelectedValue = _project.repayment_term_span.ToString();//借款期限单位
             txt_project_repayment_type.Text = _project.repayment_type.ToString();//还款方式
-            txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N1");//年化利率
+            txt_project_profit_rate.Text = _project.profit_rate_year.ToString("N2");//年化利率
             txtAddTime.Text = action == DTEnums.ActionEnum.Copy.ToString() ? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") : _project.add_time.ToString("yyyy-MM-dd HH:mm:ss");//申请时间
             txt_bond_fee_rate.Text = ((decimal) (_project.bond_fee_rate*100)).ToString("F2");
             txt_loan_fee_rate.Text = ((decimal) (_project.loan_fee_rate*100)).ToString("F2");
@@ -523,8 +523,8 @@ namespace Agp2p.Web.admin.project
                 txt_project_repayment_type.Items.Add(new ListItem("到期还本付息", "30"));
 
                 txt_project_repayment_type.SelectedIndex = 0;
-                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N1");
-                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N0");
+                txt_bond_fee_rate.Text = (Costconfig.bond_fee_rate * 100).ToString("N2");
+                txt_loan_fee_rate.Text = (Costconfig.loan_fee_rate * 100).ToString("N2");
             }
         }
 
