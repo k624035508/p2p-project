@@ -90,7 +90,7 @@ namespace Agp2p.Web.UI
             return context.li_projects.OrderByDescending(p => p.id)
                 .FirstOrDefault(p =>
                         (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
-                        p.dt_article_category.call_index == "newbie2");
+                        p.IsNewbieProject2());
         }
 
         public static li_projects GetFirstHuoqiProject()
@@ -99,7 +99,7 @@ namespace Agp2p.Web.UI
             return context.li_projects.OrderByDescending(p => p.id)
                 .FirstOrDefault(p =>
                         (int) Agp2pEnums.ProjectStatusEnum.Financing <= p.status &&
-                        p.dt_article_category.call_index == "huoqi");
+                        p.IsHuoqiProject());
         }
 
         public class Investable
@@ -208,7 +208,7 @@ namespace Agp2p.Web.UI
             }
 
             public string FixInvestAmountString => NeedTransferClaim == null
-                        ? (Project.IsNewbieProject() ? "value='100' disabled" : "")
+                        ? (Project.IsNewbieProject1() ? "value='100' disabled" : "")
                         : $"value='{FinancingAmount}' disabled";
         }
 

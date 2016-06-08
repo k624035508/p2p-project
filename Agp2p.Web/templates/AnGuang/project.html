@@ -239,7 +239,7 @@
                         <tr><td>转让日期</td><td><%=Investable.NeedTransferClaim.createTime.ToString("yyyy-MM-dd")%></td></tr>
                         <tr><td>还款日期</td><td><%=Investable.NeedTransferClaim.createTime.AddDays(Investable.RemainDays).ToString("yyyy-MM-dd")%></td></tr>
                         <%else%>
-                        <tr><td>计息方式</td><td><%=projectModel.dt_article_category.call_index=="newbie"?"投标后立即计息":"满标当天，立即计息"%></td></tr>
+                        <tr><td>计息方式</td><td>满标当天，立即计息></td></tr>
                         <tr><td>发标时间</td><td><%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%></td></tr>
                         <tr><td>剩余时间</td><td><%=GetRemainTime(projectModel)%></td></tr>
                         <%/if%>

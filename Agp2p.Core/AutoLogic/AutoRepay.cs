@@ -39,7 +39,7 @@ namespace Agp2p.Core.AutoLogic
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today)
                 .AsEnumerable()
-                .Where(t => !t.li_projects.IsNewbieProject())
+                .Where(t => !t.li_projects.IsNewbieProject1())
                 .Where(t =>
                 {
                     var loaner = t.li_projects.li_risks.li_loaners;
@@ -172,7 +172,7 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>
-                    t.li_projects.dt_article_category.call_index != "newbie" &&
+                    !t.li_projects.IsNewbieProject1() &&
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
@@ -182,11 +182,11 @@ namespace Agp2p.Core.AutoLogic
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
                 //TODO 特殊项目回款处理
-                if (ta.li_projects.IsNewbieProject())
-                {
-                    context.ExecuteRepaymentTask(ta.id);
-                }
-                else
+                //if (ta.li_projects.IsNewbieProject())
+                //{
+                //    context.ExecuteRepaymentTask(ta.id);
+                //}
+                //else
                     //调用托管本息到账接口,在本息到账异步响应中执行还款计划
                     RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false, ta.li_projects.IsHuoqiProject());
             });

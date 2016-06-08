@@ -504,32 +504,36 @@ namespace Agp2p.Core
                 if (wallet.idle_money < investingMoney)
                     throw new InvalidOperationException("余额不足，无法投资");
 
-                // 限制对新手体验标的投资，只能投资 100，只能投 1 次
-                if (pr.IsNewbieProject())
+                if (pr.IsNewbieProject1())
+                {
+                    throw new InvalidOperationException("新手标第一期已结束。");
+                }
+                // 限制对新手标2期的投资，只能投资 100，只能投 1 万
+                if (pr.IsNewbieProject2())
                 {
                     if (investingMoney < 100)
                     {
-                        throw new InvalidOperationException("新手体验标规定最低只能投 100 元");
+                        throw new InvalidOperationException("新手标规定最低只能投 100 元。");
                     }
                     if (10000 < wallet.total_investment)
                     {
-                        throw new InvalidOperationException("你的累计投资金额已经超过 10000，不能再投资新手标");
+                        throw new InvalidOperationException("对不起，您的累计投资金额已经超过10000，不能再投资新手标！");
                     }
                     var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
-                            tra.li_projects.dt_article_category.call_index == "newbie" &&
-                            tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
-                            tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                        tra.li_projects.IsNewbieProject2() &&
+                        tra.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                        tra.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                         .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
                     if (10000 < newbieProjectInvested + investingMoney)
                     {
-                        throw new InvalidOperationException($"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}");
+                        throw new InvalidOperationException($"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}元");
                     }
                 }
                 else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 10 w
                 {
                     var alreadyInvest = wallet.dt_users.li_claims.Where(c =>
-                            c.profitingProjectId == projectId && c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed &&
-                            c.IsLeafClaim())
+                        c.profitingProjectId == projectId && c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed &&
+                        c.IsLeafClaim())
                         .Aggregate(0m, (sum, c) => sum + c.principal);
                     if (100000 < alreadyInvest + investingMoney)
                     {
@@ -1406,7 +1410,7 @@ namespace Agp2p.Core
 
             var canBeInvest = project.financing_amount - project.investment_amount;
             if (0 < canBeInvest) return; // 未满标
-            if (project.IsNewbieProject()) return; // 新手标项目不会满标
+            if (project.IsNewbieProject1()) return; // 新手标项目不会满标
             FinishInvestment(context, project.id);
         }
 
@@ -1480,7 +1484,7 @@ namespace Agp2p.Core
 
             // 放款给借款人
             var loaner = project.li_risks.li_loaners;
-            if (!project.IsNewbieProject() && !project.IsHuoqiProject() && loaner != null)
+            if (!project.IsNewbieProject1() && !project.IsHuoqiProject() && loaner != null)
             {
                 // 如果已经进行过放款，则报错
                 if (loaner.dt_users.li_bank_transactions.Any(btr =>
@@ -1953,7 +1957,7 @@ namespace Agp2p.Core
 
             context.SubmitChanges();
 
-            var projectNeedComplete = !proj.IsHuoqiProject() && !proj.IsNewbieProject() && !proj.li_repayment_tasks.Any(
+            var projectNeedComplete = !proj.IsHuoqiProject() && !proj.IsNewbieProject1() && !proj.li_repayment_tasks.Any(
                 ta =>
                     ta.id != repaymentId &&
                     (ta.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid ||
@@ -1998,7 +2002,7 @@ namespace Agp2p.Core
             var context = new Agp2pDataContext(); // 旧的 context 有缓存，查询的结果不正确
             var repaymentTask = context.li_repayment_tasks.Single(ta => ta.id == repaymentTaskId);
             var pro = repaymentTask.li_projects;
-            if (!pro.IsNewbieProject() && !pro.IsHuoqiProject()
+            if (!pro.IsNewbieProject1() && !pro.IsHuoqiProject()
                 && !pro.li_repayment_tasks.Any(r => r.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid || r.status == (int)Agp2pEnums.RepaymentStatusEnum.OverTime))
             {
                 pro.status = (int)Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime;
@@ -2186,7 +2190,7 @@ namespace Agp2p.Core
                     : proj.li_claims.Where(c => c.Parent == null).SelectMany(c => c.QueryLeafClaimsAtMoment(queryTime)).ToList();
 
             // 仅针对单个用户的还款
-            if (proj.IsNewbieProject())
+            if (proj.IsNewbieProject1())
             {
                 return profitingClaims.ToDictionary(c => c, c => 1m);
             }
@@ -2221,7 +2225,7 @@ namespace Agp2p.Core
 
             var interestSkipped = 0m;
 
-            if (!repaymentTask.li_projects.IsNewbieProject())
+            if (!repaymentTask.li_projects.IsNewbieProject1())
                 Debug.Assert(Math.Round(claimRatio.Aggregate(0m, (sum, pair) => sum + pair.Value), 6) == 1, "债权比率之和不等于 1，会造成四舍五入结果异常");
 
             var rounded = claimRatio
@@ -2747,7 +2751,7 @@ namespace Agp2p.Core
 
         public static string GetProfitRateYearly(this li_projects proj)
         {
-            return proj.dt_article_category.call_index == "newbie" ? "--" : (proj.profit_rate_year / 100).ToString("p1");
+            return proj.IsNewbieProject1() ? "--" : (proj.profit_rate_year / 100).ToString("p1");
         }
 
         public static string GetRepaymentTaskProgress(this li_repayment_tasks task)

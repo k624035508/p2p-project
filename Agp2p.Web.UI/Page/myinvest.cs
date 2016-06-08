@@ -84,7 +84,7 @@ namespace Agp2p.Web.UI.Page
             {
                 var proj = c.li_projects;
                 decimal profit;
-                if (proj.dt_article_category.call_index == "newbie") profit = 10;
+                if (proj.IsNewbieProject1()) profit = 10;
                 else
                 {
                     profit = proj.profit_rate == 0
@@ -103,7 +103,7 @@ namespace Agp2p.Web.UI.Page
                     investValue = c.li_project_transactions_invest.principal,
                     profit,
                     status = proj.GetProjectStatusDesc(),
-                    isNewbieProject = proj.dt_article_category.call_index == "newbie"
+                    isNewbieProject = proj.IsNewbieProject1()
                 };
             });
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});

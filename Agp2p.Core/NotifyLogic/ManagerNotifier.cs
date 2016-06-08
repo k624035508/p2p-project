@@ -66,7 +66,7 @@ namespace Agp2p.Core.NotifyLogic
             var context = new Agp2pDataContext();
             var repaymentTask = context.li_repayment_tasks.Single(task => task.id == repaymentTaskId);
 
-            var content = repaymentTask.li_projects.dt_article_category.call_index == "newbie"
+            var content = repaymentTask.li_projects.IsNewbieProject1()
                 ? string.Format("新手标于 {0} 回款本金 {1}，利息 {2} 到 {3}", repaymentTask.repay_at, repaymentTask.repay_principal,
                     repaymentTask.repay_interest, repaymentTask.dt_users.GetFriendlyUserName())
                 : string.Format("项目 {0} 已于 {1} 进行了第 {2} 期回款，共计回款本金：{3}，利息：{4}",
