@@ -253,7 +253,7 @@ namespace Agp2p.Web.admin.repayment
                     case (int)Agp2pEnums.SumapayApiEnum.AbRep:
                         if (!string.IsNullOrEmpty(request.remarks))
                         {
-                            if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject())
+                            if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject1())
                             {
                                 var dic = Utils.UrlParamToData(request.remarks);
                                 int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
@@ -268,7 +268,7 @@ namespace Agp2p.Web.admin.repayment
                     //普通/集合项目本息到账
                     case (int)Agp2pEnums.SumapayApiEnum.RetPt:
                     case (int)Agp2pEnums.SumapayApiEnum.RetCo:
-                        if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject())
+                        if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject1())
                         {
                             if (!string.IsNullOrEmpty(request.remarks))
                             {

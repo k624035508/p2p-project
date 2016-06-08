@@ -60,8 +60,13 @@
                     <p><span class="data-style"><%=Investable.FinancingAmountStr%></span> 元</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
+                    <%if(projectModel.IsNewbieProject2())%>
+                    <span class="title-style">预期年化率</span>
+                    <p><span class="data-style"><%=string.Format("{0:0.00}", Investable.ProfitRateYearly*100)%></span> %</p>
+                    <%else%>
                     <span class="title-style">预期年化率</span>
                     <p><span class="data-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%></span> %</p>
+                    <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
@@ -97,7 +102,7 @@
             <div class="project-content">
                 <div class="proj-details" onclick="location.href='#project/details'">项目详情 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="invest-record" onclick="location.href='#project/investments'">投资记录 <span class="glyphicon glyphicon-menu-right"></span></div>
-                <%if(!projectModel.IsNewbieProject()&&!projectModel.IsHuoqiProject()&&!Investable.IsClaimTransferProject)%>
+                <%if(!projectModel.IsNewbieProject2()&&!projectModel.IsHuoqiProject()&&!Investable.IsClaimTransferProject)%>
                 <div class="debt-photos" onclick="location.href='#project/pics'">照片资料 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <div class="receive-plan" onclick="location.href='#project/repayTasks'">回款计划 <span class="glyphicon glyphicon-menu-right"></span></div>
                 <%/if%>
@@ -106,7 +111,7 @@
     </div>
     <div class="slide" data-anchor="details">
         <div class="project-detail-page inner-scrollable">
-            <%if(projectModel.IsNewbieProject())%>
+            <%if(projectModel.IsNewbieProject2())%>
             <%template src="_project_intro.html"%>
             <%else if(projectModel.IsHuoqiProject())%>
             <%template src="_project_intro.html"%>

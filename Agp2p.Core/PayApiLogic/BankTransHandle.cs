@@ -34,6 +34,10 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
+#if !DEBUG
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
+#endif
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
@@ -73,6 +77,10 @@ namespace Agp2p.Core.PayApiLogic
                     //检查签名
                     if (msg.CheckSignature())
                     {
+#if !DEBUG
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
+#endif
                         Agp2pDataContext context = new Agp2pDataContext();
                         //查找对应的交易流水
                         var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);

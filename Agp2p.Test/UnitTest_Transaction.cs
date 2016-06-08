@@ -225,7 +225,7 @@ namespace Agp2p.Test
         public void FixNewbieProjectMissGenerateRepaymentTask()
         {
             var context = new Agp2pDataContext();
-            context.li_projects.Where(p => p.dt_article_category.call_index == "newbie").ForEach(p =>
+            context.li_projects.Where(p => p.IsNewbieProject1()).ForEach(p =>
             {
                 var investments = p.li_project_transactions.Where(
                     ptr =>
@@ -328,7 +328,7 @@ namespace Agp2p.Test
                 context.li_claims.InsertOnSubmit(claimFromInvestment);
                 count += 1;
 
-                if (ptr.li_projects.IsNewbieProject())
+                if (ptr.li_projects.IsNewbieProject1())
                 {
                     var task = ptr.li_projects.li_repayment_tasks.Single(ta => ta.only_repay_to == ptr.investor);
                     if (task.status != (int) Agp2pEnums.RepaymentStatusEnum.Unpaid)

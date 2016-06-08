@@ -147,7 +147,7 @@ namespace Agp2p.Core.NotifyLogic
                 var bodytxt = context.GetInvestContractContext(investment, AppDomain.CurrentDomain.BaseDirectory + "\\tools\\invest-agreement.html");
                 //发送投资协议邮件
                 // TODO 新手体验标 不发投资协议到邮箱
-                if (!string.IsNullOrWhiteSpace(investment.dt_users.email) && investment.li_projects.dt_article_category.call_index != "newbie")
+                if (!string.IsNullOrWhiteSpace(investment.dt_users.email) && !investment.li_projects.IsNewbieProject1())
                 {
                     DTMail.sendMail(siteConfig.emailsmtp,
                         siteConfig.emailusername,

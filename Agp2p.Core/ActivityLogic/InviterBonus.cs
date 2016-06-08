@@ -138,7 +138,7 @@ namespace Lip2p.Core.ActivityLogic
                 context.LoadOptions = options;
 
                 var investment = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
-                if (investment.li_projects.dt_article_category.call_index == "newbie")
+                if (investment.li_projects.IsNewbieProject1())
                 {
                     // 投资新手标不算
                     return;

@@ -154,7 +154,7 @@ namespace Agp2p.Core.PayApiLogic
                         var makeLoanReqMsg = (MakeLoanReqMsg) msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
                         //非活期和新手标项目计算平台服务费
-                        if (project != null && !project.IsNewbieProject())
+                        if (project != null && !project.IsNewbieProject1())
                         {
                             decimal loanFee = decimal.Round(project.investment_amount * (project.loan_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);
                             decimal bondFee = decimal.Round(project.investment_amount * (project.bond_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);

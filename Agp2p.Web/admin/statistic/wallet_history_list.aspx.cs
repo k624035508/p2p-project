@@ -314,7 +314,7 @@ namespace Agp2p.Web.admin.statistic
                                 : "已撤销");
                 }
                 var proj = his.li_project_transactions.li_projects;
-                if (proj.IsNewbieProject())
+                if (proj.IsNewbieProject1())
                 {
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type], projectNameMapper(his), "");
                 }

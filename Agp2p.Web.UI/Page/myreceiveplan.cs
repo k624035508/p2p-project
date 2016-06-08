@@ -68,7 +68,7 @@ namespace Agp2p.Web.UI.Page
             {
                 var ratio = p.Sum(c => c.principal)/p.Key.investment_amount;
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
-                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
+                    .Where(task => !p.Key.IsNewbieProject1() || task.only_repay_to == user.id);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
@@ -152,7 +152,7 @@ namespace Agp2p.Web.UI.Page
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
             {
-                query = query.Where(c => c.li_projects.make_loan_time == null && c.li_projects.dt_article_category.call_index != "newbie");
+                query = query.Where(c => c.li_projects.make_loan_time == null && !c.li_projects.IsNewbieProject1());
             }
 
             var groupBy = query.ToLookup(c => c.li_projects);
@@ -196,7 +196,7 @@ namespace Agp2p.Web.UI.Page
             var claims = userInfo.li_claims.Where(c => c.profitingProjectId == projectId).ToList();
             var investRatio = claims.Sum(c => c.principal) / project.investment_amount;
 
-            var profitAmount = project.dt_article_category.call_index == "newbie"
+            var profitAmount = project.IsNewbieProject1()
                 ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
                 : (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
                     ? project.li_repayment_tasks.Sum(

@@ -35,7 +35,7 @@ namespace Agp2p.Core.Message
             ManagerNotifier.DoSubscribe();
 
             // Activity
-            TrialActivity.DoSubscribe();
+            //TrialActivity.DoSubscribe();
             // InviterBonus.DoSubscribe();
 
             // PayApi

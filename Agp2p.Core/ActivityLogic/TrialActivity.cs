@@ -8,6 +8,9 @@ using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.ActivityLogic
 {
+    /// <summary>
+    /// 新手标第一期 停用
+    /// </summary>
     public class TrialActivity
     {
         internal static void DoSubscribe()
@@ -16,6 +19,11 @@ namespace Agp2p.Core.ActivityLogic
             MessageBus.Main.Subscribe<TimerMsg>(m => HandleTimerMsg(m.TimerType, m.OnTime)); // 到期则放款
         }
 
+        /// <summary>
+        /// 新手标第一期自动返10元（停用）
+        /// </summary>
+        /// <param name="timerName"></param>
+        /// <param name="onTime"></param>
         private static void HandleTimerMsg(TimerMsg.Type timerName, bool onTime)
         {
             if (timerName != TimerMsg.Type.AutoRepayTimer) return;
@@ -32,12 +40,16 @@ namespace Agp2p.Core.ActivityLogic
             context.AppendAdminLogAndSave("AutoRepay", "新手体验标自动还款：" + string.Join(", ", shouldRepayTask.Select(t => t.dt_users.user_name).ToArray()));
         }
 
+        /// <summary>
+        /// 新手标第一期逻辑（停用）
+        /// </summary>
+        /// <param name="projectTransactionId"></param>
         public static void CheckNewbieInvest(int projectTransactionId)
         {
             var context = new Agp2pDataContext();
             var ptr = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
             var project = ptr.li_projects;
-            if (project.dt_article_category.call_index != "newbie")
+            if (!project.IsNewbieProject1())
             {
                 return;
             }

@@ -31,8 +31,9 @@
                 </div>
             </div>
             <div class="invest-list">
+
                 <!-- 新手标 -->
-                <%set var np = GetFirstNewbieProject()%>
+              <!--  <%set var np = GetFirstNewbieProject()%>
                 <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
                 <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>
                     #project'">
@@ -58,7 +59,8 @@
                         </div>
                     </div>
                 </div>
-                <%/if%>
+                <%/if%> -->
+
                 <%set var totalcount=0%>
                 <%set var investables=QueryInvestables(5,0,out totalcount)%>
                 <%foreach(var inv in investables)%>
