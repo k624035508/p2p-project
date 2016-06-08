@@ -208,7 +208,8 @@ namespace Agp2p.Web.UI
             }
 
             public string FixInvestAmountString => NeedTransferClaim == null
-                        ? (Project.IsNewbieProject() ? "value='100' disabled" : "")
+                        //? (Project.IsNewbieProject() ? "value='100' disabled" : "")
+                        ? ""
                         : $"value='{FinancingAmount}' disabled";
         }
 

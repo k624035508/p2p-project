@@ -102,9 +102,9 @@
                             <ul class="list-unstyled">
                                 <li><span>项目标题：</span><span><%=Investable.Title%></span></li>
                                 <%if(projectModel.IsNewbieProject())%>
-                                <li><span>年利率：</span><span class="rate">--</span></li>
+                                <li><span>预期年化率：</span><span class="rate"><%=string.Format("{0:0.00}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%else%>
-                                <li><span>年利率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
+                                <li><span>预期年化率：</span><span class="rate"><%=string.Format("{0:0.0}%", Investable.ProfitRateYearly*100)%></span></li>
                                 <%/if%>
                                 <%if(!projectModel.IsHuoqiProject())%>
                                 <li><span>还款期限：</span><span>{Investable.RepaymentTermSpanCount}{Investable.ProjectTermSpanName}</span></li>
