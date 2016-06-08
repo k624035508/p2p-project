@@ -60,13 +60,8 @@
                     <p><span class="data-style"><%=Investable.FinancingAmountStr%></span> 元</p>
                 </span>
                 <span class="flex flex--column flex-center-wrapper">
-                    <%if(projectModel.IsNewbieProject())%>
-                    <span class="title-style">项目收益</span>
-                    <p><span class="data-style">10</span>元</p>
-                    <%else%>
                     <span class="title-style">预期年化率</span>
                     <p><span class="data-style"><%=string.Format("{0:0.0}", Investable.ProfitRateYearly*100)%></span> %</p>
-                    <%/if%>
                 </span>
             </div>
             <div class="invest-data flex">
