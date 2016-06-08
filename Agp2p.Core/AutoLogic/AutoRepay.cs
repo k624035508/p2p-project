@@ -39,7 +39,6 @@ namespace Agp2p.Core.AutoLogic
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today)
                 .AsEnumerable()
-                .Where(t => !t.li_projects.IsNewbieProject1())
                 .Where(t =>
                 {
                     var loaner = t.li_projects.li_risks.li_loaners;
@@ -172,7 +171,6 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>
-                    !t.li_projects.IsNewbieProject1() &&
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;

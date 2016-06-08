@@ -68,7 +68,7 @@ namespace Agp2p.Web.UI.Page
             {
                 var ratio = p.Sum(c => c.principal)/p.Key.investment_amount;
                 var query = p.Key.li_repayment_tasks.Where(t => t.status != (int) Agp2pEnums.RepaymentStatusEnum.Invalid)
-                    .Where(task => !p.Key.IsNewbieProject1() || task.only_repay_to == user.id);
+                    .Where(task => p.Key.dt_article_category.call_index != "newbie" || task.only_repay_to == user.id);
 
                 if (!string.IsNullOrWhiteSpace(startTime))
                 {
@@ -152,7 +152,7 @@ namespace Agp2p.Web.UI.Page
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
             {
-                query = query.Where(c => c.li_projects.make_loan_time == null && !c.li_projects.IsNewbieProject1());
+                query = query.Where(c => c.li_projects.make_loan_time == null && c.li_projects.dt_article_category.call_index != "newbie");
             }
 
             var groupBy = query.ToLookup(c => c.li_projects);

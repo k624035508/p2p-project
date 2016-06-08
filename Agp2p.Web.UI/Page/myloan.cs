@@ -44,7 +44,7 @@ namespace Agp2p.Web.UI.Page
         {
             var context = new Agp2pDataContext();
 
-            var query = context.li_projects.Where(p => p.li_risks.li_loaners.user_id == userId && !p.IsNewbieProject1())
+            var query = context.li_projects.Where(p => p.li_risks.li_loaners.user_id == userId && p.dt_article_category.call_index != "newbie")
                 .Where(p => p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationCancel &&
                             p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingFail &&
                             p.status != (int) Agp2pEnums.ProjectStatusEnum.FinancingApplicationFail);
