@@ -61,9 +61,8 @@
                 <%/if%> 
 
                 <%set var totalcount=0%>
-                <%set var investables=QueryInvestables(5,0,out totalcount)%>
+                <%set var investables=QueryInvestables(5,0,out totalcount,60)%>
                 <%foreach(var inv in investables)%>
-                <%if(inv.CategoryName=="银票宝")%>
                 <%set var p=inv.Project%>
                 <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
                     <p class="invest-title">
@@ -105,7 +104,6 @@
                         </div>
                     </div>
                 </div>
-                <%/if%>
                 <%/foreach%>
             </div>
         </div>

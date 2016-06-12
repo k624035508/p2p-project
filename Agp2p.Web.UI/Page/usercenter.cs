@@ -368,7 +368,6 @@ namespace Agp2p.Web.UI.Page
                 return new ProjectDetail
                 {
                     id = p.id,
-                    img_url = GetProjectImageUrl(p.img_url, p.category_id),
                     no = p.no,
                     title = p.title,
                     status = p.status,
