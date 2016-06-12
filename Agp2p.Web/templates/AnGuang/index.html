@@ -180,23 +180,22 @@
     </div>
     <%/if%>
 
-    <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60).OrderByDescending(c=>c))%>
     <%set var totalcount0=0%>
     <div class="yinpiaobao tender content-wrap">
         <div class="tender-left">
           <div class="tender-left-img">
-            <p class="white35px"><%=CategoryIdTitleMap[cid]%></p>
+            <p class="white35px">银票宝</p>
             <p class="white18px">票据托管&nbsp;&nbsp;到期承兑</p>
             <p class="white13px">　</p> 
           </div>
           <div class="tender-left-more">         
-            <a href='<%linkurl("projects",cid,0,0,0,1)%>' target="_blank">查看更多</a>
+            <a href='<%linkurl("projects",60,0,0,0,1)%>' target="_blank">查看更多</a>
           </div>
         </div>
         <div class="tender-right">
             <div class="icon-corner"></div>
             <div class="content-bottom">
-                <%set var investables=QueryInvestables(8,0,out totalcount0,cid,0,0,0)%>
+                <%set var investables=QueryInvestables(8,0,out totalcount0,60,0,0,0)%>
                 <%foreach(var p in investables.Select(i=>i.Project))%>
                 <div class="tender-cell">
                     <div class="title-wrap">
@@ -263,8 +262,6 @@
             </div>
         </div>
     </div>
-    <%/foreach%>
-
 
     <!--dynamic boards-->
     <div class="container-fluid">

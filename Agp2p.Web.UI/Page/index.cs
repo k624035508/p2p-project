@@ -11,10 +11,6 @@ namespace Agp2p.Web.UI.Page
 {
     public partial class index : Web.UI.BasePage
     {
-        protected Dictionary<int, string> CategoryIdTitleMap =
-            new Agp2pDataContext().dt_article_category.Where(c => c.channel_id == 6)
-                .ToDictionary(c => c.id, c => c.title);
-
         protected List<dt_advert_banner> QueryBanner()
         {
             var context = new Agp2pDataContext();
@@ -30,14 +26,14 @@ namespace Agp2p.Web.UI.Page
         protected void Page_Load(object sender, EventArgs e)
         {
             //微信自动登录
-            var code = DTRequest.GetQueryString("code");            
-            if (!string.IsNullOrEmpty(code))
-            {               
-                MessageBus.Main.Publish(new UserLoginMsg(0, true, code, () =>
-                {
-                    HttpContext.Current.Response.Redirect(linkurl("index"));
-                }));
-            }
+            //var code = DTRequest.GetQueryString("code");            
+            //if (!string.IsNullOrEmpty(code))
+            //{               
+            //    MessageBus.Main.Publish(new UserLoginMsg(0, true, code, () =>
+            //    {
+            //        HttpContext.Current.Response.Redirect(linkurl("index"));
+            //    }));
+            //}
         }
 
         protected li_projects QueryFirstTrialProject()

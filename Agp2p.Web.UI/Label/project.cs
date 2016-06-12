@@ -54,7 +54,6 @@ namespace Agp2p.Web.UI
                 return new ProjectDetail
                 {
                     id = p.id,
-                    img_url = GetProjectImageUrl(p.img_url, p.category_id),
                     no = p.no,
                     title = inv.Title,
                     status = (int) inv.Status,
@@ -371,16 +370,6 @@ namespace Agp2p.Web.UI
                     .Skip(pageSize*pageIndex)
                     .Take(pageSize);
             return queryToNewObj;
-        }
-
-        protected static string GetProjectImageUrl(string url, int category_id)
-        {
-            if (string.IsNullOrEmpty(url))
-            {
-                return category_id == 33 ? "/templates/Agp2p/images/img_noting_house.png" :
-                    "/templates/Agp2p/images/img_noting_car.png";
-            }
-            return url;
         }
 
         /// <summary>
