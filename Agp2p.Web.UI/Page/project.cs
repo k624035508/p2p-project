@@ -208,7 +208,7 @@ namespace Agp2p.Web.UI.Page
         protected bool HasIdentification()
         {
             var user = GetUserInfoByLinq();
-            return user != null && !string.IsNullOrWhiteSpace(user.real_name) && !string.IsNullOrWhiteSpace(user.id_card_number);
+            return user != null && !string.IsNullOrWhiteSpace(user.real_name) && !string.IsNullOrWhiteSpace(user.identity_id);
         }
 
         protected bool HasBindedEmail()
