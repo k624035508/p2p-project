@@ -33,13 +33,12 @@
             <div class="invest-list">
 
                 <!-- 新手标 -->
-              <!--  <%set var np = GetFirstNewbieProject()%>
+                <%set var np = GetFirstNewbieProject()%>
                 <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
-                <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>
-                    #project'">
+                <div class="invest-project" onclick="location.href='<%=linkurl("project",np.id)%>#project'">
                     <p class="invest-title new-hand">
                         <span class="project-type">{np.dt_article_category.title}</span>
-                        新手专享标
+                        {np.title}
                     </p>
                     <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
                         <div class="rate-wrap">
@@ -59,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-                <%/if%> -->
+                <%/if%> 
 
                 <%set var totalcount=0%>
                 <%set var investables=QueryInvestables(5,0,out totalcount)%>
