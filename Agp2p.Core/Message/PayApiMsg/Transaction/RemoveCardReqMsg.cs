@@ -10,7 +10,7 @@ namespace Agp2p.Core.Message.PayApiMsg
     /// <summary>
     /// 个人银行卡解绑
     /// </summary>
-    public class RemoveCardReqMsg : FrontEndReqMsg
+    public class RemoveCardReqMsg : BackEndReqMsg
     {
         public string UserName { get; set; }
         public string IdNumber { get; set; }
@@ -18,7 +18,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string Email { get; set; }
         public string Reason { get; set; }
 
-        public RemoveCardReqMsg(int userId, string userName, string idNumber, string telephone, string email, string reason)
+        public RemoveCardReqMsg(int userId, string userName, string idNumber, string telephone, string email, string reason = "银行卡遗失")
         {
             UserId = userId;
             UserName = userName;
@@ -27,33 +27,27 @@ namespace Agp2p.Core.Message.PayApiMsg
             Email = email;
             Reason = reason;
 
-            Api = (int)Agp2pEnums.SumapayApiEnum.CanCard;
+            Api = (int)Agp2pEnums.SumapayApiEnum.RemCa;
             ApiInterface = SumapayConfig.ApiUrl + "main/UserForFT_replaceBankCard";
-            RequestId = Agp2pEnums.SumapayApiEnum.CanCard.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+            RequestId = Agp2pEnums.SumapayApiEnum.RemCa.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        public RemoveCardReqMsg()
+        {
+
         }
 
         public override string GetSignature()
         {
             return
-               SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + UserName + IdNumber + Telephone + Email + Reason + SumapayConfig.NoticeUrl, SumapayConfig.Key);
+               SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + UserName + IdNumber + Telephone + Email + Reason + NoticeUrl, SumapayConfig.Key);
         }
 
-        public override SortedDictionary<string, string> GetSubmitPara()
+        public override string GetPostPara()
         {
-            var sd = new SortedDictionary<string, string>
-            {
-                {"requestId", RequestId},
-                {"merchantCode", SumapayConfig.MerchantCode},
-                {"userIdIdentity", UserId.ToString()},
-                {"userName", UserName},
-                {"idNumber", IdNumber},
-                {"telephone", Telephone},
-                {"email", Email},
-                {"reason", Reason},
-                {"noticeUrl", SumapayConfig.NoticeUrl},
-                {"signature", GetSignature()}
-            };
-            return sd;
+            var postStr =
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userIdIdentity={UserId}&userName={UserName}&idNumber={IdNumber}&telephone={Telephone}&email={Email}&reason={Reason}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
+            return postStr;
         }
     }
 }

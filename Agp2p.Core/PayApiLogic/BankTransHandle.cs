@@ -18,6 +18,7 @@ namespace Agp2p.Core.PayApiLogic
             MessageBus.Main.Subscribe<RechargeRespMsg>(Recharge);
             MessageBus.Main.Subscribe<WithholdingRechargeRespMsg>(WithholdingRecharge);
             MessageBus.Main.Subscribe<WithdrawRespMsg>(WithDraw);
+            
         }
 
         /// <summary>
@@ -201,5 +202,7 @@ namespace Agp2p.Core.PayApiLogic
                 msg.Remarks = "内部错误：" + ex.Message;
             }
         }
+
+
     }
 }

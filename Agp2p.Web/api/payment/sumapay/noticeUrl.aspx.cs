@@ -87,11 +87,7 @@ namespace Agp2p.Web.api.payment.sumapay
                                 case (int)Agp2pEnums.SumapayApiEnum.WeRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.CeRec:
                                     respMsg = new RechargeRespMsg(reqStr);
-                                    break;
-                                //银行卡解绑
-                                case (int)Agp2pEnums.SumapayApiEnum.CanCard:
-                                    respMsg = new RemoveCardRespMsg(reqStr);
-                                    break;
+                                    break;                                
                                 //个人一键充值
                                 case (int)Agp2pEnums.SumapayApiEnum.WhRec:
                                 case (int)Agp2pEnums.SumapayApiEnum.WhReM:
@@ -158,6 +154,10 @@ namespace Agp2p.Web.api.payment.sumapay
                                 //查询项目
                                 case (int)Agp2pEnums.SumapayApiEnum.QuPro:
                                     respMsg = BaseRespMsg.NewInstance<QueryProjectRespMsg>(reqStr);
+                                    break;
+                                //银行卡解绑
+                                case (int)Agp2pEnums.SumapayApiEnum.RemCa:
+                                    respMsg = new RemoveCardRespMsg(reqStr);
                                     break;
                                 default:
                                     respMsg = new BaseRespMsg();

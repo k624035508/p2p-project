@@ -3,6 +3,9 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
+using Agp2p.Core;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 
 namespace Agp2p.Web.admin.transact
 {
@@ -12,13 +15,12 @@ namespace Agp2p.Web.admin.transact
         protected int page;
         protected int pageSize;
 
-        protected string keywords = string.Empty; 
+        protected string keywords = string.Empty;
         private Agp2pDataContext context = new Agp2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             keywords = DTRequest.GetQueryString("keywords");
-
 
             pageSize = GetPageSize(GetType().Name + "_page_size");
             if (!Page.IsPostBack)
@@ -67,44 +69,14 @@ namespace Agp2p.Web.admin.transact
             }
         }
 
+
+
+
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum2.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("all_bank_account_list.aspx", "keywords={0}", keywords));
-        }
-
-        //批量删除
-        protected void btnDelete_Click2(object sender, EventArgs e)
-        {
-            ChkAdminLevel("manage_users_charge_withdraw", DTEnums.ActionEnum.Delete.ToString()); //检查权限
-            int sucCount = 0;
-            int errorCount = 0;
-            for (int i = 0; i < rptList.Items.Count; i++)
-            {
-                int id = Convert.ToInt32(((HiddenField)rptList.Items[i].FindControl("hidId")).Value);
-                CheckBox cb = (CheckBox)rptList.Items[i].FindControl("chkId");
-                if (cb.Checked)
-                {
-                    var preDel = context.li_bank_accounts.FirstOrDefault(q => q.id == id);
-                    if (preDel != null)
-                    {
-                        sucCount += 1;
-                        context.li_bank_accounts.DeleteOnSubmit(preDel);
-                    }
-                    else errorCount += 1;
-                }
-            }
-            try
-            {
-                context.SubmitChanges();
-                AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除银行账户 " + sucCount + " 条，失败 " + errorCount + " 条"); //记录日志
-                JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("bank_account_list.aspx", "keywords={0}", keywords), "Success");
-            }
-            catch (Exception)
-            {
-                JscriptMsg("删除失败！", Utils.CombUrlTxt("all_bank_account_list.aspx", "keywords={0}", keywords), "Failure");
-            }
         }
 
     }

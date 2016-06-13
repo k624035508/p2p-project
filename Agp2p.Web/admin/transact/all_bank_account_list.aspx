@@ -54,15 +54,13 @@
    <tr>
     <td align="left" style="padding-left:.5%;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td> 
     <td><%# Eval("dt_users.real_name") != null && Eval("dt_users.real_name") != "" ? Eval("dt_users.real_name") : Eval("dt_users.user_name")%></td>     
-    <td><%# Eval("bank") %>
+    <td><%# Eval("bank") %></td>
     <td><%# Eval("opening_bank") %></td>
     <td><%# Eval("account") %></td>
-    <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
+    <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>&user_id=<%#Eval("dt_users.id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
     <td>
-        <%# GetTypeName(Eval("type").ToString()) %>
-        <%if (Eval("type").ToString() == "2") { %>
-                <a> 解绑 </a>
-                    <% }%>
+        <%# GetTypeName(Eval("type").ToString()) %>    
+       
     </td>
   </tr>
 

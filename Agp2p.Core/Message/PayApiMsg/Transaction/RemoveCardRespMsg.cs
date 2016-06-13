@@ -1,5 +1,4 @@
-﻿
-using Agp2p.Common;
+﻿using Agp2p.Common;
 
 namespace Agp2p.Core.Message.PayApiMsg
 {
@@ -10,15 +9,21 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string FailReason { get; set; }
 
+        public RemoveCardRespMsg()
+        {
+           
+        }
+
         public RemoveCardRespMsg(string requestStr)
         {
+            
             var map = Utils.UrlParamToData(requestStr);
             RequestId = map["requestId"];
             Result = map["result"];
-            Signature = map.ContainsKey("signature") ? map["signature"] : "";
+            Signature = map["signature"];
 
-            UserIdIdentity = map.ContainsKey("userIdIdentity") ? Utils.StrToInt(map["userIdIdentity"], 0) : 0;
-            FailReason = map.ContainsKey("failReason") ? map["failReason"] : "";
+            UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
+            FailReason = map["failReason"];
         }
 
         public override bool CheckSignature()

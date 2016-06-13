@@ -30,6 +30,7 @@ namespace Agp2p.Core.PayApiLogic
             MessageBus.Main.Subscribe<ReturnPrinInteRespMsg>(ReturnPrinInte); //本息到账
             MessageBus.Main.Subscribe<CreditAssignmentRespMsg>(CreditAssignment); //债权转让
             MessageBus.Main.Subscribe<QueryProjectRespMsg>(QueryProject); //查询项目
+            MessageBus.Main.Subscribe<RemoveCardRespMsg>(RemoveCard); //解绑银行卡
         }
 
         /// <summary>
@@ -409,6 +410,49 @@ namespace Agp2p.Core.PayApiLogic
                             {
                                 msg.Remarks = "没有找到对应的项目，项目id：" + msg.ProjectCode;
                             }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 银行卡解绑响应处理
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void RemoveCard(RemoveCardRespMsg msg)
+        {
+            try
+            {
+                //检查请求处理结果
+                if (msg.CheckResult())
+                {
+                    //检查签名
+                    if (msg.CheckSignature())
+                    {
+#if !DEBUG
+                        //同步平台不做处理
+                        if(msg.Result.Equal("00001")) return;
+#endif
+                        Agp2pDataContext context = new Agp2pDataContext();
+                        var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
+                        if (user != null)
+                        {
+                            var quickpay = user.li_bank_accounts.Where(a => a.type == (int)Agp2pEnums.BankAccountType.QuickPay);
+                            quickpay.ForEach(q =>
+                            {
+                                q.type = (int)Agp2pEnums.BankAccountType.WebBank;
+                            });
+                            context.SubmitChanges();
+                            msg.HasHandle = true;
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到解绑用户信息，流水号为：" + msg.RequestId;
                         }
                     }
                 }
