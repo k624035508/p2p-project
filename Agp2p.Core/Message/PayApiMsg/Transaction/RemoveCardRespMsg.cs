@@ -10,8 +10,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string FailReason { get; set; }
 
         public RemoveCardRespMsg()
-        {
-           
+        {          
         }
 
         public RemoveCardRespMsg(string requestStr)
@@ -23,7 +22,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Signature = map["signature"];
 
             UserIdIdentity = Utils.StrToInt(map["userIdIdentity"], 0);
-            FailReason = map["failReason"];
+            FailReason = map.ContainsKey("failReason") ? map["failReason"] : "";
         }
 
         public override bool CheckSignature()

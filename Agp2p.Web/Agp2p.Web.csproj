@@ -863,6 +863,11 @@
     <Content Include="templates\AnGuang\imgs\help\diagram-05.png" />
     <Content Include="templates\AnGuang\imgs\help\guide.png" />
     <Content Include="templates\AnGuang\imgs\help\guide2.png" />
+    <Content Include="templates\AnGuang\imgs\help\newhelp1.png" />
+    <Content Include="templates\AnGuang\imgs\help\newhelp2.png" />
+    <Content Include="templates\AnGuang\imgs\help\newhelp3.png" />
+    <Content Include="templates\AnGuang\imgs\help\newhelp4.png" />
+    <Content Include="templates\AnGuang\imgs\help\newhelp5.png" />
     <Content Include="templates\AnGuang\imgs\help\problems.png" />
     <Content Include="templates\AnGuang\imgs\help\problems2.png" />
     <Content Include="templates\AnGuang\imgs\help\step-01.png" />

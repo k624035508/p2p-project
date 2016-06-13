@@ -122,8 +122,7 @@ namespace Agp2p.Web.admin.transact
                 MessageBus.Main.Publish(msgResp);
                 if (msgResp.HasHandle)
                 {
-                    JscriptMsg("解绑操作成功！",
-                       "../all_bank_account_list.aspx");
+                    JscriptMsg("解绑操作成功！", "../transact/all_bank_account_list.aspx");
                 }
                 else
                 {

@@ -440,19 +440,16 @@ namespace Agp2p.Core.PayApiLogic
 #endif
                         Agp2pDataContext context = new Agp2pDataContext();
                         var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
-                        if (user != null)
+                        if (user.li_bank_accounts.Any())
                         {
-                            var quickpay = user.li_bank_accounts.Where(a => a.type == (int)Agp2pEnums.BankAccountType.QuickPay);
-                            quickpay.ForEach(q =>
-                            {
-                                q.type = (int)Agp2pEnums.BankAccountType.WebBank;
-                            });
+                            var quickpay = user.li_bank_accounts.SingleOrDefault(a => a.type == (int)Agp2pEnums.BankAccountType.QuickPay);
+                            quickpay.type = (int)Agp2pEnums.BankAccountType.WebBank;                           
                             context.SubmitChanges();
                             msg.HasHandle = true;
                         }
                         else
                         {
-                            msg.Remarks = "没有找到解绑用户信息，流水号为：" + msg.RequestId;
+                            msg.Remarks = "没有找到解绑信息，流水号为：" + msg.RequestId;
                         }
                     }
                 }

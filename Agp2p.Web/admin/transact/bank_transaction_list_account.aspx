@@ -36,7 +36,7 @@
     <div class="l-list">
       <ul class="icon-list">
         <li><a class="add" href="bank_transaction_withdraw.aspx?account_id=<%=account_id %>"><i></i><span>提现</span></a></li>
-           <li><asp:Button  runat="server" Text="解绑"  OnClientClick="return ExeNoCheckPostBack(this.name, '解绑此银行卡？');"  OnClick="btnRemoveCard_OnClick" /></li>
+          
       </ul>
     </div>
   </div>
