@@ -2228,14 +2228,19 @@ namespace Agp2p.Web.tools
         private void add_bank_card(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
+            if (user == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
             if (string.IsNullOrEmpty(user.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
@@ -2293,14 +2298,19 @@ namespace Agp2p.Web.tools
         private void update_bank_card(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
+            if (user == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
             if (string.IsNullOrEmpty(user.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
