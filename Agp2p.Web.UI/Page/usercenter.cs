@@ -1078,5 +1078,75 @@ namespace Agp2p.Web.UI.Page
         {
             return myloan.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
         }
+
+        private static decimal SumOfScore(Agp2pEnums.QuestionnaireEnum questionnaire, List<string> results)
+        {
+            switch(questionnaire)
+            {
+                case Agp2pEnums.QuestionnaireEnum.LenderRiskAssessmentTest:
+                    return results.Select(s => s.ToUpper()).Aggregate(0m, (sum, str) =>
+                    {
+                        switch (str)
+                        {
+                            case "A": return sum + 1;
+                            case "B": return sum + 2;
+                            case "C": return sum + 3;
+                            case "D": return sum + 4;
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    });
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        [WebMethod]
+        public static string AjaxSaveQuestionnaireResult(int questionnaireId, string result)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            // result 的格式： ["A", "A&B", ...]
+            var results = JsonConvert.DeserializeObject<List<string>>(result);
+            var qrs = results.Zip(Utils.Infinite(), (r, i) => new li_questionnaire_result
+            {
+                answer = r,
+                userId = userInfo.id,
+                questionId = i,
+                questionnaireId = questionnaireId,
+            });
+            context.li_questionnaire_results.InsertAllOnSubmit(qrs);
+            var score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, results);
+
+            context.SubmitChanges();
+
+            return "您的得分是：" + score;
+        }
+
+        [WebMethod]
+        public static string AjaxLoadQuestionnaireResult(int questionnaireId)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            // 返回的格式：{"answer": ["A", "A&B", ...], "score": 999}
+
+            var answers = userInfo.li_questionnaire_results.Where(q => q.questionnaireId == questionnaireId)
+                .OrderBy(q => q.questionId).Select(q => q.answer).ToList();
+            return JsonConvert.SerializeObject(new { answers,
+                score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, answers) });
+        }
+
     }
 }

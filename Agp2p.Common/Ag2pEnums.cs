@@ -956,5 +956,11 @@ namespace Agp2p.Common
             [Description("网银支付")]
             WebBank = 3,
         }
+
+        public enum QuestionnaireEnum
+        {
+            [Description("网络借贷出借人风险评估测试")]
+            LenderRiskAssessmentTest = 1,
+        }
     }
 }
