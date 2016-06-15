@@ -436,7 +436,7 @@ namespace Agp2p.Core.PayApiLogic
                     {
 #if !DEBUG
                         //同步平台不做处理
-                        if(msg.Result.Equal("00001")) return;
+                        if(msg.Result.Equals("00001")) return;
 #endif
                         Agp2pDataContext context = new Agp2pDataContext();
                         var user = context.dt_users.SingleOrDefault(u => u.id == msg.UserIdIdentity);
