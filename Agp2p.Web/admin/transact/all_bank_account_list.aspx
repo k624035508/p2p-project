@@ -48,6 +48,7 @@
     <th align="left" width="20%">银行账户</th>
     <th align="left" width="10%">交易记录</th>
     <th align="left" width="20%">银行卡状态</th>
+    <th align="left" width="10%">操作</th>
   </tr>
 </HeaderTemplate>
 <ItemTemplate>
@@ -59,8 +60,11 @@
     <td><%# Eval("account") %></td>
     <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>&user_id=<%#Eval("dt_users.id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
     <td>
-        <%# GetTypeName(Eval("type").ToString()) %>    
-       
+        <%# GetTypeName(Eval("type").ToString()) %>         
+    </td>
+    <td>
+        <asp:LinkButton  runat="server" ID="lbt_removecard" Text="解绑" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定解绑银行卡吗?');" 
+            OnClick="btnRemoveCard_OnClick" Visible='<%#Convert.ToInt16(Eval("type")) ==2 %>'></asp:LinkButton>
     </td>
   </tr>
 

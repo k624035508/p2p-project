@@ -69,7 +69,37 @@ namespace Agp2p.Web.admin.transact
             }
         }
 
+        /// <summary>
+        /// 解绑银行卡
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnRemoveCard_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                var bankId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+                var bank = context.li_bank_accounts.SingleOrDefault(b => b.id == bankId);
+                var user = bank.dt_users;
+                var msg = new RemoveCardReqMsg(user.id, user.real_name, user.id_card_number, user.mobile, user.email);
+                MessageBus.Main.Publish(msg);
+                var msgResp = BaseRespMsg.NewInstance<RemoveCardRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
+                {
+                    JscriptMsg("解绑操作成功！", "../transact/all_bank_account_list.aspx");
+                }
+                else
+                {
+                    JscriptMsg("解绑操作失败：" + msgResp.Remarks, "back", "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("解绑操作失败：" + ex.Message, "back", "Error");
+            }
 
+        }
 
 
         //设置分页数量

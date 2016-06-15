@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Agp2p.Common;
 
 namespace Agp2p.Core.Message.PayApiMsg
@@ -34,7 +35,6 @@ namespace Agp2p.Core.Message.PayApiMsg
 
         public RemoveCardReqMsg()
         {
-
         }
 
         public override string GetSignature()
@@ -46,7 +46,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public override string GetPostPara()
         {
             var postStr =
-                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userIdIdentity={UserId}&userName={UserName}&idNumber={IdNumber}&telephone={Telephone}&email={Email}&reason={Reason}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
+                $"requestId={RequestId}&merchantCode={SumapayConfig.MerchantCode}&userIdIdentity={UserId}&userName={HttpUtility.UrlEncode(UserName, Encoding.GetEncoding("GBK"))}&idNumber={IdNumber}&telephone={Telephone}&email={Email}&reason={HttpUtility.UrlEncode(Reason, Encoding.GetEncoding("GBK"))}&noticeUrl={NoticeUrl}&signature={GetSignature()}";
             return postStr;
         }
     }
