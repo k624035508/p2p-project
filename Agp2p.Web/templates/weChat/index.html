@@ -51,7 +51,7 @@
                         </div>
                         <div class="amount-wrap">
                             <div class="title-style">可投金额</div>
-                            <div><span class="txt-darkgrey-l"><%=np.financing_amount.ToString("n0")%></span> 元</div>
+                            <div><span class="txt-darkgrey-l"><%=(np.financing_amount-np.investment_amount).ToString("n0")%></span> 元</div>
                         </div>
                         <div class="invest-status flex flex-center-wrapper">
                             <div class="indicatorContainer" data-progress="<%=(np.GetInvestmentProgressPercent()*100)%>"></div>
