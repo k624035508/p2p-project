@@ -60,6 +60,7 @@ namespace Agp2p.Web.UI.Page
         {
             var myRepayingProjects = user.li_claims.Where(c =>
                         c.projectId == c.profitingProjectId && c.IsLeafClaim() &&
+                        (int)Agp2pEnums.ProjectStatusEnum.Financing <= c.li_projects.status &&
                         c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToLookup(cg => cg.li_projects);
 
             Model.siteconfig config = new siteconfig().loadConfig();
