@@ -512,7 +512,7 @@ namespace Agp2p.Common
             [Description("6-10%")]
             SixToTen = 2,
             [Description("10-15%")]
-            TenToFifteen = 3,
+            TenToFifteen = 3, 
         }
 
         /// <summary>

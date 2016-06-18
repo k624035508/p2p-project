@@ -31,8 +31,10 @@
     <div class="content-wrap consume">
         <ul>
             <li class='<%=rootCategoryId==tickerCategoryId?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">定期专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
-            <li class='<%=rootCategoryId==claimsCategoryId?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",claimsCategoryId)%>'">债权转让<span></span></li>
-            <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li>
+            <!--<li class='<%=rootCategoryId==claimsCategoryId?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",claimsCategoryId)%>'">债权转让<span></span></li>
+            <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li> -->
+            <li class="zhaiquan-li">债权转让<span></span></li>
+            <li class="huoqibao-li">活期宝<span></span></li>
             <li class="wentibao-li">文体宝<span></span></li>
             <li class="consumefin-li">消费金融<span></span></li>
         </ul>
@@ -64,6 +66,8 @@
                            class='<%=0==category_id||rootCategoryId==category_id?"selected":""%>'>全部</a>
                     </li>
                     <%foreach(var kvp in SubCategoryIdTitleMap)%>
+                    <!--隐藏天盈宝-->
+                    <%if(kvp.Key==60)%>
                     <li>
                         <a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                            class='<%=kvp.Key==category_id?"selected":""%>'>
@@ -75,6 +79,7 @@
                             <%/if%>
                         </a>
                     </li>
+                    <%/if%>
                     <%/foreach%>
                 </ul>
             </div>
@@ -85,10 +90,13 @@
                     <Agp2pEnums.InterestRateTypeEnum>
                     ()%>
                     <%foreach(var en in interestRateTypeEnums)%>
+                    <!--隐藏10%以上利率-->
+                    <%if((int)en!=3)%>
                     <li>
                         <a href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'
                            class='<%=project_profit_rate_index==(int)en?"selected":""%>'><%=Utils.GetAgp2pEnumDes(en)%></a>
                     </li>
+                    <%/if%>
                     <%/foreach%>
                 </ul>
             </div>
@@ -297,7 +305,7 @@
             </div>
 
     <!--债权转让-->
-    <div class="hidden zhaiquan">
+  <!--  <div class="hidden zhaiquan">
          <a name="zhaiquan"></a>
         <div class="invest-list content-wrap">
             <div class="list-head">
@@ -359,10 +367,23 @@
             </div>
             <%/foreach%>
           </div>
+        </div>  -->
+    <div class="hidden zhaiquan">
+        <a name="zhaiquan"></a>
+        <div class="content-wrap">
+            <img src="<%templateskin%>/imgs/projects/002.jpg" />
+            <div>敬请期待</div>
         </div>
+    </div>
 
-    <!--活期宝-->
-    <div></div>
+<!--活期宝-->
+    <div class="hidden huoqibao">
+        <a name="huoqibao"></a>
+        <div class="content-wrap">
+            <img src="<%templateskin%>/imgs/projects/002.jpg" />
+            <div>敬请期待</div>
+        </div>
+    </div>
 
     <!--文体宝-->
     <div class="hidden wentibao">
