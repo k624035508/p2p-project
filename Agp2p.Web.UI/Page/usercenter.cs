@@ -62,6 +62,11 @@ namespace Agp2p.Web.UI.Page
             return invokeBanner.Count();
         }
 
+        protected bool IsQuestionnaire()
+        {
+            return userModel.li_questionnaire_results.Any();
+        }
+
         protected List<dt_advert_banner> QueryBannerList(int aid)
         {
             var context = new Agp2pDataContext();
