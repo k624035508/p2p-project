@@ -856,26 +856,26 @@ namespace Agp2p.Web.UI.Page
         }
 
         /* 暂无使用这个 api */
-        [WebMethod]
-        public static string AjaxInvestHuoqiProject(decimal amount)
-        {
-            var context = new Agp2pDataContext();
-            var userInfo = GetUserInfoByLinq(context);
-            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-            if (userInfo == null)
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return "请先登录";
-            }
+        //[WebMethod]
+        //public static string AjaxInvestHuoqiProject(decimal amount)
+        //{
+        //    var context = new Agp2pDataContext();
+        //    var userInfo = GetUserInfoByLinq(context);
+        //    HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+        //    if (userInfo == null)
+        //    {
+        //        HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //        return "请先登录";
+        //    }
 
-            var huoqiProject = context.li_projects.Single(
-                p =>
-                    p.dt_article_category.call_index == "huoqi" &&
-                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
-            TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
+        //    var huoqiProject = context.li_projects.Single(
+        //        p =>
+        //            p.dt_article_category.call_index == "huoqi" &&
+        //            p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
+        //    TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
 
-            return "ok";
-        }
+        //    return "ok";
+        //}
 
         [WebMethod]
         public static string AjaxWithdrawHuoqiProject(string transactPassword, decimal amount)
