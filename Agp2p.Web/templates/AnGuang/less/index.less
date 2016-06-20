@@ -592,13 +592,14 @@ div.announcement-wrap {
 
 .white35px {
     color: @white;
-    font-size: 45px;
+    font-size: 40px;
+    height:53px;
     text-align: center;
 }
 
 .white13px {
     color: @white;
-    font-size: @font13;
+    font-size: 18px;
     text-indent: 26px;
     margin: 0 0 3px;
 }
@@ -673,9 +674,9 @@ a.invest-btn-grey {
         a {
             display: block;
             height: 100%;
-            padding-top: 15px;
+            padding-top: 10px;
             text-decoration: none;
-            background: url("@{images}/newhand-bg.png") no-repeat;
+            background: url("@{images}/newbie-bg2.png") no-repeat;
         }
     }
 
@@ -1001,10 +1002,11 @@ a.invest-btn-grey {
             &:hover {
                 padding-top: 20px;
             }
-            &:nth-child(5){margin-top:10px;}
-            &:nth-child(6){margin-top:10px;}
-            &:nth-child(7){margin-top:10px;}
-            &:nth-child(8){margin-top:10px;}
+            &:first-child{margin-bottom:10px;}
+                    /*兼容IE8*/
+        &:first-child + div.tender-cell{margin-bottom:10px;}
+        &:first-child + div.tender-cell + div.tender-cell{margin-bottom:10px;}
+        &:first-child + div.tender-cell + div.tender-cell + div.tender-cell{margin-bottom:10px;}
         }
     }
 }

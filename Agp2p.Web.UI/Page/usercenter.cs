@@ -1112,6 +1112,8 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
+            var deleteResult = userInfo.li_questionnaire_results;
+            context.li_questionnaire_results.DeleteAllOnSubmit(deleteResult);
             // result 的格式： ["A", "A&B", ...]
             var results = JsonConvert.DeserializeObject<List<string>>(result);
             var qrs = results.Zip(Utils.Infinite(), (r, i) => new li_questionnaire_result
@@ -1126,7 +1128,7 @@ namespace Agp2p.Web.UI.Page
 
             context.SubmitChanges();
 
-            return "您的得分是：" + score;
+            return  score.ToString();
         }
 
         [WebMethod]

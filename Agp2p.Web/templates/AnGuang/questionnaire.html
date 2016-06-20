@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>调查问卷</title>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/questionnaire.bundle.js"></script>
+</head>
+<body>
+    <!--head-->
+    <%template src="_header.html"%>
+    <!--head end-->
+
+    <!--banner-->
+<div class="queBanner"></div>
+<!--banner end-->
+
+<div class="questionaire">
+    <div class="queHead"></div>
+
+    <div class="queMiddle">
+        <div class="queContent">
+            1.&nbsp;您的年龄是&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question1" id="1A"/><label for="1A">A. 高于60岁</label></span>
+            <span><input type="radio" value="B" name="question1" id="1B"/><label for="1B">B. 51-60岁</label></span>
+            <span><input type="radio" value="C" name="question1" id="1C"/><label for="1C">C. 31-50岁</label></span>
+            <span><input type="radio" value="D" name="question1" id="1D"/><label for="1D">D. 18-30岁</label></span>
+        </div>
+
+        <div class="queContent">
+            2.&nbsp;您的学历&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question2" id="2A" /><label for="2A">A. 高中以下</label></span>
+            <span><input type="radio" value="B" name="question2" id="2B" /><label for="2B">B. 专科</label></span>
+            <span><input type="radio" value="C" name="question2" id="2C" /><label for="2C">C. 本科</label></span>
+            <span><input type="radio" value="D" name="question2" id="2D" /><label for="2D">D. 研究生或研究生以上</label></span>
+        </div>
+
+        <div class="queContent">
+            3.&nbsp;您目前的职业&nbsp;？
+        </div>
+        <div class="question-list question-twoList">
+            <span><input type="radio" value="A" name="question3" id="3A" /><label for="3A">A. 待业或退休</label></span>
+            <span><input type="radio" value="B" name="question3" id="3B" /><label for="3B">B. 无固定工作</label></span>
+            <span><input type="radio" value="C" name="question3" id="3C" /><label for="3C">C. 企事业单位固定工作</label></span>
+            <span><input type="radio" value="D" name="question3" id="3D" /><label for="3D">D. 私营业主</label></span>
+        </div>
+
+        <div class="queContent">
+            4.&nbsp;您的家庭年收入折合人民币为&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question4" id="4A" /><label for="4A">A. 5万元以下</label></span>
+            <span><input type="radio" value="B" name="question4" id="4B" /><label for="4B">B. 5-10万元</label></span>
+            <span><input type="radio" value="C" name="question4" id="4C" /><label for="4C">C. 10-20万元</label></span>
+            <span><input type="radio" value="D" name="question4" id="4D" /><label for="4D">D. 20万元以上</label></span>
+        </div>
+
+        <div class="queContent">
+            5.&nbsp;在您每年的家庭收入中，可用于金融投资（储蓄存款除外）的比例为&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question5" id="5A" /><label for="5A">A. 小于 10% </label></span>
+            <span><input type="radio" value="B" name="question5" id="5B" /><label for="5B">B. 10% 至 25%</label></span>
+            <span><input type="radio" value="C" name="question5" id="5C" /><label for="5C">C. 25% 至 50%</label></span>
+            <span><input type="radio" value="D" name="question5" id="5D" /><label for="5D">D. 大于 50%</label></span>
+        </div>
+
+        <div class="queContent">
+            6.&nbsp;您以往的投资以什么产品为主&nbsp;？
+        </div>
+        <div class="question-list question-twoList">
+            <span><input type="radio" value="A" name="question6" id="6A" /><label for="6A">A. 存款</label></span>
+            <span><input type="radio" value="B" name="question6" id="6B" /><label for="6B">B. 债券、偏债型基金</label></span>
+            <span><input type="radio" value="C" name="question6" id="6C" /><label for="6C">C. 股票、偏股型基金</label></span>
+            <span style="width: 490px;"><input type="radio" value="D" name="question6" id="6D" /><label for="6D">D. 金融衍生品（如期货、外汇等）、私募股权投资</label></span>
+        </div>
+
+        <div class="queContent queContent-two">
+            <span>7.</span><p>您有多少年投资股票、基金、外汇、期货、金融衍生产品等风险投资品的经验（投资经历越长，您的风险承受能力越强）&nbsp;？</p>
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question7" id="7A" /><label for="7A">A. 没有经验</label></span>
+            <span><input type="radio" value="B" name="question7" id="7B" /><label for="7B">B. 少于 2 年</label></span>
+            <span><input type="radio" value="C" name="question7" id="7C" /><label for="7C">C. 2 至 5 年</label></span>
+            <span><input type="radio" value="D" name="question7" id="7D" /><label for="7D">D. 5 年以上</label></span>
+        </div>
+
+        <div class="queContent">
+            8.&nbsp;以下哪项描述最符合您的投资态度（高收益意味着要承担高风险）&nbsp;？
+        </div>
+        <div class="question-list questionFourList">
+            <span><input type="radio" value="A" name="question8" id="8A" /><label for="8A">A. 厌恶风险，不希望本金损失，希望获得稳定回报</label></span>
+            <span><input type="radio" value="B" name="question8" id="8B" /><label for="8B">B. 保守投资，不希望本金损失，愿意承担一定幅度的收益波动</label></span>
+            <span><input type="radio" value="C" name="question8" id="8C" /><label for="8C">C. 寻求资金的较高收益和成长性，愿意为此承担有限本金损失</label></span>
+            <span><input type="radio" value="D" name="question8" id="8D" /><label for="8D">D. 希望赚取高回报，愿意为此承担较大本金损失</label></span>
+        </div>
+
+        <div class="queContent">
+            9.&nbsp;您计划的投资期限是多久&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question9" id="9A" /><label for="9A">A. 1年以下</label></span>
+            <span><input type="radio" value="B" name="question9" id="9B" /><label for="9B">B. 1—3年</label></span>
+            <span><input type="radio" value="C" name="question9" id="9C" /><label for="9C">C. 3—5年</label></span>
+            <span><input type="radio" value="D" name="question9" id="9D" /><label for="9D">D. 5年以上</label></span>
+        </div>
+
+        <div class="queContent">
+            10.&nbsp;您进行投资时所能承受的最大亏损比例是&nbsp;？
+        </div>
+        <div class="question-list">
+            <span><input type="radio" value="A" name="question10" id="10A" /><label for="10A">A. 10%以内</label></span>
+            <span><input type="radio" value="B" name="question10" id="10B" /><label for="10B">B. 10-30%</label></span>
+            <span><input type="radio" value="C" name="question10" id="10C" /><label for="10C">C. 30-50%</label></span>
+            <span><input type="radio" value="D" name="question10" id="10D" /><label for="10D">D. 50%以上</label></span>
+        </div>
+
+        <div class="queContent queContent-two">
+            <span>11.</span><p style="width: 980px;">您是否曾经投资过非保本金融投资产品并且熟悉互联网？（绝对否定项，即本项目如果答案为否，则不适于投资网络借贷产品）&nbsp;？</p>
+        </div>
+        <div class="question-list">
+            <span style="width: 300px;"><input type="radio" value="A" name="question11" id="11A" /><label for="11A">A. 否，不熟悉互联网</label></span>
+            <span><input type="radio" value="B" name="question11" id="11B" /><label for="11B">B. 否，没有投资过</label></span>
+            <span style="width: 400px;"><input type="radio" value="C" name="question11" id="11C" /><label for="11C">C. 是，曾经投资过，也熟悉互联网</label></span>
+        </div>
+
+        <button id="questionnaireBtn" type="button">提交问卷</button>
+    </div>
+
+    <div class="queBottom"></div>
+
+    <!--投资类型-->
+    <div class="investAlert">
+    <div class="investType">
+        <div class="typeHead">
+            您的投资类型
+        </div>
+        <div class="typeMiddle">
+             
+        </div>
+        <div class="typeMiddle2">
+            <p class="typeP1"></p>
+            <p class="typeP2"></p>
+        </div>
+        <div class="typeBottom">
+            <a class="replay" href='<%linkurl("questionnaire")%>'>重新测试</a>
+            <a class="toRegister" href='<%linkurl("usercenter","index")%>'>返回首页</a>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<!--footer-->
+    <%template src="_footerSmall.html"%>
+    <!--footer end-->
+</body>
+</html>

@@ -92,7 +92,7 @@
                 <li>累计提现：<%=totalWithDraw %></li>
                 <li>注册人数：<%=userCount%>人</li>
                 <li>标的总数：<%=projectCount%>个</li>  
-                <li>票据理财总额：<%=totalPjProjectAmount%></li>  
+                <%-- <li>票据理财总额：<%=totalPjProjectAmount%></li>  --%>
                 <li>今日登陆人数：<%=totalLoginCount%>人</li>
                 <li>今日注册人数：<%=totalRegisterCount%>个</li>               
             </ul>
