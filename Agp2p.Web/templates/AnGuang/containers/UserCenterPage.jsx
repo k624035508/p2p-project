@@ -65,9 +65,9 @@ class UserCenterPage extends React.Component {
 		this.props.dispatch(updateWalletInfo(walletInfo));
 		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True", isQuestionnaire: isQuestionnaire === "True" }));
 		
-		if (isQuestionnaire == "False") {
+		{/*if (isQuestionnaire == "False") {
 		    $("#questionConfirm").modal();
-		}	
+		}}	*/}
 		
 		if (isIdentity == "True") {
 		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。", () => {
@@ -148,7 +148,7 @@ class UserCenterPage extends React.Component {
 
                 </div>
                     
-    <div className="modal fade" id="questionConfirm"  role="dialog" aria-labelledby="questionConfirmLabel">
+    <div className="modal fade" id="questionConfirm"  role="dialog" aria-labelledby="questionConfirmLabel" data-backdrop="static">
         <div className="modal-dialog questionConfirm-dialog" role="document">
             <div className="modal-content">
                 <div className="modal-header">
