@@ -52,7 +52,7 @@ class UserCenterPage extends React.Component {
 
 	componentDidMount() {
 	   
-		var {idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity} = $("#app").data();
+		var {idleMoney, lockedMoney, investingMoney, profitingMoney, userName, prevLoginTime, lotteriesValue, isLoaner, isIdentity, isQuestionnaire} = $("#app").data();
 
 		var walletInfo = {
 			idleMoney: idleMoney.toNum(),
@@ -63,9 +63,11 @@ class UserCenterPage extends React.Component {
 		};
 
 		this.props.dispatch(updateWalletInfo(walletInfo));
-		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True" }));
+		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True", isQuestionnaire: isQuestionnaire === "True" }));
 		
-			
+		if (isQuestionnaire == "False") {
+		    $("#questionConfirm").modal();
+		}	
 		
 		if (isIdentity == "True") {
 		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。", () => {
@@ -145,6 +147,21 @@ class UserCenterPage extends React.Component {
 					</div>
 
                 </div>
+                    
+    <div className="modal fade" id="questionConfirm"  role="dialog" aria-labelledby="questionConfirmLabel">
+        <div className="modal-dialog questionConfirm-dialog" role="document">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h4 className="modal-title" id="myModalLabel">评估测试</h4>
+                </div>
+                <div className="modal-body">
+                    <p>测一测你是哪种类型的投资人</p>
+                    <a href='<%linkurl("questionnaire")%>'>点击测试</a>
+                    <div className="questionp"><span className="strongMan">我是稳健型投资者，</span><span data-dismiss="modal" aria-label="Close">跳过测试</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 				{this.props.children || <StatusContainer><MyAccountPage/></StatusContainer>}
 			</div>
 		);
