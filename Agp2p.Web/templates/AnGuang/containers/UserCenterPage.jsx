@@ -156,7 +156,7 @@ class UserCenterPage extends React.Component {
                 </div>
                 <div className="modal-body">
                     <p>测一测你是哪种类型的投资人</p>
-                    <a href='<%linkurl("questionnaire")%>'>点击测试</a>
+                    <a href={"/questionnaire.html"}>点击测试</a>
                     <div className="questionp"><span className="strongMan">我是稳健型投资者，</span><span data-dismiss="modal" aria-label="Close">跳过测试</span></div>
                 </div>
             </div>
