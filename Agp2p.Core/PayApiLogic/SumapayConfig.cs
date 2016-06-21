@@ -23,9 +23,11 @@ namespace Agp2p.Core.Message.PayApiMsg
 #endif
 #if DEBUG
         public static string ApiUrl = "https://fbtest.sumapay.com/";
+        public static string MobileApiUrl = "https://fbtest.sumapay.com/";
 #endif
 #if !DEBUG
         public static string ApiUrl = "https://www.sumapay.com/";
+        public static string MobileApiUrl = "https://mapi.sumapay.com/";
 #endif
 #if DEBUG
         public static string NoticeUrl = "http://test.agrhp2p.com/api/payment/sumapay/noticeUrl.aspx";
