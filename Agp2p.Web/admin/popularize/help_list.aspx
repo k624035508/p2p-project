@@ -138,7 +138,10 @@
         <asp:LinkButton ID="lbtnIsSlide" CommandName="lbtnIsSlide" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_slide")) == 1 ? "pic selected" : "pic"%>' ToolTip='<%# Convert.ToInt32(Eval("is_slide")) == 1 ? "取消幻灯片" : "设置幻灯片"%>' />
       </div>
     </td>
-    <td align="center"><a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>">修改</a></td>
+    <td align="center">
+        <a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>">修改</a>
+        <a href="/article/<%#Eval("id")%>.html" target="_blank">预览</a>
+    </td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>
