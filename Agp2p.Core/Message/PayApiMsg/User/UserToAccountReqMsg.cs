@@ -29,7 +29,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0013";
             Api = (int)Agp2pEnums.SumapayApiEnum.AccoM;
-            ApiInterface = SumapayConfig.ApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.MobileApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.AccoM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
