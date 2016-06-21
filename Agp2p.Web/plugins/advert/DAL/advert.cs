@@ -62,16 +62,18 @@ namespace Agp2p.Web.Plugin.Advert.DAL
             strSql.Append(" values (");
             strSql.Append("@title,@type,@price,@remark,@view_num,@view_width,@view_height,@target,@add_time)");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
-					new SqlParameter("@title", SqlDbType.NVarChar,100),
-					new SqlParameter("@type", SqlDbType.TinyInt,1),
-					new SqlParameter("@price", SqlDbType.Decimal,9),
-					new SqlParameter("@remark", SqlDbType.NVarChar,255),
-					new SqlParameter("@view_num", SqlDbType.Int,4),
-					new SqlParameter("@view_width", SqlDbType.Int,4),
-					new SqlParameter("@view_height", SqlDbType.Int,4),
-					new SqlParameter("@target", SqlDbType.NVarChar,30),
-					new SqlParameter("@add_time", SqlDbType.DateTime)};
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@title", SqlDbType.NVarChar, 100),
+                new SqlParameter("@type", SqlDbType.TinyInt, 1),
+                new SqlParameter("@price", SqlDbType.Decimal, 9),
+                new SqlParameter("@remark", SqlDbType.NVarChar, 255),
+                new SqlParameter("@view_num", SqlDbType.Int, 4),
+                new SqlParameter("@view_width", SqlDbType.Int, 4),
+                new SqlParameter("@view_height", SqlDbType.Int, 4),
+                new SqlParameter("@target", SqlDbType.NVarChar, 30),
+                new SqlParameter("@add_time", SqlDbType.DateTime),
+            };
             parameters[0].Value = model.title;
             parameters[1].Value = model.type;
             parameters[2].Value = model.price;
@@ -119,7 +121,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
 					new SqlParameter("@view_height", SqlDbType.Int,4),
 					new SqlParameter("@target", SqlDbType.NVarChar,30),
 					new SqlParameter("@add_time", SqlDbType.DateTime),
-					new SqlParameter("@id", SqlDbType.Int,4)};
+                    new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.title;
             parameters[1].Value = model.type;
             parameters[2].Value = model.price;
@@ -230,6 +232,7 @@ namespace Agp2p.Web.Plugin.Advert.DAL
                 {
                     model.add_time = DateTime.Parse(ds.Tables[0].Rows[0]["add_time"].ToString());
                 }
+
                 return model;
             }
             else

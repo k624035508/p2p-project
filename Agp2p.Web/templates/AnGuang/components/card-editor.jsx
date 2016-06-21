@@ -1,4 +1,5 @@
 import React from "react";
+import CityPicker from "../components/city-picker.jsx";
 import { bankList } from "../js/bank-list.jsx";
 import { appendBankCard, modifyBankCard } from "../actions/bankcard.js";
 
@@ -53,18 +54,34 @@ class CardEditor extends React.Component {
 				<ul className="list-unstyled">
 					<li><span>开户名：</span><span style={this.props.realName ? null : {color: "red"}} >
 						{this.props.realName || "（请先到 “个人中心 -> 安全中心” 进行实名认证）"}</span></li>
-					<li><span>选择银行：</span><select className="bankSelect" value={this.state.bank}
-						onChange={ev => this.setState({bank: ev.target.value})} disabled={!this.props.realName}>
+					<li><span><i>*</i>选择银行：</span>
+                    <select className="bankSelect" value={this.state.bank} style={!(this.props.realName && creatingCard) ? {"backgroundColor": "#f2f2f2"} : null}
+						onChange={ev => this.setState({bank: ev.target.value})} disabled={!(this.props.realName && creatingCard)} >
 						<option value="">请选择银行</option>
 						{bankList.map(b => <option value={b} key={b}>{b}</option>)}
-						</select></li>
+					</select>
+                    </li>
+                    <li><span>开户行所在城市：</span>
+						<CityPicker value={this.state.selectedLocation} onLocationChanged={(...args) => this.setState({selectedLocation: [...args]})}
+							disabled={!this.props.realName} />
+					</li>
+					<li><span>开户行：</span><input type="text" value={this.state.openingBank} 
+						onChange={ev => this.setState({openingBank: ev.target.value})} disabled={!this.props.realName} placeholder="请输入开户行支行名称"/></li>
+                    <li style={{marginBottom: '4px'}}>
+                        <span></span><span style={{color: '#aaaaaa',fontSize:'13px'}}>某某银行/某某分行/某某支行/某某分理处（如：中国银行上海分行杨浦支行控江路分理处）</span>
+                    </li>
+                    <li style={{marginTop: '0'}}>
+                        <span></span><span style={{color: '#ff414b'}}>请您准确填写，否则有可能无法提现；如果您不清楚，建议致电银行客服进行询问</span>
+                    </li>
 					{editingCard
-						? <li><span>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
-						: <li><span>银行卡号：</span><input type="text" value={this.state.cardNumber}
-						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
-					{editingCard ? null :
-					<li><span>确认卡号：</span><input type="text" value={this.state.cardNumber2}
-						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: 'red', marginLeft: '10px'}}>*</span></li>}
+						? <li><span><i>*</i>银行卡号：</span>{mask(this.state.cardNumber, 2, 4)}</li>
+						: <li  style={{marginBottom: '0'}}><span><i>*</i>银行卡号：</span><input type="text" value={this.state.cardNumber} placeholder="请输入银行卡号"
+						onChange={ev => this.setState({cardNumber: ev.target.value})} disabled={!this.props.realName} /></li>}
+                    <li style={{marginTop: '0'}}><span></span><span></span><span style={{color: '#ff414b'}}>必须使用开户信息与实名认证信息一致的银行卡</span></li>
+                       
+                           {editingCard ? null :
+                           <li><span><i>*</i>确认卡号：</span><input type="text" value={this.state.cardNumber2} placeholder="请再次输入银行卡号"
+						onChange={ev => this.setState({cardNumber2: ev.target.value})} disabled={!this.props.realName} /><span style={{color: '#ff414b', marginLeft: '10px'}}></span></li>}
 				</ul>
 				{creatingCard ? null :
 					<button type="button" className="cancel-btn" onClick={ev => this.props.onOperationSuccess()}>取 消</button>}

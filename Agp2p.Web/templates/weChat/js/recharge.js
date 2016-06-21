@@ -15,7 +15,10 @@ $(() => {
             alert("请输入正确的金额");
             return;
         }
-        //location.href = "/api/payment/ecpss/index.aspx?bankcode=NOCARD&amount=" + $("#amount").val();
+        if (amount < 100) {
+            alert("充值金额最低为100元");
+            return;
+        }
 
         $.ajax({
             type: "post",

@@ -31,7 +31,7 @@ namespace Agp2p.Web.Plugin.Advert.BLL
         public string GetTitle(int id)
         {
             return dal.GetTitle(id);
-        }
+        }    
 
         /// <summary>
         /// 增加一条数据

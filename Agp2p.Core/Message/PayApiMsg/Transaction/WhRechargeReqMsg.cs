@@ -55,7 +55,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             PassThrough = passThrough;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.WhRec;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/withholdingRecharge_toWithholdingRecharge";
+            ApiInterface = SumapayConfig.ApiUrl + "user/withholdingRecharge_toWithholdingRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WhRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -72,7 +72,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0001";
             Api = (int)Agp2pEnums.SumapayApiEnum.WhReM;
-            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.MobileApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.WhReM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

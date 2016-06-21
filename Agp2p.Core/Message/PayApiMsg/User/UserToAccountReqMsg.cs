@@ -18,7 +18,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             UserId = userId;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.Accou;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/accountManage_toAccountManage";
+            ApiInterface = SumapayConfig.ApiUrl + "user/accountManage_toAccountManage";
             RequestId = Agp2pEnums.SumapayApiEnum.Accou.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -29,8 +29,12 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0013";
             Api = (int)Agp2pEnums.SumapayApiEnum.AccoM;
-            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.MobileApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.AccoM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        protected UserToAccountReqMsg()
+        {
         }
 
         public override string GetSignature()

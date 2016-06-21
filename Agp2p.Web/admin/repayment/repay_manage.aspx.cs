@@ -202,7 +202,7 @@ namespace Agp2p.Web.admin.repayment
                 var repay = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
                 if (repay != null)
                 {
-                    if (repay.li_projects.IsHuoqiProject() || repay.li_projects.IsNewbieProject())
+                    if (repay.li_projects.IsHuoqiProject() || repay.li_projects.IsNewbieProject1())
                     {
                         JscriptMsg("活期或新手项目不能手动还款！", "back", "Error");
                         return;

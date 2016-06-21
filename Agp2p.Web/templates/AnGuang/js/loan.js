@@ -131,6 +131,7 @@ class LoanerApplyingPanel extends React.Component {
             });
         }
     }
+    
     doLoanerApplySubmit() {
         $.ajax({
             type: "post",
@@ -380,7 +381,7 @@ class LoanApplying extends React.Component {
 }
 
 $(function () {
-    header.setHeaderHighlight(5);
+    header.setHeaderHighlight(2);
 
     //data-toggle 初始化
     $('[data-toggle="popover"]').popover();

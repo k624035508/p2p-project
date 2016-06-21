@@ -22,7 +22,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BackUrl { get; set; }
         public string RequestType { get; set; }
         //分账列表
-        private string subledgerList;
+        protected string subledgerList;
         public string SubledgerList
         {
             get
@@ -57,7 +57,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             SetBankCodeAccount(bankCode, bankAccount);
 
             Api = (int) Agp2pEnums.SumapayApiEnum.Wdraw;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/withdraw_toWithdraw";
+            ApiInterface = SumapayConfig.ApiUrl + "user/withdraw_toWithdraw";
             RequestId = Agp2pEnums.SumapayApiEnum.Wdraw.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -73,11 +73,15 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0002";
             Api = (int)Agp2pEnums.SumapayApiEnum.WdraM;
-            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.MobileApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.WdraM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
-        private void SetBankCodeAccount(string bankCode, string bankAccount)
+        protected WithdrawReqMsg()
+        {
+        }
+
+        protected void SetBankCodeAccount(string bankCode, string bankAccount)
         {
             if (!string.IsNullOrEmpty(bankCode))
             {

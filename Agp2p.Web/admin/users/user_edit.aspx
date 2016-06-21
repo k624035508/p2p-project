@@ -268,10 +268,10 @@
                 <dd>
                     <asp:TextBox ID="txtRealName" runat="server" CssClass="input normal"></asp:TextBox></dd>
             </dl>
-            <dl>
+            <dl style="display: none;">
                 <dt>上传头像</dt>
                 <dd>
-                    <asp:TextBox ID="txtAvatar" runat="server" CssClass="input normal upload-path"></asp:TextBox>
+                    <asp:TextBox ID="txtAvatar" runat="server" CssClass="input normal upload-path" ></asp:TextBox>
                     <div class="upload-box upload-img">
                     </div>
                 </dd>
@@ -323,7 +323,7 @@
                 <dd>
                     <asp:TextBox ID="txtIdCard" runat="server" CssClass="input normal"></asp:TextBox></dd>
             </dl>
-            <dl>
+            <dl style="display: none;">
                 <dt>身份证照片</dt>
                 <dd>
                     <div class="upload-box upload-album">

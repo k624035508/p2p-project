@@ -39,6 +39,46 @@ namespace Agp2p.Web.UI.Page
             return userModel.li_loaners.Any();
         }
 
+        protected bool IsIdentity()
+        {
+#if DEBUG
+            return false;
+#endif
+#if !DEBUG
+            //5月13号托管更新前的用户才需要激活操作
+            return userModel.identity_id == null && userModel.reg_time <= DateTime.Parse("2016-5-13");
+#endif
+        }
+
+        protected int QueryBanner(int aid)
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.aid == aid && a.end_time >= DateTime.Today)
+                    .OrderBy(a => a.sort_id).ToList();
+
+            return invokeBanner.Count();
+        }
+
+        protected bool IsQuestionnaire()
+        {
+            return userModel.li_questionnaire_results.Any();
+        }
+
+        protected List<dt_advert_banner> QueryBannerList(int aid)
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.aid == aid && a.end_time >= DateTime.Today)
+                    .OrderBy(a => a.sort_id).ToList();
+
+            return invokeBanner;
+        }
+
         /// <summary>
         /// 重写虚方法,此方法在Init事件执行
         /// </summary>
@@ -133,6 +173,13 @@ namespace Agp2p.Web.UI.Page
         public static string AjaxQueryTransactionHistory(short type, short pageIndex, short pageSize, string startTime = "", string endTime = "")
         {
             return mytrade.AjaxQueryTransactionHistory(type, pageIndex, pageSize, startTime, endTime);
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryBanner()
+        {
+            return advert.AjaxQueryBanner();
         }
 
         [WebMethod]
@@ -326,7 +373,6 @@ namespace Agp2p.Web.UI.Page
                 return new ProjectDetail
                 {
                     id = p.id,
-                    img_url = GetProjectImageUrl(p.img_url, p.category_id),
                     no = p.no,
                     title = p.title,
                     status = p.status,
@@ -815,26 +861,26 @@ namespace Agp2p.Web.UI.Page
         }
 
         /* 暂无使用这个 api */
-        [WebMethod]
-        public static string AjaxInvestHuoqiProject(decimal amount)
-        {
-            var context = new Agp2pDataContext();
-            var userInfo = GetUserInfoByLinq(context);
-            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-            if (userInfo == null)
-            {
-                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return "请先登录";
-            }
+        //[WebMethod]
+        //public static string AjaxInvestHuoqiProject(decimal amount)
+        //{
+        //    var context = new Agp2pDataContext();
+        //    var userInfo = GetUserInfoByLinq(context);
+        //    HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+        //    if (userInfo == null)
+        //    {
+        //        HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //        return "请先登录";
+        //    }
 
-            var huoqiProject = context.li_projects.Single(
-                p =>
-                    p.dt_article_category.call_index == "huoqi" &&
-                    p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
-            TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
+        //    var huoqiProject = context.li_projects.Single(
+        //        p =>
+        //            p.dt_article_category.call_index == "huoqi" &&
+        //            p.status == (int) Agp2pEnums.ProjectStatusEnum.Financing);
+        //    TransactionFacade.Invest(userInfo.id, huoqiProject.id, amount);
 
-            return "ok";
-        }
+        //    return "ok";
+        //}
 
         [WebMethod]
         public static string AjaxWithdrawHuoqiProject(string transactPassword, decimal amount)
@@ -1037,5 +1083,77 @@ namespace Agp2p.Web.UI.Page
         {
             return myloan.AjaxQueryLoan(type, pageIndex, pageSize, startTime, endTime);
         }
+
+        private static decimal SumOfScore(Agp2pEnums.QuestionnaireEnum questionnaire, List<string> results)
+        {
+            switch(questionnaire)
+            {
+                case Agp2pEnums.QuestionnaireEnum.LenderRiskAssessmentTest:
+                    return results.Select(s => s.ToUpper()).Aggregate(0m, (sum, str) =>
+                    {
+                        switch (str)
+                        {
+                            case "A": return sum + 1;
+                            case "B": return sum + 2;
+                            case "C": return sum + 3;
+                            case "D": return sum + 4;
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    });
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        [WebMethod]
+        public static string AjaxSaveQuestionnaireResult(int questionnaireId, string result)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var deleteResult = userInfo.li_questionnaire_results;
+            context.li_questionnaire_results.DeleteAllOnSubmit(deleteResult);
+            // result 的格式： ["A", "A&B", ...]
+            var results = JsonConvert.DeserializeObject<List<string>>(result);
+            var qrs = results.Zip(Utils.Infinite(), (r, i) => new li_questionnaire_result
+            {
+                answer = r,
+                userId = userInfo.id,
+                questionId = i,
+                questionnaireId = questionnaireId,
+            });
+            context.li_questionnaire_results.InsertAllOnSubmit(qrs);
+            var score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, results);
+
+            context.SubmitChanges();
+
+            return  score.ToString();
+        }
+
+        [WebMethod]
+        public static string AjaxLoadQuestionnaireResult(int questionnaireId)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            // 返回的格式：{"answer": ["A", "A&B", ...], "score": 999}
+
+            var answers = userInfo.li_questionnaire_results.Where(q => q.questionnaireId == questionnaireId)
+                .OrderBy(q => q.questionId).Select(q => q.answer).ToList();
+            return JsonConvert.SerializeObject(new { answers,
+                score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, answers) });
+        }
+
     }
 }

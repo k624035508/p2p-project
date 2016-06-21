@@ -27,7 +27,7 @@
                 </p>
                 <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
                     <div class="rate-wrap">
-                        <div class="title-style">年化利率</div>
+                        <div class="title-style">预期年化率</div>
                         <div class="txt-red-s"><span class="txt-red-l">@{=item.profit_rate_year}@</span> %</div>
                     </div>
                     <div class="time-wrap">
@@ -66,7 +66,7 @@
 <div class="height-100 flex flex--column flex--flex-grow-second">
     <div class="invest-nav">
         <!--<a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>-->
-        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>票据专区<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>定期专区<span class="divider">|</span></a>
         <a href='<%linkurl("projects",claimsCategoryId)%>' class='<%=claimsCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
         <a href='<%linkurl("projects",huoqiCategoryId)%>' class='<%=huoqiCategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a>
     </div>
@@ -75,7 +75,7 @@
         <div id="loading-hint"></div>
         <div class="loading-hint" style="display: none">
             <img src="<%templateskin%>/imgs/empty-box.png" style="width: 30%; margin: 70px auto 10px auto;"/>
-            <p style="color:#ccc">您目前没有投资记录</p>
+            <p style="color:#ccc">暂没有找到相关数据</p>
         </div>
     </div>
     <%template src="_footer.html"%>

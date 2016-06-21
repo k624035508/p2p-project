@@ -12,7 +12,7 @@ class TransactionTable extends React.Component {
         }
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
-        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory", pageSize = 13;
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryTransactionHistory", pageSize = 12;
         $.ajax({
             type: "post",
             dataType: "json",

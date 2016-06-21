@@ -39,7 +39,6 @@ namespace Agp2p.Core.AutoLogic
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today)
                 .AsEnumerable()
-                .Where(t => !t.li_projects.IsNewbieProject())
                 .Where(t =>
                 {
                     var loaner = t.li_projects.li_risks.li_loaners;
@@ -53,28 +52,36 @@ namespace Agp2p.Core.AutoLogic
 
             shouldRepayTask.ForEach(t =>
             {
-                var loaner = t.li_projects.li_risks.li_loaners;
-                try
+                var project = context.li_projects.SingleOrDefault(p => p.id == t.project);
+                if (project != null)
                 {
-                    if (t.li_projects.IsHuoqiProject() || (t.li_projects.autoRepay != null && (bool)t.li_projects.autoRepay))
+                    var loaner = project.li_risks.li_loaners.dt_users;
+                    try
                     {
-                        //创建自动还款托管接口请求
-                        var autoRepayReqMsg = new AutoRepayReqMsg(loaner.user_id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
-                        autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
-                        //发送请求
-                        MessageBus.Main.Publish(autoRepayReqMsg);
-                        //处理请求同步返回结果 TODO 异步消息
-                        var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(autoRepayReqMsg.SynResult);
-                        repayRespMsg.AutoRepay = true;
-                        MessageBus.Main.Publish(repayRespMsg);
+                        if (project.IsHuoqiProject() || (project.autoRepay != null && (bool)project.autoRepay))
+                        {
+                            //创建自动还款托管接口请求
+                            var autoRepayReqMsg = loaner.dt_user_groups.title.Equals("融资合作组") ? 
+                            new CompanyAutoRepayReqMsg(loaner.id, t.project, (t.repay_principal + t.repay_interest).ToString("f")) : 
+                            new AutoRepayReqMsg(loaner.id, t.project, (t.repay_principal + t.repay_interest).ToString("f"));
+                            autoRepayReqMsg.Remarks = $"isEarly=false&repayTaskId={t.id}";
+                            //发送请求
+                            MessageBus.Main.PublishAsync(autoRepayReqMsg, msg =>
+                            {
+                                //处理请求同步返回结果
+                                var repayRespMsg = BaseRespMsg.NewInstance<RepayRespMsg>(msg.SynResult);
+                                repayRespMsg.AutoRepay = true;
+                                MessageBus.Main.PublishAsync(repayRespMsg);
+                            });
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    context.AppendAdminLog("GainLoanerRepayment",
-                        ex.Message == "借款人的余额不足"
-                            ? $"借款人 {loaner.dt_users.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
-                            : ex.GetSimpleCrashInfo());
+                    catch (Exception ex)
+                    {
+                        context.AppendAdminLog("GainLoanerRepayment",
+                            ex.Message == "借款人的余额不足"
+                                ? $"借款人 {loaner.GetFriendlyUserName()} 的余额小于还款计划需要收取的金额 {t.repay_principal + t.repay_interest}"
+                                : ex.GetSimpleCrashInfo());
+                    }
                 }
             });
         }
@@ -164,7 +171,6 @@ namespace Agp2p.Core.AutoLogic
             var context = new Agp2pDataContext();
             var shouldRepayTask = context.li_repayment_tasks.Where(
                 t =>
-                    t.li_projects.dt_article_category.call_index != "newbie" &&
                     t.status == (int) Agp2pEnums.RepaymentStatusEnum.Unpaid &&
                     t.should_repay_time.Date <= DateTime.Today).ToList();
             if (!shouldRepayTask.Any()) return;
@@ -174,11 +180,11 @@ namespace Agp2p.Core.AutoLogic
             shouldRepayTask.OrderByDescending(t => t.li_projects.dt_article_category.sort_id).ForEach(ta =>
             {
                 //TODO 特殊项目回款处理
-                if (ta.li_projects.IsNewbieProject())
-                {
-                    context.ExecuteRepaymentTask(ta.id);
-                }
-                else
+                //if (ta.li_projects.IsNewbieProject())
+                //{
+                //    context.ExecuteRepaymentTask(ta.id);
+                //}
+                //else
                     //调用托管本息到账接口,在本息到账异步响应中执行还款计划
                     RequestApiHandle.SendReturnPrinInte(ta.project, (ta.repay_interest + ta.repay_principal).ToString("f"), ta.id, false, ta.li_projects.IsHuoqiProject());
             });

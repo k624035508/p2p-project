@@ -34,16 +34,12 @@ namespace Agp2p.Web.admin.statistic
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
-                (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
         readonly int[] _ignoringHistoryTypes =
             {
                 (int) Agp2pEnums.WalletHistoryTypeEnum.WithdrawConfirm,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.Charging, (int) Agp2pEnums.WalletHistoryTypeEnum.ChargeCancel,
                 (int) Agp2pEnums.WalletHistoryTypeEnum.InvestSuccess,
-                (int)Agp2pEnums.WalletHistoryTypeEnum.Gaining,(int)Agp2pEnums.WalletHistoryTypeEnum.GainCancel,(int)Agp2pEnums.WalletHistoryTypeEnum.GainConfirm,
-                (int) Agp2pEnums.WalletHistoryTypeEnum.Losting,(int) Agp2pEnums.WalletHistoryTypeEnum.LostCancel,(int) Agp2pEnums.WalletHistoryTypeEnum.LostConfirm,
             };
 
         protected void Page_Load(object sender, EventArgs e)
@@ -318,7 +314,7 @@ namespace Agp2p.Web.admin.statistic
                                 : "已撤销");
                 }
                 var proj = his.li_project_transactions.li_projects;
-                if (proj.IsNewbieProject())
+                if (proj.IsNewbieProject1())
                 {
                     return string.Format(RemarkHintMap[(Agp2pEnums.WalletHistoryTypeEnum) his.action_type], projectNameMapper(his), "");
                 }

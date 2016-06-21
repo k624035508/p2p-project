@@ -36,6 +36,7 @@
     <div class="l-list">
       <ul class="icon-list">
         <li><a class="add" href="bank_transaction_withdraw.aspx?account_id=<%=account_id %>"><i></i><span>提现</span></a></li>
+          
       </ul>
     </div>
   </div>

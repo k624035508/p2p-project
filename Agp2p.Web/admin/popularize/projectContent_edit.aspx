@@ -124,8 +124,8 @@
     <dd>
       <div class="rule-multi-radio">
         <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-        <asp:ListItem Value="0" Selected="True">正常</asp:ListItem>
-        <asp:ListItem Value="1">待审核</asp:ListItem>
+        <asp:ListItem Value="0">正常</asp:ListItem>
+        <asp:ListItem Value="1" Selected="True">待审核</asp:ListItem>
         <asp:ListItem Value="2">不显示</asp:ListItem>
         </asp:RadioButtonList>
       </div>

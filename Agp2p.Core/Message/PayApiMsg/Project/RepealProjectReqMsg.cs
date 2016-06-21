@@ -17,7 +17,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectCode = projectCode;
             Sum = sum;
             Api = (int) Agp2pEnums.SumapayApiEnum.RePro;
-            ApiInterface = SumapayConfig.TestApiUrl + "main/TransactionForFT_repealProject";
+            ApiInterface = SumapayConfig.ApiUrl + "main/TransactionForFT_repealProject";
             RequestId = Agp2pEnums.SumapayApiEnum.RePro.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

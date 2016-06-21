@@ -39,7 +39,7 @@ class MyloanTable extends React.Component {
             this.props.pageIndex);
     }
     fetch(type, pageIndex, startTime = "", endTime = "") {
-        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLoan", pageSize = 15;
+        let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLoan", pageSize = 12;
         ajax({
             type: "post",
             dataType: "json",

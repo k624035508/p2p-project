@@ -147,6 +147,28 @@ namespace Agp2p.Web.UI
             return new Agp2pDataContext().li_bank_accounts.Where(b => b.owner == user_id).ToList();
         }
 
+        protected Tuple<List<li_bank_accounts>, string> GetWithdrawableCards(dt_users user)
+        {
+            var allCards = user.li_bank_accounts.ToList();
+            var quickPayCards = allCards.Where(ac => ac.type == (int)Agp2pEnums.BankAccountType.QuickPay).ToList();
+            if (quickPayCards.Count == 1)
+            {
+                return new Tuple<List<li_bank_accounts>, string>(quickPayCards, "");
+            }
+            else if (allCards.All(ac => ac.type == (int) Agp2pEnums.BankAccountType.Unknown))
+            {
+                return new Tuple<List<li_bank_accounts>, string>(allCards, "尊敬的会员，因您未在丰付平台中绑定银行卡，所以在丰付平台提现时需要手动输入银行卡号。");
+            }
+            else if (allCards.All(ac => ac.type == (int) Agp2pEnums.BankAccountType.WebBank))
+            {
+                return new Tuple<List<li_bank_accounts>, string>(Enumerable.Empty<li_bank_accounts>().ToList(), "尊敬的会员，因您在安广融合平台绑定的银行卡与丰付平台绑定的银行卡不一致，请重新绑定。");
+            }
+            else
+            {
+                return new Tuple<List<li_bank_accounts>, string>(Enumerable.Empty<li_bank_accounts>().ToList(), "查询银行卡出错，请联系客服");
+            }
+        }
+
         protected int GetUserUnreadMessage(int userId)
         {
             return new Agp2pDataContext().dt_user_message.Count(m => m.receiver == userId && (m.is_read != 1 || m.is_read == null));

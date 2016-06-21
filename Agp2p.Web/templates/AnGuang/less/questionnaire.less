@@ -1,0 +1,102 @@
+﻿@import "common-style";
+@register: "../imgs/register";
+
+body{ background: #55beff;}
+.top-bar-wrap{
+    background:@body-color;
+}
+
+.queBanner{
+    background:url("@{register}/questionnaire-banner.jpg") no-repeat;
+    height:580px;
+}
+
+.questionaire{
+    width:1190px; margin:20px auto 50px auto; position:relative;
+    .queHead{
+        background:url("@{register}/queTop.jpg") no-repeat;
+        height:120px;
+    }
+    .queMiddle{
+        background:url("@{register}/queMiddle.jpg") ;
+        height:1940px;
+        padding-top:40px;
+        .queContent{
+            width:1045px; height:45px; margin-left:73px; 
+            background:#f8f3ed;
+            font-size:25px;color:#95621d; font-weight:bold; padding-left:20px; line-height:45px;
+        }
+        .queContent-two{height:85px; line-height:40px; 
+                        p{display:inline-block; width:990px; margin-bottom:0;margin-left:7px;}
+                        span{float:left;}
+        }
+        .question-list{
+            margin-left:93px; margin-top:18px; margin-bottom:45px;
+            span{
+                display:inline-block; width:250px; font-size:20px; color:#e4a045; height:30px; line-height:30px;
+                label{
+                    display:inline-block;position:relative; padding-left:41px;
+                }
+                input[type=radio]{display:none;}
+                label:before{
+                    content:"";
+	                display: inline-block;
+	                position: absolute;
+	                left: 0;bottom: 0;
+                    background:url("@{register}/noSelect.png") no-repeat; width:30px; height:30px;
+                     }
+                input[type=radio]:checked + label:before{
+                    content:"";
+                    background:url("@{register}/select.png") no-repeat;
+                }
+            }
+        }
+        .question-twoList{
+            margin-bottom:32px;
+            span{width:485px; margin-bottom:13px;}
+        }
+        .questionFourList{
+            margin-bottom:32px;
+            span{ width:1000px;margin-bottom:13px;}
+        }
+        #questionnaireBtn{ 
+            margin-top:19px; border:none;
+            display:inline-block; height:80px; width:350px; text-decoration:none; font-size:45px; font-weight:bold; color:@white; line-height:80px; text-align:center; margin-left:420px;
+            background:url("@{register}/loadButtonBefore.png") no-repeat;
+        }
+    }
+    .queBottom{
+        background:url("@{register}/queBottom.jpg") no-repeat;
+        height:100px;
+    }
+
+    .investAlert{
+        position:absolute; left:20px;top:56px; width:1150px; height:2070px; z-index:-10; background:rgba(255,255,255,0.5); 
+    .investType{
+        margin-left:198px;  margin-top:-56px; 
+        width:755px; height:650px; padding-top:134px;
+        background:url("@{register}/investType.png") no-repeat;
+        .typeHead{
+            color:@darker-grey; font-size:40px; text-align:center; margin-bottom:15px;
+        }
+        .typeMiddle{
+            width:680px; height:155px; background:#f8f3ed; margin-left:37px; margin-bottom:22px;
+            font-size:125px; color:@blue; text-align:center; line-height:155px;           
+        }
+        .typeMiddle2{
+            p{text-align:center; font-size:40px; color:@dark-grey; margin-bottom:0;}
+        }
+        .typeBottom{   
+            margin-top:47px;       
+            a.replay{
+                display:inline-block; width:220px; height:50px; background:url("@{register}/rePlay.png") no-repeat; font-size:25px; color:#95621d; line-height:50px; text-align:center; text-decoration:none;
+                margin-left:117px;
+            }
+            a.toRegister{
+                display:inline-block; width:220px; height:50px; background:url("@{register}/toRegister.png") no-repeat; font-size:25px; color:#ffe401; line-height:50px; text-align:center; text-decoration:none;
+                margin-left:76px;
+            }
+        }
+    }
+    }
+}

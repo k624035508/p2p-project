@@ -70,6 +70,7 @@ namespace Lip2p.Core.ActivityLogic
 
                 var wallet = tr.dt_users.li_wallets;
                 wallet.idle_money += tr.value;
+                wallet.total_profit += tr.value;
                 wallet.last_update_time = projectCompleteTime;
 
                 var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
@@ -137,7 +138,7 @@ namespace Lip2p.Core.ActivityLogic
                 context.LoadOptions = options;
 
                 var investment = context.li_project_transactions.Single(tr => tr.id == projectTransactionId);
-                if (investment.li_projects.dt_article_category.call_index == "newbie")
+                if (investment.li_projects.IsNewbieProject1())
                 {
                     // 投资新手标不算
                     return;

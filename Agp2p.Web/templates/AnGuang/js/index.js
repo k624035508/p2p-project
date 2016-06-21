@@ -24,25 +24,34 @@ $(function () {
     var progParent = prog.parent();
     var changdu1=progParent.width();
     for(var i=0;i<prog.length;i++){
-        if (prog.eq(i).offset().top < 820) {
+        if (prog.eq(i).offset().top < 900) {
             var changdu2 = parseInt(prog.eq(i).html()) / 100;
             prog.eq(i).width(changdu2 * changdu1);
         }
     }
     $(window).scroll(function(){          
         var windowtop = $(window).scrollTop();
-        if(windowtop>99 && windowtop<1040){           
+        if(windowtop>100 && windowtop<400){           
             for(var i=0;i<prog.length;i++){
-                if (prog.eq(i).offset().top < 820) {
+                if (prog.eq(i).offset().top < 1080) {
                     var changdu2 = parseInt(prog.eq(i).html()) / 100;
                     prog.eq(i).width(changdu2 * changdu1);
                 }
             }      
         }
                 
-        if(windowtop>245){
+        if(windowtop>480 && windowtop<1000){
             for (var i = 0; i < prog.length; i++) {
-                if (prog.eq(i).offset().top < 1220) {
+                if (prog.eq(i).offset().top < 1440 && prog.eq(i).offset().top > 1000) {
+                    var changdu2 = parseInt(prog.eq(i).html()) / 100;
+                    prog.eq(i).width(changdu2 * changdu1);
+                }
+            }
+        }
+
+        if(windowtop>1000){
+            for (var i = 0; i < prog.length; i++) {
+                if (prog.eq(i).offset().top < 1440 && prog.eq(i).offset().top > 1100) {
                     var changdu2 = parseInt(prog.eq(i).html()) / 100;
                     prog.eq(i).width(changdu2 * changdu1);
                 }
@@ -58,5 +67,4 @@ $(function () {
             $(".prev , .next").hide();
         });
   
- 
 });

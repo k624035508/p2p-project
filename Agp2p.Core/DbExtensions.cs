@@ -61,7 +61,12 @@ namespace Agp2p.Core
             return !string.IsNullOrWhiteSpace(user.nick_name) ? $"{user.user_name}（{user.nick_name}）" : user.user_name;
         }
 
-        public static bool IsNewbieProject(this li_projects p)
+        public static bool IsNewbieProject2(this li_projects p)
+        {
+            return p.dt_article_category.call_index == "newbie2";
+        }
+
+        public static bool IsNewbieProject1(this li_projects p)
         {
             return p.dt_article_category.call_index == "newbie";
         }
@@ -374,6 +379,12 @@ namespace Agp2p.Core
 
         public static int QueryEventTimesDuring(this Agp2pDataContext context, int userId, Agp2pEnums.EventRecordTypeEnum eventType, TimeSpan timeSpan, string remark = null)
         {
+            if (remark == null)
+            {
+                return context.li_event_records.Count(r =>
+                    r.userId == userId && r.eventType == eventType && DateTime.Now - timeSpan <= r.occurAt &&
+                    r.remark == null);
+            }
             return context.li_event_records.Count(r =>
                     r.userId == userId && r.eventType == eventType && DateTime.Now - timeSpan <= r.occurAt &&
                     r.remark == remark);
@@ -384,7 +395,7 @@ namespace Agp2p.Core
             context.li_event_records.InsertOnSubmit(new li_event_records
             {
                 userId = userId,
-                eventType = Agp2pEnums.EventRecordTypeEnum.IdcardChecking,
+                eventType = eventType,
                 occurAt = occurAt,
                 remark = remark
             });

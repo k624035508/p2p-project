@@ -35,8 +35,8 @@ namespace Agp2p.Core.Message
             ManagerNotifier.DoSubscribe();
 
             // Activity
-            TrialActivity.DoSubscribe();
-            InviterBonus.DoSubscribe();
+            //TrialActivity.DoSubscribe();
+            // InviterBonus.DoSubscribe();
 
             // PayApi
             RequestApiHandle.DoSubscribe();//所有托管接口请求

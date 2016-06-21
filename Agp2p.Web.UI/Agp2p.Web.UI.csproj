@@ -104,6 +104,9 @@
     <Compile Include="ManagePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\advert.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\article.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -144,6 +147,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Page\payment.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page\questionnaire.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Page\recharge.cs">

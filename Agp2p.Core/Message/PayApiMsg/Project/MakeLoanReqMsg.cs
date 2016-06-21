@@ -16,8 +16,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountCode { get; set; }//主账户编码
         public bool Collective { get; set; }//集合项目标识
         public string SubledgerList { get; set; }//分账列表
+        public bool IsCompany { get; set; }//是否放款给企业
 
-        public MakeLoanReqMsg(int userId, int projectCode, string sum, bool collective = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
+        public MakeLoanReqMsg(int userId, int projectCode, string sum, bool collective = false, bool isCompany = false, string payType = "3", string mainAccountType = "", string mainAccountCode = "")
         {
             UserId = userId;
             ProjectCode = projectCode;
@@ -26,9 +27,10 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountType = mainAccountType;
             MainAccountCode = mainAccountCode;
             Collective = collective;
+            IsCompany = isCompany;
 
             Api = collective ? (int)Agp2pEnums.SumapayApiEnum.CLoan : (int)Agp2pEnums.SumapayApiEnum.ALoan;
-            ApiInterface = SumapayConfig.TestApiUrl + (collective ? "main/CollectiveFinance_loan" : "main/TransactionForFT_loan");
+            ApiInterface = SumapayConfig.ApiUrl + (collective ? "main/CollectiveFinance_loan" : "main/TransactionForFT_loan");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -51,7 +53,18 @@ namespace Agp2p.Core.Message.PayApiMsg
         public void SetSubledgerList(decimal fee)
         {
             var loanSum = Utils.StrToDecimal(Sum, 0);
-            var list = new List<object>
+            var list = IsCompany ? new List<object>
+            {
+                //企业收到的款
+                new
+                {
+                    roleType = "3",
+                    roleCode = UserId.ToString(),
+                    inOrOut = "0",
+                    bizFlag = "0",
+                    sum = (loanSum - fee).ToString("f2")
+                }
+            } : new List <object>
             {
                 //借款人收到的款
                 new

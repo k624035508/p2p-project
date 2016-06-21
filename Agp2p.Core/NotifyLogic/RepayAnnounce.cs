@@ -35,13 +35,13 @@ namespace Agp2p.Core.NotifyLogic
                 if (!SMSHelper.SendTemplateSms(loaner.mobile, smsContent, out errorMsg))
                 {
                     context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
-                        $"发送还款提醒失败：{errorMsg}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+                        $"发送还款成功信息失败：{errorMsg}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
                 }
             }
             catch (Exception ex)
             {
                 context.AppendAdminLogAndSave("LoanerRepaySuccessHint",
-                    $"发送还款提醒失败：{ex.GetSimpleCrashInfo()}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
+                    $"发送还款成功信息失败：{ex.GetSimpleCrashInfo()}（借款人：{loaner.GetFriendlyUserName()}，项目名称：{task.li_projects.title}）");
             }
         }
 
@@ -49,12 +49,11 @@ namespace Agp2p.Core.NotifyLogic
         {
             if (timerType != TimerMsg.Type.AutoRepayTimer) return;
 
-            // 安广融合借款人还款提现：你 {remainDays} 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。
+            // 安广融合借款人还款提醒：您的借款项目【{project}】第 {termNumber} 期{remainDays}天后将到期，本期应还本金 {principal} 加利息 {interest} 共计 {total}。
             var context = new Agp2pDataContext();
             var willRepayTasks =
                 context.li_repayment_tasks.Where(
                     t =>
-                        t.li_projects.dt_article_category.call_index != "newbie" &&
                         (t.should_repay_time.Date == DateTime.Today.AddDays(3) || t.should_repay_time.Date == DateTime.Today.AddDays(1)) &&
                         t.status == (int)Agp2pEnums.RepaymentStatusEnum.Unpaid).ToList();
             if (!willRepayTasks.Any()) return;
@@ -64,7 +63,7 @@ namespace Agp2p.Core.NotifyLogic
             if (smsTemplate == null)
             {
                 context.AppendAdminLogAndSave("LoanerRepayHint", "找不到还款提醒模板: loaner_repay_hint");
-                smsTemplate = "安广融合借款人还款提醒：你 {remainDays} 天后将要返还还项目【{project}】的第 {termNumber} 期借款，本金 {principal} 加利息 {interest} 共计 {total}。";
+                smsTemplate = "您的借款项目【{project}】第 {termNumber} 期{remainDays}天后将到期，本期应还本金 {principal} 加利息 {interest} 共计 {total}。";
             }
 
             willRepayTasks.ForEach(task =>

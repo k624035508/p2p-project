@@ -13,7 +13,7 @@ body { background: @body-color; }
 	}
 	.left-nav {
 		width: 230px;
-		height: 221px;
+		height: 164px;
 		*height: auto;
 		margin-right: 10px;
 		.nav-list {
@@ -23,7 +23,7 @@ body { background: @body-color; }
 				border-top: @border;
 				&:hover, &.clicked {
 					background: @body-color;
-					border-left: 3px solid @red;
+					border-left: 3px solid @blue;
 				}
 				a {
 					display: inline-block;
@@ -36,10 +36,10 @@ body { background: @body-color; }
 					padding-left: 40px;
 					outline: none;
 				}
-				.funds { background: url("@{images}/funds-icon.png") no-repeat 0 50%; }
-				.data { background: url("@{images}/data-icon.png") no-repeat 0 50%; }
-				.project { background: url("@{images}/project-icon.png") no-repeat 0 50%; }
-				.law { background: url("@{images}/law-icon.png") no-repeat 0 50%; }
+				.funds { background: url("@{images}/fundsblue.png") no-repeat 0 50%; }
+				.data { background: url("@{images}/datablue.png") no-repeat 0 50%; }
+				.project { background: url("@{images}/projectblue.png") no-repeat 0 50%; }
+				
 			}
 			li:first-child { border-top: none; }
 		}
@@ -61,31 +61,33 @@ body { background: @body-color; }
 				border-bottom: @border-dashed;
 				& > * { .inline-block; }
 				i {
-					width: 260px;
+					width: 230px;
 					height: 250px;
-					margin-right: 19px;
+					margin-right: 52px;
 				}
-				.third-part { background: url("@{images}/funds-01.png") no-repeat center; }
-				.backup { background: url("@{images}/funds-02.png") no-repeat center; }
-				.authentication { background: url("@{images}/funds-03.png") no-repeat center; }
-				.query { background: url("@{images}/funds-04.png") no-repeat center; }
-				.technology { background: url("@{images}/data-01.png") no-repeat center; }
-				.privacy { background: url("@{images}/data-02.png") no-repeat center; }
+				.third-part { background: url("@{images}/project-05.png") no-repeat 50px 40px; }
+				.backup { background: url("@{images}/funds-01.png") no-repeat 18px center; }
+				.authentication { background: url("@{images}/project-06.png") no-repeat 50px 40px; }
+				.query { background: url("@{images}/funds-04.png") no-repeat -60px 30px; }
+                .project02 { background: url("@{images}/project-02.png") no-repeat -40px 40px; }
+                .funds03{ background: url("@{images}/funds-03.png") no-repeat 30px 15px;}
+				.technology { background: url("@{images}/data-01.png") no-repeat 20px 0; width:260px; }
+				.privacy { background: url("@{images}/data-02.png") no-repeat -30px 0; }
 				.charge { background: url("@{images}/law-01.png") no-repeat center; }
 				.debit-credit { background: url("@{images}/law-02.png") no-repeat center; }
 				.transfer { background: url("@{images}/law-03.png") no-repeat center; }
 				.contract { background: url("@{images}/law-04.png") no-repeat center; }
-				.check { background: url("@{images}/project-01.png") no-repeat center; }
-				.final-check { background: url("@{images}/project-02.png") no-repeat center; }
-				.manage { background: url("@{images}/project-03.png") no-repeat center; }
-				.cooperating-agency { background: url("@{images}/project-04.png") no-repeat center; }
+				.check { background: url("../imgs/aboutus/bills-icon.png") no-repeat center; }
+				.final-check { background: url("../imgs/aboutus/micro-finance-icon.png") no-repeat center; }
+				.manage { background: url("../imgs/aboutus/supply-chain-icon.png") no-repeat center; }
+				.cooperating-agency { background: url("@{images}/project-04.png") no-repeat -35px 0; }
 
 				.description {
-					width: 64%;
+					width: 59%;
 					h4 {
 						color: @darker-grey;
 						margin: 20px 0;
-						font-weight: bold;
+						
 					}
 					p {
 						color: @dark-grey;
@@ -99,7 +101,7 @@ body { background: @body-color; }
 						line-height: 30px;
 					}
 					ul {
-						color: @red;
+						color: @blue;
 						list-style-type: square;
 						margin-left: -20px;
 						li {

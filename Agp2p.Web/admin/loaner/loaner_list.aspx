@@ -79,7 +79,9 @@
                     <td><%# Utils.GetAgp2pEnumDes((Agp2pEnums.MaritalStatusEnum) Convert.ToByte(Eval("marital_status")))%></td>
                     <td><%# Eval("dt_users.id_card_number")%></td>
                     <td><%# Eval("income")%></td>
-                    <td><a href="mortgage_list.aspx?loaner_id=<%#Eval("id")%>">管理标的物（<%# Eval("li_mortgages.Count")%>）</a></td>
+                    <td><a href="mortgage_list.aspx?loaner_id=<%#Eval("id")%>">管理标的物（<%# Eval("li_mortgages.Count")%>）</a>
+                        <a href="loaner_edit.aspx?action=<%#DTEnums.ActionEnum.Audit%>&id=<%#Eval("id")%>">审核</a>
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

@@ -56,14 +56,15 @@
                     <p>提现</p>
                 </div>
                 <div class="bank-select-body">
-                    <%set var bank_accounts=get_bank_accounts(userModel.id)%>
-                    <%foreach(var bank_account in bank_accounts)%>
+                    <%set var tuple=GetWithdrawableCards(userModel)%>
+                    <%foreach(var bank_account in tuple.Item1)%>
                     <div data-dismiss="modal" data-cardId="{bank_account.id}" data-bankName="{bank_account.bank}">
                         <i class="sprite-dlg"></i>
                         <span>{bank_account.bank} （<%=bank_account.account.Substring(bank_account.account.Length - 4)%>）</span>
                     </div>
                     <%/foreach%>
                 </div>
+                <div style="color: red; padding: 1em 8%;">{tuple.Item2}</div>
             </div>
         </div>
     </div>

@@ -71,8 +71,9 @@ div.top-bar-wrap {
                     a {
                         color: @dark-grey;
                         text-decoration: none;
-                        &:hover, &:focus { color: @red; }
+                        &:hover, &:focus { color: @blue; }
                     }
+                   
                     #apps {
                         display: inline-block;
                         width: 80px;
@@ -91,6 +92,7 @@ div.top-bar-wrap {
                         height: 13px;
                         line-height: 12px;
                         top: -7px;
+                        left:12px;
                         text-align: center;
                         font-size: @font12;
                         color: @white;
@@ -107,8 +109,8 @@ div.nav-bar-wrap {
     height: 90px;
     background: #fff;
     .nav-active {
-        color: #ff414b !important;
-        border-bottom: 2px solid #ff414b;                                                            
+        color: @blue !important;
+        border-bottom: 2px solid @blue;                                                            
     }
 
     .nav-bar {
@@ -182,7 +184,7 @@ div.nav-bar-wrap {
                         }
 
                     }
-                    & li:first-child { border-top:2px solid #ff414b; }
+                    & li:first-child { border-top:2px solid @blue; }
 
                  }
             }
@@ -227,17 +229,17 @@ div.floating-wrap {
     .floating-icon {
         width: 50px;
         height: 53px;
-        background: url("../imgs/index/floating-icon.png") no-repeat;
+        
     }
 
-    .qq-icon {background-position: -15px -181px;}
-    .qqHover-icon {background-position: -15px -264px;}
+    .qq-icon {background: url("../imgs/index/qqIcon.png") no-repeat;}
+    .qqHover-icon {background: url("../imgs/index/qqhover.jpg") no-repeat;}
 
-    .cal-icon {background-position: -15px -15px;}
-    .calHover-icon {background-position: -15px -98px;}
+    .cal-icon {background: url("../imgs/index/calIcon.png") no-repeat ;}
+    .calHover-icon {background: url("../imgs/index/calhover.jpg") no-repeat;}
 
-    .top-icon {background-position: -15px -347px;}
-    .topHover-icon {background-position: -15px -430px;}
+    .top-icon {background: url("../imgs/index/topIcon.png") no-repeat ;}
+    .topHover-icon {background: url("../imgs/index/topIconhover.jpg") no-repeat;}
 
     //计算器
     .cal-btn { padding: 0; }

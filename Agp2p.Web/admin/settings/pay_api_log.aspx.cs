@@ -167,5 +167,122 @@ namespace Agp2p.Web.admin.repayment
         {
             RptBind();
         }
+
+        //批量删除
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            ChkAdminLevel("manager_log", DTEnums.ActionEnum.Delete.ToString()); //检查权限
+            
+            var deleteReq = context.li_pay_request_log.Where(r => r.request_time <= DateTime.Now.AddDays(-15)).ToList();          
+            int delCount = deleteReq.Count();
+            for (var i = 0; i < delCount; i++)
+            {
+                var deleteRes = context.li_pay_response_log.Where(s => s.request_id == deleteReq.Skip(i).First().id);
+                context.li_pay_response_log.DeleteAllOnSubmit(deleteRes);
+                context.SubmitChanges();
+            }
+            context.li_pay_request_log.DeleteAllOnSubmit(deleteReq);
+            context.SubmitChanges();
+            AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除资金托管日志" + delCount + "条"); //记录日志
+            JscriptMsg("删除日志" + delCount + "条", Utils.CombUrlTxt("pay_api_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
+        }
+
+        protected void excBtn_OnClick(object sender, EventArgs e)
+        {
+            string requestId = ((LinkButton)sender).CommandArgument;
+            var request = context.li_pay_request_log.SingleOrDefault(r => r.id == requestId);
+            if (request != null)
+            {
+                var project = context.li_projects.SingleOrDefault(p => p.id == request.project_id);
+                switch (request.api)
+                {
+#if DEBUG
+                    //个人自动账户/银行还款开通
+                    case (int)Agp2pEnums.SumapayApiEnum.AcReO:
+                    case (int)Agp2pEnums.SumapayApiEnum.AbReO:
+                        if (project != null)
+                        {
+                            project.autoRepay = true;
+                            context.SubmitChanges();
+                        }
+                        break;
+                    //个人自动还款取消
+                    case (int)Agp2pEnums.SumapayApiEnum.ClRep:
+                        if (project != null)
+                        {
+                            project.autoRepay = false;
+                            context.SubmitChanges();
+                        }
+                        break;
+                    //个人网银/一键充值
+                    case (int) Agp2pEnums.SumapayApiEnum.WeRec:
+                    case (int) Agp2pEnums.SumapayApiEnum.WhRec:
+                    case (int) Agp2pEnums.SumapayApiEnum.WhReM:
+                        var trans = context.li_bank_transactions.SingleOrDefault(u => u.no_order == requestId);
+                        if (trans?.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        {
+                            context.ConfirmBankTransaction(trans.id, null);
+                        }
+                        break;
+                    //个人提现
+                    case (int)Agp2pEnums.SumapayApiEnum.Wdraw:
+                    case (int)Agp2pEnums.SumapayApiEnum.WdraM:
+                        var transT = context.li_bank_transactions.SingleOrDefault(u => u.no_order == requestId);
+                        if (transT?.status == (int)Agp2pEnums.BankTransactionStatusEnum.Acting)
+                        {
+                            context.ConfirmBankTransaction(transT.id, null);
+                        }
+                        break;
+                    //普通/集合项目放款
+                    case (int)Agp2pEnums.SumapayApiEnum.ALoan:
+                    case (int)Agp2pEnums.SumapayApiEnum.CLoan:
+                        if (project != null)
+                        {
+                            if (project.IsHuoqiProject())
+                            {
+                                TransactionFacade.MakeLoan(context, DateTime.Now, project, project.li_risks.li_loaners.user_id);
+                            }
+                            else
+                            {
+                                context.StartRepayment(project.id);
+                            }
+                        }
+                        break;
+                    //个人自动还款普通/集合项目
+                    case (int)Agp2pEnums.SumapayApiEnum.AcRep:
+                    case (int)Agp2pEnums.SumapayApiEnum.AbRep:
+                        if (!string.IsNullOrEmpty(request.remarks))
+                        {
+                            if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject1())
+                            {
+                                var dic = Utils.UrlParamToData(request.remarks);
+                                int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                var repayTask = context.li_repayment_tasks.SingleOrDefault(r => r.id == repayId);
+                                if (repayTask != null)
+                                {
+                                    context.GainLoanerRepayment(DateTime.Now, repayId, (int)request.user_id, repayTask.repay_principal + repayTask.repay_interest);
+                                }
+                            }
+                        }
+                        break;
+                    //普通/集合项目本息到账
+                    case (int)Agp2pEnums.SumapayApiEnum.RetPt:
+                    case (int)Agp2pEnums.SumapayApiEnum.RetCo:
+                        if (project != null && !project.IsHuoqiProject() && !project.IsNewbieProject1())
+                        {
+                            if (!string.IsNullOrEmpty(request.remarks))
+                            {
+                                var dic = Utils.UrlParamToData(request.remarks);
+                                int repayId = Utils.StrToInt(dic["repayTaskId"], 0);
+                                context.ExecuteRepaymentTask(repayId);
+                            }
+                        }
+                        break;
+#endif
+                    default:
+                        throw new NotImplementedException("该接口操作暂不能在平台单方面执行。");
+                }
+            }
+        }
     }
 }

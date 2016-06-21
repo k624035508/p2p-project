@@ -37,7 +37,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             MainAccountCode = mainAccountCode;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.CreAs;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/creditAssignment_toCreditAssignment";
+            ApiInterface = SumapayConfig.ApiUrl + "user/creditAssignment_toCreditAssignment";
             RequestId = Agp2pEnums.SumapayApiEnum.CreAs.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 
@@ -53,7 +53,7 @@ namespace Agp2p.Core.Message.PayApiMsg
 
             RequestType = "PFT0012";
             Api = (int)Agp2pEnums.SumapayApiEnum.CreAM;
-            ApiInterface = SumapayConfig.TestApiUrl + "p2pMobileUser/merchant.do";
+            ApiInterface = SumapayConfig.MobileApiUrl + "p2pMobileUser/merchant.do";
             RequestId = Agp2pEnums.SumapayApiEnum.CreAM.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

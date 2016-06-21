@@ -60,6 +60,7 @@ namespace Agp2p.Web.UI.Page
         {
             var myRepayingProjects = user.li_claims.Where(c =>
                         c.projectId == c.profitingProjectId && c.IsLeafClaim() &&
+                        (int)Agp2pEnums.ProjectStatusEnum.Financing <= c.li_projects.status &&
                         c.status < (int)Agp2pEnums.ClaimStatusEnum.Transferred).ToLookup(cg => cg.li_projects);
 
             Model.siteconfig config = new siteconfig().loadConfig();
@@ -148,11 +149,11 @@ namespace Agp2p.Web.UI.Page
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying)
             {
-                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed);
+                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.li_projects.make_loan_time != null);
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
             {
-                query = query.Where(c => c.li_projects.make_loan_time == null);
+                query = query.Where(c => c.li_projects.make_loan_time == null && c.li_projects.dt_article_category.call_index != "newbie");
             }
 
             var groupBy = query.ToLookup(c => c.li_projects);
@@ -196,7 +197,7 @@ namespace Agp2p.Web.UI.Page
             var claims = userInfo.li_claims.Where(c => c.profitingProjectId == projectId).ToList();
             var investRatio = claims.Sum(c => c.principal) / project.investment_amount;
 
-            var profitAmount = project.dt_article_category.call_index == "newbie"
+            var profitAmount = project.IsNewbieProject1()
                 ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")
                 : (int)Agp2pEnums.ProjectStatusEnum.Financing < project.status
                     ? project.li_repayment_tasks.Sum(

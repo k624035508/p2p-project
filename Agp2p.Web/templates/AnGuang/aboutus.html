@@ -26,14 +26,25 @@
             <li><a href="#company">公司简介</a></li>
             <li><a href="#culture">企业文化</a></li>
             <li><a href="#events">大事记</a></li>
-            <li><a href="#manager">高管团队</a></li>
+            <li><a href="#manager">团队</a></li>
             <li><a href="#agency">合作机构</a></li>
             <li><a href="#staff">员工风采</a></li>
             <li><a href="#office">办公环境</a></li>
             <li><a href="#qualification">公司资质</a></li>
             <li><a href="#strategy">战略合作</a></li>
             <li><a href="#contact">联系方式</a></li>
-            <li><a class="more" href='<%=linkurl("about_more")%>' target="_blank">更多</a></li>
+            <li  role="presentation" id="aboutmore" class="dropdown" style="padding:0;">
+                <a style="width:90px; text-align:center;" class="dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href = this.getAttribute('href');"  href='<%=linkurl("about_more")%>' target="_blank">
+                更多 <span class="arrowsituation"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-custom">
+                    <li><a href='<%=linkurl("about_more")%>' target="_blank">产品介绍</a></li>
+                    <li><a href='<%=linkurl("about_more","43,54")%>' target="_blank">平台公告</a></li>
+                    <li><a href='<%=linkurl("about_more",42)%>' target="_blank">最新动态</a></li>
+                    <li><a href='<%=linkurl("about_more",44)%>' target="_blank">媒体报道</a></li>
+                    <li><a href='<%=linkurl("about_more",-1)%>' target="_blank">加入我们</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>
@@ -45,9 +56,7 @@
             <div class="title"></div>
             <div class="content-body">
                 <div class="description pull-right">
-                    <p>广东安广融合电子商务股份有限公司成立于2015年8月，安广融合注册资本为陆仟捌佰万元，是互联网金融服务平台，广东南粤银行作为资金存管机构，对客户资金进行管理和监督，实现客户资金与平台自身资金分账管理，是国内获得备案和测评双重保障的P2P平台之一。</p>
-                    <p>安广融合致力于为公众提供一个安全、专业、收益稳健的金融平台。结合多年的资产管理服务和风险控制经验，利用先进的信息处理技术，不断为平台用户提供更丰富、更便捷的互联网理财产品。</p>
-                    <p>未来，安广融合将继续深耕互联网金融领域，致力成为最具价值的互联网金融信息服务平台。</p>
+                    <p>广东安广融合电子商务股份有限公司(以下简称“安广融合”）成立于2015年8月，注册资金为陆仟捌佰万元。公司致力于为公众提供一个安全、专业、公开的互联网金融服务平台。公司拥有具备丰富金融从业经验及风险控制管理经验的管理团队；利用互联网信息处理技术，依托第三方进行资金存管的架构，不断为平台用户提供安全、丰富、便捷的互联网金融服务。</p>
                 </div>
             </div>
         </div>
@@ -59,7 +68,7 @@
             <div class="content-body">
                 <div class="description">
                     <p><strong>安广理念</strong>：安天下   广聚贤   融诚信  合发展</p>
-                    <p><strong>安广使命</strong>：创诚信金融服务平台，做金融行业诚信先锋</p>
+                    <p style="width: 500px;"><strong>安广使命</strong>：打造诚信金融服务平台，提供专业、便捷、惠普服务</p>
                     <p><strong>安广愿景</strong>：坤厚载物，德合无疆</p>
                 </div>
             </div>
@@ -87,11 +96,11 @@
                 </div>
                 <span class="hr"></span>
                 <div>
-                    <div class="xuanjinghui"></div>
+                    <div class="mazong"></div>
                     <div class="personal-info">
-                        <p class="name">禤景辉</p>
-                        <p class="position">广东安广融合 风控总监</p>
-                        <p class="introduce">佛山大学金融系国际金融专业，学士学位；华南理工大学工商管理学院EMBA学位。曾任职多家银行信贷部经理；曾任职融资担保公司、小额贷款公司副总经理。有十多年的信贷业务管理工作和风控运营经验。</p>
+                        <p class="name">马鸣彦</p>
+                        <p class="position">广东安广融合 运营总监</p>
+                        <p class="introduce">台北德明商业技术学院国贸专业毕业，曾任台湾有线电视公司董事长特别助理，东莞长安鸿运电子(电子制造业台湾上市)财务总监，东莞品翔电子(台湾电子制造业)行政管理中心主管，东莞市台新资产管理有限公司总经理，拥有20多年财务、运营、及投融资管理等经验。</p>
                     </div>
                 </div>
                 <span class="hr"></span>
@@ -106,18 +115,44 @@
             </div>
         </div>
     </div>
+    <!--顾问团队-->
+    <div id="advisor">
+        <div class="content-wrap">
+            <div class="title"></div>
+            <div class="description">
+                <div>
+                    <div class="xuan"></div>
+                    <div class="personal-info">
+                        <p class="name">禤景辉</p>
+                        <p class="position">广东安广融合 风控顾问</p>
+                        <p class="introduce">佛山大学金融系国际金融专业，学士学位；华南理工大学工商管理学院EMBA学位。曾任职多家银行信贷部经理；曾任职融资担保公司、小额贷款公司副总经理。有十多年的信贷业务管理工作和风控运营经验。</p>
+                    </div>
+                </div>
+               <span class="hr"></span>
+                <div>
+                    <div class="lawer"></div>
+                    <div class="personal-info">
+                        <p class="name">刘勇</p>
+                        <p class="position">广东安广融合 法律顾问</p>
+                        <p class="position">北京市盈科（佛山）律师事务所股权高级合伙人</p>
+                        <p class="introduce">毕业于江南大学法学专业，法学士。在佛山从事法律工作15年，办理了大量公司、金融、行政诉讼及非诉案件。主要资历有：上市公司独立董事资格、广东股交中心路演项目评审专家、佛山中小企业法律顾问网首席律师、中国家族财富传承联盟理事等。</p>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
     <!--合作机构-->
     <div id="agency">
         <div class="content-wrap">
             <div class="title"></div>
             <div class="description">
                 <div class="nanyue-wrap">
-                    <div class="bank-nanyue"></div>
+                    <div class="sumapay"></div>
                     <div class="name">
-                        <p class="name-style">广东南粤银行</p>
+                        <p class="name-style">北京数码视讯支付技术有限公司</p>
                     </div>
                     <div class="info">
-                        <p>广东南粤银行佛山分行于2011年1月9日正式开业，积极探索将自身优势与佛山市场规律相结合的路子，利用差异化和特色经营策略，在佛山地区实现了较快、较好的发展，赢得了客户的支持和社会的认可，品牌知名度、美誉度和竞争力不断提升。</p>
+                        <p>北京数码视讯支付技术有限公司是一家由清华科技园投资的高新技术企业，隶属于数码视讯集团，位于中关村科技园，于2000年成立，2010年4月上市，是中国最大的三大网融合龙头企业，成立多年来获得各种荣誉，于2008年被评为国家规划布局内重点软件企业。</p>
                     </div>
                 </div>
                 <div class="yingke-wrap">
@@ -138,14 +173,13 @@
             <div class="title"></div>
             <div class="description">
                 <ul class="list-unstyled list-inline picWall">
-                    <li><a class="staff01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff01.png"><span class="mask"></span></a></li>
-                    <li><a class="staff02" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff02.png"><span class="mask"></span></a></li>
-                    <li><a class="staff03" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff03.png"><span class="mask"></span></a></li>
-                    <li><a class="staff04" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff04.png"><span class="mask"></span></a></li>
-                    <li><a class="staff05" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff05.png"><span class="mask"></span></a></li>
-                    <li><a class="staff06" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff06.png"><span class="mask"></span></a></li>
-                    <li><a class="staff07" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff07.png"><span class="mask"></span></a></li>
-                    <li><a class="staff08" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff08.png"><span class="mask"></span></a></li>
+                   
+                    <li><a class="staff01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff02.png"><span class="mask"></span></a></li>                   
+                    <li><a class="staff02" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff04.png"><span class="mask"></span></a></li>
+                    <li><a class="staff03" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff05.png"><span class="mask"></span></a></li>
+                    <li><a class="staff04" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff06.png"><span class="mask"></span></a></li>
+                    <li><a class="staff05" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff07.png"><span class="mask"></span></a></li>
+                    <li><a class="staff06" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/staff08.png"><span class="mask"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -157,7 +191,7 @@
             <div class="description">
                 <div class="background">
                     <ul class="list-unstyled list-inline picWall">
-                        <li><a class="office01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/office01.png"><span class="mask"></span></a></li>
+                        <li><a class="office01" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/office07.jpg"><span class="mask"></span></a></li>
                         <li><a class="office02" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/office02.png"><span class="mask"></span></a></li>
                         <li><a class="office03" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/office03.png"><span class="mask"></span></a></li>
                         <li><a class="office04" href="javascript:" data-src="<%templateskin%>/imgs/aboutus/picWall/office04.png"><span class="mask"></span></a></li>
@@ -173,7 +207,8 @@
         <div class="content-wrap">
             <div class="title"></div>
             <div class="description">
-                <div class="business-license" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/license.jpg"></div>
+                <div class="business-license" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/license3.jpg"></div>
+                <div class="business-beian" data-toggle="modal" data-target="#picModal" data-pic="<%templateskin%>/imgs/aboutus/beian3.jpg"></div>
             </div>
         </div>
     </div>
@@ -182,7 +217,13 @@
         <div class="content-wrap">
             <div class="title"></div>
             <div class="description">
-                <div class="strategy-content">待添加</div>
+                <div class="strategy-content">
+                    <div class="team-con1"></div>
+                    <div class="team-con2"></div>
+                    <div class="team-con3"></div>
+                    <div class="team-con4"></div>
+                    <div class="team-con5"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -193,11 +234,9 @@
             <div class="description">
                 <div class="add-wrap">
                     <address>
-                        <strong>地　　址</strong>：佛山市禅城区季华五路瑞山大厦10楼 <br>
-                        <strong>传　　真</strong>：0757-82363302 <br>
-                        <strong>前台电话</strong>：0757-82363302 <br>
+                        <strong>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址</strong>：佛山市禅城区季华五路3号十层C室<br>                      
                         <strong>客服热线</strong>：400-8878-200 <br>
-                        <strong>商务合作</strong>：18138311646 <br>
+                        <strong>在线&nbsp;QQ</strong>：4008878200 <br>
                     </address>
                 </div>
                 <div class="qrCode">

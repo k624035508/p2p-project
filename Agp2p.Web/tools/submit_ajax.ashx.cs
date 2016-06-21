@@ -18,6 +18,7 @@ using System.Threading;
 using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Transaction;
 using Newtonsoft.Json;
 using Agp2p.Model.DTO;
 
@@ -177,7 +178,7 @@ namespace Agp2p.Web.tools
             int article_id = DTRequest.GetQueryInt("article_id");
             string _content = DTRequest.GetFormString("txtContent");
             //校检验证码
-            string result =verify_code(context, code);
+            string result = verify_code(context, code);
             if (result != "success")
             {
                 context.Response.Write(result);
@@ -278,7 +279,7 @@ namespace Agp2p.Web.tools
                     {
                         strTxt.Append(",");
                     }
-                   
+
                 }
                 strTxt.Append("]");
             }
@@ -329,7 +330,7 @@ namespace Agp2p.Web.tools
             //string password1 = DTRequest.GetFormString("txtPassword1").Trim();
             string email = Utils.ToHtml(DTRequest.GetFormString("txtEmail").Trim());
             string mobile = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
-            string userip = DTRequest.GetIP();            
+            string userip = DTRequest.GetIP();
 
             #region 检查各项并提示
             if (username.Length < 11)
@@ -358,7 +359,7 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"两次输入的密码不一样！\"}");
                 return;
             }*/
-            
+
             //校检验证码,如果注册使用手机短信则只需验证手机验证码，否则使用网页验证码
             if (userConfig.regstatus == 2) //手机验证码
             {
@@ -465,8 +466,8 @@ namespace Agp2p.Web.tools
                 default:
                     model.status = 1; //待验证
                     break;
-            }            
-            
+            }
+
             try
             {
                 var linqContext = new Agp2pDataContext();
@@ -477,7 +478,7 @@ namespace Agp2p.Web.tools
                 if (!string.IsNullOrWhiteSpace(invitecode))
                 {
                     dt_users inviteUser = linqContext.dt_users.FirstOrDefault(u => u.user_name == invitecode || u.mobile == invitecode);
-                    if(inviteUser == null)
+                    if (inviteUser == null)
                     {
                         var invitecodeModel = linqContext.dt_user_code.FirstOrDefault(c => c.str_code == invitecode && c.type == DTEnums.CodeEnum.Register.ToString());
                         if (invitecodeModel != null)
@@ -491,7 +492,7 @@ namespace Agp2p.Web.tools
                         li_invitations invitation = new li_invitations
                         {
                             dt_users = model,
-                            inviter = inviteUser.id                            
+                            inviter = inviteUser.id
                         };
                         linqContext.li_invitations.InsertOnSubmit(invitation);
 
@@ -530,7 +531,7 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"系统故障，请联系网站管理员！\"}");
                 return;
             }
-            
+
             //赠送积分金额
             if (modelGroup.point > 0)
             {
@@ -697,12 +698,12 @@ namespace Agp2p.Web.tools
             //发送邮件
             try
             {
-                DTMail.sendMail(siteConfig.emailsmtp, 
+                DTMail.sendMail(siteConfig.emailsmtp,
                     siteConfig.emailusername,
-                    DESEncrypt.Decrypt(siteConfig.emailpassword), 
-                    siteConfig.emailnickname, 
-                    siteConfig.emailfrom, 
-                    email, 
+                    DESEncrypt.Decrypt(siteConfig.emailpassword),
+                    siteConfig.emailnickname,
+                    siteConfig.emailfrom,
+                    email,
                     titletxt, bodytxt);
             }
             catch
@@ -1272,7 +1273,7 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入手机号码！\"}");
                 return;
             }
-            
+
             //开始写入数据库
             model.email = email;
             model.nick_name = nick_name;
@@ -1289,7 +1290,7 @@ namespace Agp2p.Web.tools
             model.safe_question = safe_question;
             model.safe_answer = safe_answer;
 
-            
+
             new BLL.users().Update(model);
             context.Response.Write("{\"status\":1, \"msg\":\"账户资料已修改成功！\"}");
             return;
@@ -2078,7 +2079,7 @@ namespace Agp2p.Web.tools
 
         #region 通用外理方法OK=================================
         //校检网站验证码
-        private string verify_code(HttpContext context,string strcode)
+        private string verify_code(HttpContext context, string strcode)
         {
             if (string.IsNullOrEmpty(strcode))
             {
@@ -2160,7 +2161,7 @@ namespace Agp2p.Web.tools
                     if (string.IsNullOrEmpty(backUrl))
                     {
                         context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                               (int) Agp2pEnums.SumapayApiEnum.CreAs
+                                               (int)Agp2pEnums.SumapayApiEnum.CreAs
                                                + "&userId=" + user.id + "&claimId=" + buyClaimId + "&undertakeSum=" +
                                                investingAmount + "\"}");
                     }
@@ -2174,6 +2175,28 @@ namespace Agp2p.Web.tools
                 }
                 else
                 {
+                    //新手标二期前端限制
+                    var pr = linqContext.li_projects.SingleOrDefault(p => p.id == projectId);
+                    if (pr.IsNewbieProject2())
+                    {
+                        var wallet = linqContext.li_wallets.Single(w => w.user_id == user.id);
+                        if (10000 < wallet.total_investment)
+                        {
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = "对不起，您的累计投资金额已经超过10000，不能再投资新手标！", status = 0 }));
+                            return;
+                        }
+                        var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
+                            tra.li_projects.IsNewbieProject2() &&
+                            tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                            tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                            .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
+                        if (10000 < newbieProjectInvested + investingAmount)
+                        {
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = $"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}元", status = 0 }));
+                            return;
+                        }
+                    }
+
                     if (string.IsNullOrEmpty(backUrl))
                     {
                         int reqApi = huoqi.Equals("True") ? (int)Agp2pEnums.SumapayApiEnum.McBid : (int)Agp2pEnums.SumapayApiEnum.MaBid;
@@ -2194,7 +2217,7 @@ namespace Agp2p.Web.tools
             }
             catch (Exception e)
             {
-                context.Response.Write(JsonConvert.SerializeObject(new {msg = "投资失败：" + e.Message, status = 0}));
+                context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资失败：" + e.Message, status = 0 }));
             }
         }
 
@@ -2205,14 +2228,19 @@ namespace Agp2p.Web.tools
         private void add_bank_card(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
+            if (user == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
             if (string.IsNullOrEmpty(user.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
@@ -2241,6 +2269,7 @@ namespace Agp2p.Web.tools
                     context.Response.Write("{\"status\":0, \"msg\":\"开户行名称格式不正确\"}");
                     return;
                 }
+
                 var bank = new li_bank_accounts
                 {
                     account = cardNo,
@@ -2248,7 +2277,8 @@ namespace Agp2p.Web.tools
                     opening_bank = branch_name,
                     location = province + ";" + city + ";" + area,
                     last_access_time = DateTime.Now,
-                    owner = user.id
+                    owner = user.id,
+                    type = (int)Agp2pEnums.BankAccountType.Unknown,
                 };
                 linq_context.li_bank_accounts.InsertOnSubmit(bank);
                 linq_context.SubmitChanges();
@@ -2258,9 +2288,9 @@ namespace Agp2p.Web.tools
             catch (Exception e)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"添加银行卡失败：" + e.Message + "\"}");
-            }      
+            }
         }
-        
+
         /// <summary>
         /// 修改银行卡
         /// </summary>
@@ -2268,14 +2298,19 @@ namespace Agp2p.Web.tools
         private void update_bank_card(HttpContext context)
         {
             var user = BasePage.GetUserInfoByLinq();
+            if (user == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
             if (string.IsNullOrEmpty(user.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心绑定手机！\"}");
                 return;
             }
-            if (string.IsNullOrEmpty(user.id_card_number))
+            if (string.IsNullOrEmpty(user.identity_id))
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先到安全中心进行实名认证！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"为了您的资金安全，请先到安全中心开通第三方托管账户！\"}");
                 return;
             }
 
@@ -2312,7 +2347,7 @@ namespace Agp2p.Web.tools
             catch (Exception e)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"修改银行卡失败：" + e.Message + "\"}");
-            }      
+            }
         }
 
         /// <summary>
@@ -2347,6 +2382,11 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
                 return;
             }
+            if (Utils.StrToDecimal(rechargeSum, 0) < 100)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"抱歉，最低充值100元！\"}");
+                return;
+            }
             if (!quickPayment)
             {
                 if (string.IsNullOrWhiteSpace(bankCode))
@@ -2355,14 +2395,14 @@ namespace Agp2p.Web.tools
                     return;
                 }
                 context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                       (int) Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.WeRec + "&userId=" + user.id + "&sum=" +
                                        rechargeSum + "&bankCode=" +
                                        bankCode + "\"}");
             }
             else
             {
                 //有返回地址参数的是移动端请求
-                if(string.IsNullOrEmpty(backUrl))
+                if (string.IsNullOrEmpty(backUrl))
                     context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
                                        (int)Agp2pEnums.SumapayApiEnum.WhRec + "&userId=" + user.id + "&sum=" +
                                        rechargeSum + "\"}");
@@ -2371,7 +2411,7 @@ namespace Agp2p.Web.tools
                                        (int)Agp2pEnums.SumapayApiEnum.WhReM + "&userId=" + user.id + "&sum=" +
                                        rechargeSum + "&backUrl=" + backUrl + "\"}");
             }
-                
+
         }
 
         /// <summary>
@@ -2379,7 +2419,7 @@ namespace Agp2p.Web.tools
         /// </summary>
         /// <param name="context"></param>
         private void withdraw(HttpContext context)
-        {            
+        {
             var user = BasePage.GetUserInfoByLinq();
             if (user == null)
             {
@@ -2402,15 +2442,20 @@ namespace Agp2p.Web.tools
             var bankAccount = DTRequest.GetFormString("bankAccount");
             var howmany = DTRequest.GetFormDecimal("howmany", 0);
             var backUrl = DTRequest.GetFormString("backUrl");
-            // 提现 100 起步，5w 封顶
+            if (howmany <= 0)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
+                return;
+            }
+            // 提现 100 起步，50w 封顶
             if (howmany < 100)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"提现金额最低 100 元！\"}");
                 return;
             }
-            if (howmany > 50000)
+            if (howmany > 500000)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 50000 元！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"提现金额最高 500000 元！\"}");
                 return;
             }
             if (cardId <= 0)
@@ -2418,16 +2463,20 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请选择银行卡！\"}");
                 return;
             }
-            if (howmany <= 0)
+            // 判断提现次数，每人每日的提现次数不能超过 3 次
+            var withdrawTimesToday = new Agp2pDataContext().li_bank_transactions.Count(btr => btr.li_bank_accounts.owner == user.id
+                && btr.type == (int)Agp2pEnums.BankTransactionTypeEnum.Withdraw
+                && btr.status != (int)Agp2pEnums.BankTransactionStatusEnum.Cancel && btr.create_time.Date == DateTime.Today);
+            if (3 <= withdrawTimesToday)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请输入正确的金额！\"}");
-                return;
+                context.Response.Write("{\"status\":0, \"msg\":\"每日每张卡的提现次数不能超过 3 次！\"}");
             }
+
             //TODO 在丰付托管平台绑定银行卡后只能使用绑定卡来提现
             if (string.IsNullOrEmpty(backUrl))
             {
                 context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" +
-                                       (int) Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
+                                       (int)Agp2pEnums.SumapayApiEnum.Wdraw + "&userId=" + user.id + "&sum=" +
                                        howmany + "&bankId=" +
                                        cardId + "&bankName=" +
                                        bankName + "&bankAccount=" +
@@ -2474,8 +2523,8 @@ namespace Agp2p.Web.tools
                 linqContext.SubmitChanges();
             }
             catch (Exception ex)
-            {                
-                context.Response.Write("{\"status\":0, \"msg\":\"删除银行卡失败！银行卡有提现记录不允许删除。（"+ex.Message+"）\"}");
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"删除银行卡失败！银行卡有提现记录不允许删除。（" + ex.Message + "）\"}");
                 return;
             }
 
@@ -2499,7 +2548,7 @@ namespace Agp2p.Web.tools
                 var user = userId > 0 ? dbContext.dt_users.SingleOrDefault(u => u.id == userId) : BasePage.GetUserInfoByLinq(dbContext);
                 if (user == null)
                 {
-                    httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     httpContext.Response.Write("对不起，请先登录！");
                     return;
                 }
@@ -2519,9 +2568,9 @@ namespace Agp2p.Web.tools
                         li_projects = proj,
                         dt_users = user,
                         principal = investAmount,
-                        interest = Math.Round(proj.GetFinalProfitRate(DateTime.Now)*investAmount, 2),
-                        status = (byte) Agp2pEnums.ProjectTransactionStatusEnum.Pending,
-                        type = (byte) Agp2pEnums.ProjectTransactionTypeEnum.Invest,
+                        interest = Math.Round(proj.GetFinalProfitRate(DateTime.Now) * investAmount, 2),
+                        status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Pending,
+                        type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.Invest,
                     };
                 }
                 else
@@ -2531,7 +2580,7 @@ namespace Agp2p.Web.tools
 
                 if (investment == null)
                 {
-                    httpContext.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     httpContext.Response.Write("对不起，没有找到投资记录！");
                     return;
                 }
@@ -2557,8 +2606,9 @@ namespace Agp2p.Web.tools
             try
             {
                 //检查用户是否登录
-                Model.users model = BasePage.GetUserInfo();
-                if (model == null)
+                var dataContext = new Agp2pDataContext();
+                var user = BasePage.GetUserInfoByLinq(dataContext);
+                if (user == null)
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                     return;
@@ -2566,17 +2616,17 @@ namespace Agp2p.Web.tools
 
                 var idcard = DTRequest.GetFormString("idCardNumber");
                 var truename = DTRequest.GetFormString("trueName");
-                var licontext = new Agp2pDataContext();
+
                 // 判断身份证是否重复
-                var count = licontext.dt_users.Count(u => u.id != model.id && u.id_card_number == idcard);
+                var count = dataContext.dt_users.Count(u => u.id != user.id && u.id_card_number == idcard);
                 if (count != 0)
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"对不起，身份证号已经存在！\"}");
                     return;
                 }
                 // 判断是否已锁定，锁定后不能再改
-                var dtUsers = licontext.dt_users.Single(u => u.id == model.id);
-                if (!string.IsNullOrWhiteSpace(dtUsers.real_name) && !string.IsNullOrWhiteSpace(dtUsers.id_card_number))
+                //var dtUsers = dataContext.dt_users.Single(u => u.id == user.id);
+                if (!string.IsNullOrWhiteSpace(user.real_name) && !string.IsNullOrWhiteSpace(user.id_card_number))
                 {
                     context.Response.Write("{\"status\":0, \"msg\":\"你已经认证过了\"}");
                     return;
@@ -2592,31 +2642,36 @@ namespace Agp2p.Web.tools
                     return;
                 }
 
-                if (6 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
+                if (6 <= dataContext.QueryEventTimesDuring(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(365)))
                 {
-                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一年内已经进行过 6 次身份认证，不能再继续认证了。如有疑问，请联系客服"}));
+                    context.Response.Write(JsonConvert.SerializeObject(new { status = 0, msg = "你在一年内已经进行过 6 次身份认证，不能再继续认证了。如有疑问，请联系客服" }));
                     return;
                 }
-                if (3 <= licontext.QueryEventTimesDuring(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
+                if (3 <= dataContext.QueryEventTimesDuring(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, TimeSpan.FromDays(1)))
                 {
-                    context.Response.Write(JsonConvert.SerializeObject(new {status = 0, msg = "你在一天内已经进行过 3 次身份认证，请明日再试，并务必填写正确的认证信息"}));
+                    context.Response.Write(JsonConvert.SerializeObject(new { status = 0, msg = "你在一天内已经进行过 3 次身份认证，请明日再试，并务必填写正确的认证信息" }));
                     return;
                 }
 
-                //TODO 使用免费接口先核实有效的身份证
-                //var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
-                //var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
-                //if (resultModel != null)
-                //{
-                //    if (resultModel.Resultcode == "200")
-                //    {
-
+#if !DEBUG
+                //使用免费接口先核实有效的身份证
+                var result = Utils.HttpGet("http://apis.juhe.cn/idcard/index?key=dc1c29e8a25f095fd7069193fb802144&cardno=" + idcard);
+                var resultModel = JsonConvert.DeserializeObject<dto_user_idcard>(result);
+                if (resultModel != null)
+                {
+                    if (resultModel.Resultcode == "200")
+                    {
+                        //保存地区信息
+                        user.address = resultModel.Result.Area;
+                        user.sex = resultModel.Result.Sex;
+                        user.birthday = DateTime.Parse(resultModel.Result.Birthday);
+#endif
                         // 记录接口调用
-                        licontext.MarkEventOccurNotSave(dtUsers.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
-                        licontext.SubmitChanges();
+                        dataContext.MarkEventOccurNotSave(user.id, Agp2pEnums.EventRecordTypeEnum.IdcardChecking, DateTime.Now);
+                        dataContext.SubmitChanges();
 
                         //调用托管平台实名验证接口
-                        var msg = new UserRealNameAuthReqMsg(model.id, truename, idcard);
+                        var msg = new UserRealNameAuthReqMsg(user.id, truename, idcard);
                         MessageBus.Main.Publish(msg);
                         //处理实名验证返回结果
                         var msgResp = BaseRespMsg.NewInstance<UserRealNameAuthRespMsg>(msg.SynResult);
@@ -2629,16 +2684,16 @@ namespace Agp2p.Web.tools
                         {
                             context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + msgResp.Remarks + "\"}");
                         }
-                //    }
-                //    else
-                //        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
-                //}
-
-                
+#if !DEBUG
+                    }
+                    else
+                        context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + resultModel.Reason + "\"}");
+                }
+#endif
             }
             catch (Exception ex)
             {
-                throw ex;
+                context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + ex.Message + "\"}");
             }
         }
 

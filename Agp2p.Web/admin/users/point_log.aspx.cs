@@ -2,10 +2,12 @@
 using System.Text;
 using System.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.admin.users
 {
@@ -16,11 +18,11 @@ namespace Agp2p.Web.admin.users
         protected int pageSize;
 
         protected string keywords = string.Empty;
+        protected Agp2pDataContext context = new Agp2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //this.keywords = DTRequest.GetQueryString("keywords");
-
+            //this.keywords = DTRequest.GetQueryString("keywords");            
             this.pageSize = GetPageSize(10); //每页数量
             if (!Page.IsPostBack)
             {
@@ -123,6 +125,18 @@ namespace Agp2p.Web.admin.users
             }
             AddAdminLog(DTEnums.ActionEnum.Delete.ToString(), "删除积分日专成功" + sucCount + "条，失败" + errorCount + "条"); //记录日志
             JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("point_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
+        }
+
+        //查积分
+        protected int GetUserPoints()
+        {
+            var points = 0;
+            var user = context.dt_user_point_log.Where(p => p.user_id == 2447);
+            for (var i = 0; i < user.Count(); i++)
+            {
+                points += Convert.ToInt32(user.Skip(i).First().value);
+            }
+            return points;
         }
     }
 }

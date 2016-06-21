@@ -39,7 +39,12 @@ namespace Agp2p.Web.UI.Page
                 //写入登录日志
                 //new BLL.user_login_log().Add(model.id, model.user_name, "自动登录");
                 //自动登录,跳转URL
-                HttpContext.Current.Response.Redirect(turl);
+
+                //如果有活动页面，则跳转至活动页面
+                if(!string.IsNullOrEmpty(DTRequest.GetQueryString("url")))
+                    HttpContext.Current.Response.Redirect(DTRequest.GetQueryString("url") + "&id=" + DTRequest.GetQueryString("id"));
+                else
+                    HttpContext.Current.Response.Redirect(turl);
             }
         }
 

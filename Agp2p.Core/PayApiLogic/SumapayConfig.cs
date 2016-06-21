@@ -9,10 +9,31 @@ namespace Agp2p.Core.Message.PayApiMsg
 {
     public class SumapayConfig
     {
+#if DEBUG
         public static string MerchantCode = "fbp100012";
+#endif
+#if !DEBUG
+        public static string MerchantCode = "4410000231";
+#endif
+#if DEBUG
         public static string Key = "RPZJNXEUQW89L2AF6HS5YIDGBC37MKT4V";
-        public static string TestApiUrl = "https://fbtest.sumapay.com/";
-        public static string ApiUrl = "";
+#endif
+#if !DEBUG
+        public static string Key = "yease5wrZsJuB9OObWqZ2O94ZmoPrGrH";
+#endif
+#if DEBUG
+        public static string ApiUrl = "https://fbtest.sumapay.com/";
+        public static string MobileApiUrl = "https://fbtest.sumapay.com/";
+#endif
+#if !DEBUG
+        public static string ApiUrl = "https://www.sumapay.com/";
+        public static string MobileApiUrl = "https://mapi.sumapay.com/";
+#endif
+#if DEBUG
         public static string NoticeUrl = "http://test.agrhp2p.com/api/payment/sumapay/noticeUrl.aspx";
+#endif
+#if !DEBUG
+        public static string NoticeUrl = "https://www.agrhp2p.com/api/payment/sumapay/noticeUrl.aspx";
+#endif
     }
 }

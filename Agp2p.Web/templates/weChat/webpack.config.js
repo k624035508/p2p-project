@@ -25,7 +25,8 @@ module.exports = {
         citySelector: "./js/citySelector.js",
         forgotPassword: "./js/forgotPassword.js",
         activity: "./js/activity.js",
-        article_show: "./js/article_show.js"
+        article_show: "./js/article_show.js",
+        safe_defence: "./js/safe_defence.js"
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -56,7 +57,7 @@ module.exports = {
     plugins: [
         new CommonsChunkPlugin("fullpage.bundle.js", ["project", "myreceiveplan", "mycard", "citySelector"]),
         new CommonsChunkPlugin("commons.bundle.js", ["fullpage.bundle.js", "index", "login", "register", "projects", "usercenter", "recharge",
-             "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus", "forgotPassword","activity"]),
+             "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus", "forgotPassword","activity","safe_defence"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

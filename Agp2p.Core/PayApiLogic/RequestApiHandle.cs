@@ -45,6 +45,7 @@ namespace Agp2p.Core.PayApiLogic
                 switch (requestLog.api)
                 {
                     case (int) Agp2pEnums.SumapayApiEnum.WeRec:
+                    case (int) Agp2pEnums.SumapayApiEnum.CeRec:
                         //网银充值
                         context.Charge((int) requestLog.user_id, Utils.StrToDecimal(((WebRechargeReqMsg) msg).Sum, 0),
                             Agp2pEnums.PayApiTypeEnum.Sumapay, "丰付网银支付", msg.RequestId);
@@ -56,11 +57,13 @@ namespace Agp2p.Core.PayApiLogic
                             Agp2pEnums.PayApiTypeEnum.SumapayQ, "丰付一键支付", msg.RequestId);
                         break;
                     case (int) Agp2pEnums.SumapayApiEnum.Wdraw:
+                    case (int) Agp2pEnums.SumapayApiEnum.Cdraw:
                     case (int) Agp2pEnums.SumapayApiEnum.WdraM:
                         //提现
                         var withdrawReqMsg = (WithdrawReqMsg) msg;
-                        context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
-                            Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
+                        requestLog.remarks = withdrawReqMsg.BankId;
+                        //context.Withdraw(Utils.StrToInt(withdrawReqMsg.BankId, 0),
+                        //    Utils.StrToDecimal(withdrawReqMsg.Sum, 0), withdrawReqMsg.RequestId);
                         break;
                     //债权转让
                     case (int) Agp2pEnums.SumapayApiEnum.CreAs:
@@ -151,10 +154,10 @@ namespace Agp2p.Core.PayApiLogic
                         var makeLoanReqMsg = (MakeLoanReqMsg) msg;
                         var project = context.li_projects.SingleOrDefault(p => p.id == makeLoanReqMsg.ProjectCode);
                         //非活期和新手标项目计算平台服务费
-                        if (project != null && !project.IsNewbieProject())
+                        if (project != null && !project.IsNewbieProject1())
                         {
-                            decimal loanFee = project.investment_amount * (project.loan_fee_rate) ?? 0;
-                            decimal bondFee = project.investment_amount * (project.bond_fee_rate) ?? 0;
+                            decimal loanFee = decimal.Round(project.investment_amount * (project.loan_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);
+                            decimal bondFee = decimal.Round(project.investment_amount * (project.bond_fee_rate) ?? 0, 2, MidpointRounding.AwayFromZero);
                             makeLoanReqMsg.SetSubledgerList(loanFee + bondFee);
                         }
                         else
@@ -198,12 +201,13 @@ namespace Agp2p.Core.PayApiLogic
             returnPrinInteReqMsg.SetSubledgerList(transList);
             returnPrinInteReqMsg.Remarks = $"isEarly=false&repayTaskId={repayTaskId}&isHuoqi={isHuoqi}";
             //发送请求
-            MessageBus.Main.Publish(returnPrinInteReqMsg);
-            //处理请求同步返回结果  TODO 异步消息
-            var returnPrinInteRespMsg =
-                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-            returnPrinInteRespMsg.Sync = true;
-            MessageBus.Main.Publish(returnPrinInteRespMsg);
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, msg =>
+            {
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg =
+                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(msg.SynResult);
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg);
+            });
         }
 
         /// <summary>
@@ -220,16 +224,19 @@ namespace Agp2p.Core.PayApiLogic
             //生成分账列表（每个转出用户的本金）
             returnPrinInteReqMsg.SetSubledgerList(grouping.ToLookup(c => c.dt_users));
             //发送请求
-            MessageBus.Main.Publish(returnPrinInteReqMsg);
-            //处理请求同步返回结果
-            var returnPrinInteRespMsg =
-                BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(returnPrinInteReqMsg.SynResult);
-            returnPrinInteRespMsg.Sync = true;
-            returnPrinInteReqMsg.Remarks = "isEarly=false&isHuoqi=true";
-            MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
+            MessageBus.Main.PublishAsync(returnPrinInteReqMsg, msg =>
             {
-                if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
+                //处理请求同步返回结果
+                var returnPrinInteRespMsg =
+                    BaseRespMsg.NewInstance<ReturnPrinInteRespMsg>(msg.SynResult);
+                returnPrinInteRespMsg.Sync = true;
+                returnPrinInteReqMsg.Remarks = "isEarly=false&isHuoqi=true";
+                MessageBus.Main.PublishAsync(returnPrinInteRespMsg, result =>
+                {
+                    if (callBack != null && returnPrinInteRespMsg.HasHandle) callBack();
+                });
             });
+            
         }
     }
 }

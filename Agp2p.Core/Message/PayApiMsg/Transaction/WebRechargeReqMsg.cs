@@ -18,8 +18,9 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string MainAccountType { get; set; }//主账户类型
         public string MainAccountCode { get; set; }//主账户编码
         public string PassThrough { get; set; }//透传信息
+        public string BankType { get; set; }//银行类型 0：个人网银1：企业网银
         //分账列表
-        private string subledgerList;
+        protected string subledgerList;
         public string SubledgerList
         {
             get
@@ -56,14 +57,18 @@ namespace Agp2p.Core.Message.PayApiMsg
             PassThrough = passThrough;
 
             Api = (int) Agp2pEnums.SumapayApiEnum.WeRec;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/webBankRecharge_toRecharge";
+            ApiInterface = SumapayConfig.ApiUrl + "user/webBankRecharge_toRecharge";
             RequestId = Agp2pEnums.SumapayApiEnum.WeRec.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        protected WebRechargeReqMsg()
+        {
         }
 
         public override string GetSignature()
         {
             return
-                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum + BankCode +
+                SumaPayUtils.GenSign(RequestId + SumapayConfig.MerchantCode + UserId + Sum + BankCode + BankType +
                 SuccessReturnUrl + FailReturnUrl + BankCardTypeFlag + PayType + SubledgerList, SumapayConfig.Key);
         }
 
@@ -76,7 +81,6 @@ namespace Agp2p.Core.Message.PayApiMsg
                 {"userIdIdentity", UserId.ToString()},
                 {"sum", Sum},
                 {"bankCode", BankCode},
-                {"bankcardTypeFlag", BankCardTypeFlag},
                 {"payType", PayType},
                 {"subledgerList", SubledgerList},
                 {"successReturnUrl", SuccessReturnUrl},
@@ -87,6 +91,16 @@ namespace Agp2p.Core.Message.PayApiMsg
             if (!string.IsNullOrEmpty(MainAccountType)) sd.Add("mainAccountType", MainAccountType);
             if (!string.IsNullOrEmpty(MainAccountCode)) sd.Add("mainAccountCode", MainAccountCode);
             if (!string.IsNullOrEmpty(PassThrough)) sd.Add("passThrough", PassThrough);
+            //丰付企业与个人充值接口，参数必须区分大小写不同 - -！
+            if (!string.IsNullOrEmpty(BankType))
+            {
+                sd.Add("bankType", BankType);
+                sd.Add("bankCardTypeFlag", BankCardTypeFlag);
+            }
+            else
+            {
+                sd.Add("bankcardTypeFlag", BankCardTypeFlag);
+            }
 
             return sd;
         }

@@ -55,12 +55,12 @@
     <dd>
       <div class="rule-multi-radio">
           <asp:RadioButtonList ID="rblType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-            <asp:ListItem Selected="True" Value="1">文字</asp:ListItem>
-            <asp:ListItem Value="2">图片</asp:ListItem>
-            <asp:ListItem Value="3">幻灯片</asp:ListItem>
-            <asp:ListItem Value="4">动画</asp:ListItem>
-            <asp:ListItem Value="5">FLV视频</asp:ListItem>
-            <asp:ListItem Value="6">代码 </asp:ListItem>
+             <asp:ListItem Selected="True" Value="1">文字</asp:ListItem>
+             <asp:ListItem Value="2">图片</asp:ListItem>
+             <asp:ListItem Value="3">幻灯片</asp:ListItem>
+             <asp:ListItem Value="4">动画</asp:ListItem>
+             <asp:ListItem Value="5">FLV视频</asp:ListItem>
+             <asp:ListItem Value="6">代码 </asp:ListItem>
            </asp:RadioButtonList>
        </div>
     </dd>

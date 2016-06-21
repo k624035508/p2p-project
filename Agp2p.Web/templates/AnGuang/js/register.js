@@ -270,10 +270,10 @@ $(function() {
             },
             beforeSend:function(XMLHttpRequest){ 
                 //在后台返回success之前显示loading图标
-                $(".nameLoading").css("z-index","2").html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
+                $(".nameLoading").css({"z-index":"2","opacity":"0.3"}).html("<img src='/templates/AnGuang/imgs/register/loading.gif' />");
             }, 
             success: function(data) {        
-                $(".nameLoading").empty().css("z-index","-2");
+                $(".nameLoading").empty().css({"z-index":"-2","opacity":"0"});
                 if (data.status == 1) {
                     //实名验证成功，进入开户步骤
                     location.href="register.html?action=3";
@@ -282,7 +282,7 @@ $(function() {
                 }
             },
             error: function(data) {             
-                $(".nameLoading").empty().css("z-index","-2");
+                $(".nameLoading").empty().css({"z-index":"-2","opacity":"0"});
                 alert("操作超时，请重试");
             }
         });

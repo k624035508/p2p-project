@@ -6,6 +6,9 @@ using Agp2p.BLL;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Linq2SQL;
+using Agp2p.Core;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 
 namespace Agp2p.Web.admin.transact
 {
@@ -16,11 +19,14 @@ namespace Agp2p.Web.admin.transact
         protected int pageSize;
 
         protected string account_id; // 根据 url 参数来保持当前选择的用户与银行账户
+        protected int user_id;
+
         private Agp2pDataContext context = new Agp2pDataContext();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             account_id = DTRequest.GetQueryString("account_id");
+            user_id = DTRequest.GetQueryInt("user_id");
 
             pageSize = GetPageSize(GetType().Name + "_page_size");
             if (!Page.IsPostBack)
@@ -98,6 +104,36 @@ namespace Agp2p.Web.admin.transact
             {
                 JscriptMsg("取消银行账户交易失败！" + ex.Message, Utils.CombUrlTxt("bank_transaction_list_account.aspx", "account_id={0}", account_id), "Failure");
             }
+        }
+
+        /// <summary>
+        /// 解绑银行卡
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnRemoveCard_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                var user = context.dt_users.SingleOrDefault(u => u.id == user_id);
+                var msg = new RemoveCardReqMsg(user_id, user.real_name, user.id_card_number, user.mobile, user.email);
+                MessageBus.Main.Publish(msg);
+                var msgResp = BaseRespMsg.NewInstance<RemoveCardRespMsg>(msg.SynResult);
+                MessageBus.Main.Publish(msgResp);
+                if (msgResp.HasHandle)
+                {
+                    JscriptMsg("解绑操作成功！", "../transact/all_bank_account_list.aspx");
+                }
+                else
+                {
+                    JscriptMsg("解绑操作失败：" + msgResp.Remarks, "back", "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("解绑操作失败：" + ex.Message, "back", "Error");
+            }
+
         }
 
         protected decimal GetHandlingFee(li_bank_transactions tr)

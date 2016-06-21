@@ -227,7 +227,7 @@ export default class AgCurrent extends React.Component {
                                 </tr>
                             </thead>
                             <tbody>
-                            {this.state.data.length == 0 ? <tr><td colSpan="5">暂无内容</td></tr> : this.state.data.map(c => 
+                            {this.state.data.length == 0 ? <tr><td colSpan="6">暂无内容</td></tr> : this.state.data.map(c => 
                                 <tr key={c.id}>
                                     <td>{c.number}</td>
                                     <td>{c.project}</td>

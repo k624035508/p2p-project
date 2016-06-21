@@ -87,7 +87,7 @@ namespace Agp2p.Web
             };
             InitDailyTimer(TimerMsg.Type.AutoRepayTimer, ConfigLoader.loadSiteConfig().systemTimerTriggerTime);
             InitDailyTimer(TimerMsg.Type.LoanerRepayTimer, ConfigLoader.loadSiteConfig().loanerRepayTime);
-            InitDailyTimer(TimerMsg.Type.AutoMakeLoanTimer, "24:00:00");
+            //InitDailyTimer(TimerMsg.Type.AutoMakeLoanTimer, "24:00:00");
             DelayedRelease();
         }
 

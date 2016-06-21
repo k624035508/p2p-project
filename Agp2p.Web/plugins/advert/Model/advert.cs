@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+
 namespace Agp2p.Web.Plugin.Advert.Model
 {
     /// <summary>
@@ -44,6 +46,7 @@ namespace Agp2p.Web.Plugin.Advert.Model
             set { _type = value; }
             get { return _type; }
         }
+
         /// <summary>
         /// 广告位价格
         /// </summary>

@@ -191,11 +191,11 @@ div#bannerCarousel {
     margin: 0 auto;
     position: relative;
 
-    .carousel-indicators li {
+   /* .carousel-indicators li {
         width: 12px;
         height: 12px;
         margin: 0;
-    }
+    }   */
 
     .carousel-inner {
         .carousel-control.left, .carousel-control.right {
@@ -219,7 +219,10 @@ div#bannerCarousel {
             }
 
             .banner4 {
-                background: url("@{images}/banner-04.jpg") no-repeat center;
+                background: url("@{images}/banner-safe.jpg") no-repeat center;
+            }
+            .banner5 {
+                background: url("@{images}/banner-05.jpg") no-repeat center;
             }
 
             .apps-btns {
@@ -301,7 +304,7 @@ div#bannerCarousel {
         width: 53px;
         background: url("@{images}/slider-arrow.png") no-repeat 10px 0;
         top: 40%;
-        left: 8%;
+        left: 5%;
         z-index: 100;
         cursor: pointer;
 
@@ -316,7 +319,7 @@ div#bannerCarousel {
         width: 55px;
         background: url("@{images}/slider-arrow.png") no-repeat -82px 0;
         top: 40%;
-        right: 10%;
+        right: 5%;
         z-index: 100;
         cursor: pointer;
 
@@ -341,10 +344,11 @@ div#bannerCarousel {
 
                 a {
                     margin: 0;
+                    margin-top:-20px;
                     padding: 0;
                     display: block;
                     width: 100%;
-                    height: 350px;
+                    height: 100%;
                 }
             }
 
@@ -352,15 +356,15 @@ div#bannerCarousel {
                 background: url("@{images}/banner-02.jpg") no-repeat center;
             }
 
-            .banner3 {
-                background: url("@{images}/banner-03.jpg") no-repeat center;
-
+            .bannerApp {
+                background: url("@{images}/banner-apps.jpg") no-repeat center;
+               
                 .apps-btns {
                     position: absolute;
                     width: 155px;
                     left: 50%;
                     margin-left: -253px;
-                    margin-top: -150px;
+                    margin-top: -130px;
 
                     a {
                         display: block;
@@ -369,7 +373,7 @@ div#bannerCarousel {
                     }
 
                     .android-btn {
-                        background: url("@{images}/android-btn.png");
+                        background: url("@{images}/android-btn.png");  margin-top:0;
 
                         &:hover, &:visited {
                             background: url("@{images}/android-btn-hover.png") no-repeat;
@@ -388,7 +392,13 @@ div#bannerCarousel {
             }
 
             .banner4 {
-                background: url("@{images}/banner-04.jpg") no-repeat center;
+                background: url("@{images}/banner-safe.jpg") no-repeat center;
+            }
+            .banner5 {
+                background: url("@{images}/banner-05.jpg") no-repeat center;
+            }
+             .bannerNewYPB {
+                background: url("@{images}/banner-newYPB.jpg") no-repeat center;
             }
         }
     }
@@ -396,10 +406,10 @@ div#bannerCarousel {
     .hd {
         width: 100%;
         position: absolute;
-        height: 40px;
+        height: 25px;
         text-align: center;
         z-index: 15;
-        bottom: 9px;
+        bottom: 7px;
         padding: 0;
 
         li {
@@ -409,8 +419,8 @@ div#bannerCarousel {
             display: inline-block;
             *display: inline;
             width: 30px;
-            height: 45px;
-            line-height: 40px;
+            height: 25px;
+            line-height: 30px;
             font-size: 30px;
             color: #ebe1e1;
             opacity: 0.2;
@@ -503,32 +513,38 @@ div.announcement-wrap {
             }
 
             a {
-                width: 90px;
-                height: 100px;
+                width: 92px;
+                height: 102px;
                 margin-right: 30px;
             }
 
             .funds-icon {
-                background: url("@{images}/funds.png");
-
-                &:hover {
-                    background: url("@{images}/funds-hover.png");
+                background: url("@{images}/001.png");
+                transition: transform 0.5s;
+                &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
                 }
             }
 
             .acceptance-icon {
-                background: url("@{images}/acceptance.png");
-
-                &:hover {
-                    background: url("@{images}/acceptance-hover.png");
+                background: url("@{images}/002.png");
+                 transition: transform 0.5s;
+                 &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
                 }
             }
 
             .guarantee-icon {
-                background: url("@{images}/guarantee.png");
-
-                &:hover {
-                    background: url("@{images}/guarantee-hover.png");
+                background: url("@{images}/003.png");
+                 transition: transform 0.5s;
+                &:hover{
+                    transform: rotateY(360deg);
+                    -webkit-transform: rotateY(360deg);	/* Safari 和 Chrome */
+                    -moz-transform: rotateY(360deg);	/* Firefox */
                 }
             }
 
@@ -571,18 +587,19 @@ div.announcement-wrap {
 
 .dark-grey25px {
     color: @dark-grey;
-    font-size: @font25;
+    font-size: 30px;
 }
 
 .white35px {
     color: @white;
-    font-size: 35px;
+    font-size: 40px;
+    height:53px;
     text-align: center;
 }
 
 .white13px {
     color: @white;
-    font-size: @font13;
+    font-size: 18px;
     text-indent: 26px;
     margin: 0 0 3px;
 }
@@ -591,6 +608,7 @@ div.announcement-wrap {
     color: @white;
     font-size: @font18;
     text-indent: 26px;
+    margin-top:16px; padding-left:10px;
 }
 
 .icon-corner {
@@ -656,9 +674,9 @@ a.invest-btn-grey {
         a {
             display: block;
             height: 100%;
-            padding-top: 15px;
+            padding-top: 10px;
             text-decoration: none;
-            background: url("@{images}/newhand-bg.png") no-repeat;
+            background: url("@{images}/newbie-bg2.png") no-repeat;
         }
     }
 
@@ -696,7 +714,13 @@ a.invest-btn-grey {
                             color: @red;
                         }
                     }
-
+                    .rate2{
+                        display:inline-block;
+                        font-size:18px;
+                        width:80px; height:30px;
+                        background:@red; color:@white; text-align:center;
+                        margin-left:25px;
+                    }
                     .tips {
                         width: 185px;
                         height: 30px;
@@ -708,7 +732,7 @@ a.invest-btn-grey {
                 }
 
                 .content-body {
-                    margin-top: 25px;
+                    margin-top: 22px;
 
                     .margin-left30 {
                         margin-left: 30px;
@@ -727,7 +751,7 @@ a.invest-btn-grey {
 
                     .invest-btn {
                         width: 155px;
-                        margin-top: 17px;
+                        margin-top: 28px;
                     }
 
                     .bottom18px {
@@ -741,7 +765,7 @@ a.invest-btn-grey {
                     margin-top: -30px;
                     width: 73px;
                     height: 65px;
-                    background: url("@{images}/over-icon.png") bottom right;
+                   // background: url("@{images}/over-icon.png") bottom right;
                 }
             }
 
@@ -776,7 +800,7 @@ a.invest-btn-grey {
 
 .tender {
     margin-top: 30px !important;
-    height: 370px;
+    height: 740px;
 
     & > div {
         .inline-block;
@@ -786,7 +810,7 @@ a.invest-btn-grey {
 
     .tender-left {
         width: 220px;
-        padding-top: 15px;
+     
 
         p span:first-child {
             margin-right: 20px;
@@ -797,18 +821,6 @@ a.invest-btn-grey {
             margin-top: 8px;
         }
 
-        a {
-            display: block;
-            margin: 20px auto 0 auto;
-            width: 70px;
-            height: 25px;
-            line-height: 24px;
-            color: @white;
-            font-size: @font15;
-            text-decoration: none;
-            text-align: center;
-            border: 1px solid @white;
-        }
     }
 
     .tender-right {
@@ -898,21 +910,17 @@ a.invest-btn-grey {
     }
 
     .content-bottom {
-        height: 360px;
-        background: @white;
-        border: @border;
+        height:730px;
 
+       
         & > div {
             display: inline-block;
             width: 25%;
-            height: 100%;
+            height: 360px;
             padding: 25px 15px 30px 15px;
             float: left;
-            border-left: @border;
-        }
-
-        & > div:first-child {
-            border-left: none;
+            border: @border;
+            border-left:none;
         }
     }
 }
@@ -955,27 +963,34 @@ a.invest-btn-grey {
 /*银票宝*/
 .yinpiaobao {
     .tender-left {
-        background: #4ea4f2;
-
-        .geometry-icon {
-            background: url("@{images}/yinpiaobao-geo.png") no-repeat center;
-        }
-
-        a {
+        .tender-left-img{
+            padding-top:30px; height:674px;
+            background: url("@{images}/yinpiaobao.jpg") no-repeat center;
+            }
+        .tender-left-more{
+            height:66px; background:#50aaf4; padding:18px 72.5px;
+        a {                 
+            display:inline-block;         
+            width: 75px;
             height: 30px;
-            line-height: 28px;
-
+            line-height: 30px;
+            color: @white;
+            font-size: @font15;
+            background:#0592e8;
+            text-decoration: none;
+            text-align: center;
+            border-radius:5px;
             &:hover {
                 background-color: #3796e6;
-                border-color: #3796e6;
             }
+        }
         }
     }
 
     .tender-right {
         .tender-cell {
             transition: padding .3s;
-
+            background:@white;
             .cash-bank {
                 text-align: center;
             }
@@ -987,6 +1002,11 @@ a.invest-btn-grey {
             &:hover {
                 padding-top: 20px;
             }
+            &:first-child{margin-bottom:10px;}
+                    /*兼容IE8*/
+        &:first-child + div.tender-cell{margin-bottom:10px;}
+        &:first-child + div.tender-cell + div.tender-cell{margin-bottom:10px;}
+        &:first-child + div.tender-cell + div.tender-cell + div.tender-cell{margin-bottom:10px;}
         }
     }
 }
@@ -1039,7 +1059,7 @@ div.dynamic-wrap {
                     width: 5px;
                     height: 5px;
                     margin-right: 8px;
-                    background: @grey;
+                    background: @blue;
                 }
 
                 &:hover {
@@ -1065,7 +1085,7 @@ div.dynamic-wrap {
         color: @darker-grey;
         font-size: @font20;
         padding-left: 10px;
-        border-left: 5px solid @red;
+        border-left: 5px solid @blue;
 
         &:hover {
             color: @red;
@@ -1124,5 +1144,26 @@ div.dynamic-wrap {
             height: 10%;
             line-height: 30px;
         }
+    }
+}
+
+/*战略合作*/
+.strategy-coop{
+    width: @min-width;
+    margin: 30px auto 0 auto;
+    .strategy-title{
+        border-bottom:1px solid @light-grey;
+        span{
+            display:inline-block; font-size:20px; color:@darker-grey; margin-left:20px; margin-bottom:16px;
+            border-left:5px solid @blue; padding-left:10px; 
+        }
+    }
+    .strategy-con{ margin-top:15px;
+        & > div{ width:210px; height:70px; display:inline-block; margin-right:8px;}
+                    .strategory-img1 { background:url("@{images}/strategory1.jpg");}
+                    .strategory-img2 { background:url("@{images}/strategory2.jpg");}
+                    .strategory-img3 { background:url("@{images}/strategory3.jpg");}
+                    .strategory-img4 { background:url("@{images}/strategory4.jpg");}
+                    .strategory-img5 { background:url("@{images}/strategory5.jpg"); margin-right:0;}
     }
 }

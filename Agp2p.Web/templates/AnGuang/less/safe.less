@@ -27,6 +27,9 @@
 		.personal-info-th {
 			.th-red-style;
 			color: @red;
+            span{
+            border-bottom-color:@blue;
+            }
 			a {
 				padding: 3px 8px;
 				text-decoration: none;
@@ -84,7 +87,11 @@
 		margin-top: 25px;
 		padding: 15px 20px 56px 20px;
 		* { font-size: @font15; }
-		.safe-center-th { .th-red-style; }
+		.safe-center-th { .th-red-style; 
+                           span{
+            border-bottom-color:@blue;
+            }
+		}
 		.setting-list {
 			ul {
 				li {
@@ -99,11 +106,11 @@
 							margin-right: 40px;
 							background-position: center;
 						}
-						.mail { background: url("@{safe}/mail.png") no-repeat; }
-						.phone { background: url("@{safe}/phone.png") no-repeat; }
-						.name { background: url("@{safe}/name.png") no-repeat; }
-                        .custody{ background: url("@{safe}/custody.png") no-repeat;}
-						.psw-login { background: url("@{safe}/psw-login.png") no-repeat; }
+						.mail { background: url("@{safe}/013.png") no-repeat; }
+						.phone { background: url("@{safe}/014.png") no-repeat; }
+						.name { background: url("@{safe}/015.png") no-repeat; }
+                        .custody{ background: url("@{safe}/018.png") no-repeat;}
+						.psw-login { background: url("@{safe}/016.png") no-repeat; }
 						.psw-trade { background: url("@{safe}/psw-trade.png") no-repeat; }
 						.list-th {
 							color: @dark-grey;
@@ -223,6 +230,7 @@
 								}
 							}
 						}
+
 					}
 					#email-setting .settings .btn-wrap { padding-left: 10px !important; }
 					#phone-setting .settings .btn-wrap { padding-left: 35px !important; }
@@ -248,4 +256,15 @@
 		}
 	}
      .safe-center-loaner{min-height:722px;}
+                             .real-name-th{.th-red-style; 
+                           span{
+            font-size:16px;
+            border-bottom-color:@blue;
+            }
+                        }
+                             .warmTip-realName{
+                                 height:48px; padding-top:17px; padding-left:24px; font-size:@font13;  color:@dark-grey;
+                             }
 }
+
+

@@ -9,105 +9,105 @@
     <script src="<%templateskin%>/build/index.bundle.js"></script>
 </head>
 <body>
-<div class="height-100 flex flex--column flex--flex-grow-first">
-    <div class="index-page scroll" style="height:0"> <!--/ ios flex box bug hack /-->
-        <%if(!IsUserLogin())%>
-        <div class="reglog-bar flex flex-vertical-align flex--flex-grow-first">
-            <span><img src="<%templateskin%>/imgs/agrh.png"></span>
-            <a href='<%linkurl("register")%>'>快速注册</a>
-            <a href='<%linkurl("login")%>'>登录</a>
-        </div>
-        <%/if%>
-        <div id="banner-carousel" class="carousel slide" data-ride="carousel">
-            <!--<ol class="carousel-indicators">-->
-                <!--<li data-target="#banner-carousel" data-slide-to="0" class="active"></li>-->
-                <!--<li data-target="#banner-carousel" data-slide-to="1"></li>-->
-            <!--</ol>-->
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <a href='<%linkurl("activity_rewards")%>'><img src="<%templateskin%>/imgs/banner/banner-2.png"></a>
-                </div>
-            </div>
-        </div>
-        <div class="invest-list">
-            <!-- 新手标 -->
-            <%set var np = GetFirstNewbieProject()%>
-            <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
-            <div class="invest-project" onclick="location.href='<%linkurl("project",np.id)%>#project'">
-                <p class="invest-title new-hand">
-                <span class="project-type">{np.dt_article_category.title}</span>
-                新手专享标
-            </p>
-                <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
-                <div class="rate-wrap">
-                    <div class="title-style">项目收益</div>
-                    <div class="txt-red-s"><span class="txt-red-l">10</span> 元</div>
-                </div>
-                <div class="time-wrap">
-                    <div class="title-style">期限</div>
-                    <div><span class="txt-darkgrey-l">{np.repayment_term_span_count}</span> {np.GetProjectTermSpanEnumDesc()}</div>
-                </div>
-                <div class="amount-wrap">
-                    <div class="title-style">可投金额</div>
-                    <div><span class="txt-darkgrey-l"><%=np.financing_amount.ToString("n0")%></span> 元</div>
-                </div>
-                <div class="invest-status flex flex-center-wrapper">
-                    <div class="indicatorContainer" data-progress="<%=(np.GetInvestmentProgressPercent()*100)%>"></div>
-                </div>
-            </div>
+    <div class="height-100 flex flex--column flex--flex-grow-first">
+        <div class="index-page scroll" style="height:0">
+            <!--/ ios flex box bug hack /-->
+            <%if(!IsUserLogin())%>
+            <div class="reglog-bar flex flex-vertical-align flex--flex-grow-first">
+                <span><img src="<%templateskin%>/imgs/agrh.png"></span>
+                <a href='<%linkurl("register")%>'>快速注册</a>
+                <a href='<%linkurl("login")%>'>登录</a>
             </div>
             <%/if%>
-
-            <%foreach(var cid in CategoryIdTitleMap.Keys.Where(c=>c==60||c==62).OrderByDescending(c=>c))%>
-            <%set var totalcount=0%>
-        <%set var investables=QueryInvestables(5,0,out totalcount,cid,0,0,0)%>
-        <%foreach(var inv in investables)%>
-        <%set var p=inv.Project%>
-        <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
-            <p class="invest-title">
-                <span class="project-type">{inv.CategoryName}</span>
-                {inv.Title}
-                <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
-                <span class="book-icon">约标</span>
-                <%/if%>
-                <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
-                <%/if%>
-                <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
-                <%/if%>
-            </p>
-            <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
-                <div class="rate-wrap">
-                    <div class="title-style">年化利率</div>
-                    <div class="txt-red-s"><span class="txt-red-l"><%=(inv.ProfitRateYearly*100).ToString("f1")%></span> %</div>
-                </div>
-                <div class="time-wrap">
-                    <div class="title-style">期限</div>
-                    <div><span class="txt-darkgrey-l">{inv.RepaymentTermSpanCount}</span> {inv.ProjectTermSpanName}</div>
-                </div>
-                <div class="amount-wrap">
-                    <div class="title-style">借款金额</div>
-                    <div><span class="txt-darkgrey-l"><%=inv.FinancingAmountStr%></span> 元</div>
-                </div>
-                <div class="invest-status flex flex-center-wrapper">
-                    <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
-                    <div class="status-wrap"><div class="over-icon">待发标</div></div>
-                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
-                    <div class="indicatorContainer" data-progress="<%=(inv.InvestmentProgress*100)%>"></div>
-                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
-                    <div class="status-wrap"><div class="over-icon">审核中</div></div>
-                    <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
-                    <div class="status-wrap"><div class="over-icon">还款中</div></div>
-                    <%else if(inv.Status>=Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
-                    <div class="status-wrap"><div class="over-icon">已结束</div></div>
-                    <%/if%>
+            <div id="banner-carousel" class="carousel slide" data-ride="carousel">
+                <!--<ol class="carousel-indicators">-->
+                <!--<li data-target="#banner-carousel" data-slide-to="0" class="active"></li>-->
+                <!--<li data-target="#banner-carousel" data-slide-to="1"></li>-->
+                <!--</ol>-->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <a href='<%linkurl("safe_defence")%>'><img src="<%templateskin%>/imgs/banner/banner-phone.jpg"></a>
+                    </div>
                 </div>
             </div>
+            <div class="invest-list">
+
+                <!-- 新手标 -->
+                <%set var np = GetFirstNewbieProject()%>
+                <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
+                <div class="invest-project" onclick="location.href='<%=linkurl("project",np.id)%>#project'">
+                    <p class="invest-title new-hand">
+                        <span class="project-type">{np.dt_article_category.title}</span>
+                        {np.title}
+                    </p>
+                    <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
+                        <div class="rate-wrap">
+                            <div class="title-style">预期年化率</div>
+                            <div class="txt-red-s"><span class="txt-red-l"><%=np.profit_rate_year.ToString("f2")%></span> %</div>
+                        </div>
+                        <div class="time-wrap">
+                            <div class="title-style">期限</div>
+                            <div><span class="txt-darkgrey-l">{np.repayment_term_span_count}</span> {np.GetProjectTermSpanEnumDesc()}</div>
+                        </div>
+                        <div class="amount-wrap">
+                            <div class="title-style">可投金额</div>
+                            <div><span class="txt-darkgrey-l"><%=(np.financing_amount-np.investment_amount).ToString("n0")%></span> 元</div>
+                        </div>
+                        <div class="invest-status flex flex-center-wrapper">
+                            <div class="indicatorContainer" data-progress="<%=(np.GetInvestmentProgressPercent()*100)%>"></div>
+                        </div>
+                    </div>
+                </div>
+                <%/if%> 
+
+                <%set var totalcount=0%>
+                <%set var investables=QueryInvestables(5,0,out totalcount,60)%>
+                <%foreach(var inv in investables)%>
+                <%set var p=inv.Project%>
+                <div class="invest-project" onclick="location.href='<%=inv.Linkurl(config)%>#project'">
+                    <p class="invest-title">
+                        <span class="project-type">{inv.CategoryName}</span>
+                        {inv.Title}
+                        <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Ordered)>0)%>
+                        <span class="book-icon">约标</span>
+                        <%/if%>
+                        <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.Recommend)>0)%>
+                        <%/if%>
+                        <%if((p.tag&(int)Agp2pEnums.ProjectTagEnum.CreditGuarantee)>0)%>
+                        <%/if%>
+                    </p>
+                    <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
+                        <div class="rate-wrap">                            
+                            <div class="title-style">预期年化率</div>
+                            <div class="txt-red-s"><span class="txt-red-l"><%=(inv.ProfitRateYearly*100).ToString("f2")%></span> %</div>
+                        </div>
+                        <div class="time-wrap">
+                            <div class="title-style">期限</div>
+                            <div><span class="txt-darkgrey-l">{inv.RepaymentTermSpanCount}</span> {inv.ProjectTermSpanName}</div>
+                        </div>
+                        <div class="amount-wrap">
+                            <div class="title-style">借款金额</div>
+                            <div><span class="txt-darkgrey-l"><%=inv.FinancingAmountStr%></span> 元</div>
+                        </div>
+                        <div class="invest-status flex flex-center-wrapper">
+                            <%if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                            <div class="status-wrap"><div class="over-icon">待发标</div></div>
+                            <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
+                            <div class="indicatorContainer" data-progress="<%=(inv.InvestmentProgress*100)%>"></div>
+                            <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                            <div class="status-wrap"><div class="over-icon">审核中</div></div>
+                            <%else if(inv.Status==Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                            <div class="status-wrap"><div class="over-icon">还款中</div></div>
+                            <%else if(inv.Status>=Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                            <div class="status-wrap"><div class="over-icon">已结束</div></div>
+                            <%/if%>
+                        </div>
+                    </div>
+                </div>
+                <%/foreach%>
+            </div>
         </div>
-            <%/foreach%>
-            <%/foreach%>
-        </div>
+        <%template src="_footer.html"%>
     </div>
-    <%template src="_footer.html"%>
-</div>
 </body>
 </html>

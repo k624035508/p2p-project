@@ -9,15 +9,26 @@ body { background: @body-color; }
 	height: 80px;
 	background: #1478d2;
 	.content-wrap {
-		ul{
-			li {
-				margin-left: 25px;
+		ul.list-inline{
+			&>li {
+				margin-left: 24px; 
 				a {
 					color: @white;
-					font-size: @font17;
-					line-height: 80px;
+					font-size: @font17; display:inline-block;	
+                    line-height:80px;				
 					text-decoration: none;
+                    vertical-align:middle;
 				}
+                  .arrowsituation{width:16px; height:16px; .inline-block;
+                              background:url("@{images}/bottom.png");                            
+                         }
+                                      &:hover{
+                        a{
+                            .arrowsituation{
+                                background:url("@{images}/top.png");
+                            }
+                        }
+                    }
 			}
 			li:first-child { margin-left: 4px; }
 		}
@@ -63,11 +74,11 @@ body { background: @body-color; }
 				margin-top: 55px;
 				background: url("@{images}/agrh-bg.png") no-repeat left center;
 				.description {
-					width: 645px;
-					color: @darker-grey;
-					font-size: @font15;
-					text-indent: 2em;
-					line-height: 28px;
+                    margin-top:22px;
+					width: 630px;
+					color: @dark-grey;
+					font-size: 18px;
+					line-height: 39px;
 				}
 			}
 		}
@@ -99,19 +110,18 @@ body { background: @body-color; }
 	/*大事记*/
 	#events {
 		height: 600px;
-		padding-top: 40px;
+		padding-top: 24px;
 		background: url("@{images}/events-bg.jpg") no-repeat center;
 		.title {
 			height: 110px;
 			background: url("@{images}/events-title.png") no-repeat center;
 		}
 		.description {
-			height: 310px;
-			margin-top: 80px;
-			background: url("@{images}/events.png") no-repeat center;
+			height: 380px;
+			background: url("@{images}/events2.png") no-repeat center;
 		}
 	}
-	/*高管团队*/
+	/*管理团队*/
 	#manager {
 		height: 820px;
 		padding-top: 40px;
@@ -119,7 +129,7 @@ body { background: @body-color; }
 		.content-wrap {
 			.title {
 				height: 110px;
-				background: url("@{images}/manager-title.png") no-repeat center;
+				background: url("@{images}/manager-title2.png") no-repeat center;
 			}
 			.description {
 				margin-top: 50px;
@@ -157,13 +167,77 @@ body { background: @body-color; }
 						height: 225px;
 						background: url("@{images}/chenmaoqiang.png") no-repeat center;
 					}
-					.xuanjinghui {
+					.mazong {
 						height: 225px;
-						background: url("@{images}/xuanjinghui.png") no-repeat center;
+						background: url("@{images}/mazong.jpg") no-repeat center;
 					}
 					.lixiangnan {
 						height: 225px;
 						background: url("@{images}/lixiangnan.png") no-repeat center;
+					}
+				}
+				& > div:first-child {
+					border-left: none;
+					.personal-info {
+						padding: 0 !important;
+						.introduce { margin: 30px 28px 0 28px; }
+					}
+				}
+			}
+		}
+	}
+    /*顾问团队*/
+	#advisor {
+		height: 800px;
+		padding-top: 5px;
+		background: #1478d2;
+		.content-wrap {
+			.title {
+				height: 110px;
+				background: url("@{images}/manager-title3.png") no-repeat center;
+			}
+			.description {
+				margin-top: 50px;
+				padding: 0 5%;
+				& > * {
+					display: inline-block;
+					float: left;
+				}
+				& > span {
+					width: 1px;
+					height: 575px;
+					margin-top: 20px;
+					background: #6cb9fd;
+				}
+				& > div {
+					display: inline-block;
+					width: 49%;
+					.personal-info {
+						color: @white;
+						line-height: 26px;
+						padding: 0 30px;
+						.name, .position { text-align: center; }
+						.name {
+							font-size: @font25;
+							margin: 25px 0;
+						}
+						.position { font-size: @font20; }
+						.introduce {
+                           
+							font-size: @font15;
+							text-indent: 2em;
+                            margin-top: 30px;
+                            margin-left:20% !important;
+                            margin-right:20% !important;
+						}
+					}
+					.xuan {
+						height: 225px; 
+						background: url("@{images}/xuanjinghui.png") no-repeat center;
+					}
+					.lawer {
+						height: 225px;
+						background: url("@{images}/lawer.jpg") no-repeat center;
 					}
 				}
 				& > div:first-child {
@@ -193,10 +267,10 @@ body { background: @body-color; }
 					display: inline-block;
 					vertical-align: top;
 					width: 40%;
-					.bank-nanyue {
+					.sumapay {
 						height: 175px;
 						margin-bottom: 25px;
-						background: url("@{images}/bank-nanyue.png") no-repeat center;
+						background: url("@{images}/sumapay.jpg") no-repeat center;
 					}
 					.law-yingke {
 						height: 175px;
@@ -247,16 +321,14 @@ body { background: @body-color; }
 					margin: 0 auto;
 					li {
 						padding: 0;
-						a, a span { width: 207px; }
-					}
-					.staff01 { background: url("@{picWall}/staff01-bg.jpg") center; }
-					.staff02 { background: url("@{picWall}/staff02-bg.png") center; }
-					.staff03 { background: url("@{picWall}/staff03-bg.png") center; }
-					.staff04 { background: url("@{picWall}/staff04-bg.png") center; }
-					.staff05 { background: url("@{picWall}/staff05-bg.png") center; }
-					.staff06 { background: url("@{picWall}/staff06-bg.jpg") center; }
-					.staff07 { background: url("@{picWall}/staff07-bg.png") center; }
-					.staff08 { background: url("@{picWall}/staff08-bg.png") center; }
+						a, a span { width: 270px; }
+					}					
+					.staff01 { background: url("@{picWall}/staff01B-bg .png") center; }				
+					.staff02 { background: url("@{picWall}/staff02B-bg .png") center; }
+					.staff03 { background: url("@{picWall}/staff03B-bg .png") center; }
+					.staff04 { background: url("@{picWall}/staff04B-bg .png") center; }
+					.staff05 { background: url("@{picWall}/staff05B-bg .png") center; }
+					.staff06 { background: url("@{picWall}/staff06B-bg .png") center; }
 				}
 			}
 		}
@@ -284,9 +356,9 @@ body { background: @body-color; }
 						margin-left: 0%;
 						li {
 							padding: 0 .5px;
-							a, a span { width: 270px; }
+							a, a span { width: 270px;  }
 						}
-						.office01 { background: url("@{picWall}/office01-bg.png") center; }
+						.office01 { background: url("@{picWall}/office07-bg.jpg") center; }
 						.office02 { background: url("@{picWall}/office02-bg.png") center; }
 						.office03 { background: url("@{picWall}/office03-bg.png") center; }
 						.office04 { background: url("@{picWall}/office04-bg.png") center; }
@@ -299,7 +371,7 @@ body { background: @body-color; }
 	}
 	/*公司资质*/
 	#qualification {
-		height: 610px;
+		height: 704px;
 		padding-top: 40px;
 		background: url("@{images}/culture-bg.png");
 		.content-wrap {
@@ -310,12 +382,20 @@ body { background: @body-color; }
 			.description {
 				text-align: center;
 				margin-top: 50px;
-				div {
-					display: inline-block;
+				.business-license {
+                    display:inline-block;
 					width: 248px;
 					height: 350px;
 					cursor: pointer;
-					background: url("@{images}/license-bg.jpg") no-repeat;
+					background: url("@{images}/license-bg3.jpg") no-repeat;
+				}
+                .business-beian {
+                    margin-top:35px;
+                    margin-left:425px;					
+					width: 248px;
+					height: 84px;
+					cursor: pointer;
+					background: url("@{images}/beian-bg3.jpg") no-repeat;
 				}
 			}
 		}
@@ -331,14 +411,19 @@ body { background: @body-color; }
 				background: url("@{images}/strategy-title.png") no-repeat center;
 			}
 			.description {
-				margin-top: 50px;
+				margin-top: 70px;
 				.strategy-content {
-					height: 110px;
+					height: 90px;
 					line-height: 118px;
 					color: @grey;
 					font-size: @font22;
 					text-align: center;
-					border: @border;
+					& > div{ width:210px; height:70px; display:inline-block; margin-right:5px;}
+                    .team-con1 { background:url("@{images}/team1.jpg");}
+                    .team-con2 { background:url("@{images}/team2.jpg");}
+                    .team-con3 { background:url("@{images}/team3.jpg");}
+                    .team-con4 { background:url("@{images}/team4.jpg");}
+                    .team-con5 { background:url("@{images}/team5.jpg"); margin-right:0;}
 				}
 			}
 		}
@@ -362,7 +447,7 @@ body { background: @body-color; }
 					float: left;
 				}
 				.add-wrap {
-					margin-right: 110px;
+					width:600px;
 					address {
 						color: @white;
 						font-size: @font20;
@@ -399,6 +484,7 @@ body { background: @body-color; }
 	}
 }
 
+
 .unselectable {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -409,11 +495,12 @@ body { background: @body-color; }
 
 #picModal {
 	.modal-dialog {
-		width: 650px;
+		width: 850px;
 		margin: 30px auto;
 		.modal-content .modal-body img { max-width: 100%; }
 	}
 }
+
 
 #picWall {
 	* { .unselectable; }
@@ -440,3 +527,24 @@ body { background: @body-color; }
 		}
 	}
 }
+                  
+                   .dropdown-menu-custom {                  
+                    min-width: 90px;
+                    margin: 0;
+                    padding: 0;
+                     border: none;
+                     border-radius:0;
+                    &>li {
+                        padding: 0;   margin: 0!important;          height:42px;         
+                        a {
+                            
+                            color:@darker-grey!important;
+                             line-height:42px!important;
+                             font-size:14px!important;
+                        }
+                    }
+                    & li:first-child { border-top:2px solid @blue; }
+                 }
+                  
+
+ #aboutmore:hover > .dropdown-menu-custom { display: block; margin-top:-20px; }

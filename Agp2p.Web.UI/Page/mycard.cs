@@ -7,6 +7,10 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
+using Agp2p.Common;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Transaction;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 
@@ -52,17 +56,51 @@ namespace Agp2p.Web.UI.Page
                 return "你已经添加了卡号为 " + cardNumber + " 的银行卡，不能重复添加";
             }
 
+            if (3 <= userInfo.li_bank_accounts.Count)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return "最多只能添加 3 张银行卡";
+            }
+
+            //查询该客户是否已经在丰付绑定了银行卡
             var user = context.dt_users.Single(u => u.id == userInfo.id);
-            var card = new li_bank_accounts
+            var req = new SignBankCardQueryRequest(user.id);
+            MessageBus.Main.Publish(req);
+            var resp = BaseRespMsg.NewInstance<SignBankCardQueryRespone>(req.SynResult);
+            if (resp.RechargeProtocolList != null)
+            {
+                if (resp.CheckRechargeProtocol(bankName, cardNumber))
+                {
+                    var card = new li_bank_accounts
+                    {
+                        dt_users = user,
+                        account = cardNumber,
+                        bank = bankName,
+                        last_access_time = DateTime.Now,
+                        opening_bank = "",
+                        location = "",
+                        type = (int)Common.Agp2pEnums.BankAccountType.QuickPay,
+                    };
+                    context.li_bank_accounts.InsertOnSubmit(card);
+                    context.SubmitChanges();
+                    return "保存银行卡信息成功";
+                }
+                else
+                {
+                    return "添加银行卡失败，您输入的银行卡号与丰付平台绑定的银行卡号不一致！";
+                }
+            }
+            var cardUnknown = new li_bank_accounts
             {
                 dt_users = user,
                 account = cardNumber,
                 bank = bankName,
                 last_access_time = DateTime.Now,
                 opening_bank = "",
-                location = ""
+                location = "",
+                type = (int)Common.Agp2pEnums.BankAccountType.Unknown,
             };
-            context.li_bank_accounts.InsertOnSubmit(card);
+            context.li_bank_accounts.InsertOnSubmit(cardUnknown);
             context.SubmitChanges();
             return "保存银行卡信息成功";
         }

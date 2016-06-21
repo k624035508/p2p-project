@@ -83,7 +83,8 @@ namespace Agp2p.Web.admin.transact
                 bank = txtBank.Text.Trim(),
                 opening_bank = txtOpeningBank.Text.Trim(),
                 account = txtAccount.Text.Trim(),
-                last_access_time = DateTime.Now
+                last_access_time = DateTime.Now,
+                type = (int)Agp2pEnums.BankAccountType.Unknown,
             };
             context.li_bank_accounts.InsertOnSubmit(model);
             try

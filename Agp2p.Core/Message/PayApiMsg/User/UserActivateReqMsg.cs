@@ -12,12 +12,12 @@ namespace Agp2p.Core.Message.PayApiMsg
     {
         public string PayType { get; set; }
 
-        public UserActivateReqMsg(int userId, string payType)
+        public UserActivateReqMsg(int userId, string payType = "1")
         {
             UserId = userId;
             PayType = payType;
             Api = (int) Agp2pEnums.SumapayApiEnum.Activ;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/activate_toActivate";
+            ApiInterface = SumapayConfig.ApiUrl + "user/activate_toActivate";
             RequestId = Agp2pEnums.SumapayApiEnum.Activ.ToString().ToUpper() + Utils.GetOrderNumberLonger();
         }
 

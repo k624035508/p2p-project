@@ -17,8 +17,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             ProjectCode = projectCode;
 
             Api = (int)Agp2pEnums.SumapayApiEnum.ClRep;
-            ApiInterface = SumapayConfig.TestApiUrl + "user/cancelAutoRepay_toCancelAutoRepay";
+            ApiInterface = SumapayConfig.ApiUrl + "user/cancelAutoRepay_toCancelAutoRepay";
             RequestId = Agp2pEnums.SumapayApiEnum.ClRep.ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        protected AutoRepayCancelReqMsg()
+        {
         }
 
         public override string GetSignature()

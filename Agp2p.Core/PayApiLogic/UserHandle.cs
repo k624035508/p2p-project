@@ -66,7 +66,9 @@ namespace Agp2p.Core.PayApiLogic
                                     //更新请求日志
                                     requestLog.complete_time = DateTime.Now;
                                     requestLog.status = (int) Agp2pEnums.SumapayRequestEnum.Complete;
-
+                                    //收取手续费
+                                    UserAuthFee(context, user.id);
+                                    context.SubmitChanges();
                                     msg.HasHandle = true;
                                 }
                                 else
@@ -94,6 +96,19 @@ namespace Agp2p.Core.PayApiLogic
             context.SubmitChanges();
         }
 
+        private static void UserAuthFee(Agp2pDataContext context, int userId)
+        {
+            var rechangerFee = new li_company_inoutcome()
+            {
+                create_time = DateTime.Now,
+                user_id = userId,
+                outcome = 2.5m,
+                type = (int)Agp2pEnums.OfflineTransactionTypeEnum.UserAuthFee,
+                remark = "个人实名认证手续费"
+            };
+            context.li_company_inoutcome.InsertOnSubmit(rechangerFee);
+        }
+
         /// <summary>
         /// 开户处理
         /// </summary>
@@ -119,9 +134,13 @@ namespace Agp2p.Core.PayApiLogic
                         if (user != null)
                         {
                             user.identity_id = msg.UserId;
-                            user.real_name = msg.Name;
-                            msg.HasHandle = true;
+                            //TODO 丰付企业认证返回anonymous
+                            user.real_name = !msg.Name.Equals("anonymous") ? msg.Name : user.real_name;
+                            //在开户中进行了实名认证，收取手续费
+                            if (string.IsNullOrEmpty(user.token))
+                                UserAuthFee(context, user.id);
                             context.SubmitChanges();
+                            msg.HasHandle = true;
                         }
                         else
                         {

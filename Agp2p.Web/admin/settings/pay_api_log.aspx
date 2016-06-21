@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="pay_api_log.aspx.cs" Inherits="Agp2p.Web.admin.repayment.pay_api_log" %>
+<%@ Import Namespace="Agp2p.Common" %>
 
 <!DOCTYPE html>
 
@@ -26,6 +27,14 @@
         <!--工具栏-->
         <div class="toolbar-wrap">
             <div id="floatHead" class="toolbar">
+                <div class="l-list">
+                <ul class="icon-list">
+                    <li>
+                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="del" OnClientClick="return ExeNoCheckPostBack('btnDelete','删除15天前的资金托管日志，你确定吗?');"
+                            OnClick="btnDelete_Click"><i></i><span>删除日志</span></asp:LinkButton>
+                    </li>                    
+                </ul>
+                </div>
                 <div class="r-list">
                     <div class="menu-list rl" style="display: inline-block;">
                         <div class="rule-single-select">
@@ -68,7 +77,9 @@
                     <td align="left"><%#Eval("ResponseTime") %></td>
                     <td align="left"><%#Eval("ResponseResult") %></td>
                     <td align="left"><%#Eval("ResponseRemark") %></td>
-                    <td align="center"></td>
+                    <td align="center">
+                        <asp:LinkButton runat="server" ID="excBtn" OnClick="excBtn_OnClick" OnClientClick="return confirm('确定执行平台操作吗?');" CommandArgument='<%#Eval("RequestLog.RequestId")%>' Visible='<%#Eval("RequestLog.Status") != null && !Eval("RequestLog.Status").ToString().Equals("已完成")%>'>执行</asp:LinkButton>
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

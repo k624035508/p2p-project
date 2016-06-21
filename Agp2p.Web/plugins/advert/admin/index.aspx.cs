@@ -102,7 +102,10 @@ namespace Agp2p.Web.Plugin.Advert.admin
                     return "其它";
             }
         }
+
         #endregion
+
+
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)

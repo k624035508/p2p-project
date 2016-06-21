@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+using System.Data;
 using Agp2p.Common;
 
 namespace Agp2p.Web.Plugin.Advert.admin
@@ -11,6 +15,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
     {
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
         private int id = 0;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -46,6 +51,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
         {
             BLL.advert bll = new BLL.advert();
             Model.advert model = bll.GetModel(_id);
+            
 
             txtTitle.Text = model.title;
             rblType.SelectedValue = model.type.ToString();
@@ -55,6 +61,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
             txtViewWidth.Text = model.view_width.ToString();
             txtViewHeight.Text = model.view_height.ToString();
             rblTarget.SelectedValue = model.target;
+           
         }
         #endregion
 
@@ -73,6 +80,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
             model.view_width = int.Parse(txtViewWidth.Text.Trim());
             model.view_height = int.Parse(txtViewHeight.Text.Trim());
             model.target = rblTarget.SelectedValue;
+           
 
             if (bll.Add(model) >0)
             {
@@ -92,6 +100,7 @@ namespace Agp2p.Web.Plugin.Advert.admin
 
             model.title = txtTitle.Text.Trim();
             model.type = int.Parse(rblType.SelectedValue);
+            
             model.price = decimal.Parse(txtPrice.Text.Trim());
             model.remark = txtRemark.Text.Trim();
             model.view_num = int.Parse(txtViewNum.Text.Trim());

@@ -22,8 +22,12 @@ namespace Agp2p.Core.Message.PayApiMsg
             Cycle = cycle;
 
             Api = useBank ? (int)Agp2pEnums.SumapayApiEnum.AbReO : (int) Agp2pEnums.SumapayApiEnum.AcReO;
-            ApiInterface = SumapayConfig.TestApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
+            ApiInterface = SumapayConfig.ApiUrl + (useBank ? "user/autoWithholdingRepay_toAutoRepaySign" : "user/autoAccountRepay_toAutoRepaySign");
             RequestId = ((Agp2pEnums.SumapayApiEnum)Api).ToString().ToUpper() + Utils.GetOrderNumberLonger();
+        }
+
+        protected AutoRepaySignReqMsg()
+        {
         }
 
         public override string GetSignature()

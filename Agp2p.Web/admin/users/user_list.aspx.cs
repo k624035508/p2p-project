@@ -33,6 +33,11 @@ namespace Agp2p.Web.admin.users
             page = DTRequest.GetQueryInt("page", 1);
             if (!Page.IsPostBack)
             {
+#if !DEBUG
+                //正式环境不能删除用户
+                btnDelete.Visible = false;
+#endif
+
                 var startTime = DTRequest.GetQueryString("startTime");
                 if (!string.IsNullOrEmpty(startTime))
                     txtStartTime.Text = startTime;
@@ -261,7 +266,7 @@ namespace Agp2p.Web.admin.users
                 .Select(
                     u => new
                     {
-                        u.user_name,
+                        u.id,
                         u.real_name,
                         u.reg_time,
                         u.dt_user_groups.title,
