@@ -83,8 +83,22 @@
         </div>
     </div>
     <div id="app"
-         data-user-identity="<%=IsIdentity()%>"></div>
+         data-user-identity="<%=IsIdentity()%>" data-questionnaireScore="<%=IsQuestionnaire()%>"></div>
 
+    <div class="modal fade" id="questionConfirm" role="dialog" aria-labelledby="questionConfirmLabel" data-backdrop="static">
+        <div class="modal-dialog questionConfirm-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">评估测试</h4>
+                </div>
+                <div class="modal-body">
+                    <p>测一测你是哪种类型的投资人</p>
+                    <a href='<%linkurl("questionnaire")%>'>点击测试</a>
+                    <div class="questionp"><span class="strongMan">我是稳健型投资者，</span><span data-dismiss="modal" aria-label="Close">跳过测试</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <%template src="_footer.html"%>
 </div>

@@ -1159,6 +1159,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-login.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade-grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\psw-trade.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\safe\score.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\smile.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\test_01.jpg" />
     <Content Include="templates\AnGuang\imgs\usercenter\unread.png" />
@@ -1264,6 +1265,13 @@
     <Content Include="templates\weChat\imgs\banner\banner-2.png" />
     <Content Include="templates\weChat\imgs\banner\banner-3.png" />
     <Content Include="templates\weChat\imgs\banner\banner-phone.jpg" />
+    <Content Include="templates\weChat\imgs\banner\investType.png" />
+    <Content Include="templates\weChat\imgs\banner\investType2.png" />
+    <Content Include="templates\weChat\imgs\banner\investType3.png" />
+    <Content Include="templates\weChat\imgs\banner\questionnaire-banner.jpg" />
+    <Content Include="templates\weChat\imgs\banner\rePlay3.png" />
+    <Content Include="templates\weChat\imgs\banner\toRegister.png" />
+    <Content Include="templates\weChat\imgs\banner\toRegister3.png" />
     <Content Include="templates\weChat\imgs\blue-tick.png" />
     <Content Include="templates\weChat\imgs\cordova-back.png" />
     <Content Include="templates\weChat\imgs\empty-box.png" />
@@ -1343,6 +1351,7 @@
     <Content Include="templates\weChat\js\newsdetail.js" />
     <Content Include="templates\weChat\js\project.js" />
     <Content Include="templates\weChat\js\projects.js" />
+    <Content Include="templates\weChat\js\questionnaire.js" />
     <Content Include="templates\weChat\js\recharge.js" />
     <Content Include="templates\weChat\js\register.js" />
     <Content Include="templates\weChat\js\safe.js" />
@@ -1355,6 +1364,7 @@
     <Content Include="templates\weChat\less\card-select.css" />
     <Content Include="templates\weChat\less\cards-list.css" />
     <Content Include="templates\weChat\less\jquery.mobile-1.4.5.min.css" />
+    <None Include="templates\weChat\less\questionnaire.less" />
     <Content Include="templates\weChat\less\verified.css" />
     <Content Include="templates\weChat\project.html" />
     <Content Include="templates\weChat\projects.html" />
@@ -1371,6 +1381,7 @@
     <Content Include="templates\weChat\mynews_show.html" />
     <Content Include="templates\weChat\myreceiveplan.html" />
     <Content Include="templates\weChat\mytrade.html" />
+    <Content Include="templates\weChat\questionnaire.html" />
     <Content Include="templates\weChat\recharge.html" />
     <Content Include="templates\weChat\register.html" />
     <Content Include="templates\weChat\safe.html" />

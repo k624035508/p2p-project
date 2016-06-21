@@ -165,6 +165,8 @@ namespace Agp2p.Web.UI.Page
                     groupName = userInfo.dt_user_groups.title,
                     isLoaner = userInfo.li_loaners.Any(),
                     identityId = userInfo.identity_id,
+                    questionnaireScore = AjaxLoadQuestionnaireResult(1),
+                    isQuestionnaire = userInfo.li_questionnaire_results.Any()
                 }
             });
         }
@@ -1151,8 +1153,10 @@ namespace Agp2p.Web.UI.Page
 
             var answers = userInfo.li_questionnaire_results.Where(q => q.questionnaireId == questionnaireId)
                 .OrderBy(q => q.questionId).Select(q => q.answer).ToList();
-            return JsonConvert.SerializeObject(new { answers,
-                score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, answers) });
+            /* return JsonConvert.SerializeObject(new { answers,
+                score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, answers) }); */
+            var score = SumOfScore((Agp2pEnums.QuestionnaireEnum)questionnaireId, answers);
+            return score.ToString();
         }
 
     }

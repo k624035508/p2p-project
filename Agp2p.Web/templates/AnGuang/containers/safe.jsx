@@ -340,14 +340,38 @@ class CustodyAccount extends React.Component {
                     {this.props.identityId? 
                     <a href={"/api/payment/sumapay/index.aspx?api=4"} target="_blank">查看</a> 
                     :
-                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank" >设置</a>
+                    <a href={"/api/payment/sumapay/index.aspx?api=1"} target="_blank">设置</a>
 	                    }
                     </span>
 				</div>
 			</li>
 		);
 			}
-	}
+				}
+
+class QuestionnaireResult extends React.Component {
+    constructor(props) {
+        super(props);
+        }
+        render() {
+            return(
+            <li>
+                <div className="list-cell">
+                    <span className="questionnaire-result"></span>
+                    <span className="list-th">风险测评</span>
+                    <span className="list-tips">测一测您是哪种类型的投资人</span>
+                    <span className="pull-right">
+                        {this.props.isQuestionnaire? 
+                        <a href={"/questionnaire.html?action="+this.props.questionnaireScore} target="_blank">查看</a> 
+                        : 
+                        <a href={"/questionnaire.html"} target="_blank">测试</a>
+                        }
+                    </span>
+                </div>
+            </li>
+                );
+        }
+}
 
 class ResetLoginPassword extends React.Component {
 	constructor(props) {
@@ -532,6 +556,7 @@ class SafeCenter extends React.Component {
                             <CustodyAccount {...this.props} />
                             <EmailBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
+                            <QuestionnaireResult {...this.props} />
                     {/*<ResetTransactPassword {...this.props} />*/}
                 </ul>
 					</div>
@@ -545,6 +570,7 @@ class SafeCenter extends React.Component {
                             <CustodyAccount {...this.props} />
                             <EmailBinding {...this.props} />
 							<ResetLoginPassword {...this.props} />
+                            <QuestionnaireResult {...this.props} />
                 {/*<ResetTransactPassword {...this.props} />*/}
     </ul>
 					</div>
