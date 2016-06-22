@@ -19,6 +19,7 @@ namespace Agp2p.Web.admin.popularize
         private int id = 0;
         private int categoryId = 0;
         protected string navigation_name;
+        protected string user_name;
 
         //页面初始化事件
         protected void Page_Init(object sernder, EventArgs e)
@@ -26,6 +27,7 @@ namespace Agp2p.Web.admin.popularize
             this.channel_id = DTRequest.GetQueryInt("channel_id");
             this.categoryId = DTRequest.GetQueryInt("category_id");
             this.navigation_name = DTRequest.GetCookieByName("dt_manage_navigation_cookie");
+            this.user_name = DTRequest.GetQueryString("user_name");
             CreateOtherField(this.channel_id); //动态生成相应的扩展字段
         }
 
@@ -40,6 +42,8 @@ namespace Agp2p.Web.admin.popularize
                 return;
             }            
             this.channel_name = new BLL.channel().GetChannelName(this.channel_id); //取得频道名称
+
+            
 
             if (!string.IsNullOrEmpty(_action) && _action == DTEnums.ActionEnum.Edit.ToString())
             {
@@ -97,6 +101,11 @@ namespace Agp2p.Web.admin.popularize
                     Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
                     this.ddlParentId.Items.Add(new ListItem(Title, Id));
                 }
+            }
+
+            if (user_name == "admin")
+            {
+                rblStatus.Enabled = true;
             }
         }
 
@@ -397,6 +406,7 @@ namespace Agp2p.Web.admin.popularize
             {
                 cblItem.Items[4].Selected = true;
             }
+            
             ddlParentId.SelectedValue = model.category_id.ToString();
             //扩展字段赋值
             List<Model.article_attribute_field> ls1 = new BLL.article_attribute_field().GetModelList(this.channel_id, "");

@@ -19,12 +19,14 @@ namespace Agp2p.Web.admin.popularize
         private int id = 0;
         private int categoryId = 0;
         protected string navigation_name;
+        protected string user_name;
 
         //页面初始化事件
         protected void Page_Init(object sernder, EventArgs e)
         {
             this.channel_id = DTRequest.GetQueryInt("channel_id");
             this.categoryId = DTRequest.GetQueryInt("category_id");
+            this.user_name = DTRequest.GetQueryString("user_name");
             this.navigation_name = DTRequest.GetCookieByName("dt_manage_navigation_cookie");
             CreateOtherField(this.channel_id); //动态生成相应的扩展字段
         }
@@ -59,6 +61,10 @@ namespace Agp2p.Web.admin.popularize
             if (!Page.IsPostBack)
             {
                 ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.View.ToString()); //检查权限
+                if (user_name == "ch001")
+                {
+                    rblStatus.Enabled = true;
+                }
                 ShowSysField(this.channel_id); //显示相应的默认控件
                 GroupBind(""); //绑定用户组
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
