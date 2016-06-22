@@ -43,6 +43,9 @@ namespace Agp2p.Core.Message
             UserHandle.DoSubscribe();//用户接口响应处理
             BankTransHandle.DoSubscribe();//资金账户接口响应
             ProjectTransHandle.DoSubscribe();//项目接口响应
+
+            //会员积分
+            UserPointHandler.DoSubscribe();
         }
     }
 }

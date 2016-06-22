@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="agrh_test" Class="Agp2pDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.5.98;Initial Catalog=agrh_test;User ID=sa" SettingsObjectName="Agp2p.Linq2SQL.Properties.Settings" SettingsPropertyName="agrh_testConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.li_activity_transactions" Member="li_activity_transactions">
     <Type Name="li_activity_transactions">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

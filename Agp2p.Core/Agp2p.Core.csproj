@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="ActivityLogic\InviterBonus.cs" />
     <Compile Include="ActivityLogic\TrialActivity.cs" />
+    <Compile Include="ActivityLogic\UserPointHandler.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
     <Compile Include="AutoLogic\CheckDelayInvestOverTime.cs" />
     <Compile Include="AutoLogic\AutoMakeLoan.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Message\PayApiMsg\Project\BidRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\User\UserRealNameAuthRespMsg.cs" />
     <Compile Include="Message\GainLoanerRepaymentMsg.cs" />
+    <Compile Include="Message\UserPointMsg.cs" />
     <Compile Include="PayApiLogic\SumapayConfig.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\ReturnPrinInteReqMsg.cs" />
