@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="agrh_test" Class="Agp2pDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.5.98;Initial Catalog=agrh_test;User ID=sa" SettingsObjectName="Agp2p.Linq2SQL.Properties.Settings" SettingsPropertyName="agrh_testConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.li_activity_transactions" Member="li_activity_transactions">
     <Type Name="li_activity_transactions">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -212,16 +213,6 @@
       <Column Name="call_index" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="content" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="is_sys" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.dt_user_point_log" Member="dt_user_point_log">
-    <Type Name="dt_user_point_log">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="value" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_departments" Member="li_departments">
@@ -814,6 +805,17 @@
       <Column Name="questionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="answer" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="dt_users_li_questionnaire_result" Member="dt_users" ThisKey="userId" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_point_log" Member="dt_user_point_log">
+    <Type Name="dt_user_point_log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="type" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="value" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

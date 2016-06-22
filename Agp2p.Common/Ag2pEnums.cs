@@ -962,5 +962,30 @@ namespace Agp2p.Common
             [Description("网络借贷出借人风险评估测试")]
             LenderRiskAssessmentTest = 1,
         }
+
+        /// <summary>
+        /// 会员积分
+        /// </summary>
+        public enum PointEnum
+        {
+            [Description("每日签到")]
+            Sign = 1,
+            [Description("注册")]
+            Register = 2,
+            [Description("实名认证")]
+            RealNameAuth = 3,
+            [Description("绑定邮箱")]
+            BindingEmail = 4,
+            [Description("绑定银行卡")]
+            BindingBank = 4,
+            [Description("成功充值")]
+            Recharge = 5,
+            [Description("成功投资")]
+            Invest = 6,
+            [Description("邀请注册成功")]
+            InviteRegister = 7,
+            [Description("邀请投资成功")]
+            InviteInvest = 8
+        }
     }
 }
