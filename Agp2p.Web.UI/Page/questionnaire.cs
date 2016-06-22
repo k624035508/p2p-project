@@ -20,7 +20,14 @@ using Newtonsoft.Json.Linq;
 namespace Agp2p.Web.UI.Page
 {
      public partial class questionnaire :Web.UI.BasePage
-    {
+     {
+        protected string action = string.Empty;
+
+         protected override void ShowPage()
+         {
+            action = DTRequest.GetQueryString("action");
+        }
+        
         private static decimal SumOfScore(Agp2pEnums.QuestionnaireEnum questionnaire, List<string> results)
         {
             switch (questionnaire)

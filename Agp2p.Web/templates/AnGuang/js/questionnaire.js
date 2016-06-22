@@ -8,8 +8,34 @@ import header from "./header.js";
 window['$'] = $;
 
 $(function() {
+    //弹出窗popover初始化
+    $('[data-toggle="popover"]').popover();
 
- 
+    //加载投资者类型
+    var step = $("#step").data("step");      
+        if (step >= 31) {
+            $(".typeMiddle").html("积极型");
+            $(".typeP1").html("书山路，勤为径，");
+            $(".typeP2").html("循序渐进齐头进。");
+            $(window).scrollTop(600);
+            $(".investAlert").css("z-index", "10");
+        }
+        if (step >= 21 && step <= 30) {
+            $(".typeMiddle").html("稳健型");
+            $(".typeP1").html("黄叶落，白云扫，");
+            $(".typeP2").html("稳健安全才最好。");
+            $(window).scrollTop(600);
+            $(".investAlert").css("z-index", "10");
+        }
+        if (step <= 20 && step > 0) {
+            $(".typeMiddle").html("保守型");
+            $(".typeP1").html("雷不动，打不动，");
+            $(".typeP2").html("别人咋劝都没用。");
+            $(window).scrollTop(600);
+            $(".investAlert").css("z-index", "10");
+        }
+        
+    
 
     //提交表格
     $("#questionnaireBtn").click(function() {
