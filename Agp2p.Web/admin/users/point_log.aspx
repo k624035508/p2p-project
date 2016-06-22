@@ -62,10 +62,10 @@
       <asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" />
       <asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" />
     </td>
-    <td><%#Eval("user_name")%></td>
-    <td><%# Convert.ToDecimal(Eval("value")) > 0 ? "+" + Eval("value").ToString() : Eval("value").ToString()%></td>
-    <td><%#Eval("remark")%></td>
-    <td><%#string.Format("{0:g}", Eval("add_time"))%></td>
+    <td><%#Eval("UserName")%></td>
+    <td><%# Convert.ToDecimal(Eval("Value")) > 0 ? "+" + Eval("Value").ToString() : Eval("Value").ToString()%></td>
+    <td><%#Eval("Remark")%></td>
+    <td><%#string.Format("{0:g}", Eval("AddTime"))%></td>
   </tr>
 </ItemTemplate>
 <FooterTemplate>

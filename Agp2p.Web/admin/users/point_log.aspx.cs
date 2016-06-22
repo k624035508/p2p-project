@@ -31,17 +31,39 @@ namespace Agp2p.Web.admin.users
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
                 Model.manager manager = GetAdminInfo();
-                RptBind("id>0  and user_id in (select u.id from dt_users u inner join dt_user_groups g on g.id=u.group_id inner join li_user_group_access_keys k on k.user_group=g.id where k.owner_manager=" + manager.id + ")" + CombSqlTxt(txtKeywords.Text), "add_time desc,id desc");
+               // RptBind("id>0  and user_id in (select u.id from dt_users u inner join dt_user_groups g on g.id=u.group_id inner join li_user_group_access_keys k on k.user_group=g.id where k.owner_manager=" + manager.id + ")" + CombSqlTxt(txtKeywords.Text), "add_time desc,id desc");
+               RptBind();
             }
         }
 
         #region 数据绑定=================================
-        private void RptBind(string _strWhere, string _orderby)
+
+        protected class UserPoints
+        {
+            public int id { get; set; }
+            public int UserId { get; set; }
+            public string UserName { get; set; }
+            public int Type { get; set; }
+            public int Value { get; set; }
+            public string Remark { get; set; }
+            public string AddTime { get; set; }
+        }
+
+        private void RptBind()
         {
             this.page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = this.keywords;
             BLL.user_point_log bll = new BLL.user_point_log();
-            this.rptList.DataSource = bll.GetList(this.pageSize, this.page, _strWhere, _orderby, out this.totalCount);
+            this.rptList.DataSource = context.dt_user_point_log.OrderByDescending(q => q.id).AsEnumerable().Select(g => new UserPoints
+            {
+                id = g.id,
+                UserId = g.user_id,
+                UserName = g.user_name,
+                Type = Convert.ToInt32(g.type),
+                Value = g.value,
+                Remark = g.remark,
+                AddTime = g.add_time.ToString()
+            });
             this.rptList.DataBind();
 
             //绑定页码
@@ -127,16 +149,5 @@ namespace Agp2p.Web.admin.users
             JscriptMsg("删除成功" + sucCount + "条，失败" + errorCount + "条！", Utils.CombUrlTxt("point_log.aspx", "keywords={0}", txtKeywords.Text), "Success");
         }
 
-        //查积分
-        protected int GetUserPoints()
-        {
-            var points = 0;
-            var user = context.dt_user_point_log.Where(p => p.user_id == 2447);
-            for (var i = 0; i < user.Count(); i++)
-            {
-                points += Convert.ToInt32(user.Skip(i).First().value);
-            }
-            return points;
-        }
     }
 }
