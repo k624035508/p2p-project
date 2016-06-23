@@ -176,12 +176,6 @@ namespace Agp2p.Linq2SQL
     partial void Deletedt_user_point_log(dt_user_point_log instance);
     #endregion
 		
-		public Agp2pDataContext() : 
-				base(global::Agp2p.Linq2SQL.Properties.Settings.Default.agrh_testConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public Agp2pDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
