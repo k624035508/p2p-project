@@ -27,7 +27,6 @@ namespace Agp2p.Web.admin.popularize
             this.channel_id = DTRequest.GetQueryInt("channel_id");
             this.categoryId = DTRequest.GetQueryInt("category_id");
             this.navigation_name = DTRequest.GetCookieByName("dt_manage_navigation_cookie");
-            this.user_name = DTRequest.GetQueryString("user_name");
             CreateOtherField(this.channel_id); //动态生成相应的扩展字段
         }
 
@@ -42,8 +41,8 @@ namespace Agp2p.Web.admin.popularize
                 return;
             }            
             this.channel_name = new BLL.channel().GetChannelName(this.channel_id); //取得频道名称
+            this.user_name = GetAdminInfo().user_name;
 
-            
 
             if (!string.IsNullOrEmpty(_action) && _action == DTEnums.ActionEnum.Edit.ToString())
             {
@@ -101,11 +100,6 @@ namespace Agp2p.Web.admin.popularize
                     Title = Utils.StringOfChar(ClassLayer - 1, "　") + Title;
                     this.ddlParentId.Items.Add(new ListItem(Title, Id));
                 }
-            }
-
-            if (user_name == "admin")
-            {
-                rblStatus.Enabled = true;
             }
         }
 
@@ -386,6 +380,15 @@ namespace Agp2p.Web.admin.popularize
             txtClick.Text = model.click.ToString();
             rblStatus.SelectedValue = model.status.ToString();
             txtAddTime.Text = model.add_time.ToString("yyyy-MM-dd HH:mm:ss");
+
+            if (rblStatus.SelectedValue == "0")
+            {
+                if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.Audit.ToString()))
+                {
+                    rblStatus.Enabled = false;
+                }
+            }
+
             if (model.is_msg == 1)
             {
                 cblItem.Items[0].Selected = true;
@@ -938,13 +941,25 @@ namespace Agp2p.Web.admin.popularize
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
-                ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.Edit.ToString()); //检查权限
-                if (!DoEdit(this.id))
+                if (rblStatus.SelectedValue == "0")
                 {
-                    JscriptMsg("保存过程中发生错误啦！", "", "Error");
-                    return;
+                    ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.AuditEdit.ToString()); //检查权限              
+                    if (!DoEdit(this.id))
+                    {
+                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                        return;
+                    }
+                    JscriptMsg("修改信息成功！", "help_list.aspx?channel_id=" + this.channel_id, "Success");
                 }
-                JscriptMsg("修改信息成功！", "help_list.aspx?channel_id=" + this.channel_id, "Success");
+                else
+                {
+                    if (!DoEdit(this.id))
+                    {
+                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                        return;
+                    }
+                    JscriptMsg("修改信息成功！", "help_list.aspx?channel_id=" + this.channel_id, "Success");
+                }
             }
             else //添加
             {

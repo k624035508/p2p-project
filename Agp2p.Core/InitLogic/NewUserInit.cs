@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Agp2p.Common;
 using Agp2p.Core.Message;
-using Agp2p.Core.Message.UserPointMsg;
 using Agp2p.Linq2SQL;
 using Agp2p.Model;
 
@@ -39,13 +38,21 @@ namespace Agp2p.Core.InitLogic
                 user_name = newUser.user_name,
                 type = DTEnums.CodeEnum.Register.ToString(),
                 str_code = Utils.GetCheckCode(8), //获取邀请码
-                eff_time = newUser.reg_time.Value,
-                add_time = newUser.reg_time.Value
+                eff_time = newUser.reg_time ?? DateTime.Now,
+                add_time = newUser.reg_time ?? DateTime.Now
             };
             context.dt_user_code.InsertOnSubmit(codeModel);
 
             // 注册送积分
-            MessageBus.Main.PublishAsync(new UserPointMsg(newUser.id, newUser.user_name, Agp2pEnums.PointEnum.Register, (int)newUser.dt_user_groups.point));
+            var dtUserPointLog = new dt_user_point_log
+            {
+                user_id = newUser.id,
+                user_name = newUser.user_name,
+                add_time = newUser.reg_time??DateTime.Now,
+                value = newUser.dt_user_groups.point??0,
+                remark = "注册赠送积分"
+            };
+            context.dt_user_point_log.InsertOnSubmit(dtUserPointLog);
 
             // 发站内信
             var userConfig = ConfigLoader.loadUserConfig();

@@ -18,6 +18,8 @@ $(function() {
         $(".investType").addClass("investTypeSmall").removeClass("investType");
     }
 
+
+
     //加载投资者类型
     var step = $("#step").data("step");      
     if (step >= 31) {
@@ -44,6 +46,21 @@ $(function() {
 
     //提交表格
     $("#questionnaireBtn").click(function() {
+
+        for (var j = 1 ; j < 11; j++) {
+            var resualt = false;
+            var radios = document.getElementsByName("question" + j);
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    resualt = true;
+                }
+            }
+            if (!resualt) {
+                alert("问题"+j+"还没选择");
+                return resualt;
+            }
+        }
+
         var url = "/aspx/main/usercenter.aspx/AjaxSaveQuestionnaireResult";        
         var radioLen = $("input[type='radio']:checked").length;
         var answers = new Array(radioLen);

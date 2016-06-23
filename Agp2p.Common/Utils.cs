@@ -1586,7 +1586,7 @@ namespace Agp2p.Common
                 {"Restore", "还原"},
                 {"Replace", "替换"},
                 {"BigOrderAudit", "大额审批"},
-                //{"ProjectStatusChange", "项目状态修改"}
+                {"AuditEdit", "审核后修改"}
             };
         }
         #endregion

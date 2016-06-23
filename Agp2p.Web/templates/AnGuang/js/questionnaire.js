@@ -38,7 +38,21 @@ $(function() {
     
 
     //提交表格
-    $("#questionnaireBtn").click(function() {
+        $("#questionnaireBtn").click(function() {
+            for (var j = 1 ; j < 11; j++) {
+                var resualt = false;
+                var radios = document.getElementsByName("question" + j);
+                for (var i = 0; i < radios.length; i++) {
+                    if (radios[i].checked) {
+                        resualt = true;
+                    }
+                }
+                if (!resualt) {
+                    alert("问题"+j+"还没选择");
+                    return resualt;
+                }
+            }
+
         var url = USER_CENTER_ASPX_PATH + "/AjaxSaveQuestionnaireResult";        
         var radioLen = $("input[type='radio']:checked").length;
         var answers = new Array(radioLen);
