@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Lip2p.Common;
+using Agp2p.Common;
 
-namespace Lip2p.Web.admin.order
+namespace Agp2p.Web.admin.order
 {
     public partial class order_edit : Web.UI.ManagePage
     {
@@ -53,7 +53,7 @@ namespace Lip2p.Web.admin.order
                         lbUserName.Text = user_info.user_name;
                         lbUserGroup.Text = group_info.title;
                         lbUserDiscount.Text = group_info.discount.ToString() + " %";
-                        lbUserAmount.Text = user_info.amount.ToString();
+                        //lbUserAmount.Text = user_info.amount.ToString();
                         lbUserPoint.Text = user_info.point.ToString();
                     }
                 }

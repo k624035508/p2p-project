@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_edit.aspx.cs" Inherits="Lip2p.Web.admin.order.order_edit" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_edit.aspx.cs" Inherits="Agp2p.Web.admin.order.order_edit" ValidateRequest="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -464,11 +464,11 @@
       <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
         <tr>
           <th width="20%">支付方式</th>
-          <td><%=new Lip2p.BLL.payment().GetTitle(model.payment_id) %></td>
+          <td><%=new Agp2p.BLL.payment().GetTitle(model.payment_id) %></td>
         </tr>
         <tr>
           <th>配送方式</th>
-          <td><%=new Lip2p.BLL.express().GetTitle(model.express_id) %></td>
+          <td><%=new Agp2p.BLL.express().GetTitle(model.express_id) %></td>
         </tr>
         <tr>
           <th>用户留言</th>

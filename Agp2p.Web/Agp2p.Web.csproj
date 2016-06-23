@@ -177,6 +177,10 @@
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
+    <Content Include="admin\order\order_config.aspx" />
+    <Content Include="admin\order\order_confirm.aspx" />
+    <Content Include="admin\order\order_edit.aspx" />
+    <Content Include="admin\order\order_list.aspx" />
     <Content Include="admin\popularize\companyContent_edit.aspx" />
     <Content Include="admin\popularize\companyContent_list.aspx" />
     <Content Include="admin\popularize\help_edit.aspx" />
@@ -1628,6 +1632,34 @@
     </Compile>
     <Compile Include="admin\manager\department_select_member.aspx.designer.cs">
       <DependentUpon>department_select_member.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_config.aspx.cs">
+      <DependentUpon>order_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_config.aspx.designer.cs">
+      <DependentUpon>order_config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_confirm.aspx.cs">
+      <DependentUpon>order_confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_confirm.aspx.designer.cs">
+      <DependentUpon>order_confirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_edit.aspx.cs">
+      <DependentUpon>order_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_edit.aspx.designer.cs">
+      <DependentUpon>order_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\order_list.aspx.cs">
+      <DependentUpon>order_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\order_list.aspx.designer.cs">
+      <DependentUpon>order_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\popularize\companyContent_edit.aspx.cs">
       <DependentUpon>companyContent_edit.aspx</DependentUpon>
