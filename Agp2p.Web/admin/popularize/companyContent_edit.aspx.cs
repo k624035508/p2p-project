@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Data;
 using Agp2p.Common;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Agp2p.Web.admin.popularize
 {
@@ -26,7 +27,7 @@ namespace Agp2p.Web.admin.popularize
         {
             this.channel_id = DTRequest.GetQueryInt("channel_id");
             this.categoryId = DTRequest.GetQueryInt("category_id");
-            this.user_name = DTRequest.GetQueryString("user_name");
+            this.user_name = GetAdminInfo().user_name;
             this.navigation_name = DTRequest.GetCookieByName("dt_manage_navigation_cookie");
             CreateOtherField(this.channel_id); //动态生成相应的扩展字段
         }
@@ -60,11 +61,8 @@ namespace Agp2p.Web.admin.popularize
             }
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.View.ToString()); //检查权限
-                if (user_name == "ch001")
-                {
-                    rblStatus.Enabled = true;
-                }
+
+                ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.View.ToString()); //检查权限           
                 ShowSysField(this.channel_id); //显示相应的默认控件
                 GroupBind(""); //绑定用户组
                 if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
@@ -356,6 +354,15 @@ namespace Agp2p.Web.admin.popularize
             txtClick.Text = model.click.ToString();
             rblStatus.SelectedValue = model.status.ToString();
             txtAddTime.Text = model.add_time.ToString("yyyy-MM-dd HH:mm:ss");
+
+            if (rblStatus.SelectedValue == "0")
+            {
+                if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.BigOrderAudit.ToString()))
+                {
+                    rblStatus.Enabled = false;
+                }
+            }
+
             if (model.is_msg == 1)
             {
                 cblItem.Items[0].Selected = true;
@@ -903,14 +910,22 @@ namespace Agp2p.Web.admin.popularize
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
-            {
-                ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.Edit.ToString()); //检查权限
-                if (!DoEdit(this.id))
-                {
-                    JscriptMsg("保存过程中发生错误啦！", "", "Error");
-                    return;
-                }
-                JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+            {                               
+                    ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.AuditEdit.ToString()); //检查权限                    
+                    if (!DoEdit(this.id))
+                    {
+                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                        return;
+                    }
+                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");                
+                
+                    if (!DoEdit(this.id))
+                    {
+                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                        return;
+                    }
+                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+                
             }
             else //添加
             {

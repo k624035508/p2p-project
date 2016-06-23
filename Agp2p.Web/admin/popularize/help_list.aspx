@@ -124,7 +124,7 @@
 <ItemTemplate>
   <tr>
     <td align="center"><asp:CheckBox ID="chkId" CssClass="checkall" runat="server" style="vertical-align:middle;" /><asp:HiddenField ID="hidId" Value='<%#Eval("id")%>' runat="server" /></td>
-    <td><a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>&user_name=<%# Eval("user_name") %>"><%#Eval("title")%></a></td>
+    <td><a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>"><%#Eval("title")%></a></td>
     <td><%#new Agp2p.BLL.article_category().GetTitle(Convert.ToInt32(Eval("category_id")))%></td>
     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>
       <td><%#Eval("click")%></td>
@@ -139,7 +139,7 @@
       </div>
     </td>
     <td align="center">
-        <a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>&user_name=<%# Eval("user_name") %>">修改</a>
+        <a href="help_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval("id")%>">修改</a>
         <a href="/article/<%#Eval("id")%>.html" target="_blank">预览</a>
     </td>
   </tr>
