@@ -289,7 +289,6 @@
     <Content Include="admin\transact\bank_users_charge_withdraw.aspx" />
     <Content Include="admin\transact\bank_transaction_list_all.aspx" />
     <Content Include="admin\audit\bank_transaction_charging_list.aspx" />
-    <Content Include="admin\users\amount_log.aspx" />
     <Content Include="admin\users\batch_switch_group.aspx" />
     <Content Include="admin\users\ChoiceUser.aspx" />
     <Content Include="admin\users\group_edit.aspx" />
@@ -342,17 +341,10 @@
     <Content Include="api\oauth\taobao\index.aspx" />
     <Content Include="api\oauth\taobao\result_json.aspx" />
     <Content Include="api\oauth\taobao\return_url.aspx" />
-    <Content Include="api\payment\alipay\index.aspx" />
-    <Content Include="api\payment\alipay\notify_url.aspx" />
-    <Content Include="api\payment\alipay\return_url.aspx" />
-    <Content Include="api\payment\balance\index.aspx" />
     <Content Include="api\payment\baofoo\index.aspx" />
     <Content Include="api\payment\baofoo\notify_url.aspx" />
     <Content Include="api\payment\baofoo\return_url.aspx" />
     <Content Include="api\payment\baofoo\pay_test.aspx" />
-    <Content Include="api\payment\chinabank\index.aspx" />
-    <Content Include="api\payment\chinabank\notify_url.aspx" />
-    <Content Include="api\payment\chinabank\return_url.aspx" />
     <Content Include="api\payment\lianlianpay\index.aspx" />
     <Content Include="api\payment\lianlianpay\infoQuery.aspx" />
     <Content Include="api\payment\lianlianpay\notify_url.aspx" />
@@ -362,9 +354,6 @@
     <Content Include="api\payment\sumapay\index.aspx" />
     <Content Include="api\payment\sumapay\noticeUrl.aspx" />
     <Content Include="api\payment\sumapay\successReturnUrl.aspx" />
-    <Content Include="api\payment\tenpay\index.aspx" />
-    <Content Include="api\payment\tenpay\notify_url.aspx" />
-    <Content Include="api\payment\tenpay\return_url.aspx" />
     <Content Include="api\payment\ecpss\index.aspx" />
     <Content Include="api\payment\ecpss\return_url.aspx" />
     <Content Include="api\payment\ecpss\pay_test.aspx" />
@@ -2256,13 +2245,6 @@
     <Compile Include="admin\audit\bank_transaction_charging_list.aspx.designer.cs">
       <DependentUpon>bank_transaction_charging_list.aspx</DependentUpon>
     </Compile>
-    <Compile Include="admin\users\amount_log.aspx.cs">
-      <DependentUpon>amount_log.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\users\amount_log.aspx.designer.cs">
-      <DependentUpon>amount_log.aspx</DependentUpon>
-    </Compile>
     <Compile Include="admin\users\batch_switch_group.aspx.cs">
       <DependentUpon>batch_switch_group.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2566,22 +2548,6 @@
       <DependentUpon>return_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="api\payment\alipay\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\alipay\notify_url.aspx.cs">
-      <DependentUpon>notify_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\alipay\return_url.aspx.cs">
-      <DependentUpon>return_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\balance\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="api\payment\baofoo\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2599,18 +2565,6 @@
     </Compile>
     <Compile Include="api\payment\baofoo\pay_test.aspx.cs">
       <DependentUpon>pay_test.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\chinabank\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\chinabank\notify_url.aspx.cs">
-      <DependentUpon>notify_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\chinabank\return_url.aspx.cs">
-      <DependentUpon>return_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="api\payment\lianlianpay\index.aspx.cs">
@@ -2647,18 +2601,6 @@
     </Compile>
     <Compile Include="api\payment\sumapay\successReturnUrl.aspx.cs">
       <DependentUpon>successReturnUrl.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\tenpay\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\tenpay\notify_url.aspx.cs">
-      <DependentUpon>notify_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="api\payment\tenpay\return_url.aspx.cs">
-      <DependentUpon>return_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="api\payment\ecpss\index.aspx.cs">

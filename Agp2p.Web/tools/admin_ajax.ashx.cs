@@ -834,11 +834,6 @@ namespace Agp2p.Web.tools
                         {
                             new BLL.user_point_log().Add(model.user_id, model.user_name, (model.point * -1), "取消订单返还积分，订单号：" + model.order_no, false);
                         }
-                        //如果已支付则退还金额到会员账户
-                        if (model.user_id > 0 && model.payment_status == 2 && model.order_amount > 0)
-                        {
-                            new BLL.user_amount_log().Add(model.user_id, model.user_name, DTEnums.AmountTypeEnum.BuyGoods.ToString(), model.order_amount, "取消订单退还金额，订单号：" + model.order_no, 1);
-                        }
                     }
                     new BLL.manager_log().Add(adminInfo.id, adminInfo.user_name, DTEnums.ActionEnum.Cancel.ToString(), "取消订单号:" + model.order_no); //记录日志
                     context.Response.Write("{\"status\": 1, \"msg\": \"取消订单成功！\"}");
@@ -868,11 +863,6 @@ namespace Agp2p.Web.tools
                         if (model.user_id > 0 && model.point > 0)
                         {
                             new BLL.user_point_log().Add(model.user_id, model.user_name, (model.point * -1), "作废订单扣除积分，订单号：" + model.order_no, false);
-                        }
-                        //退还金额到会员账户
-                        if (model.user_id > 0 && model.order_amount > 0)
-                        {
-                            new BLL.user_amount_log().Add(model.user_id, model.user_name, DTEnums.AmountTypeEnum.BuyGoods.ToString(), model.order_amount - model.express_fee, "取消订单退还金额，订单号：" + model.order_no, 1);
                         }
                     }
                     new BLL.manager_log().Add(adminInfo.id, adminInfo.user_name, DTEnums.ActionEnum.Invalid.ToString(), "作废订单号:" + model.order_no); //记录日志

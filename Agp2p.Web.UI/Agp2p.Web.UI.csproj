@@ -92,9 +92,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Label\project.cs" />
-    <Compile Include="Label\shoppingcart.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Label\users.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -164,12 +161,6 @@
     <Compile Include="Page\register.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page\search.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Page\shopping.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Page\useramount.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -228,7 +219,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShoppingCart.cs" />
     <Compile Include="UpLoad.cs" />
     <Compile Include="UserPage.cs">
       <SubType>ASPXCodeBehind</SubType>
