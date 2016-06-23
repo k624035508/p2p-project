@@ -57,17 +57,24 @@ namespace Agp2p.Core.ActivityLogic
             }
 
             var context  = new Agp2pDataContext();
-            var dtUserPointLog = new dt_user_point_log
+            
+            var user = context.dt_users.SingleOrDefault(u => u.id == userPointMsg.UserId);
+            if (user != null)
             {
-                user_id = userPointMsg.UserId,
-                user_name = userPointMsg.UserName,
-                add_time = DateTime.Now,
-                value = userPointMsg.Point,
-                type = userPointMsg.Type,
-                remark = userPointMsg.Remark
-            };
-            context.dt_user_point_log.InsertOnSubmit(dtUserPointLog);
-            context.SubmitChanges();
+                var dtUserPointLog = new dt_user_point_log
+                {
+                    user_id = userPointMsg.UserId,
+                    user_name = userPointMsg.UserName,
+                    add_time = DateTime.Now,
+                    value = userPointMsg.Point,
+                    type = userPointMsg.Type,
+                    remark = userPointMsg.Remark
+                };
+                context.dt_user_point_log.InsertOnSubmit(dtUserPointLog);
+                user.point += userPointMsg.Point;
+                context.SubmitChanges();
+            }
+            
         }
     }
 }

@@ -130,10 +130,10 @@ namespace Agp2p.BLL
             }
             //取得所属频道分类在导航中的ID
             int parent_id = new BLL.navigation().GetNavId("channel_" + build_path);
-            if (parent_id == 0)
-            {
-                return false;
-            }
+            //if (parent_id == 0)
+            //{
+            //    return false;
+            //}
             //取得旧的数据
             Model.channel oldModel = dal.GetModel(model.id);
             //开始修改数据

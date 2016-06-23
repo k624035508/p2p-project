@@ -68,7 +68,7 @@
 <div class="toolbar-wrap">
   <div id="floatHead" class="toolbar">
     <div class="l-list">
-      <ul class="icon-list"><asp:Button ID="btnOffProject" runat="server" Text="下标" OnClick="btnReSet_Click" OnClientClick="return ExeOffProjectPostBack('btnOffProject');" CssClass="btn"  />
+      <ul class="icon-list">
         <li><a class="add" href="article_edit.aspx?action=<%=DTEnums.ActionEnum.Add %>&channel_id=<%=this.channel_id %>"><i></i><span>新增</span></a></li>
         <li><asp:LinkButton ID="btnSave" runat="server" CssClass="save" onclick="btnSave_Click"><i></i><span>保存</span></asp:LinkButton></li>
         <li><asp:LinkButton ID="btnAudit" runat="server" CssClass="folder" OnClientClick="return ExePostBack('btnAudit','审核后前台将显示该信息，确定继续吗？');" onclick="btnAudit_Click"><i></i><span>审核</span></asp:LinkButton></li>

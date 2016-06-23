@@ -55,10 +55,10 @@ namespace Agp2p.DAL
         /// </summary>
         public int Add(int parent_id, string nav_name, string title, string link_url, int sort_id, int channel_id, string action_type)
         {
-            if (parent_id < 1)
-            {
-                return 0;
-            }
+            //if (parent_id < 1)
+            //{
+            //    return 0;
+            //}
             //开始赋值
             Model.navigation model = new Model.navigation();
             model.nav_type = DTEnums.NavigationEnum.System.ToString();
