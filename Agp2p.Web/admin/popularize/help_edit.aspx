@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="help_edit.aspx.cs" Inherits="Agp2p.Web.admin.popularize.help_edit" ValidateRequest="false" %>
+<%@ Import Namespace="Agp2p.Linq2SQL" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -123,7 +124,7 @@
                 <dt>显示状态</dt>
                 <dd>
                     <div class="rule-multi-radio">
-                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"  >
                             <asp:ListItem Value="0" >正常</asp:ListItem>
                             <asp:ListItem Value="1" Selected="True">待审核</asp:ListItem>
                             <asp:ListItem Value="2">不显示</asp:ListItem>

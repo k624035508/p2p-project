@@ -93,9 +93,9 @@ namespace Agp2p.Common
             /// </summary>
             BigOrderAudit,
             ///// <summary>
-            ///// 项目状态修改
+            ///// 审核后修改
             ///// </summary>
-            //ProjectStatusChange
+            AuditEdit
         }
 
         /// <summary>
