@@ -357,7 +357,7 @@ namespace Agp2p.Web.admin.popularize
 
             if (rblStatus.SelectedValue == "0")
             {
-                if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.BigOrderAudit.ToString()))
+                if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.Audit.ToString()))
                 {
                     rblStatus.Enabled = false;
                 }
@@ -910,22 +910,27 @@ namespace Agp2p.Web.admin.popularize
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
-            {                               
-                    ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.AuditEdit.ToString()); //检查权限                    
-                    if (!DoEdit(this.id))
-                    {
-                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
-                        return;
-                    }
-                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");                
-                
+            {
+                if (rblStatus.SelectedValue == "0")
+                {
+                    ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.AuditEdit.ToString());
+                    //检查权限                    
                     if (!DoEdit(this.id))
                     {
                         JscriptMsg("保存过程中发生错误啦！", "", "Error");
                         return;
                     }
                     JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
-                
+                }
+                else
+                {
+                    if (!DoEdit(this.id))
+                    {
+                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                        return;
+                    }
+                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+                }
             }
             else //添加
             {
