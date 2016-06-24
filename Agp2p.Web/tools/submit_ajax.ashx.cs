@@ -1177,128 +1177,88 @@ namespace Agp2p.Web.tools
         #region 保存用户订单OK=================================
         private void order_save(HttpContext context)
         {
-            //获得传参信息
-            int payment_id = DTRequest.GetFormInt("payment_id");
-            int express_id = DTRequest.GetFormInt("express_id");
-            string accept_name = Utils.ToHtml(DTRequest.GetFormString("accept_name"));
-            string post_code = Utils.ToHtml(DTRequest.GetFormString("post_code"));
-            string telphone = Utils.ToHtml(DTRequest.GetFormString("telphone"));
-            string mobile = Utils.ToHtml(DTRequest.GetFormString("mobile"));
-            string address = Utils.ToHtml(DTRequest.GetFormString("address"));
+            var agContext = new Agp2pDataContext();
+            //获得客户地址信息
+            int addressId = DTRequest.GetFormInt("addressId");
             string message = Utils.ToHtml(DTRequest.GetFormString("message"));
-            //获取订单配置信息
-            Model.orderconfig orderConfig = new BLL.orderconfig().loadConfig();
-
-            //检查物流方式
-            if (express_id == 0)
+            var userAddr = agContext.dt_user_addr_book.SingleOrDefault(a => a.id == addressId);
+            if (userAddr == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请选择配送方式！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的收货地址信息！\"}");
                 return;
             }
-            Model.express expModel = new BLL.express().GetModel(express_id);
-            if (expModel == null)
+            //获取商品信息
+            int goodId = DTRequest.GetFormInt("goodId");
+            int goodCount = DTRequest.GetFormInt("goodCount");
+            var goods = agContext.dt_article.SingleOrDefault(g => g.id == goodId);
+            if (goods == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，配送方式不存在或已删除！\"}");
-                return;
-            }
-            //检查支付方式
-            if (payment_id == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请选择支付方式！\"}");
-                return;
-            }
-            Model.payment payModel = new BLL.payment().GetModel(payment_id);
-            if (payModel == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，支付方式不存在或已删除！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的兑换物信息！\"}");
                 return;
             }
             //检查收货人
-            if (string.IsNullOrEmpty(accept_name))
+            if (string.IsNullOrEmpty(userAddr.accept_name))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人姓名！\"}");
                 return;
             }
             //检查手机和电话
-            if (string.IsNullOrEmpty(telphone) && string.IsNullOrEmpty(mobile))
+            if (string.IsNullOrEmpty(userAddr.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人联系电话或手机！\"}");
                 return;
             }
             //检查地址
-            if (string.IsNullOrEmpty(address))
+            if (string.IsNullOrEmpty(userAddr.address))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入详细的收货地址！\"}");
                 return;
             }
-            //如果开启匿名购物则不检查会员是否登录
-            int user_id = 0;
-            int user_group_id = 0;
-            string user_name = string.Empty;
             //检查用户是否登录
             Model.users userModel = BasePage.GetUserInfo();
-            if (userModel != null)
-            {
-                user_id = userModel.id;
-                user_group_id = userModel.group_id;
-                user_name = userModel.user_name;
-            }
-            if (orderConfig.anonymous == 0 && userModel == null)
+            if (userModel == null)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            //检查购物车商品
-            //IList<Model.cart_items> iList = Agp2p.Web.UI.ShopCart.GetList(user_group_id);
-            //if (iList == null)
-            //{
-            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，购物车为空，无法结算！\"}");
-            //    return;
-            //}
-            //统计购物车
-            //Model.cart_total cartModel = Agp2p.Web.UI.ShopCart.GetTotal(user_group_id);
-            //保存订单=======================================================================
-            Model.orders model = new Model.orders();
-            model.order_no = "B" + Utils.GetOrderNumber(); //订单号B开头为商品订单
-            model.user_id = user_id;
-            model.user_name = user_name;
-            model.payment_id = payment_id;
-            model.express_id = express_id;
-            model.accept_name = accept_name;
-            model.post_code = post_code;
-            model.telphone = telphone;
-            model.mobile = mobile;
-            model.address = address;
-            model.message = message;
-            model.payable_amount = 0;
-            model.real_amount = 0;
-            model.express_status = 1;
-            model.express_fee = expModel.express_fee; //物流费用
-            //如果是先款后货的话
-            if (payModel.type == 1)
+
+            //保存订单
+            Model.orders model = new Model.orders
             {
-                model.payment_status = 1; //标记未付款
-                if (payModel.poundage_type == 1) //百分比
+                order_no = "B" + Utils.GetOrderNumber(), //订单号B开头为商品订单
+                user_id = userModel.id,
+                user_name = userModel.user_name,
+                payment_id = 1,
+                express_id = 1,
+                accept_name = userAddr.accept_name,
+                post_code = userAddr.post_code,
+                telphone = userAddr.telphone,
+                mobile = userAddr.mobile,
+                address = userAddr.address,
+                message = message,
+                payable_amount = 0,
+                real_amount = 0,
+                express_status = 1,
+                express_fee = 0,//物流费用
+                order_amount = 0,
+                point = 0,
+                add_time = DateTime.Now
+
+            };
+            //商品详细
+            var orderGoods = new List<Model.order_goods>()
+            {
+                new Model.order_goods
                 {
-                    model.payment_fee = model.real_amount * payModel.poundage_amount / 100;
+                    goods_id = goods.id,
+                    goods_title = goods.title,
+                    goods_price = 0,
+                    real_price = 0,
+                    quantity = goodCount,
+                    point = -1
                 }
-                else //固定金额
-                {
-                    model.payment_fee = payModel.poundage_amount;
-                }
-            }
-            //订单总金额=实付商品金额+运费+支付手续费
-            model.order_amount = model.real_amount + model.express_fee + model.payment_fee;
-            //购物积分,可为负数
-            model.point = 0;
-            model.add_time = DateTime.Now;
-            //商品详细列表
-            List<Model.order_goods> gls = new List<Model.order_goods>();
-            //foreach (Model.cart_items item in iList)
-            //{
-            //    gls.Add(new Model.order_goods { goods_id = item.id, goods_title = item.title, goods_price = item.price, real_price = item.user_price, quantity = item.quantity, point = item.point });
-            //}
-            model.order_goods = gls;
+            };
+            model.order_goods = orderGoods;
             int result = new BLL.orders().Add(model);
             if (result < 1)
             {
