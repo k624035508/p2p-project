@@ -60,7 +60,7 @@
     <td><%# Eval("account") %></td>
     <td><a href="bank_transaction_list_account.aspx?account_id=<%#Eval("id")%>&user_id=<%#Eval("dt_users.id")%>">查看（<%# Eval("li_bank_transactions.Count")%>）</a></td>
     <td>
-        <%# GetTypeName(Eval("type").ToString()) %>         
+        <%# Utils.GetAgp2pEnumDes((Agp2pEnums.BankAccountType)Convert.ToInt32(Eval("type"))) %>         
     </td>
     <td>
         <asp:LinkButton  runat="server" ID="lbt_removecard" Text="快捷支付解绑" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定解绑银行卡吗?');" 
