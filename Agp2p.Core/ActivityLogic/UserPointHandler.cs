@@ -67,7 +67,7 @@ namespace Agp2p.Core.ActivityLogic
                     user_name = userPointMsg.UserName,
                     add_time = DateTime.Now,
                     value = userPointMsg.Point,
-                    type = userPointMsg.Type,
+                    type = (short) userPointMsg.Type,
                     remark = userPointMsg.Remark
                 };
                 context.dt_user_point_log.InsertOnSubmit(dtUserPointLog);
