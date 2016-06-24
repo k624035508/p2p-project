@@ -953,7 +953,7 @@ namespace Agp2p.Common
             Unknown = 1,
             [Description("快捷支付")]
             QuickPay = 2,
-            [Description("网银支付")]
+            [Description("失效")]
             WebBank = 3,
         }
 

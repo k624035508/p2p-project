@@ -321,6 +321,7 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
+            ChkAdminLevel("statistics_projects_repay_detail", DTEnums.ActionEnum.DownLoad.ToString()); //检查权限
             var beforePaging = QueryRepayDetails();
             var lsData = beforePaging.Skip(pageSize*(page - 1)).Take(pageSize).Select(d => new
             {

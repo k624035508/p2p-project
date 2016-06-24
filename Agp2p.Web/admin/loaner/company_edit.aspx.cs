@@ -227,7 +227,7 @@ namespace Agp2p.Web.admin.loaner
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
-                ChkAdminLevel("loan_company", DTEnums.ActionEnum.Edit.ToString()); //检查权限
+                ChkAdminLevel("loan_company", DTEnums.ActionEnum.AuditEdit.ToString()); //检查权限
                 if (!DoEdit(id))
                 {
                     JscriptMsg("保存过程中发生错误！", "", "Error");

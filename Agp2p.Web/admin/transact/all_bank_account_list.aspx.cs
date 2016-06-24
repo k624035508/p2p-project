@@ -63,14 +63,14 @@ namespace Agp2p.Web.admin.transact
                 case "2":
                     return "快捷支付";
                 case "3":
-                    return "网银支付";
+                    return "失效";
                 default:
                     return "其它";
             }
         }
 
         /// <summary>
-        /// 解绑银行卡
+        /// 解绑快捷支付银行卡
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,6 +101,27 @@ namespace Agp2p.Web.admin.transact
 
         }
 
+
+        /// <summary>
+        /// 解绑普通银行卡
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnRemoveCardNormal_OnClick(object sender, EventArgs e)
+        {
+            try
+            {
+                var normalBankId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);
+                var normalBank = context.li_bank_accounts.SingleOrDefault(b => b.id == normalBankId);
+                normalBank.type = (int) Agp2pEnums.BankAccountType.WebBank;
+                context.SubmitChanges();
+                JscriptMsg("解绑操作成功！", "../transact/all_bank_account_list.aspx");
+            }
+            catch (Exception ex)
+            {
+                JscriptMsg("解绑操作失败："+ ex.Message,"back","Error");
+            }
+        }
 
         //设置分页数量
         protected void txtPageNum_TextChanged(object sender, EventArgs e)

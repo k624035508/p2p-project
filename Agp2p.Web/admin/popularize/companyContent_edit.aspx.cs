@@ -14,6 +14,8 @@ namespace Agp2p.Web.admin.popularize
 {
     public partial class companyContent_edit : Web.UI.ManagePage
     {
+        private static string STATUS = "status";
+
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
         protected string channel_name = string.Empty; //频道名称
         protected int channel_id;
@@ -353,16 +355,13 @@ namespace Agp2p.Web.admin.popularize
             txtSortId.Text = model.sort_id.ToString();
             txtClick.Text = model.click.ToString();
             rblStatus.SelectedValue = model.status.ToString();
+            SessionHelper.Set(STATUS, rblStatus.SelectedValue);
             txtAddTime.Text = model.add_time.ToString("yyyy-MM-dd HH:mm:ss");
 
-            if (rblStatus.SelectedValue == "0")
+            if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.Audit.ToString()))
             {
-                if (!ChkAdminLevelReturn(this.navigation_name, DTEnums.ActionEnum.Audit.ToString()))
-                {
-                    rblStatus.Enabled = false;
-                }
+                rblStatus.Enabled = false;
             }
-
             if (model.is_msg == 1)
             {
                 cblItem.Items[0].Selected = true;
@@ -527,7 +526,7 @@ namespace Agp2p.Web.admin.popularize
                         if (txtControl != null)
                         {
                             dic.Add(dr["name"].ToString(), txtControl.Text.Trim());
-                            
+
                         }
                         break;
                     case "multi-text": //多行文本
@@ -745,7 +744,7 @@ namespace Agp2p.Web.admin.popularize
             if (bll.Add(model) > 0)
             {
                 //开始生成缩略图咯
-         
+
                 AddAdminLog(DTEnums.ActionEnum.Add.ToString(), "添加" + this.channel_name + "频道内容:" + model.title); //记录日志
                 result = true;
             }
@@ -897,7 +896,7 @@ namespace Agp2p.Web.admin.popularize
 
             if (bll.Update(model))
             {
-              
+
                 AddAdminLog(DTEnums.ActionEnum.Edit.ToString(), "修改" + this.channel_name + "频道内容:" + model.title); //记录日志
                 result = true;
             }
@@ -905,32 +904,25 @@ namespace Agp2p.Web.admin.popularize
         }
         #endregion
 
-        
+
         //保存
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
-                if (rblStatus.SelectedValue == "0")
+                if ((string)SessionHelper.Get(STATUS) == "0")
                 {
+                    //检查权限 
                     ChkAdminLevel(this.navigation_name, DTEnums.ActionEnum.AuditEdit.ToString());
-                    //检查权限                    
-                    if (!DoEdit(this.id))
-                    {
-                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
-                        return;
-                    }
-                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+                    SessionHelper.Remove(STATUS);
                 }
-                else
+                if (!DoEdit(this.id))
                 {
-                    if (!DoEdit(this.id))
-                    {
-                        JscriptMsg("保存过程中发生错误啦！", "", "Error");
-                        return;
-                    }
-                    JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+                    JscriptMsg("保存过程中发生错误啦！", "", "Error");
+                    return;
                 }
+                JscriptMsg("修改信息成功！", "companyContent_list.aspx?channel_id=" + this.channel_id, "Success");
+
             }
             else //添加
             {

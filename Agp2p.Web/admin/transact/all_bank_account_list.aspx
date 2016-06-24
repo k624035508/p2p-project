@@ -47,7 +47,7 @@
     <th align="left" width="20%">开户行</th>
     <th align="left" width="20%">银行账户</th>
     <th align="left" width="10%">交易记录</th>
-    <th align="left" width="20%">银行卡状态</th>
+    <th align="left" width="10%">银行卡状态</th>
     <th align="left" width="10%">操作</th>
   </tr>
 </HeaderTemplate>
@@ -63,8 +63,10 @@
         <%# GetTypeName(Eval("type").ToString()) %>         
     </td>
     <td>
-        <asp:LinkButton  runat="server" ID="lbt_removecard" Text="解绑" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定解绑银行卡吗?');" 
-            OnClick="btnRemoveCard_OnClick" Visible='<%#Convert.ToInt16(Eval("type")) ==2 %>'></asp:LinkButton>
+        <asp:LinkButton  runat="server" ID="lbt_removecard" Text="快捷支付解绑" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定解绑银行卡吗?');" 
+            OnClick="btnRemoveCard_OnClick" Visible='<%#Convert.ToInt16(Eval("type")) == 2  %>'></asp:LinkButton>
+        <asp:LinkButton  runat="server" ID="lbt_removecardNormal" Text="普通解绑" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定解绑银行卡吗?');" 
+            OnClick="btnRemoveCardNormal_OnClick" Visible='<%#Convert.ToInt16(Eval("type")) == 1  %>'></asp:LinkButton>
     </td>
   </tr>
 

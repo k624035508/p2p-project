@@ -14,6 +14,7 @@ namespace Agp2p.Web.admin.loaner
 {
     public partial class loaner_edit : UI.ManagePage
     {
+        private static string STATUS = "status";
         private string action = DTEnums.ActionEnum.Add.ToString(); //操作类型
         protected int id = 0;
         Agp2pDataContext context = new Agp2pDataContext();
@@ -73,6 +74,7 @@ namespace Agp2p.Web.admin.loaner
             
             var model = context.li_loaners.First(q => q.id == id);
             this.rblStatus.SelectedValue = model.status.ToString();
+            SessionHelper.Set(STATUS,this.rblStatus.SelectedValue);
             txtName.Text = model.dt_users.real_name;
             txtTel.Text = model.dt_users.mobile;
             txtAge.Text = model.age.ToString();
@@ -211,6 +213,11 @@ namespace Agp2p.Web.admin.loaner
         {
             if (action == DTEnums.ActionEnum.Edit.ToString()) //修改
             {
+                if ((string) SessionHelper.Get(STATUS) ==  "1") 
+                {
+                    ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.AuditEdit.ToString()); //检查权限
+                    SessionHelper.Remove(STATUS);
+                }
                 ChkAdminLevel("loan_loaners", DTEnums.ActionEnum.Edit.ToString()); //检查权限
                 if (!DoEdit(id))
                 {
