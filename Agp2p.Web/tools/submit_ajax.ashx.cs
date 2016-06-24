@@ -19,6 +19,7 @@ using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Core.Message.PayApiMsg.Transaction;
+using Agp2p.Core.Message.UserPointMsg;
 using Newtonsoft.Json;
 using Agp2p.Model.DTO;
 
@@ -1184,7 +1185,7 @@ namespace Agp2p.Web.tools
             var userAddr = agContext.dt_user_addr_book.SingleOrDefault(a => a.id == addressId);
             if (userAddr == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的收货地址信息！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询收货地址信息出错！请联系客服。\"}");
                 return;
             }
             //获取商品信息
@@ -1193,9 +1194,17 @@ namespace Agp2p.Web.tools
             var goods = agContext.dt_article.SingleOrDefault(g => g.id == goodId);
             if (goods == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的兑换物信息！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询兑换物信息出错！请联系客服。\"}");
                 return;
             }
+            //获取商品详细信息
+            var goodFields = agContext.dt_article_attribute_value.SingleOrDefault(f => f.article_id == goodId);
+            if (goodFields == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询兑换物详细信息出错！请联系客服。\"}");
+                return;
+            }
+
             //检查收货人
             if (string.IsNullOrEmpty(userAddr.accept_name))
             {
@@ -1239,13 +1248,14 @@ namespace Agp2p.Web.tools
                 payable_amount = 0,
                 real_amount = 0,
                 express_status = 1,
-                express_fee = 0,//物流费用
+                express_fee = 0,
                 order_amount = 0,
                 point = 0,
-                add_time = DateTime.Now
+                add_time = DateTime.Now,
 
+                status = goodFields.isVirtual.GetValueOrDefault(0) == 1 ? 3 : 1
             };
-            //商品详细
+            
             var orderGoods = new List<Model.order_goods>()
             {
                 new Model.order_goods
@@ -1255,24 +1265,37 @@ namespace Agp2p.Web.tools
                     goods_price = 0,
                     real_price = 0,
                     quantity = goodCount,
-                    point = -1
+                    point = goodFields.point.GetValueOrDefault(0) * goodCount
                 }
             };
             model.order_goods = orderGoods;
-            int result = new BLL.orders().Add(model);
+            var orderBll = new BLL.orders();
+            int result = orderBll.Add(model);
             if (result < 1)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"订单保存过程中发生错误，请重新提交！\"}");
                 return;
             }
-            //扣除积分
-            if (model.point < 0)
+            
+            //如果是虚拟物直接扣除积分
+            if (goodFields.isVirtual.GetValueOrDefault(0) == 1)
             {
-                new BLL.user_point_log().Add(model.user_id, model.user_name, model.point, "积分换购，订单号：" + model.order_no, false);
+                //TODO 生成虚拟物并绑定会员
+
+                var msg = new UserPointMsg(userModel.id, userModel.user_name, (int) Agp2pEnums.PointEnum.Exchange,
+                    goodFields.point.GetValueOrDefault(0))
+                {
+                    Remark = "积分换购，订单号：" + model.order_no
+                };
+                MessageBus.Main.Publish(msg);
+                //兑换成功，返回URL
+                context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，已成功兑换！\"}");
             }
-            //提交成功，返回URL
-            context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，订单已成功提交！\"}");
-            return;
+            else
+            {
+                //提交成功，返回URL
+                context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，订单已成功提交！\"}");
+            }
         }
         #endregion
 

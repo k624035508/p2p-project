@@ -985,7 +985,10 @@ namespace Agp2p.Common
             [Description("邀请注册成功")]
             InviteRegister = 8,
             [Description("邀请投资成功")]
-            InviteInvest = 9
+            InviteInvest = 9,
+
+            [Description("积分兑换")]
+            Exchange = 20,
         }
     }
 }
