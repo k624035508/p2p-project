@@ -4,9 +4,9 @@ using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Lip2p.Common;
+using Agp2p.Common;
 
-namespace Lip2p.Web.admin.order
+namespace Agp2p.Web.admin.order
 {
     public partial class order_config : Web.UI.ManagePage
     {
@@ -25,14 +25,14 @@ namespace Lip2p.Web.admin.order
             BLL.orderconfig bll = new BLL.orderconfig();
             Model.orderconfig model = bll.loadConfig();
 
-            if (model.anonymous == 1)
-            {
-                anonymous.Checked = true;
-            }
-            else
-            {
-                anonymous.Checked = false;
-            }
+            //if (model.anonymous == 1)
+            //{
+            //    anonymous.Checked = true;
+            //}
+            //else
+            //{
+            //    anonymous.Checked = false;
+            //}
             confirmmsg.SelectedValue = model.confirmmsg.ToString();
             confirmcallindex.Text = model.confirmcallindex;
             expressmsg.SelectedValue = model.expressmsg.ToString();
@@ -56,14 +56,14 @@ namespace Lip2p.Web.admin.order
             Model.orderconfig model = bll.loadConfig();
             try
             {
-                if (anonymous.Checked == true)
-                {
-                    model.anonymous = 1;
-                }
-                else
-                {
+                //if (anonymous.Checked == true)
+                //{
+                //    model.anonymous = 1;
+                //}
+                //else
+                //{
                     model.anonymous = 0;
-                }
+                //}
                 model.confirmmsg = Utils.StrToInt(confirmmsg.SelectedValue, 0);
                 model.confirmcallindex = confirmcallindex.Text;
                 model.expressmsg = Utils.StrToInt(expressmsg.SelectedValue, 0);

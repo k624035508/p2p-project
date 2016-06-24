@@ -8,7 +8,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 
-namespace Lip2p.Core.ActivityLogic
+namespace Agp2p.Core.ActivityLogic
 {
     // 如果是首次投资，并且有邀请人，则其可额外奖励利润的 10%
     class InviterBonus

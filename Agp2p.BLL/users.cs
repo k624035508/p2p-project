@@ -224,11 +224,6 @@ namespace Agp2p.BLL
                 {
                     new BLL.user_point_log().Add(model.id, model.user_name, groupModel.point, "升级获得积分", true);
                 }
-                //增加金额
-                if (groupModel.amount > 0)
-                {
-                    new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.SysGive.ToString(), groupModel.amount, "升级赠送金额", 1);
-                }
             }
             return true;
         }

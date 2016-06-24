@@ -87,7 +87,6 @@
     <Compile Include="sys_config.cs" />
     <Compile Include="url_rewrite.cs" />
     <Compile Include="users.cs" />
-    <Compile Include="user_amount_log.cs" />
     <Compile Include="user_code.cs" />
     <Compile Include="cost_config.cs" />
     <Compile Include="user_config.cs" />

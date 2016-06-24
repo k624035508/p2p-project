@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Lip2p.Common;
+using Agp2p.Common;
 
-namespace Lip2p.Web.admin.order
+namespace Agp2p.Web.admin.order
 {
     public partial class order_confirm : Web.UI.ManagePage
     {

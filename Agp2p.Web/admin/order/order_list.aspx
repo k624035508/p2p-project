@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_list.aspx.cs" Inherits="Lip2p.Web.admin.order.order_list" %>
-<%@ Import namespace="Lip2p.Common" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_list.aspx.cs" Inherits="Agp2p.Web.admin.order.order_list" %>
+<%@ Import namespace="Agp2p.Common" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -91,8 +91,8 @@
     </td>
     <td><a href="order_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&id=<%#Eval("id")%>"><%#Eval("order_no")%></a></td>
     <td><%#Eval("user_name").ToString() == "" ? "匿名用户" : Eval("user_name").ToString()%></td>
-    <td><%#new Lip2p.BLL.payment().GetTitle(Convert.ToInt32(Eval("payment_id")))%></td>
-    <td><%#new Lip2p.BLL.express().GetTitle(Convert.ToInt32(Eval("express_id")))%></td>
+    <td><%#new Agp2p.BLL.payment().GetTitle(Convert.ToInt32(Eval("payment_id")))%></td>
+    <td><%#new Agp2p.BLL.express().GetTitle(Convert.ToInt32(Eval("express_id")))%></td>
     <td align="center"><%#GetOrderStatus(Convert.ToInt32(Eval("id")))%></td>
     <td align="center"><%#Eval("order_amount")%></td>
     <td><%#string.Format("{0:g}",Eval("add_time"))%></td>

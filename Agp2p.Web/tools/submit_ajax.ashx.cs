@@ -44,9 +44,6 @@ namespace Agp2p.Web.tools
                 case "comment_list": //评论列表
                     comment_list(context);
                     break;
-                case "validate_username": //验证用户名
-                    validate_username(context);
-                    break;
                 case "user_register": //用户注册
                     user_register(context);
                     break;
@@ -77,48 +74,6 @@ namespace Agp2p.Web.tools
                 case "user_oauth_register": //注册第三方登录账户
                     user_oauth_register(context);
                     break;
-                case "user_info_edit": //修改用户信息
-                    user_info_edit(context);
-                    break;
-                case "user_avatar_crop": //确认裁剪用户头像
-                    user_avatar_crop(context);
-                    break;
-                case "user_password_edit": //修改密码
-                    user_password_edit(context);
-                    break;
-                case "user_getpassword": //邮箱取回密码
-                    user_getpassword(context);
-                    break;
-                case "user_repassword": //邮箱重设密码
-                    user_repassword(context);
-                    break;
-                case "user_message_delete": //删除短信息
-                    user_message_delete(context);
-                    break;
-                case "user_message_add": //发布站内短消息
-                    user_message_add(context);
-                    break;
-                case "user_point_convert": //用户兑换积分
-                    user_point_convert(context);
-                    break;
-                case "user_point_delete": //删除用户积分明细
-                    user_point_delete(context);
-                    break;
-                case "user_amount_recharge": //用户在线充值
-                    user_amount_recharge(context);
-                    break;
-                case "user_amount_delete": //删除用户收支明细
-                    user_amount_delete(context);
-                    break;
-                case "cart_goods_add": //购物车加入商品
-                    cart_goods_add(context);
-                    break;
-                case "cart_goods_update": //购物车修改商品
-                    cart_goods_update(context);
-                    break;
-                case "cart_goods_delete": //购物车删除商品
-                    cart_goods_delete(context);
-                    break;
                 case "order_save": //保存订单
                     order_save(context);
                     break;
@@ -133,9 +88,6 @@ namespace Agp2p.Web.tools
                     break;
                 case "view_attach_count": //输出附件下载总数
                     view_attach_count(context);
-                    break;
-                case "view_cart_count": //输出当前购物车总数
-                    view_cart_count(context);
                     break;
                 case "invest_project":  //投标
                     invest_project(context);
@@ -154,9 +106,6 @@ namespace Agp2p.Web.tools
                     break;
                 case "bind_idcard": // 实名认证
                     bind_idcard(context);
-                    break;
-                case "user_edit": //修改会员资料
-                    user_edit(context);
                     break;
                 case "update_bank_card":   //新增银行卡
                     update_bank_card(context);
@@ -1163,16 +1112,6 @@ namespace Agp2p.Web.tools
                 return;
             }
             model = bll.GetModel(newId);
-            //赠送积分金额
-            if (modelGroup.point > 0)
-            {
-                new BLL.user_point_log().Add(model.id, string.IsNullOrEmpty(model.real_name) ? model.user_name :
-                    $"{model.user_name}({model.real_name})", modelGroup.point, "注册赠送积分", false);
-            }
-            if (modelGroup.amount > 0)
-            {
-                new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.SysGive.ToString(), modelGroup.amount, "注册赠送金额", 1);
-            }
             //判断是否发送欢迎消息
             if (userConfig.regmsgstatus == 1) //站内短消息
             {
@@ -1235,723 +1174,91 @@ namespace Agp2p.Web.tools
         }
         #endregion
 
-        #region 修改用户信息OK=================================
-        private void user_info_edit(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string email = Utils.ToHtml(DTRequest.GetFormString("txtEmail"));
-            string nick_name = Utils.ToHtml(DTRequest.GetFormString("txtNickName"));
-            string sex = DTRequest.GetFormString("rblSex");
-            string birthday = DTRequest.GetFormString("txtBirthday");
-            string telphone = Utils.ToHtml(DTRequest.GetFormString("txtTelphone"));
-            string mobile = Utils.ToHtml(DTRequest.GetFormString("txtMobile"));
-            string qq = Utils.ToHtml(DTRequest.GetFormString("txtQQ"));
-            string address = Utils.ToHtml(context.Request.Form["txtAddress"]);
-            string safe_question = Utils.ToHtml(context.Request.Form["txtSafeQuestion"]);
-            string safe_answer = Utils.ToHtml(context.Request.Form["txtSafeAnswer"]);
-            //检查昵称
-            if (nick_name == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入您的姓名昵称！\"}");
-                return;
-            }
-            //检查邮箱
-            if (userConfig.emaillogin == 1 && email == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入您邮箱帐号！\"}");
-                return;
-            }
-            //检查手机
-            if (userConfig.mobilelogin == 1 && mobile == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入手机号码！\"}");
-                return;
-            }
-
-            //开始写入数据库
-            model.email = email;
-            model.nick_name = nick_name;
-            model.sex = sex;
-            DateTime _birthday;
-            if (DateTime.TryParse(birthday, out _birthday))
-            {
-                model.birthday = _birthday;
-            }
-            model.telphone = telphone;
-            model.mobile = mobile;
-            model.qq = qq;
-            model.address = address;
-            model.safe_question = safe_question;
-            model.safe_answer = safe_answer;
-
-
-            new BLL.users().Update(model);
-            context.Response.Write("{\"status\":1, \"msg\":\"账户资料已修改成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 确认裁剪用户头像OK=============================
-        private void user_avatar_crop(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string fileName = DTRequest.GetFormString("hideFileName");
-            int x1 = DTRequest.GetFormInt("hideX1");
-            int y1 = DTRequest.GetFormInt("hideY1");
-            int w = DTRequest.GetFormInt("hideWidth");
-            int h = DTRequest.GetFormInt("hideHeight");
-            //检查是否图片
-
-            //检查参数
-            if (!Utils.FileExists(fileName) || w == 0 || h == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请先上传一张图片！\"}");
-                return;
-            }
-            //取得保存的新文件名
-            UpLoad upFiles = new UpLoad();
-            bool result = upFiles.cropSaveAs(fileName, fileName, 180, 180, w, h, x1, y1);
-            if (!result)
-            {
-                context.Response.Write("{\"status\": 0, \"msg\": \"图片裁剪过程中发生意外错误！\"}");
-                return;
-            }
-            //删除原用户头像
-            Utils.DeleteFile(model.avatar);
-            model.avatar = fileName;
-            //修改用户头像
-            new BLL.users().UpdateField(model.id, "avatar='" + model.avatar + "'");
-            context.Response.Write("{\"status\": 1, \"msg\": \"" + model.avatar + "\"}");
-            return;
-        }
-        #endregion
-
-        #region 修改登录密码OK=================================
-        private void user_password_edit(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            int user_id = model.id;
-            string oldpassword = DTRequest.GetFormString("txtOldPassword");
-            string password = DTRequest.GetFormString("txtPassword");
-            //检查输入的旧密码
-            if (string.IsNullOrEmpty(oldpassword))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的旧登录密码！\"}");
-                return;
-            }
-            //检查输入的新密码
-            if (string.IsNullOrEmpty(password))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的新登录密码！\"}");
-                return;
-            }
-            //旧密码是否正确
-            if (model.password != DESEncrypt.Encrypt(oldpassword, model.salt))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您输入的旧密码不正确！\"}");
-                return;
-            }
-            //执行修改操作
-            model.password = DESEncrypt.Encrypt(password, model.salt);
-            new BLL.users().Update(model);
-            context.Response.Write("{\"status\":1, \"msg\":\"您的密码已修改成功，请记住新密码！\"}");
-            return;
-        }
-        #endregion
-
-        #region 邮箱取回密码OK=================================
-        private void user_getpassword(HttpContext context)
-        {
-            string code = DTRequest.GetFormString("txtCode");
-            string username = DTRequest.GetFormString("txtUserName").Trim();
-            //检查用户名是否正确
-            if (string.IsNullOrEmpty(username))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户名不可为空！\"}");
-                return;
-            }
-            //校检验证码
-            string result = verify_code(context, code);
-            if (result != "success")
-            {
-                context.Response.Write(result);
-                return;
-            }
-            //检查用户信息
-            BLL.users bll = new BLL.users();
-            Model.users model = bll.GetModel(username);
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您输入的用户名不存在！\"}");
-                return;
-            }
-            if (string.IsNullOrEmpty(model.email))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"您尚未设置邮箱地址，无法使用取回密码功能！\"}");
-                return;
-            }
-            //生成随机码
-            string strcode = Utils.GetCheckCode(20);
-            //获得邮件内容
-            Model.mail_template mailModel = new BLL.mail_template().GetModel("getpassword");
-            if (mailModel == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"邮件发送失败，邮件模板内容不存在！\"}");
-                return;
-            }
-            //检查是否重复提交
-            BLL.user_code codeBll = new BLL.user_code();
-            Model.user_code codeModel;
-            codeModel = codeBll.GetModel(username, DTEnums.CodeEnum.RegVerify.ToString(), "d");
-            if (codeModel == null)
-            {
-                codeModel = new Model.user_code();
-                //写入数据库
-                codeModel.user_id = model.id;
-                codeModel.user_name = model.user_name;
-                codeModel.type = DTEnums.CodeEnum.Password.ToString();
-                codeModel.str_code = strcode;
-                codeModel.eff_time = DateTime.Now.AddDays(userConfig.regemailexpired);
-                codeModel.add_time = DateTime.Now;
-                codeBll.Add(codeModel);
-            }
-            //替换模板内容
-            string titletxt = mailModel.maill_title;
-            string bodytxt = mailModel.content;
-            titletxt = titletxt.Replace("{webname}", siteConfig.webname);
-            titletxt = titletxt.Replace("{username}", model.user_name);
-            bodytxt = bodytxt.Replace("{webname}", siteConfig.webname);
-            bodytxt = bodytxt.Replace("{weburl}", siteConfig.weburl);
-            bodytxt = bodytxt.Replace("{webtel}", siteConfig.webtel);
-            bodytxt = bodytxt.Replace("{valid}", userConfig.regemailexpired.ToString());
-            bodytxt = bodytxt.Replace("{username}", model.user_name);
-            bodytxt = bodytxt.Replace("{linkurl}", "http://" + HttpContext.Current.Request.Url.Authority.ToLower() + new BasePage().linkurl("repassword", "reset", strcode));
-            //发送邮件
-            try
-            {
-                DTMail.sendMail(siteConfig.emailsmtp,
-                    siteConfig.emailusername,
-                    DESEncrypt.Decrypt(siteConfig.emailpassword),
-                    siteConfig.emailnickname,
-                    siteConfig.emailfrom,
-                    model.email,
-                    titletxt, bodytxt);
-            }
-            catch
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"邮件发送失败，请联系本站管理员！\"}");
-                return;
-            }
-            context.Response.Write("{\"status\":1, \"msg\":\"邮件发送成功，请登录您的邮箱找回登录密码！\"}");
-            return;
-        }
-        #endregion
-
-        #region 邮箱重设密码OK=================================
-        private void user_repassword(HttpContext context)
-        {
-            string code = context.Request.Form["txtCode"];
-            string strcode = context.Request.Form["hideCode"];
-            string password = context.Request.Form["txtPassword"];
-
-            //校检验证码
-            string result = verify_code(context, code);
-            if (result != "success")
-            {
-                context.Response.Write(result);
-                return;
-            }
-            //检查验证字符串
-            if (string.IsNullOrEmpty(strcode))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"邮件验证码不存在或已删除！\"}");
-                return;
-            }
-            //检查输入的新密码
-            if (string.IsNullOrEmpty(password))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的新密码！\"}");
-                return;
-            }
-
-            BLL.user_code codeBll = new BLL.user_code();
-            Model.user_code codeModel = codeBll.GetModel(strcode);
-            if (codeModel == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"邮件验证码不存在或已过期！\"}");
-                return;
-            }
-            //验证用户是否存在
-            BLL.users userBll = new BLL.users();
-            if (!userBll.Exists(codeModel.user_id))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"该用户不存在或已被删除！\"}");
-                return;
-            }
-            Model.users userModel = userBll.GetModel(codeModel.user_id);
-            //执行修改操作
-            userModel.password = DESEncrypt.Encrypt(password, userModel.salt);
-            userBll.Update(userModel);
-            //更改验证字符串状态
-            codeModel.count = 1;
-            codeModel.status = 1;
-            codeBll.Update(codeModel);
-            context.Response.Write("{\"status\":1, \"msg\":\"修改密码成功，请记住新密码！\"}");
-            return;
-        }
-        #endregion
-
-        #region 删除短消息OK===================================
-        private void user_message_delete(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string check_id = DTRequest.GetFormString("checkId");
-            if (check_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"删除失败，请检查传输参数！\"}");
-                return;
-            }
-            string[] arrId = check_id.Split(',');
-            for (int i = 0; i < arrId.Length; i++)
-            {
-                new BLL.user_message().Delete(int.Parse(arrId[i]), model.user_name);
-            }
-            context.Response.Write("{\"status\":1, \"msg\":\"删除短消息成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 发布站内短消息OK===============================
-        private void user_message_add(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string code = context.Request.Form["txtCode"];
-            string send_save = DTRequest.GetFormString("sendSave");
-            string user_name = Utils.ToHtml(DTRequest.GetFormString("txtUserName"));
-            string title = Utils.ToHtml(DTRequest.GetFormString("txtTitle"));
-            string content = Utils.ToHtml(DTRequest.GetFormString("txtContent"));
-            //校检验证码
-            string result = verify_code(context, code);
-            if (result != "success")
-            {
-                context.Response.Write(result);
-                return;
-            }
-            //检查用户名
-            if (user_name == "" || !new BLL.users().Exists(user_name))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，该用户不存在或已删除！\"}");
-                return;
-            }
-            //检查标题
-            if (title == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入短消息标题！\"}");
-                return;
-            }
-            //检查内容
-            if (content == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入短消息内容！\"}");
-                return;
-            }
-            //保存数据
-            Model.user_message modelMessage = new Model.user_message
-            {
-                type = 2,
-                post_user_name = model.user_name,
-                accept_user_name = user_name,
-                title = title,
-                content = Utils.ToHtml(content),
-                receiver = model.id
-            };
-            new BLL.user_message().Add(modelMessage);
-            if (send_save == "true") //保存到收件箱
-            {
-                modelMessage.type = 3;
-                new BLL.user_message().Add(modelMessage);
-            }
-            context.Response.Write("{\"status\":1, \"msg\":\"发布短信息成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 用户兑换积分OK=================================
-        private void user_point_convert(HttpContext context)
-        {
-            //检查系统是否启用兑换积分功能
-            if (userConfig.pointcashrate == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，网站已关闭兑换积分功能！\"}");
-                return;
-            }
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            //int amout = DTRequest.GetFormInt("txtAmount");
-            string password = DTRequest.GetFormString("txtPassword");
-            //if (model.amount < 1)
-            //{
-            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，您账户上的余额不足！\"}");
-            //    return;
-            //}
-            //if (amout < 1)
-            //{
-            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，最小兑换金额为1元！\"}");
-            //    return;
-            //}
-            //if (amout > model.amount)
-            //{
-            //    context.Response.Write("{\"status\":0, \"msg\":\"对不起，您兑换的金额大于账户余额！\"}");
-            //    return;
-            //}
-            if (password == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入您账户的密码！\"}");
-                return;
-            }
-            //验证密码
-            if (DESEncrypt.Encrypt(password, model.salt) != model.password)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您输入的密码不正确！\"}");
-                return;
-            }
-            //计算兑换后的积分值
-            //int convertPoint = (int)(Convert.ToDecimal(amout) * userConfig.pointcashrate);
-            //扣除金额
-            //int amountNewId = new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout * -1, "用户兑换积分", 1);
-            //增加积分
-            //if (amountNewId < 1)
-            //{
-            //    context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
-            //    return;
-            //}
-            //int pointNewId = new BLL.user_point_log().Add(model.id, model.user_name, convertPoint, "用户兑换积分", true);
-            //if (pointNewId < 1)
-            //{
-            //    //返还金额
-            //    new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Convert.ToString(), amout, "用户兑换积分失败，返还金额", 1);
-            //    context.Response.Write("{\"status\":0, \"msg\":\"转换过程中发生错误，请重新提交！\"}");
-            //    return;
-            //}
-
-            context.Response.Write("{\"status\":1, \"msg\":\"恭喜您，积分兑换成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 删除用户积分明细OK=============================
-        private void user_point_delete(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string check_id = DTRequest.GetFormString("checkId");
-            if (check_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"删除失败，请检查传输参数！\"}");
-                return;
-            }
-            string[] arrId = check_id.Split(',');
-            for (int i = 0; i < arrId.Length; i++)
-            {
-                new BLL.user_point_log().Delete(int.Parse(arrId[i]), model.user_name);
-            }
-            context.Response.Write("{\"status\":1, \"msg\":\"积分明细删除成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 用户在线充值OK=================================
-        private void user_amount_recharge(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            decimal amount = DTRequest.GetFormDecimal("order_amount", 0);
-            int payment_id = DTRequest.GetFormInt("payment_id");
-            if (amount == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入正确的充值金额！\"}");
-                return;
-            }
-            if (payment_id == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请选择正确的支付方式！\"}");
-                return;
-            }
-            if (!new BLL.payment().Exists(payment_id))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，支付方式不存在或已删除！\"}");
-                return;
-            }
-            //生成订单号
-            string order_no = "R" + Utils.GetOrderNumber(); //订单号R开头为充值订单
-            new BLL.user_amount_log().Add(model.id, model.user_name, DTEnums.AmountTypeEnum.Recharge.ToString(), order_no,
-                payment_id, amount, "账户充值(" + new BLL.payment().GetModel(payment_id).title + ")", 0);
-            //保存成功后返回订单号
-            context.Response.Write("{\"status\":1, \"msg\":\"订单保存成功！\", \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", order_no) + "\"}");
-            return;
-
-        }
-        #endregion
-
-        #region 删除用户收支明细OK=============================
-        private void user_amount_delete(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-            string check_id = DTRequest.GetFormString("checkId");
-            if (check_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"删除失败，请检查传输参数！\"}");
-                return;
-            }
-            string[] arrId = check_id.Split(',');
-            for (int i = 0; i < arrId.Length; i++)
-            {
-                new BLL.user_amount_log().Delete(int.Parse(arrId[i]), model.user_name);
-            }
-            context.Response.Write("{\"status\":1, \"msg\":\"收支明细删除成功！\"}");
-            return;
-        }
-        #endregion
-
-        #region 购物车加入商品OK===============================
-        private void cart_goods_add(HttpContext context)
-        {
-            string goods_id = DTRequest.GetFormString("goods_id");
-            int goods_quantity = DTRequest.GetFormInt("goods_quantity", 1);
-            if (goods_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"您提交的商品参数有误！\"}");
-                return;
-            }
-            //查找会员组
-            int group_id = 0;
-            Model.users groupModel = BasePage.GetUserInfo();
-            if (groupModel != null)
-            {
-                group_id = groupModel.group_id;
-            }
-            //统计购物车
-            Web.UI.ShopCart.Add(goods_id, goods_quantity);
-            Model.cart_total cartModel = Web.UI.ShopCart.GetTotal(group_id);
-            context.Response.Write("{\"status\":1, \"msg\":\"商品已成功添加到购物车！\", \"quantity\":" + cartModel.total_quantity + ", \"amount\":" + cartModel.real_amount + "}");
-            return;
-        }
-        #endregion
-
-        #region 修改购物车商品OK===============================
-        private void cart_goods_update(HttpContext context)
-        {
-            string goods_id = DTRequest.GetFormString("goods_id");
-            int goods_quantity = DTRequest.GetFormInt("goods_quantity");
-            if (goods_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"您提交的商品参数有误！\"}");
-                return;
-            }
-
-            if (Web.UI.ShopCart.Update(goods_id, goods_quantity))
-            {
-                context.Response.Write("{\"status\":1, \"msg\":\"商品数量修改成功！\"}");
-            }
-            else
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"商品数量更改失败，请检查操作是否有误！\"}");
-            }
-            return;
-        }
-        #endregion
-
-        #region 删除购物车商品OK===============================
-        private void cart_goods_delete(HttpContext context)
-        {
-            string goods_id = DTRequest.GetFormString("goods_id");
-            if (goods_id == "")
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"您提交的商品参数有误！\"}");
-                return;
-            }
-            Web.UI.ShopCart.Clear(goods_id);
-            context.Response.Write("{\"status\":1, \"msg\":\"商品移除成功！\"}");
-            return;
-        }
-        #endregion
-
         #region 保存用户订单OK=================================
         private void order_save(HttpContext context)
         {
-            //获得传参信息
-            int payment_id = DTRequest.GetFormInt("payment_id");
-            int express_id = DTRequest.GetFormInt("express_id");
-            string accept_name = Utils.ToHtml(DTRequest.GetFormString("accept_name"));
-            string post_code = Utils.ToHtml(DTRequest.GetFormString("post_code"));
-            string telphone = Utils.ToHtml(DTRequest.GetFormString("telphone"));
-            string mobile = Utils.ToHtml(DTRequest.GetFormString("mobile"));
-            string address = Utils.ToHtml(DTRequest.GetFormString("address"));
+            var agContext = new Agp2pDataContext();
+            //获得客户地址信息
+            int addressId = DTRequest.GetFormInt("addressId");
             string message = Utils.ToHtml(DTRequest.GetFormString("message"));
-            //获取订单配置信息
-            Model.orderconfig orderConfig = new BLL.orderconfig().loadConfig();
-
-            //检查物流方式
-            if (express_id == 0)
+            var userAddr = agContext.dt_user_addr_book.SingleOrDefault(a => a.id == addressId);
+            if (userAddr == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请选择配送方式！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的收货地址信息！\"}");
                 return;
             }
-            Model.express expModel = new BLL.express().GetModel(express_id);
-            if (expModel == null)
+            //获取商品信息
+            int goodId = DTRequest.GetFormInt("goodId");
+            int goodCount = DTRequest.GetFormInt("goodCount");
+            var goods = agContext.dt_article.SingleOrDefault(g => g.id == goodId);
+            if (goods == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，配送方式不存在或已删除！\"}");
-                return;
-            }
-            //检查支付方式
-            if (payment_id == 0)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请选择支付方式！\"}");
-                return;
-            }
-            Model.payment payModel = new BLL.payment().GetModel(payment_id);
-            if (payModel == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，支付方式不存在或已删除！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，没有找到对应的兑换物信息！\"}");
                 return;
             }
             //检查收货人
-            if (string.IsNullOrEmpty(accept_name))
+            if (string.IsNullOrEmpty(userAddr.accept_name))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人姓名！\"}");
                 return;
             }
             //检查手机和电话
-            if (string.IsNullOrEmpty(telphone) && string.IsNullOrEmpty(mobile))
+            if (string.IsNullOrEmpty(userAddr.mobile))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人联系电话或手机！\"}");
                 return;
             }
             //检查地址
-            if (string.IsNullOrEmpty(address))
+            if (string.IsNullOrEmpty(userAddr.address))
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入详细的收货地址！\"}");
                 return;
             }
-            //如果开启匿名购物则不检查会员是否登录
-            int user_id = 0;
-            int user_group_id = 0;
-            string user_name = string.Empty;
             //检查用户是否登录
             Model.users userModel = BasePage.GetUserInfo();
-            if (userModel != null)
-            {
-                user_id = userModel.id;
-                user_group_id = userModel.group_id;
-                user_name = userModel.user_name;
-            }
-            if (orderConfig.anonymous == 0 && userModel == null)
+            if (userModel == null)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
                 return;
             }
-            //检查购物车商品
-            IList<Model.cart_items> iList = Agp2p.Web.UI.ShopCart.GetList(user_group_id);
-            if (iList == null)
+
+            //保存订单
+            Model.orders model = new Model.orders
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，购物车为空，无法结算！\"}");
-                return;
-            }
-            //统计购物车
-            Model.cart_total cartModel = Agp2p.Web.UI.ShopCart.GetTotal(user_group_id);
-            //保存订单=======================================================================
-            Model.orders model = new Model.orders();
-            model.order_no = "B" + Utils.GetOrderNumber(); //订单号B开头为商品订单
-            model.user_id = user_id;
-            model.user_name = user_name;
-            model.payment_id = payment_id;
-            model.express_id = express_id;
-            model.accept_name = accept_name;
-            model.post_code = post_code;
-            model.telphone = telphone;
-            model.mobile = mobile;
-            model.address = address;
-            model.message = message;
-            model.payable_amount = cartModel.payable_amount;
-            model.real_amount = cartModel.real_amount;
-            model.express_status = 1;
-            model.express_fee = expModel.express_fee; //物流费用
-            //如果是先款后货的话
-            if (payModel.type == 1)
+                order_no = "B" + Utils.GetOrderNumber(), //订单号B开头为商品订单
+                user_id = userModel.id,
+                user_name = userModel.user_name,
+                payment_id = 1,
+                express_id = 1,
+                accept_name = userAddr.accept_name,
+                post_code = userAddr.post_code,
+                telphone = userAddr.telphone,
+                mobile = userAddr.mobile,
+                address = userAddr.address,
+                message = message,
+                payable_amount = 0,
+                real_amount = 0,
+                express_status = 1,
+                express_fee = 0,//物流费用
+                order_amount = 0,
+                point = 0,
+                add_time = DateTime.Now
+
+            };
+            //商品详细
+            var orderGoods = new List<Model.order_goods>()
             {
-                model.payment_status = 1; //标记未付款
-                if (payModel.poundage_type == 1) //百分比
+                new Model.order_goods
                 {
-                    model.payment_fee = model.real_amount * payModel.poundage_amount / 100;
+                    goods_id = goods.id,
+                    goods_title = goods.title,
+                    goods_price = 0,
+                    real_price = 0,
+                    quantity = goodCount,
+                    point = -1
                 }
-                else //固定金额
-                {
-                    model.payment_fee = payModel.poundage_amount;
-                }
-            }
-            //订单总金额=实付商品金额+运费+支付手续费
-            model.order_amount = model.real_amount + model.express_fee + model.payment_fee;
-            //购物积分,可为负数
-            model.point = cartModel.total_point;
-            model.add_time = DateTime.Now;
-            //商品详细列表
-            List<Model.order_goods> gls = new List<Model.order_goods>();
-            foreach (Model.cart_items item in iList)
-            {
-                gls.Add(new Model.order_goods { goods_id = item.id, goods_title = item.title, goods_price = item.price, real_price = item.user_price, quantity = item.quantity, point = item.point });
-            }
-            model.order_goods = gls;
+            };
+            model.order_goods = orderGoods;
             int result = new BLL.orders().Add(model);
             if (result < 1)
             {
@@ -1963,8 +1270,6 @@ namespace Agp2p.Web.tools
             {
                 new BLL.user_point_log().Add(model.user_id, model.user_name, model.point, "积分换购，订单号：" + model.order_no, false);
             }
-            //清空购物车
-            Agp2p.Web.UI.ShopCart.Clear("0");
             //提交成功，返回URL
             context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，订单已成功提交！\"}");
             return;
@@ -2059,21 +1364,6 @@ namespace Agp2p.Web.tools
                 count = new BLL.article_attach().GetDownNum(attach_id);
             }
             context.Response.Write("document.write('" + count + "');");
-        }
-        #endregion
-
-        #region 输出购物车总数OK===============================
-        private void view_cart_count(HttpContext context)
-        {
-            int group_id = 0;
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model != null)
-            {
-                group_id = model.group_id;
-            }
-            Model.cart_total cartModel = Web.UI.ShopCart.GetTotal(group_id);
-            context.Response.Write("document.write('" + cartModel.total_quantity + "');");
         }
         #endregion
 
@@ -2696,74 +1986,6 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"身份证认证失败：" + ex.Message + "\"}");
             }
         }
-
-        #region 修改用户信息OK=================================
-        private void user_edit(HttpContext context)
-        {
-            //检查用户是否登录
-            Model.users model = BasePage.GetUserInfo();
-            if (model == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
-                return;
-            }
-
-            model.nick_name = DTRequest.GetFormString("nickName");
-            if (!string.IsNullOrEmpty(model.nick_name) && model.nick_name.Length < 4)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户昵称不能少于4个字符！\"}");
-                return;
-            }
-            var xssCheckRegex = new Regex(@"^[^<>]*$");
-            if (!xssCheckRegex.IsMatch(model.nick_name))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户昵称不能包含特殊字符！\"}");
-                return;
-            }
-            model.sex = DTRequest.GetFormString("sex");
-            if (!xssCheckRegex.IsMatch(model.sex))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，性别不能包含特殊字符！\"}");
-                return;
-            }
-            var birthdayStr = DTRequest.GetFormString("birthday");
-            if (!xssCheckRegex.IsMatch(birthdayStr))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，生日不能包含特殊字符！\"}");
-                return;
-            }
-            DateTime birthday;
-            if (DateTime.TryParse(birthdayStr, out birthday))
-            {
-                model.birthday = birthday;
-            }
-
-            model.area = DTRequest.GetFormString("area"); // 逗号隔开
-            if (!xssCheckRegex.IsMatch(model.area))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，所在城市不能包含特殊字符！\"}");
-                return;
-            }
-            model.qq = DTRequest.GetFormString("qq");
-            if (!xssCheckRegex.IsMatch(model.qq))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，QQ不能包含特殊字符！\"}");
-                return;
-            }
-            model.address = DTRequest.GetFormString("address");
-            if (!xssCheckRegex.IsMatch(model.address))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，居住地址不能包含特殊字符！\"}");
-                return;
-            }
-
-            //执行修改操作
-            //model.password = DESEncrypt.Encrypt(password, model.salt);
-            //model.password = DESEncrypt.Encrypt(password, model.salt);
-            new users().Update(model);
-            context.Response.Write("{\"status\":1, \"msg\":\"您的会员信息已修改成功！\"}");
-        }
-        #endregion
 
         public bool IsReusable
         {

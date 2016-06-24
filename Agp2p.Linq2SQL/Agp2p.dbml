@@ -817,4 +817,20 @@
       <Column Name="add_time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_user_addr_book" Member="dt_user_addr_book">
+    <Type Name="dt_user_addr_book">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="accept_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="telphone" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="post_code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="is_default" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

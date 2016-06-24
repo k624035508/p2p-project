@@ -16,7 +16,6 @@ namespace Agp2p.Web.UI.Page
         protected Model.orderconfig orderConfig = new BLL.orderconfig().loadConfig(); //订单配置信息
         protected Model.users userModel;
         protected Model.orders orderModel;
-        protected Model.user_amount_log amountModel;
         protected Model.payment payModel;
 
         /// <summary>
@@ -67,37 +66,8 @@ namespace Agp2p.Web.UI.Page
                     {
                         userModel = new Model.users();
                     }
-                    //检查订单的类型(充值或购物)
-                    if (order_no.ToUpper().StartsWith("R")) //充值订单
-                    {
-                        amountModel = new BLL.user_amount_log().GetModel(order_no);
-                        if (amountModel == null)
-                        {
-                            HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，订单号不存在或已删除！")));
-                            return;
-                        }
-                        //检查订单号是否已支付
-                        if (amountModel.status == 1)
-                        {
-                            HttpContext.Current.Response.Redirect(linkurl("payment", "succeed", amountModel.order_no));
-                            return;
-                        }
-                        //检查支付方式
-                        payModel = new BLL.payment().GetModel(amountModel.payment_id);
-                        if (payModel == null)
-                        {
-                            HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，支付方式不存在或已删除！")));
-                            return;
-                        }
-                        //检查是否线上支付
-                        if (payModel.type == 2)
-                        {
-                            HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，账户充值不允许线下支付！")));
-                            return;
-                        }
-                        order_amount = amountModel.value; //订单金额
-                    }
-                    else if (order_no.ToUpper().StartsWith("B")) //商品订单
+                    //检查订单的类型
+                    if (order_no.ToUpper().StartsWith("B")) //商品订单
                     {
                         //检查订单是否存在
                         orderModel = new BLL.orders().GetModel(order_no);
@@ -147,18 +117,8 @@ namespace Agp2p.Web.UI.Page
                     }
                     break;
                 case "succeed":
-                    //检查订单的类型(充值或购物)
-                    if (order_no.ToUpper().StartsWith("R")) //充值订单
-                    {
-                        amountModel = new BLL.user_amount_log().GetModel(order_no);
-                        if (amountModel == null)
-                        {
-                            HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，订单号不存在或已删除！")));
-                            return;
-                        }
-
-                    }
-                    else if (order_no.ToUpper().StartsWith("B")) //商品订单
+                    //检查订单的类型
+                    if (order_no.ToUpper().StartsWith("B")) //商品订单
                     {
                         orderModel = new BLL.orders().GetModel(order_no);
                         if (orderModel == null)

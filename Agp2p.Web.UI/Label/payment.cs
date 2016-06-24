@@ -42,22 +42,19 @@ namespace Agp2p.Web.UI
         /// <returns>decimal</returns>
         protected decimal get_payment_poundage_amount(int payment_id)
         {
-            int group_id = 0;
-            Model.users userModel = GetUserInfo();
-            if (userModel != null)
-            {
-                group_id = userModel.group_id;
-            }
+            //TODO 会员组特殊优惠？
+            //int group_id = 0;
+            //Model.users userModel = GetUserInfo();
+            //if (userModel != null)
+            //{
+            //    group_id = userModel.group_id;
+            //}
             Model.payment payModel = new BLL.payment().GetModel(payment_id);
             if (payModel == null)
             {
                 return 0;
             }
             decimal poundage_amount = payModel.poundage_amount;
-            if (payModel.poundage_type == 1)
-            {
-                poundage_amount = (poundage_amount * Web.UI.ShopCart.GetTotal(group_id).real_amount) / 100;
-            }
             return poundage_amount;
         }
 

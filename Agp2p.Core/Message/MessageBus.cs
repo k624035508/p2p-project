@@ -3,7 +3,7 @@ using Agp2p.Core.AutoLogic;
 using Agp2p.Core.InitLogic;
 using Agp2p.Core.NotifyLogic;
 using Agp2p.Core.PayApiLogic;
-using Lip2p.Core.ActivityLogic;
+using Agp2p.Core.ActivityLogic;
 using TinyMessenger;
 
 namespace Agp2p.Core.Message
@@ -43,6 +43,9 @@ namespace Agp2p.Core.Message
             UserHandle.DoSubscribe();//用户接口响应处理
             BankTransHandle.DoSubscribe();//资金账户接口响应
             ProjectTransHandle.DoSubscribe();//项目接口响应
+
+            //会员积分
+            UserPointHandler.DoSubscribe();
         }
     }
 }

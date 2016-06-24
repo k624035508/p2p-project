@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_config.aspx.cs" Inherits="Lip2p.Web.admin.order.order_config" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="order_config.aspx.cs" Inherits="Agp2p.Web.admin.order.order_config" ValidateRequest="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -38,7 +38,7 @@
     <div class="content-tab-ul-wrap">
       <ul>
         <li><a href="javascript:;" onclick="tabs(this);" class="selected">基本参数设置</a></li>
-        <li><a href="javascript:;" onclick="tabs(this);">物流跟踪配置</a></li>
+        <%--<li><a href="javascript:;" onclick="tabs(this);">物流跟踪配置</a></li>--%>
       </ul>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
 <!--订单参数设置-->
 <div class="tab-content">
-  <dl>
+<%--  <dl>
     <dt>开启匿名购物</dt>
     <dd>
       <div class="rule-single-checkbox">
@@ -54,7 +54,7 @@
       </div>
       <span class="Validform_checktip">*注意：开启匿名后无需登录即可下订单</span>
     </dd>
-  </dl>
+  </dl>--%>
   <dl>
     <dt>订单确认通知</dt>
     <dd>

@@ -977,15 +977,15 @@ namespace Agp2p.Common
             [Description("绑定邮箱")]
             BindingEmail = 4,
             [Description("绑定银行卡")]
-            BindingBank = 4,
+            BindingBank = 5,
             [Description("成功充值")]
-            Recharge = 5,
+            Recharge = 6,
             [Description("成功投资")]
-            Invest = 6,
+            Invest = 7,
             [Description("邀请注册成功")]
-            InviteRegister = 7,
+            InviteRegister = 8,
             [Description("邀请投资成功")]
-            InviteInvest = 8
+            InviteInvest = 9
         }
     }
 }

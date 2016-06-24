@@ -174,6 +174,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_user_point_log(dt_user_point_log instance);
     partial void Updatedt_user_point_log(dt_user_point_log instance);
     partial void Deletedt_user_point_log(dt_user_point_log instance);
+    partial void Insertdt_user_addr_book(dt_user_addr_book instance);
+    partial void Updatedt_user_addr_book(dt_user_addr_book instance);
+    partial void Deletedt_user_addr_book(dt_user_addr_book instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -589,6 +592,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_user_point_log>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_user_addr_book> dt_user_addr_book
+		{
+			get
+			{
+				return this.GetTable<dt_user_addr_book>();
 			}
 		}
 	}
@@ -18640,6 +18651,332 @@ namespace Agp2p.Linq2SQL
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_add_time", DbType="DateTime NOT NULL")]
 		public System.DateTime add_time
+		{
+			get
+			{
+				return this._add_time;
+			}
+			set
+			{
+				if ((this._add_time != value))
+				{
+					this.Onadd_timeChanging(value);
+					this.SendPropertyChanging();
+					this._add_time = value;
+					this.SendPropertyChanged("add_time");
+					this.Onadd_timeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_user_addr_book")]
+	public partial class dt_user_addr_book : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<int> _user_id;
+		
+		private string _user_name;
+		
+		private string _accept_name;
+		
+		private string _area;
+		
+		private string _address;
+		
+		private string _mobile;
+		
+		private string _telphone;
+		
+		private string _email;
+		
+		private string _post_code;
+		
+		private System.Nullable<byte> _is_default;
+		
+		private System.Nullable<System.DateTime> _add_time;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onuser_idChanging(System.Nullable<int> value);
+    partial void Onuser_idChanged();
+    partial void Onuser_nameChanging(string value);
+    partial void Onuser_nameChanged();
+    partial void Onaccept_nameChanging(string value);
+    partial void Onaccept_nameChanged();
+    partial void OnareaChanging(string value);
+    partial void OnareaChanged();
+    partial void OnaddressChanging(string value);
+    partial void OnaddressChanged();
+    partial void OnmobileChanging(string value);
+    partial void OnmobileChanged();
+    partial void OntelphoneChanging(string value);
+    partial void OntelphoneChanged();
+    partial void OnemailChanging(string value);
+    partial void OnemailChanged();
+    partial void Onpost_codeChanging(string value);
+    partial void Onpost_codeChanged();
+    partial void Onis_defaultChanging(System.Nullable<byte> value);
+    partial void Onis_defaultChanged();
+    partial void Onadd_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Onadd_timeChanged();
+    #endregion
+		
+		public dt_user_addr_book()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int")]
+		public System.Nullable<int> user_id
+		{
+			get
+			{
+				return this._user_id;
+			}
+			set
+			{
+				if ((this._user_id != value))
+				{
+					this.Onuser_idChanging(value);
+					this.SendPropertyChanging();
+					this._user_id = value;
+					this.SendPropertyChanged("user_id");
+					this.Onuser_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_name", DbType="NVarChar(100)")]
+		public string user_name
+		{
+			get
+			{
+				return this._user_name;
+			}
+			set
+			{
+				if ((this._user_name != value))
+				{
+					this.Onuser_nameChanging(value);
+					this.SendPropertyChanging();
+					this._user_name = value;
+					this.SendPropertyChanged("user_name");
+					this.Onuser_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_accept_name", DbType="NVarChar(100)")]
+		public string accept_name
+		{
+			get
+			{
+				return this._accept_name;
+			}
+			set
+			{
+				if ((this._accept_name != value))
+				{
+					this.Onaccept_nameChanging(value);
+					this.SendPropertyChanging();
+					this._accept_name = value;
+					this.SendPropertyChanged("accept_name");
+					this.Onaccept_nameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_area", DbType="NVarChar(100)")]
+		public string area
+		{
+			get
+			{
+				return this._area;
+			}
+			set
+			{
+				if ((this._area != value))
+				{
+					this.OnareaChanging(value);
+					this.SendPropertyChanging();
+					this._area = value;
+					this.SendPropertyChanged("area");
+					this.OnareaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_address", DbType="NVarChar(500)")]
+		public string address
+		{
+			get
+			{
+				return this._address;
+			}
+			set
+			{
+				if ((this._address != value))
+				{
+					this.OnaddressChanging(value);
+					this.SendPropertyChanging();
+					this._address = value;
+					this.SendPropertyChanged("address");
+					this.OnaddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mobile", DbType="NVarChar(20)")]
+		public string mobile
+		{
+			get
+			{
+				return this._mobile;
+			}
+			set
+			{
+				if ((this._mobile != value))
+				{
+					this.OnmobileChanging(value);
+					this.SendPropertyChanging();
+					this._mobile = value;
+					this.SendPropertyChanged("mobile");
+					this.OnmobileChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_telphone", DbType="NVarChar(30)")]
+		public string telphone
+		{
+			get
+			{
+				return this._telphone;
+			}
+			set
+			{
+				if ((this._telphone != value))
+				{
+					this.OntelphoneChanging(value);
+					this.SendPropertyChanging();
+					this._telphone = value;
+					this.SendPropertyChanged("telphone");
+					this.OntelphoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_email", DbType="NVarChar(50)")]
+		public string email
+		{
+			get
+			{
+				return this._email;
+			}
+			set
+			{
+				if ((this._email != value))
+				{
+					this.OnemailChanging(value);
+					this.SendPropertyChanging();
+					this._email = value;
+					this.SendPropertyChanged("email");
+					this.OnemailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_post_code", DbType="NVarChar(20)")]
+		public string post_code
+		{
+			get
+			{
+				return this._post_code;
+			}
+			set
+			{
+				if ((this._post_code != value))
+				{
+					this.Onpost_codeChanging(value);
+					this.SendPropertyChanging();
+					this._post_code = value;
+					this.SendPropertyChanged("post_code");
+					this.Onpost_codeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_default", DbType="TinyInt")]
+		public System.Nullable<byte> is_default
+		{
+			get
+			{
+				return this._is_default;
+			}
+			set
+			{
+				if ((this._is_default != value))
+				{
+					this.Onis_defaultChanging(value);
+					this.SendPropertyChanging();
+					this._is_default = value;
+					this.SendPropertyChanged("is_default");
+					this.Onis_defaultChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_add_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> add_time
 		{
 			get
 			{

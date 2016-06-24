@@ -28,21 +28,6 @@ namespace Agp2p.Web.UI
         }
 
         /// <summary>
-        /// 返回用户头像图片地址
-        /// </summary>
-        /// <param name="user_name">用户名</param>
-        /// <returns>String</returns>
-        protected string get_user_avatar(string user_name)
-        {
-            BLL.users bll = new BLL.users();
-            if (!bll.Exists(user_name))
-            {
-                return "";
-            }
-            return bll.GetModel(user_name).avatar;
-        }
-
-        /// <summary>
         /// 统计短信息数量
         /// </summary>
         /// <param name="strwhere">查询条件</param>
@@ -87,18 +72,6 @@ namespace Agp2p.Web.UI
         protected DataTable get_user_point_list(int page_size, int page_index, string strwhere, out int totalcount)
         {
             return new BLL.user_point_log().GetList(page_size, page_index, strwhere, "add_time desc,id desc", out totalcount).Tables[0];
-        }
-        /// <summary>
-        /// 余额明细分页列表
-        /// </summary>
-        /// <param name="page_size">页面大小</param>
-        /// <param name="page_index">当前页码</param>
-        /// <param name="strwhere">查询条件</param>
-        /// <param name="totalcount">总记录数</param>
-        /// <returns>DateTable</returns>
-        protected DataTable get_user_amount_list(int page_size, int page_index, string strwhere, out int totalcount)
-        {
-            return new BLL.user_amount_log().GetList(page_size, page_index, strwhere, "add_time desc,id desc", out totalcount).Tables[0];
         }
 
         /// <summary>
