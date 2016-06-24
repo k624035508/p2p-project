@@ -101,7 +101,13 @@
         cursor:pointer;
 	}
 }
-.rechargeTips { .warm-tips-style; }
+.rechargeTips { .warm-tips-style;
+            .rechargeLimit{ 
+                color:@blue;
+                text-decoration:none;
+                &:hover{ color:@blue;}
+            }
+}
 
 #waitforPaymentDialog .modal-dialog .modal-content {
 	width: 600px;

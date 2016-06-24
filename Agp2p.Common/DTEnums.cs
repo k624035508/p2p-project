@@ -97,7 +97,7 @@ namespace Agp2p.Common
             /// </summary>
             AuditEdit,
             /// <summary>
-            /// 审核后修改
+            /// 下载
             /// </summary>
             DownLoad
         }
