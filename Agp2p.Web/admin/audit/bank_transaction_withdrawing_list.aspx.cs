@@ -239,6 +239,7 @@ namespace Agp2p.Web.admin.audit
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
+            ChkAdminLevel("manage_bank_transaction_withdraw", DTEnums.ActionEnum.DownLoad.ToString()); //检查权限
             var withdraws = QueryWithdraws();
             if (rblTableType.SelectedValue == "0")
             {

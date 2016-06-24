@@ -259,6 +259,7 @@ namespace Agp2p.Web.admin.users
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
+            ChkAdminLevel("user_list", DTEnums.ActionEnum.DownLoad.ToString()); //检查权限
             var users = QueryUsers();
             var xlsData = users
                 .OrderByDescending(u => u.reg_time)

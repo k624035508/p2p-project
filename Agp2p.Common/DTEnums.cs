@@ -92,10 +92,14 @@ namespace Agp2p.Common
             /// 大额审批
             /// </summary>
             BigOrderAudit,
-            ///// <summary>
-            ///// 审核后修改
-            ///// </summary>
-            AuditEdit
+            /// <summary>
+            /// 审核后修改
+            /// </summary>
+            AuditEdit,
+            /// <summary>
+            /// 审核后修改
+            /// </summary>
+            DownLoad
         }
 
         /// <summary>

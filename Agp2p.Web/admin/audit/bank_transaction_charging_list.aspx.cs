@@ -254,6 +254,7 @@ namespace Agp2p.Web.admin.audit
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
+            ChkAdminLevel("manage_bank_transaction_charge", DTEnums.ActionEnum.DownLoad.ToString());
             var reCharge = QueryReCharge();
             if (rblTableType.SelectedValue == "0")
             {

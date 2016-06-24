@@ -185,6 +185,7 @@ namespace Agp2p.Web.admin.statistic
 
         protected void btnExportExcel_Click(object sender, EventArgs e)
         {
+            ChkAdminLevel("statistics_wallet", DTEnums.ActionEnum.DownLoad.ToString()); //检查权限
             var wallets = QueryWallets(out totalCount);
             if (rblTableType.SelectedValue == "0")
             {
