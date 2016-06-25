@@ -53,22 +53,6 @@ namespace Agp2p.Web.admin.transact
             Response.Redirect(Utils.CombUrlTxt("all_bank_account_list.aspx", "keywords={0}", txtKeywords2.Text));
         }
 
-        //银行卡状态管理
-        protected string GetTypeName(string typeId)
-        {
-            switch (typeId)
-            {
-                case "1":
-                    return "未知";
-                case "2":
-                    return "快捷支付";
-                case "3":
-                    return "失效";
-                default:
-                    return "其它";
-            }
-        }
-
         /// <summary>
         /// 解绑快捷支付银行卡
         /// </summary>

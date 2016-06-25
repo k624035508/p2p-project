@@ -8,7 +8,6 @@ import React from "react";
 import ReactDom from "react-dom";
 import header from "./header.js";
 
-import alert from "../components/tips_alert.js";
 
 class ReturnFailCondition extends React.Component {
     constructor(props) {
@@ -22,7 +21,7 @@ class ReturnFailCondition extends React.Component {
                     很抱歉, {
                         this.props.returnId == "default" ? "操作" : this.props.returnId == "investedFail" ? "投资" : this.props.returnId == "rechargeFail" ? "充值" : this.props.returnId == "withdrawFail" ? "提现申请" : this.props.returnId == "repayFail" ? "还款" :
                             this.props.returnId == "tranClaimFail" ? "债权转让认购" : this.props.returnId == "autoTenderFail" ? "自动投标续约" : this.props.returnId == "autoTenderCancelFail" ? "自动投标解约" :
-                                this.props.returnId == "autoAccountFail" ? "个人自动账户开通" : "个人自动账户取消"
+                                this.props.returnId == "autoAccountFail" ? "个人自动账户开通" : this.props.returnId == "autoAccountCancelFail" ? "个人自动账户取消" : "操作"
                     }失败！
                 </p>
                 <div className="contentbg">
@@ -48,7 +47,7 @@ $(function () {
     var returnId = url.substring(index + 1);
     var titlevalue = (returnId == "investedFail" ? "投资" : returnId == "rechargeFail" ? "充值" : returnId == "withdrawFail" ? "提现" : returnId == "repayFail" ? "还款" :
        returnId == "tranClaimFail" ? "债权转让认购" : returnId == "autoTenderFail" ? "自动投标续约" : returnId == "autoTenderCancelFail" ? "自动投标解约" :
-           returnId == "autoAccountFail" ? "自动还款开通" : "自动还款取消") + "失败";
+           returnId == "autoAccountFail" ? "自动还款开通" : returnId == "autoAccountCancelFail" ? "自动还款取消" : "操作") + "失败";
     //$("title").text(titlevalue);  IE8不适用
     $(document).attr("title",titlevalue);  //IE8修改title值
     ReactDom.render(<ReturnFailCondition returnId={returnId} />, document.getElementById("returnFail"));
