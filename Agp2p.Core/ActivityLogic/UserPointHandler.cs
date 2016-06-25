@@ -24,36 +24,35 @@ namespace Agp2p.Core.ActivityLogic
         {
             switch (userPointMsg.Type)
             {
-                case Agp2pEnums.PointEnum.Sign:
+                case (int)Agp2pEnums.PointEnum.Sign:
                     userPointMsg.Point = 10;
                     userPointMsg.Remark = "每日签到";
                     break;
-                case Agp2pEnums.PointEnum.Register:
+                case (int)Agp2pEnums.PointEnum.Register:
                     userPointMsg.Point = 100;
                     userPointMsg.Remark = "注册送积分";
                     break;
-                case Agp2pEnums.PointEnum.RealNameAuth:
+                case (int)Agp2pEnums.PointEnum.RealNameAuth:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.BindingEmail:
+                case (int)Agp2pEnums.PointEnum.BindingEmail:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.BindingBank:
+                case (int)Agp2pEnums.PointEnum.BindingBank:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.Recharge:
+                case (int)Agp2pEnums.PointEnum.Recharge:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.Invest:
+                case (int)Agp2pEnums.PointEnum.Invest:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.InviteRegister:
+                case (int)Agp2pEnums.PointEnum.InviteRegister:
                     userPointMsg.Point = 50;
                     break;
-                case Agp2pEnums.PointEnum.InviteInvest:
+                case (int)Agp2pEnums.PointEnum.InviteInvest:
                     userPointMsg.Point = 50;
                     break;
-
             }
 
             var context  = new Agp2pDataContext();

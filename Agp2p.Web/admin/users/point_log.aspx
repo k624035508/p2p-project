@@ -52,7 +52,8 @@
     <th width="8%">选择</th>
     <th align="left" width="15%">用户名</th>
     <th align="left" width="10%">积分</th>
-    <th align="left">备注</th>
+    <th align="left" width="20%">备注</th>
+    <th align="left" width="10%">类型</th>
     <th align="left" width="16%">时间</th>
   </tr>
 </HeaderTemplate>
@@ -65,6 +66,7 @@
     <td><%#Eval("UserName")%></td>
     <td><%# Convert.ToDecimal(Eval("Value")) > 0 ? "+" + Eval("Value").ToString() : Eval("Value").ToString()%></td>
     <td><%#Eval("Remark")%></td>
+    <td><%#Utils.GetAgp2pEnumDes((Agp2pEnums.PointEnum)Eval("type")) %></td>
     <td><%#string.Format("{0:g}", Eval("AddTime"))%></td>
   </tr>
 </ItemTemplate>

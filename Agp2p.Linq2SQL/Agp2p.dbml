@@ -120,20 +120,6 @@
       <Association Name="dt_user_groups_dt_users" Member="dt_users" ThisKey="id" OtherKey="group_id" Type="dt_users" />
     </Type>
   </Table>
-  <Table Name="dbo.dt_article_attribute_value" Member="dt_article_attribute_value">
-    <Type Name="dt_article_attribute_value">
-      <Column Name="article_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="sub_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="source" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="goods_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="stock_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.li_user_group_servers" Member="li_user_group_servers">
     <Type Name="li_user_group_servers">
       <Column Name="serving_user" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -831,6 +817,24 @@
       <Column Name="post_code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="is_default" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_article_attribute_value" Member="dt_article_attribute_value">
+    <Type Name="dt_article_attribute_value">
+      <Column Name="article_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sub_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="source" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="goods_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="stock_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="jiaxijuan" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="hongbao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="point_month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isVirtual" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

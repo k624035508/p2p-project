@@ -30,7 +30,7 @@ namespace Agp2p.Web.admin.users
                 var keywords = DTRequest.GetQueryString("keywords");  //关键字查询
                 if (!string.IsNullOrEmpty(keywords))
                     txtKeywords.Text = keywords;
-                Model.manager manager = GetAdminInfo();
+                //Model.manager manager = GetAdminInfo();
                // RptBind("id>0  and user_id in (select u.id from dt_users u inner join dt_user_groups g on g.id=u.group_id inner join li_user_group_access_keys k on k.user_group=g.id where k.owner_manager=" + manager.id + ")" + CombSqlTxt(txtKeywords.Text), "add_time desc,id desc");
                RptBind();
             }
@@ -53,7 +53,6 @@ namespace Agp2p.Web.admin.users
         {
             this.page = DTRequest.GetQueryInt("page", 1);
             //txtKeywords.Text = this.keywords;
-            BLL.user_point_log bll = new BLL.user_point_log();
             this.rptList.DataSource = context.dt_user_point_log.OrderByDescending(q => q.id).AsEnumerable().Select(g => new UserPoints
             {
                 id = g.id,
@@ -70,20 +69,6 @@ namespace Agp2p.Web.admin.users
             txtPageNum.Text = this.pageSize.ToString();
             string pageUrl = Utils.CombUrlTxt("point_log.aspx", "keywords={0}&page={1}", txtKeywords.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(this.pageSize, this.page, this.totalCount, pageUrl, 8);
-        }
-        #endregion
-
-        #region 组合SQL查询语句==========================
-        protected string CombSqlTxt(string _keywords)
-        {
-            StringBuilder strTemp = new StringBuilder();
-            _keywords = _keywords.Replace("'", "");
-            if (!string.IsNullOrEmpty(_keywords))
-            {
-                strTemp.Append(" and (user_name='" + _keywords + "' or remark like '%" + _keywords + "%')");
-            }
-
-            return strTemp.ToString();
         }
         #endregion
 

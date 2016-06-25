@@ -54,9 +54,6 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_user_groups(dt_user_groups instance);
     partial void Updatedt_user_groups(dt_user_groups instance);
     partial void Deletedt_user_groups(dt_user_groups instance);
-    partial void Insertdt_article_attribute_value(dt_article_attribute_value instance);
-    partial void Updatedt_article_attribute_value(dt_article_attribute_value instance);
-    partial void Deletedt_article_attribute_value(dt_article_attribute_value instance);
     partial void Insertli_user_group_servers(li_user_group_servers instance);
     partial void Updateli_user_group_servers(li_user_group_servers instance);
     partial void Deleteli_user_group_servers(li_user_group_servers instance);
@@ -177,6 +174,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_user_addr_book(dt_user_addr_book instance);
     partial void Updatedt_user_addr_book(dt_user_addr_book instance);
     partial void Deletedt_user_addr_book(dt_user_addr_book instance);
+    partial void Insertdt_article_attribute_value(dt_article_attribute_value instance);
+    partial void Updatedt_article_attribute_value(dt_article_attribute_value instance);
+    partial void Deletedt_article_attribute_value(dt_article_attribute_value instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -264,14 +264,6 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_user_groups>();
-			}
-		}
-		
-		public System.Data.Linq.Table<dt_article_attribute_value> dt_article_attribute_value
-		{
-			get
-			{
-				return this.GetTable<dt_article_attribute_value>();
 			}
 		}
 		
@@ -600,6 +592,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_user_addr_book>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_article_attribute_value> dt_article_attribute_value
+		{
+			get
+			{
+				return this.GetTable<dt_article_attribute_value>();
 			}
 		}
 	}
@@ -3354,301 +3354,6 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.dt_user_groups = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_article_attribute_value")]
-	public partial class dt_article_attribute_value : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _article_id;
-		
-		private string _sub_title;
-		
-		private string _source;
-		
-		private string _author;
-		
-		private string _goods_no;
-		
-		private System.Nullable<int> _stock_quantity;
-		
-		private System.Nullable<decimal> _market_price;
-		
-		private System.Nullable<decimal> _sell_price;
-		
-		private System.Nullable<int> _point;
-		
-		private EntityRef<dt_article> _dt_article;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void Onarticle_idChanging(int value);
-    partial void Onarticle_idChanged();
-    partial void Onsub_titleChanging(string value);
-    partial void Onsub_titleChanged();
-    partial void OnsourceChanging(string value);
-    partial void OnsourceChanged();
-    partial void OnauthorChanging(string value);
-    partial void OnauthorChanged();
-    partial void Ongoods_noChanging(string value);
-    partial void Ongoods_noChanged();
-    partial void Onstock_quantityChanging(System.Nullable<int> value);
-    partial void Onstock_quantityChanged();
-    partial void Onmarket_priceChanging(System.Nullable<decimal> value);
-    partial void Onmarket_priceChanged();
-    partial void Onsell_priceChanging(System.Nullable<decimal> value);
-    partial void Onsell_priceChanged();
-    partial void OnpointChanging(System.Nullable<int> value);
-    partial void OnpointChanged();
-    #endregion
-		
-		public dt_article_attribute_value()
-		{
-			this._dt_article = default(EntityRef<dt_article>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_article_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int article_id
-		{
-			get
-			{
-				return this._article_id;
-			}
-			set
-			{
-				if ((this._article_id != value))
-				{
-					if (this._dt_article.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.Onarticle_idChanging(value);
-					this.SendPropertyChanging();
-					this._article_id = value;
-					this.SendPropertyChanged("article_id");
-					this.Onarticle_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sub_title", DbType="NVarChar(255)")]
-		public string sub_title
-		{
-			get
-			{
-				return this._sub_title;
-			}
-			set
-			{
-				if ((this._sub_title != value))
-				{
-					this.Onsub_titleChanging(value);
-					this.SendPropertyChanging();
-					this._sub_title = value;
-					this.SendPropertyChanged("sub_title");
-					this.Onsub_titleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_source", DbType="NVarChar(100)")]
-		public string source
-		{
-			get
-			{
-				return this._source;
-			}
-			set
-			{
-				if ((this._source != value))
-				{
-					this.OnsourceChanging(value);
-					this.SendPropertyChanging();
-					this._source = value;
-					this.SendPropertyChanged("source");
-					this.OnsourceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_author", DbType="NVarChar(50)")]
-		public string author
-		{
-			get
-			{
-				return this._author;
-			}
-			set
-			{
-				if ((this._author != value))
-				{
-					this.OnauthorChanging(value);
-					this.SendPropertyChanging();
-					this._author = value;
-					this.SendPropertyChanged("author");
-					this.OnauthorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_goods_no", DbType="NVarChar(100)")]
-		public string goods_no
-		{
-			get
-			{
-				return this._goods_no;
-			}
-			set
-			{
-				if ((this._goods_no != value))
-				{
-					this.Ongoods_noChanging(value);
-					this.SendPropertyChanging();
-					this._goods_no = value;
-					this.SendPropertyChanged("goods_no");
-					this.Ongoods_noChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_stock_quantity", DbType="Int")]
-		public System.Nullable<int> stock_quantity
-		{
-			get
-			{
-				return this._stock_quantity;
-			}
-			set
-			{
-				if ((this._stock_quantity != value))
-				{
-					this.Onstock_quantityChanging(value);
-					this.SendPropertyChanging();
-					this._stock_quantity = value;
-					this.SendPropertyChanged("stock_quantity");
-					this.Onstock_quantityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_market_price", DbType="Decimal(9,2)")]
-		public System.Nullable<decimal> market_price
-		{
-			get
-			{
-				return this._market_price;
-			}
-			set
-			{
-				if ((this._market_price != value))
-				{
-					this.Onmarket_priceChanging(value);
-					this.SendPropertyChanging();
-					this._market_price = value;
-					this.SendPropertyChanged("market_price");
-					this.Onmarket_priceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sell_price", DbType="Decimal(9,2)")]
-		public System.Nullable<decimal> sell_price
-		{
-			get
-			{
-				return this._sell_price;
-			}
-			set
-			{
-				if ((this._sell_price != value))
-				{
-					this.Onsell_priceChanging(value);
-					this.SendPropertyChanging();
-					this._sell_price = value;
-					this.SendPropertyChanged("sell_price");
-					this.Onsell_priceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_point", DbType="Int")]
-		public System.Nullable<int> point
-		{
-			get
-			{
-				return this._point;
-			}
-			set
-			{
-				if ((this._point != value))
-				{
-					this.OnpointChanging(value);
-					this.SendPropertyChanging();
-					this._point = value;
-					this.SendPropertyChanged("point");
-					this.OnpointChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_dt_article_attribute_value", Storage="_dt_article", ThisKey="article_id", OtherKey="id", IsForeignKey=true)]
-		public dt_article dt_article
-		{
-			get
-			{
-				return this._dt_article.Entity;
-			}
-			set
-			{
-				dt_article previousValue = this._dt_article.Entity;
-				if (((previousValue != value) 
-							|| (this._dt_article.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._dt_article.Entity = null;
-						previousValue.dt_article_attribute_value = null;
-					}
-					this._dt_article.Entity = value;
-					if ((value != null))
-					{
-						value.dt_article_attribute_value = this;
-						this._article_id = value.id;
-					}
-					else
-					{
-						this._article_id = default(int);
-					}
-					this.SendPropertyChanged("dt_article");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -18991,6 +18696,397 @@ namespace Agp2p.Linq2SQL
 					this._add_time = value;
 					this.SendPropertyChanged("add_time");
 					this.Onadd_timeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_article_attribute_value")]
+	public partial class dt_article_attribute_value : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _article_id;
+		
+		private string _sub_title;
+		
+		private string _source;
+		
+		private string _author;
+		
+		private string _goods_no;
+		
+		private System.Nullable<int> _stock_quantity;
+		
+		private System.Nullable<decimal> _market_price;
+		
+		private System.Nullable<decimal> _sell_price;
+		
+		private System.Nullable<int> _point;
+		
+		private string _jiaxijuan;
+		
+		private System.Nullable<int> _hongbao;
+		
+		private System.Nullable<int> _point_month;
+		
+		private System.Nullable<byte> _isVirtual;
+		
+		private EntityRef<dt_article> _dt_article;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onarticle_idChanging(int value);
+    partial void Onarticle_idChanged();
+    partial void Onsub_titleChanging(string value);
+    partial void Onsub_titleChanged();
+    partial void OnsourceChanging(string value);
+    partial void OnsourceChanged();
+    partial void OnauthorChanging(string value);
+    partial void OnauthorChanged();
+    partial void Ongoods_noChanging(string value);
+    partial void Ongoods_noChanged();
+    partial void Onstock_quantityChanging(System.Nullable<int> value);
+    partial void Onstock_quantityChanged();
+    partial void Onmarket_priceChanging(System.Nullable<decimal> value);
+    partial void Onmarket_priceChanged();
+    partial void Onsell_priceChanging(System.Nullable<decimal> value);
+    partial void Onsell_priceChanged();
+    partial void OnpointChanging(System.Nullable<int> value);
+    partial void OnpointChanged();
+    partial void OnjiaxijuanChanging(string value);
+    partial void OnjiaxijuanChanged();
+    partial void OnhongbaoChanging(System.Nullable<int> value);
+    partial void OnhongbaoChanged();
+    partial void Onpoint_monthChanging(System.Nullable<int> value);
+    partial void Onpoint_monthChanged();
+    partial void OnisVirtualChanging(System.Nullable<byte> value);
+    partial void OnisVirtualChanged();
+    #endregion
+		
+		public dt_article_attribute_value()
+		{
+			this._dt_article = default(EntityRef<dt_article>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_article_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int article_id
+		{
+			get
+			{
+				return this._article_id;
+			}
+			set
+			{
+				if ((this._article_id != value))
+				{
+					if (this._dt_article.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onarticle_idChanging(value);
+					this.SendPropertyChanging();
+					this._article_id = value;
+					this.SendPropertyChanged("article_id");
+					this.Onarticle_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sub_title", DbType="NVarChar(255)")]
+		public string sub_title
+		{
+			get
+			{
+				return this._sub_title;
+			}
+			set
+			{
+				if ((this._sub_title != value))
+				{
+					this.Onsub_titleChanging(value);
+					this.SendPropertyChanging();
+					this._sub_title = value;
+					this.SendPropertyChanged("sub_title");
+					this.Onsub_titleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_source", DbType="NVarChar(100)")]
+		public string source
+		{
+			get
+			{
+				return this._source;
+			}
+			set
+			{
+				if ((this._source != value))
+				{
+					this.OnsourceChanging(value);
+					this.SendPropertyChanging();
+					this._source = value;
+					this.SendPropertyChanged("source");
+					this.OnsourceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_author", DbType="NVarChar(50)")]
+		public string author
+		{
+			get
+			{
+				return this._author;
+			}
+			set
+			{
+				if ((this._author != value))
+				{
+					this.OnauthorChanging(value);
+					this.SendPropertyChanging();
+					this._author = value;
+					this.SendPropertyChanged("author");
+					this.OnauthorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_goods_no", DbType="NVarChar(100)")]
+		public string goods_no
+		{
+			get
+			{
+				return this._goods_no;
+			}
+			set
+			{
+				if ((this._goods_no != value))
+				{
+					this.Ongoods_noChanging(value);
+					this.SendPropertyChanging();
+					this._goods_no = value;
+					this.SendPropertyChanged("goods_no");
+					this.Ongoods_noChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_stock_quantity", DbType="Int")]
+		public System.Nullable<int> stock_quantity
+		{
+			get
+			{
+				return this._stock_quantity;
+			}
+			set
+			{
+				if ((this._stock_quantity != value))
+				{
+					this.Onstock_quantityChanging(value);
+					this.SendPropertyChanging();
+					this._stock_quantity = value;
+					this.SendPropertyChanged("stock_quantity");
+					this.Onstock_quantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_market_price", DbType="Decimal(9,2)")]
+		public System.Nullable<decimal> market_price
+		{
+			get
+			{
+				return this._market_price;
+			}
+			set
+			{
+				if ((this._market_price != value))
+				{
+					this.Onmarket_priceChanging(value);
+					this.SendPropertyChanging();
+					this._market_price = value;
+					this.SendPropertyChanged("market_price");
+					this.Onmarket_priceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sell_price", DbType="Decimal(9,2)")]
+		public System.Nullable<decimal> sell_price
+		{
+			get
+			{
+				return this._sell_price;
+			}
+			set
+			{
+				if ((this._sell_price != value))
+				{
+					this.Onsell_priceChanging(value);
+					this.SendPropertyChanging();
+					this._sell_price = value;
+					this.SendPropertyChanged("sell_price");
+					this.Onsell_priceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_point", DbType="Int")]
+		public System.Nullable<int> point
+		{
+			get
+			{
+				return this._point;
+			}
+			set
+			{
+				if ((this._point != value))
+				{
+					this.OnpointChanging(value);
+					this.SendPropertyChanging();
+					this._point = value;
+					this.SendPropertyChanged("point");
+					this.OnpointChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_jiaxijuan", DbType="NVarChar(5)")]
+		public string jiaxijuan
+		{
+			get
+			{
+				return this._jiaxijuan;
+			}
+			set
+			{
+				if ((this._jiaxijuan != value))
+				{
+					this.OnjiaxijuanChanging(value);
+					this.SendPropertyChanging();
+					this._jiaxijuan = value;
+					this.SendPropertyChanged("jiaxijuan");
+					this.OnjiaxijuanChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hongbao", DbType="Int")]
+		public System.Nullable<int> hongbao
+		{
+			get
+			{
+				return this._hongbao;
+			}
+			set
+			{
+				if ((this._hongbao != value))
+				{
+					this.OnhongbaoChanging(value);
+					this.SendPropertyChanging();
+					this._hongbao = value;
+					this.SendPropertyChanged("hongbao");
+					this.OnhongbaoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_point_month", DbType="Int")]
+		public System.Nullable<int> point_month
+		{
+			get
+			{
+				return this._point_month;
+			}
+			set
+			{
+				if ((this._point_month != value))
+				{
+					this.Onpoint_monthChanging(value);
+					this.SendPropertyChanging();
+					this._point_month = value;
+					this.SendPropertyChanged("point_month");
+					this.Onpoint_monthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isVirtual", DbType="TinyInt")]
+		public System.Nullable<byte> isVirtual
+		{
+			get
+			{
+				return this._isVirtual;
+			}
+			set
+			{
+				if ((this._isVirtual != value))
+				{
+					this.OnisVirtualChanging(value);
+					this.SendPropertyChanging();
+					this._isVirtual = value;
+					this.SendPropertyChanged("isVirtual");
+					this.OnisVirtualChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_dt_article_attribute_value", Storage="_dt_article", ThisKey="article_id", OtherKey="id", IsForeignKey=true)]
+		public dt_article dt_article
+		{
+			get
+			{
+				return this._dt_article.Entity;
+			}
+			set
+			{
+				dt_article previousValue = this._dt_article.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_article.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_article.Entity = null;
+						previousValue.dt_article_attribute_value = null;
+					}
+					this._dt_article.Entity = value;
+					if ((value != null))
+					{
+						value.dt_article_attribute_value = this;
+						this._article_id = value.id;
+					}
+					else
+					{
+						this._article_id = default(int);
+					}
+					this.SendPropertyChanged("dt_article");
 				}
 			}
 		}

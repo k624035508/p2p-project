@@ -8,15 +8,15 @@ using TinyMessenger;
 
 namespace Agp2p.Core.Message.UserPointMsg
 {
-    class UserPointMsg : ITinyMessage
+    public class UserPointMsg : ITinyMessage
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
-        public Agp2pEnums.PointEnum Type { get; set; }
+        public int Type { get; set; }
         public int Point { get; set; }
         public string Remark { get; set; }
 
-        public UserPointMsg(int userId, string userName, Agp2pEnums.PointEnum type, int point = 0)
+        public UserPointMsg(int userId, string userName, int type, int point = 0)
         {
             UserId = userId;
             UserName = userName;

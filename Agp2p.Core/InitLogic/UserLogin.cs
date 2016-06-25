@@ -60,7 +60,7 @@ namespace Agp2p.Core.InitLogic
             var userLog = context.dt_user_login_log.OrderByDescending(u => u.login_time).FirstOrDefault(u => u.user_name == user.user_name);
             if (userLog != null && userLog.login_time != null && ((DateTime)userLog.login_time).Day != DateTime.Now.Day)
             {
-                MessageBus.Main.PublishAsync(new UserPointMsg(user.id, user.user_name, Agp2pEnums.PointEnum.Sign));
+                MessageBus.Main.PublishAsync(new UserPointMsg(user.id, user.user_name, (int)Agp2pEnums.PointEnum.Sign));
             }
 
             //记住登录状态下次自动登录
