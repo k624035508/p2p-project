@@ -39,7 +39,7 @@ $(function() {
 
     //提交表格
         $("#questionnaireBtn").click(function() {
-            for (var j = 1 ; j < 11; j++) {
+            for (var j = 1 ; j <= 11; j++) {
                 var resualt = false;
                 var radios = document.getElementsByName("question" + j);
                 for (var i = 0; i < radios.length; i++) {
