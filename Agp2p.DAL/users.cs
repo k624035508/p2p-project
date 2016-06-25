@@ -338,16 +338,6 @@ namespace Agp2p.DAL
             CommandInfo cmd = new CommandInfo(strSql1.ToString(), parameters1);
             sqllist.Add(cmd);
 
-            //删除金额记录
-            StringBuilder strSql2 = new StringBuilder();
-            strSql2.Append("delete from " + databaseprefix + "user_amount_log ");
-            strSql2.Append(" where user_id=@id");
-            SqlParameter[] parameters2 = {
-					new SqlParameter("@id", SqlDbType.Int,4)};
-            parameters2[0].Value = id;
-            cmd = new CommandInfo(strSql2.ToString(), parameters2);
-            sqllist.Add(cmd);
-
             //删除短消息
             StringBuilder strSql3 = new StringBuilder();
             strSql3.Append("delete from " + databaseprefix + "user_message ");

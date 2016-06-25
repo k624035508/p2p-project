@@ -116,6 +116,9 @@ namespace Agp2p.Web.tools
                 case "generate_user_invest_contract": //显示用户协议合同信息
                     GenerateUserInvestContract(context);
                     break;
+                case "user_password_edit": //修改密码
+                    user_password_edit(context);
+                    break;
             }
         }
 
@@ -1579,6 +1582,45 @@ namespace Agp2p.Web.tools
             //model.password = DESEncrypt.Encrypt(password, model.salt);
             new users().Update(model);
             context.Response.Write("{\"status\":1, \"msg\":\"您的会员信息已修改成功！\"}");
+        }
+        #endregion
+
+        #region 修改登录密码OK=================================
+        private void user_password_edit(HttpContext context)
+        {
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
+            int user_id = model.id;
+            string oldpassword = DTRequest.GetFormString("txtOldPassword");
+            string password = DTRequest.GetFormString("txtPassword");
+            //检查输入的旧密码
+            if (string.IsNullOrEmpty(oldpassword))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的旧登录密码！\"}");
+                return;
+            }
+            //检查输入的新密码
+            if (string.IsNullOrEmpty(password))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的新登录密码！\"}");
+                return;
+            }
+            //旧密码是否正确
+            if (model.password != DESEncrypt.Encrypt(oldpassword, model.salt))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您输入的旧密码不正确！\"}");
+                return;
+            }
+            //执行修改操作
+            model.password = DESEncrypt.Encrypt(password, model.salt);
+            new BLL.users().Update(model);
+            context.Response.Write("{\"status\":1, \"msg\":\"您的密码已修改成功，请记住新密码！\"}");
+            return;
         }
         #endregion
 
