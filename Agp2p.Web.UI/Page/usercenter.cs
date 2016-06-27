@@ -1099,6 +1099,7 @@ namespace Agp2p.Web.UI.Page
                             case "B": return sum + 2;
                             case "C": return sum + 3;
                             case "D": return sum + 4;
+                            case "X": return sum + 25; //跳过测试
                             default:
                                 throw new NotImplementedException();
                         }
@@ -1136,6 +1137,31 @@ namespace Agp2p.Web.UI.Page
             context.SubmitChanges();
 
             return  score.ToString();
+        }
+
+        [WebMethod]
+        public static string SkipQuestionnaireResult(int questionnaireId)
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var deleteResult = userInfo.li_questionnaire_results;
+            context.li_questionnaire_results.DeleteAllOnSubmit(deleteResult);
+            context.li_questionnaire_results.InsertOnSubmit( new li_questionnaire_result
+            {
+                answer = "X",
+                userId = userInfo.id,
+                questionId = 0,
+                questionnaireId = questionnaireId
+            });
+            var score = "25";
+            context.SubmitChanges();
+            return score;
         }
 
         [WebMethod]
