@@ -71,7 +71,7 @@ $(function(){
 		</Provider>
 	), document.getElementById("app"));
 	
-	header.setHeaderHighlight(3);
+	header.setHeaderHighlight(4);
 	$("ul.inner-ul").hide();   
 	    $("li.nav-active").parent().show();
 	$("ul.outside-ul>li.listing").click(function(){

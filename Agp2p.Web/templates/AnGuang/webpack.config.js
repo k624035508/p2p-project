@@ -26,7 +26,8 @@ module.exports = {
         coop: "./js/coop.js",
         success_return: "./js/success_return.js",
         fail_return: "./js/fail_return.js",
-        questionnaire: "./js/questionnaire.js"
+        questionnaire: "./js/questionnaire.js",
+        point: "./js/point.js"
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -38,7 +39,7 @@ module.exports = {
         new CommonsChunkPlugin("react.bundle.js", ["usercenter", "forgot_password", "article_show",
             "success_return","fail_return", "loan"]),
         new CommonsChunkPlugin("commons.bundle.js", ["react.bundle.js", "index", "login", "register", "project",
-            "projects", "aboutus", "safe_defence", "sitemap", "404", "help", "about_more", "coop", "success_return", "fail_return", "questionnaire"]),
+            "projects", "aboutus", "safe_defence", "sitemap", "404", "help", "about_more", "coop", "success_return", "fail_return", "questionnaire", "point"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

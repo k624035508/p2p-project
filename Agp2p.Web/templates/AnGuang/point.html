@@ -1,0 +1,129 @@
+﻿<%namespace "Agp2p.Core"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>积分商城</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/point.bundle.js"></script>
+</head>
+<body>
+    <!--head-->
+    <%template src="_header.html"%>
+<!--head end-->
+
+<div class="point-banner">
+    <div class="content-wrap">
+        <div class="banner-left">
+            <div class="banner-gift">
+                <p>全部商品</p>
+                <p><span>虚拟商品</span><span>实物商品</span></p>
+            </div>
+            <div class="banner-gift">
+                <p>虚拟商品</p>
+                <p><span>加息券</span><span>提现券</span></p>
+            </div>
+            <div class="banner-gift">
+                <p>虚拟商品</p>
+                <p><span>加息券</span><span>提现券</span></p>
+            </div>
+            <div class="banner-code">
+                <p>关注微信公众号</p>
+                <p>更有惊喜等你拿</p>
+                <img src="<%templateskin%>/imgs/point/code.png"/>
+            </div>
+        </div>
+        <div class="banner-img"></div>
+        <div class="banner-right">
+            <div class="content-body">
+                <%if(_userModel==null)%>
+                <a class="loginBtn" href='<%linkurl("login")%>'>登录</a>
+                <p>还不是安广融合会员？<a href='<%linkurl("register")%>'>立即注册&nbsp;></a>
+                </p>
+                <%else%>
+                <div>我的积分</div>
+                <p class="points">0</p>
+                <a class="giftRecord">兑奖记录</a>
+                <%/if%>
+            </div>
+            <div class="banner-bottom">
+                <div class="banner-sign">
+                    <div><img src="<%templateskin%>/imgs/point/002.png"/>
+                    </div>
+                    <div class="banner-sign-day">
+                        <span>每日签到</span>
+                        <span>每天都有好运气</span>
+                    </div>
+                    <a>签到有礼</a>
+                </div>
+                <div class="banner-lottery">
+                    <div><img src="<%templateskin%>/imgs/point/003.png"/>
+                    </div>
+                    <div class="banner-sign-day">
+                        <span>小积分抽大奖</span>
+                        <span>每天都有好运气</span>
+                    </div>
+                    <a>积分抽奖</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="point-recommend">
+    <p>精彩推荐</p>
+    <ul class="list-unstyled list-inline">
+        <li>
+            <div class="recommend-img recommend-img1"></div>
+            <div class="recommend-points">10000积分</div>
+            <div class="recommend-title">乐扣运动水壶</div>
+            <div class="recommend-content">便携创意杯子</div>
+        </li>
+        <li>
+            <div class="recommend-img recommend-img2"></div>
+            <div class="recommend-points">10000积分</div>
+            <div class="recommend-title">洁丽雅毛巾</div>
+            <div class="recommend-content">纯棉舒适蓬松柔软洁面巾</div>
+        </li>
+        <li>
+            <div class="recommend-img recommend-img3"></div>
+            <div class="recommend-points">10000积分</div>
+            <div class="recommend-title">小米迷你充电宝</div>
+            <div class="recommend-content">移动电源10000毫安大容量</div>
+        </li>
+        <li>
+            <div class="recommend-img recommend-img4"></div>
+            <div class="recommend-points">10000积分</div>
+            <div class="recommend-title">ZARA男钱包</div>
+            <div class="recommend-content">编织长形钱包</div>
+        </li>
+    </ul>
+</div>
+
+<div class="xuni-goods">
+    <p>虚拟商品</p>
+    <div class="xuni-img">
+        <span>1%加息券</span>
+        <span>所需积分：10000</span>
+        <a>兑换</a>
+    </div>
+    <div class="xuni">
+        <div class="xuni-quan1"></div>
+        <div class="xuni-quan2"></div>
+        <div class="xuni-quan3"></div>
+        <div class="xuni-quan4"></div>
+    </div>
+</div>
+
+<!--footer-->
+    <%template src="_footer.html"%>
+<!--footer end-->
+
+</body>
+</html>
