@@ -87,7 +87,7 @@ body{
 
 .xuni-goods{
     height:350px; width:1100px; margin:0 auto;
-    p{font-size:20px; color:@darker-grey; font-weight:bold; height:20px; line-height:20px; border-left:5px solid @blue; margin-left:7px; padding-left:8px; margin-bottom:15px;}
+    &>p{font-size:20px; color:@darker-grey; font-weight:bold; height:20px; line-height:20px; border-left:5px solid @blue; margin-left:7px; padding-left:8px; margin-bottom:15px;}
     .xuni-img{
         display:inline-block; width:315px; height:315px; background:url("@{point}/008.png") no-repeat; padding-top:207px; padding-left:24px; float:left;
         span{display:block; font-size:15px; color:@white; line-height:23px;}
@@ -97,10 +97,60 @@ body{
     }
     .xuni{
         display:inline-block; width:785px;  border-top:2px solid @blue;
-        &>div{display:inline-block; height:156px; border-right:@border; border-bottom:@border; background:@white; }
-        .xuni-quan1{width:393px;  float:left;}
+        .xuni-quan{display:inline-block; height:156px; border-right:@border; border-bottom:@border; background:@white; float:left;
+               padding:15px 25px 0 30px;
+              .xuni-quan-content{
+                  display:inline-block; 
+                  .xuni-quan-content-p1{ font-size:18px; color:@darker-grey; margin-bottom:3px;}
+                  .xuni-quan-content-p2{ font-size:13px; color:@dark-grey; margin-bottom:4px;
+                                         span{color:@blue;}
+                  }
+                  .xuni-quan-content-p3{ font-size:13px; color:@dark-grey;}
+                  .xuni-quan-content-p4{width:80px; height:30px; background:@white; color:@blue; border:1px solid @blue; border-radius:5px; display:inline-block; 
+                                        line-height:28px; text-decoration:none; margin-top:11px;
+                                        &:hover{ background:@blue; color:@white;}
+                  }
+              }
+              img{ float:right; margin-top:10px;}
+        }
+        .xuni-quan1{width:393px; }
         .xuni-quan2{width:391px; }
-        .xuni-quan3{width:393px;  float:left;}
-        .xuni-quan4{width:391px;}
+        .xuni-quan3{width:393px; height:157px;}
+        .xuni-quan4{width:391px; height:157px;}
+    }
+}
+
+.shiwu-goods{
+    height:350px; width:1100px; margin:30px auto -25px auto;
+    &>p{font-size:20px; color:@darker-grey; font-weight:bold; height:20px; line-height:20px; border-left:5px solid @blue; margin-left:7px; padding-left:8px; margin-bottom:15px;}
+    .shiwu-img{
+        display:inline-block; width:315px; height:315px; background:url("@{point}/009.png") no-repeat; padding-top:207px; padding-left:24px; float:left;
+        span{display:block; font-size:15px; color:@white; line-height:23px;}
+        a{
+            display:inline-block; width:100px; height:30px; font-size:15px; border-radius:6px; color:@dark-grey; background:@white; line-height:30px;text-decoration:none; margin-top:6px;
+        }
+    }
+    .shiwu{
+        display:inline-block; width:785px;  border-top:2px solid @blue;
+        .shiwu-quan{display:inline-block; height:156px; border-right:@border; border-bottom:@border; background:@white; float:left;
+               padding:15px 25px 0 30px;
+              .shiwu-quan-content{
+                  display:inline-block; 
+                  .shiwu-quan-content-p1{ font-size:18px; color:@darker-grey; margin-bottom:3px;}
+                  .shiwu-quan-content-p2{ font-size:13px; color:@dark-grey; margin-bottom:4px;
+                                         span{color:@blue;}
+                  }
+                  .shiwu-quan-content-p3{ font-size:13px; color:@dark-grey;}
+                  .shiwu-quan-content-p4{width:80px; height:30px; background:@white; color:@blue; border:1px solid @blue; border-radius:5px; display:inline-block; 
+                                        line-height:28px; text-decoration:none; margin-top:11px;
+                                        &:hover{ background:@blue; color:@white;}
+                  }
+              }
+              img{ float:right; margin-top:-15px;}
+        }
+        .shiwu-quan1{width:393px; }
+        .shiwu-quan2{width:391px; }
+        .shiwu-quan3{width:393px; height:157px;}
+        .shiwu-quan4{width:391px; height:157px;}
     }
 }
