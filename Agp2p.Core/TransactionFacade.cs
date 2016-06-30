@@ -13,6 +13,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Lip2p.Core.ActivityLogic;
 
 namespace Agp2p.Core
 {
@@ -471,12 +472,44 @@ namespace Agp2p.Core
         }
 
         /// <summary>
+        /// 使用体验券
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userId"></param>
+        /// <param name="projectId"></param>
+        /// <param name="investingMoney"></param>
+        private static void InvestTrialProject(Agp2pDataContext context, li_activity_transactions atr, int projectId, decimal investingMoney)
+        {
+            if (atr == null)
+            {
+                throw new InvalidOperationException("你没有新手体验券，不能投资新手标");
+            }
+            if (atr.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+            {
+                var ticket = new TrialActivity.TrialTicket(atr);
+                if (ticket.IsUsed())
+                {
+                    throw new InvalidOperationException("体验券已经被使用");
+                }
+                if (ticket.GetTicketValue() != investingMoney)
+                {
+                    throw new InvalidOperationException("投资的金额应等于体验券的面值");
+                }
+                ticket.Use(context, projectId);
+            }
+            else
+            {
+                throw new InvalidOperationException("你已使用过了新手体验券，或新手体验券已过期");
+            }
+        }
+
+        /// <summary>
         /// 投资
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
         /// <param name="investingMoney"></param>
-        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "")
+        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "", int ticketId = 0)
         {
             li_project_transactions tr;
             li_wallets wallet;
@@ -485,7 +518,8 @@ namespace Agp2p.Core
                 var context = new Agp2pDataContext();
                 var pr = context.li_projects.Single(p => p.id == projectId);
 
-                if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status && (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
+                if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status &&
+                    (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
                     throw new InvalidOperationException("项目不可投资！");
                 // 判断投资金额的数额是否合理
                 var canBeInvest = pr.financing_amount - pr.investment_amount;
@@ -497,6 +531,23 @@ namespace Agp2p.Core
                     throw new InvalidOperationException("投资金额最低 100 元");
                 if (canBeInvest != investingMoney && canBeInvest - investingMoney < 100)
                     throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
+
+                if (ticketId != 0)
+                {
+                    var atr = context.li_activity_transactions.SingleOrDefault(a =>
+                        a.user_id == userId &&
+                        a.id == ticketId);
+                    if (atr.activity_type == (byte) Agp2pEnums.ActivityTransactionActivityTypeEnum.TrialTicket)
+                    {
+                        InvestTrialProject(context, atr, pr.id, investingMoney);
+                        ts.Complete();
+                        return;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
 
                 // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
                 wallet = context.li_wallets.Single(w => w.user_id == userId);

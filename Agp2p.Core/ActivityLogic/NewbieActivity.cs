@@ -11,7 +11,7 @@ namespace Agp2p.Core.ActivityLogic
     /// <summary>
     /// 新手标第一期 停用
     /// </summary>
-    public class TrialActivity
+    public class NewbieActivity
     {
         internal static void DoSubscribe()
         {

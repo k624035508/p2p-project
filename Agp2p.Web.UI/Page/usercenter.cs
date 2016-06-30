@@ -332,7 +332,7 @@ namespace Agp2p.Web.UI.Page
 
         private static readonly int[] LotteryType =
         {
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial,
         };
 
         [WebMethod]
