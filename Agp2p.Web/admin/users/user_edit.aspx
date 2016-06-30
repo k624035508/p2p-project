@@ -301,7 +301,8 @@
             <dl>
                 <dt>手机号码</dt>
                 <dd>
-                    <asp:TextBox ID="txtMobile" runat="server" CssClass="input normal"></asp:TextBox></dd>
+                    <asp:TextBox ID="txtMobile" runat="server" CssClass="input normal" AUTOCOMPLETE="off" datatype="*11-11"  nullmsg="请填写11位手机号码" errormsg="请填写11位正确手机号码" sucmsg=" "></asp:TextBox>
+                    <span class="Validform_checktip" >*手机号码必填</span></dd>
             </dl>
             <dl>
                 <dt>电话号码</dt>
