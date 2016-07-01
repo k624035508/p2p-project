@@ -34,7 +34,7 @@ const initialState = {
 	    identityId: ""
 	},
 	bankCards: [],
-	bannerInfo: [],
+	bannerInfo: []
 }
 
 export default function userCenter(state = initialState, action) {

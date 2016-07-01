@@ -144,6 +144,7 @@ class UserCenterPage extends React.Component {
                                     </li> }
                             </ul>
 
+                       {this.props.bannerInfo.length == 0 ? "" :  
                             <div className="hot-act">
                                 <div className="hot-title">热门活动</div>
                                 <div>
@@ -163,7 +164,7 @@ class UserCenterPage extends React.Component {
 							    <li  key={c.banId}>●</li>
 							) }
 						</ul>
-					</div>
+					</div>  }
 
                 </div>
                     
