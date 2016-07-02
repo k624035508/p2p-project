@@ -515,7 +515,7 @@ namespace Agp2p.Core
                     {
                         throw new InvalidOperationException("新手标规定最低只能投 100 元。");
                     }
-                    if (100000 <= wallet.total_investment)
+                    if (100000 < wallet.total_investment)
                     {
                         throw new InvalidOperationException("对不起，您的累计投资金额已经超过100000，不能再投资新手标！");
                     }
@@ -524,7 +524,7 @@ namespace Agp2p.Core
                         tra.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                         tra.type == (int) Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                         .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
-                    if (100000 <= newbieProjectInvested + investingMoney)
+                    if (100000 < newbieProjectInvested + investingMoney)
                     {
                         throw new InvalidOperationException($"新手标累计投资不能超过 100000，您剩余可投 {100000 - newbieProjectInvested}元");
                     }
