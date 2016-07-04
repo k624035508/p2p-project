@@ -36,6 +36,7 @@ namespace Agp2p.Core.Message
             // Activity
             //TrialActivity.DoSubscribe();
             // InviterBonus.DoSubscribe();
+            HongBaoActivity.DoSubscribe();
             TrialTicketActivity.DoSubscribe();
             InterestRateTicketActivity.DoSubscribe();
 

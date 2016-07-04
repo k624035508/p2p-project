@@ -278,8 +278,8 @@ namespace Agp2p.Common
             TrialTicket = 4,
             [Description("加息券")]
             InterestRateTicket = 5,
-            [Description("抵现券")]
-            MoneyTicket = 6,
+            [Description("红包")]
+            HongBao = 6,
         }
 
         /// <summary>
