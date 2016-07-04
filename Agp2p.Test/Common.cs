@@ -11,7 +11,7 @@ using Agp2p.Core.AutoLogic;
 using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lip2p.Core.ActivityLogic;
+using Agp2p.Core.ActivityLogic;
 
 namespace Agp2p.Test
 {
@@ -66,7 +66,8 @@ namespace Agp2p.Test
             ProjectWithdraw.HuoqiClaimTransferToCompanyWhenNeeded(TimerMsg.Type.AutoRepayTimer, false);
             ProjectWithdraw.DoHuoqiProjectWithdraw(TimerMsg.Type.AutoRepayTimer, false, runAt.GetValueOrDefault(DateTime.Now));
 
-            TrialActivity.HandleTimerMsg(TimerMsg.Type.AutoRepayTimer, false);
+            TrialTicketActivity.HandleTimerMsg(TimerMsg.Type.AutoRepayTimer, false);
+            InterestRateTicketActivity.HandleTimerMsg(TimerMsg.Type.AutoRepayTimer, false);
         }
 
         public static void DoSimpleCleanUp(DateTime deleteAfter)

@@ -8,9 +8,9 @@ using Agp2p.Linq2SQL;
 using Agp2p.Common;
 using Agp2p.Core;
 
-namespace Lip2p.Core.ActivityLogic
+namespace Agp2p.Core.ActivityLogic
 {
-    public class TrialActivity
+    public class TrialTicketActivity
     {
         internal static void DoSubscribe()
         {
@@ -66,6 +66,7 @@ namespace Lip2p.Core.ActivityLogic
             public void Use(Agp2pDataContext context, int projectId)
             {
                 if (IsUsed()) throw new Exception("此体验券已经使用过了");
+                if (IsExpired()) throw new Exception("此体验券已经过期了");
 
                 var proj = context.li_projects.Single(p => p.id == projectId);
                 if ((int)Agp2pEnums.ProjectStatusEnum.Financing != proj.status)
@@ -84,12 +85,10 @@ namespace Lip2p.Core.ActivityLogic
 
                 var useTime = DateTime.Now;
                 // 计算利息
-                var termSpan = (Agp2pEnums.ProjectRepaymentTermSpanEnum)proj.repayment_term_span;
                 var rate = proj.GetFinalProfitRate(useTime);
                 atr.value = Math.Round(ticketValue * rate, 2);
                 // 计算放款时间
-                var repayTime = proj.CalcRepayTimeByTerm(
-                    termSpan == Agp2pEnums.ProjectRepaymentTermSpanEnum.Day ? 1 : proj.repayment_term_span_count, useTime);
+                var repayTime = proj.CalcRepayTimeByTerm(proj.CalcRealTermCount(), useTime);
 
                 var jsonObj = (JObject)JsonConvert.DeserializeObject(atr.details);
                 jsonObj["ProjectId"] = projectId;
@@ -97,8 +96,6 @@ namespace Lip2p.Core.ActivityLogic
                 atr.remarks = string.Format("[体验券]将于 {0:yyyy-MM-dd} 收益 {1:c}", repayTime, atr.value);
                 atr.details = jsonObj.ToString(Formatting.None);
                 atr.status = (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
-
-                var profitingMoney = atr.value;
 
                 // 修改项目已投资金额
                 proj.investment_amount += ticketValue;
@@ -110,9 +107,10 @@ namespace Lip2p.Core.ActivityLogic
                 }
 
                 // 修改钱包，添加待收金额
-                var wallet = context.li_wallets.Single(w => w.user_id == atr.user_id);
+
+                var wallet = atr.dt_users.li_wallets;
                 // 满标时再计算待收益金额
-                wallet.profiting_money += profitingMoney;
+                wallet.profiting_money += atr.value;
                 wallet.last_update_time = useTime;
 
                 // 修改钱包历史
