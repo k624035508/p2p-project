@@ -24,8 +24,8 @@ namespace Agp2p.Core.ActivityLogic
             var user = context.dt_users.Single(u => u.id == userId);
             var hongbaos = user.li_activity_transactions.Where(
                 t =>
-                    t.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao&&
-                    t.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting).AsEnumerable()
+                    t.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao &&
+                    t.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting).AsEnumerable()
                     .Select(a => new HongBao(a)).ToList();
             hongbaos.ForEach(h =>
             {
@@ -40,7 +40,7 @@ namespace Agp2p.Core.ActivityLogic
             context.SubmitChanges();
         }
 
-        private class HongBao
+        public class HongBao
         {
             public readonly li_activity_transactions atr;
 
@@ -90,7 +90,7 @@ namespace Agp2p.Core.ActivityLogic
 
             public void Cancel()
             {
-                atr.status = (byte) Agp2pEnums.ActivityTransactionStatusEnum.Cancel;
+                atr.status = (byte)Agp2pEnums.ActivityTransactionStatusEnum.Cancel;
                 atr.transact_time = GetDeadline();
             }
         }
@@ -103,8 +103,8 @@ namespace Agp2p.Core.ActivityLogic
 
             var unactived = context.li_activity_transactions.Where(a =>
                     a.user_id == projectTransaction.investor && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting &&
-                    a.type == (int) Agp2pEnums.ActivityTransactionTypeEnum.Gain &&
-                    a.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao).ToList();
+                    a.type == (int)Agp2pEnums.ActivityTransactionTypeEnum.Gain &&
+                    a.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao).ToList();
             if (!unactived.Any()) return;
 
             var wallet = context.li_wallets.Single(w => w.user_id == projectTransaction.investor);
@@ -139,7 +139,7 @@ namespace Agp2p.Core.ActivityLogic
                 }
             }
             // 有剩余投资金额不够激活钱包的话将其记在第一个未被激活的红包
-            var firstRp = rps.FirstOrDefault(rp => rp.atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting);
+            var firstRp = rps.FirstOrDefault(rp => rp.atr.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting);
             if (0 < investAmount && firstRp != null)
             {
                 firstRp.SetInvested(investAmount);
@@ -164,14 +164,26 @@ namespace Agp2p.Core.ActivityLogic
                 user_id = userId,
                 create_time = useTime,
                 value = m.Key,
-                details = JsonConvert.SerializeObject(new {
-                    Deadline = useTime.AddDays(expireAfterDays).ToString("yyyy-MM-dd"), InvestUntil = m.Value }),
+                details = JsonConvert.SerializeObject(new
+                {
+                    Deadline = useTime.AddDays(expireAfterDays).ToString("yyyy-MM-dd"),
+                    InvestUntil = m.Value
+                }),
                 type = (byte)Agp2pEnums.ActivityTransactionTypeEnum.Gain,
                 status = (byte)Agp2pEnums.ActivityTransactionStatusEnum.Acting,
                 activity_type = (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao,
             });
             context.li_activity_transactions.InsertAllOnSubmit(trs);
             context.SubmitChanges();
+        }
+
+        public static List<HongBao> QueryHongBao(dt_users user)
+        {
+            return user.li_activity_transactions
+                .Where(atr => atr.activity_type == (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao &&
+                atr.status == (byte)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .AsEnumerable().Select(atr => new HongBao(atr)).ToList();
+
         }
     }
 }

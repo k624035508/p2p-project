@@ -7,6 +7,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Agp2p.Common;
 using Agp2p.Core;
+using System.Collections.Generic;
 
 namespace Agp2p.Core.ActivityLogic
 {
@@ -187,5 +188,14 @@ namespace Agp2p.Core.ActivityLogic
 
             return trs.id;
         }
+
+        public static List<TrialTicket> QueryTicket(dt_users user)
+        {
+            return user.li_activity_transactions
+                .Where(atr => atr.activity_type == (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.TrialTicket &&
+                atr.status == (byte)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .AsEnumerable().Select(atr => new TrialTicket(atr)).ToList();
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using Agp2p.Linq2SQL;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using System.Collections.Generic;
 
 namespace Agp2p.Core.ActivityLogic
 {
@@ -26,7 +27,7 @@ namespace Agp2p.Core.ActivityLogic
 
             public InterestRateTicket(li_activity_transactions atr)
             {
-                Debug.Assert(atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket);
+                Debug.Assert(atr.activity_type == (int)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket);
                 this.atr = atr;
                 detailObj = (JObject)JsonConvert.DeserializeObject(atr.details);
             }
@@ -112,7 +113,7 @@ namespace Agp2p.Core.ActivityLogic
 
                 atr.remarks = string.Format("[加息券]已用于 {0} 项目，预计收益 {1}", proj.title, atr.value);
                 atr.details = detailObj.ToString(Formatting.None);
-                atr.status = (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
+                atr.status = (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
 
                 // remember to save context
             }
@@ -215,7 +216,8 @@ namespace Agp2p.Core.ActivityLogic
                 user_id = userId,
                 create_time = DateTime.Now,
                 value = 0, // 使用之后才有值
-                details = JsonConvert.SerializeObject(new {
+                details = JsonConvert.SerializeObject(new
+                {
                     InterestRateBonus = interestRateBonusPercent,
                     minInvestValue = minInvestValue,
                     MinProjectDayCount = minProjectDayCount,
@@ -229,6 +231,14 @@ namespace Agp2p.Core.ActivityLogic
             context.SubmitChanges();
 
             return trs.id;
+        }
+
+        public static List<InterestRateTicket> QueryTicket(dt_users user)
+        {
+            return user.li_activity_transactions
+                .Where(atr => atr.activity_type == (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket &&
+                atr.status == (byte)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                .AsEnumerable().Select(atr => new InterestRateTicket(atr)).ToList();
         }
     }
 }
