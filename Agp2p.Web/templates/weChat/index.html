@@ -24,13 +24,13 @@
                     <%set var ba=QueryWechatBanner()%>
                     <%set var balen=ba.Count()%>
                     <%for(var a=0;a<balen;a++)%>
-                    <li data-target="#banner-carousel" data-slide-to=a></li>
+                    <li data-target="#banner-carousel" data-slide-to="<%=a%>"></li>
                     <%/for%>
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <%for(var b=0;b<balen;b++)%>
                          <%set var index=ba.Skip(b).First()%>
-                    <div class="item active">
+                    <div class="item">
                         <a href='<%=index.link_url%>'><img src="<%=index.file_path%>"></a>
                     </div>
                     <%/for%>

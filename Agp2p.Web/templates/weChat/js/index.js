@@ -10,7 +10,8 @@ $("html").css("font-size", $(window).width() / 20);
 
 $(function () {
     footerInit();
-    $(".carousel-indicators li").eq(0).addClass("active");
+    $(".carousel-indicators>li").eq(0).addClass("active");
+    $(".carousel-inner>.item").eq(0).addClass("active");
     $('.indicatorContainer').each(function(index, obj) {
         $(obj).radialIndicator({
             radius: 28,
