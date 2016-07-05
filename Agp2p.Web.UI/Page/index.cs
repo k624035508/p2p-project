@@ -23,6 +23,18 @@ namespace Agp2p.Web.UI.Page
             return invokeBanner;
         }
 
+        protected List<dt_advert_banner> QueryWechatBanner()
+        {
+            var context = new Agp2pDataContext();
+            var invokeBanner =
+                context.dt_advert_banner.Where(
+                    a =>
+                        a.is_lock == 0 && a.dt_advert.title.Contains("移动端") && a.end_time >= DateTime.Today)
+                    .OrderBy(a => a.sort_id).ToList();
+
+            return invokeBanner;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //微信自动登录
