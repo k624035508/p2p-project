@@ -21,9 +21,9 @@
                 <div class="psw-wrap">
                     <input type="password" id="psw" class="input-l" name="txtPassword" placeholder="请输入密码" datatype="*" errormsg="请输入6-16位的密码，不能有空格">
                 </div>
-                <div class="psw2-wrap">
+                <!--<div class="psw2-wrap">
                     <input type="password" id="psw2" class="input-l" name="txtPassword1" placeholder="请再次输入密码" recheck="txtPassword" errormsg="两次输入的密码不一致">
-                </div>
+                </div> -->
                 <div class="pic-code-wrap">
                     <input type="text" id="pic-code" class="input-s" name='<%=uconfig.regstatus==2?"txtPicCode":"txtVerifyCode"%>' placeholder="请输入图形验证码" datatype="*" errormsg="请输入图形验证码">
                     <span class="pic-code-span pull-right flex flex-center-wrapper">
@@ -36,15 +36,25 @@
                     <button type="button" id="get-auth-code-btn" class="button-s pull-right">获 取</button><br/>
                 </div>
                 <%/if%>
-                <div class="recommend-one-wrap">
+                <!--<div class="recommend-one-wrap">
                     <input type="text" id="recommend-one" class="input-l" name="txtInviteCode" placeholder="推荐码/推荐人账号（可不填）">
                 </div>
                 <div class="agreement-wrap">
                     <input type="checkbox" id="agreement" checked>
                     <label for="agreement">同意 《<a href="<%templateskin%>/../AnGuang/register-agreement.html">注册协议</a>》</label>
+                </div>-->
+                <div class="liuliang">
+                    <div class="liuliang-rules">领取流量规则：</div>
+                    <div class="liuliang-content">
+                        <p>1.仅支持广东省中国移动用户。</p>
+                        <p>2.每个手机号码只可领取一次流量。</p>
+                        <p>3.流量将在参与活动起的1-2个工作日内到帐。月末三天参加活动的用户，流量将在次月2号统一充值，具体流量生效以中国移动下发的生效短信内容为准。</p>
+                        <p>4.所获流量当月有效，仅限国内使用。</p>
+                        <p>5.本次活动最终解释权归安广融合所有。</p>
+                    </div>
                 </div>
                 <div class="register-btn-wrap">
-                    <button type="button" id="register-btn" class="button-l">注 册</button>
+                    <button type="button" id="register-btn" class="button-l">领取流量</button>
                 </div>
             </form>
             <div class="login-now-wrap">已有账号？ <a href="<%linkurl("login")%>">马上登录</a>
@@ -69,6 +79,19 @@
                 <div class="tiphead"><span>温馨提示</span></div>
                 <p>1.安广融合不会在任何地方泄漏您的信息。</p>
                 <p>2.每天实名认证不能超过3次，一年不能超过6次，请认真核对信息。</p>
+            </div>
+            <div class="modal fade" id="liuliangConfirm" role="dialog" aria-labelledby="liuliangConfirmLabel" data-backdrop="static">
+                <div class="modal-dialog liuliangConfirm-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="myModalLabel">恭喜您，流量领取成功</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>流量将在1-2个工作日内送到您的手机号上，届时会由中国移动为您发送短信通知，请注意查收。</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             </div>
     </div>

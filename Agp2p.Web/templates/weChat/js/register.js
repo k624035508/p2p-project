@@ -32,10 +32,12 @@ $(function () {
     var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
+        $("#liuliangConfirm").modal();
         $(".register-step").eq(1).show().siblings().hide();
     } else {
         $(".register-step").eq(0).show().siblings().hide();
     }
+    $(".liuliang-content").hide();
     // 初始化邀请码 input
     var inviteCode = getUrlParameter("inviteCode");
     if (inviteCode != null) {
@@ -44,6 +46,10 @@ $(function () {
         inviterInput.attr("readonly", "readonly");
         inviterInput.attr("name", "txtInviteCode");
     }
+    //流量规则显示
+    $(".liuliang-rules").click(function() {
+        $(".liuliang-content").toggle();
+    })
     //同意条款
     var chkAgree = $("#agreement");
     var btnSendCode = $("#get-auth-code-btn");
@@ -135,6 +141,7 @@ $(function () {
     function showResponse(data, textStatus) {
         if (data.status === 1) { //成功
             //location.href = data.url;
+            
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入实名认证
                 // location.href = "/api/payment/sumapay/index.aspx?api=101";
