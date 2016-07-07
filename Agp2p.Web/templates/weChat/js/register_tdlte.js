@@ -129,10 +129,6 @@ $(function () {
 
     //表单提交前
     function showRequest(formData, jqForm, options) {
-        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2").val()) {
-            alert("两次输入的密码不一致");
-            return false;
-        }
         btnSubmit.val("正在提交...");
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
@@ -145,7 +141,7 @@ $(function () {
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入实名认证
                 // location.href = "/api/payment/sumapay/index.aspx?api=101";
-                location.href="register.html?action=2";
+                location.href="register_tdlte.html?action=2";
             });
         } else { //失败
             $.dialog.alert(data.msg);
