@@ -1,0 +1,156 @@
+﻿@import "common-style.less";
+@point: "../imgs/point";
+
+body{
+    background:@body-color;
+    a{text-decoration:none; text-align:center;}
+}
+
+.point-banner{
+    height:400px;
+    background: @blue;
+    padding:25px 0;
+    .banner-left{
+        float:left;
+        width:195px; height:350px;
+        background:@white;
+        .banner-gift{
+            height:71px; padding-top:15px; padding-left:20px;
+            border-bottom:@border;
+            p{font-size:13px;line-height:13px; color:@blue; font-weight:bold; margin-bottom:12px;
+              span{color:@dark-grey; margin-right:8px; font-weight:normal;}
+            }
+        }
+        .banner-code{
+            font-size:@font12; line-height:@font12; color:@dark-grey; text-align:center; padding-top:11px;
+            p{margin-bottom:4px;}
+            img{ margin-top:2px;}
+        }
+    }
+    .banner-right{
+        float:right;
+        width:320px; height:350px;
+        background:@white;
+        .content-body{
+            height:211px; border-bottom:@border;
+            .loginBtn{
+                display:inline-block; width:280px; height:40px; text-decoration:none; text-align:center; margin:75px 0 38px 20px; border-radius:8px; letter-spacing:10px;
+                font-size:20px; line-height:40px; color:@white; background:@red;
+            }
+            p{font-size:15px; color:@dark-grey; text-align:center;
+              a{margin-left:10px; text-decoration:none; color:@blue;}
+            }
+            &>div{
+                font-size:25px; color:@darker-grey; text-align:center; padding-top:32px; margin-bottom:8px;
+            }
+            .points{ font-size:40px; text-align:center; color:@blue; margin-bottom:6px;}
+            .giftRecord{font-size:15px; color:@darker-grey; text-align:center; width:140px; height:40px; display:block; border:@border;
+                        text-decoration:none; line-height:40px; margin-left:90px;
+            }
+        }
+        .banner-bottom{
+            margin-top:30px;
+            .banner-sign, .banner-lottery{
+                display:inline-block; width:157px; height:80px; padding-left:14px;
+                &>div{display:inline-block; width:40px; float:left;}
+                .banner-sign-day{
+                    width:95px; 
+                    span{
+                        display:block; font-size:12px; color:@dark-grey;
+                    }
+                    span:first-child{ font-size:13px; color:@darker-grey;}
+                }  
+                a{display:inline-block; width:75px; height:25px; background:@blue; color:@white; border-radius:5px; font-size:15px; line-height:25px; margin-top:18px; margin-left:45px; text-decoration:none;}             
+            }
+            .banner-lottery{border-left:@border; padding-left:18px;}
+        }
+    }
+}
+
+.point-recommend{
+    height:370px; width:1100px; margin:45px auto 30px auto; background:@white;
+    &>p{height:47px; border-bottom:1px solid @blue; color:@blue; font-size:20px; line-height:46px; font-weight:bold; padding-left:20px;}
+    ul{
+        li{
+            width:273px; text-align:center;
+            .recommend-img{width:270px; height:180px;}
+            .recommend-points{width:150px; height:30px; background:@blue; color:@white; font-size:15px; line-height:30px; border-radius:6px; margin:0 auto;}
+            .recommend-title{font-size:18px; color:@darker-grey; margin-top:7px;}
+            .recommend-content{font-size:13px; color:@dark-grey; margin-top:5px;}
+        }
+}
+     .recommend-img1{background:url("@{point}/004.png") no-repeat;}
+     .recommend-img2{background:url("@{point}/005.png") no-repeat;}
+     .recommend-img3{background:url("@{point}/006.png") no-repeat;}
+     .recommend-img4{background:url("@{point}/007.png") no-repeat;}
+    }
+
+.xuni-goods{
+    height:350px; width:1100px; margin:0 auto;
+    &>p{font-size:20px; color:@darker-grey; font-weight:bold; height:20px; line-height:20px; border-left:5px solid @blue; margin-left:7px; padding-left:8px; margin-bottom:15px;}
+    .xuni-img{
+        display:inline-block; width:315px; height:315px; background:url("@{point}/008.png") no-repeat; padding-top:207px; padding-left:24px; float:left;
+        span{display:block; font-size:15px; color:@white; line-height:23px;}
+        a{
+            display:inline-block; width:100px; height:30px; font-size:15px; border-radius:6px; color:@dark-grey; background:@white; line-height:30px;text-decoration:none; margin-top:6px;
+        }
+    }
+    .xuni{
+        display:inline-block; width:785px;  border-top:2px solid @blue;
+        .xuni-quan{display:inline-block; height:156px; border-right:@border; border-bottom:@border; background:@white; float:left;
+               padding:15px 25px 0 30px;
+              .xuni-quan-content{
+                  display:inline-block; 
+                  .xuni-quan-content-p1{ font-size:18px; color:@darker-grey; margin-bottom:3px;}
+                  .xuni-quan-content-p2{ font-size:13px; color:@dark-grey; margin-bottom:4px;
+                                         span{color:@blue;}
+                  }
+                  .xuni-quan-content-p3{ font-size:13px; color:@dark-grey;}
+                  .xuni-quan-content-p4{width:80px; height:30px; background:@white; color:@blue; border:1px solid @blue; border-radius:5px; display:inline-block; 
+                                        line-height:28px; text-decoration:none; margin-top:11px;
+                                        &:hover{ background:@blue; color:@white;}
+                  }
+              }
+              img{ float:right; margin-top:10px;}
+        }
+        .xuni-quan1{width:393px; }
+        .xuni-quan2{width:391px; }
+        .xuni-quan3{width:393px; height:157px;}
+        .xuni-quan4{width:391px; height:157px;}
+    }
+}
+
+.shiwu-goods{
+    height:350px; width:1100px; margin:30px auto -25px auto;
+    &>p{font-size:20px; color:@darker-grey; font-weight:bold; height:20px; line-height:20px; border-left:5px solid @blue; margin-left:7px; padding-left:8px; margin-bottom:15px;}
+    .shiwu-img{
+        display:inline-block; width:315px; height:315px; background:url("@{point}/009.png") no-repeat; padding-top:207px; padding-left:24px; float:left;
+        span{display:block; font-size:15px; color:@white; line-height:23px;}
+        a{
+            display:inline-block; width:100px; height:30px; font-size:15px; border-radius:6px; color:@dark-grey; background:@white; line-height:30px;text-decoration:none; margin-top:6px;
+        }
+    }
+    .shiwu{
+        display:inline-block; width:785px;  border-top:2px solid @blue;
+        .shiwu-quan{display:inline-block; height:156px; border-right:@border; border-bottom:@border; background:@white; float:left;
+               padding:15px 25px 0 30px;
+              .shiwu-quan-content{
+                  display:inline-block; 
+                  .shiwu-quan-content-p1{ font-size:18px; color:@darker-grey; margin-bottom:3px;}
+                  .shiwu-quan-content-p2{ font-size:13px; color:@dark-grey; margin-bottom:4px;
+                                         span{color:@blue;}
+                  }
+                  .shiwu-quan-content-p3{ font-size:13px; color:@dark-grey;}
+                  .shiwu-quan-content-p4{width:80px; height:30px; background:@white; color:@blue; border:1px solid @blue; border-radius:5px; display:inline-block; 
+                                        line-height:28px; text-decoration:none; margin-top:11px;
+                                        &:hover{ background:@blue; color:@white;}
+                  }
+              }
+              img{ float:right; margin-top:-15px;}
+        }
+        .shiwu-quan1{width:393px; }
+        .shiwu-quan2{width:391px; }
+        .shiwu-quan3{width:393px; height:157px;}
+        .shiwu-quan4{width:391px; height:157px;}
+    }
+}

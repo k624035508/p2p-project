@@ -11,7 +11,7 @@ $(function(){
 
 	//弹出窗popover初始化
 	$('[data-toggle="popover"]').popover();
-	header.setHeaderHighlight(3);
+	header.setHeaderHighlight(4);
 
 	$("#loginBtn").click(function(){
 		$.ajax({
