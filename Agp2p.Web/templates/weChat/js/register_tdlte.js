@@ -1,6 +1,6 @@
 ﻿import "bootstrap-webpack";
 import "../less/common.less";
-import "../less/register.less";
+import "../less/register_tdlte.less";
 import footerInit from "./footer.js";
 
 window['$'] = window['jQuery'] = $;
@@ -32,10 +32,12 @@ $(function () {
     var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
+        $("#liuliangConfirm").modal();
         $(".register-step").eq(1).show().siblings().hide();
-    } else {
+    } else {       
         $(".register-step").eq(0).show().siblings().hide();
-    }
+        $(".liuliang-content").hide();
+    }    
     // 初始化邀请码 input
     var inviteCode = getUrlParameter("inviteCode");
     if (inviteCode != null) {
@@ -44,6 +46,9 @@ $(function () {
         inviterInput.attr("readonly", "readonly");
         inviterInput.attr("name", "txtInviteCode");
     }
+    $(".liuliang-rules") .click(function() {
+            $(".liuliang-content").toggle();
+        });
 
     //同意条款
     var chkAgree = $("#agreement");
@@ -156,7 +161,7 @@ $(function () {
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入开户
-                 location.href = "/api/payment/sumapay/index.aspx?api=101";
+                location.href = "/api/payment/sumapay/index.aspx?api=101";
             });
         } else { //失败
             $.dialog.alert(data.msg);

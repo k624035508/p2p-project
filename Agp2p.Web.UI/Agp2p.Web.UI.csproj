@@ -161,6 +161,9 @@
     <Compile Include="Page\register.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\register_tdlte.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\useramount.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

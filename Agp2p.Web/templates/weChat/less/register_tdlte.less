@@ -1,0 +1,120 @@
+﻿/*register.less*/
+@input: "../imgs/input-icon";
+
+.register-page {
+    padding: 1rem 5%;
+    form {
+        width: 20rem;
+        & > div { margin-bottom: 1.2rem; }
+        .pic-code-wrap span img { width: 100%; }
+        #account {
+            background: url("@{input}/user.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #psw, #psw2 {
+            background: url("@{input}/pwd.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #pic-code {
+            background: url("@{input}/pic-code.png") no-repeat 3% center;
+            background-size: 15%;
+        }
+        #auth-code {
+            background: url("@{input}/sms-code.png") no-repeat 3% center;
+            background-size: 15%;
+        }
+        #recommend-one {
+            background: url("@{input}/recommend.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #realName{
+            background: url("@{input}/user.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+        #identityId{
+            background: url("@{input}/idcard.png") no-repeat 3% center;
+            background-size: 8%;
+        }
+
+        .liuliang-rules{
+            margin-bottom:3px;
+        }
+        .liuliang-content{
+            p{ margin-bottom:3px;             
+            }
+        }
+
+        .agreement-wrap {
+            #agreement {
+                width: 16px;
+                height: 16px;
+                margin-top: 1.5px;
+                margin-right: 5px;
+                padding: 0;
+                vertical-align: top;
+                border-radius: 0;
+                &:checked {
+                    background: url("../imgs/blue-tick.png") no-repeat center;
+                    background-size: contain;
+                }
+            }
+            label {
+                color: #3e4346;
+                font-weight: normal;
+                a {
+                    color: #1478d2;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    .login-now-wrap{
+        text-align: center;
+        color: #a9a9a9;
+        margin-bottom: 30px;
+        a {
+            padding-left: 8px;
+            color: #1478d2;
+            text-decoration: none;
+        }
+    }
+    .skip-now-wrap {
+        text-align:right;
+          color: #646464; 
+        margin-bottom: 30px;
+        a {
+            padding-left: 10px;
+            color: #37aaf0;
+            text-decoration: none;
+        }
+    }
+    .warm-tips{
+        margin-top:100px;
+        p{
+            margin:5px 0;color:#646464;font-size:15px;
+        }
+        .tiphead{
+            border-bottom:1px solid #e6e6e6; margin-bottom:15px;
+            span{font-size:20px;color:#646464;
+                 display:inline-block; border-bottom:2px solid #ff414b;padding-bottom:4px;
+            }
+        }
+    }
+    }
+
+        .liuliangConfirm-dialog{
+           margin:20% auto; width:310px;
+           .modal-content{
+               width:310px; height:185px;
+               padding: 0 10px;
+               border:none;
+               .modal-header{
+                   border:none;
+                   h3{color:#464646; font-weight:bold; display:inline-block; margin-top:30px;}
+                   button{float:right;}
+               }
+               .modal-body{ padding:0;
+                   p{font-size:15px;color:#464646; width:100%; margin-top:10px;}
+               }
+           }
+        }

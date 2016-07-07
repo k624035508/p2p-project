@@ -27,7 +27,8 @@ module.exports = {
         activity: "./js/activity.js",
         article_show: "./js/article_show.js",
         safe_defence: "./js/safe_defence.js",
-        questionnaire: "./js/questionnaire.js"
+        questionnaire: "./js/questionnaire.js",
+        register_tdlte: "./js/register_tdlte.js"
     },
     output: {
         path: path.join(__dirname, './build'),
@@ -59,7 +60,7 @@ module.exports = {
         new CommonsChunkPlugin("fullpage.bundle.js", ["project", "myreceiveplan", "mycard", "citySelector"]),
         new CommonsChunkPlugin("commons.bundle.js", ["fullpage.bundle.js", "index", "login", "register", "projects", "usercenter", "recharge",
              "withdraw", "mytrade", "myinvest", "settings", "mynews", "newsdetail", "mylottery", "safe", "aboutus", "forgotPassword", "activity",
-             "safe_defence", "questionnaire"]),
+             "safe_defence", "questionnaire", "register_tdlte"]),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",

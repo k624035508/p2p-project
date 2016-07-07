@@ -19,23 +19,25 @@
                 <a href='<%linkurl("login")%>'>登录</a>
             </div>
             <%/if%>
+            <%set var ba=QueryWechatBanner()%>
+            <%set var balen=ba.Count()%>
+            <%if balen!=0%>
             <div id="banner-carousel" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <%set var ba=QueryWechatBanner()%>
-                    <%set var balen=ba.Count()%>
+                <ol class="carousel-indicators">                   
                     <%for(var a=0;a<balen;a++)%>
                     <li data-target="#banner-carousel" data-slide-to="<%=a%>"></li>
                     <%/for%>
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <%for(var b=0;b<balen;b++)%>
-                         <%set var index=ba.Skip(b).First()%>
+                    <%set var index=ba.Skip(b).First()%>
                     <div class="item">
                         <a href='<%=index.link_url%>'><img src="<%=index.file_path%>"></a>
                     </div>
                     <%/for%>
                 </div>
             </div>
+            <%/if%>
             <div class="invest-list">
 
                 <!-- 新手标 -->

@@ -1165,12 +1165,14 @@
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
+    <Content Include="templates\weChat\js\register_tdlte.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />
     <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
+    <None Include="templates\weChat\less\register_tdlte.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
@@ -1352,6 +1354,7 @@
     <Content Include="templates\weChat\questionnaire.html" />
     <Content Include="templates\weChat\recharge.html" />
     <Content Include="templates\weChat\register.html" />
+    <Content Include="templates\weChat\register_tdlte.html" />
     <Content Include="templates\weChat\safe.html" />
     <Content Include="templates\weChat\safe_defence.html" />
     <Content Include="templates\weChat\settings.html" />
