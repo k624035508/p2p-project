@@ -270,9 +270,16 @@ namespace Agp2p.Common
             [Description("手工操作/冲正")]
             ManualOperation = 1,
             [Description("新手体验券")]
-            Trial = 2,
+            NewbieTrial = 2,
             [Description("被推荐人首次投资奖励推荐人")]
             RefereeFirstTimeProfitBonus = 3,
+
+            [Description("体验券")]
+            TrialTicket = 4,
+            [Description("加息券")]
+            InterestRateTicket = 5,
+            [Description("红包")]
+            HongBao = 6,
         }
 
         /// <summary>

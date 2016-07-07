@@ -13,6 +13,7 @@ using Agp2p.Core.Message;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Agp2p.Core.ActivityLogic;
 
 namespace Agp2p.Core
 {
@@ -476,16 +477,18 @@ namespace Agp2p.Core
         /// <param name="userId"></param>
         /// <param name="projectId"></param>
         /// <param name="investingMoney"></param>
-        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "")
+        public static void Invest(int userId, int projectId, decimal investingMoney, string noOrder = "", int ticketId = 0)
         {
             li_project_transactions tr;
             li_wallets wallet;
+            var investTime = DateTime.Now;
             using (var ts = new TransactionScope())
             {
                 var context = new Agp2pDataContext();
                 var pr = context.li_projects.Single(p => p.id == projectId);
 
-                if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status && (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
+                if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status &&
+                    (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
                     throw new InvalidOperationException("项目不可投资！");
                 // 判断投资金额的数额是否合理
                 var canBeInvest = pr.financing_amount - pr.investment_amount;
@@ -497,6 +500,35 @@ namespace Agp2p.Core
                     throw new InvalidOperationException("投资金额最低 100 元");
                 if (canBeInvest != investingMoney && canBeInvest - investingMoney < 100)
                     throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
+
+                if (ticketId != 0)
+                {
+                    var atr = context.li_activity_transactions.SingleOrDefault(a =>
+                        a.user_id == userId &&
+                        a.id == ticketId);
+                    if (atr == null)
+                        throw new InvalidOperationException("找不到该活动券");
+                    if (atr.status != (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                        throw new InvalidOperationException("该活动券不可用");
+                    if (atr.activity_type == (byte) Agp2pEnums.ActivityTransactionActivityTypeEnum.TrialTicket)
+                    {
+                        var ticket = new TrialTicketActivity.TrialTicket(atr);
+                        if (ticket.GetTicketValue() != investingMoney)
+                            throw new InvalidOperationException("投资的金额应等于体验券的面值");
+                        ticket.Use(context, projectId);
+                        ts.Complete();
+                        return;
+                    }
+                    else if (atr.activity_type == (byte) Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket)
+                    {
+                        var ticket = new InterestRateTicketActivity.InterestRateTicket(atr);
+                        ticket.Use(context, projectId, investingMoney);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
 
                 // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
                 wallet = context.li_wallets.Single(w => w.user_id == userId);
@@ -549,7 +581,7 @@ namespace Agp2p.Core
                 wallet.unused_money -= Math.Min(investingMoney, wallet.unused_money); // 投资的话优先使用未投资金额，再使用回款金额
                 wallet.investing_money += investingMoney;
                 wallet.total_investment += investingMoney;
-                wallet.last_update_time = DateTime.Now;
+                wallet.last_update_time = investTime;
 
                 // 创建投资记录
                 tr = new li_project_transactions
@@ -1562,7 +1594,7 @@ namespace Agp2p.Core
             context.CalcProfitingMoneyAfterRepaymentTasksCreated(project, repaymentTasks);
             context.SubmitChanges();
 
-            MessageBus.Main.PublishAsync(new ProjectStartRepaymentMsg(projectId)); // 广播项目开始还款的消息
+            MessageBus.Main.PublishAsync(new ProjectStartRepaymentMsg(projectId, project.make_loan_time.Value)); // 广播项目开始还款的消息
             return project;
         }
 

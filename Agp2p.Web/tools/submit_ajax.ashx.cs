@@ -108,11 +108,17 @@ namespace Agp2p.Web.tools
                 case "bind_idcard": // 实名认证
                     bind_idcard(context);
                     break;
+                case "user_edit": //修改会员资料
+                    user_edit(context);
+                    break;
                 case "update_bank_card":   //新增银行卡
                     update_bank_card(context);
                     break;
                 case "generate_user_invest_contract": //显示用户协议合同信息
                     GenerateUserInvestContract(context);
+                    break;
+                case "user_password_edit": //修改密码
+                    user_password_edit(context);
                     break;
             }
         }
@@ -1533,6 +1539,113 @@ namespace Agp2p.Web.tools
                 context.Response.Write(JsonConvert.SerializeObject(new { msg = "投资失败：" + e.Message, status = 0 }));
             }
         }
+
+        #region 修改用户信息OK=================================
+        private void user_edit(HttpContext context)
+        {
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
+
+            model.nick_name = DTRequest.GetFormString("nickName");
+            if (!string.IsNullOrEmpty(model.nick_name) && model.nick_name.Length< 4)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户昵称不能少于4个字符！\"}");
+                return;
+            }
+            var xssCheckRegex = new Regex(@"^[^<>]*$");
+            if (!xssCheckRegex.IsMatch(model.nick_name))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户昵称不能包含特殊字符！\"}");
+                return;
+            }
+            model.sex = DTRequest.GetFormString("sex");
+            if (!xssCheckRegex.IsMatch(model.sex))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，性别不能包含特殊字符！\"}");
+                return;
+            }
+            var birthdayStr = DTRequest.GetFormString("birthday");
+            if (!xssCheckRegex.IsMatch(birthdayStr))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，生日不能包含特殊字符！\"}");
+                return;
+            }
+            DateTime birthday;
+            if (DateTime.TryParse(birthdayStr, out birthday))
+            {
+                model.birthday = birthday;
+            }
+
+            model.area = DTRequest.GetFormString("area"); // 逗号隔开
+            if (!xssCheckRegex.IsMatch(model.area))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，所在城市不能包含特殊字符！\"}");
+                return;
+            }
+            model.qq = DTRequest.GetFormString("qq");
+            if (!xssCheckRegex.IsMatch(model.qq))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，QQ不能包含特殊字符！\"}");
+                return;
+            }
+            model.address = DTRequest.GetFormString("address");
+            if (!xssCheckRegex.IsMatch(model.address))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，居住地址不能包含特殊字符！\"}");
+                return;
+            }
+
+            //执行修改操作
+            //model.password = DESEncrypt.Encrypt(password, model.salt);
+            //model.password = DESEncrypt.Encrypt(password, model.salt);
+            new users().Update(model);
+            context.Response.Write("{\"status\":1, \"msg\":\"您的会员信息已修改成功！\"}");
+        }
+        #endregion
+
+        #region 修改登录密码OK=================================
+        private void user_password_edit(HttpContext context)
+        {
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
+            int user_id = model.id;
+            string oldpassword = DTRequest.GetFormString("txtOldPassword");
+            string password = DTRequest.GetFormString("txtPassword");
+            //检查输入的旧密码
+            if (string.IsNullOrEmpty(oldpassword))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的旧登录密码！\"}");
+                return;
+            }
+            //检查输入的新密码
+            if (string.IsNullOrEmpty(password))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请输入您的新登录密码！\"}");
+                return;
+            }
+            //旧密码是否正确
+            if (model.password != DESEncrypt.Encrypt(oldpassword, model.salt))
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您输入的旧密码不正确！\"}");
+                return;
+            }
+            //执行修改操作
+            model.password = DESEncrypt.Encrypt(password, model.salt);
+            new BLL.users().Update(model);
+            context.Response.Write("{\"status\":1, \"msg\":\"您的密码已修改成功，请记住新密码！\"}");
+            return;
+        }
+        #endregion
 
         /// <summary>
         /// 添加银行卡

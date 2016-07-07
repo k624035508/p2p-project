@@ -83,7 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityLogic\InviterBonus.cs" />
-    <Compile Include="ActivityLogic\TrialActivity.cs" />
+    <Compile Include="ActivityLogic\NewbieActivity.cs" />
+    <Compile Include="ActivityLogic\InterestRateTicketActivity.cs" />
+    <Compile Include="ActivityLogic\HongBaoActivity.cs" />
+    <Compile Include="ActivityLogic\TrialTicketActivity.cs" />
     <Compile Include="ActivityLogic\UserPointHandler.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
     <Compile Include="AutoLogic\CheckDelayInvestOverTime.cs" />

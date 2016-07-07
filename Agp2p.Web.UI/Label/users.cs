@@ -184,7 +184,7 @@ namespace Agp2p.Web.UI
 
         private static readonly int[] LotteryType =
         {
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial,
         };
 
         protected int QueryUnusedLottery(int userId)

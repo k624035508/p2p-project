@@ -27,7 +27,7 @@ namespace Agp2p.Web.UI.Page
             <int, Func<li_activity_transactions, Dictionary<string, string>>>
         {
             {
-                (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial, atr => new Dictionary<string, string>
+                (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial, atr => new Dictionary<string, string>
                 {
                     { "lottery-value", "￥" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("F0") },
                     {"lottery-spec", "新手标体验券，利润归您"},
@@ -46,7 +46,7 @@ namespace Agp2p.Web.UI.Page
 
         private static readonly int[] LotteryType =
         {
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial,
         };
         protected List<Dictionary<string, string>> QueryLottery()
         {

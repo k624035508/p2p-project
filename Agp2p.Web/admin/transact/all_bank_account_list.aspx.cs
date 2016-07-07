@@ -25,7 +25,7 @@ namespace Agp2p.Web.admin.transact
             pageSize = GetPageSize(GetType().Name + "_page_size");
             if (!Page.IsPostBack)
             {
-                ChkAdminLevel("manage_users_charge_withdraw", DTEnums.ActionEnum.View.ToString()); //检查权限
+                ChkAdminLevel("all_bank_account_list", DTEnums.ActionEnum.View.ToString()); //检查权限
                 RptBind();
             }
         }
@@ -60,6 +60,7 @@ namespace Agp2p.Web.admin.transact
         /// <param name="e"></param>
         protected void btnRemoveCard_OnClick(object sender, EventArgs e)
         {
+            ChkAdminLevel("all_bank_account_list", DTEnums.ActionEnum.Edit.ToString()); //检查权限
             try
             {
                 var bankId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
@@ -93,6 +94,7 @@ namespace Agp2p.Web.admin.transact
         /// <param name="e"></param>
         protected void btnRemoveCardNormal_OnClick(object sender, EventArgs e)
         {
+            ChkAdminLevel("all_bank_account_list", DTEnums.ActionEnum.Edit.ToString()); //检查权限
             try
             {
                 var normalBankId = Utils.StrToInt(((LinkButton) sender).CommandArgument, 0);

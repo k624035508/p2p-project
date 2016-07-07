@@ -5,6 +5,7 @@ import { updateWalletInfo, updateUserInfo, fetchBannerInfo} from "../actions/use
 import StatusContainer from "../containers/user-status.jsx";
 import MyAccountPage from "../containers/myaccount.jsx";
 import confirm from "../components/tips_confirm.js";
+import alert from "../components/tips_alert.js";
 
 /**
  * Number.prototype.format(n, x)
@@ -66,15 +67,33 @@ class UserCenterPage extends React.Component {
 		this.props.dispatch(updateUserInfo({ userName: "" + userName, prevLoginTime, isLoaner: isLoaner === "True", isIdentity: isIdentity === "True", isQuestionnaire: isQuestionnaire === "True" }));
 		
 		if (isQuestionnaire == "False") {
-		    $("#questionConfirm").modal();
+		    $("#questionConfirm").modal();		    
 		}
-		
+
 		if (isIdentity == "True") {
 		    confirm("安广融合已切换第三方支付平台（丰付），请到支付平台页面激活存管账户。", () => {
 				location.href = "/api/payment/sumapay/index.aspx?api=3";
 			});
 		}
 	}
+
+	skipQuestionnaire() {
+	    let url = USER_CENTER_ASPX_PATH + "/SkipQuestionnaireResult";
+        ajax({
+            type:"post",
+            dataType: "json",
+            contentType: "application/json",
+            url: url,
+            data: JSON.stringify({questionnaireId: 1}),
+            success: data => {
+                $("#questionConfirm").modal("hide");
+            },
+            error: () => {
+                alert("请登录");
+            }
+        });
+    }
+
 	render() {
 		return (
 			<div className="content-wrap usercenter">
@@ -157,7 +176,7 @@ class UserCenterPage extends React.Component {
                 <div className="modal-body">
                     <p>测一测你是哪种类型的投资人</p>
                     <a href={"/questionnaire.html"}>点击测试</a>
-                    <div className="questionp"><span className="strongMan">我是稳健型投资者，</span><span data-dismiss="modal" aria-label="Close">跳过测试</span></div>
+                    <div className="questionp"><span className="strongMan">我是稳健型投资者，</span><span onClick={ev => this.skipQuestionnaire()}>跳过测试</span></div>
                 </div>
             </div>
         </div>

@@ -235,7 +235,7 @@ namespace Agp2p.Web.UI.Page
         private static readonly Dictionary<Agp2pEnums.ProjectTagEnum, Agp2pEnums.ActivityTransactionActivityTypeEnum>
             EnumMapping = new Dictionary<Agp2pEnums.ProjectTagEnum, Agp2pEnums.ActivityTransactionActivityTypeEnum>
             {
-                {Agp2pEnums.ProjectTagEnum.Trial, Agp2pEnums.ActivityTransactionActivityTypeEnum.Trial},
+                {Agp2pEnums.ProjectTagEnum.Trial, Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial},
             };
         protected List<Dictionary<string, string>> QueryTickets()
         {
