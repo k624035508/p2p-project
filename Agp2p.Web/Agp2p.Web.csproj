@@ -1165,6 +1165,7 @@
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
+    <Content Include="templates\weChat\imgs\right.png" />
     <Content Include="templates\weChat\js\register_tdlte.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
     <Content Include="templates\AnGuang\js\sitemap.js" />

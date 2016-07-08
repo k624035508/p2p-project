@@ -38,14 +38,7 @@ $(function () {
         $(".register-step").eq(0).show().siblings().hide();
         $(".liuliang-content").hide();
     }    
-    // 初始化邀请码 input
-    var inviteCode = getUrlParameter("inviteCode");
-    if (inviteCode != null) {
-        var inviterInput = $("#recommend-one");
-        inviterInput.val(inviteCode);
-        inviterInput.attr("readonly", "readonly");
-        inviterInput.attr("name", "txtInviteCode");
-    }
+
     $(".liuliang-rules") .click(function() {
             $(".liuliang-content").toggle();
         });
@@ -56,13 +49,6 @@ $(function () {
     var btnSubmit = $("#register-btn");
     var btnSubmitName = $("#register-identity-btn");
 
-    chkAgree.click(function () {
-        if ($(this).is(":checked")) {
-            btnSubmit.prop("disabled", false);
-        } else {
-            btnSubmit.prop("disabled", true);
-        }
-    });
     //发送短信
     btnSendCode.click(function () {
         //检查是否输入手机号码

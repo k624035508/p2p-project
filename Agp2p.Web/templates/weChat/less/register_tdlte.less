@@ -1,6 +1,9 @@
 ﻿/*register.less*/
 @input: "../imgs/input-icon";
 
+body{
+    font-family:SimSun;
+}
 .register-page {
     padding: 1rem 5%;
     form {
@@ -103,18 +106,19 @@
     }
 
         .liuliangConfirm-dialog{
-           margin:20% auto; width:310px;
-           .modal-content{
-               width:310px; height:185px;
-               padding: 0 10px;
+           margin:30% auto 0 auto; width:85%;
+           .modal-content{                              
                border:none;
                .modal-header{
-                   border:none;
-                   h3{color:#464646; font-weight:bold; display:inline-block; margin-top:30px;}
-                   button{float:right;}
+                   border:none; padding:0;
+                   img{width:30%; height:30%; margin-top:-15%; margin-left:35%;}
+                   p{color:#464646; font-weight:bold; text-align:center; margin-top:13px; font-size:1.3rem;}
                }
-               .modal-body{ padding:0;
-                   p{font-size:15px;color:#464646; width:100%; margin-top:10px;}
+               .modal-body{  padding:0; 
+                   p{font-size:1rem;color:#464646; margin:6% 5% 10px 5%;  text-align:left; line-height:25px; word-break:break-all;}
+                   a{display:inline-block;width:90%; height:40px; background:#1072cc; color:#fff; border-radius:5px;
+                     text-align:center; text-decoration:none; line-height:40px; margin:10px 5% 20px 5%;
+                   }
                }
            }
         }
