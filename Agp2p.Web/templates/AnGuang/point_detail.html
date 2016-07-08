@@ -1,11 +1,50 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
+<%namespace "Agp2p.Core"%>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>商品详情</title>
-	<meta charset="utf-8" />
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/react.bundle.js"></script>
+    <script src="<%templateskin%>/build/point_detail.bundle.js"></script>
 </head>
 <body>
+<%template src="_header.html"%>
+
+<div class="breadcrumbs">
+    <a href='<%linkurl("point")%>'>积分商城</a>
+    <span> > </span>
+    <span><%=articleModel.title%></span>
+</div>
+
+<div class="goodsBuy">
+    <div class="goods-img" style='background: url("<%=articleModel.img_url%>") no-repeat center;'></div>
+    <div class="goods-content">
+        <p class="goodsName"><%=articleModel.title%></p>
+        <div class="goods">
+            <p>兑换积分：<%=articleDetail.point%></p>
+            <p>兑换数量</p>
+        </div>
+        <a>立即兑换</a>
+    </div>
+</div>
+
+<div class="content-wrap goods-detail">
+    <div class="goods-explain">
+        商品说明
+    </div>
+    <%=articleModel.content%>  
+</div>
+
+<%template src="_footerSmall.html"%>
 
 </body>
 </html>

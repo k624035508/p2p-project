@@ -1187,6 +1187,7 @@
     <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\point.js" />
+    <Content Include="templates\AnGuang\js\point_detail.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
@@ -1197,6 +1198,7 @@
     <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
+    <None Include="templates\AnGuang\less\point_detail.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\point.html" />
     <Content Include="templates\AnGuang\point_detail.html" />

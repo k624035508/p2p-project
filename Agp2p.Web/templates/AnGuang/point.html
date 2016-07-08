@@ -158,10 +158,10 @@
         <%set var shiwu=GetArticles(73,5)%>
         <%set var shiwuFirst=shiwu.FirstOrDefault()%>
         <div class="shiwu-img">
-            <img src="<%=shiwuFirst.img_url%>"/>
+            <a href='<%linkurl("point_detail",shiwuFirst.id)%>'><img src="<%=shiwuFirst.img_url%>"/></a>
             <span><%=shiwuFirst.title%></span>
             <span>所需积分：<%=shiwuFirst.dt_article_attribute_value.point%></span>
-            <a>兑换</a>
+            <a class="exchange">兑换</a>
         </div>
         <div class="shiwu">
             <%foreach(var a in shiwu.Skip(1))%>
@@ -172,7 +172,7 @@
                     <p class="shiwu-quan-content-p3">剩余数量：<%=a.dt_article_attribute_value.stock_quantity%>个</p>
                     <a class="shiwu-quan-content-p4">兑换</a>
                 </div>
-                <a href="<%linkurl("point_detail")%>?id=<%=a.id%>"><img src="<%=a.img_url%>"/></a>
+                <a href='<%linkurl("point_detail",a.id)%>'><img src="<%=a.img_url%>"/></a>
             </div>
             <%/foreach%>
         </div>
