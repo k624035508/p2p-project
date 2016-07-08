@@ -236,6 +236,8 @@ namespace Agp2p.Web.UI
                 .AsEnumerable();
         }
 
+
+
         /// <summary>
         /// 获取最新动态（包括置顶的公告）
         /// </summary>

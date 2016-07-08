@@ -716,8 +716,10 @@
     <Content Include="templates\AnGuang\activity_rewards.html" />
     <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
+    <None Include="templates\AnGuang\components\myPoints-table.jsx" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
+    <None Include="templates\AnGuang\containers\mypoints.jsx" />
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
@@ -989,6 +991,8 @@
     <Content Include="templates\AnGuang\imgs\point\015.png" />
     <Content Include="templates\AnGuang\imgs\point\016.png" />
     <Content Include="templates\AnGuang\imgs\point\017.png" />
+    <Content Include="templates\AnGuang\imgs\point\018.png" />
+    <Content Include="templates\AnGuang\imgs\point\019.png" />
     <Content Include="templates\AnGuang\imgs\point\code.png" />
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
@@ -1092,9 +1096,11 @@
     <Content Include="templates\AnGuang\imgs\usercenter\jian.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\myloan.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\myloan2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\mypoints.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\news2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\overview2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\pointChange.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\read.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\guangda.png" />
@@ -1188,10 +1194,12 @@
     <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
+    <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\point.html" />
+    <Content Include="templates\AnGuang\point_detail.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />

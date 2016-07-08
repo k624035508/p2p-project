@@ -31,7 +31,8 @@ const initialState = {
 		hasTransactPassword: false,
 		groupName: "",
 		isLoaner: false,
-	    identityId: ""
+		identityId: "",
+        point:""
 	},
 	bankCards: [],
 	bannerInfo: [],

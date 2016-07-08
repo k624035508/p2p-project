@@ -111,6 +111,11 @@ class UserCenterPage extends React.Component {
 								<li><Link to="/mylottery" activeClassName="active-link">我的奖券</Link></li>
 							</ul>
 						</li>
+                        <li className="listing"><a className="pointMall">奖励管理<div></div></a>
+                            <ul className="list-unstyled inner-ul">
+                                <li><Link to="/mypoints" activeClassName="active-link">我的积分</Link></li>
+                            </ul>
+                        </li>
 						<li className="listing"><a className="news">消息管理<div></div></a>
 							<ul className="list-unstyled inner-ul">
 								<li><Link to="/mynews" activeClassName="active-link">我的消息</Link></li>
