@@ -32,7 +32,6 @@ $(function () {
     var { step,result } = $("#step").data();
     if (step == "2") {
         //实名验证
-        $("#liuliangConfirm").modal();
         $(".register-step").eq(1).show().siblings().hide();
     } else {       
         $(".register-step").eq(0).show().siblings().hide();
@@ -42,6 +41,10 @@ $(function () {
     $(".liuliang-rules") .click(function() {
             $(".liuliang-content").toggle();
         });
+
+    $(".cancel-btn").click(function() {
+        $(".liuliangConfirm-dialog").hide();
+    })
 
     //同意条款
     var chkAgree = $("#agreement");
