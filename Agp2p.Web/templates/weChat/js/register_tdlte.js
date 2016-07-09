@@ -43,7 +43,7 @@ $(function () {
         });
 
     $(".cancel-btn").click(function() {
-        $(".liuliangConfirm-dialog").hide();
+        $("#liuliangConfirm").hide();
     })
 
     //同意条款
