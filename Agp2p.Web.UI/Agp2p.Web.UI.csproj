@@ -101,6 +101,9 @@
     <Compile Include="ManagePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\add_order.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\advert.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

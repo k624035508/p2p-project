@@ -714,6 +714,7 @@
     <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
+    <Content Include="templates\AnGuang\add_order.html" />
     <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <None Include="templates\AnGuang\components\myPoints-table.jsx" />
@@ -993,7 +994,12 @@
     <Content Include="templates\AnGuang\imgs\point\017.png" />
     <Content Include="templates\AnGuang\imgs\point\018.png" />
     <Content Include="templates\AnGuang\imgs\point\019.png" />
+    <Content Include="templates\AnGuang\imgs\point\addAddress.png" />
     <Content Include="templates\AnGuang\imgs\point\code.png" />
+    <Content Include="templates\AnGuang\imgs\point\selected.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi1.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi2.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi3.png" />
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />
@@ -1178,6 +1184,7 @@
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
+    <Content Include="templates\AnGuang\js\add_order.js" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\coop.js" />
     <Content Include="templates\AnGuang\js\fail_return.js" />
@@ -1187,6 +1194,7 @@
     <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\point.js" />
+    <None Include="templates\AnGuang\js\pointGoods-list.jsx" />
     <Content Include="templates\AnGuang\js\point_detail.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
@@ -1195,6 +1203,7 @@
     <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
+    <Content Include="templates\AnGuang\less\add_order.less" />
     <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />

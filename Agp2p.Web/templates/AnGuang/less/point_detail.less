@@ -1,4 +1,5 @@
 ﻿@import "common-style";
+@point: "../imgs/point";
 
 body{background:@body-color;}
 
@@ -9,8 +10,22 @@ body{background:@body-color;}
   }
   .goods-content{
       display:inline-block;
-      .goodsName{ font-size:20px; color:@darker-grey; font-weight:bold;}
-
+      .goodsName{ font-size:20px; color:@darker-grey; font-weight:bold; margin-top:33px;}
+      .goods{
+          width:760px; height:170px; background:#f6f6f6; padding-left:35px; padding-top:17px;
+          .goods-points{color:@dark-grey; font-size:@font15; margin-bottom:15px;
+                        span{color:@red; font-size:@font20; margin-right:5px;}
+          }
+          .goods-counts{
+              color:@dark-grey; font-size:@font15; margin-bottom:20px;
+              i{ display:inline-block; width:24px; height:25px; background:#eeeeee; border:@border; text-align:center; font-weight:normal; font-style:normal; cursor:pointer;}
+              input{border:none; width:32px; text-align:center;}
+              span{ margin-left:10px;}
+          }
+      }
+      .duihuan{width:200px; height:40px; display:inline-block; font-size:20px; line-height:40px; border-radius:5px; background:@red; 
+               text-decoration:none; text-align:center; color:@white; margin-top:30px;
+      }
   }
 }
 
@@ -21,4 +36,22 @@ body{background:@body-color;}
         border-bottom:@border; padding-left:23px; margin-bottom:25px;
     }
     img{display:block; margin:0 auto;}
+}
+
+#xiaomiType{
+    span{float:left; display:inline-block; height:40px; line-height:40px; font-size:15px; text-align:right;}
+.type-select{
+    display:inline-block; margin-left:0;
+    li{
+        width:40px; height:40px; 
+        cursor:pointer;
+        vertical-align: top;
+        padding: 0;
+		margin-right: 7px;
+        border:@border;
+    }
+#ag{ background:url("@{point}/xiaomi1.png") no-repeat center center ;}
+#gold{ background:url("@{point}/xiaomi2.png") no-repeat center center ;}
+#red{ background:url("@{point}/xiaomi3.png") no-repeat center center ;}
+}
 }

@@ -30,10 +30,11 @@
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
         <div class="goods">
-            <p>兑换积分：<%=articleDetail.point%></p>
-            <p>兑换数量</p>
+            <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分</p>
+            <p class="goods-counts">兑换数量：<i class="jian">-</i><input type="text" /><i class="jia">+</i><span>库存<%=articleDetail.stock_quantity%>件</span></p>
+            <div id="xiaomiType"></div>
         </div>
-        <a>立即兑换</a>
+        <a class="duihuan">立即兑换</a>
     </div>
 </div>
 

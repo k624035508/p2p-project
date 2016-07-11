@@ -1,0 +1,33 @@
+﻿@import "common-style";
+@point: "../imgs/point";
+
+body {
+    background:@body-color;
+}
+
+.order-wrap{
+    width:1100px; margin:0 auto; background:@white; padding-bottom:22px;
+    .goods-address{ padding:21px 0 45px 38px; border-bottom:@border;
+        p{font-size:@font18; color:@darker-grey; margin-bottom:24px;}
+        ul{ margin-left:0; height:135px;
+            li{width:255px; height:135px; border:@border;}
+            .addName{background:url("@{point}/addAddress.png") no-repeat center; cursor:pointer;}
+        }
+    }
+    .order-content{
+        padding-right:37px;
+        .bill{font-size:@font18; color:@darker-grey; margin-left:39px; padding-top:26px; margin-bottom:19px;}
+        .order-tb{
+            width:1050px; margin-left:25px;
+            th{ height:35px; border:none; background:@body-color; font-size:@font15; color:@dark-grey; padding:7px; font-weight:normal; }
+        }
+        .quantity{font-size:@font15; color:@dark-grey; text-align:right; margin-bottom:15px;}
+        .points{font-size:@font15; color:@dark-grey; text-align:right;
+                i{ font-size:@font18; color:@red; font-weight:normal; font-style:normal;}
+        }
+        a{display:inline-block; text-decoration:none; width:160px; height:35px; background:@red; color:@white;
+          text-align:center; border-radius:5px; font-size:18px; line-height:35px; margin-left:903px; margin-top:30px;
+        }
+        .premise{font-size:@font13; color:@dark-grey; text-align:right; margin-top:7px;}
+    }
+}
