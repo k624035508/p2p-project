@@ -1199,5 +1199,11 @@ namespace Agp2p.Web.UI.Page
             });            
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});
         }
+
+        [WebMethod]
+        public static string AjaxAppendAddress(string address, string postalCode, string orderName, string orderPhone)
+        {
+            return add_order.AjaxAppendAddress(address, postalCode, orderName, orderPhone);
+        }
     }
 }

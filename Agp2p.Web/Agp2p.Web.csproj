@@ -710,6 +710,7 @@
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
+    <Content Include="templates\AnGuang\actions\order-address.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
