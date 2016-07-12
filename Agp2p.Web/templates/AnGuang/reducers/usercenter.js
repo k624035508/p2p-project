@@ -1,5 +1,6 @@
 import { UPDATE_WALLET_INFO, UPDATE_USER_INFO, UPDATE_USER_INFO_BY_NAME, UPDATE_BANNER_INFO } from "../actions/usercenter.js"
 import { UPDATE_BANK_CARDS } from "../actions/bankcard.js"
+import {UPDATE_ADDRESS} from "../actions/order_address.js"
 import Immutable from "immutable"
 
 const initialState = {
@@ -36,6 +37,7 @@ const initialState = {
 	},
 	bankCards: [],
 	bannerInfo: [],
+    orderAddress: []
 }
 
 export default function userCenter(state = initialState, action) {
@@ -50,6 +52,8 @@ export default function userCenter(state = initialState, action) {
 	    return Immutable.fromJS(state).setIn([ "bankCards"], action.bankCards).toJS();
 	case UPDATE_BANNER_INFO:
 	    return Immutable.fromJS(state).setIn([ "bannerInfo"],action.bannerInfo).toJS();
+	case UPDATE_ADDRESS:
+	    return Immutable.fromJS(state).setIn(["orderAddress"], action.orderAddress).toJS();
 	default:
 		return state;
 	}

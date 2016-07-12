@@ -1201,9 +1201,22 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string AjaxQueryAddress()
+        {
+            return add_order.AjaxQueryAddress();
+        }
+
+        [WebMethod]
         public static string AjaxAppendAddress(string address, string postalCode, string orderName, string orderPhone)
         {
             return add_order.AjaxAppendAddress(address, postalCode, orderName, orderPhone);
+        }
+
+        [WebMethod]
+        public static string AjaxDeleteAddress(string address)
+        {
+            return add_order.AjaxDeleteAddress(address);
         }
     }
 }
