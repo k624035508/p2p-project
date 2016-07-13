@@ -53,7 +53,7 @@ export default function userCenter(state = initialState, action) {
 	case UPDATE_BANNER_INFO:
 	    return Immutable.fromJS(state).setIn([ "bannerInfo"],action.bannerInfo).toJS();
 	case UPDATE_ADDRESS:
-	    return Immutable.fromJS(state).setIn(["orderAddress"], action.orderAddress).toJS();
+	    return Immutable.fromJS(state).setIn([ "orderAddress" ], action.orderAddress).toJS();
 	default:
 		return state;
 	}

@@ -1214,9 +1214,9 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxDeleteAddress(string address)
+        public static string AjaxDeleteAddress(int addressId)
         {
-            return add_order.AjaxDeleteAddress(address);
+            return add_order.AjaxDeleteAddress(addressId);
         }
     }
 }

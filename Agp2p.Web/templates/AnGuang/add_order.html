@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,22 +14,59 @@
     <script src="<%templateskin%>/build/react.bundle.js"></script>
     <script src="<%templateskin%>/build/add_order.bundle.js"></script>
 </head>
+
 <body>
-<%template src="_header.html"%>
+    <%template src="_header.html"%>
 
-<div class="breadcrumbs">
-    <a href='<%linkurl("point")%>'>积分商城</a>
-    <span> > </span>
-    <span>核对商品信息</span>
-</div>
+        <div class="breadcrumbs">
+            <a href='<%linkurl("point")%>'>积分商城</a>
+            <span> > </span>
+            <span>核对商品信息</span>
+        </div>
 
-<div id="orderConfirm"
-     
-     data-order-price="<%=articleDetail.point%>"
-     data-order-count="<%=goods_id%>"
-     ></div>
+        <div id="orderConfirm"></div>
+
+        <div class="order-content">
+            <p class="bill">商品清单</p>
+            <table class="table order-tb">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>商品名称</th>
+                        <th>价格</th>
+                        <th>属性</th>
+                        <th>数量</th>
+                        <th>小计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="<%=articleModel.img_url%>" /></td>
+                        <td>
+                            <%=articleModel.title%>
+                        </td>
+                        <td>
+                            <%=articleDetail.point%>
+                        </td>
+                        <td></td>
+                        <td>
+                            <%=order_count%>
+                        </td>
+                        <td>
+                            <%=(articleDetail.point*order_count)%>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="quantity">商品数量：
+                <%=order_count%>件</p>
+            <p class="points">应付积分：<i><%=(articleDetail.point*order_count)%>积分</i></p>
+            <a>提交订单</a>
+            <p class="premise">* 须完成投资的用户才能兑换</p>
+        </div>
 
 
-<%template src="_footerSmall.html"%>
+        <%template src="_footerSmall.html"%>
 </body>
+
 </html>

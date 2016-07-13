@@ -5,13 +5,13 @@ export const UPDATE_ADDRESS = "UPDATE_ADDRESS"
 
 export function updateAddress(orderAddress) {
     return {
-        type:UPDATE_ADDRESS,
+        type: UPDATE_ADDRESS,
         orderAddress
-    }
+    };
 }
 
 export function fetchAddress() {
-    return function dispatch() {
+    return function (dispatch) {
         let url = USER_CENTER_ASPX_PATH + "/AjaxQueryAddress";
         return ajax({
             type: "get",

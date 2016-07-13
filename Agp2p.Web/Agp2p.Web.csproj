@@ -724,6 +724,7 @@
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
     <None Include="templates\AnGuang\containers\mypoints.jsx" />
+    <None Include="templates\AnGuang\containers\add_order.jsx" />
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
@@ -998,6 +999,10 @@
     <Content Include="templates\AnGuang\imgs\point\018.png" />
     <Content Include="templates\AnGuang\imgs\point\019.png" />
     <Content Include="templates\AnGuang\imgs\point\addAddress.png" />
+    <Content Include="templates\AnGuang\imgs\point\address1.png" />
+    <Content Include="templates\AnGuang\imgs\point\address1Blue.png" />
+    <Content Include="templates\AnGuang\imgs\point\address2.png" />
+    <Content Include="templates\AnGuang\imgs\point\address2Blue.png" />
     <Content Include="templates\AnGuang\imgs\point\code.png" />
     <Content Include="templates\AnGuang\imgs\point\selected.png" />
     <Content Include="templates\AnGuang\imgs\point\xiaomi1.png" />
@@ -1187,7 +1192,7 @@
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
-    <Content Include="templates\AnGuang\js\add_order.js" />
+    <None Include="templates\AnGuang\js\add_order.jsx" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\coop.js" />
     <Content Include="templates\AnGuang\js\fail_return.js" />

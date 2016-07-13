@@ -17,7 +17,7 @@ namespace Agp2p.Web.UI.Page
     {
         Agp2pDataContext context = new Agp2pDataContext();
         protected int goods_id;
-        protected string order_count;
+        protected int order_count;
         protected dt_article articleModel;
         protected dt_article_attribute_value articleDetail;
 
@@ -28,7 +28,7 @@ namespace Agp2p.Web.UI.Page
         {
             Init += Page_Init;
             goods_id = DTRequest.GetQueryInt("id");
-            order_count = DTRequest.GetQueryString("count");
+            order_count = DTRequest.GetQueryInt("count");
             articleModel = context.dt_article.SingleOrDefault(a => a.id == goods_id);
             articleDetail = articleModel.dt_article_attribute_value;
         }
@@ -41,22 +41,22 @@ namespace Agp2p.Web.UI.Page
 
         }
 
-        [WebMethod]
         public new static string AjaxQueryAddress()
         {
             var userInfo = GetUserInfoByLinq();
-            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
             if (userInfo == null)
             {
+                HttpContext.Current.Response.TrySkipIisCustomErrors = true;
                 HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
             var context = new Agp2pDataContext();
             var addressBook = context.dt_user_addr_book.Where(b => b.user_id == userInfo.id).Select(a => new
             {
+                addressId = a.id,
                 orderName = a.accept_name,
                 orderPhone=a.telphone,
-                address = a.address,
+                orderAddress = a.address,
                 postalCode=a.post_code,
             });
             return JsonConvert.SerializeObject(addressBook);
@@ -85,8 +85,11 @@ namespace Agp2p.Web.UI.Page
                 accept_name = orderName,
                 area = "",
                 address = address,
+                mobile = orderPhone,
                 telphone = orderPhone,
+                email = "",
                 post_code = postalCode,
+                is_default = 0,
                 add_time = DateTime.Now,
             };
             context.dt_user_addr_book.InsertOnSubmit(addressBook);
@@ -95,7 +98,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public new static string AjaxDeleteAddress(string address)
+        public new static string AjaxDeleteAddress(int addressId)
         {
             var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -105,7 +108,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
             var context = new Agp2pDataContext();
-            var addressBook = context.dt_user_addr_book.SingleOrDefault(b => b.address == address);
+            var addressBook = context.dt_user_addr_book.SingleOrDefault(b => b.id == addressId);
             context.dt_user_addr_book.DeleteOnSubmit(addressBook);
             context.SubmitChanges();
             return "删除成功";

@@ -29,7 +29,7 @@ module.exports = {
         questionnaire: "./js/questionnaire.js",
         point: "./js/point.js",
         point_detail: "./js/point_detail.js",
-        add_order: "./js/add_order.js"
+        add_order: "./js/add_order.jsx"
     },
     output: {
         path: path.join(__dirname, './build'),
