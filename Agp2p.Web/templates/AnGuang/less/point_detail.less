@@ -16,15 +16,9 @@ body{background:@body-color;}
           .goods-points{color:@dark-grey; font-size:@font15; margin-bottom:15px;
                         span{color:@red; font-size:@font20; margin-right:5px;}
           }
-          .goods-counts{
-              color:@dark-grey; font-size:@font15; margin-bottom:20px;
-              i{ display:inline-block; width:24px; height:25px; background:#eeeeee; border:@border; text-align:center; font-weight:normal; font-style:normal; cursor:pointer;}
-              input{border:none; width:32px; text-align:center;}
-              span{ margin-left:10px;}
-          }
       }
       .duihuan{width:200px; height:40px; display:inline-block; font-size:20px; line-height:40px; border-radius:5px; background:@red; 
-               text-decoration:none; text-align:center; color:@white; margin-top:30px;
+               text-decoration:none; text-align:center; color:@white; margin-top:30px; border:none;
       }
   }
 }
@@ -39,7 +33,15 @@ body{background:@body-color;}
 }
 
 #xiaomiType{
-    span{float:left; display:inline-block; height:40px; line-height:40px; font-size:15px; text-align:right;}
+              .goods-counts{
+              color:@dark-grey; font-size:@font15; margin-bottom:20px;
+              i{ display:inline-block; width:24px; height:25px; background:#eeeeee; border:@border; text-align:center; font-weight:normal; font-style:normal; cursor:pointer;}
+              input{border:none; width:32px; text-align:center;}
+              span{ margin-left:10px;}
+              span:first-child{ margin-left:0;}
+          }
+        .goods-wenzi{font-size:@font15; color:@dark-grey; width:70px; text-align:right;display:inline-block; line-height:40px; float:left;}
+
 .type-select{
     display:inline-block; margin-left:0;
     li{

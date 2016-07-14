@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import userCenter from "../reducers/usercenter.js"
 
 import Orders from "../containers/add_order.jsx";
+import OrderAdding from "../containers/add_order.jsx";
 
 $(function () {
     //弹出窗popover初始化
@@ -31,5 +32,7 @@ $(function () {
             </Router>
         </Provider>
         ), document.getElementById("orderConfirm"));
-    header.setHeaderHighlight(4);
+        header.setHeaderHighlight(3);
+
+    ReactDom.render(<OrderAdding />, document.getElementById("orderAdding"));
 });

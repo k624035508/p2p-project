@@ -29,12 +29,15 @@
     <div class="goods-img" style='background: url("<%=articleModel.img_url%>") no-repeat center;'></div>
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
+        <form method="get" action='<%linkurl("add_order")%>' >
         <div class="goods">
             <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分</p>
-            <p class="goods-counts">兑换数量：<i class="jian">-</i><input type="text"/><i class="jia">+</i><span>库存<%=articleDetail.stock_quantity%>件</span></p>
+            
             <div id="xiaomiType"></div>
+            <input type="hidden" name="id" value="<%=goods_id%>">
         </div>
-        <a class="duihuan" href='<%linkurl("add_order")%>?id=<%=goods_id%>&count=2'>立即兑换</a>
+        <input type="submit" value="立即兑换" class="duihuan"/>
+        </form>
     </div>
 </div>
 

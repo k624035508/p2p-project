@@ -74,7 +74,7 @@
   <tr>
     <th width="8%">选择</th>
     <th align="left">订单号</th>
-    <th align="left" width="12%">会员账号</th>
+    <th align="left" width="12%">会员姓名</th>
     <th align="left" width="10%">支付方式</th>
     <th align="left" width="10%">配送方式</th>
     <th width="8%">订单状态</th>

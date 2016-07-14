@@ -56,7 +56,7 @@ export function appendAddress(address, postalCode, orderName, orderPhone) {
     };
 }
 
-export function deleteAddress(address) {
+export function deleteAddress(addressId) {
     return function(dispatch) {
         let url = USER_CENTER_ASPX_PATH + "/AjaxDeleteAddress";
         return ajax({
@@ -64,7 +64,7 @@ export function deleteAddress(address) {
             dataType: "json",
             contentType: "application/json",
             url: url,
-            data: JSON.stringify(address),
+            data: JSON.stringify({ addressId }),
             success: function(data) {
                 dispatch(fetchAddress());
                 alert(data.d);

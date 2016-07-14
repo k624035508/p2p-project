@@ -14,12 +14,17 @@ import keys from "lodash/object/keys";
 class XiaomiType extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectTypeId: "" };
+        this.state = { selectTypeId: "", buyCount: 1 };
     }
     render() {
         return (
             <div>
-            <span className="goods-wenzi">颜色分类：</span>
+            <p className="goods-counts">兑换数量：<i className="jian" onClick={ev => this.setState({buyCount: this.state.buyCount-1})}>-</i>
+                <input name="count" type="text" value={this.state.buyCount} onChange={ev => this.setState({buyCount: ev.target.value})}/>
+                <i className="jia" onClick= { ev => this.setState({ buyCount: this.state.buyCount+1 }) } >+</i><span>库存10件</span>
+                </p>
+            <div>
+            <span className="goods-wenzi">属性：</span>
                 <ul className="list-unstyled list-inline type-select">
                     {keys(classMappingXiaomi).map(k => {
                         return (
@@ -30,6 +35,8 @@ class XiaomiType extends React.Component {
                             </li>);
                     }) }
                 </ul>
+            <input type="hidden" name="type" value={this.state.selectTypeId} />
+            </div>
             </div>
         )
     }

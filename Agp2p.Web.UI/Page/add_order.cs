@@ -18,6 +18,8 @@ namespace Agp2p.Web.UI.Page
         Agp2pDataContext context = new Agp2pDataContext();
         protected int goods_id;
         protected int order_count;
+        protected string order_type;
+        protected string order_type_zh;
         protected dt_article articleModel;
         protected dt_article_attribute_value articleDetail;
 
@@ -29,6 +31,8 @@ namespace Agp2p.Web.UI.Page
             Init += Page_Init;
             goods_id = DTRequest.GetQueryInt("id");
             order_count = DTRequest.GetQueryInt("count");
+            order_type = DTRequest.GetQueryString("type");
+            order_type_zh = order_type == "ag" ? "银色" : order_type == "gold" ? "金色" : order_type == "red" ? "红色" : " ";
             articleModel = context.dt_article.SingleOrDefault(a => a.id == goods_id);
             articleDetail = articleModel.dt_article_attribute_value;
         }
