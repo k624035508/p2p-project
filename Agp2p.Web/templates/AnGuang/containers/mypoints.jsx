@@ -2,6 +2,7 @@
 import "../less/mypoints.less";
 
 import Table from "../components/myPoints-table.jsx";
+import MinusTable from "../components/myPointsMinus-table.jsx";
 import Pagination from "../components/pagination.jsx";
 
 class MyPointsRecord extends React.Component {
@@ -40,11 +41,11 @@ class MyPointsRecord extends React.Component {
                             endTime={this.state.endTime}
                             onPageLoaded={this.state.onPageLoaded} />                                           
                     : 
-                        <table className="pointsRecord-tb">
-                        <tr>
-                        <td>兑换商品</td><td>属性</td><td>消费积分</td><td>兑换时间</td><td>处理状态</td>
-                        </tr>
-                        </table>                        
+                        <MinusTable
+                            pageIndex={this.state.pageIndex}
+                            startTime={this.state.startTime}
+                            endTime={this.state.endTime}
+                            onPageLoaded={this.state.onPageLoaded} />                        
                         }
             <div className="warm-tips"><span>积分说明</span></div>
                     <div className="rechargeTips">

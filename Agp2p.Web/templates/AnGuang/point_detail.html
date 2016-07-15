@@ -33,7 +33,8 @@
         <div class="goods">
             <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分</p>
             
-            <div id="xiaomiType"></div>
+            <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
+                                 data-title="<%=articleModel.title%>"></div>
             <input type="hidden" name="id" value="<%=goods_id%>">
         </div>
         <input type="submit" value="立即兑换" class="duihuan"/>
@@ -45,7 +46,9 @@
     <div class="goods-explain">
         商品说明
     </div>
-    <%=articleModel.content%>  
+    <div class="goods-compress">
+        <%=articleModel.content%>  
+    </div>
 </div>
 
 <%template src="_footerSmall.html"%>

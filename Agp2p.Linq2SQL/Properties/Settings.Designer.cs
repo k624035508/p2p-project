@@ -42,5 +42,16 @@ namespace Agp2p.Linq2SQL.Properties {
                 return ((string)(this["agrh_testConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.5.98;Initial Catalog=agrh_test;Persist Security Info=True;Use" +
+            "r ID=sa;Password=Zxcvbnm,")]
+        public string agrh_testConnectionString1 {
+            get {
+                return ((string)(this["agrh_testConnectionString1"]));
+            }
+        }
     }
 }

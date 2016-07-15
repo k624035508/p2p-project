@@ -1163,7 +1163,7 @@ namespace Agp2p.Web.UI.Page
         protected static List<dt_user_point_log> QueryPointsRecord(int userId, int pageIndex, string startTime, string endTime, short pageSize, out int count)
         {
             var context = new Agp2pDataContext();
-            var query = context.dt_user_point_log.Where(c => c.user_id == userId);
+            var query = context.dt_user_point_log.Where(c => c.user_id == userId & c.value > 0);
 
             if (!string.IsNullOrWhiteSpace(startTime))
                 query = query.Where(c => Convert.ToDateTime(startTime) <= c.add_time);
@@ -1199,6 +1199,44 @@ namespace Agp2p.Web.UI.Page
             });            
             return JsonConvert.SerializeObject(new {totalCount = count, data = result});
         }
+
+        protected static List<dt_orders> QueryMinusPointsRecord(int userId, int pageIndex, string startTime, string endTime, short pageSize, out int count)
+        {
+            var context = new Agp2pDataContext();
+            var query = context.dt_orders.Where(o => o.user_id == userId);
+            if (!string.IsNullOrWhiteSpace(startTime))
+                query = query.Where(c => Convert.ToDateTime(startTime) <= c.add_time);
+            if (!string.IsNullOrWhiteSpace(endTime))
+                query = query.Where(c => c.add_time <= Convert.ToDateTime(endTime));
+            count = query.Count();
+            return query.OrderByDescending(q => q.id).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+        }
+
+        [WebMethod]
+        public static string AjaxQueryMinusPoints(short pageIndex, short pageSize, string startTime = "", string endTime = "")
+        {
+            var context = new Agp2pDataContext();
+            var userInfo = GetUserInfoByLinq(context);
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            int count;
+            var minusPointRecord = QueryMinusPointsRecord(userInfo.id, pageIndex, startTime, endTime, pageSize, out count);
+            var result = minusPointRecord.Select(m =>
+            {
+                return new
+                {
+                    title = context.dt_order_goods.SingleOrDefault(a => a.order_id == m.id).goods_title,
+                    point = context.dt_order_goods.SingleOrDefault(a => a.order_id == m.id).point,
+                    add_time = m.add_time?.ToString("yy/MM/dd HH:mm"),
+                    status = Utils.GetAgp2pEnumDes((Agp2pEnums.OrderStatus)m.status)
+                };
+            });
+            return JsonConvert.SerializeObject(new { totalCount = count, data = result });
+        }
+
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true)]

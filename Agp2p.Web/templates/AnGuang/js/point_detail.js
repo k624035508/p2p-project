@@ -14,17 +14,22 @@ import keys from "lodash/object/keys";
 class XiaomiType extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { selectTypeId: "", buyCount: 1 };
+        this.state = { selectTypeId: "", buyCount: 1 ,stock: 0, title:""};
+    }
+    componentDidMount(){
+        var {stock, title} = $("#xiaomiType").data();
+        this.setState({stock:stock,title:title});   
     }
     render() {
         return (
             <div>
             <p className="goods-counts">兑换数量：<i className="jian" onClick={ev => this.setState({buyCount: this.state.buyCount-1})}>-</i>
                 <input name="count" type="text" value={this.state.buyCount} onChange={ev => this.setState({buyCount: ev.target.value})}/>
-                <i className="jia" onClick= { ev => this.setState({ buyCount: this.state.buyCount+1 }) } >+</i><span>库存10件</span>
+                <i className="jia" onClick= { ev => this.setState({ buyCount: this.state.buyCount+1 }) } >+</i><span>库存{this.state.stock}件</span>
                 </p>
             <div>
-            <span className="goods-wenzi">属性：</span>
+                {this.state.title == "小米迷你充电宝" ?  <span className="goods-wenzi">属性：</span> : null}
+                {this.state.title == "小米迷你充电宝" ?
                 <ul className="list-unstyled list-inline type-select">
                     {keys(classMappingXiaomi).map(k => {
                         return (
@@ -34,7 +39,7 @@ class XiaomiType extends React.Component {
                                     : null}
                             </li>);
                     }) }
-                </ul>
+                </ul> : null }
             <input type="hidden" name="type" value={this.state.selectTypeId} />
             </div>
             </div>

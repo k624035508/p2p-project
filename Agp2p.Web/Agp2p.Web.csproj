@@ -721,6 +721,7 @@
     <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
     <None Include="templates\AnGuang\components\myPoints-table.jsx" />
+    <None Include="templates\AnGuang\components\myPointsMinus-table.jsx" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
     <None Include="templates\AnGuang\containers\mypoints.jsx" />

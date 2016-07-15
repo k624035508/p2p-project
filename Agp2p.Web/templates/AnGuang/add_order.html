@@ -25,9 +25,53 @@
         </div>
 
         <div id="orderConfirm"></div>
+        
+            <div class="order-content">
+                 <p class="bill">商品清单</p>
+                   <table class="table order-tb">           
+            <thead>            
+                <tr>
+                    <th></th>
+                    <th>商品名称</th>
+                    <th>价格</th>
+                    <th>属性</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="<%=articleModel.img_url%>" /></td>
+                    <td>
+                           <%=articleModel.title%>
+                    </td>
+                    <td>
+                           <%=articleDetail.point%>
+                    </td>
+                    <td>
+                            <%=order_type_zh%>
+                    </td>
+                    <td>
+                          <%=order_count%>
+                    </td>
+                    <td>
+                         <%=(articleDetail.point*order_count)%>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+         <p class="quantity">
+            商品数量：<%=order_count%>件
+        </p>
+         <p class="points">应付积分：<i><%=(articleDetail.point*order_count)%>积分</i></p>
+ <a href="javascript:" class="adding">提交订单</a>
+ <p class="premise">* 须完成投资的用户才能兑换</p>
+    </div>
 
-        <div id="orderAdding"></div>
-
+    <div id="shiwuxinxi"
+          data-goodsid="<%=goods_id%>"
+         data-count="<%=order_count%>"
+         ></div>
 
         <%template src="_footerSmall.html"%>
 </body>

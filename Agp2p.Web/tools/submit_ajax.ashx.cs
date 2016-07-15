@@ -1179,6 +1179,20 @@ namespace Agp2p.Web.tools
         private void order_save(HttpContext context)
         {
             var agContext = new Agp2pDataContext();
+            //检查用户是否登录
+            Model.users userModel = BasePage.GetUserInfo();
+            if (userModel == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                return;
+            }
+            //投资记录查询
+            var investRecord = agContext.li_project_transactions.Where(p => p.investor == userModel.id);
+            if (investRecord == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，你还没有完成过投资。\"}");
+                return;
+            }
             //获得客户地址信息
             int addressId = DTRequest.GetFormInt("addressId");
             string message = Utils.ToHtml(DTRequest.GetFormString("message"));
@@ -1204,7 +1218,6 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询兑换物详细信息出错！请联系客服。\"}");
                 return;
             }
-
             //检查收货人
             if (string.IsNullOrEmpty(userAddr.accept_name))
             {
@@ -1223,11 +1236,10 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入详细的收货地址！\"}");
                 return;
             }
-            //检查用户是否登录
-            Model.users userModel = BasePage.GetUserInfo();
-            if (userModel == null)
+            //检查积分是否足够
+            if (userModel.point < goodFields.point * goodCount)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，用户尚未登录或已超时！\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"积分不足，不能兑换该商品！\"}");
                 return;
             }
 
@@ -1283,7 +1295,7 @@ namespace Agp2p.Web.tools
                 //TODO 生成虚拟物并绑定会员
 
                 var msg = new UserPointMsg(userModel.id, userModel.user_name, (int) Agp2pEnums.PointEnum.Exchange,
-                    goodFields.point.GetValueOrDefault(0))
+                    -goodFields.point.GetValueOrDefault(0) * goodCount)
                 {
                     Remark = "积分换购，订单号：" + model.order_no
                 };

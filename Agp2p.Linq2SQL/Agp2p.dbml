@@ -837,4 +837,52 @@
       <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.dt_order_goods" Member="dt_order_goods">
+    <Type Name="dt_order_goods">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="order_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="goods_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="goods_title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="goods_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="real_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_orders_dt_order_goods" Member="dt_orders" ThisKey="order_id" OtherKey="id" Type="dt_orders" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_orders" Member="dt_orders">
+    <Type Name="dt_orders">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="order_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="trade_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="user_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="payment_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="payment_fee" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="payment_status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="payment_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="express_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="express_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="express_fee" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="express_status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="express_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="accept_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="post_code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="telphone" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="mobile" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="message" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="payable_amount" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="real_amount" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="order_amount" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="confirm_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="complete_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="dt_orders_dt_order_goods" Member="dt_order_goods" ThisKey="id" OtherKey="order_id" Type="dt_order_goods" />
+    </Type>
+  </Table>
 </Database>

@@ -990,5 +990,22 @@ namespace Agp2p.Common
             [Description("积分兑换")]
             Exchange = 20,
         }
+
+        /// <sumary>
+        /// 商城订单状态
+        /// </sumary>
+        public enum OrderStatus
+        {
+            [Description("订单生成")]
+            Build = 1,
+            [Description("订单确认")]
+            Confirm = 2,
+            [Description("订单完成")]
+            Complete = 3,
+            [Description("订单取消")]
+            Cancel = 4,
+            [Description("订单作废")]
+            Delete = 5,
+        }
     }
 }

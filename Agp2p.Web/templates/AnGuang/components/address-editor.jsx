@@ -26,10 +26,11 @@ class AddressEditor extends React.Component {
         }
         return state;
     }
-    doSafeAddress() {
+    doSaveAddress() {
         this.props.dispatch(appendAddress(this.state.address, this.state.postalCode,this.state.orderName,this.state.orderPhone));
     }
     render() {
+        let createAddress = !this.props.value, editingAddress = !createAddress;
         return (
             <div className="modal fade" id="addressConfirm"  role="dialog" aria-labelledby="addressConfirmLabel" data-backdrop="static">
                 <div className="modal-dialog addressConfirm-dialog" role="document">
@@ -47,7 +48,7 @@ class AddressEditor extends React.Component {
                                 <li><span><i>*</i>收货人姓名</span><input type="text" value={this.state.orderName} onChange={ev => this.setState({orderName:ev.target.value})}/></li>
                                 <li><span><i>*</i>手机号码</span><input type="text" value={this.props.orderPhone} onChange={ev => this.setState({orderPhone:ev.target.value})}/></li>
                             </ul>
-                            <a href="javascript:" onClick={ev => this.doSafeAddress() }>保 存</a>
+                            <a href="javascript:" onClick={ev => this.doSaveAddress() }>保 存</a>
                         </div>
                     </div>
                 </div>
