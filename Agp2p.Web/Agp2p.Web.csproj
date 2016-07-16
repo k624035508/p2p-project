@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,6 +37,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -710,14 +712,20 @@
     <Content Include="templates\AnGuang\aboutus.html" />
     <Content Include="templates\AnGuang\about_more.html" />
     <Content Include="templates\AnGuang\actions\bankcard.js" />
+    <Content Include="templates\AnGuang\actions\order_address.js" />
     <Content Include="templates\AnGuang\actions\usercenter.js" />
     <Content Include="templates\AnGuang\activity_apps.html" />
     <Content Include="templates\AnGuang\activity_new.html" />
     <Content Include="templates\AnGuang\activity_rewards.html" />
+    <Content Include="templates\AnGuang\add_order.html" />
     <Content Include="templates\AnGuang\app_download.html" />
     <Content Include="templates\AnGuang\article_show.html" />
+    <None Include="templates\AnGuang\components\myPoints-table.jsx" />
+    <None Include="templates\AnGuang\components\myPointsMinus-table.jsx" />
     <Content Include="templates\AnGuang\components\tips_alert.js" />
     <Content Include="templates\AnGuang\components\tips_confirm.js" />
+    <None Include="templates\AnGuang\containers\mypoints.jsx" />
+    <None Include="templates\AnGuang\containers\add_order.jsx" />
     <Content Include="templates\AnGuang\coop.html" />
     <Content Include="templates\AnGuang\fail_return.html" />
     <Content Include="templates\AnGuang\help.html" />
@@ -989,7 +997,18 @@
     <Content Include="templates\AnGuang\imgs\point\015.png" />
     <Content Include="templates\AnGuang\imgs\point\016.png" />
     <Content Include="templates\AnGuang\imgs\point\017.png" />
+    <Content Include="templates\AnGuang\imgs\point\018.png" />
+    <Content Include="templates\AnGuang\imgs\point\019.png" />
+    <Content Include="templates\AnGuang\imgs\point\addAddress.png" />
+    <Content Include="templates\AnGuang\imgs\point\address1.png" />
+    <Content Include="templates\AnGuang\imgs\point\address1Blue.png" />
+    <Content Include="templates\AnGuang\imgs\point\address2.png" />
+    <Content Include="templates\AnGuang\imgs\point\address2Blue.png" />
     <Content Include="templates\AnGuang\imgs\point\code.png" />
+    <Content Include="templates\AnGuang\imgs\point\selected.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi1.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi2.png" />
+    <Content Include="templates\AnGuang\imgs\point\xiaomi3.png" />
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />
@@ -1092,9 +1111,11 @@
     <Content Include="templates\AnGuang\imgs\usercenter\jian.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\myloan.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\myloan2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\mypoints.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\news2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\open.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\overview2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\pointChange.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\read.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\gonghang.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recharge-icons\guangda.png" />
@@ -1172,6 +1193,7 @@
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
+    <None Include="templates\AnGuang\js\add_order.jsx" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\coop.js" />
     <Content Include="templates\AnGuang\js\fail_return.js" />
@@ -1181,6 +1203,8 @@
     <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
     <Content Include="templates\AnGuang\js\point.js" />
+    <None Include="templates\AnGuang\js\pointGoods-list.jsx" />
+    <Content Include="templates\AnGuang\js\point_detail.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\weChat\imgs\right.png" />
@@ -1190,11 +1214,15 @@
     <Content Include="templates\AnGuang\js\success_return.js" />
     <Content Include="templates\AnGuang\less\bootstrap.glyphicons.min.css" />
     <Content Include="templates\AnGuang\less\common.css" />
+    <Content Include="templates\AnGuang\less\add_order.less" />
+    <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
     <None Include="templates\weChat\less\register_tdlte.less" />
+    <None Include="templates\AnGuang\less\point_detail.less" />
     <Content Include="templates\AnGuang\loan.html" />
     <Content Include="templates\AnGuang\point.html" />
+    <Content Include="templates\AnGuang\point_detail.html" />
     <Content Include="templates\AnGuang\projects.html" />
     <Content Include="templates\AnGuang\project.html" />
     <Content Include="templates\AnGuang\js\aboutus.js" />
@@ -2791,11 +2819,18 @@
     <Content Include="tools\mobile_verify.ashx" />
     <Content Include="tools\trade_pwd.ashx" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="templates\AnGuang\components\address-editor.jsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

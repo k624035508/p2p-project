@@ -48,7 +48,7 @@
                 </p>
                 <%else%>
                 <div>我的积分</div>
-                <p class="points">0</p>
+                <p class="points"><%=_userModel.point%></p>
                 <a class="giftRecord">兑奖记录</a>
                 <%/if%>
             </div>
@@ -114,89 +114,43 @@
         <a>兑换</a>
     </div>
     <div class="xuni">
-        <div class="xuni-quan xuni-quan1">
+        <%set var xuni=GetArticles(72,4)%>
+        <%foreach(var b in xuni)%>
+        <div class="xuni-quan">
             <div class="xuni-quan-content">
-                <p class="xuni-quan-content-p1">10元现金券</p>
-                <p class="xuni-quan-content-p2">所需积分：<span>10000</span></p>
-                <p class="xuni-quan-content-p3">剩余数量：50个</p>
-                <a class="xuni-quan-content-p4">兑换</a>
+                <p class="xuni-quan-content-p1"><%=b.title%></p>
+                <p class="xuni-quan-content-p2">所需积分：<span><%=b.dt_article_attribute_value.point%></span></p>
+                <p class="xuni-quan-content-p3">剩余数量：<%=b.dt_article_attribute_value.stock_quantity%>个</p>
+                <a class="xuni-quan-content-p4" href='<%linkurl("point_detail",b.id)%>'>兑换</a>
             </div>
-            <img src="<%templateskin%>/imgs/point/010.png"/>
+            <a href='<%linkurl("point_detail",b.id)%>'><img src="<%=b.img_url%>" /></a>
         </div>
-        <div class="xuni-quan xuni-quan2">
-            <div class="xuni-quan-content">
-                <p class="xuni-quan-content-p1">1%加息券</p>
-                <p class="xuni-quan-content-p2">所需积分：<span>10000</span></p>
-                <p class="xuni-quan-content-p3">剩余数量：50个</p>
-                <a class="xuni-quan-content-p4">兑换</a>
-            </div>
-            <img src="<%templateskin%>/imgs/point/012.png" />
-        </div>
-        <div class="xuni-quan xuni-quan3">
-            <div class="xuni-quan-content">
-                <p class="xuni-quan-content-p1">5元现金券</p>
-                <p class="xuni-quan-content-p2">所需积分：<span>10000</span></p>
-                <p class="xuni-quan-content-p3">剩余数量：50个</p>
-                <a class="xuni-quan-content-p4">兑换</a>
-            </div>
-            <img src="<%templateskin%>/imgs/point/011.png" />
-        </div>
-        <div class="xuni-quan xuni-quan4">
-            <div class="xuni-quan-content">
-                <p class="xuni-quan-content-p1">0.5%加息券</p>
-                <p class="xuni-quan-content-p2">所需积分：<span>10000</span></p>
-                <p class="xuni-quan-content-p3">剩余数量：50个</p>
-                <a class="xuni-quan-content-p4">兑换</a>
-            </div>
-            <img src="<%templateskin%>/imgs/point/013.png" />
-        </div>
+        <%/foreach%>
     </div>
 </div>
 
     <div class="shiwu-goods">
         <p>实物商品</p>
+        <%set var shiwu=GetArticles(73,5)%>
+        <%set var shiwuFirst=shiwu.FirstOrDefault()%>
         <div class="shiwu-img">
-            <span>小米迷你充电宝</span>
-            <span>所需积分：10000</span>
-            <a>兑换</a>
+            <a href='<%linkurl("point_detail",shiwuFirst.id)%>'><img src="<%=shiwuFirst.img_url%>"/></a>
+            <span><%=shiwuFirst.title%></span>
+            <span>所需积分：<%=shiwuFirst.dt_article_attribute_value.point%></span>
+            <a class="exchange" href='<%linkurl("point_detail",shiwuFirst.id)%>'>兑换</a>
         </div>
         <div class="shiwu">
-            <div class="shiwu-quan shiwu-quan1">
+            <%foreach(var a in shiwu.Skip(1))%>
+            <div class="shiwu-quan">
                 <div class="shiwu-quan-content">
-                    <p class="shiwu-quan-content-p1">德芙巧克力</p>
-                    <p class="shiwu-quan-content-p2">所需积分：<span>10000</span></p>
-                    <p class="shiwu-quan-content-p3">剩余数量：50个</p>
-                    <a class="shiwu-quan-content-p4">兑换</a>
+                    <p class="shiwu-quan-content-p1"><%=a.title%></p>
+                    <p class="shiwu-quan-content-p2">所需积分：<span><%=a.dt_article_attribute_value.point%></span></p>
+                    <p class="shiwu-quan-content-p3">剩余数量：<%=a.dt_article_attribute_value.stock_quantity%>个</p>
+                    <a class="shiwu-quan-content-p4" href='<%linkurl("point_detail",a.id)%>'>兑换</a>
                 </div>
-                <img src="<%templateskin%>/imgs/point/014.png" />
+                <a href='<%linkurl("point_detail",a.id)%>'><img src="<%=a.img_url%>"/></a>
             </div>
-            <div class="shiwu-quan shiwu-quan2">
-                <div class="shiwu-quan-content">
-                    <p class="shiwu-quan-content-p1">进口咖啡</p>
-                    <p class="shiwu-quan-content-p2">所需积分：<span>10000</span></p>
-                    <p class="shiwu-quan-content-p3">剩余数量：50个</p>
-                    <a class="shiwu-quan-content-p4">兑换</a>
-                </div>
-                <img src="<%templateskin%>/imgs/point/015.png" />
-            </div>
-            <div class="shiwu-quan shiwu-quan3">
-                <div class="shiwu-quan-content">
-                    <p class="shiwu-quan-content-p1">笔记本套装</p>
-                    <p class="shiwu-quan-content-p2">所需积分：<span>10000</span></p>
-                    <p class="shiwu-quan-content-p3">剩余数量：50个</p>
-                    <a class="shiwu-quan-content-p4">兑换</a>
-                </div>
-                <img src="<%templateskin%>/imgs/point/016.png" />
-            </div>
-            <div class="shiwu-quan shiwu-quan4">
-                <div class="shiwu-quan-content">
-                    <p class="shiwu-quan-content-p1">游戏鼠标垫</p>
-                    <p class="shiwu-quan-content-p2">所需积分：<span>10000</span></p>
-                    <p class="shiwu-quan-content-p3">剩余数量：50个</p>
-                    <a class="shiwu-quan-content-p4">兑换</a>
-                </div>
-                <img src="<%templateskin%>/imgs/point/017.png" />
-            </div>
+            <%/foreach%>
         </div>
     </div>
 <!--footer-->

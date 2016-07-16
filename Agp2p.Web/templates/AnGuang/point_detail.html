@@ -1,0 +1,57 @@
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
+<%namespace "Agp2p.Core"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>商品详情</title>
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/react.bundle.js"></script>
+    <script src="<%templateskin%>/build/point_detail.bundle.js"></script>
+</head>
+<body>
+<%template src="_header.html"%>
+
+<div class="breadcrumbs">
+    <a href='<%linkurl("point")%>'>积分商城</a>
+    <span> > </span>
+    <span><%=articleModel.title%></span>
+</div>
+
+<div class="goodsBuy">
+    <div class="goods-img" style='background: url("<%=articleModel.img_url%>") no-repeat center;'></div>
+    <div class="goods-content">
+        <p class="goodsName"><%=articleModel.title%></p>
+        <form method="get" action='<%linkurl("add_order")%>' >
+        <div class="goods">
+            <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分</p>
+            
+            <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
+                                 data-title="<%=articleModel.title%>"></div>
+            <input type="hidden" name="id" value="<%=goods_id%>">
+        </div>
+        <input type="submit" value="立即兑换" class="duihuan"/>
+        </form>
+    </div>
+</div>
+
+<div class="content-wrap goods-detail">
+    <div class="goods-explain">
+        商品说明
+    </div>
+    <div class="goods-compress">
+        <%=articleModel.content%>  
+    </div>
+</div>
+
+<%template src="_footerSmall.html"%>
+
+</body>
+</html>

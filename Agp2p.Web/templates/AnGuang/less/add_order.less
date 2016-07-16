@@ -1,0 +1,98 @@
+﻿@import "common-style";
+@point: "../imgs/point";
+
+body {
+    background:@body-color;
+}
+
+.order-wrap{
+    width:1100px; margin:0 auto; background:@white; 
+    .goods-address{ padding:21px 0 45px 38px; border-bottom:@border;
+        p{font-size:@font18; color:@darker-grey; margin-bottom:24px;}
+        ul{ margin-left:0; height:135px;
+            li{width:255px; height:135px; border:@border; margin-right:20px; float:left; cursor:pointer;
+               .dizhi{ height:48px; border-bottom:@border; margin-left:7px; margin-right:6px;
+               span{display:inline-block; height:47px; font-size:@font13; color:@dark-grey; line-height:48px; float:left;}
+               .mingzi{width:40px;}
+               .shouji{margin-left:14px;}
+               .xiugai{width:15px; height:15px; background:url("@{point}/address1.png") no-repeat; margin-left:50px; cursor:pointer; margin-top:16px;
+                       &:hover{background:url("@{point}/address1Blue.png") no-repeat; }
+               }
+               .shanchu{width:15px; height:15px; background:url("@{point}/address2.png") no-repeat; margin-left:11px; cursor:pointer; margin-top:16px;
+                        &:hover{background:url("@{point}/address2Blue.png") no-repeat; }
+               }
+               }
+               p{ color:@dark-grey; font-size:@font13; margin-left:7px; margin-right:6px;}
+               .jutidizhi{margin-top:17px; margin-bottom:16px;}
+               .youbian{text-align:right;}
+            }
+            .xuanzhong{border-color:@blue;}
+            .addName{background:url("@{point}/addAddress.png") no-repeat center; margin-right:0;}
+        }
+    }    
+}
+
+.order-content{
+        padding-right:37px; width:1100px; margin:0 auto; background:@white; padding-bottom:22px;
+        .bill{font-size:@font18; color:@darker-grey; margin-left:39px; padding-top:26px; margin-bottom:19px;}
+        .order-tb{
+            width:1050px; margin-left:25px;
+            thead{
+            th{  height:35px; border:none; background:@body-color; font-size:@font15; color:@dark-grey; padding:7px; font-weight:normal; text-align:center;}
+            }
+                
+            tbody{
+            td{
+                text-align:center;
+                vertical-align:middle;
+                height:105px; border-bottom:@border;
+                img{width:100px; height:50px;}
+            }
+            
+            }
+        }
+        .quantity{font-size:@font15; color:@dark-grey; text-align:right; margin-bottom:15px;}
+        .points{font-size:@font15; color:@dark-grey; text-align:right;
+                i{ font-size:@font18; color:@red; font-weight:normal; font-style:normal;}
+        }
+        .adding{display:inline-block; text-decoration:none; width:160px; height:35px; background:@red; color:@white;
+          text-align:center; border-radius:5px; font-size:18px; line-height:35px; margin-left:903px; margin-top:30px;
+        }
+        .premise{font-size:@font13; color:@dark-grey; text-align:right; margin-top:7px;}
+    }
+
+        .addressConfirm-dialog{
+           margin-top:15%;
+           .modal-content{
+               width:600px; height:480px;
+               padding: 0 25px 10px 25px;
+               border:none;
+               .modal-header{ padding:16px;
+                   h4{color:@darker-grey; font-weight:bold; display:inline-block;}
+                   .close{ float:right;}
+               }
+               .modal-body{                  
+                   ul{ padding-top:15px;
+                       li{ margin-bottom:20px; height:35px;
+                           &>span{font-size:@font15;color:@darker-grey; margin-right:20px;  width:100px; display:inline-block; text-align:right; float:left; line-height:35px;
+                                i{font-weight:normal; font-style:normal; color:@red; margin-right:5px;}
+                           }
+                           input{
+                               border:@border; width:250px; height:35px; border-radius:4px; padding-left:10px;
+                           }
+                           textarea{
+                               font-size:@font12; width:350px; height:70px; resize:none; border:@border; border-radius:4px; padding:10px;
+                           }
+                       }
+                       .dizhi{height:70px; }
+                       .selectDist{display:inline-block;
+                                   select{ height:35px; border-radius:4px; border:@border; width:100px; margin-right:10px;}
+                                   } 
+                   }
+                   a{
+                       display:inline-block; width:100px; height:35px; font-size:15px; color:@white; background:@red; line-height:35px; text-decoration:none; 
+                       border-radius:5px; text-align:center; margin-left:120px; margin-top:15px;
+                   }
+               }
+           }
+        }

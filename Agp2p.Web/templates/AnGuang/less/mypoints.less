@@ -1,0 +1,42 @@
+﻿@import "common-style";
+@usercenter: "../imgs/usercenter";
+
+.pointSum{
+    font-size:@font18; color:@dark-grey;  margin-top:-10px; 
+    span{display:inline-block; border-bottom:1px solid @blue;height:40px;}
+}
+.pointChange{
+    height:100px; width:815px; border:@border; background:#f1f5ff; margin-top:-1px;
+    &>div{
+        display:inline-block; width:240px; text-align:center; height:100px; float:left; padding-top:21px;
+        .pointsP1{font-size:18px; color:@dark-grey;}
+        .pointsP2{font-size:20px; color:@red;}
+    }
+    .pointChangeImg{ background:url("@{usercenter}/pointChange.png") no-repeat center; margin-left:90px;
+                     font-size:20px;  font-weight:bold; line-height:80px;
+                     a{color:@blue; text-decoration:none;}
+    }
+}
+.point-choose{
+    height:34px; border-bottom:@border; margin-top:33px;
+    span{display:inline-block;font-size:18px; color:@dark-grey; height:34px;
+         a{display:inline-block; text-decoration:none; color:@dark-grey;height:34px;}
+    }
+    span:first-child{ margin-right:25px;}
+    .active{border-bottom:1px solid @blue;
+    }
+}
+.tb-wrap{ 
+    height:300px;
+.pointsRecord-tb{ margin-top:14px;
+    text-align:center; font-size:@font15; color:@dark-grey;    
+        td{border-bottom:1px solid @blue; height:41px;}
+    th{text-align:center; color:@darker-grey; padding-bottom:4px !important; border-bottom-color:@blue !important;}  
+}
+}
+
+.nav-parent{
+.nav{
+    bottom:192px !important;
+}
+}

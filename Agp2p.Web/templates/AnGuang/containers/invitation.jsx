@@ -60,7 +60,7 @@ class InvitationPage extends React.Component {
 	fetchInvitationData(pageIndex = 0) {
 		this.setState({pageIndex});
 
-		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryInvitationInfo", pageSize = 5;
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryInvitationInfo", pageSize = 4;
         $.ajax({
             type: "post",
             dataType: "json",
@@ -116,8 +116,8 @@ class InvitationPage extends React.Component {
                             </tr>)}
                         </tbody>
                     </table>
-	                <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
-	                    onPageSelected={pageIndex => this.fetchInvitationData(pageIndex)}/>
+	              <div className="nav-parent">  <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+	                    onPageSelected={pageIndex => this.fetchInvitationData(pageIndex)}/>  </div>
                 </div>
                 <div className="warm-tips-th"><span>温馨提示</span></div>
                 <div className="warmTips">
