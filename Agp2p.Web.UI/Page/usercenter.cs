@@ -1246,9 +1246,15 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxAppendAddress(string address, string postalCode, string orderName, string orderPhone)
+        public static string AjaxAppendAddress(string address, string area, string postalCode, string orderName, string orderPhone)
         {
-            return add_order.AjaxAppendAddress(address, postalCode, orderName, orderPhone);
+            return add_order.AjaxAppendAddress(address, area, postalCode, orderName, orderPhone);
+        }
+
+        [WebMethod]
+        public static string AjaxModifyAddress(int addressId, string address, string postalCode, string orderName, string orderPhone)
+        {
+            return add_order.AjaxModifyAddress(addressId, address, postalCode, orderName, orderPhone);
         }
 
         [WebMethod]

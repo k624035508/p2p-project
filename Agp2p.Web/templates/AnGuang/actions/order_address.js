@@ -30,7 +30,7 @@ export function fetchAddress() {
     };
 }
 
-export function appendAddress(address, postalCode, orderName, orderPhone) {
+export function appendAddress(address, area, postalCode, orderName, orderPhone) {
     return function (dispatch) {
         let url = USER_CENTER_ASPX_PATH + "/AjaxAppendAddress";
         return ajax({
@@ -40,6 +40,7 @@ export function appendAddress(address, postalCode, orderName, orderPhone) {
             url: url,
             data: JSON.stringify({
                 address,
+                area,
                 postalCode,
                 orderName,
                 orderPhone
@@ -47,6 +48,7 @@ export function appendAddress(address, postalCode, orderName, orderPhone) {
             success: function (data) {
                 dispatch(fetchAddress());
                 alert(data.d);
+                $("#addressConfirm").modal("hide");
             }.bind(this),
             error: function (xhr, status, err) {
                 alert(xhr.responseJSON.d);
@@ -75,4 +77,25 @@ export function deleteAddress(addressId) {
             }.bind(this)
         });
     };
+}
+
+export function modify(addressId, address, postalCode, orderName, orderPhone) {
+    return function(dispatch) {
+        let url = USER_CENTER_ASPX_PATH + "/AjaxModifyAddress";
+        return ajax({
+            type:"post",
+            dataType:"json",
+            contentType:"application/json",
+            url:url,
+            data:JSON.stringify({addressId, address, postalCode, orderName, orderPhone}),
+            success:function(data) {
+                dispatch(fetchAddress());
+                alert(data.d);
+            }.bind(this),
+            error:function(xhr, status, err) {
+                alert(xhr.responseJSON.d);
+                console.error(url, status, err.toString());
+            }.bind(this)
+        });
+    }
 }

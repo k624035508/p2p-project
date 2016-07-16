@@ -3,6 +3,7 @@
 import CityPicker from "../components/city-picker.jsx";
 import { fetchAddress, deleteAddress} from "../actions/order_address.js";
 import AddressEditor from "../components/address-editor.jsx";
+import confirm from "../components/tips_confirm.js";
 
 class Orders extends React.Component {
     constructor(props) {
@@ -18,7 +19,10 @@ class Orders extends React.Component {
         });
     }
     deleteAddress(id) {
-        this.props.dispatch(deleteAddress(id));
+        confirm("是否确认删除该地址？",
+        () => {
+            this.props.dispatch(deleteAddress(id));
+        });
     }
     render() {
         return (
@@ -33,10 +37,10 @@ class Orders extends React.Component {
                                 <div className="dizhi">
                                     <span className="mingzi">{a.orderName}</span>
                                     <span className="shouji">{a.orderPhone}</span>
-                                    <span className="xiugai" onClick={ev => this.modifyAddress(a.addressId)}></span>
+                                    <span className="xiugai"></span>
                                     <span className="shanchu" onClick={ev => this.deleteAddress(a.addressId)}></span>
                                 </div>
-                                <p className="jutidizhi">{a.orderAddress}</p>
+                                <p className="jutidizhi">{a.area + a.orderAddress}</p>
                                 <p className="youbian">{a.postalCode}</p>
                             </li>
                         )}

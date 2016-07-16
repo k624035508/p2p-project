@@ -59,7 +59,8 @@ namespace Agp2p.Web.UI.Page
             {
                 addressId = a.id,
                 orderName = a.accept_name,
-                orderPhone=a.telphone,
+                orderPhone=a.mobile,
+                area = a.area,
                 orderAddress = a.address,
                 postalCode=a.post_code,
             });
@@ -67,7 +68,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public new static string AjaxAppendAddress(string address, string postalCode, string orderName, string orderPhone)
+        public new static string AjaxAppendAddress(string address, string area, string postalCode, string orderName, string orderPhone)
         {
             var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -82,12 +83,17 @@ namespace Agp2p.Web.UI.Page
                 return "手机号码格式不正确";
             }
             var context= new Agp2pDataContext();
+            var addressCount = context.dt_user_addr_book.Where(a => a.user_id == userInfo.id).Count();
+            if (addressCount >= 2)
+            {
+                return "最多只能添加2个收获地址";
+            }
             var addressBook = new dt_user_addr_book
             {
                 user_id = userInfo.id,
                 user_name = userInfo.real_name,
                 accept_name = orderName,
-                area = "",
+                area = area,
                 address = address,
                 mobile = orderPhone,
                 telphone = orderPhone,
@@ -99,6 +105,31 @@ namespace Agp2p.Web.UI.Page
             context.dt_user_addr_book.InsertOnSubmit(addressBook);
             context.SubmitChanges();
             return "保存收货地址信息成功";
+        }
+
+        [WebMethod]
+        public new static string AjaxModifyAddress(int addressId, string address, string postalCode, string orderName, string orderPhone)
+        {
+            var userInfo = GetUserInfoByLinq();
+            HttpContext.Current.Response.TrySkipIisCustomErrors = true;
+            if (userInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return "请先登录";
+            }
+            var context = new Agp2pDataContext();
+            var addressInfo = context.dt_user_addr_book.SingleOrDefault(a => a.id == addressId && a.user_id == userInfo.id);
+            if (addressInfo == null)
+            {
+                HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return "找不到地址信息";
+            }
+            addressInfo.address = address;
+            addressInfo.post_code = postalCode;
+            addressInfo.accept_name = orderName;
+            addressInfo.mobile = orderPhone;
+            context.SubmitChanges();
+            return "修改成功";
         }
 
         [WebMethod]

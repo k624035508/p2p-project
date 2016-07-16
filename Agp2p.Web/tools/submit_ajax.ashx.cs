@@ -1255,7 +1255,7 @@ namespace Agp2p.Web.tools
                 post_code = userAddr.post_code,
                 telphone = userAddr.telphone,
                 mobile = userAddr.mobile,
-                address = userAddr.address,
+                address = userAddr.area + userAddr.address,
                 message = message,
                 payable_amount = 0,
                 real_amount = 0,

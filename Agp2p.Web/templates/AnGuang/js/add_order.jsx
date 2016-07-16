@@ -33,6 +33,10 @@ $(function () {
         ), document.getElementById("orderConfirm"));
         header.setHeaderHighlight(3);
 
+        $(".xiugai").click(function () {
+            $("#addressConfirm").modal();
+        });    
+
     $(".adding").click(function(){
         var addressId = $(".xuanzhong .addressIdInfo").val();
         $.ajax({

@@ -20,10 +20,13 @@ class XiaomiType extends React.Component {
         var {stock, title} = $("#xiaomiType").data();
         this.setState({stock:stock,title:title});   
     }
+    reduceBuy() {
+        this.setState({ buyCount: this.state.buyCount - 1 });
+    }
     render() {
         return (
             <div>
-            <p className="goods-counts">兑换数量：<i className="jian" onClick={ev => this.setState({buyCount: this.state.buyCount-1})}>-</i>
+            <p className="goods-counts">兑换数量：<i className="jian" onClick={ev => this.reduceBuy()}>-</i>
                 <input name="count" type="text" value={this.state.buyCount} onChange={ev => this.setState({buyCount: ev.target.value})}/>
                 <i className="jia" onClick= { ev => this.setState({ buyCount: this.state.buyCount+1 }) } >+</i><span>库存{this.state.stock}件</span>
                 </p>
@@ -40,7 +43,7 @@ class XiaomiType extends React.Component {
                             </li>);
                     }) }
                 </ul> : null }
-            <input type="hidden" name="type" value={this.state.selectTypeId} />
+            <input className="hiddenCount" type="hidden" name="type" value={this.state.selectTypeId} />
             </div>
             </div>
         )
