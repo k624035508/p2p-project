@@ -1499,9 +1499,9 @@ namespace Agp2p.Web.tools
                     if (pr.IsNewbieProject2())
                     {
                         var wallet = linqContext.li_wallets.Single(w => w.user_id == user.id);
-                        if (10000 < wallet.total_investment)
+                        if (100000 < wallet.total_investment)
                         {
-                            context.Response.Write(JsonConvert.SerializeObject(new { msg = "对不起，您的累计投资金额已经超过10000，不能再投资新手标！", status = 0 }));
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = "对不起，您的累计投资金额已经超过100000，不能再投资新手标！", status = 0 }));
                             return;
                         }
                         var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
@@ -1509,9 +1509,9 @@ namespace Agp2p.Web.tools
                             tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
                             tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
                             .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
-                        if (10000 < newbieProjectInvested + investingAmount)
+                        if (100000 < newbieProjectInvested + investingAmount)
                         {
-                            context.Response.Write(JsonConvert.SerializeObject(new { msg = $"新手标累计投资不能超过 10000，您剩余可投 {10000 - newbieProjectInvested}元", status = 0 }));
+                            context.Response.Write(JsonConvert.SerializeObject(new { msg = $"新手标累计投资不能超过 100000，您剩余可投 {100000 - newbieProjectInvested}元", status = 0 }));
                             return;
                         }
                     }

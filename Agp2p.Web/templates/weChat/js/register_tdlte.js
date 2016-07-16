@@ -1,6 +1,6 @@
 ﻿import "bootstrap-webpack";
 import "../less/common.less";
-import "../less/register.less";
+import "../less/register_tdlte.less";
 import footerInit from "./footer.js";
 
 window['$'] = window['jQuery'] = $;
@@ -33,17 +33,18 @@ $(function () {
     if (step == "2") {
         //实名验证
         $(".register-step").eq(1).show().siblings().hide();
-    } else {
+    } else {       
         $(".register-step").eq(0).show().siblings().hide();
-    }
-    // 初始化邀请码 input
-    var inviteCode = getUrlParameter("inviteCode");
-    if (inviteCode != null) {
-        var inviterInput = $("#recommend-one");
-        inviterInput.val(inviteCode);
-        inviterInput.attr("readonly", "readonly");
-        inviterInput.attr("name", "txtInviteCode");
-    }
+        $(".liuliang-content").hide();
+    }    
+
+    $(".liuliang-rules") .click(function() {
+            $(".liuliang-content").toggle();
+        });
+
+    $(".cancel-btn").click(function() {
+        $("#liuliangConfirm").hide();
+    })
 
     //同意条款
     var chkAgree = $("#agreement");
@@ -51,13 +52,6 @@ $(function () {
     var btnSubmit = $("#register-btn");
     var btnSubmitName = $("#register-identity-btn");
 
-    chkAgree.click(function () {
-        if ($(this).is(":checked")) {
-            btnSubmit.prop("disabled", false);
-        } else {
-            btnSubmit.prop("disabled", true);
-        }
-    });
     //发送短信
     btnSendCode.click(function () {
         //检查是否输入手机号码
@@ -124,10 +118,6 @@ $(function () {
 
     //表单提交前
     function showRequest(formData, jqForm, options) {
-        if ($("#psw").val() == "" || $("#psw").val() !== $("#psw2").val()) {
-            alert("两次输入的密码不一致");
-            return false;
-        }
         btnSubmit.val("正在提交...");
         btnSubmit.prop("disabled", true);
         chkAgree.prop("disabled", true);
@@ -140,7 +130,7 @@ $(function () {
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入实名认证
                 // location.href = "/api/payment/sumapay/index.aspx?api=101";
-                location.href="register.html?action=2";
+                location.href="register_tdlte.html?action=2";
             });
         } else { //失败
             $.dialog.alert(data.msg);
@@ -156,7 +146,7 @@ $(function () {
             //location.href = data.url;
             $.dialog.alert(data.msg, function() {
                 //注册成功后进入开户
-                 location.href = "/api/payment/sumapay/index.aspx?api=101";
+                location.href = "/api/payment/sumapay/index.aspx?api=101";
             });
         } else { //失败
             $.dialog.alert(data.msg);
