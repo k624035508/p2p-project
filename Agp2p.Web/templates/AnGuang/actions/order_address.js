@@ -79,7 +79,7 @@ export function deleteAddress(addressId) {
     };
 }
 
-export function modify(addressId, address, postalCode, orderName, orderPhone) {
+export function modifyAddress(addressId, address, area, postalCode, orderName, orderPhone) {
     return function(dispatch) {
         let url = USER_CENTER_ASPX_PATH + "/AjaxModifyAddress";
         return ajax({
@@ -87,10 +87,11 @@ export function modify(addressId, address, postalCode, orderName, orderPhone) {
             dataType:"json",
             contentType:"application/json",
             url:url,
-            data:JSON.stringify({addressId, address, postalCode, orderName, orderPhone}),
+            data:JSON.stringify({addressId, address, area, postalCode, orderName, orderPhone}),
             success:function(data) {
                 dispatch(fetchAddress());
                 alert(data.d);
+                $("#addressConfirm").modal("hide");
             }.bind(this),
             error:function(xhr, status, err) {
                 alert(xhr.responseJSON.d);

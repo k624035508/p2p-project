@@ -31,11 +31,7 @@ $(function () {
             </Router>
         </Provider>
         ), document.getElementById("orderConfirm"));
-        header.setHeaderHighlight(3);
-
-        $(".xiugai").click(function () {
-            $("#addressConfirm").modal();
-        });    
+        header.setHeaderHighlight(3);  
 
     $(".adding").click(function(){
         var addressId = $(".xuanzhong .addressIdInfo").val();
@@ -49,7 +45,11 @@ $(function () {
                 goodCount:$("#shiwuxinxi").data("count")
             },
             success:function(data){
-                alert(data.msg);
+                if (data.status = "0") {
+                    alert(data.msg);
+                } else {
+                    location.href = data.url;
+                }
             },
             error: function(xhr, status, err){
                 alert("操作超时，请重试。");

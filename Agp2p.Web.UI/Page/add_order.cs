@@ -108,7 +108,7 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public new static string AjaxModifyAddress(int addressId, string address, string postalCode, string orderName, string orderPhone)
+        public new static string AjaxModifyAddress(int addressId, string address, string area, string postalCode, string orderName, string orderPhone)
         {
             var userInfo = GetUserInfoByLinq();
             HttpContext.Current.Response.TrySkipIisCustomErrors = true;
@@ -125,6 +125,7 @@ namespace Agp2p.Web.UI.Page
                 return "找不到地址信息";
             }
             addressInfo.address = address;
+            addressInfo.area = area;
             addressInfo.post_code = postalCode;
             addressInfo.accept_name = orderName;
             addressInfo.mobile = orderPhone;

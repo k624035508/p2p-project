@@ -1202,11 +1202,13 @@
     <Content Include="templates\AnGuang\js\json2.js" />
     <Content Include="templates\AnGuang\js\loan.js" />
     <Content Include="templates\AnGuang\js\mask.js" />
+    <Content Include="templates\AnGuang\js\payment.js" />
     <Content Include="templates\AnGuang\js\point.js" />
     <None Include="templates\AnGuang\js\pointGoods-list.jsx" />
     <Content Include="templates\AnGuang\js\point_detail.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
+    <Content Include="templates\AnGuang\payment.html" />
     <Content Include="templates\weChat\imgs\right.png" />
     <Content Include="templates\weChat\js\register_tdlte.js" />
     <Content Include="templates\AnGuang\js\safe_defence.js" />
@@ -1217,6 +1219,7 @@
     <Content Include="templates\AnGuang\less\add_order.less" />
     <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
+    <Content Include="templates\AnGuang\less\payment.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
     <None Include="templates\weChat\less\register_tdlte.less" />
     <None Include="templates\AnGuang\less\point_detail.less" />
