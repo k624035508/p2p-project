@@ -1193,7 +1193,7 @@ namespace Agp2p.Web.tools
                 return;
             }
             //投资记录查询
-            var investRecord = agContext.li_project_transactions.Where(p => p.investor == userModel.id);
+            var investRecord = agContext.li_project_transactions.FirstOrDefault(p => p.investor == userModel.id);
             if (investRecord == null)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，你还没有完成过投资。\"}");
@@ -1205,7 +1205,7 @@ namespace Agp2p.Web.tools
             var userAddr = agContext.dt_user_addr_book.SingleOrDefault(a => a.id == addressId);
             if (userAddr == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询收货地址信息出错！请联系客服。\"}");
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请先选择收获地址。\"}");
                 return;
             }
             //获取商品信息

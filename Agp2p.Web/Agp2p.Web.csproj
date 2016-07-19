@@ -1005,6 +1005,7 @@
     <Content Include="templates\AnGuang\imgs\point\address2.png" />
     <Content Include="templates\AnGuang\imgs\point\address2Blue.png" />
     <Content Include="templates\AnGuang\imgs\point\code.png" />
+    <Content Include="templates\AnGuang\imgs\point\orderSuccess.png" />
     <Content Include="templates\AnGuang\imgs\point\selected.png" />
     <Content Include="templates\AnGuang\imgs\point\xiaomi1.png" />
     <Content Include="templates\AnGuang\imgs\point\xiaomi2.png" />

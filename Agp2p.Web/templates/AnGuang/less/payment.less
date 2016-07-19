@@ -1,2 +1,16 @@
-﻿body {
+﻿@import "common-style.less";
+
+body{
+    background:@body-color;
+}
+
+.orderSuccess{
+    width:1100px; margin:30px auto; background:@white; padding-top:22px;
+    .orderMessage{
+        margin:0 25px;  height:40px; border-bottom:@border;
+        span{display:inline-block; font-size:18px; color:@dark-grey; border-bottom:2px solid @blue; height:40px; line-height:42px;}
+    }
+    .order-right{
+        margin-top:100px; text-align:center; font-size:40px; color:@blue; font-weight:bold;
+    }
 }

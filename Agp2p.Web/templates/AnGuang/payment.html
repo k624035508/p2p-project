@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>兑换成功</title>
+    <title>兑换信息</title>
     <meta charset="utf-8"/>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -14,6 +14,25 @@
     <script src="<%templateskin%>/build/payment.bundle.js"></script>
 </head>
 <body>
+<%template src="_header.html"%>
 
+<div class="orderSuccess">
+    <div class="orderMessage">
+        <span>确认兑换信息</span>
+    </div>
+    <div class="orderContent">
+        <p class="order-right">恭喜您，商品兑换成功</p>
+        <div>兑换编号：</div>
+        <div>兑换商品：</div>
+        <div>兑换数量：</div>
+        <div>已付积分：</div>
+        <div>剩余积分：</div>
+        <p>客服将尽快与您联系，联系后将在1-3个工作日内发货，请您耐心等待！</p>
+        <a>继续兑换</a>
+        <a>关闭</a>
+    </div>
+</div>
+
+<%template src="_footerSmall.html"%>
 </body>
 </html>
