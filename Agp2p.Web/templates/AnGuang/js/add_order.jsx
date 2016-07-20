@@ -45,9 +45,10 @@ $(function () {
                 goodCount:$("#shiwuxinxi").data("count")
             },
             success:function(data){
-                if (data.status = "0") {
+                if (data.status == 0) {
                     alert(data.msg);
-                } else {
+                }
+                if(data.status == 1) {
                     location.href = data.url;
                 }
             },

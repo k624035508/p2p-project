@@ -21,15 +21,15 @@
         <span>确认兑换信息</span>
     </div>
     <div class="orderContent">
-        <p class="order-right">恭喜您，商品兑换成功</p>
-        <div>兑换编号：</div>
-        <div>兑换商品：</div>
-        <div>兑换数量：</div>
-        <div>已付积分：</div>
-        <div>剩余积分：</div>
-        <p>客服将尽快与您联系，联系后将在1-3个工作日内发货，请您耐心等待！</p>
-        <a>继续兑换</a>
-        <a>关闭</a>
+        <p class="order-right"><img src="<%templateskin%>/imgs/point/orderSuccess.png"/>恭喜您，商品兑换成功</p>
+        <div>兑换编号：<%=orderModel.order_no%></div>
+        <div>兑换商品：<%=queryOrder().goods_title%></div>
+        <div>兑换数量：<span><%=queryOrder().quantity%></span></div>
+        <div><span class="title">已付积分：</span><span><%=queryOrder().point%></span></div>
+        <div>剩余积分：<span><%=queryUser().point%></span></div>
+        <p class="kefu">客服将尽快与您联系，联系后将在1-3个工作日内发货，请您耐心等待！</p>
+        <a class="continue" href='<%linkurl("point")%>'>继续兑换</a>
+        <a>关 闭</a>
     </div>
 </div>
 

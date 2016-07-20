@@ -5,12 +5,25 @@ body{
 }
 
 .orderSuccess{
-    width:1100px; margin:30px auto; background:@white; padding-top:22px;
+    width:1100px; margin:30px auto; background:@white; padding-top:22px; height:745px;
     .orderMessage{
-        margin:0 25px;  height:40px; border-bottom:@border;
+        margin:0 25px;  height:40px; border-bottom:1px solid #e6e6e6;
         span{display:inline-block; font-size:18px; color:@dark-grey; border-bottom:2px solid @blue; height:40px; line-height:42px;}
     }
+    .orderContent{
     .order-right{
-        margin-top:100px; text-align:center; font-size:40px; color:@blue; font-weight:bold;
+        margin-top:98px; text-align:center; font-size:40px; color:@blue; font-weight:bold; height:45px; line-height:45px; margin-bottom:47px;
+        img{margin-top:-5px; margin-right:25px;}
     }
+    &>div{
+        font-size:@font15; color:@dark-grey; line-height:15px; height:15px; margin-bottom:20px; padding-left:385px;
+        span{color:@blue;}
+        .title{color:@darker-grey;}
+    }
+    .kefu{ font-size:15px; color:#aaaaaa; padding-left:385px; padding-top:10px;}
+    a{display:inline-block; width:115px; height:35px; background:@red; color:@white; border-radius:5px; text-align:center; font-size:15px; line-height:35px;
+      text-decoration:none; margin-right:76px; margin-top:40px;
+    }
+    a.continue{margin-left:407px;}
 }
+    }

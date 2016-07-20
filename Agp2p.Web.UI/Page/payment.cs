@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web;
 using Agp2p.Common;
+using Agp2p.Linq2SQL;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -18,6 +20,23 @@ namespace Agp2p.Web.UI.Page
         protected Model.orders orderModel;
         protected Model.payment payModel;
 
+        protected dt_order_goods queryOrder()
+        {
+            var context = new Agp2pDataContext();
+            order_no = DTRequest.GetString("order_no");
+            var ordersId = context.dt_orders.SingleOrDefault(o => o.order_no == order_no).id;
+            var orderGoods = context.dt_order_goods.SingleOrDefault(g => g.order_id == ordersId);
+            return orderGoods;
+        }
+
+        protected dt_users queryUser()
+        {
+            var context = new Agp2pDataContext();
+            order_no = DTRequest.GetString("order_no");
+            var ordersId = context.dt_orders.SingleOrDefault(o => o.order_no == order_no).user_id;
+            var userId = context.dt_users.SingleOrDefault(g => g.id == ordersId);
+            return userId;
+        }
         /// <summary>
         /// 重写父类的虚方法,此方法将在Init事件前执行
         /// </summary>
