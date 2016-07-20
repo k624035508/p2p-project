@@ -5,4 +5,8 @@ import "../less/footerSmall.less";
 
 window['jQuery'] = $;
 window['$'] = $;
+import header from "./header.js";
 
+$(function() {
+    header.setHeaderHighlight(3);
+});

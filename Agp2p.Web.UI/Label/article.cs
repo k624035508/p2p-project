@@ -235,7 +235,13 @@ namespace Agp2p.Web.UI
                 .Take(pageSize)
                 .AsEnumerable();
         }
-
+        //查询虚拟券
+        protected dt_article GetXuniquan()
+        {
+            var context = new Agp2pDataContext();
+            var xuniquan = context.dt_article.Where(d => d.title.Contains("1%加息券")).FirstOrDefault();
+            return xuniquan;
+        }
 
 
         /// <summary>
