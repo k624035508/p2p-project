@@ -2783,7 +2783,7 @@ namespace Agp2p.Core
 
         public static string GetProfitRateYearly(this li_projects proj)
         {
-            return proj.IsNewbieProject1() ? "--" : (proj.profit_rate_year / 100).ToString("p1");
+            return proj.IsNewbieProject2() ? (proj.profit_rate_year / 100).ToString("p2") : (proj.profit_rate_year / 100).ToString("p1");
         }
 
         public static string GetRepaymentTaskProgress(this li_repayment_tasks task)
