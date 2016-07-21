@@ -10,6 +10,7 @@ import React from "react";
 import ReactDom from "react-dom";
 import {classMappingXiaomi} from "../js/pointGoods-list.jsx";
 import keys from "lodash/object/keys";
+import alert from "../components/tips_alert.js";
 
 class XiaomiType extends React.Component {
     constructor(props) {
@@ -53,4 +54,9 @@ class XiaomiType extends React.Component {
 $(function () {
     header.setHeaderHighlight(3);
     ReactDom.render(<XiaomiType />, document.getElementById("xiaomiType"));
+    $(".duihuanLogin").click(function() {
+        alert("请先登录", () => {
+            location.href = "login.html";
+        });
+    });
 });

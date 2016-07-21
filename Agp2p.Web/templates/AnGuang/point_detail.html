@@ -30,14 +30,19 @@
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
         <form method="get" action='<%linkurl("add_order")%>' >
-        <div class="goods">
-            <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分</p>
-            
-            <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
-                                 data-title="<%=articleModel.title%>"></div>
-            <input type="hidden" name="id" value="<%=goods_id%>">
-        </div>
-        <input type="submit" value="立即兑换" class="duihuan"/>
+            <div class="goods">
+                <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分
+                </p>
+
+                <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
+                     data-title="<%=articleModel.title%>"></div>
+                <input type="hidden" name="id" value="<%=goods_id%>">
+            </div>
+            <%if(_userModel==null)%>
+            <a href="javascript:" class="duihuanLogin">立即兑换</a>
+            <%else%>
+            <input type="submit" value="立即兑换" class="duihuan" />
+            <%/if%>
         </form>
     </div>
 </div>
