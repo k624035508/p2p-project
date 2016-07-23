@@ -39,6 +39,8 @@ namespace Agp2p.Core.Message
             HongBaoActivity.DoSubscribe();
             TrialTicketActivity.DoSubscribe();
             InterestRateTicketActivity.DoSubscribe();
+            PointsActivity.DoSubscribe();
+
 
             // PayApi
             RequestApiHandle.DoSubscribe();//所有托管接口请求

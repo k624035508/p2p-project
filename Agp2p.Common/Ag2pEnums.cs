@@ -247,6 +247,8 @@ namespace Agp2p.Common
             Gain = 1,
             [Description("扣取金钱")]
             Lost = 2,
+            [Description("获得积分")]
+            GainPoint = 3,
         }
 
         /// <summary>
@@ -280,6 +282,8 @@ namespace Agp2p.Common
             InterestRateTicket = 5,
             [Description("红包")]
             HongBao = 6,
+            [Description("积分")]
+            Point = 7,
         }
 
         /// <summary>
@@ -993,9 +997,13 @@ namespace Agp2p.Common
             InviteRegister = 8,
             [Description("邀请投资成功")]
             InviteInvest = 9,
+            [Description("积分抽奖获得积分")]
+            LotteryGet = 10,
 
             [Description("积分兑换")]
             Exchange = 20,
+            [Description("积分抽奖")]
+            Lottery = 21,
         }
 
         /// <sumary>

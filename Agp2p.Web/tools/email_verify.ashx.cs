@@ -6,6 +6,9 @@ using System.Web;
 using System.Web.SessionState;
 using Agp2p.BLL;
 using Agp2p.Common;
+using Agp2p.Core;
+using Agp2p.Core.Message;
+using Agp2p.Core.Message.UserPointMsg;
 using Agp2p.Linq2SQL;
 using Agp2p.Web.UI;
 using Newtonsoft.Json;
@@ -66,6 +69,8 @@ namespace Agp2p.Web.tools
                     SessionHelper.Remove("last_send_verifying_mail_at");
                     SessionHelper.Remove("verifying_email_code");
                     httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+                    var msg = new UserPointMsg(dtUsers.id, dtUsers.user_name, (int)Agp2pEnums.PointEnum.BindingEmail);
+                    MessageBus.Main.Publish(msg);
                     httpContext.Response.Write(JsonConvert.SerializeObject(new { msg = "邮箱绑定成功" }));
                 }
                 else

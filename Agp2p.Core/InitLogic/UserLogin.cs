@@ -57,11 +57,11 @@ namespace Agp2p.Core.InitLogic
                 user = context.dt_users.Single(u => u.id == userId);
 
             //检查用户每天登录是否获得积分
-            var userLog = context.dt_user_login_log.OrderByDescending(u => u.login_time).FirstOrDefault(u => u.user_name == user.user_name);
+            /* var userLog = context.dt_user_login_log.OrderByDescending(u => u.login_time).FirstOrDefault(u => u.user_name == user.user_name);
             if (userLog != null && userLog.login_time != null && ((DateTime)userLog.login_time).Day != DateTime.Now.Day)
             {
                 MessageBus.Main.PublishAsync(new UserPointMsg(user.id, user.user_name, (int)Agp2pEnums.PointEnum.Sign));
-            }
+            } */
 
             //记住登录状态下次自动登录
             if (remember)

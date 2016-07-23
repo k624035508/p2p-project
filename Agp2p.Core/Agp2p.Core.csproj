@@ -86,6 +86,7 @@
     <Compile Include="ActivityLogic\NewbieActivity.cs" />
     <Compile Include="ActivityLogic\InterestRateTicketActivity.cs" />
     <Compile Include="ActivityLogic\HongBaoActivity.cs" />
+    <Compile Include="ActivityLogic\PointsActivity.cs" />
     <Compile Include="ActivityLogic\TrialTicketActivity.cs" />
     <Compile Include="ActivityLogic\UserPointHandler.cs" />
     <Compile Include="AutoLogic\AutoRepay.cs" />
