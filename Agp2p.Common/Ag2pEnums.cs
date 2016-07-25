@@ -999,6 +999,8 @@ namespace Agp2p.Common
             InviteInvest = 9,
             [Description("积分抽奖获得积分")]
             LotteryGet = 10,
+            [Description("首次投资")]
+            FirstInvest =11,
 
             [Description("积分兑换")]
             Exchange = 20,

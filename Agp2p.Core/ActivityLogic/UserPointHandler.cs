@@ -45,6 +45,11 @@ namespace Agp2p.Core.ActivityLogic
                     break;
                 case (int)Agp2pEnums.PointEnum.Invest:
                     userPointMsg.Point = 50;
+                    userPointMsg.Remark = "投资";
+                    break;
+                case (int)Agp2pEnums.PointEnum.FirstInvest:
+                    userPointMsg.Point = 50;
+                    userPointMsg.Remark = "首次投资";
                     break;
                 case (int)Agp2pEnums.PointEnum.InviteRegister:
                     userPointMsg.Point = 50;

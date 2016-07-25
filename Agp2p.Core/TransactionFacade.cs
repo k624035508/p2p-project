@@ -14,6 +14,7 @@ using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message.UserPointMsg;
 
 namespace Agp2p.Core
 {
@@ -583,6 +584,12 @@ namespace Agp2p.Core
                 wallet.total_investment += investingMoney;
                 wallet.last_update_time = investTime;
 
+                //如果首次投资，创建首次投资积分记录
+                var investFirst = context.li_project_transactions.Where(p => p.investor == userId);
+                if (investFirst == null)
+                {
+                    MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.FirstInvest));
+                }
                 // 创建投资记录
                 tr = new li_project_transactions
                 {
@@ -595,7 +602,7 @@ namespace Agp2p.Core
                     create_time = wallet.last_update_time // 时间应该一致
                 };
                 context.li_project_transactions.InsertOnSubmit(tr);
-
+                
                 // 修改钱包历史
                 var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
                 his.li_project_transactions = tr;
@@ -641,6 +648,7 @@ namespace Agp2p.Core
                 ts.Complete();
             }
             MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+            MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));
         }
 
         /// <summary>

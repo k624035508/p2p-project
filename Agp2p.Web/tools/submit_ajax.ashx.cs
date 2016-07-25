@@ -1716,12 +1716,12 @@ namespace Agp2p.Web.tools
                 return;
             }
             var userLog = agContext.dt_user_point_log.Where(u => u.user_id == model.id && u.type == (int)Agp2pEnums.PointEnum.Sign).OrderByDescending(u => u.add_time);
-            var LoginToday = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day).FirstOrDefault();
-            var LoginFirstDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day-1).FirstOrDefault();
-            var LoginSecondDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 2).FirstOrDefault();
-            var LoginThirdDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 3).FirstOrDefault();
-            var LoginFourthDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 4).FirstOrDefault();
-            var LoginFifthDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 5).FirstOrDefault();
+            var LoginToday = userLog.Where(u => u.add_time >= DateTime.Today && u.add_time < DateTime.Today.AddDays(1)).FirstOrDefault();
+            var LoginFirstDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-1) && u.add_time < DateTime.Today).FirstOrDefault();
+            var LoginSecondDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-2) && u.add_time < DateTime.Today.AddDays(-1)).FirstOrDefault();
+            var LoginThirdDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-3) && u.add_time < DateTime.Today.AddDays(-2)).FirstOrDefault();
+            var LoginFourthDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-4) && u.add_time < DateTime.Today.AddDays(-3)).FirstOrDefault();
+            var LoginFifthDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-5) && u.add_time < DateTime.Today.AddDays(-4)).FirstOrDefault();
             if (LoginToday != null)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"您今天已签到\"}");
