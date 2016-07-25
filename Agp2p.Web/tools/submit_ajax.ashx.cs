@@ -120,6 +120,12 @@ namespace Agp2p.Web.tools
                 case "user_password_edit": //修改密码
                     user_password_edit(context);
                     break;
+                case "point_lottery": //积分抽奖
+                    point_lottery(context);
+                    break;
+                case "point_qiandao": //积分签到
+                    point_qiandao(context);
+                    break;
             }
         }
 
@@ -451,6 +457,16 @@ namespace Agp2p.Web.tools
                             inviter = inviteUser.id
                         };
                         linqContext.li_invitations.InsertOnSubmit(invitation);
+                        var msg = new UserPointMsg(inviteUser.id, inviteUser.user_name, (int)Agp2pEnums.PointEnum.InviteRegister)
+                        {
+                            Remark = "推荐新用户注册积分获取"
+                        };
+                        MessageBus.Main.Publish(msg);
+                        var msg2 = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.InviteRegister)
+                        {
+                            Remark = "受推荐注册积分获取"
+                        };
+                        MessageBus.Main.Publish(msg2);
 
                         // 会员部功能，被推荐人自动归组
                         if (inviteUser.li_user_group_servers != null)
@@ -481,6 +497,7 @@ namespace Agp2p.Web.tools
                 linqContext.SubmitChanges();
                 // 广播新用户注册消息
                 MessageBus.Main.Publish(new NewUserCreatedMsg(model.id, (DateTime)model.reg_time)); // 发同步消息，避免跳转到用户中心后钱包为空
+
             }
             catch (Exception ex)
             {
@@ -574,6 +591,9 @@ namespace Agp2p.Web.tools
 
                 //写入登录日志
                 new BLL.user_login_log().Add(model.id, model.user_name, "会员登录");
+
+                var msg = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.Register);
+                MessageBus.Main.Publish(msg);
 
                 //context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("usercenter", "index") + "?action=succeed&username=" + Utils.UrlEncode(model.user_name) + "\", \"msg\":\"注册成功，欢迎成为本站会员！\"}");
                 context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("register") + "?action=succeed&username=" + Utils.UrlEncode(model.user_name) + "\", \"msg\":\"注册成功，欢迎成为本站会员！\"}");
@@ -1659,6 +1679,118 @@ namespace Agp2p.Web.tools
         }
         #endregion
 
+        #region  积分抽奖======================
+        private void point_lottery(HttpContext context)
+        {
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先登录\"}");
+                return;
+            }
+            //检查积分是否足够
+            if (model.point < 10)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您的积分不足\"}");
+                return;
+            }
+            var msg = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.Lottery);
+            MessageBus.Main.Publish(msg);
+            context.Response.Write("{\"status\":1, \"msg\":\"恭喜您，抽奖开始\"}");
+            int getPoints = DTRequest.GetFormInt("getPoints");
+            var msg2 = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.LotteryGet, getPoints);
+            MessageBus.Main.Publish(msg2);
+        }
+        #endregion
+
+        #region  签到积分====================
+        private void point_qiandao(HttpContext context)
+        {
+            var agContext = new Agp2pDataContext();
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先登录\"}");
+                return;
+            }
+            var userLog = agContext.dt_user_point_log.Where(u => u.user_id == model.id && u.type == (int)Agp2pEnums.PointEnum.Sign).OrderByDescending(u => u.add_time);
+            var LoginToday = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day).FirstOrDefault();
+            var LoginFirstDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day-1).FirstOrDefault();
+            var LoginSecondDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 2).FirstOrDefault();
+            var LoginThirdDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 3).FirstOrDefault();
+            var LoginFourthDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 4).FirstOrDefault();
+            var LoginFifthDay = userLog.Where(u => ((DateTime)u.add_time).Day == DateTime.Now.Day - 5).FirstOrDefault();
+            if (LoginToday != null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"您今天已签到\"}");
+                return;
+            }
+            if(LoginFirstDay == null)
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
+                {
+                    Remark = "第一天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
+                return;
+            }
+             else if(LoginSecondDay == null)
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 2)
+                {
+                    Remark = "第二天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第二天签到\"}");
+                return;
+            }
+            else if (LoginThirdDay == null)
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 3)
+                {
+                    Remark = "第三天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第三天签到\"}");
+                return;
+            }
+            else if (LoginFourthDay == null)
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 4)
+                {
+                    Remark = "第四天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第四天签到\"}");
+                return;
+            }
+            else if (LoginFifthDay == null)
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 5)
+                {
+                    Remark = "第五天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第五天签到\"}");
+                return;
+            }
+            else
+            {
+                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
+                {
+                    Remark = "第一天签到"
+                };
+                MessageBus.Main.Publish(msg);
+                context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
+                return;
+            }
+
+        }
+        #endregion
+
         /// <summary>
         /// 添加银行卡
         /// </summary>
@@ -2116,6 +2248,8 @@ namespace Agp2p.Web.tools
                         MessageBus.Main.Publish(msgResp);
                         if (msgResp.HasHandle)
                         {
+                            var msgPoints = new UserPointMsg(user.id, user.user_name, (int)Agp2pEnums.PointEnum.Sign);
+                            MessageBus.Main.Publish(msgPoints);
                             context.Response.Write("{\"status\":1, \"msg\":\"身份证认证成功！\"}");
                         }
                         else

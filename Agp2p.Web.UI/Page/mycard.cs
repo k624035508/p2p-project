@@ -10,6 +10,7 @@ using System.Web.Services;
 using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.UserPointMsg;
 using Agp2p.Core.Message.PayApiMsg.Transaction;
 using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
@@ -83,6 +84,8 @@ namespace Agp2p.Web.UI.Page
                     };
                     context.li_bank_accounts.InsertOnSubmit(card);
                     context.SubmitChanges();
+                    var msg = new UserPointMsg(user.id, user.user_name, (int)Agp2pEnums.PointEnum.BindingBank);
+                    MessageBus.Main.Publish(msg);
                     return "保存银行卡信息成功";
                 }
                 else
@@ -102,6 +105,8 @@ namespace Agp2p.Web.UI.Page
             };
             context.li_bank_accounts.InsertOnSubmit(cardUnknown);
             context.SubmitChanges();
+            var msg2 = new UserPointMsg(user.id, user.user_name, (int)Agp2pEnums.PointEnum.BindingBank);
+            MessageBus.Main.Publish(msg2);
             return "保存银行卡信息成功";
         }
 

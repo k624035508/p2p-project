@@ -125,14 +125,14 @@ class UserCenterPage extends React.Component {
 						<li className="listing"><a className="account">账户管理<div></div></a>
 							<ul className="list-unstyled inner-ul">
 								<li><Link to="/safe" activeClassName="active-link">个人中心</Link></li>
-								<li><Link to="/bankaccount" activeClassName="active-link">银行账户</Link></li>
-								<li><Link to="/invitation" activeClassName="active-link">推荐奖励</Link></li>
-								<li><Link to="/mylottery" activeClassName="active-link">我的奖券</Link></li>
+								<li><Link to="/bankaccount" activeClassName="active-link">银行账户</Link></li>							
 							</ul>
 						</li>
                         <li className="listing"><a className="pointMall">奖励管理<div></div></a>
                             <ul className="list-unstyled inner-ul">
                                 <li><Link to="/mypoints" activeClassName="active-link">我的积分</Link></li>
+                                <li><Link to="/mylottery" activeClassName="active-link">我的奖券</Link></li>
+                                <li><Link to="/invitation" activeClassName="active-link">推荐奖励</Link></li>
                             </ul>
                         </li>
 						<li className="listing"><a className="news">消息管理<div></div></a>

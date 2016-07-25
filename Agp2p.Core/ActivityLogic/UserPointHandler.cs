@@ -24,22 +24,21 @@ namespace Agp2p.Core.ActivityLogic
         {
             switch (userPointMsg.Type)
             {
-                case (int)Agp2pEnums.PointEnum.Sign:
-                    userPointMsg.Point = 10;
-                    userPointMsg.Remark = "每日签到";
-                    break;
                 case (int)Agp2pEnums.PointEnum.Register:
                     userPointMsg.Point = 100;
                     userPointMsg.Remark = "注册送积分";
                     break;
                 case (int)Agp2pEnums.PointEnum.RealNameAuth:
                     userPointMsg.Point = 50;
+                    userPointMsg.Remark = "实名认证";
                     break;
                 case (int)Agp2pEnums.PointEnum.BindingEmail:
                     userPointMsg.Point = 50;
+                    userPointMsg.Remark = "绑定邮箱";
                     break;
                 case (int)Agp2pEnums.PointEnum.BindingBank:
                     userPointMsg.Point = 50;
+                    userPointMsg.Remark = "绑定银行卡";
                     break;
                 case (int)Agp2pEnums.PointEnum.Recharge:
                     userPointMsg.Point = 50;
@@ -52,6 +51,13 @@ namespace Agp2p.Core.ActivityLogic
                     break;
                 case (int)Agp2pEnums.PointEnum.InviteInvest:
                     userPointMsg.Point = 50;
+                    break;
+                case (int)Agp2pEnums.PointEnum.LotteryGet:
+                    userPointMsg.Remark = "积分抽奖获取积分";
+                    break;
+                case (int)Agp2pEnums.PointEnum.Lottery:
+                    userPointMsg.Point = -10;
+                    userPointMsg.Remark = "积分抽奖消耗";
                     break;
             }
 

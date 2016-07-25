@@ -4,6 +4,7 @@ import CityPicker from "../components/city-picker.jsx";
 import { fetchAddress, deleteAddress} from "../actions/order_address.js";
 import AddressEditor from "../components/address-editor.jsx";
 import confirm from "../components/tips_confirm.js";
+import alert from "../components/tips_alert.js";
 
 class Orders extends React.Component {
     constructor(props) {
