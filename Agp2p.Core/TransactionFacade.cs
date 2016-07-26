@@ -585,7 +585,7 @@ namespace Agp2p.Core
                 wallet.last_update_time = investTime;
 
                 //如果首次投资，创建首次投资积分记录
-                var investFirst = context.li_project_transactions.Where(p => p.investor == userId);
+                var investFirst = context.li_project_transactions.SingleOrDefault(p => p.investor == userId);
                 if (investFirst == null)
                 {
                     MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.FirstInvest));

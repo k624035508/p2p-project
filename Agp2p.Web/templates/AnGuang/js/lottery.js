@@ -63,7 +63,9 @@ function roll() {
             success: function (data) {
                 if (data.status == 0) {
                     alert(data.msg);
-                }                   
+                } else {
+                    alert(lottery.name);
+                }
             },
             error:function(xhr, status, error) {
                 alert("操作超时，请重试");
@@ -82,7 +84,7 @@ function roll() {
                 success:function(data) {
                     let { name, result } = JSON.parse(data.d);
                     lottery.prize = result;
-                    lottery.name = name;
+                    lottery.name = name;                    
                 },
                 error:function(xhr, status, error) {
                     alert("操作超时，请重试");
@@ -107,14 +109,17 @@ var click = false;
 window.onload = function () {
     header.setHeaderHighlight(3);
     lottery.init();
-    $("#lottery a").click(function () {
+    $("#lottery a.denglu").click(function () {
         if (click) {
             return false;
         } else {
-            lottery.speed = 100;            
+            lottery.speed = 100;    
             roll();
             click = true;
             return false;
         }
+    });
+    $("#lottery a.weidenglu").click(function() {
+        alert("请先登录");
     });
 };

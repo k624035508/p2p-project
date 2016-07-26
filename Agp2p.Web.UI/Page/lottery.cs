@@ -34,7 +34,7 @@ namespace Agp2p.Web.UI.Page
                 new JiangPin {id = 1, Name = "1688", gailv = 0},
                 new JiangPin {id = 2, Name = "18", gailv = 0},
                 new JiangPin {id = 3, Name = "88888", gailv = 0},
-                new JiangPin {id = 4, Name = "1", gailv = 100},
+                new JiangPin {id = 4, Name = "恭喜您，抽中1积分", gailv = 100},
                 new JiangPin {id = 5, Name = "16888", gailv = 0},
                 new JiangPin {id = 6, Name = "8", gailv = 0},
                 new JiangPin {id = 7, Name = "8888", gailv = 0},

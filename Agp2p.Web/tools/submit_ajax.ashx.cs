@@ -1697,10 +1697,10 @@ namespace Agp2p.Web.tools
             }
             var msg = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.Lottery);
             MessageBus.Main.Publish(msg);
-            context.Response.Write("{\"status\":1, \"msg\":\"恭喜您，抽奖开始\"}");
             int getPoints = DTRequest.GetFormInt("getPoints");
             var msg2 = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.LotteryGet, getPoints);
             MessageBus.Main.Publish(msg2);
+            context.Response.Write("{\"status\":1, \"msg\":\"抽奖完成\"}");
         }
         #endregion
 

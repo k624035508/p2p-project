@@ -69,8 +69,14 @@
                             <span></span>
                         </td>
                         <td class="choujiang">
-                            <a href="#">
+                            <%if(_userModel==null)%>
+                            <a href="javascript:" class="weidenglu">
+                                <span>我要抽奖</span>
+                            </a>
+                            <%else%>
+                            <a href="javascript:" class="denglu">
                                 <span>我要抽奖</span></a>
+                            <%/if%>
                             <p class="use-jifen">10积分/次</p>
                         </td>
                         <td class="lottery-unit lottery-unit-5">
