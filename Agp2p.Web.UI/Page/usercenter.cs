@@ -13,6 +13,7 @@ using System.Net;
 using System.Web.Script.Services;
 using System.Web.Services;
 using Agp2p.Core;
+using Agp2p.Core.ActivityLogic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -334,6 +335,8 @@ namespace Agp2p.Web.UI.Page
         private static readonly int[] LotteryType =
         {
             (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.NewbieTrial,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket
         };
 
         [WebMethod]

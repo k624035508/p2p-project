@@ -585,8 +585,7 @@ namespace Agp2p.Core
                 wallet.last_update_time = investTime;
 
                 //如果首次投资，创建首次投资积分记录
-                var investFirst = context.li_project_transactions.SingleOrDefault(p => p.investor == userId);
-                if (investFirst == null)
+                if (!context.li_project_transactions.Any(p => p.investor == userId))
                 {
                     MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.FirstInvest));
                 }
@@ -648,7 +647,7 @@ namespace Agp2p.Core
                 ts.Complete();
             }
             MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
-            MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));
+            MessageBus.Main.Publish(new UserPointMsg(userId, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));  //投资送积分
         }
 
         /// <summary>

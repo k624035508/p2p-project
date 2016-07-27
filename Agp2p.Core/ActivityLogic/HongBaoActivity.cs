@@ -149,9 +149,7 @@ namespace Agp2p.Core.ActivityLogic
 
         private static readonly Dictionary<decimal, decimal> HongbaoActivateMoneyMap = new Dictionary<decimal, decimal>
         {
-            {10m, 500m},
-            {15m, 3000m},
-            {50m, 6000m}
+            {10m, 100m},
         };
 
         public static void GiveUser(int userId, int expireAfterDays = 365)

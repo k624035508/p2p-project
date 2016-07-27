@@ -16,6 +16,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Agp2p.Core;
+using Agp2p.Core.ActivityLogic;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Core.Message.PayApiMsg.Transaction;
@@ -1326,6 +1327,13 @@ namespace Agp2p.Web.tools
                     Remark = "积分换购，订单号：" + model.order_no
                 };
                 MessageBus.Main.Publish(msg);
+                if (goodFields.isVirtual.GetValueOrDefault(0) == 1 && goodFields.hongbao != 0) {
+                    HongBaoActivity.GiveUser(userModel.id);
+                }
+                if(goodFields.isVirtual.GetValueOrDefault(0) == 1 && Convert.ToInt32(goodFields.jiaxijuan) != 0)
+                {
+                    InterestRateTicketActivity.GiveUser(userModel.id, 1, 1000, 1);
+                }
                 //兑换成功，返回URL
                 context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，已成功兑换！\"}");
             }

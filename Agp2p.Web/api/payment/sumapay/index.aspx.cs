@@ -126,6 +126,7 @@ namespace Agp2p.Web.api.payment.sumapay
                         DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
                         DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
                         requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
+                    //reqMsg.Remarks = DTRequest.GetQueryString("ticketId");
                     break;
                 //个人移动端投标 普通/集合项目
                 case (int)Agp2pEnums.SumapayApiEnum.MaBiM:
