@@ -51,6 +51,7 @@ namespace Agp2p.Core.PayApiLogic
                         //同步返回平台不做处理
                         if (msg.Result.Equals("00001")) return;
 #endif
+
                         //查找对应的交易流水
                         //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         //if (trans != null)

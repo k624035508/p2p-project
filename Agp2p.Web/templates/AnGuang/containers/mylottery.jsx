@@ -10,6 +10,11 @@ const LotteryStatusEnum = {
 	Cancel: 3,
 };
 
+const LotteryTypeEnum = {
+    InterestRateTicket: 5,
+    HongBao: 6,
+};
+
 class MyLottery extends React.Component {
 	constructor(props) {
 		super(props);
@@ -25,7 +30,7 @@ class MyLottery extends React.Component {
 	}
 	fetchLotteries(pageIndex) {
 		this.setState({pageIndex});
-		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLotteries", pageSize = 5;
+		let url = USER_CENTER_ASPX_PATH + "/AjaxQueryLotteries", pageSize = 6;
 		ajax({
 			type: "post",
 			dataType: "json",
@@ -45,38 +50,38 @@ class MyLottery extends React.Component {
 		return(
             <div className="lotteries-wrap">
                 <div className="lottery-th">
-                    {["未使用","已失效", "历史记录"].map((s, index) =>
+                    {["我的奖券", "历史记录"].map((s, index) =>
                         <span key={index}><a href="javascript:" className={this.state.selectedTabIndex == index ? "active" : null}
                             onClick={ ev => this.setState({ selectedTabIndex: index }) }>{s}</a></span>)}
                 </div>
                 <div className="lottery-content">
-                	{this.state.selectedTabIndex < 2 &&
+                {this.state.selectedTabIndex == 0 &&
                     <div className="lottery-list">
-                        {this.state.data.length != 0 ? null : <div>暂无奖券</div>}
-                    	{this.state.data.map(l =>
-                        <div className={l.status == LotteryStatusEnum.Acting ? "lottery-usable" : "lottery-fail"}>
+                {this.state.data.length != 0 ? null : <div>暂无奖券</div>}
+                {this.state.data.map(l =>
+                        <div className={l.status == LotteryStatusEnum.Acting ? "lottery-usable" : "lottery-fail"} key={l.id}>
                             <div className="lottery-face">
-                                <p className="lottery-value">￥{l.value}</p>
+                                <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? l.value + "元红包" : l.details.InterestRateBonus+"%加息券"}</p>
                                 <p className="use-condition">使用条件</p>
-                                <p className="use-date">使用期限</p>
+                                <p className="use-date">使用期限{l.details.Deadline}</p>
                             </div>
-                            <div className="lottery-state">{l.status == LotteryStatusEnum.Acting ? "待使用" : "已失效"}</div>
+                            <div className="lottery-state">{l.status == LotteryStatusEnum.Acting ? "待使用" : "已使用"}</div>
                         </div>)}
                     </div>}
-                    {this.state.selectedTabIndex == 2 &&
-                    <div className="lottery-history">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>红包金额</th>
-                                    <th>红包来源</th>
-                                    <th>使用规则</th>
-                                    <th>红包状态</th>
-                                    <th>有效期限</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.data.length != 0 ? null : <tr><td colSpan="5" style={{textAlign: "center"}}>暂无奖券</td></tr>}
+                {this.state.selectedTabIndex == 1 &&
+                <div className="lottery-history">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>红包金额</th>
+                                <th>红包来源</th>
+                                <th>使用规则</th>
+                                <th>红包状态</th>
+                                <th>有效期限</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.data.length != 0 ? null : <tr><td colSpan="5" style={{textAlign: "center"}}>暂无奖券</td></tr>}
                             	{this.state.data.map(l => 
                                 <tr>
                                     <td>{"￥" + l.value}</td>

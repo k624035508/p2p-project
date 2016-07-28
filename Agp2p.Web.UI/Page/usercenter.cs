@@ -351,7 +351,7 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type));
+            var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type)).OrderBy(a => a.status);
             var totalCount = query.Count();
 
             var data = query.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
