@@ -109,7 +109,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.Core\Agp2p.Core.csproj">
       <Project>{d13bc3ec-928c-4086-ab16-ec62a86feb85}</Project>
-      <Name>Agp2p.Core.csproj1</Name>
+      <Name>Agp2p.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Agp2p.DAL\Agp2p.DAL.csproj">
       <Project>{A587C7B0-981B-4BBE-8B8E-462D477C48E4}</Project>

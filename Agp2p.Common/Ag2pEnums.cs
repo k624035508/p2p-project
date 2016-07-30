@@ -1024,5 +1024,14 @@ namespace Agp2p.Common
             [Description("订单作废")]
             Delete = 5,
         }
+
+        /// <sumary>
+        /// 投资使用加息券状态
+        /// </sumary>
+        public enum InvestInterestRateTypeEnum
+        {
+            [Description("投资")]
+            Invest = 1,
+        }
     }
 }

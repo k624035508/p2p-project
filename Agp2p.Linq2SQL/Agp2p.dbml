@@ -885,4 +885,13 @@
       <Association Name="dt_orders_dt_order_goods" Member="dt_order_goods" ThisKey="id" OtherKey="order_id" Type="dt_order_goods" />
     </Type>
   </Table>
+  <Table Name="dbo.li_jiaxiquan_transaction" Member="li_jiaxiquan_transaction">
+    <Type Name="li_jiaxiquan_transaction">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="requestId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

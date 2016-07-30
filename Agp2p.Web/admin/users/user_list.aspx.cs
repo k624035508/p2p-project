@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Agp2p.Common;
+using Agp2p.Core.ActivityLogic;
 using Agp2p.Linq2SQL;
 using System.IO;
 
@@ -181,6 +182,21 @@ namespace Agp2p.Web.admin.users
                 }
             }
             Response.Redirect(Utils.CombUrlTxt("user_list.aspx", "group_id={0}&keywords={1}&startTime={2}&endTime={3}", group_id.ToString(), txtKeywords.Text, txtStartTime.Text, txtEndTime.Text));
+        }
+
+        //注册用户送红包
+        protected void giveHongBao_Click(object sender, EventArgs e)
+        {
+            ChkAdminLevel("user_list", DTEnums.ActionEnum.GiveHongBao.ToString()); //检查权限
+            var registerId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
+            try {
+                HongBaoActivity.GiveUser(registerId, 7);
+                JscriptMsg("赠送注册新用户红包成功！", "../users/user_list.aspx");
+            }
+            catch(Exception ex)
+            {
+                JscriptMsg("赠送红包失败：" + ex.Message, "back", "Error");
+            }
         }
 
         //批量删除

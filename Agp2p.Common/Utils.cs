@@ -1587,7 +1587,8 @@ namespace Agp2p.Common
                 {"Replace", "替换"},
                 {"BigOrderAudit", "大额审批"},
                 {"AuditEdit", "审核后修改"},
-                {"DownLoad", "下载" }
+                {"DownLoad", "下载" },
+                {"GiveHongBao", "注册送红包" }
             };
         }
         #endregion

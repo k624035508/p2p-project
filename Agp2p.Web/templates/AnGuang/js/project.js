@@ -55,7 +55,7 @@ $(function () {
         var projectSum = $investBtn.data()["projectSum"];
         var projectDescription = $investBtn.data()["projectDescription"];
         var huoqi  = $investBtn.data()["projectHuoqi"];
-
+        var ticketId = $investBtn.data()["ticketId"];
 
         $investBtn.click(function () {
             var investBtnData = $investBtn.data();
@@ -80,7 +80,7 @@ $(function () {
             if (investAmount < 100) {
                 alert("对不起，最少100元起投！");
                 return;
-            }
+            }  
             if (buyClaimId === 0 && investAmount != ~~investAmount) {
                 alert("对不起，请输入整数金额！");
                 return;
@@ -127,7 +127,7 @@ $(function () {
         		type: "post",
         		dataType: "json",
         		url: "/tools/submit_ajax.ashx?action=invest_project",
-        		data: {investingAmount: investAmount, projectId, buyClaimId, projectSum: projectSum, projectDescription: projectDescription,huoqi},
+        		data: {investingAmount: investAmount, projectId, buyClaimId, projectSum: projectSum, projectDescription: projectDescription,huoqi,ticketId: ticketId},
         		timeout: 10000,
         		success: function(result) {
         		    if (result.status == 0) {

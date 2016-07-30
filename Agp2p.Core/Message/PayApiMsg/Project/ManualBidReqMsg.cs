@@ -27,7 +27,7 @@ namespace Agp2p.Core.Message.PayApiMsg
         public string BackUrl { get; set; }
         public string RequestType { get; set; }
 
-        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, bool collective = false, string giftFlag = "", string subledgerList = "")
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, int ticketId, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;

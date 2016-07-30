@@ -183,6 +183,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_orders(dt_orders instance);
     partial void Updatedt_orders(dt_orders instance);
     partial void Deletedt_orders(dt_orders instance);
+    partial void Insertli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
+    partial void Updateli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
+    partial void Deleteli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -622,6 +625,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_orders>();
+			}
+		}
+		
+		public System.Data.Linq.Table<li_jiaxiquan_transaction> li_jiaxiquan_transaction
+		{
+			get
+			{
+				return this.GetTable<li_jiaxiquan_transaction>();
 			}
 		}
 	}
@@ -20188,6 +20199,164 @@ namespace Agp2p.Linq2SQL
 		{
 			this.SendPropertyChanging();
 			entity.dt_orders = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.li_jiaxiquan_transaction")]
+	public partial class li_jiaxiquan_transaction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _userId;
+		
+		private int _type;
+		
+		private string _remarks;
+		
+		private string _requestId;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnuserIdChanging(int value);
+    partial void OnuserIdChanged();
+    partial void OntypeChanging(int value);
+    partial void OntypeChanged();
+    partial void OnremarksChanging(string value);
+    partial void OnremarksChanged();
+    partial void OnrequestIdChanging(string value);
+    partial void OnrequestIdChanged();
+    #endregion
+		
+		public li_jiaxiquan_transaction()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userId", DbType="Int NOT NULL")]
+		public int userId
+		{
+			get
+			{
+				return this._userId;
+			}
+			set
+			{
+				if ((this._userId != value))
+				{
+					this.OnuserIdChanging(value);
+					this.SendPropertyChanging();
+					this._userId = value;
+					this.SendPropertyChanged("userId");
+					this.OnuserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="Int NOT NULL")]
+		public int type
+		{
+			get
+			{
+				return this._type;
+			}
+			set
+			{
+				if ((this._type != value))
+				{
+					this.OntypeChanging(value);
+					this.SendPropertyChanging();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remarks", DbType="NVarChar(50)")]
+		public string remarks
+		{
+			get
+			{
+				return this._remarks;
+			}
+			set
+			{
+				if ((this._remarks != value))
+				{
+					this.OnremarksChanging(value);
+					this.SendPropertyChanging();
+					this._remarks = value;
+					this.SendPropertyChanged("remarks");
+					this.OnremarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_requestId", DbType="NVarChar(50)")]
+		public string requestId
+		{
+			get
+			{
+				return this._requestId;
+			}
+			set
+			{
+				if ((this._requestId != value))
+				{
+					this.OnrequestIdChanging(value);
+					this.SendPropertyChanging();
+					this._requestId = value;
+					this.SendPropertyChanged("requestId");
+					this.OnrequestIdChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

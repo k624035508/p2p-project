@@ -7,6 +7,7 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Linq2SQL;
+using Newtonsoft.Json;
 
 namespace Agp2p.Core.PayApiLogic
 {
@@ -89,11 +90,20 @@ namespace Agp2p.Core.PayApiLogic
                         creditAssignmentReqMsg.SetSubledgerList(finalCost, claim.userId.ToString());
                         break;
 
-                    //case (int)Agp2pEnums.SumapayApiEnum.MaBid:
-                    //    //投资
-                    //    var manualBidReqMsg = (ManualBidReqMsg) msg;
-                    //    TransactionFacade.Invest((int)requestLog.user_id, Utils.StrToInt(manualBidReqMsg.ProjectCode, 0), Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);
-                    //    break;
+                    case (int)Agp2pEnums.SumapayApiEnum.MaBid:
+                        //投资
+                        var manualBidReqMsg = (ManualBidReqMsg) msg;
+                        //TransactionFacade.Invest((int)requestLog.user_id, Utils.StrToInt(manualBidReqMsg.ProjectCode, 0), Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);
+                        var jiaxiquan = new li_jiaxiquan_transaction
+                        {
+                            userId = (int)msg.UserId,
+                            type = (int)Agp2pEnums.InvestInterestRateTypeEnum.Invest,
+                            requestId = msg.RequestId,
+                            remarks = msg.Remarks
+                        };
+                        context.li_jiaxiquan_transaction.InsertOnSubmit(jiaxiquan);
+                        context.SubmitChanges();
+                        break;
                 }
                 //生成发送报文
                 msg.RequestContent = BuildFormHtml(msg.GetSubmitPara(), msg.ApiInterface);

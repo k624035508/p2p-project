@@ -50,15 +50,17 @@ namespace Agp2p.Core.PayApiLogic
 #if !DEBUG
                         //同步返回平台不做处理
                         if (msg.Result.Equals("00001")) return;
-#endif
-
+#endif                  
+                        //查找是否使用了加息券
+                        var context = new Agp2pDataContext();
+                        var ticketId = context.li_jiaxiquan_transaction.SingleOrDefault(m => m.requestId == msg.RequestId && m.userId == msg.UserIdIdentity).remarks;
                         //查找对应的交易流水
                         //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
                         //if (trans != null)
                         //{
                         //TODO 检查用户资金信息
                         TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode,
-                            Utils.StrToDecimal(msg.Sum, 0), msg.RequestId);
+                            Utils.StrToDecimal(msg.Sum, 0), msg.RequestId, Convert.ToInt32(ticketId));
                         msg.HasHandle = true;
                         //}
                         //else

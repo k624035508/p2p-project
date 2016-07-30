@@ -160,6 +160,7 @@
     <th align="left">用户名</th>
     <th align="left" width="8%">会员组</th>
     <th width="8%">手机</th>
+    <th width="8%">送红包</th>
     <th width="12%">身份证号</th>
     <th align="right" width="8%">邮箱</th>
       <th width="8%">地区</th>
@@ -196,6 +197,10 @@
     </td>
     <td align="left"><%#new Agp2p.BLL.user_groups().GetTitle(Convert.ToInt32(Eval("group_id")))%></td>
     <td align="center"><%#Eval("mobile")%></td>
+    <td align="center">
+        <asp:LinkButton  runat="server" ID="lbt_removecard" Text="注册送红包" CommandArgument='<%#Eval("id")%>' OnClientClick="return confirm('确定赠送该用户红包吗?');" 
+           OnClick="giveHongBao_Click" ></asp:LinkButton>
+    </td>
     <td align="center"><%#Eval("id_card_number")%></td>
     <td align="right"><%#Eval("email")%></td>
       <td align="center"><%#Eval("address")%></td>

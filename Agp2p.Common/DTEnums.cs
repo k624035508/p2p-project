@@ -99,7 +99,11 @@ namespace Agp2p.Common
             /// <summary>
             /// 下载
             /// </summary>
-            DownLoad
+            DownLoad,
+            /// <summary>
+            /// 注册送红包
+            /// </summary>
+            GiveHongBao
         }
 
         /// <summary>

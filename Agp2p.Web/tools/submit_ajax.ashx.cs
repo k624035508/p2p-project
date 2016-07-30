@@ -1294,7 +1294,7 @@ namespace Agp2p.Web.tools
 
                 status = goodFields.isVirtual.GetValueOrDefault(0) == 1 ? 3 : 1
             };
-            
+
             var orderGoods = new List<Model.order_goods>()
             {
                 new Model.order_goods
@@ -1315,24 +1315,28 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"订单保存过程中发生错误，请重新提交！\"}");
                 return;
             }
-            
+
             //如果是虚拟物直接扣除积分
             if (goodFields.isVirtual.GetValueOrDefault(0) == 1)
             {
                 //TODO 生成虚拟物并绑定会员
 
-                var msg = new UserPointMsg(userModel.id, userModel.user_name, (int) Agp2pEnums.PointEnum.Exchange,
+                var msg = new UserPointMsg(userModel.id, userModel.user_name, (int)Agp2pEnums.PointEnum.Exchange,
                     -goodFields.point.GetValueOrDefault(0) * goodCount)
                 {
                     Remark = "积分换购，订单号：" + model.order_no
                 };
                 MessageBus.Main.Publish(msg);
-                if (goodFields.isVirtual.GetValueOrDefault(0) == 1 && goodFields.hongbao != 0) {
-                    HongBaoActivity.GiveUser(userModel.id);
-                }
-                if(goodFields.isVirtual.GetValueOrDefault(0) == 1 && Convert.ToInt32(goodFields.jiaxijuan) != 0)
+                for (int i = 0; i < goodCount; i++)
                 {
-                    InterestRateTicketActivity.GiveUser(userModel.id, 1, 1000, 1);
+                    if (goodFields.hongbao != 0)
+                    {
+                        HongBaoActivity.GiveUser(userModel.id);
+                    }
+                    if (Convert.ToInt32(goodFields.jiaxijuan) != 0)
+                    {
+                        InterestRateTicketActivity.GiveUser(userModel.id, 1, 100, 1);
+                    }
                 }
                 //兑换成功，返回URL
                 context.Response.Write("{\"status\":1, \"url\":\"" + new Web.UI.BasePage().linkurl("payment", "confirm", model.order_no) + "\", \"msg\":\"恭喜您，已成功兑换！\"}");
@@ -1513,6 +1517,7 @@ namespace Agp2p.Web.tools
                 var projectDescription = DTRequest.GetFormString("projectDescription");
                 var huoqi = DTRequest.GetFormString("huoqi");
                 var backUrl = DTRequest.GetFormString("backUrl");
+                var ticketId = DTRequest.GetFormInt("ticketId", 0);
 
                 if (buyClaimId != 0)
                 {
@@ -1562,7 +1567,7 @@ namespace Agp2p.Web.tools
                         context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                            + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" + investingAmount
                                            + "&projectSum=" + projectSum + "&projectDescription=" +
-                                           projectDescription + "\"}");
+                                           projectDescription + "&ticketId=" + ticketId + "\"}");
                     }
                     else
                     {
