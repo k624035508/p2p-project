@@ -195,7 +195,7 @@ namespace Agp2p.Web.UI.Page
                 .Aggregate(0m, (sum, c) => sum + c.li_project_transactions_invest.principal);
 
             var claims = userInfo.li_claims.Where(c => c.profitingProjectId == projectId).ToList();
-            var investRatio = claims.Sum(c => c.principal) / project.investment_amount;
+            var investRatio = investAmount / project.investment_amount;
 
             var profitAmount = project.IsNewbieProject1()
                 ? (project.li_repayment_tasks.Single(ta => ta.only_repay_to == userInfo.id).repay_interest + investAmount).ToString("c")

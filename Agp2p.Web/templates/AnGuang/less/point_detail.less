@@ -41,9 +41,10 @@ body{background:@body-color;}
 
 #xiaomiType{
               .goods-counts{
-              color:@dark-grey; font-size:@font15; margin-bottom:20px;
+              color:@dark-grey; font-size:@font15; margin-bottom:20px; 
               i{ display:inline-block; width:24px; height:25px; background:#eeeeee; border:@border; text-align:center; font-weight:normal; font-style:normal; cursor:pointer;}
-              input{border:none; width:32px; text-align:center;}
+              i.disabled{cursor:not-allowed;}
+              input{border:none; width:32px; text-align:center; height:25px; background:@white;}
               span{ margin-left:10px;}
               span:first-child{ margin-left:0;}
           }
