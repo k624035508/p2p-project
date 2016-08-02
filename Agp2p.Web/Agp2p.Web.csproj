@@ -1426,6 +1426,7 @@
     <Content Include="templates\weChat\_risk_control.html" />
     <Content Include="templates\weChat\_ticket_info.html" />
     <Content Include="templates\weChat\_ticket_intro.html" />
+    <Content Include="tools\disclosure.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\invest-agreement.html" />
     <Content Include="tools\submit_ajax.ashx" />
