@@ -831,6 +831,9 @@
     <Content Include="templates\AnGuang\imgs\aboutus\top.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\员工明细表.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\计提明细表.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\赔付流程.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\项目信息.jpg" />
     <Content Include="templates\AnGuang\imgs\help\charge.png" />
     <Content Include="templates\AnGuang\imgs\help\diagram-01.png" />
@@ -1196,8 +1199,6 @@
     <Content Include="templates\AnGuang\index.html" />
     <Content Include="templates\AnGuang\js\404.js" />
     <Content Include="templates\AnGuang\js\about_more.js" />
-    <Content Include="templates\AnGuang\imgs\aboutus\广东安广融合电子商务股份有限公司风险备用金管理制度.pdf" />
-    <Content Include="templates\AnGuang\imgs\aboutus\员工人数、年龄、学历情况%281%29.pdf" />
     <None Include="templates\AnGuang\js\add_order.jsx" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\coop.js" />
@@ -1429,6 +1430,7 @@
     <Content Include="templates\weChat\_risk_control.html" />
     <Content Include="templates\weChat\_ticket_info.html" />
     <Content Include="templates\weChat\_ticket_intro.html" />
+    <Content Include="tools\cash.html" />
     <Content Include="tools\disclosure.html" />
     <Content Include="tools\download.ashx" />
     <Content Include="tools\invest-agreement.html" />
