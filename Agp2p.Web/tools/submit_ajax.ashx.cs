@@ -1728,79 +1728,78 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"请先登录\"}");
                 return;
             }
-            var userLog = agContext.dt_user_point_log.Where(u => u.user_id == model.id && u.type == (int)Agp2pEnums.PointEnum.Sign).OrderByDescending(u => u.add_time);
-            var LoginToday = userLog.Where(u => u.add_time >= DateTime.Today && u.add_time < DateTime.Today.AddDays(1)).FirstOrDefault();
-            var LoginFirstDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-1) && u.add_time < DateTime.Today).FirstOrDefault();
-            var LoginSecondDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-2) && u.add_time < DateTime.Today.AddDays(-1)).FirstOrDefault();
-            var LoginThirdDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-3) && u.add_time < DateTime.Today.AddDays(-2)).FirstOrDefault();
-            var LoginFourthDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-4) && u.add_time < DateTime.Today.AddDays(-3)).FirstOrDefault();
-            var LoginFifthDay = userLog.Where(u => u.add_time >= DateTime.Today.AddDays(-5) && u.add_time < DateTime.Today.AddDays(-4)).FirstOrDefault();
-            if (LoginToday != null)
+            var signLogs = agContext.dt_user_sign_log.Where(s => s.user_id == model.id && s.sign_time == DateTime.Today);
+            if (signLogs.Any())
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"您今天已签到\"}");
-                return;
-            }
-            if(LoginFirstDay == null)
-            {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
-                {
-                    Remark = "第一天签到"
-                };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
-                return;
-            }
-             else if(LoginSecondDay == null)
-            {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 2)
-                {
-                    Remark = "第二天签到"
-                };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第二天签到\"}");
-                return;
-            }
-            else if (LoginThirdDay == null)
-            {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 3)
-                {
-                    Remark = "第三天签到"
-                };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第三天签到\"}");
-                return;
-            }
-            else if (LoginFourthDay == null)
-            {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 4)
-                {
-                    Remark = "第四天签到"
-                };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第四天签到\"}");
-                return;
-            }
-            else if (LoginFifthDay == null)
-            {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 5)
-                {
-                    Remark = "第五天签到"
-                };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第五天签到\"}");
-                return;
             }
             else
             {
-                var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
+                var signYesterday = agContext.dt_user_sign_log.Where(s => s.user_id == model.id && s.sign_time == DateTime.Today.AddDays(-1));
+                var signCount = 1;
+                if (signYesterday.Any())
                 {
-                    Remark = "第一天签到"
+                    signCount = Convert.ToInt32(signYesterday.First().sign_count) + 1;
+                }
+                var newSign = new dt_user_sign_log
+                {
+                    user_id = model.id,
+                    sign_time = DateTime.Today,
+                    sign_count = signCount.ToString()
                 };
-                MessageBus.Main.Publish(msg);
-                context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
-                return;
+                agContext.dt_user_sign_log.InsertOnSubmit(newSign);
+                agContext.SubmitChanges();
+                if (signCount % 5 == 1)
+                {
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
+                    {
+                        Remark = "第一天签到"
+                    };
+                    MessageBus.Main.Publish(msg);
+                    context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
+                    return;
+                }
+                if (signCount % 5 == 2)
+                {
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 2)
+                    {
+                        Remark = "第二天签到"
+                    };
+                    MessageBus.Main.Publish(msg);
+                    context.Response.Write("{\"status\":1, \"msg\":\"第二天签到\"}");
+                    return;
+                }
+                if (signCount % 5 == 3)
+                {
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 3)
+                    {
+                        Remark = "第三天签到"
+                    };
+                    MessageBus.Main.Publish(msg);
+                    context.Response.Write("{\"status\":1, \"msg\":\"第三天签到\"}");
+                    return;
+                }
+                if (signCount % 5 == 4)
+                {
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 4)
+                    {
+                        Remark = "第四天签到"
+                    };
+                    MessageBus.Main.Publish(msg);
+                    context.Response.Write("{\"status\":1, \"msg\":\"第四天签到\"}");
+                    return;
+                }
+                if (signCount % 5 == 0)
+                {
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 5)
+                    {
+                        Remark = "第五天签到"
+                    };
+                    MessageBus.Main.Publish(msg);
+                    context.Response.Write("{\"status\":1, \"msg\":\"第五天签到\"}");
+                    return;
+                }
             }
-
         }
         #endregion
 

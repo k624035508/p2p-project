@@ -695,6 +695,7 @@
       <Association Name="dt_users_li_event_records" Member="li_event_records" ThisKey="id" OtherKey="userId" Type="li_event_records" />
       <Association Name="dt_users_li_bank_accounts" Member="li_bank_accounts" ThisKey="id" OtherKey="owner" Type="li_bank_accounts" />
       <Association Name="dt_users_li_questionnaire_result" Member="li_questionnaire_results" ThisKey="id" OtherKey="userId" Type="li_questionnaire_result" />
+      <Association Name="dt_users_dt_user_sign_log" Member="dt_user_sign_log" ThisKey="id" OtherKey="user_id" Type="dt_user_sign_log" />
       <Association Name="dt_user_groups_dt_users" Member="dt_user_groups" ThisKey="group_id" OtherKey="id" Type="dt_user_groups" IsForeignKey="true" />
     </Type>
   </Table>
@@ -892,6 +893,15 @@
       <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="remarks" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="requestId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_user_sign_log" Member="dt_user_sign_log">
+    <Type Name="dt_user_sign_log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sign_time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="sign_count" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Association Name="dt_users_dt_user_sign_log" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -186,6 +186,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
     partial void Updateli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
     partial void Deleteli_jiaxiquan_transaction(li_jiaxiquan_transaction instance);
+    partial void Insertdt_user_sign_log(dt_user_sign_log instance);
+    partial void Updatedt_user_sign_log(dt_user_sign_log instance);
+    partial void Deletedt_user_sign_log(dt_user_sign_log instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -633,6 +636,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<li_jiaxiquan_transaction>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_user_sign_log> dt_user_sign_log
+		{
+			get
+			{
+				return this.GetTable<dt_user_sign_log>();
 			}
 		}
 	}
@@ -14976,6 +14987,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_questionnaire_result> _li_questionnaire_results;
 		
+		private EntitySet<dt_user_sign_log> _dt_user_sign_log;
+		
 		private EntityRef<dt_user_groups> _dt_user_groups;
 		
     #region 可扩展性方法定义
@@ -15066,6 +15079,7 @@ namespace Agp2p.Linq2SQL
 			this._li_event_records = new EntitySet<li_event_records>(new Action<li_event_records>(this.attach_li_event_records), new Action<li_event_records>(this.detach_li_event_records));
 			this._li_bank_accounts = new EntitySet<li_bank_accounts>(new Action<li_bank_accounts>(this.attach_li_bank_accounts), new Action<li_bank_accounts>(this.detach_li_bank_accounts));
 			this._li_questionnaire_results = new EntitySet<li_questionnaire_result>(new Action<li_questionnaire_result>(this.attach_li_questionnaire_results), new Action<li_questionnaire_result>(this.detach_li_questionnaire_results));
+			this._dt_user_sign_log = new EntitySet<dt_user_sign_log>(new Action<dt_user_sign_log>(this.attach_dt_user_sign_log), new Action<dt_user_sign_log>(this.detach_dt_user_sign_log));
 			this._dt_user_groups = default(EntityRef<dt_user_groups>);
 			OnCreated();
 		}
@@ -16004,6 +16018,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_user_sign_log", Storage="_dt_user_sign_log", ThisKey="id", OtherKey="user_id")]
+		public EntitySet<dt_user_sign_log> dt_user_sign_log
+		{
+			get
+			{
+				return this._dt_user_sign_log;
+			}
+			set
+			{
+				this._dt_user_sign_log.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_user_groups_dt_users", Storage="_dt_user_groups", ThisKey="group_id", OtherKey="id", IsForeignKey=true)]
 		public dt_user_groups dt_user_groups
 		{
@@ -16269,6 +16296,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_questionnaire_results(li_questionnaire_result entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = null;
+		}
+		
+		private void attach_dt_user_sign_log(dt_user_sign_log entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_users = this;
+		}
+		
+		private void detach_dt_user_sign_log(dt_user_sign_log entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_users = null;
@@ -20335,6 +20374,181 @@ namespace Agp2p.Linq2SQL
 					this._requestId = value;
 					this.SendPropertyChanged("requestId");
 					this.OnrequestIdChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_user_sign_log")]
+	public partial class dt_user_sign_log : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private int _user_id;
+		
+		private System.DateTime _sign_time;
+		
+		private string _sign_count;
+		
+		private EntityRef<dt_users> _dt_users;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onuser_idChanging(int value);
+    partial void Onuser_idChanged();
+    partial void Onsign_timeChanging(System.DateTime value);
+    partial void Onsign_timeChanged();
+    partial void Onsign_countChanging(string value);
+    partial void Onsign_countChanged();
+    #endregion
+		
+		public dt_user_sign_log()
+		{
+			this._dt_users = default(EntityRef<dt_users>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_id", DbType="Int NOT NULL")]
+		public int user_id
+		{
+			get
+			{
+				return this._user_id;
+			}
+			set
+			{
+				if ((this._user_id != value))
+				{
+					if (this._dt_users.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onuser_idChanging(value);
+					this.SendPropertyChanging();
+					this._user_id = value;
+					this.SendPropertyChanged("user_id");
+					this.Onuser_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sign_time", DbType="Date NOT NULL")]
+		public System.DateTime sign_time
+		{
+			get
+			{
+				return this._sign_time;
+			}
+			set
+			{
+				if ((this._sign_time != value))
+				{
+					this.Onsign_timeChanging(value);
+					this.SendPropertyChanging();
+					this._sign_time = value;
+					this.SendPropertyChanged("sign_time");
+					this.Onsign_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sign_count", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string sign_count
+		{
+			get
+			{
+				return this._sign_count;
+			}
+			set
+			{
+				if ((this._sign_count != value))
+				{
+					this.Onsign_countChanging(value);
+					this.SendPropertyChanging();
+					this._sign_count = value;
+					this.SendPropertyChanged("sign_count");
+					this.Onsign_countChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_users_dt_user_sign_log", Storage="_dt_users", ThisKey="user_id", OtherKey="id", IsForeignKey=true)]
+		public dt_users dt_users
+		{
+			get
+			{
+				return this._dt_users.Entity;
+			}
+			set
+			{
+				dt_users previousValue = this._dt_users.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_users.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_users.Entity = null;
+						previousValue.dt_user_sign_log.Remove(this);
+					}
+					this._dt_users.Entity = value;
+					if ((value != null))
+					{
+						value.dt_user_sign_log.Add(this);
+						this._user_id = value.id;
+					}
+					else
+					{
+						this._user_id = default(int);
+					}
+					this.SendPropertyChanged("dt_users");
 				}
 			}
 		}
