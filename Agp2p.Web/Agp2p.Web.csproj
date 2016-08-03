@@ -1198,7 +1198,6 @@
     <Content Include="templates\AnGuang\js\about_more.js" />
     <Content Include="templates\AnGuang\imgs\aboutus\广东安广融合电子商务股份有限公司风险备用金管理制度.pdf" />
     <Content Include="templates\AnGuang\imgs\aboutus\员工人数、年龄、学历情况%281%29.pdf" />
-    <Content Include="templates\AnGuang\imgs\aboutus\项目信息%281%29.xlsx" />
     <None Include="templates\AnGuang\js\add_order.jsx" />
     <Content Include="templates\AnGuang\js\bootstrap.config.js" />
     <Content Include="templates\AnGuang\js\coop.js" />
