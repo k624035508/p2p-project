@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 
 namespace Agp2p.Core.ActivityLogic
 {
@@ -80,6 +81,9 @@ namespace Agp2p.Core.ActivityLogic
                 atr.status = (byte)Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
                 atr.transact_time = investTime;
                 atr.remarks = string.Format("投资 {0:c} 激活 {1:c} 红包", GetInvestUntil(), atr.value);
+                //丰付支付
+                var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
+                MessageBus.Main.Publish(msg);
             }
 
             public DateTime GetDeadline()
@@ -128,6 +132,8 @@ namespace Agp2p.Core.ActivityLogic
 
                     // 红包激活，发放奖金，更改状态
                     rp.Activate(investTime);
+                  
+
                     var curr = rp.atr;
 
                     wallet.idle_money += curr.value;

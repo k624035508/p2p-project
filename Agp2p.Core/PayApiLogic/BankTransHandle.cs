@@ -4,6 +4,7 @@ using Agp2p.Common;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
 using Agp2p.Core.Message.PayApiMsg.Transaction;
+using Agp2p.Core.Message.PayApiMsg.Project;
 using Agp2p.Linq2SQL;
 
 namespace Agp2p.Core.PayApiLogic
@@ -18,7 +19,7 @@ namespace Agp2p.Core.PayApiLogic
             MessageBus.Main.Subscribe<RechargeRespMsg>(Recharge);
             MessageBus.Main.Subscribe<WithholdingRechargeRespMsg>(WithholdingRecharge);
             MessageBus.Main.Subscribe<WithdrawRespMsg>(WithDraw);
-            
+            MessageBus.Main.Subscribe<HongbaoPayRespMsg>(HongbaoPay); //红包付款至用户账户
         }
 
         /// <summary>
@@ -203,6 +204,33 @@ namespace Agp2p.Core.PayApiLogic
             }
         }
 
+        /// <summary>
+        /// 红包付款至用户 响应
+        /// </summary>
+        /// <param name="msg"></param>
+        private static void HongbaoPay(HongbaoPayRespMsg msg)
+        {
+            try
+            {
+                //检查请求处理结果
+                if (msg.CheckResult())
+                {
+                    //检查签名
+                    if (msg.CheckSignature())
+                    {
+#if !DEBUG
+                        //同步返回平台不做处理
+                        if (msg.Result.Equals("00001")) return;
+#endif 
+                        msg.HasHandle = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.Remarks = "内部错误：" + ex.Message;
+            }
+        } 
 
     }
 }

@@ -7,6 +7,7 @@ using Agp2p.Linq2SQL;
 using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.Message;
+using Agp2p.Core.Message.PayApiMsg;
 using System.Collections.Generic;
 
 namespace Agp2p.Core.ActivityLogic
@@ -115,6 +116,8 @@ namespace Agp2p.Core.ActivityLogic
                 atr.details = detailObj.ToString(Formatting.None);
                 atr.status = (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
 
+
+
                 // remember to save context
             }
         }
@@ -140,7 +143,9 @@ namespace Agp2p.Core.ActivityLogic
                     // 满标时再计算待收益金额
                     wallet.profiting_money += atr.value;
                     wallet.last_update_time = makeLoanTime;
-
+                    //丰付获取收益
+                    var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
+                    MessageBus.Main.Publish(msg);
                     // 修改钱包历史
                     var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Gaining);
                     his.li_activity_transactions = atr;

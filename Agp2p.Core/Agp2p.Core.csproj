@@ -112,6 +112,8 @@
     <Compile Include="Message\PayApiMsg\Company\CompanyToAccountReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Company\CompanyRegisterReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\FrontEndReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\HongbaoPayReqMsg.cs" />
+    <Compile Include="Message\PayApiMsg\Project\HongbaoPayRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\RemoveCardReqMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\RemoveCardRespMsg.cs" />
     <Compile Include="Message\PayApiMsg\Transaction\SignBankCardQueryRespone.cs" />

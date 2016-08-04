@@ -9,6 +9,7 @@ using System.Web;
 using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Project;
 using Agp2p.Model.DTO;
 using Newtonsoft.Json;
 
@@ -158,6 +159,10 @@ namespace Agp2p.Web.api.payment.sumapay
                                 //银行卡解绑
                                 case (int)Agp2pEnums.SumapayApiEnum.RemCa:
                                     respMsg = new RemoveCardRespMsg(reqStr);
+                                    break;
+                                //红包付款至用户
+                                case (int)Agp2pEnums.SumapayApiEnum.HbPay:
+                                    respMsg = new HongbaoPayRespMsg(reqStr);
                                     break;
                                 default:
                                     respMsg = new BaseRespMsg();
