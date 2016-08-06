@@ -13,8 +13,13 @@ class MyPointsRecord extends React.Component {
             startTime: "",
             endTime: "",
             pageIndex: 0,
-            onPageLoaded: pageCount => this.setState({ pageCount: pageCount })
+            onPageLoaded: pageCount => this.setState({ pageCount: pageCount }),
+            usePoints: 0
         };
+    }
+    componentDidMount(){
+        var usePoint = $("#app").data("usePoints");
+        this.setState({usePoints:-usePoint});
     }
     render() {
         let selectRecord = this.state.selectedPoints == "RECORD";
@@ -23,7 +28,7 @@ class MyPointsRecord extends React.Component {
                 <div className="pointSum"><span>积分统计</span></div>
                 <div className="pointChange">
                     <div><p className="pointsP1">可用积分</p><p className="pointsP2">{this.props.myPoints}</p></div>
-                    <div><p className="pointsP1">已用积分</p><p className="pointsP2">0</p></div>
+                    <div><p className="pointsP1">已用积分</p><p className="pointsP2">{this.state.usePoints}</p></div>
                     <div className="pointChangeImg"><a href="../point.html">积分兑换</a></div>
                 </div>
 

@@ -10,8 +10,10 @@ import alert from "../components/tips_alert.js";
 
 $(function() {
     header.setHeaderHighlight(3);   
+    $('[data-toggle="popover"]').popover();
+
     $("#signPoint").click(function(){
-        $.ajax({
+        /*$.ajax({
             type: "post",
             dataType:"JSON",
             url:"/tools/submit_ajax.ashx?action=point_qiandao",
@@ -21,6 +23,7 @@ $(function() {
             error:function(xhr, status, error) {
                 alert("操作超时，请重试");
             }
-        });
+        }); */
+        $("#signConfirm").modal();
     });
 });

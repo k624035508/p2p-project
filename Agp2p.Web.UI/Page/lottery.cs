@@ -14,7 +14,7 @@ namespace Agp2p.Web.UI.Page
         {
             
         }
-        static Random rnd = new Random(); 
+        static Random rmd = new Random(); 
         //奖品实体类
         public class JiangPin
         {
@@ -28,7 +28,7 @@ namespace Agp2p.Web.UI.Page
         {
             int result;
             //定义奖品和概率
-            var szZp = new List<JiangPin>
+            var award = new List<JiangPin>
             {
                 new JiangPin {id = 0, Name = "88", gailv = 0},
                 new JiangPin {id = 1, Name = "1688", gailv = 0},
@@ -43,9 +43,9 @@ namespace Agp2p.Web.UI.Page
                 new JiangPin {id = 10, Name = "2888", gailv = 0},
                 new JiangPin {id = 11, Name = "0", gailv = 0},
             };
-            int id = chouJiang(szZp).id;
-            result = szZp[id].id;
-            string name = szZp[id].Name;
+            int id = chouJiang(award).id;
+            result = award[id].id;
+            string name = award[id].Name;
             return JsonConvert.SerializeObject(new {name = name, result = result.ToString()});
         }
 
@@ -53,8 +53,8 @@ namespace Agp2p.Web.UI.Page
         {
             return (from x in Enumerable.Range(0, 1000000)
                 //模拟抽奖
-                let sjcp = szZp[rnd.Next(szZp.Count())]
-                let zgz = rnd.Next(0, 1000)
+                let sjcp = szZp[rmd.Next(szZp.Count())]
+                let zgz = rmd.Next(0, 1000)
                 where zgz < sjcp.gailv
                 select sjcp).First();
         }

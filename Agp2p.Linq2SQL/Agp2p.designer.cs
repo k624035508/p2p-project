@@ -6056,6 +6056,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntityRef<dt_article_attribute_value> _dt_article_attribute_value;
 		
+		private EntityRef<dt_article_category> _dt_article_category;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -6117,6 +6119,7 @@ namespace Agp2p.Linq2SQL
 		public dt_article()
 		{
 			this._dt_article_attribute_value = default(EntityRef<dt_article_attribute_value>);
+			this._dt_article_category = default(EntityRef<dt_article_category>);
 			OnCreated();
 		}
 		
@@ -6171,6 +6174,10 @@ namespace Agp2p.Linq2SQL
 			{
 				if ((this._category_id != value))
 				{
+					if (this._dt_article_category.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.Oncategory_idChanging(value);
 					this.SendPropertyChanging();
 					this._category_id = value;
@@ -6665,6 +6672,40 @@ namespace Agp2p.Linq2SQL
 						value.dt_article = this;
 					}
 					this.SendPropertyChanged("dt_article_attribute_value");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_category_dt_article", Storage="_dt_article_category", ThisKey="category_id", OtherKey="id", IsForeignKey=true)]
+		public dt_article_category dt_article_category
+		{
+			get
+			{
+				return this._dt_article_category.Entity;
+			}
+			set
+			{
+				dt_article_category previousValue = this._dt_article_category.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_article_category.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_article_category.Entity = null;
+						previousValue.dt_article.Remove(this);
+					}
+					this._dt_article_category.Entity = value;
+					if ((value != null))
+					{
+						value.dt_article.Add(this);
+						this._category_id = value.id;
+					}
+					else
+					{
+						this._category_id = default(int);
+					}
+					this.SendPropertyChanged("dt_article_category");
 				}
 			}
 		}
@@ -9003,6 +9044,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntitySet<li_projects> _li_projects;
 		
+		private EntitySet<dt_article> _dt_article;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -9040,6 +9083,7 @@ namespace Agp2p.Linq2SQL
 		public dt_article_category()
 		{
 			this._li_projects = new EntitySet<li_projects>(new Action<li_projects>(this.attach_li_projects), new Action<li_projects>(this.detach_li_projects));
+			this._dt_article = new EntitySet<dt_article>(new Action<dt_article>(this.attach_dt_article), new Action<dt_article>(this.detach_dt_article));
 			OnCreated();
 		}
 		
@@ -9336,6 +9380,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_category_dt_article", Storage="_dt_article", ThisKey="id", OtherKey="category_id")]
+		public EntitySet<dt_article> dt_article
+		{
+			get
+			{
+				return this._dt_article;
+			}
+			set
+			{
+				this._dt_article.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -9363,6 +9420,18 @@ namespace Agp2p.Linq2SQL
 		}
 		
 		private void detach_li_projects(li_projects entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_article_category = null;
+		}
+		
+		private void attach_dt_article(dt_article entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_article_category = this;
+		}
+		
+		private void detach_dt_article(dt_article entity)
 		{
 			this.SendPropertyChanging();
 			entity.dt_article_category = null;

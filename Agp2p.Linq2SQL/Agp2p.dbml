@@ -278,6 +278,7 @@
       <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="update_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="dt_article_dt_article_attribute_value" Member="dt_article_attribute_value" ThisKey="id" OtherKey="article_id" Type="dt_article_attribute_value" Cardinality="One" />
+      <Association Name="dt_article_category_dt_article" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.li_mortgage_types" Member="li_mortgage_types">
@@ -399,6 +400,7 @@
       <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="dt_article_category_li_projects" Member="li_projects" ThisKey="id" OtherKey="category_id" Type="li_projects" />
+      <Association Name="dt_article_category_dt_article" Member="dt_article" ThisKey="id" OtherKey="category_id" Type="dt_article" />
     </Type>
   </Table>
   <Table Name="dbo.li_notification_settings" Member="li_notification_settings">

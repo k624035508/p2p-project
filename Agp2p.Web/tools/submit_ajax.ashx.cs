@@ -1316,6 +1316,10 @@ namespace Agp2p.Web.tools
                 return;
             }
 
+            //减少库存
+            goodFields.stock_quantity = goodFields.stock_quantity - goodCount;
+            agContext.SubmitChanges();
+
             //如果是虚拟物直接扣除积分
             if (goodFields.isVirtual.GetValueOrDefault(0) == 1)
             {

@@ -61,6 +61,16 @@ namespace Agp2p.Core
             return !string.IsNullOrWhiteSpace(user.nick_name) ? $"{user.user_name}（{user.nick_name}）" : user.user_name;
         }
 
+        public static bool IsJiaxijuan(this dt_article a)
+        {
+            return a.dt_article_category.call_index == "jiaxijuan";
+        }
+
+        public static bool IsHongbao(this dt_article a)
+        {
+            return a.dt_article_category.call_index == "hongbao";
+        }
+
         public static bool IsNewbieProject2(this li_projects p)
         {
             return p.dt_article_category.call_index == "newbie2";

@@ -37,9 +37,11 @@ class XiaomiType extends React.Component {
         let isOne = this.state.buyCount <= 1, overStock = this.state.buyCount >= this.state.stock;
         return (
             <div>
+                
                 <p className="goods-counts"><span>兑换数量：</span><i className={isOne ? "disabled" : ""}  onClick={ev => this.reduceBuy() }>-</i>
                     <input name="count" type="text"  value={this.state.buyCount} />
-                    <i className={overStock ? "disabled" : ""}  onClick= { ev => this.plusBuy() }>+</i><span>库存{this.state.stock}件</span>
+                    <i className={overStock ? "disabled" : ""}  onClick= { ev => this.plusBuy() }>+</i>
+                    {this.state.stock == 0 ? <span className="noStock">库存不足</span> : <span>库存{this.state.stock}件</span>}
                 </p>
                 <div>
                     {this.state.title == "小米迷你充电宝" ? <span className="goods-wenzi">属性：</span> : null}
@@ -64,6 +66,9 @@ class XiaomiType extends React.Component {
 $(function () {
     header.setHeaderHighlight(3);
     ReactDom.render(<XiaomiType />, document.getElementById("xiaomiType"));
+    $("ul.type-jiaxijuan li").click(function() {
+        $(this).addClass("selectJiaxi").siblings().removeClass("selectJiaxi");
+    });
     $(".duihuanLogin").click(function () {
         alert("请先登录", () => {
             location.href = "login.html";

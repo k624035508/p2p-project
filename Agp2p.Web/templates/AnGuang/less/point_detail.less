@@ -47,6 +47,7 @@ body{background:@body-color;}
               input{border:none; width:32px; text-align:center; height:25px; background:@white;}
               span{ margin-left:10px;}
               span:first-child{ margin-left:0;}
+              .noStock{color:@red;}
           }
         .goods-wenzi{font-size:@font15; color:@dark-grey; width:75px; text-align:right;display:inline-block; line-height:40px; float:left;}
 
@@ -63,5 +64,26 @@ body{background:@body-color;}
 #ag{ background:url("@{point}/xiaomi1.png") no-repeat center center ;}
 #gold{ background:url("@{point}/xiaomi2.png") no-repeat center center ;}
 #red{ background:url("@{point}/xiaomi3.png") no-repeat center center ;}
+}
+}
+
+.IsJiaxijuan{
+    span{width:75px; text-align:right; display:inline-block; float:left;
+         height:40px; line-height:40px; font-size:15px;
+    }
+.type-jiaxijuan{
+    display:inline-block; margin-left:0;
+    li{
+        width:90px; height:40px; font-size:15px; text-align:center;
+        cursor:pointer;
+        line-height:40px; background:@white; color:@dark-grey;
+        padding: 0;
+		margin-right: 7px;
+        border:@border;             
+    }
+    li.selectJiaxi{
+        border:none;
+        background:url("@{point}/selectBg.png");
+    }
 }
 }

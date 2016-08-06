@@ -7,6 +7,7 @@ using Agp2p.Common;
 using Agp2p.Linq2SQL;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Project;
 
 namespace Agp2p.Core.ActivityLogic
 {
@@ -81,9 +82,7 @@ namespace Agp2p.Core.ActivityLogic
                 atr.status = (byte)Agp2pEnums.ActivityTransactionStatusEnum.Confirm;
                 atr.transact_time = investTime;
                 atr.remarks = string.Format("投资 {0:c} 激活 {1:c} 红包", GetInvestUntil(), atr.value);
-                //丰付支付
-                var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
-                MessageBus.Main.Publish(msg);
+                
             }
 
             public DateTime GetDeadline()
@@ -132,16 +131,25 @@ namespace Agp2p.Core.ActivityLogic
 
                     // 红包激活，发放奖金，更改状态
                     rp.Activate(investTime);
-                  
 
-                    var curr = rp.atr;
+                    //丰付支付
+                    var msg = new HongbaoPayReqMsg(rp.atr.user_id, rp.atr.value);
+                    MessageBus.Main.Publish(msg);
+                    var msgResp = BaseRespMsg.NewInstance<HongbaoPayRespMsg>(msg.SynResult);
+                    MessageBus.Main.Publish(msgResp);
 
-                    wallet.idle_money += curr.value;
-                    wallet.last_update_time = investTime;
+                    if (msgResp.HasHandle)
+                    {
+                        var curr = rp.atr;
 
-                    var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
-                    his.li_activity_transactions = curr;
-                    context.li_wallet_histories.InsertOnSubmit(his);
+
+                        wallet.idle_money += curr.value;
+                        wallet.last_update_time = investTime;
+
+                        var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
+                        his.li_activity_transactions = curr;
+                        context.li_wallet_histories.InsertOnSubmit(his);
+                    }
                 }
             }
             // 有剩余投资金额不够激活钱包的话将其记在第一个未被激活的红包
