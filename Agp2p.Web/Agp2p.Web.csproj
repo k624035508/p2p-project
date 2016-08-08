@@ -831,10 +831,10 @@
     <Content Include="templates\AnGuang\imgs\aboutus\top.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
-    <Content Include="templates\AnGuang\imgs\aboutus\员工明细表.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\员工明细表2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\计提明细表.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\赔付流程.jpg" />
-    <Content Include="templates\AnGuang\imgs\aboutus\项目信息.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\项目信息2.jpg" />
     <Content Include="templates\AnGuang\imgs\help\charge.png" />
     <Content Include="templates\AnGuang\imgs\help\diagram-01.png" />
     <Content Include="templates\AnGuang\imgs\help\diagram-02.png" />
