@@ -25,6 +25,7 @@ $(function() {
                     $("#signConfirm").modal();                    
                     $(".signTable>div:lt("+data.status+")").addClass("jinbi").removeClass("nojinbi");
                     $(".signDay:lt("+data.status+")").css("color", "#37aaf0");
+                    $(".signTable .signRight:lt("+data.status+")").css("display", "inline-block");
                 }
             },
             error:function(xhr, status, error) {
