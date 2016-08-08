@@ -1735,7 +1735,8 @@ namespace Agp2p.Web.tools
             var signLogs = agContext.dt_user_sign_log.Where(s => s.user_id == model.id && s.sign_time == DateTime.Today);
             if (signLogs.Any())
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"您今天已签到\"}");
+                var count = Convert.ToInt32(signLogs.Single().sign_count);
+                context.Response.Write("{\"status\":\""+count+"\", \"msg\":\"您今天已签到\"}");
             }
             else
             {
@@ -1770,7 +1771,7 @@ namespace Agp2p.Web.tools
                         Remark = "第二天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":1, \"msg\":\"第二天签到\"}");
+                    context.Response.Write("{\"status\":2, \"msg\":\"第二天签到\"}");
                     return;
                 }
                 if (signCount % 5 == 3)
@@ -1780,7 +1781,7 @@ namespace Agp2p.Web.tools
                         Remark = "第三天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":1, \"msg\":\"第三天签到\"}");
+                    context.Response.Write("{\"status\":3, \"msg\":\"第三天签到\"}");
                     return;
                 }
                 if (signCount % 5 == 4)
@@ -1790,7 +1791,7 @@ namespace Agp2p.Web.tools
                         Remark = "第四天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":1, \"msg\":\"第四天签到\"}");
+                    context.Response.Write("{\"status\":4, \"msg\":\"第四天签到\"}");
                     return;
                 }
                 if (signCount % 5 == 0)
@@ -1800,7 +1801,7 @@ namespace Agp2p.Web.tools
                         Remark = "第五天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":1, \"msg\":\"第五天签到\"}");
+                    context.Response.Write("{\"status\":5, \"msg\":\"第五天签到\"}");
                     return;
                 }
             }
