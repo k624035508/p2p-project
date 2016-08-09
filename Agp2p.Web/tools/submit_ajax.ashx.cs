@@ -547,6 +547,7 @@ namespace Agp2p.Web.tools
                     msgContent = msgContent.Replace("{weburl}", siteConfig.weburl);
                     msgContent = msgContent.Replace("{webtel}", siteConfig.webtel);
                     msgContent = msgContent.Replace("{username}", model.user_name);
+                    msgContent = msgContent.Replace("{id}", model.id.ToString());
                     //发送短信
                     string tipMsg = string.Empty;
                     SMSHelper.Send(model.mobile, msgContent, 2, out tipMsg);
