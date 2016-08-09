@@ -76,6 +76,59 @@
     </div>
 </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="signConfirm" tabindex="-1" role="dialog" aria-labelledby="investConfirmLabel">
+        <div class="modal-dialog investConfirm-dialog" role="document">
+            <div class="modal-content">
+                <div class="signImg"><img src="<%templateskin%>/imgs/point/daySign.png"/>
+                <img class="closeing" src="<%templateskin%>/imgs/point/close.png" data-dismiss="modal"/></div>
+                <ul class="list-unstyled list-inline">
+                    <li>
+                        <div class="signTable">
+                            <div class="nojinbi"></div>
+                            <p>积分+<span>18</span></p>
+                            <span class="signRight"></span>
+                        </div>
+                        <p class="signDay">第一天</p></li>
+                    <li>
+                        <div class="signTable">
+                            <div class="nojinbi"></div>
+                            <p>积分+<span>38</span></p>
+                            <span class="signRight"></span>
+                        </div>
+                        <p class="signDay">第二天</p></li>
+                    <li>
+                        <div class="signTable">
+                            <div class="nojinbi"></div>
+                            <p>积分+<span>68</span></p>
+                            <span class="signRight"></span>
+                        </div>
+                        <p class="signDay">第三天</p></li>
+                    <li>
+                        <div class="signTable">
+                            <div class="nojinbi"></div>
+                            <p>积分+<span>88</span></p>
+                            <span class="signRight"></span>
+                        </div>
+                        <p class="signDay">第四天</p>
+                    </li>
+                    <li>
+                    <div class="signTable">
+                        <div class="nojinbi"></div>
+                        <p>积分+<span style="margin-right:3px;">100</span></p>
+                        <span class="signRight"></span>
+                    </div>
+                    <p class="signDay">第五天</p>
+                    <li/>
+                </ul>
+                <div class="qiandaoOK">
+                    <p>连续签到5天，即可获得意外宝箱一个，每5天循环一次。</p>
+                    <a data-dismiss="modal">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="point-recommend">
     <p>精彩推荐</p>
     <ul class="list-unstyled list-inline">
@@ -114,7 +167,7 @@
         <a href='<%linkurl("point_detail",GetXuniquan().id)%>'>兑换</a>
     </div>
     <div class="xuni">
-        <%set var xuni=GetArticles(72,4)%>
+        <%set var xuni=GetArticles("74,75",4)%>
         <%foreach(var b in xuni)%>
         <div class="xuni-quan">
             <div class="xuni-quan-content">

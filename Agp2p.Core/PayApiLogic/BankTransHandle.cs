@@ -223,6 +223,7 @@ namespace Agp2p.Core.PayApiLogic
                         if (msg.Result.Equals("00001")) return;
 #endif 
                         msg.HasHandle = true;
+
                     }
                 }
             }

@@ -10,17 +10,27 @@ import alert from "../components/tips_alert.js";
 
 $(function() {
     header.setHeaderHighlight(3);   
+    $('[data-toggle="popover"]').popover();
+
     $("#signPoint").click(function(){
         $.ajax({
             type: "post",
             dataType:"JSON",
             url:"/tools/submit_ajax.ashx?action=point_qiandao",
             success: function (data) {
-                alert(data.msg);                 
+                if (data.status == 0) {
+                    alert(data.msg);
+                } 
+                else {
+                    $("#signConfirm").modal();                    
+                    $(".signTable>div:lt("+data.status+")").addClass("jinbi").removeClass("nojinbi");
+                    $(".signDay:lt("+data.status+")").css("color", "#37aaf0");
+                    $(".signTable .signRight:lt("+data.status+")").css("display", "inline-block");
+                }
             },
             error:function(xhr, status, error) {
                 alert("操作超时，请重试");
             }
-        });
+        });         
     });
 });

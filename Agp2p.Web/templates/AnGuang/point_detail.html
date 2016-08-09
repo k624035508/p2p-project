@@ -33,9 +33,18 @@
             <div class="goods">
                 <p class="goods-points">兑换积分：<span><%=articleDetail.point%></span>积分
                 </p>
-
                 <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
                      data-title="<%=articleModel.title%>"></div>
+                <%if(articleModel.IsJiaxijuan())%>
+                <div class="IsJiaxijuan">
+                    <span>属性：</span>
+                    <ul class="list-unstyled list-inline type-jiaxijuan">
+                        <li>限投2万</li>
+                        <li>限投5万</li>
+                        <li>限投10万</li>
+                    </ul>
+                </div>
+                <%/if%>
                 <input type="hidden" name="id" value="<%=goods_id%>">
             </div>
             <%if(_userModel==null)%>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Agp2p.Common;
 using Agp2p.Linq2SQL;
+using System.Web;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -22,6 +23,11 @@ namespace Agp2p.Web.UI.Page
             Init += Page_Init;
             goods_id = DTRequest.GetQueryInt("id");
             articleModel = context.dt_article.SingleOrDefault(a => a.id == goods_id);
+            if (articleModel == null)
+            {
+                HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                return;
+            }
             articleDetail = articleModel.dt_article_attribute_value;
         }
 

@@ -80,6 +80,13 @@ namespace Agp2p.Web.UI.Page
             return invokeBanner;
         }
 
+        protected decimal UsePoints()
+        {
+            var context = new Agp2pDataContext();
+            var usepoints = context.dt_user_point_log.Where(p => p.user_id == userModel.id && p.value < 0).ToList();
+            return usepoints.Aggregate(0m, (sum, a) => sum + a.value);
+        }
+
         /// <summary>
         /// 重写虚方法,此方法在Init事件执行
         /// </summary>

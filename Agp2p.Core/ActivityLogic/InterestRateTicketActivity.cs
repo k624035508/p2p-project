@@ -8,6 +8,7 @@ using Agp2p.Common;
 using Agp2p.Core;
 using Agp2p.Core.Message;
 using Agp2p.Core.Message.PayApiMsg;
+using Agp2p.Core.Message.PayApiMsg.Project;
 using System.Collections.Generic;
 
 namespace Agp2p.Core.ActivityLogic
@@ -140,16 +141,22 @@ namespace Agp2p.Core.ActivityLogic
                 var wallet = p.Key.li_wallets;
                 p.ForEach(atr =>
                 {
-                    // 满标时再计算待收益金额
-                    wallet.profiting_money += atr.value;
-                    wallet.last_update_time = makeLoanTime;
                     //丰付获取收益
                     var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
                     MessageBus.Main.Publish(msg);
-                    // 修改钱包历史
-                    var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Gaining);
-                    his.li_activity_transactions = atr;
-                    context.li_wallet_histories.InsertOnSubmit(his);
+                    var msgResp = BaseRespMsg.NewInstance<HongbaoPayRespMsg>(msg.SynResult);
+                    MessageBus.Main.Publish(msgResp);
+
+                    if (msgResp.HasHandle)
+                    {
+                        // 满标时再计算待收益金额
+                        wallet.profiting_money += atr.value;
+                        wallet.last_update_time = makeLoanTime;
+                        // 修改钱包历史
+                        var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Gaining);
+                        his.li_activity_transactions = atr;
+                        context.li_wallet_histories.InsertOnSubmit(his);
+                    }
                 });
             });
             if (projectAtrs.Any())
