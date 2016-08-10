@@ -122,4 +122,18 @@ window.onload = function () {
     $("#lottery a.weidenglu").click(function() {
         alert("请先登录");
     });
+    var scroll_area = $("ul.scroll-award");
+    var timespan = 2000;
+    var timeID;
+    scroll_area.hover(function () {
+        clearInterval(timeID);
+    }, function () {
+        timeID = setInterval(function () {
+            var moveline = scroll_area.find('li:first');
+            var lineheight = moveline.height();
+            moveline.animate({ marginTop: -lineheight + 'px' }, 1000, function () {
+                moveline.css('marginTop', 0).appendTo(scroll_area);
+            });
+        }, timespan);
+    }).trigger('mouseleave');
 };

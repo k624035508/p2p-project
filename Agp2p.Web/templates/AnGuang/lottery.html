@@ -20,7 +20,7 @@
 
         <div id="lottery">
             <div class="lottery-border">
-                <img  src="<%templateskin%>/imgs/point/donghua.gif" />
+                <img src="<%templateskin%>/imgs/point/donghua.gif"/>
                 <table>
                     <tr>
                         <td class="lottery-unit lottery-unit-0">
@@ -128,15 +128,15 @@
                 <div class="lottery-record">
                     <a class="zhongjiang">中奖纪录</a>
                     <a class="myjiangpin">我的奖品</a>
-                    <ul>
-                        <li>恭喜135**89抽中1积分</li>
-                        <li>恭喜135**89抽中1积分</li>
-                        <li>恭喜135**89抽中1积分</li>
-                        <li>恭喜135**89抽中1积分</li>
-                        <li>恭喜135**89抽中1积分</li>
-                        <li>恭喜135**89抽中1积分</li>
+                    <ul class="list-unstyled scroll-award ">
+                        <%set var jifenRecord=JifenRecord()%>
+                        <%foreach(var dr in jifenRecord)%>
+                        <li>恭喜<%=Utils.GetLotteryNameHidden(dr.user_name)%>抽中<%=dr.value%>积分</li>
+                        <%/foreach%>
                     </ul>
                 </div>
+                <p class="rules">抽奖规则</p>
+                <p class="rule-list">通过本次活动获得的积分仅限在安广融合平台内使用，可以和其他活动中获得积分累积使用。</p>
             </div>
         </div>
 

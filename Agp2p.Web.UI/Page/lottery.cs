@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Services;
+using Agp2p.Common;
+using Agp2p.Core;
+using Agp2p.Linq2SQL;
 using Newtonsoft.Json;
 
 namespace Agp2p.Web.UI.Page
 {
     public partial class lottery: Web.UI.BasePage
     {
-        protected void Page_load(object sender, EventArgs e)
+        protected List<dt_user_point_log> JifenRecord()
         {
-            
+            var context = new Agp2pDataContext();
+            return context.dt_user_point_log.Where(l => l.type==(int)Agp2pEnums.PointEnum.LotteryGet).OrderByDescending(l => l.add_time).Take(9).ToList();
         }
+
         static Random rmd = new Random(); 
         //奖品实体类
         public class JiangPin

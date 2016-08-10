@@ -1687,6 +1687,13 @@ namespace Agp2p.Common
             return user_name;
         }
 
+        public static string GetLotteryNameHidden(string user_name)
+        {
+            if (user_name.Length >= 4)
+                user_name = user_name.Substring(0, 3) + "**" + user_name.Substring(user_name.Length - 2, 2);
+            return user_name;
+        }
+
         public static void ExportXls(string worksheetName, Action<IXLWorksheet> wsAction, HttpResponse httpResponse)
         {
             var workbook = GenXlsForSingleTable(worksheetName, wsAction);

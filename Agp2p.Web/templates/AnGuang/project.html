@@ -43,7 +43,13 @@
         <%/if%>
         <div class="investable-amount-wrap">
             <div class="investable-amount">{Investable.InvestmentBalance}</div>
-            <%if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingSuccess)%>
+            <%if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingAtTime)%>
+            <!--待发标-->
+            <div class="account-balance-empty">
+                <div class="tips">项目将于<%=string.Format("{0:yyyy-MM-dd HH:mm}",projectModel.publish_time)%>开始接受投资</div>
+                <button type="button" class="btn-common empty-btn" disabled>待 发 标</button>
+            </div>
+            <%else if(Investable.Status==Agp2pEnums.ProjectStatusEnum.FinancingSuccess)%>
             <!--满标，审核中-->
             <div class="account-balance-empty">
                 <div class="tips" style="text-align: center">已满标</div>
