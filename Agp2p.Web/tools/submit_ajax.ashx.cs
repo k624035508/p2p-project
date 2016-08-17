@@ -1730,13 +1730,13 @@ namespace Agp2p.Web.tools
             Model.users model = BasePage.GetUserInfo();
             if (model == null)
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"请先登录\"}");
+                context.Response.Write("{\"status\":-1, \"msg\":\"请先登录\"}");
                 return;
             }
             var signLogs = agContext.dt_user_sign_log.Where(s => s.user_id == model.id && s.sign_time == DateTime.Today);
             if (signLogs.Any())
             {
-                var count = Convert.ToInt32(signLogs.Single().sign_count);
+                var count = Convert.ToInt32(signLogs.Single().sign_count)%5;
                 context.Response.Write("{\"status\":\""+count+"\", \"msg\":\"您今天已签到\"}");
             }
             else

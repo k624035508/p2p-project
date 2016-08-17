@@ -18,9 +18,15 @@ $(function() {
             dataType:"JSON",
             url:"/tools/submit_ajax.ashx?action=point_qiandao",
             success: function (data) {
-                if (data.status == 0) {
+                if (data.status == -1) {
                     alert(data.msg);
                 } 
+                else if (data.status == 0) {
+                    $("#signConfirm").modal();                    
+                    $(".signTable>div:lt(5)").addClass("jinbi").removeClass("nojinbi");
+                    $(".signDay:lt(5)").css("color", "#37aaf0");
+                    $(".signTable .signRight:lt(5)").css("display", "inline-block");
+                }
                 else {
                     $("#signConfirm").modal();                    
                     $(".signTable>div:lt("+data.status+")").addClass("jinbi").removeClass("nojinbi");
