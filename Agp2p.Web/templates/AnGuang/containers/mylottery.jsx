@@ -40,7 +40,7 @@ class MyLottery extends React.Component {
 			data: JSON.stringify({pageIndex, pageSize}),
 			success: function(result) {
 				let {totalCount, data, dataGuoqi} = JSON.parse(result.d);
-				this.setState({pageCount: Math.ceil(totalCount / pageSize), data});
+				this.setState({pageCount: Math.ceil(totalCount / pageSize), data, dataGuoqi});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(url, status, err.toString());
@@ -76,8 +76,8 @@ class MyLottery extends React.Component {
                     }
                 {this.state.selectedTabIndex == 1 &&
                     <div className="lottery-list">
-                {this.state.data.length != 0 ? null : <div>暂无可用奖券</div>}
-                {this.state.data.map(l =>                
+                {this.state.dataGuoqi.length != 0 ? null : <div>暂无可用奖券</div>}
+                {this.state.dataGuoqi.map(l =>                
                         (<div className="interest-rate-ticket" key={l.id}>
                             <div className="lottery-title">
                 {l.activity_type == LotteryTypeEnum.InterestRateTicket ? "加息券" : "红包"}
