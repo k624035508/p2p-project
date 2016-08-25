@@ -358,8 +358,10 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
-            var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type)).OrderBy(a => a.status);
+            var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting);
             var totalCount = query.Count();
+
+            var queryGuoqi = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
 
             var data = query.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
             {
@@ -371,7 +373,18 @@ namespace Agp2p.Web.UI.Page
                 a.create_time,
                 a.transact_time,
             });
-            return JsonConvert.SerializeObject(new {totalCount, data});
+
+            var dataGuoqi = queryGuoqi.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
+            {
+                a.id,
+                a.activity_type,
+                a.status,
+                a.value,
+                details = string.IsNullOrWhiteSpace(a.details) ? null : JsonConvert.DeserializeObject(a.details),
+                a.create_time,
+                a.transact_time,
+            });
+            return JsonConvert.SerializeObject(new {totalCount, data, dataGuoqi});
         }
 
         [WebMethod]

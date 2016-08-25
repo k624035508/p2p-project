@@ -1117,10 +1117,12 @@
     <Content Include="templates\AnGuang\imgs\usercenter\account2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\activity1.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\activity2.jpg" />
+    <Content Include="templates\AnGuang\imgs\usercenter\blue.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\close.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-bg.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\current-icon-border.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\funds2.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\grey.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\investing2.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\jia.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\jian.png" />
@@ -1163,6 +1165,7 @@
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\sinaweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\tencentweibo.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\recommend\wechat.png" />
+    <Content Include="templates\AnGuang\imgs\usercenter\red.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\013.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\014.png" />
     <Content Include="templates\AnGuang\imgs\usercenter\safe\015.png" />

@@ -57,23 +57,50 @@
 	.lottery-content {
 		height: 360px;
 		padding-top: 25px;
-		.lottery-list {
+		.lottery-list { width:853px;
 			& > div {
 				display: inline-block;
-				margin: 10px 16px;
+				margin: 10px 60px 40px 0;
 			}
-			.lottery-fail {
-				.lottery-cell;
-				border: @border;
-				.lottery-face .lottery-value { color: @grey; font-size: 20px;}
-				.lottery-state { background: #d2d2d2; }
+			.interest-rate-ticket {
+                background:url("../imgs/usercenter/blue.png") no-repeat;
+				width:220px; height:100px;
+                &>div{display:inline-block; float:left;}
+                .lottery-title{ width:40px; font-size:20px; color:@white; padding-left:13px; line-height:25px; padding-top:10px;}
+                .lottery-face{width:155px; padding-left:19px;
+                              .lottery-value{ margin-bottom:0;
+                                  span{
+                                      color:@blue; font-size:20px;
+                                  }
+                                  span:first-child{ font-size:40px; margin-right:3px;}
+                              }
+                              .use-condition{ margin-bottom:0; margin-top:-3px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                              .use-date{ margin-bottom:0; margin-top:-2px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                }
+                .lottery-state{width:25px; font-size:18px; color:@white; text-align:center; padding-top:12px; }
 			}
-			.lottery-usable {
-				.lottery-cell;
-				border: 1px solid @red;
-				.lottery-face .lottery-value { color: @red; font-size: 20px;}
-				.lottery-state { background: @red; }
-			}
+
+            .hongbao{
+                background:url("../imgs/usercenter/red.png") no-repeat;
+                width:220px; height:100px;
+                &>div{display:inline-block; float:left;}
+                .lottery-title{ width:40px; font-size:20px; color:@white; padding-left:13px; line-height:35px; padding-top:15px;}
+                .lottery-face{width:155px; padding-left:19px;
+                              .lottery-value{ margin-bottom:0;
+                                  span{
+                                      color:@blue; font-size:20px;
+                                  }
+                                  span:first-child{ font-size:40px; margin-right:3px;}
+                              }
+                              .use-condition{ margin-bottom:0; margin-top:-3px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                              .use-date{ margin-bottom:0; margin-top:-2px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                }
+                .lottery-state{width:25px; font-size:18px; color:@white; text-align:center; padding-top:12px; }
+            }
 		}
 		.lottery-history {
 			table {

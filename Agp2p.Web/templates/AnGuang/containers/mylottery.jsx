@@ -19,7 +19,8 @@ class MyLottery extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [],
+		    data: [],
+            dataGuoqi: [],
 			pageIndex: 0,
 			pageCount: 0,
 			selectedTabIndex: 0,
@@ -38,7 +39,7 @@ class MyLottery extends React.Component {
 			url: url,
 			data: JSON.stringify({pageIndex, pageSize}),
 			success: function(result) {
-				let {totalCount, data} = JSON.parse(result.d);
+				let {totalCount, data, dataGuoqi} = JSON.parse(result.d);
 				this.setState({pageCount: Math.ceil(totalCount / pageSize), data});
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -50,25 +51,48 @@ class MyLottery extends React.Component {
 		return(
             <div className="lotteries-wrap">
                 <div className="lottery-th">
-                    {["我的奖券", "历史记录"].map((s, index) =>
+                    {["未使用", "已失效", "历史记录"].map((s, index) =>
                         <span key={index}><a href="javascript:" className={this.state.selectedTabIndex == index ? "active" : null}
                             onClick={ ev => this.setState({ selectedTabIndex: index }) }>{s}</a></span>)}
                 </div>
                 <div className="lottery-content">
                 {this.state.selectedTabIndex == 0 &&
                     <div className="lottery-list">
-                {this.state.data.length != 0 ? null : <div>暂无奖券</div>}
-                {this.state.data.map(l =>
-                        <div className={l.status == LotteryStatusEnum.Acting ? "lottery-usable" : "lottery-fail"} key={l.id}>
-                            <div className="lottery-face">
-                                <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? l.value + "元红包" : l.details.InterestRateBonus+"%加息券"}</p>
-                                <p className="use-condition">使用条件</p>
-                                <p className="use-date">使用期限{l.details.Deadline}</p>
+                {this.state.data.length != 0 ? null : <div>暂无可用奖券</div>}
+                {this.state.data.map(l =>                
+                        (<div className={l.activity_type == LotteryTypeEnum.InterestRateTicket ? "interest-rate-ticket" : "hongbao"} key={l.id}>
+                            <div className="lottery-title">
+                {l.activity_type == LotteryTypeEnum.InterestRateTicket ? "加息券" : "红包"}
                             </div>
-                            <div className="lottery-state">{l.status == LotteryStatusEnum.Acting ? "待使用" : "已使用"}</div>
-                        </div>)}
-                    </div>}
+                            <div className="lottery-face">
+                                <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
+                                <p className="use-condition">投资{l.details.minInvestValue}万元以上可用</p>
+                                <p className="use-date">有效期至{l.details.Deadline}</p>
+                            </div>
+                            <div className="lottery-state">待使用</div>
+                        </div>)
+                        )}
+                    </div>
+                    }
                 {this.state.selectedTabIndex == 1 &&
+                    <div className="lottery-list">
+                {this.state.data.length != 0 ? null : <div>暂无可用奖券</div>}
+                {this.state.data.map(l =>                
+                        (<div className="interest-rate-ticket" key={l.id}>
+                            <div className="lottery-title">
+                {l.activity_type == LotteryTypeEnum.InterestRateTicket ? "加息券" : "红包"}
+                            </div>
+                            <div className="lottery-face">
+                                <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
+                                <p className="use-condition">投资{l.details.minInvestValue}万元以上可用</p>
+                                <p className="use-date">有效期至{l.details.Deadline}</p>
+                            </div>
+                            <div className="lottery-state">待使用</div>
+                        </div>)
+                        )}
+                    </div>
+                    }
+                {this.state.selectedTabIndex == 2 &&
                 <div className="lottery-history">
                     <table className="table">
                         <thead>
@@ -93,8 +117,8 @@ class MyLottery extends React.Component {
                             </tbody>
                         </table>
                     </div>}
-	                <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
-	                    onPageSelected={pageIndex => this.fetchLotteries(pageIndex)}/>
+	            <Pagination pageIndex={this.state.pageIndex} pageCount={this.state.pageCount}
+                    onPageSelected={pageIndex => this.fetchLotteries(pageIndex)}/>    
                 </div>
                 <div className="use-rules-th"><span>使用规则</span></div>
                 <div className="use-rules">
