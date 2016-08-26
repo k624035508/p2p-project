@@ -217,27 +217,47 @@ div.tender-content {
 						& span:first-child { .titleSpan; }
 						.profit { color: @red; }
 					}
-					.pswInput {
-						font-size: @font15;
-						color: @dark-grey;
-						i {
-							.inline-block;
-							margin-right: 8px;
-							font-size: @font15;
-							font-weight: bold;
-							font-style: normal;
-							color: @red;
-						}
-						span { .titleSpan; }
-						input {
-							width: 200px;
-							height: 40px;
-							line-height: 40px;
-							border: @border;
-							border-radius: 4px;
-							padding-left: 10px;
-						}
-					}
+                    .jiangquan{ 
+                        span{font-size:15px; color:#646464;}
+                        ul{      margin:0;        width:100%;             
+                            .interest-rate-ticket{
+                               background:url("../imgs/projects/blue.png") no-repeat; float:left;
+				width:220px; height:100px;
+                &>div{display:inline-block; float:left;}
+                .lottery-title{ width:40px; font-size:20px; color:@white; padding-left:8px; line-height:25px; padding-top:10px;}
+                .lottery-face{width:155px; padding-left:19px;
+                              .lottery-value{ margin-bottom:0;
+                                  span{
+                                      color:@blue; font-size:20px;
+                                  }
+                                  span:first-child{ font-size:40px; margin-right:3px;}
+                              }
+                              .use-condition{ margin-bottom:0; margin-top:-3px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                              .use-date{ margin-bottom:0; margin-top:-2px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                }
+                            }
+                            .hongbao{
+                               background:url("../imgs/projects/red.png") no-repeat; float:left;
+                width:220px; height:100px;
+                &>div{display:inline-block; float:left;}
+                .lottery-title{ width:40px; font-size:20px; color:@white; padding-left:8px; line-height:35px; padding-top:15px;}
+                .lottery-face{width:155px; padding-left:19px;
+                              .lottery-value{ margin-bottom:0;
+                                  span{
+                                      color:@red; font-size:20px;
+                                  }
+                                  span:first-child{ font-size:40px; margin-right:3px;}
+                              }
+                              .use-condition{ margin-bottom:0; margin-top:-3px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                              .use-date{ margin-bottom:0; margin-top:-2px;
+                                  span{font-size:13px; color:@dark-grey;}}
+                }
+                            }
+                        }
+                    }
 					.agreement {
 						font-size: @font13;
 						color: @dark-grey;

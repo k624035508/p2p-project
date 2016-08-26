@@ -113,7 +113,6 @@
                                 <%/if%>
                                 <li><span>还款方式：</span><span><%=projectModel.GetProjectRepaymentTypeDesc()%></span></li>
                                 <li><span>投资金额：</span><span id="investAmount">0.00</span></li>
-                                <!--<li><span>保障方式：</span><span>本金 + 利息</span></li>-->
                             </ul>
                         </div>
                         <div class="profit-wrap">
@@ -124,7 +123,33 @@
                             <%/if%>
                             <span class="profit">0.00</span>
                         </div>
-                        <!--<div class="pswInput"><i>*</i><span>支付密码：</span><input type="password" /></div>-->
+                        <div class="jiangquan">
+                            <span>使用加息券/红包</span>
+                            <ul class="list-unstyled">
+                                <%foreach(var act in actt)%>
+                                <%set var data=(JObject)JsonConvert.DeserializeObject(act.details)%>
+                                <%if(act.activity_type==(int)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket)%>
+                                <li class="interest-rate-ticket">
+                                    <div class="lottery-title">加息券</div>
+                                    <div class="lottery-face">
+                                        <p class="lottery-value"><span><%=data["InterestRateBonus"]%></span><span>%</span></p>
+                                        <p class="use-condition">投资<%=data["minInvestValue"]%>万元以上可用</p>
+                                        <p class="use-date">有效期至<%=data["Deadline"]%></p>
+                                    </div>
+                                </li>
+                                <%else%>
+                                <li class="hongbao">
+                                    <div class="lottery-title">红包</div>
+                                    <div class="lottery-face">
+                                        <p class="lottery-value"><span><%=Convert.ToInt32(act.value)%></span><span>元</span></p>
+                                        <p class="use-condition">投资<%=data["InvestUntil"]%>万元以上可用</p>
+                                        <p class="use-date">有效期至<%=data["Deadline"]%></p>
+                                    </div>
+                                </li>
+                                <%/if%>
+                                <%/foreach%>
+                            </ul>
+                        </div>
                         <div class="agreement"><input type="checkbox" id="agreement"/>
                             <label for="agreement">我已经阅读并同意
                             </label><a id="show-invest-contract" href="javascript:" target="_blank">《投资协议》</a> <span>和 

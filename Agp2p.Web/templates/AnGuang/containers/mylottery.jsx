@@ -78,16 +78,16 @@ class MyLottery extends React.Component {
                     <div className="lottery-list">
                 {this.state.dataGuoqi.length != 0 ? null : <div>暂无可用奖券</div>}
                 {this.state.dataGuoqi.map(l =>                
-                        (<div className="interest-rate-ticket" key={l.id}>
+                        (<div className={l.activity_type == LotteryTypeEnum.InterestRateTicket ? "interest-rate-ticket-guoqi" : "hongbao-guoqi"} key={l.id}>
                             <div className="lottery-title">
                 {l.activity_type == LotteryTypeEnum.InterestRateTicket ? "加息券" : "红包"}
                             </div>
                             <div className="lottery-face">
                                 <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
-                                <p className="use-condition">投资{l.details.minInvestValue}万元以上可用</p>
+                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue : l.details.InvestUntil}万元以上可用</p>
                                 <p className="use-date">有效期至{l.details.Deadline}</p>
                             </div>
-                            <div className="lottery-state">待使用</div>
+                            <div className="lottery-state">已使用</div>
                         </div>)
                         )}
                     </div>

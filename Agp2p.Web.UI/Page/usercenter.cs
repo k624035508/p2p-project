@@ -374,7 +374,7 @@ namespace Agp2p.Web.UI.Page
                 a.transact_time,
             });
 
-            var dataGuoqi = queryGuoqi.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
+            var dataGuoqi = queryGuoqi.OrderByDescending(a => a.create_time).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
             {
                 a.id,
                 a.activity_type,

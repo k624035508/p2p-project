@@ -21,6 +21,7 @@ namespace Agp2p.Web.UI.Page
         Agp2pDataContext context = new Agp2pDataContext();
         protected int project_id;         //项目id
         protected li_projects projectModel;
+        protected List<li_activity_transactions> actt;
         protected Investable Investable;
         protected int invsetorCount = 0;//投资人数
         protected string investmentBalance = string.Empty;//剩余金额
@@ -39,6 +40,12 @@ namespace Agp2p.Web.UI.Page
         protected int page;
         protected int buyClaimId;
 
+        protected static readonly int[] LotteryTypes =
+        {
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao
+        };
+
         /// <summary>
         /// 重写虚方法,此方法将在Init事件前执行
         /// </summary>
@@ -54,7 +61,8 @@ namespace Agp2p.Web.UI.Page
             projectModel = context.li_projects.FirstOrDefault(p => p.id == project_id);
             if (projectModel == null)
             {
-                HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                //HttpContext.Current.Response.Redirect(linkurl("error", "?msg=" + Utils.UrlEncode("出错啦，您要浏览的页面不存在或已删除啦！")));
+                HttpContext.Current.Response.Redirect(linkurl("404"));
                 return;
             }
             li_claims preBuyClaim = null;
@@ -163,6 +171,11 @@ namespace Agp2p.Web.UI.Page
             var user = GetUserInfoByLinq();
             has_email = !string.IsNullOrEmpty(user.email);
             idle_money = user.li_wallets.idle_money;
+            actt =
+                user.li_activity_transactions.Where(
+                    a =>
+                        LotteryTypes.Contains(a.activity_type) &&
+                        a.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting).ToList();
         }
 
         //投标记录
