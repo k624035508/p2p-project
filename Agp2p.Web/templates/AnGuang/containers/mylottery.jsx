@@ -51,7 +51,7 @@ class MyLottery extends React.Component {
 		return(
             <div className="lotteries-wrap">
                 <div className="lottery-th">
-                    {["未使用", "已失效", "历史记录"].map((s, index) =>
+                    {["未使用", "已使用", "历史记录"].map((s, index) =>
                         <span key={index}><a href="javascript:" className={this.state.selectedTabIndex == index ? "active" : null}
                             onClick={ ev => this.setState({ selectedTabIndex: index }) }>{s}</a></span>)}
                 </div>

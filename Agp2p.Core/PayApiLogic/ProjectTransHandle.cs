@@ -53,20 +53,24 @@ namespace Agp2p.Core.PayApiLogic
 #endif                  
                         //查找是否使用了加息券
                         var context = new Agp2pDataContext();
+                        /*TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode,
+                            Utils.StrToDecimal(msg.Sum, 0), msg.RequestId, Convert.ToInt32(ticketId));*/
                         var ticketId = context.li_jiaxiquan_transaction.SingleOrDefault(m => m.requestId == msg.RequestId && m.userId == msg.UserIdIdentity).remarks;
                         //查找对应的交易流水
-                        //var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
-                        //if (trans != null)
-                        //{
-                        //TODO 检查用户资金信息
-                        TransactionFacade.Invest((int)msg.UserIdIdentity, msg.ProjectCode,
-                            Utils.StrToDecimal(msg.Sum, 0), msg.RequestId, Convert.ToInt32(ticketId));
-                        msg.HasHandle = true;
-                        //}
-                        //else
-                        //{
-                        //    msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
-                        //}
+                        var trans = context.li_project_transactions.SingleOrDefault(u => u.no_order == msg.RequestId);
+                        if (trans != null)
+                        {
+                            if (trans.status == (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
+                            {
+                                context.ConfirmProjectTransaction(trans.id, Convert.ToInt32(ticketId));
+                                //TODO 检查用户资金信息
+                                msg.HasHandle = true;
+                            }                                                                     
+                        }
+                        else
+                        {
+                            msg.Remarks = "没有找到平台交易流水记录，交易流水号为：" + msg.RequestId;
+                        }
                     }
                 }
             }

@@ -54,8 +54,8 @@ $(function () {
         var buyClaimId = $investBtn.data()["buyClaimId"];
         var projectSum = $investBtn.data()["projectSum"];
         var projectDescription = $investBtn.data()["projectDescription"];
-        var huoqi  = $investBtn.data()["projectHuoqi"];
-        var ticketId = $investBtn.data()["ticketId"];
+        var huoqi = $investBtn.data()["projectHuoqi"];
+        var ticketId = 0;
 
         $investBtn.click(function () {
             var investBtnData = $investBtn.data();
@@ -109,6 +109,12 @@ $(function () {
 
             // 显示对话框
             $("#investConfirm").modal();
+        });
+
+        //投资选择加息券
+        $(".jiangquan ul li").click(function() {
+            $(this).addClass("selecting").siblings().removeClass("selecting");
+            ticketId = $(this).data()["ticketId"];
         });
 
         // 进行投资操作

@@ -172,6 +172,145 @@ namespace Agp2p.Core
         }
 
         /// <summary>
+        /// 投资（待确认），等待提现成功的通知
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="bankAccountId"></param>
+        /// <param name="withdrawMoney"></param>
+        /// <param name="remark"></param>
+        /// <returns></returns>
+        public static li_project_transactions InvestConfirm(this Agp2pDataContext context, int userId, int projectId, decimal investingMoney, string noOrder = "")
+        {
+            li_project_transactions tr;
+            li_wallets wallet;
+            var investTime = DateTime.Now;
+            using (var ts = new TransactionScope())
+            {
+                var pr = context.li_projects.Single(p => p.id == projectId);
+
+                if ((int)Agp2pEnums.ProjectStatusEnum.Financing != pr.status &&
+                    (int)Agp2pEnums.ProjectStatusEnum.FinancingTimeout != pr.status)
+                    throw new InvalidOperationException("项目不可投资！");
+                // 判断投资金额的数额是否合理
+                var canBeInvest = pr.financing_amount - pr.investment_amount;
+                if (canBeInvest == 0)
+                    throw new InvalidOperationException("项目已经投满");
+                if (canBeInvest < investingMoney)
+                    throw new InvalidOperationException("投资金额 " + investingMoney + " 超出项目可投资金额 " + canBeInvest);
+                if (investingMoney < 100)
+                    throw new InvalidOperationException("投资金额最低 100 元");
+                if (canBeInvest != investingMoney && canBeInvest - investingMoney < 100)
+                    throw new InvalidOperationException($"您投标 {investingMoney} 元后项目的可投金额（{canBeInvest - investingMoney}）低于 100 元，这样下一个人就不能投啦，所以请调整你的投标金额");
+
+
+                // 修改钱包，将金额放到待收资金中，流标后再退回空闲资金
+                wallet = context.li_wallets.Single(w => w.user_id == userId);
+
+                if (wallet.idle_money < investingMoney)
+                    throw new InvalidOperationException("余额不足，无法投资");
+
+                if (pr.IsNewbieProject1())
+                {
+                    throw new InvalidOperationException("新手标第一期已结束。");
+                }
+                // 限制对新手标2期的投资，只能投资 100，只能投 10 万
+                if (pr.IsNewbieProject2())
+                {
+                    if (investingMoney < 100)
+                    {
+                        throw new InvalidOperationException("新手标规定最低只能投 100 元。");
+                    }
+                    if (100000 < wallet.total_investment)
+                    {
+                        throw new InvalidOperationException("对不起，您的累计投资金额已经超过100000，不能再投资新手标！");
+                    }
+                    var newbieProjectInvested = wallet.dt_users.li_project_transactions.Where(tra =>
+                        tra.li_projects.IsNewbieProject2() &&
+                        tra.status == (int)Agp2pEnums.ProjectTransactionStatusEnum.Success &&
+                        tra.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.Invest)
+                        .Aggregate(0m, (sum, ptr) => sum + ptr.principal);
+                    if (100000 < newbieProjectInvested + investingMoney)
+                    {
+                        throw new InvalidOperationException($"新手标累计投资不能超过 100000，您剩余可投 {100000 - newbieProjectInvested}元");
+                    }
+                }
+                else if (pr.IsHuoqiProject()) // 限制对活期项目的投资，最大投 10 w
+                {
+                    var alreadyInvest = wallet.dt_users.li_claims.Where(c =>
+                        c.profitingProjectId == projectId && c.status < (int)Agp2pEnums.ClaimStatusEnum.Completed &&
+                        c.IsLeafClaim())
+                        .Aggregate(0m, (sum, c) => sum + c.principal);
+                    if (100000 < alreadyInvest + investingMoney)
+                    {
+                        throw new InvalidOperationException("对活期项目最多可投 ¥100,000，你目前已投 " + alreadyInvest.ToString("c"));
+                    }
+                }
+
+
+                // 创建投资记录
+                tr = new li_project_transactions
+                {
+                    dt_users = wallet.dt_users,
+                    li_projects = pr,
+                    type = (byte)Agp2pEnums.ProjectTransactionTypeEnum.Invest,
+                    principal = investingMoney,
+                    status = (byte)Agp2pEnums.ProjectTransactionStatusEnum.Pending,
+                    no_order = noOrder,
+                    create_time = investTime // 时间应该一致
+                };
+                context.li_project_transactions.InsertOnSubmit(tr);
+
+                wallet.last_update_time = tr.create_time;
+
+                // 修改钱包历史
+                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+                his.li_project_transactions = tr;
+                context.li_wallet_histories.InsertOnSubmit(his);
+
+                if (pr.IsHuoqiProject())
+                {
+                    if (wallet.dt_users.IsAgent())
+                        throw new InvalidOperationException("中间人不能投资活期项目");
+
+                    // 从中间人手上接手 可转让债权
+                    try
+                    {
+                        BuyHuoqiClaims(context, tr.principal, tr);
+                    }
+                    catch (Exception ex)
+                    {
+                        // throw new Exception("没有足够的项目可投，超出：" + exceed);
+                        ts.Dispose();
+                        // 进行延迟投资
+                        DelayInvestHuoqi(userId, projectId, investingMoney);
+                        
+                    }
+                }
+                else
+                {
+                    // 创建债权
+                    var liClaims = new li_claims
+                    {
+                        li_project_transactions_invest = tr,
+                        createTime = wallet.last_update_time,
+                        projectId = projectId,
+                        principal = investingMoney,
+                        status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                        userId = wallet.user_id,
+                        profitingProjectId = projectId,
+                        number = Utils.HiResNowString
+                    };
+                    context.li_claims.InsertOnSubmit(liClaims);
+                }
+
+                context.SubmitChanges();
+                ts.Complete();
+            }
+            //MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
+            return tr;
+        }
+
+        /// <summary>
         /// 计算站岗手续费（防套现手续费）
         /// </summary>
         /// <param name="context"></param>
@@ -285,6 +424,77 @@ namespace Agp2p.Core
             }
             return tr;
         }
+
+        /// <summary>
+        /// 确认银行交易
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="projectTransactionId"></param>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
+        public static li_project_transactions ConfirmProjectTransaction(this Agp2pDataContext context, int projectTransactionId, int ticketId)
+        {
+            var tr = context.li_project_transactions.Single(p => p.id == projectTransactionId);
+            var pr = context.li_projects.Single(r => r.id == tr.project);
+            var investingMoney = tr.principal;
+            var wallet = context.li_wallets.Single(w => w.user_id == tr.investor);
+
+            if (tr.status != (int) Agp2pEnums.ProjectTransactionStatusEnum.Pending)
+            {
+                throw new InvalidOperationException("该交易已被确认");
+            }
+            tr.status = (int) Agp2pEnums.ProjectTransactionStatusEnum.Success;
+            if (ticketId != 0)
+            {
+                var atr = context.li_activity_transactions.SingleOrDefault(a =>
+                    a.user_id == tr.investor &&
+                    a.id == ticketId);
+                if (atr == null)
+                    throw new InvalidOperationException("找不到该活动券");
+                if (atr.status != (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting)
+                    throw new InvalidOperationException("该活动券不可用");
+                if (atr.activity_type == (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.TrialTicket)
+                {
+                    var ticket = new TrialTicketActivity.TrialTicket(atr);
+                    if (ticket.GetTicketValue() != tr.principal)
+                        throw new InvalidOperationException("投资的金额应等于体验券的面值");
+                    ticket.Use(context, tr.project);
+                }
+                else if (atr.activity_type == (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket)
+                {
+                    var ticket = new InterestRateTicketActivity.InterestRateTicket(atr);
+                    ticket.Use(context, tr.project, tr.principal);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            // 修改项目已投资金额
+            pr.investment_amount += investingMoney;
+
+            // 满标时再计算待收益金额
+            wallet.idle_money -= investingMoney;
+            wallet.unused_money -= Math.Min(investingMoney, wallet.unused_money); // 投资的话优先使用未投资金额，再使用回款金额
+            wallet.investing_money += investingMoney;
+            wallet.total_investment += investingMoney;
+            wallet.last_update_time = DateTime.Now;
+
+            // 修改钱包历史
+            var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
+            his.li_project_transactions = tr;
+            context.li_wallet_histories.InsertOnSubmit(his);
+
+            //如果首次投资，创建首次投资积分记录
+            if (!context.li_project_transactions.Any(p => p.investor == tr.investor))
+            {
+                MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.FirstInvest));
+            }
+            context.SubmitChanges();
+            MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));  //投资送积分
+            return tr;
+        }
+
 
         /// <summary>
         /// 取消银行交易

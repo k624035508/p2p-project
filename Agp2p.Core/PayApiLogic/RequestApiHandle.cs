@@ -102,7 +102,12 @@ namespace Agp2p.Core.PayApiLogic
                             remarks = msg.Remarks
                         };
                         context.li_jiaxiquan_transaction.InsertOnSubmit(jiaxiquan);
+
+                        context.InvestConfirm((int) requestLog.user_id, manualBidReqMsg.ProjectCode,
+                            Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);
+
                         context.SubmitChanges();
+
                         break;
                 }
                 //生成发送报文

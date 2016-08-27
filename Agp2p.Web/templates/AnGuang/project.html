@@ -93,7 +93,7 @@
                         data-idle-money="{idle_money}"
                         data-financing-amount="{Investable.FinancingAmount}"
                         data-total-interest="{Investable.TotalInterest}"
-                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}" data-ticket-id="0"
+                        data-project-id="{projectModel.id}" data-project-sum="{projectSum}" data-project-description="{projectDescription}" 
                         data-project-huoqi="{projectModel.IsHuoqiProject()}"><%=projectModel.IsHuoqiProject()?"转入活期宝":"投资"%></button>
             </div>
             <!-- Modal -->
@@ -124,12 +124,12 @@
                             <span class="profit">0.00</span>
                         </div>
                         <div class="jiangquan">
-                            <span>使用加息券/红包</span>
-                            <ul class="list-unstyled">
+                            <span>使用加息券&nbsp;/&nbsp;红包</span>
+                            <ul class="list-unstyled list-inline">
                                 <%foreach(var act in actt)%>
                                 <%set var data=(JObject)JsonConvert.DeserializeObject(act.details)%>
                                 <%if(act.activity_type==(int)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket)%>
-                                <li class="interest-rate-ticket">
+                                <li class="interest-rate-ticket" data-ticket-id="{act.id}">
                                     <div class="lottery-title">加息券</div>
                                     <div class="lottery-face">
                                         <p class="lottery-value"><span><%=data["InterestRateBonus"]%></span><span>%</span></p>
@@ -138,7 +138,7 @@
                                     </div>
                                 </li>
                                 <%else%>
-                                <li class="hongbao">
+                                <li class="hongbao" data-ticket-id="<%=act.id%>">
                                     <div class="lottery-title">红包</div>
                                     <div class="lottery-face">
                                         <p class="lottery-value"><span><%=Convert.ToInt32(act.value)%></span><span>元</span></p>
