@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/index.bundle.js"></script>
+    <script src="<%templateskin%>/js/jquery-2.1.4.min.js"></script>
+    <script src="<%templateskin%>/js/raphael.js"></script>
+    <script src="<%templateskin%>/js/init.js"></script>
 </head>
 <body>
     <div class="height-100 flex flex--column flex--flex-grow-first">
@@ -38,36 +41,63 @@
                 </div>
             </div>
             <%/if%>
-            <div class="invest-list">
-
-                <!-- 新手标 -->
-                <%set var np = GetFirstNewbieProject()%>
-                <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
-                <div class="invest-project" onclick="location.href='<%=linkurl("project",np.id)%>#project'">
-                    <p class="invest-title new-hand">
-                        <span class="project-type">{np.dt_article_category.title}</span>
-                        {np.title}
-                    </p>
-                    <div class="invest-content flex flex-vertical-align flex--flex-grow-all">
-                        <div class="rate-wrap">
-                            <div class="title-style">预期年化率</div>
-                            <div class="txt-red-s"><span class="txt-red-l"><%=np.profit_rate_year.ToString("f2")%></span> %</div>
-                        </div>
-                        <div class="time-wrap">
-                            <div class="title-style">期限</div>
-                            <div><span class="txt-darkgrey-l">{np.repayment_term_span_count}</span> {np.GetProjectTermSpanEnumDesc()}</div>
-                        </div>
-                        <div class="amount-wrap">
-                            <div class="title-style">可投金额</div>
-                            <div><span class="txt-darkgrey-l"><%=(np.financing_amount-np.investment_amount).ToString("n0")%></span> 元</div>
-                        </div>
-                        <div class="invest-status flex flex-center-wrapper">
-                            <div class="indicatorContainer" data-progress="<%=(np.GetInvestmentProgressPercent()*100)%>"></div>
+            <!--公告-->
+            <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
+            <div class="announce-wrap">
+                <img src="<%templateskin%>/imgs/announce.png"/>
+                <span>
+                    <%if(projectAnnounce!=null)%>
+                    <a href='<%linkurl("article_show",projectAnnounce.id)%>'>
+                        发标公告：<%=projectAnnounce.title.Length>17?projectAnnounce.title.Substring(0, 17)+"...":projectAnnounce.title%>
+                    </a>
+                    <%else%>
+                    <span>暂无内容</span>
+                    <%/if%>
+                </span>
+            </div>
+            <!-- 新手标 -->
+            <%set var np = GetFirstNewbieProject()%>
+            <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
+                <div id="content">
+                    <div id="diagram">
+                        <div class="diagram-content">
+                            <p class="title-style">预期年化率</p>
+                            <p class="rate-style">
+                                <span class="rate-first">
+                                    <span class="newbie-first-rate"><%=np.profit_rate_year.ToString("f2").Substring(0,1)%></span>
+                                    <span class="newbie-second-rate"><%=np.profit_rate_year.ToString("f2").Substring(1,3)%>%</span>
+                                </span>
+                                <span class="new-newbie">
+                                    <span class="newbie-jiaxi">已加息</span>
+                                    <span class="newbie-rate">1.29%</span>
+                                </span>
+                            </p>
+                            <hr/>
+                            <div class="qixian-wrap">
+                                <div class="qixian">
+                                    <p>项目期限</p>
+                                    <p class="tianshu"><span class="txt-darkgrey">{np.repayment_term_span_count}</span> {np.GetProjectTermSpanEnumDesc()}</p>
+                                </div>
+                                <div class="ketou">
+                                    <p>可投金额</p>
+                                    <p class="jine"><span class="txt-darkgrey"><%=(np.financing_amount-np.investment_amount).ToString("n0")%></span> 元</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <%/if%> 
-
+                <div class="get">
+                    <div class="arc">
+                        <input type="hidden" class="percent" value="75"/>
+                        <input type="hidden" class="color" value="#eee"/>
+                    </div>
+                    <div class="arc">
+                        <input type="hidden" class="percent" value="25"/>
+                        <input type="hidden" class="color" value="#1478d2"/>
+                    </div>
+                </div>
+            <%/if%>
+            <div class="invest-list">
                 <%set var totalcount=0%>
                 <%set var investables=QueryInvestables(5,0,out totalcount,60)%>
                 <%foreach(var inv in investables)%>

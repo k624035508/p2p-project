@@ -21,6 +21,7 @@ function loadData(pageIndex, callback) {
     var pageSize = 10;
     var loadingHint = $("#loading-hint");
     var emptyBox = $("div.loading-hint");
+    var newbieBox = $("div.newbie-box");
     loadingHint.text("加载中...");
     loadingHint.show();
     emptyBox.hide();
@@ -39,8 +40,11 @@ function loadData(pageIndex, callback) {
             loadingHint.hide();
             if (pageIndex === 0 && ls.length === 0) {
                 emptyBox.show();
+                newbieBox.hide();
+
             } else {
                 emptyBox.hide();
+                newbieBox.show();
             }
         }
     }).fail(function() {
