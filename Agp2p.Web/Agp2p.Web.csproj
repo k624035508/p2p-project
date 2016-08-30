@@ -1231,6 +1231,7 @@
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\lottery.html" />
     <Content Include="templates\AnGuang\payment.html" />
+    <Content Include="templates\weChat\imgs\001.png" />
     <Content Include="templates\weChat\imgs\announce.png" />
     <Content Include="templates\weChat\imgs\newbie.png" />
     <Content Include="templates\weChat\imgs\right.png" />

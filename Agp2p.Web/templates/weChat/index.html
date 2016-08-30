@@ -59,6 +59,10 @@
             <%set var np = GetFirstNewbieProject()%>
             <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
                 <div id="content">
+                    <div class="newbie-title">
+                        <span>新手标</span>
+                        <img src="<%templateskin%>/imgs/001.png" />
+                    </div>
                     <div id="diagram">
                         <div class="diagram-content">
                             <p class="title-style">预期年化率</p>
@@ -72,7 +76,6 @@
                                     <span class="newbie-rate">1.29%</span>
                                 </span>
                             </p>
-                            <hr/>
                             <div class="qixian-wrap">
                                 <div class="qixian">
                                     <p>项目期限</p>
@@ -85,16 +88,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="get">
-                    <div class="arc">
-                        <input type="hidden" class="percent" value="75"/>
-                        <input type="hidden" class="color" value="#eee"/>
+                    <div class="get">
+                        <div class="arc">
+                            <input type="hidden" class="percent" value="1"/>
+                            <input type="hidden" class="color" value="#eee"/>
+                        </div>
+                        <div class="arc">
+                            <input type="hidden" class="percent" value='<%=(np.investment_amount/np.financing_amount).ToString("f2")%>'/>
+                            <input type="hidden" class="color" value="#1478d2"/>
+                        </div>
                     </div>
-                    <div class="arc">
-                        <input type="hidden" class="percent" value="25"/>
-                        <input type="hidden" class="color" value="#1478d2"/>
-                    </div>
+                    <p class="guize-ruels"><span>100元起投</span><span>限投100,000元</span></p>
+                    <a class="invested" href='<%=linkurl("project",np.id)%>#project'>立即投资</a>
                 </div>
             <%/if%>
             <div class="invest-list">

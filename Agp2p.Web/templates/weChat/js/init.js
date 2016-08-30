@@ -6,14 +6,14 @@ var o = {
 		return Math.floor((Math.random()*(u-l+1))+l);
 	},
 	diagram: function() {
-	    var r = Raphael('diagram', "280", "300"),
-	        rad = 130, //弧度
+	    var r = Raphael('diagram', "280", "250"),
+	        rad = 133, //弧度
 	        defaultText = "123";
 		
 		r.customAttributes.arc = function(value, color, rad) {
-		    var v = 3.6 * value,
+		    var v = 3.6 * value * 70,
 		        alpha = v == 360 ? 360 : v,
-		        random = 270,
+		        random = 215,
 		        
 				a = (random-alpha) * Math.PI/180,
 				b = random * Math.PI/180,

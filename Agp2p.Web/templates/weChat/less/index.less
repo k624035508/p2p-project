@@ -38,39 +38,55 @@ div.reglog-bar a {
         }
 }
 
-#content{height:200px;text-align:center; position:relative;
+#content{text-align:center; position:relative;   background:#fff; padding-top:15px;
+         .newbie-title{       text-align:left;  height:40px;   
+             span{background:#1478d2; color:#fff; font-size:20px; display:inline-block; height:40px; float:left; line-height:40px; margin-right:2px;
+                  padding:0 8px;    
+             }
+             img{height:30px; margin-top:5px; }
+         }
         .diagram-content{ width:100%;
-            position:absolute; top:20px;  z-index:10;
-            .title-style{ font-size:15px; color:#464646;}
-            .rate-style{ margin:0 auto; width:50%;
+            position:absolute; top:85px;  z-index:10;
+            .title-style{ font-size:20px; color:#464646;}
+            .rate-style{ margin:0 auto; width:208px; border-bottom:2px solid #eee; padding-bottom:10px;
                 .rate-first{
                     .newbie-first-rate{
-                        font-size:30px; color:#ff414b;
+                        font-size:35px; color:#ff414b;
                     }
                     .newbie-second-rate{
-                        font-size:15px; color:#ff414b;
+                        font-size:20px; color:#ff414b;
                     }
                 }
                 .new-newbie{
-                float:right;  height:1.5rem;  
+                float:right;  height:1.5rem;   
                 .newbie-jiaxi{ color:#ff414b; float:left;height:1.5rem; line-height:1.5rem; border: 1px solid #ff414b; border-top-left-radius:5px; border-bottom-left-radius:5px; padding:0 2px;}
                 .newbie-rate{color:#fff; background:#ff414b; line-height:1.5rem; float:left; border-top-right-radius:5px; border-bottom-right-radius:5px; padding:0 2px;}
             }
             }
-            hr{margin:0;}
-            .qixian-wrap{
+            .qixian-wrap{ margin-top:20px;
                 .qixian{
-                    display:inline-block; color:#464646;font-size:15px;
-                    .tianshu{font-size:18px; 
-                             .txt-darkgrey{color:#ff414b; font-size:20px;}
+                    display:inline-block; color:#464646;font-size:20px;
+                    p{margin-bottom:0;}
+                    .tianshu{font-size:25px; 
+                             .txt-darkgrey{color:#ff414b; font-size:28px;}
                     }
                 }
                 .ketou{
-                    display:inline-block; color:#464646;font-size:15px; margin-left:10%;
-                    .jine{font-size:18px;
-                          .txt-darkgrey{color:#ff414b;} font-size:20px;
+                    display:inline-block; color:#464646;font-size:20px; margin-left:10%;
+                    p{margin-bottom:0;}
+                    .jine{font-size:25px;
+                          .txt-darkgrey{color:#ff414b; font-size:28px;}
                     }
                 }
             }
+        }
+        .guize-ruels{
+            font-size:20px; color:#aaa; margin-top:-20px;
+            span{padding-left:5px;}
+            span:first-child{ padding-right:5px; border-right:1px solid #aaa;}
+        }
+        .invested{
+            display:inline-block; width:90%; height:40px; font-size:20px; text-align:center; color:#fff;
+            background:#ff414b; line-height:40px; border-radius:20px; margin:0 auto 10px auto; text-decoration:none;
         }
 }
