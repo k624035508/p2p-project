@@ -14,6 +14,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using Agp2p.Core;
 using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -358,11 +359,15 @@ namespace Agp2p.Web.UI.Page
                 return "请先登录";
             }
 
+            //设置奖券过期状态
+            InterestRateTicketActivity.HandleTimerMsg(TimerMsg.Type.AutoRepayTimer, true);
+
             var query = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Acting);
-            var totalCount = query.Count();
+            var queryHaveUsed = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
+            var queryGuoqi = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Cancel);
+            var totalCount = queryHaveUsed.Count();
 
-            var queryGuoqi = userInfo.li_activity_transactions.Where(a => LotteryType.Contains(a.activity_type) && a.status == (int)Agp2pEnums.ActivityTransactionStatusEnum.Confirm);
-
+            //待使用
             var data = query.Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
             {
                 a.id,
@@ -374,6 +379,19 @@ namespace Agp2p.Web.UI.Page
                 a.transact_time,
             });
 
+            //已使用
+            var dataHaveUsed = queryHaveUsed.OrderByDescending(a => a.create_time).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
+            {
+                a.id,
+                a.activity_type,
+                a.status,
+                a.value,
+                details = string.IsNullOrWhiteSpace(a.details) ? null : JsonConvert.DeserializeObject(a.details),
+                a.create_time,
+                a.transact_time,
+            });
+
+            //已过期
             var dataGuoqi = queryGuoqi.OrderByDescending(a => a.create_time).Skip(pageSize * pageIndex).Take(pageSize).AsEnumerable().Select(a => new
             {
                 a.id,
@@ -384,7 +402,8 @@ namespace Agp2p.Web.UI.Page
                 a.create_time,
                 a.transact_time,
             });
-            return JsonConvert.SerializeObject(new {totalCount, data, dataGuoqi});
+
+            return JsonConvert.SerializeObject(new {totalCount, data, dataHaveUsed, dataGuoqi});
         }
 
         [WebMethod]

@@ -15,6 +15,8 @@ namespace Agp2p.Web.UI.Page
         protected int goods_id;
         protected dt_article articleModel;
         protected dt_article_attribute_value articleDetail;
+        protected List<dt_article> jiaxiquanValue;
+
         /// <summary>
         /// 重写父类的虚方法,此方法将在Init事件前执行
         /// </summary>
@@ -29,6 +31,7 @@ namespace Agp2p.Web.UI.Page
                 return;
             }
             articleDetail = articleModel.dt_article_attribute_value;
+            jiaxiquanValue = context.dt_article.Where(a => a.dt_article_category.call_index == "jiaxijuan").ToList();
         }
 
         /// <summary>
