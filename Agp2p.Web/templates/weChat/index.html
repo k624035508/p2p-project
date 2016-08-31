@@ -44,9 +44,8 @@
             <!--公告-->
             <%set var projectAnnounce=GetArticles(54, 1).FirstOrDefault()%>
             <div class="announce-wrap">
-                <img src="<%templateskin%>/imgs/album1.png"/>
-                <img src="<%templateskin%>/imgs/album2.png"/>
-                <img src="<%templateskin%>/imgs/album3.png" />
+                <img src="<%templateskin%>/imgs/album3.png"/>
+                <img src="<%templateskin%>/imgs/album1.svg" />
                 <span>
                     <%if(projectAnnounce!=null)%>
                     <a href='<%linkurl("article_show",projectAnnounce.id)%>'>
