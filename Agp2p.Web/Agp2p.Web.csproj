@@ -1232,6 +1232,8 @@
     <Content Include="templates\AnGuang\lottery.html" />
     <Content Include="templates\AnGuang\payment.html" />
     <Content Include="templates\weChat\imgs\001.png" />
+    <Content Include="templates\weChat\imgs\album1.png" />
+    <Content Include="templates\weChat\imgs\album2.png" />
     <Content Include="templates\weChat\imgs\announce.png" />
     <Content Include="templates\weChat\imgs\newbie.png" />
     <Content Include="templates\weChat\imgs\right.png" />

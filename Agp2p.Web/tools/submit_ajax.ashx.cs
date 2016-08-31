@@ -1225,11 +1225,7 @@ namespace Agp2p.Web.tools
             int addressId = DTRequest.GetFormInt("addressId");
             string message = Utils.ToHtml(DTRequest.GetFormString("message"));
             var userAddr = agContext.dt_user_addr_book.SingleOrDefault(a => a.id == addressId);
-            if (userAddr == null)
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请先选择收获地址。\"}");
-                return;
-            }
+            
             //获取商品信息
             int goodId = DTRequest.GetFormInt("goodId");
             int goodCount = DTRequest.GetFormInt("goodCount");
@@ -1246,23 +1242,31 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询兑换物详细信息出错！请联系客服。\"}");
                 return;
             }
-            //检查收货人
-            if (string.IsNullOrEmpty(userAddr.accept_name))
+            if (goods.dt_article_category.call_index != "jiaxijuan" && goods.dt_article_category.call_index != "hongbao")
             {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人姓名！\"}");
-                return;
-            }
-            //检查手机和电话
-            if (string.IsNullOrEmpty(userAddr.mobile))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人联系电话或手机！\"}");
-                return;
-            }
-            //检查地址
-            if (string.IsNullOrEmpty(userAddr.address))
-            {
-                context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入详细的收货地址！\"}");
-                return;
+                if (userAddr == null)
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"对不起，请先选择收获地址。\"}");
+                    return;
+                }
+                //检查收货人
+                if (string.IsNullOrEmpty(userAddr.accept_name))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人姓名！\"}");
+                    return;
+                }
+                //检查手机和电话
+                if (string.IsNullOrEmpty(userAddr.mobile))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入收货人联系电话或手机！\"}");
+                    return;
+                }
+                //检查地址
+                if (string.IsNullOrEmpty(userAddr.address))
+                {
+                    context.Response.Write("{\"status\":0, \"msg\":\"对不起，请输入详细的收货地址！\"}");
+                    return;
+                }
             }
             //检查积分是否足够
             if (userModel.point < goodFields.point * goodCount)
@@ -1279,11 +1283,11 @@ namespace Agp2p.Web.tools
                 user_name = userModel.user_name,
                 payment_id = 1,
                 express_id = 1,
-                accept_name = userAddr.accept_name,
-                post_code = userAddr.post_code,
-                telphone = userAddr.telphone,
-                mobile = userAddr.mobile,
-                address = userAddr.area + userAddr.address,
+                accept_name = userAddr == null ? "" : userAddr.accept_name,
+                post_code = userAddr == null ? "" : userAddr.post_code,
+                telphone = userAddr == null ? "" : userAddr.telphone,
+                mobile = userAddr == null ? "" : userAddr.mobile,
+                address = userAddr == null ? "" : userAddr.area + userAddr.address,
                 message = message,
                 payable_amount = 0,
                 real_amount = 0,

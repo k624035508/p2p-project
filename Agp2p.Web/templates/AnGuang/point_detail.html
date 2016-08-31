@@ -29,36 +29,51 @@
     <div class="goods-img" style='background: url("<%=articleModel.img_url%>") no-repeat center;'></div>
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
-        <form method="get" action='<%linkurl("add_order")%>' >
+        <%if(articleModel.IsJiaxijuan())%>
+        <form method="get" action='<%linkurl("add_order")%>'>
             <div class="goods">
-                <%if(articleModel.IsJiaxijuan())%>
                 <p class="goods-points">兑换积分：
-                <%foreach(var dr in jiaxiquanValue)%>
-                <span><%=dr.dt_article_attribute_value.point%></span>
-                <%/foreach%>
-                积分
+                    <%foreach(var dr in jiaxiquanValue)%>
+                    <span class="jiaxipoint"><%=dr.dt_article_attribute_value.point%></span>
+                    <%/foreach%>
+                    积分
                 </p>
-                <div id="xiaomiType" data-stock="<%=articleDetail.stock_quantity%>"
-                     data-title="<%=articleModel.title%>"></div>
-                
+                <div id="xiaomiType"
+                     data-stock="<%=articleDetail.stock_quantity%>"
+                     data-title="<%=articleModel.title%>">
+
+                </div>
+
                 <div class="IsJiaxijuan">
                     <span>属性：</span>
                     <ul class="list-unstyled list-inline type-jiaxijuan">
-
-                        <li>限投2万</li>
-                        <li>限投5万</li>
-                        <li>限投10万</li>
+                        <%foreach(var dr in jiaxiquanValue)%>
+                        <li class='<%=dr.id==goods_id?"selectJiaxi":""%>' id="<%=dr.id%>">限投<%=dr.dt_article_attribute_value.point_limit%>万</li>
+                        <%/foreach%>
                     </ul>
                 </div>
-                <%/if%>
-                <input type="hidden" name="id" value="<%=goods_id%>">
+                <input type="hidden" name="id" id="jiaxiquanId" value="<%=goods_id%>">
             </div>
-            <%if(_userModel==null)%>
-            <a href="javascript:" class="duihuanLogin">立即兑换</a>
-            <%else%>
-            <input type="submit" value="立即兑换" class="duihuan" />
-            <%/if%>
+            <input type="submit" value="立即兑换" class="duihuan"/>
         </form>
+        <%else%>
+        <form method="get" action='<%linkurl("add_order")%>'>
+            <div class="goods">
+                <p class="goods-points">
+                    兑换积分：
+                    <span class="jiaxipoint"><%=articleDetail.point%></span>
+                    积分
+                </p>
+                <div id="xiaomiType"
+                     data-stock="<%=articleDetail.stock_quantity%>"
+                     data-title="<%=articleModel.title%>">
+
+                </div>
+                <input type="hidden" name="id" id="jiaxiquanId" value="<%=goods_id%>">
+            </div>
+            <input type="submit" value="立即兑换" class="duihuan" />
+        </form>
+        <%/if%>
     </div>
 </div>
 

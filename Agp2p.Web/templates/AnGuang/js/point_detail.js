@@ -64,14 +64,14 @@ class XiaomiType extends React.Component {
 }
 
 $(function () {
-    header.setHeaderHighlight(3);
-    ReactDom.render(<XiaomiType />, document.getElementById("xiaomiType"));
-    $("ul.type-jiaxijuan li").click(function() {
+        header.setHeaderHighlight(3);
+        ReactDom.render(<XiaomiType />, document.getElementById("xiaomiType"));
+        var index = $("ul.type-jiaxijuan li").index($(".selectJiaxi"));
+        $(".jiaxipoint").eq(index).show().siblings().hide();        
+        $("ul.type-jiaxijuan li").click(function() {
         $(this).addClass("selectJiaxi").siblings().removeClass("selectJiaxi");
-    });
-    $(".duihuanLogin").click(function () {
-        alert("请先登录", () => {
-            location.href = "login.html";
-        });
+        index = $("ul.type-jiaxijuan li").index($(this));
+        $(".jiaxipoint").eq(index).show().siblings().hide();
+        $("#jiaxiquanId").val($(this).attr("id"));
     });
 });

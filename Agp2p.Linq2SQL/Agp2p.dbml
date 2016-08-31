@@ -399,8 +399,8 @@
       <Column Name="seo_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="seo_description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="dt_article_category_li_projects" Member="li_projects" ThisKey="id" OtherKey="category_id" Type="li_projects" />
       <Association Name="dt_article_category_dt_article" Member="dt_article" ThisKey="id" OtherKey="category_id" Type="dt_article" />
+      <Association Name="dt_article_category_li_projects" Member="li_projects" ThisKey="id" OtherKey="category_id" Type="li_projects" />
     </Type>
   </Table>
   <Table Name="dbo.li_notification_settings" Member="li_notification_settings">
@@ -822,24 +822,6 @@
       <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.dt_article_attribute_value" Member="dt_article_attribute_value">
-    <Type Name="dt_article_attribute_value">
-      <Column Name="article_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="sub_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="source" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="goods_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="stock_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
-      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="jiaxijuan" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
-      <Column Name="hongbao" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="point_month" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="isVirtual" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.dt_order_goods" Member="dt_order_goods">
     <Type Name="dt_order_goods">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -904,6 +886,25 @@
       <Column Name="sign_time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="sign_count" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
       <Association Name="dt_users_dt_user_sign_log" Member="dt_users" ThisKey="user_id" OtherKey="id" Type="dt_users" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_article_attribute_value" Member="dt_article_attribute_value">
+    <Type Name="dt_article_attribute_value">
+      <Column Name="article_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sub_title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="source" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="goods_no" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="stock_quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
+      <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="jiaxijuan" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="hongbao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="point_month" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isVirtual" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="point_limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

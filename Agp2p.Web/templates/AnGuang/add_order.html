@@ -24,7 +24,11 @@
             <span>核对商品信息</span>
         </div>
 
-        <div id="orderConfirm"></div>
+
+<div id="orderConfirm"
+     class='<%=articleModel.dt_article_category.call_index == "jiaxijuan"||articleModel.dt_article_category.call_index=="hongbao"?"hidden":""%>'
+     ></div>
+
         
             <div class="order-content">
                  <p class="bill">商品清单</p>
@@ -49,7 +53,13 @@
                            <%=articleDetail.point%>
                     </td>
                     <td>
-                            <%=order_type_zh%>
+                        <%=order_type_zh%>
+                        <%if(articleModel.dt_article_category.call_index=="jiaxijuan")%>
+                        限投<%=articleDetail.point_limit%>万
+                        <%/if%>
+                        <%if(articleModel.dt_article_category.call_index=="hongbao")%>
+                        有效期：1个月
+                        <%/if%>
                     </td>
                     <td>
                           <%=order_count%>

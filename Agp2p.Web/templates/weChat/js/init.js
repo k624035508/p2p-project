@@ -6,8 +6,8 @@ var o = {
 		return Math.floor((Math.random()*(u-l+1))+l);
 	},
 	diagram: function() {
-	    var r = Raphael('diagram', "280", "250"),
-	        rad = 133, //弧度
+	    var r = Raphael('diagram', "260", "210"),
+	        rad = 120, //弧度
 	        defaultText = "123";
 		
 		r.customAttributes.arc = function(value, color, rad) {

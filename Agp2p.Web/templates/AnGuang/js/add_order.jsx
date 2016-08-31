@@ -24,6 +24,7 @@ $(function () {
     const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
     const store = createStoreWithMiddleware(userCenter);
 
+
     ReactDom.render((
         <Provider store={store}>
             <Router>
@@ -31,7 +32,7 @@ $(function () {
             </Router>
         </Provider>
         ), document.getElementById("orderConfirm"));
-        header.setHeaderHighlight(3);  
+    header.setHeaderHighlight(3);  
 
     $(".adding").click(function(){
         var addressId = $(".xuanzhong .addressIdInfo").val();
