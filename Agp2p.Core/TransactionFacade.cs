@@ -262,10 +262,7 @@ namespace Agp2p.Core
 
                 wallet.last_update_time = tr.create_time;
 
-                // 修改钱包历史
-                var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
-                his.li_project_transactions = tr;
-                context.li_wallet_histories.InsertOnSubmit(his);
+                
 
                 if (pr.IsHuoqiProject())
                 {
@@ -491,6 +488,7 @@ namespace Agp2p.Core
                 MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.FirstInvest));
             }
             context.SubmitChanges();
+            MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
             MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));  //投资送积分
             return tr;
         }

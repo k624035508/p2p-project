@@ -40,11 +40,9 @@ function loadData(pageIndex, callback) {
             loadingHint.hide();
             if (pageIndex === 0 && ls.length === 0) {
                 emptyBox.show();
-                newbieBox.hide();
 
             } else {
                 emptyBox.hide();
-                newbieBox.hide();
             }
         }
     }).fail(function() {

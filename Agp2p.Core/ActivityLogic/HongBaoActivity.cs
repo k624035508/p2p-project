@@ -166,7 +166,7 @@ namespace Agp2p.Core.ActivityLogic
             {10m, 100m},
         };
 
-        public static void GiveUser(int userId, int expireAfterDays = 365)
+        public static void GiveUser(int userId, int expireAfterDays = 15)
         {
             var context = new Agp2pDataContext();
 

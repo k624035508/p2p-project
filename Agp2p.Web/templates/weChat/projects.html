@@ -67,11 +67,11 @@
 <div class="height-100 flex flex--column flex--flex-grow-second">
     <div class="invest-nav">
         <!--<a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>-->
-        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>定期专区<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",0)%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部<span class="divider">|</span></a>
         <!--<a href='<%linkurl("projects",claimsCategoryId)%>' class='<%=claimsCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
         <a href='<%linkurl("projects",huoqiCategoryId)%>' class='<%=huoqiCategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a> -->
-        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
-        <a href='<%linkurl("projects",newbie2CategoryId)%>' class='<%=newbie2CategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>定期专区<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",newbie2CategoryId)%>' class='<%=newbie2CategoryId==category_id?"nav-active nav-border-active":""%>'>新手标<span class="divider">|</span></a>
     </div>
     <div class="invest-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div id="pending">
