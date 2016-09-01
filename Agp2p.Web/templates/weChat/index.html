@@ -57,7 +57,7 @@
             </div>
             <!-- 新手标 -->
             <%set var np = GetFirstNewbieProject()%>
-            <%if(np!=null&&np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing)%>
+            
                 <div id="content">
                     <div class="newbie-title">
                         <span>新手标</span>
@@ -94,14 +94,24 @@
                             <input type="hidden" class="color" value="#eee"/>
                         </div>
                         <div class="arc">
-                            <input type="hidden" class="percent" value='<%=(np.investment_amount/np.financing_amount).ToString("f2")%>'/>
+                            <input type="hidden" class="percent" value='<%=np.GetInvestmentProgressPercent()%>'/>
                             <input type="hidden" class="color" value="#1478d2"/>
                         </div>
                     </div>
                     <p class="guize-ruels"><span>100元起投</span><span>限投100,000元</span></p>
+                    <%if(np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingAtTime) %>
+                    <a class="invested-cancel" href='<%=linkurl("project",np.id)%>#project'>待发标</a>
+                    <%else if(np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.Financing) %>
                     <a class="invested" href='<%=linkurl("project",np.id)%>#project'>立即投资</a>
+                    <%else if(np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingTimeout||np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.FinancingSuccess) %>
+                    <a class="invested-cancel" href='<%=linkurl("project",np.id)%>#project'>审核中</a>
+                    <%else if(np.status==(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.ProjectRepaying) %>
+                    <a class="invested-cancel" href='<%=linkurl("project",np.id)%>#project'>还款中</a>
+                    <%else if(np.status>=(int)Agp2p.Common.Agp2pEnums.ProjectStatusEnum.RepayCompleteIntime) %>
+                    <a class="invested-cancel" href='<%=linkurl("project",np.id)%>#project'>已结束</a>
+                    <%/if%>
                 </div>
-            <%/if%>
+            
             <div class="invest-list">
                 <%set var totalcount=0%>
                 <%set var investables=QueryInvestables(5,0,out totalcount,60)%>

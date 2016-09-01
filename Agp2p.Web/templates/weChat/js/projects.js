@@ -44,7 +44,7 @@ function loadData(pageIndex, callback) {
 
             } else {
                 emptyBox.hide();
-                newbieBox.show();
+                newbieBox.hide();
             }
         }
     }).fail(function() {
