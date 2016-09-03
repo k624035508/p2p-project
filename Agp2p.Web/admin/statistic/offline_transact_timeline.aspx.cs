@@ -109,6 +109,10 @@ namespace Agp2p.Web.admin.statistic
                 {
                     summaryRechange.outcome = tr.trg.Sum(t => t.outcome);
                 }
+                if (tr.trg.Key == Utils.GetAgp2pEnumDes(Agp2pEnums.OfflineTransactionTypeEnum.UserAuthFee))
+                {
+                    summaryRechange.outcome = tr.trg.Sum(t => t.outcome);
+                }
                 else
                 {
                     summaryRechange.income = tr.trg.Sum(t => t.income);

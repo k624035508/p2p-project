@@ -163,7 +163,7 @@ namespace Agp2p.Core.ActivityLogic
 
         private static readonly Dictionary<decimal, decimal> HongbaoActivateMoneyMap = new Dictionary<decimal, decimal>
         {
-            {10m, 100m},
+            {10m, 200m},
         };
 
         public static void GiveUser(int userId, int expireAfterDays = 15)

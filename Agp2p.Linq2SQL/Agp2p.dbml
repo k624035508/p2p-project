@@ -899,11 +899,11 @@
       <Column Name="market_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
       <Column Name="sell_price" Type="System.Decimal" DbType="Decimal(9,2)" CanBeNull="true" />
       <Column Name="point" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="jiaxijuan" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
       <Column Name="hongbao" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="point_month" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="isVirtual" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="point_limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="jiaxijuan" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
     </Type>
   </Table>

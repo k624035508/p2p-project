@@ -1342,7 +1342,7 @@ namespace Agp2p.Web.tools
                     {
                         HongBaoActivity.GiveUser(userModel.id);
                     }
-                    if (Convert.ToInt32(goodFields.jiaxijuan) != 0)
+                    if (Convert.ToInt32(goodFields.jiaxijuan) != 0 )
                     {
                         InterestRateTicketActivity.GiveUser(userModel.id, 1, 100, 1);
                     }

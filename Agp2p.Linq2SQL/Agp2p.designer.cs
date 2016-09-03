@@ -20276,8 +20276,6 @@ namespace Agp2p.Linq2SQL
 		
 		private System.Nullable<int> _point;
 		
-		private string _jiaxijuan;
-		
 		private System.Nullable<int> _hongbao;
 		
 		private System.Nullable<int> _point_month;
@@ -20285,6 +20283,8 @@ namespace Agp2p.Linq2SQL
 		private System.Nullable<byte> _isVirtual;
 		
 		private System.Nullable<int> _point_limit;
+		
+		private System.Nullable<int> _jiaxijuan;
 		
 		private EntityRef<dt_article> _dt_article;
 		
@@ -20310,8 +20310,6 @@ namespace Agp2p.Linq2SQL
     partial void Onsell_priceChanged();
     partial void OnpointChanging(System.Nullable<int> value);
     partial void OnpointChanged();
-    partial void OnjiaxijuanChanging(string value);
-    partial void OnjiaxijuanChanged();
     partial void OnhongbaoChanging(System.Nullable<int> value);
     partial void OnhongbaoChanged();
     partial void Onpoint_monthChanging(System.Nullable<int> value);
@@ -20320,6 +20318,8 @@ namespace Agp2p.Linq2SQL
     partial void OnisVirtualChanged();
     partial void Onpoint_limitChanging(System.Nullable<int> value);
     partial void Onpoint_limitChanged();
+    partial void OnjiaxijuanChanging(System.Nullable<int> value);
+    partial void OnjiaxijuanChanged();
     #endregion
 		
 		public dt_article_attribute_value()
@@ -20512,26 +20512,6 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_jiaxijuan", DbType="NVarChar(5)")]
-		public string jiaxijuan
-		{
-			get
-			{
-				return this._jiaxijuan;
-			}
-			set
-			{
-				if ((this._jiaxijuan != value))
-				{
-					this.OnjiaxijuanChanging(value);
-					this.SendPropertyChanging();
-					this._jiaxijuan = value;
-					this.SendPropertyChanged("jiaxijuan");
-					this.OnjiaxijuanChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hongbao", DbType="Int")]
 		public System.Nullable<int> hongbao
 		{
@@ -20608,6 +20588,26 @@ namespace Agp2p.Linq2SQL
 					this._point_limit = value;
 					this.SendPropertyChanged("point_limit");
 					this.Onpoint_limitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_jiaxijuan", DbType="Int")]
+		public System.Nullable<int> jiaxijuan
+		{
+			get
+			{
+				return this._jiaxijuan;
+			}
+			set
+			{
+				if ((this._jiaxijuan != value))
+				{
+					this.OnjiaxijuanChanging(value);
+					this.SendPropertyChanging();
+					this._jiaxijuan = value;
+					this.SendPropertyChanged("jiaxijuan");
+					this.OnjiaxijuanChanged();
 				}
 			}
 		}
