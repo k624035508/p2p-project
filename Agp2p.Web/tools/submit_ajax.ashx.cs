@@ -1340,11 +1340,11 @@ namespace Agp2p.Web.tools
                 {
                     if (goodFields.hongbao != 0)
                     {
-                        HongBaoActivity.GiveUser(userModel.id);
+                        HongBaoActivity.GiveUser(userModel.id, Convert.ToDecimal(goodFields.hongbao), Convert.ToDecimal(goodFields.point_month)*1000);
                     }
                     if (Convert.ToInt32(goodFields.jiaxijuan) != 0 )
                     {
-                        InterestRateTicketActivity.GiveUser(userModel.id, 1, 100, 1);
+                        InterestRateTicketActivity.GiveUser(userModel.id, 1, Convert.ToDecimal(goodFields.point_limit)*10000, 1);
                     }
                 }
                 //兑换成功，返回URL
@@ -1761,7 +1761,7 @@ namespace Agp2p.Web.tools
                 agContext.SubmitChanges();
                 if (signCount % 5 == 1)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 1)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 28)
                     {
                         Remark = "第一天签到"
                     };
@@ -1771,7 +1771,7 @@ namespace Agp2p.Web.tools
                 }
                 if (signCount % 5 == 2)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 2)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 38)
                     {
                         Remark = "第二天签到"
                     };
@@ -1781,7 +1781,7 @@ namespace Agp2p.Web.tools
                 }
                 if (signCount % 5 == 3)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 3)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 68)
                     {
                         Remark = "第三天签到"
                     };
@@ -1791,7 +1791,7 @@ namespace Agp2p.Web.tools
                 }
                 if (signCount % 5 == 4)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 4)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 88)
                     {
                         Remark = "第四天签到"
                     };
@@ -1801,7 +1801,7 @@ namespace Agp2p.Web.tools
                 }
                 if (signCount % 5 == 0)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 5)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 100)
                     {
                         Remark = "第五天签到"
                     };

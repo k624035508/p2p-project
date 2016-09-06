@@ -166,26 +166,26 @@ namespace Agp2p.Core.ActivityLogic
             {10m, 200m},
         };
 
-        public static void GiveUser(int userId, int expireAfterDays = 15)
+        public static void GiveUser(int userId, decimal hongbaoValue, decimal hongbaoLimit, int expireAfterDays = 15)
         {
             var context = new Agp2pDataContext();
 
             var useTime = DateTime.Now;
-            var trs = HongbaoActivateMoneyMap.Select(m => new li_activity_transactions
+            var trs =  new li_activity_transactions
             {
                 user_id = userId,
                 create_time = useTime,
-                value = m.Key,
+                value = hongbaoValue,
                 details = JsonConvert.SerializeObject(new
                 {
                     Deadline = useTime.AddDays(expireAfterDays).ToString("yyyy-MM-dd"),
-                    InvestUntil = m.Value
+                    InvestUntil = hongbaoLimit
                 }),
                 type = (byte)Agp2pEnums.ActivityTransactionTypeEnum.Gain,
                 status = (byte)Agp2pEnums.ActivityTransactionStatusEnum.Acting,
                 activity_type = (byte)Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao,
-            });
-            context.li_activity_transactions.InsertAllOnSubmit(trs);
+            };
+            context.li_activity_transactions.InsertOnSubmit(trs);
             context.SubmitChanges();
         }
 

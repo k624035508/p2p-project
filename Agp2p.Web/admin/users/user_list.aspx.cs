@@ -190,7 +190,7 @@ namespace Agp2p.Web.admin.users
             ChkAdminLevel("user_list", DTEnums.ActionEnum.GiveHongBao.ToString()); //检查权限
             var registerId = Utils.StrToInt(((LinkButton)sender).CommandArgument, 0);
             try {
-                HongBaoActivity.GiveUser(registerId, 7);
+                HongBaoActivity.GiveUser(registerId, 10 , 100, 7);
                 JscriptMsg("赠送注册新用户红包成功！", "../users/user_list.aspx");
             }
             catch(Exception ex)
