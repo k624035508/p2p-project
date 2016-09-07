@@ -27,7 +27,12 @@
         <div>兑换数量：<span><%=queryOrder().quantity%></span></div>
         <div><span class="title">已付积分：</span><span><%=queryOrder().point%></span></div>
         <div>剩余积分：<span><%=queryUser().point%></span></div>
+        <%if(virtualValue()==0)%>
         <p class="kefu">客服将尽快与您联系，联系后将在1-3个工作日内发货，请您耐心等待！</p>
+        <%/if%>
+        <%if(virtualValue()==1)%>
+        <p class="kefu">请到我的账户->奖励管理->我的奖券里进行查收！</p>
+        <%/if%>
         <a class="continue" href='<%linkurl("point")%>'>继续兑换</a>
         <a href='<%linkurl("usercenter","index")%>#/mylottery'>我的奖券</a>
     </div>

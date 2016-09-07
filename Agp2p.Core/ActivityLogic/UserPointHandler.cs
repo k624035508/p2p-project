@@ -25,34 +25,34 @@ namespace Agp2p.Core.ActivityLogic
             switch (userPointMsg.Type)
             {
                 case (int)Agp2pEnums.PointEnum.Register:
-                    userPointMsg.Point = 100;
+                    userPointMsg.Point = 38;
                     userPointMsg.Remark = "注册送积分";
                     break;
                 case (int)Agp2pEnums.PointEnum.RealNameAuth:
-                    userPointMsg.Point = 50;
+                    userPointMsg.Point = 38;
                     userPointMsg.Remark = "实名认证";
                     break;
                 case (int)Agp2pEnums.PointEnum.BindingEmail:
-                    userPointMsg.Point = 50;
+                    userPointMsg.Point = 28;
                     userPointMsg.Remark = "绑定邮箱";
                     break;
                 case (int)Agp2pEnums.PointEnum.BindingBank:
-                    userPointMsg.Point = 50;
+                    userPointMsg.Point = 38;
                     userPointMsg.Remark = "绑定银行卡";
                     break;
                 case (int)Agp2pEnums.PointEnum.Recharge:
                     userPointMsg.Point = 50;
                     break;
                 case (int)Agp2pEnums.PointEnum.Invest:
-                    userPointMsg.Point = 50;
+                    
                     userPointMsg.Remark = "投资";
                     break;
                 case (int)Agp2pEnums.PointEnum.FirstInvest:
-                    userPointMsg.Point = 50;
+                    userPointMsg.Point = 368;
                     userPointMsg.Remark = "首次投资";
                     break;
                 case (int)Agp2pEnums.PointEnum.InviteRegister:
-                    userPointMsg.Point = 50;
+                    userPointMsg.Point = 888;
                     break;
                 case (int)Agp2pEnums.PointEnum.InviteInvest:
                     userPointMsg.Point = 50;
@@ -61,7 +61,7 @@ namespace Agp2p.Core.ActivityLogic
                     userPointMsg.Remark = "积分抽奖获取积分";
                     break;
                 case (int)Agp2pEnums.PointEnum.Lottery:
-                    userPointMsg.Point = -10;
+                    userPointMsg.Point = -80;
                     userPointMsg.Remark = "积分抽奖消耗";
                     break;
             }

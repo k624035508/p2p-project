@@ -285,19 +285,7 @@ namespace Agp2p.Core
                 }
                 else
                 {
-                    // 创建债权
-                    var liClaims = new li_claims
-                    {
-                        li_project_transactions_invest = tr,
-                        createTime = wallet.last_update_time,
-                        projectId = projectId,
-                        principal = investingMoney,
-                        status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
-                        userId = wallet.user_id,
-                        profitingProjectId = projectId,
-                        number = Utils.HiResNowString
-                    };
-                    context.li_claims.InsertOnSubmit(liClaims);
+                    
                 }
 
                 context.SubmitChanges();
@@ -477,6 +465,20 @@ namespace Agp2p.Core
             wallet.total_investment += investingMoney;
             wallet.last_update_time = DateTime.Now;
 
+            // 创建债权
+            var liClaims = new li_claims
+            {
+                li_project_transactions_invest = tr,
+                createTime = wallet.last_update_time,
+                projectId = tr.project,
+                principal = investingMoney,
+                status = (byte)Agp2pEnums.ClaimStatusEnum.Nontransferable,
+                userId = wallet.user_id,
+                profitingProjectId = tr.project,
+                number = Utils.HiResNowString
+            };
+            context.li_claims.InsertOnSubmit(liClaims);
+
             // 修改钱包历史
             var his = CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Invest);
             his.li_project_transactions = tr;
@@ -489,7 +491,8 @@ namespace Agp2p.Core
             }
             context.SubmitChanges();
             MessageBus.Main.Publish(new UserInvestedMsg(tr.id, wallet.last_update_time)); // 广播用户的投资消息
-            MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest));  //投资送积分
+
+            MessageBus.Main.Publish(new UserPointMsg(tr.investor, wallet.dt_users.user_name, (int)Agp2pEnums.PointEnum.Invest, (int)investingMoney * 28 / 100));  //投资送积分
             return tr;
         }
 

@@ -70,7 +70,7 @@ class MyLottery extends React.Component {
                                 <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue : l.details.InvestUntil}元以上可用</p>
                                 <p className="use-date">有效期至{l.details.Deadline}</p>
                             </div>
-                            <div className="lottery-state">待使用</div>
+                            <div className="lottery-state">待使用</div> 
                         </div>)
                         )}
                     </div>

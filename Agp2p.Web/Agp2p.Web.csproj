@@ -1015,6 +1015,7 @@
     <Content Include="templates\AnGuang\imgs\point\gift.png" />
     <Content Include="templates\AnGuang\imgs\point\greyJinbi.png" />
     <Content Include="templates\AnGuang\imgs\point\jinbi.png" />
+    <Content Include="templates\AnGuang\imgs\point\lottery2.gif" />
     <Content Include="templates\AnGuang\imgs\point\lotteryBg.png" />
     <Content Include="templates\AnGuang\imgs\point\lotteryRecord.png" />
     <Content Include="templates\AnGuang\imgs\point\orderSuccess.png" />
@@ -1027,6 +1028,8 @@
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />
+    <Content Include="templates\AnGuang\imgs\projects\010.png" />
+    <Content Include="templates\AnGuang\imgs\projects\011.png" />
     <Content Include="templates\AnGuang\imgs\projects\blue.png" />
     <Content Include="templates\AnGuang\imgs\projects\red.png" />
     <Content Include="templates\AnGuang\imgs\register\001-hover.png" />

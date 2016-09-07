@@ -29,6 +29,13 @@ namespace Agp2p.Web.UI.Page
             return orderGoods;
         }
 
+        protected byte? virtualValue()
+        {
+            var goodsId = queryOrder().goods_id;
+            var context = new Agp2pDataContext();
+            return context.dt_article.SingleOrDefault(a => a.id == goodsId).dt_article_attribute_value.isVirtual;
+        }
+
         protected dt_users queryUser()
         {
             var context = new Agp2pDataContext();

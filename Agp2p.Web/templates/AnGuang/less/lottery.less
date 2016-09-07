@@ -6,30 +6,30 @@ body{
 }
 
 #lottery{
-    height:1029px;background:url("@{point}/lotteryBg.png"); padding-top:75px; margin-bottom:-25px;
+    height:1029px;background:url("@{point}/lotteryBg.png") no-repeat center; padding-top:75px; margin-bottom:-25px;
     table{
-        position:absolute; top:35px; left:35px; z-index:99;
+        position:absolute; top:35px; left:135px; z-index:99;
         td{
             width:120px;height:123px;text-align:center; display:inline-block;margin-right:4px; border-radius:5px; float:left; background:#eb9e1e;
             &>div{
                 width:100%; height:120px; padding-top:17px; background:#fff1d0; border-radius:5px;
             }
-            a{display:block;text-decoration:none; width:220px; height:52px; background:#d73c00; border-radius:5px; margin:26px auto 8px auto;
+            a{display:block;text-decoration:none; width:105px; height:52px; background:#d73c00; border-radius:5px; margin:26px auto 8px auto;
               &>span{display:block; height:48px; width:100%; border-radius:5px; background:#ff5918; font-size:20px; color:@white; line-height:48px; font-weight:bold;}
             } 
             p{font-size:37px;color:@blue; font-weight:500; margin-bottom:0;}
             p.jifen{font-size:20px; font-weight:normal;}      
             .use-jifen{font-size:@font13; color:#ff5918; }    
         }
-        .choujiang{ width:368px; height:120px; background:#ffe346}
+        .choujiang{ width:120px; height:120px; background:#ffe346}
         .active{background:#ff5918;
             &>div{background:@white;}
             }
     }
     .lottery-border{
-        width:1100px; height:629px; position:relative; margin:196px auto 0 auto;
+        width:1100px; height:629px; position:relative; margin:196px auto 0 auto; padding-left:100px;
         .lottery-record{
-            display:inline-block; float:right;
+            display:inline-block; float:right; margin-right:100px;
             width:380px; height:438px; background:url("@{point}/lotteryRecord.png");
             .zhongjiang{font-size:18px; color:@white; font-weight:bold; text-decoration:none; margin-top:14px; display:inline-block; margin-left:81px;}
             .myjiangpin{font-size:18px; color:@white; text-decoration:none; margin-top:14px; display:inline-block; margin-left:70px;}

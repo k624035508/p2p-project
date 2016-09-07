@@ -18,6 +18,7 @@ var lottery = {
     cycle: 50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
     prize: -1,    //中奖位置
     name:0,      //中奖积分
+    status:0,    //运行状态
     init: function () {
         if ($("#lottery").find(".lottery-unit").length > 0) {
             var $lottery = $("#lottery");
@@ -113,14 +114,25 @@ window.onload = function () {
         if (click) {
             return false;
         } else {
-            lottery.speed = 100;    
-            roll();
-            click = true;
-            return false;
+            $.ajax({
+                type: "post",
+                dataType:"JSON",
+                url:"/tools/submit_ajax.ashx?action=point_lottery_check",                
+                success: function (data) {
+                    if (data.status == 0) {
+                        alert(data.msg);
+                    } else {
+                        lottery.speed = 100;    
+                        roll();
+                        click = true;
+                        return false;
+                    }
+                },
+                error:function(xhr, status, error) {
+                    alert("操作超时，请重试");
+                }
+            });           
         }
-    });
-    $("#lottery a.weidenglu").click(function() {
-        alert("请先登录");
     });
     var scroll_area = $("ul.scroll-award");
     var timespan = 2000;

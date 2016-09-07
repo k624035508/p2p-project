@@ -121,7 +121,10 @@ namespace Agp2p.Web.tools
                 case "user_password_edit": //修改密码
                     user_password_edit(context);
                     break;
-                case "point_lottery": //积分抽奖
+                case "point_lottery_check": //积分抽奖前检查状态
+                    point_lottery_check(context);
+                    break;
+                case "point_lottery":  //积分抽奖
                     point_lottery(context);
                     break;
                 case "point_qiandao": //积分签到
@@ -1702,6 +1705,26 @@ namespace Agp2p.Web.tools
         #endregion
 
         #region  积分抽奖======================
+        private void point_lottery_check(HttpContext context)
+        {
+            //检查用户是否登录
+            Model.users model = BasePage.GetUserInfo();
+            if (model == null)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"请先登录\"}");
+                return;
+            }
+            //检查积分是否足够
+            if (model.point < 80)
+            {
+                context.Response.Write("{\"status\":0, \"msg\":\"对不起，您的积分不足\"}");
+                return;
+            }
+            context.Response.Write("{\"status\":1, \"msg\":\"抽奖检查完成\"}");
+        }
+        #endregion
+
+        #region  积分抽奖======================
         private void point_lottery(HttpContext context)
         {
             //检查用户是否登录
@@ -1712,15 +1735,15 @@ namespace Agp2p.Web.tools
                 return;
             }
             //检查积分是否足够
-            if (model.point < 10)
+            if (model.point < 80)
             {
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，您的积分不足\"}");
                 return;
             }
-            var msg = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.Lottery);
+            var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Lottery);
             MessageBus.Main.Publish(msg);
             int getPoints = DTRequest.GetFormInt("getPoints");
-            var msg2 = new UserPointMsg(model.id, model.user_name, (int) Agp2pEnums.PointEnum.LotteryGet, getPoints);
+            var msg2 = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.LotteryGet, getPoints);
             MessageBus.Main.Publish(msg2);
             context.Response.Write("{\"status\":1, \"msg\":\"抽奖完成\"}");
         }
