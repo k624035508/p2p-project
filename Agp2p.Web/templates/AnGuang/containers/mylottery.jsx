@@ -67,7 +67,9 @@ class MyLottery extends React.Component {
                             </div>
                             <div className="lottery-face">
                                 <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
-                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue : l.details.InvestUntil}元以上可用</p>
+                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue/10000 + "万元以下" 
+                                :
+                                l.details.InvestUntil + "元以上"}可用</p>
                                 <p className="use-date">有效期至{l.details.Deadline}</p>
                             </div>
                             <div className="lottery-state">待使用</div> 
@@ -85,7 +87,9 @@ class MyLottery extends React.Component {
                             </div>
                             <div className="lottery-face">
                                 <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
-                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue : l.details.InvestUntil}万元以上可用</p>
+                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue/10000 + "万元以下" 
+                                :
+                                l.details.InvestUntil + "元以上"}可用</p>
                                 <p className="use-date">有效期至{l.details.Deadline}</p>
                             </div>
                             <div className="lottery-state">已使用</div>
@@ -103,7 +107,9 @@ class MyLottery extends React.Component {
                             </div>
                             <div className="lottery-face">
                                 <p className="lottery-value">{l.activity_type == LotteryTypeEnum.HongBao ? <span>{l.value}元</span> : <span>{l.details.InterestRateBonus}%</span>}</p>
-                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue : l.details.InvestUntil}万元以上可用</p>
+                                <p className="use-condition">投资{l.activity_type == LotteryTypeEnum.InterestRateTicket ? l.details.minInvestValue/10000 + "万元以下" 
+                                :
+                                l.details.InvestUntil + "元以上"}可用</p>
                                 <p className="use-date">有效期至{l.details.Deadline}</p>
                             </div>
                             <div className="lottery-state">已过期</div>

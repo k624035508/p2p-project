@@ -109,11 +109,19 @@ $(function () {
 
             // 显示对话框
             $("#investConfirm").modal();
+            for(var i=0;i<$(".jiangquan ul li.interest-rate-ticket").length;i++){
+                if($("#investAmount-input").val() > $(".jiangquan ul li.interest-rate-ticket").eq(i).data()["qitou"])
+                    $(".jiangquan ul li.interest-rate-ticket").eq(i).addClass("hidden").siblings().removeClass("hidden");
+            }
         });
 
         //投资选择加息券
-        $(".jiangquan ul li").click(function() {
-            $(this).addClass("selecting").siblings().removeClass("selecting");
+        $(".jiangquan ul .interest-rate-ticket").click(function() {
+            $(this).addClass("selecting-rate").siblings().removeClass("selecting-rate").removeClass("selecting-hongbao");
+            ticketId = $(this).data()["ticketId"];
+        });
+        $(".jiangquan ul .hongbao").click(function() {
+            $(this).addClass("selecting-hongbao").siblings().removeClass("selecting-rate").removeClass("selecting-hongbao");
             ticketId = $(this).data()["ticketId"];
         });
 

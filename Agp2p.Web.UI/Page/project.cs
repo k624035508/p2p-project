@@ -10,6 +10,8 @@ using System.Web;
 using Agp2p.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Agp2p.Core.ActivityLogic;
+using Agp2p.Core.Message;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -167,6 +169,9 @@ namespace Agp2p.Web.UI.Page
         {
             //客户余额
             if (!IsUserLogin()) return;
+
+            //设置奖券过期状态
+            InterestRateTicketActivity.HandleTimerMsg(TimerMsg.Type.AutoRepayTimer, true);
 
             var user = GetUserInfoByLinq();
             has_email = !string.IsNullOrEmpty(user.email);

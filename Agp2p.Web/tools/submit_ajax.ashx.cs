@@ -1324,21 +1324,24 @@ namespace Agp2p.Web.tools
                 return;
             }
 
+            //扣分
+            var msg = new UserPointMsg(userModel.id, userModel.user_name, (int)Agp2pEnums.PointEnum.Exchange,
+                    -goodFields.point.GetValueOrDefault(0) * goodCount)
+            {
+                Remark = "积分换购，订单号：" + model.order_no
+            };
+            MessageBus.Main.Publish(msg);
+
             //减少库存
             goodFields.stock_quantity = goodFields.stock_quantity - goodCount;
             agContext.SubmitChanges();
 
-            //如果是虚拟物直接扣除积分
+            
             if (goodFields.isVirtual.GetValueOrDefault(0) == 1)
             {
                 //TODO 生成虚拟物并绑定会员
 
-                var msg = new UserPointMsg(userModel.id, userModel.user_name, (int)Agp2pEnums.PointEnum.Exchange,
-                    -goodFields.point.GetValueOrDefault(0) * goodCount)
-                {
-                    Remark = "积分换购，订单号：" + model.order_no
-                };
-                MessageBus.Main.Publish(msg);
+                
                 for (int i = 0; i < goodCount; i++)
                 {
                     if (goodFields.hongbao != 0)

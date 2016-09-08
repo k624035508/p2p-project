@@ -129,16 +129,16 @@
                                 <%foreach(var act in actt)%>
                                 <%set var data=(JObject)JsonConvert.DeserializeObject(act.details)%>
                                 <%if(act.activity_type==(int)Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket)%>
-                                <li class="interest-rate-ticket" data-ticket-id="{act.id}">
+                                <li class="interest-rate-ticket" data-ticket-id="{act.id}" data-qitou='<%=data["minInvestValue"]%>'>
                                     <div class="lottery-title">加息券</div>
                                     <div class="lottery-face">
                                         <p class="lottery-value"><span><%=data["InterestRateBonus"]%></span><span>%</span></p>
-                                        <p class="use-condition">投资<%=data["minInvestValue"]%>元以上可用</p>
+                                        <p class="use-condition">投资<%=data["minInvestValue"]%>元以下可用</p>
                                         <p class="use-date">有效期至<%=data["Deadline"]%></p>
                                     </div>
                                 </li>
                                 <%else%>
-                                <li class="hongbao" data-ticket-id="<%=act.id%>">
+                                <li class="hongbao" data-ticket-id="0">
                                     <div class="lottery-title">红包</div>
                                     <div class="lottery-face">
                                         <p class="lottery-value"><span><%=Convert.ToInt32(act.value)%></span><span>元</span></p>

@@ -27,11 +27,11 @@
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><span>加息券</span><span>提现券</span></p>
+                <p><span>加息券</span></p>
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><span>加息券</span><span>提现券</span></p>
+                <p><span>加息券</span></p>
             </div>
             <div class="banner-code">
                 <p>关注微信公众号</p>
@@ -39,7 +39,9 @@
                 <img src="<%templateskin%>/imgs/point/code.png"/>
             </div>
         </div>
-        <div class="banner-img"></div>
+        <div class="banner-img">
+            <img  src="<%=QueryMallBanner().First().file_path%>" />
+        </div>
         <div class="banner-right">
             <div class="content-body">
                 <%if(_userModel==null)%>
