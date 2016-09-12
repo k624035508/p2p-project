@@ -22,6 +22,7 @@ namespace Agp2p.Web.UI.Page
         protected string order_type_zh;
         protected dt_article articleModel;
         protected dt_article_attribute_value articleDetail;
+        protected dt_article_albums articleAlbums;
 
         /// <summary>
         /// 重写父类的虚方法,此方法将在Init事件前执行
@@ -35,6 +36,7 @@ namespace Agp2p.Web.UI.Page
             order_type_zh = order_type == "ag" ? "银色" : order_type == "gold" ? "金色" : order_type == "red" ? "红色" : " ";
             articleModel = context.dt_article.SingleOrDefault(a => a.id == goods_id);
             articleDetail = articleModel.dt_article_attribute_value;
+            articleAlbums = context.dt_article_albums.Where(a => a.article_id == goods_id && a.remark.Contains("结算")).FirstOrDefault();
         }
 
         /// <summary>

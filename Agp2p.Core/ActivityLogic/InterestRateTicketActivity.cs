@@ -141,22 +141,13 @@ namespace Agp2p.Core.ActivityLogic
                 var wallet = p.Key.li_wallets;
                 p.ForEach(atr =>
                 {
-                    //丰付获取收益
-                    var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
-                    MessageBus.Main.Publish(msg);
-                    var msgResp = BaseRespMsg.NewInstance<HongbaoPayRespMsg>(msg.SynResult);
-                    MessageBus.Main.Publish(msgResp);
-
-                    if (msgResp.HasHandle)
-                    {
                         // 满标时再计算待收益金额
                         wallet.profiting_money += atr.value;
                         wallet.last_update_time = makeLoanTime;
                         // 修改钱包历史
                         var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.Gaining);
                         his.li_activity_transactions = atr;
-                        context.li_wallet_histories.InsertOnSubmit(his);
-                    }
+                        context.li_wallet_histories.InsertOnSubmit(his);                    
                 });
             });
             if (projectAtrs.Any())
@@ -182,17 +173,27 @@ namespace Agp2p.Core.ActivityLogic
                 var wallet = userTickets.Key.li_wallets;
                 userTickets.ForEach(atr =>
                 {
-                    atr.remarks = "加息券收益";
-                    atr.transact_time = projectCompleteTime;
+                    //丰付获取收益
+                    var msg = new HongbaoPayReqMsg(atr.user_id, atr.value);
+                    MessageBus.Main.Publish(msg);
+                    var msgResp = BaseRespMsg.NewInstance<HongbaoPayRespMsg>(msg.SynResult);
+                    MessageBus.Main.Publish(msgResp);
 
-                    wallet.profiting_money -= atr.value;
-                    wallet.idle_money += atr.value;
-                    wallet.total_profit += atr.value;
-                    wallet.last_update_time = projectCompleteTime;
+                    if (msgResp.HasHandle)
+                    {
 
-                    var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
-                    his.li_activity_transactions = atr;
-                    context.li_wallet_histories.InsertOnSubmit(his);
+                        atr.remarks = "加息券收益";
+                        atr.transact_time = projectCompleteTime;
+
+                        wallet.profiting_money -= atr.value;
+                        wallet.idle_money += atr.value;
+                        wallet.total_profit += atr.value;
+                        wallet.last_update_time = projectCompleteTime;
+
+                        var his = TransactionFacade.CloneFromWallet(wallet, Agp2pEnums.WalletHistoryTypeEnum.GainConfirm);
+                        his.li_activity_transactions = atr;
+                        context.li_wallet_histories.InsertOnSubmit(his);
+                    }
                 });
             });
 

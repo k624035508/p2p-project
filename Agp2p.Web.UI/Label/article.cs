@@ -235,6 +235,15 @@ namespace Agp2p.Web.UI
                 .Take(pageSize)
                 .AsEnumerable();
         }
+
+        //查询商品图片
+        protected dt_article_albums GetIndexAlbums(int articleId)
+        {
+            var context = new Agp2pDataContext();
+            var albums = context.dt_article_albums.Where(a => a.article_id == articleId && a.remark.Contains("商城首页")).FirstOrDefault();
+            return albums;
+        }
+
         //查询虚拟券
         protected dt_article GetXuniquan()
         {

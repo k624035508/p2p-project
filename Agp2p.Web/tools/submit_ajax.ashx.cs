@@ -1590,7 +1590,7 @@ namespace Agp2p.Web.tools
                         context.Response.Write("{\"status\":1, \"url\":\"/api/payment/sumapay/index.aspx?api=" + reqApi
                                                + "&userId=" + user.id + "&projectCode=" + projectId + "&sum=" +
                                                investingAmount + "&projectSum=" + projectSum + "&projectDescription=" +
-                                               projectDescription + "&backUrl = " + backUrl + "\"}");
+                                               projectDescription + "&ticketId=" + ticketId + "&backUrl = " + backUrl + "\"}");
                     }
                 }
             }
