@@ -23,6 +23,12 @@ namespace Agp2p.Web.UI.Page
             lottery_status = DTRequest.GetQueryInt("lottery_status");
         }
 
+        private static readonly int[] LotteryType =
+        {
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao,
+            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.InterestRateTicket
+        };
+
         private readonly Dictionary<int, Func<li_activity_transactions, Dictionary<string, string>>> typeSourceMap = new Dictionary
             <int, Func<li_activity_transactions, Dictionary<string, string>>>
         {
@@ -32,23 +38,16 @@ namespace Agp2p.Web.UI.Page
                     //{ "lottery-value", "￥" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("Value").ToString("F0") },
                     {"lottery-value", atr.value.ToString("f0") + "元" },
                     {"lottery-spec", "积分商城兑换"},
-                    {"lottery-source", "新手注册送体验券"},
-                    {"lottery-condition", "只可用于投资新手标"},
-                    {
-                        "lottery-valid-time", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting
-                            ? atr.create_time.ToString("yy/MM/dd") + "-" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("Deadline").ToString("yy/MM/dd")
-                            : (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm
-                                ? "于 " + Convert.ToDateTime(QueryDetails(atr, "RepayTime")).ToString("yyyy.MM.dd") + " 收益"
-                                : "已过期")
+                    {"lottery-source", "红包"},
+                    {"lottery-condition", "投资" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<decimal>("InvestUntil") + "元以上可用"},
+                    {"lottery-valid-time", 
+                             "有效期至" + ((JObject) JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("Deadline").ToString("yyyy-MM-dd")                            
                     }
                 }
             },
         };
 
-        private static readonly int[] LotteryType =
-        {
-            (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao
-        };
+        
         protected List<Dictionary<string, string>> QueryLottery()
         {
             var context = new Agp2pDataContext();
@@ -60,12 +59,15 @@ namespace Agp2p.Web.UI.Page
             return query.AsEnumerable().Select(atr => new Dictionary<string, string>
             {
                 { "lottery-face-class", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting ? "lottery-face" : "lottery-face-grey" },
-                {
-                    "lottery-valid-time", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting
-                        ? "长期有效"
-                        : (atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Confirm ? "已使用" : "已过期")
-                }
-            }.Merge(typeSourceMap[atr.activity_type](atr))).ToList();
+                { "lottery-spec", "积分商城兑换" },
+                { "lottery-valid-time", "有效期至" + ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("Deadline").ToString("yyyy-MM-dd") },
+                { "lottery-condition", atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao ?
+                    "投资" + ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<int>("InvestUntil") + "元以上可用" :
+                    "投资" + ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<int>("minInvestValue")/10000 + "万元以下可用"
+                },
+                {"lottery-source", atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao ? "红包" : "加息券"},
+                { "lottery-value", atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao ? (int)atr.value + "元" : "1%" }
+            }).ToList();
         }
 
         protected static string QueryDetails(li_activity_transactions tr, string key, string defVal = "")
