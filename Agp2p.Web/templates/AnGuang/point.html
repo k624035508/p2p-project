@@ -178,7 +178,12 @@
                 <p class="xuni-quan-content-p3">剩余数量：<%=b.dt_article_attribute_value.stock_quantity%>个</p>
                 <a class="xuni-quan-content-p4" href='<%linkurl("point_detail",b.id)%>'>兑换</a>
             </div>
-            <a href='<%linkurl("point_detail",b.id)%>'><img src="<%=b.img_url%>" /></a>
+            <a href='<%linkurl("point_detail",b.id)%>'>
+                <%set var albums=GetIndexAlbums(b.id)%>
+                <%if(albums!=null)%>
+                <img src="<%=albums.thumb_path%>" />
+                <%/if%>
+            </a>
         </div>
         <%/foreach%>
     </div>

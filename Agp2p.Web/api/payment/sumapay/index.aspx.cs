@@ -134,8 +134,9 @@ namespace Agp2p.Web.api.payment.sumapay
                     if (!CheckUserLogin(out user)) return;
                     reqMsg = new ManualBidReqMsg(user.id,
                         DTRequest.GetQueryInt("projectCode"), DTRequest.GetQueryString("sum"),
-                        DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"),
+                        DTRequest.GetQueryString("projectSum"), DTRequest.GetQueryString("projectDescription"), DTRequest.GetQueryInt("ticketId"),
                         DTRequest.GetQueryString("backUrl"), requestApi == (int) Agp2pEnums.SumapayApiEnum.McBid);
+                    reqMsg.Remarks = DTRequest.GetQueryString("ticketId");
                     break;
                 //个人/企业 存管账户还款普通/集合项目 TODO Remarks移动到RequestApiHandle处理
                 case (int)Agp2pEnums.SumapayApiEnum.MaRep:

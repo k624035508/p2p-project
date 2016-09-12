@@ -42,7 +42,7 @@ namespace Agp2p.Core.Message.PayApiMsg
             Collective = collective;
         }
 
-        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, string backUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
+        public ManualBidReqMsg(int userId, int projectCode, string sum, string projectSum, string projectDescription, int ticketId, string backUrl, bool collective = false, string giftFlag = "", string subledgerList = "")
         {
             UserId = userId;
             ProjectCode = projectCode;

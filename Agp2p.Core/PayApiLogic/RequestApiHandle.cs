@@ -91,6 +91,7 @@ namespace Agp2p.Core.PayApiLogic
                         break;
 
                     case (int)Agp2pEnums.SumapayApiEnum.MaBid:
+                    case (int)Agp2pEnums.SumapayApiEnum.MaBiM:
                         //投资
                         var manualBidReqMsg = (ManualBidReqMsg) msg;
                         //TransactionFacade.Invest((int)requestLog.user_id, Utils.StrToInt(manualBidReqMsg.ProjectCode, 0), Utils.StrToDecimal(manualBidReqMsg.Sum, 0), manualBidReqMsg.RequestId);

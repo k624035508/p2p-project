@@ -26,7 +26,11 @@
 </div>
 
 <div class="goodsBuy">
-    <div class="goods-img" style='background: url("<%=articleModel.img_url%>") no-repeat center;'></div>
+    <%if detailAlbums==null%>
+    <div class="goods-img"></div>
+    <%else%>
+    <div class="goods-img" style='background: url("<%=detailAlbums.thumb_path%>") no-repeat center;'></div>
+    <%/if%>
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
         <%if(articleModel.IsJiaxijuan())%>

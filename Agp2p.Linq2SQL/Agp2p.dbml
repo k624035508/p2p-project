@@ -278,6 +278,7 @@
       <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="update_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="dt_article_dt_article_attribute_value" Member="dt_article_attribute_value" ThisKey="id" OtherKey="article_id" Type="dt_article_attribute_value" Cardinality="One" />
+      <Association Name="dt_article_dt_article_albums" Member="dt_article_albums" ThisKey="id" OtherKey="article_id" Type="dt_article_albums" />
       <Association Name="dt_article_category_dt_article" Member="dt_article_category" ThisKey="category_id" OtherKey="id" Type="dt_article_category" IsForeignKey="true" />
     </Type>
   </Table>
@@ -905,6 +906,17 @@
       <Column Name="point_limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="jiaxijuan" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="dt_article_dt_article_attribute_value" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.dt_article_albums" Member="dt_article_albums">
+    <Type Name="dt_article_albums">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="article_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="thumb_path" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="original_path" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="remark" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="add_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="dt_article_dt_article_albums" Member="dt_article" ThisKey="article_id" OtherKey="id" Type="dt_article" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -45,7 +45,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><img src="<%=articleModel.img_url%>" /></td>
+                    <td>
+                        <%if(articleAlbums!=null)%>
+                        <img src="<%=articleAlbums.thumb_path%>" />
+                        <%/if%>
+                    </td>
                     <td>
                            <%=articleModel.title%>
                     </td>

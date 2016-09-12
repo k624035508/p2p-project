@@ -189,6 +189,9 @@ namespace Agp2p.Linq2SQL
     partial void Insertdt_article_attribute_value(dt_article_attribute_value instance);
     partial void Updatedt_article_attribute_value(dt_article_attribute_value instance);
     partial void Deletedt_article_attribute_value(dt_article_attribute_value instance);
+    partial void Insertdt_article_albums(dt_article_albums instance);
+    partial void Updatedt_article_albums(dt_article_albums instance);
+    partial void Deletedt_article_albums(dt_article_albums instance);
     #endregion
 		
 		public Agp2pDataContext(string connection) : 
@@ -644,6 +647,14 @@ namespace Agp2p.Linq2SQL
 			get
 			{
 				return this.GetTable<dt_article_attribute_value>();
+			}
+		}
+		
+		public System.Data.Linq.Table<dt_article_albums> dt_article_albums
+		{
+			get
+			{
+				return this.GetTable<dt_article_albums>();
 			}
 		}
 	}
@@ -6056,6 +6067,8 @@ namespace Agp2p.Linq2SQL
 		
 		private EntityRef<dt_article_attribute_value> _dt_article_attribute_value;
 		
+		private EntitySet<dt_article_albums> _dt_article_albums;
+		
 		private EntityRef<dt_article_category> _dt_article_category;
 		
     #region 可扩展性方法定义
@@ -6119,6 +6132,7 @@ namespace Agp2p.Linq2SQL
 		public dt_article()
 		{
 			this._dt_article_attribute_value = default(EntityRef<dt_article_attribute_value>);
+			this._dt_article_albums = new EntitySet<dt_article_albums>(new Action<dt_article_albums>(this.attach_dt_article_albums), new Action<dt_article_albums>(this.detach_dt_article_albums));
 			this._dt_article_category = default(EntityRef<dt_article_category>);
 			OnCreated();
 		}
@@ -6676,6 +6690,19 @@ namespace Agp2p.Linq2SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_dt_article_albums", Storage="_dt_article_albums", ThisKey="id", OtherKey="article_id")]
+		public EntitySet<dt_article_albums> dt_article_albums
+		{
+			get
+			{
+				return this._dt_article_albums;
+			}
+			set
+			{
+				this._dt_article_albums.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_category_dt_article", Storage="_dt_article_category", ThisKey="category_id", OtherKey="id", IsForeignKey=true)]
 		public dt_article_category dt_article_category
 		{
@@ -6728,6 +6755,18 @@ namespace Agp2p.Linq2SQL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_dt_article_albums(dt_article_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_article = this;
+		}
+		
+		private void detach_dt_article_albums(dt_article_albums entity)
+		{
+			this.SendPropertyChanging();
+			entity.dt_article = null;
 		}
 	}
 	
@@ -20640,6 +20679,229 @@ namespace Agp2p.Linq2SQL
 					else
 					{
 						this._article_id = default(int);
+					}
+					this.SendPropertyChanged("dt_article");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.dt_article_albums")]
+	public partial class dt_article_albums : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private System.Nullable<int> _article_id;
+		
+		private string _thumb_path;
+		
+		private string _original_path;
+		
+		private string _remark;
+		
+		private System.Nullable<System.DateTime> _add_time;
+		
+		private EntityRef<dt_article> _dt_article;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void Onarticle_idChanging(System.Nullable<int> value);
+    partial void Onarticle_idChanged();
+    partial void Onthumb_pathChanging(string value);
+    partial void Onthumb_pathChanged();
+    partial void Onoriginal_pathChanging(string value);
+    partial void Onoriginal_pathChanged();
+    partial void OnremarkChanging(string value);
+    partial void OnremarkChanged();
+    partial void Onadd_timeChanging(System.Nullable<System.DateTime> value);
+    partial void Onadd_timeChanged();
+    #endregion
+		
+		public dt_article_albums()
+		{
+			this._dt_article = default(EntityRef<dt_article>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_article_id", DbType="Int")]
+		public System.Nullable<int> article_id
+		{
+			get
+			{
+				return this._article_id;
+			}
+			set
+			{
+				if ((this._article_id != value))
+				{
+					if (this._dt_article.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onarticle_idChanging(value);
+					this.SendPropertyChanging();
+					this._article_id = value;
+					this.SendPropertyChanged("article_id");
+					this.Onarticle_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_thumb_path", DbType="NVarChar(255)")]
+		public string thumb_path
+		{
+			get
+			{
+				return this._thumb_path;
+			}
+			set
+			{
+				if ((this._thumb_path != value))
+				{
+					this.Onthumb_pathChanging(value);
+					this.SendPropertyChanging();
+					this._thumb_path = value;
+					this.SendPropertyChanged("thumb_path");
+					this.Onthumb_pathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_original_path", DbType="NVarChar(255)")]
+		public string original_path
+		{
+			get
+			{
+				return this._original_path;
+			}
+			set
+			{
+				if ((this._original_path != value))
+				{
+					this.Onoriginal_pathChanging(value);
+					this.SendPropertyChanging();
+					this._original_path = value;
+					this.SendPropertyChanged("original_path");
+					this.Onoriginal_pathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_remark", DbType="NVarChar(500)")]
+		public string remark
+		{
+			get
+			{
+				return this._remark;
+			}
+			set
+			{
+				if ((this._remark != value))
+				{
+					this.OnremarkChanging(value);
+					this.SendPropertyChanging();
+					this._remark = value;
+					this.SendPropertyChanged("remark");
+					this.OnremarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_add_time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> add_time
+		{
+			get
+			{
+				return this._add_time;
+			}
+			set
+			{
+				if ((this._add_time != value))
+				{
+					this.Onadd_timeChanging(value);
+					this.SendPropertyChanging();
+					this._add_time = value;
+					this.SendPropertyChanged("add_time");
+					this.Onadd_timeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="dt_article_dt_article_albums", Storage="_dt_article", ThisKey="article_id", OtherKey="id", IsForeignKey=true)]
+		public dt_article dt_article
+		{
+			get
+			{
+				return this._dt_article.Entity;
+			}
+			set
+			{
+				dt_article previousValue = this._dt_article.Entity;
+				if (((previousValue != value) 
+							|| (this._dt_article.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._dt_article.Entity = null;
+						previousValue.dt_article_albums.Remove(this);
+					}
+					this._dt_article.Entity = value;
+					if ((value != null))
+					{
+						value.dt_article_albums.Add(this);
+						this._article_id = value.id;
+					}
+					else
+					{
+						this._article_id = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("dt_article");
 				}

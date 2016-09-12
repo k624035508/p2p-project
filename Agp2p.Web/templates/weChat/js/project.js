@@ -38,11 +38,14 @@ function initPage(){
         // 初始化投资确认对话框
         let $investingValueInput = $(".invest-action input");
         var investingValue = Number($investingValueInput.val());
-        if (investingValue <= 0 || (buyClaimId === 0 && investingValue % 1 !== 0)) {
+        if (investingValue <= 0 || (buyClaimId == 0 && investingValue % 1 != 0)) {
             $.dialog.tips("请输入正整数");
             return;
         } else if (idleMoney < investingValue) {
             $.dialog.tips("您的余额不足 " + investingValue + " 元");
+            return;
+        } else if (investingValue < 100){
+            $.dialog.tips("投资金额需大于100");
             return;
         }
         var dlg = $("#dlgInvestConfirm");
