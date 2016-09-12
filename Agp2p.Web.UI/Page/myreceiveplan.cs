@@ -142,14 +142,17 @@ namespace Agp2p.Web.UI.Page
 
             var stat = (Agp2pEnums.MyInvestRadioBtnTypeEnum) projectStatus;
             // 查出投资过的项目
-            var query = context.li_claims.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any());
+            var query = context.li_claims.Where(c => c.userId == userInfo.id && c.status < (int) Agp2pEnums.ClaimStatusEnum.Transferred && !c.Children.Any()
+                && c.li_projects.status != (int)Agp2pEnums.ProjectStatusEnum.FinancingFail);
+            //TODO 临时性修复已完成的债权没有生成完成记录的bug
             if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.RepayComplete)
             {
-                query = query.Where(c => (int) Agp2pEnums.ClaimStatusEnum.Completed <= c.status);
+                query = query.Where(c => (int) Agp2pEnums.ClaimStatusEnum.Completed <= c.status || c.li_projects.complete_time != null);
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Repaying)
             {
-                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.li_projects.make_loan_time != null);
+                query = query.Where(c => c.status < (int) Agp2pEnums.ClaimStatusEnum.Completed && c.li_projects.make_loan_time != null
+                        && c.li_projects.complete_time == null);
             }
             else if (stat == Agp2pEnums.MyInvestRadioBtnTypeEnum.Investing)
             {
