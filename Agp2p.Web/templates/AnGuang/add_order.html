@@ -47,7 +47,33 @@
                 <tr>
                     <td>
                         <%if(articleAlbums!=null)%>
-                        <img src="<%=articleAlbums.thumb_path%>" />
+                        <%if(articleDetail.hongbao!=0)%>
+                        <div class="mall-lottery" style='background:url("<%=articleAlbums.original_path%>") no-repeat center;'>
+                            <div class="lottery-left">
+                                红<br />包
+                            </div>
+                            <div class="lottery-right">
+                                <%if(articleModel.title.Contains("100"))%>
+                                <span class="money-100">100</span>
+                                <span class="money-unit-100">元</span>
+                                <%else%>
+                                <span class="money"><%=articleModel.title.Contains("60")?"60":"30"%></span>
+                                <span class="money-unit">元</span>
+                                <%/if%>
+                            </div>
+                        </div>
+                        <%/if%>
+                        <%if(articleDetail.jiaxijuan!=0)%>
+                        <div class="mall-lottery-jiaxi" style='background:url("<%=articleAlbums.original_path%>") no-repeat center;'>
+                            <div class="lottery-left">
+                                加<br />息<br />券
+                            </div>
+                            <div class="lottery-right">
+                                <span class="money">1</span>
+                                <span class="money-unit">%</span>
+                            </div>
+                        </div>
+                        <%/if%>
                         <%/if%>
                     </td>
                     <td>

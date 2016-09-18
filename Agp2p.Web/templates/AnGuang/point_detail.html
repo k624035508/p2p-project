@@ -29,7 +29,35 @@
     <%if detailAlbums==null%>
     <div class="goods-img"></div>
     <%else%>
-    <div class="goods-img" style='background: url("<%=detailAlbums.thumb_path%>") no-repeat center;'></div>
+    <div class="goods-img">
+        <%if(articleDetail.hongbao!=0)%>
+        <div class="mall-lottery" style='background:url("<%=detailAlbums.original_path%>") no-repeat center;'>
+            <div class="lottery-left">
+                红<br />包
+            </div>
+            <div class="lottery-right">
+                <%if(articleModel.title.Contains("100"))%>
+                <span class="money-100">100</span>
+                <span class="money-unit-100">元</span>
+                <%else%>
+                <span class="money"><%=articleModel.title.Contains("60")?"60":"30"%></span>
+                <span class="money-unit">元</span>
+                <%/if%>
+            </div>
+        </div>
+        <%/if%>
+        <%if(articleDetail.jiaxijuan!=0)%>
+        <div class="mall-lottery-jiaxi" style='background:url("<%=detailAlbums.original_path%>") no-repeat center;'>
+            <div class="lottery-left">
+                加<br />息<br />券
+            </div>
+            <div class="lottery-right">
+                <span class="money">1</span>
+                <span class="money-unit">%</span>
+            </div>
+        </div>
+        <%/if%>  
+    </div>
     <%/if%>
     <div class="goods-content">
         <p class="goodsName"><%=articleModel.title%></p>
@@ -42,12 +70,17 @@
                     <%/foreach%>
                     积分
                 </p>
-                <div id="xiaomiType"
-                     data-stock="<%=articleDetail.stock_quantity%>"
-                     data-title="<%=articleModel.title%>">
-
+                <div>
+                    <div id="xiaomiType"
+                        data-stock="<%=articleDetail.stock_quantity%>"
+                        data-title="<%=articleModel.title%>">
+                    </div>
+                    <span style="font-size:15px; color:#646464;">库存&nbsp;&nbsp;
+                        <%foreach(var dr in jiaxiquanValue)%>
+                        <span class="jiaxiquantity"><%=dr.dt_article_attribute_value.stock_quantity%></span>
+                        <%/foreach%>
+                        &nbsp;&nbsp;件</span>
                 </div>
-
                 <div class="IsJiaxijuan">
                     <span>属性：</span>
                     <ul class="list-unstyled list-inline type-jiaxijuan">
@@ -68,10 +101,13 @@
                     <span class="jiaxipoint"><%=articleDetail.point%></span>
                     积分
                 </p>
-                <div id="xiaomiType"
-                     data-stock="<%=articleDetail.stock_quantity%>"
-                     data-title="<%=articleModel.title%>">
+                <div>
+                    <div id="xiaomiType"
+                        data-stock="<%=articleDetail.stock_quantity%>"
+                        data-title="<%=articleModel.title%>">
 
+                    </div>
+                    <span style="font-size:15px; color:#646464;">库存&nbsp;&nbsp;<%=articleDetail.stock_quantity%>&nbsp;&nbsp;件</span>
                 </div>
                 <input type="hidden" name="id" id="jiaxiquanId" value="<%=goods_id%>">
             </div>

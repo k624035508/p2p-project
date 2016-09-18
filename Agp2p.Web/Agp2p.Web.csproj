@@ -1016,6 +1016,7 @@
     <Content Include="templates\AnGuang\imgs\point\greyJinbi.png" />
     <Content Include="templates\AnGuang\imgs\point\jinbi.png" />
     <Content Include="templates\AnGuang\imgs\point\lottery2.gif" />
+    <Content Include="templates\AnGuang\imgs\point\lotteryBg2.png" />
     <Content Include="templates\AnGuang\imgs\point\lotteryBg.png" />
     <Content Include="templates\AnGuang\imgs\point\lotteryRecord.png" />
     <Content Include="templates\AnGuang\imgs\point\orderSuccess.png" />

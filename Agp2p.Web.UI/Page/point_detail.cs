@@ -33,7 +33,7 @@ namespace Agp2p.Web.UI.Page
             }
             articleDetail = articleModel.dt_article_attribute_value;
             jiaxiquanValue = context.dt_article.Where(a => a.dt_article_category.call_index == "jiaxijuan").ToList();
-            detailAlbums = context.dt_article_albums.Where(a => a.article_id == goods_id && a.remark.Contains("详情")).FirstOrDefault();
+            detailAlbums = context.dt_article_albums.Where(a => a.article_id == goods_id && a.remark.Contains("首页")).FirstOrDefault();
         }
 
         /// <summary>

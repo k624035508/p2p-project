@@ -27,7 +27,7 @@
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><span>加息券</span></p>
+                <p><span>红包</span></p>
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
@@ -181,7 +181,33 @@
             <a href='<%linkurl("point_detail",b.id)%>'>
                 <%set var albums=GetIndexAlbums(b.id)%>
                 <%if(albums!=null)%>
-                <img src="<%=albums.thumb_path%>" />
+                <%if(b.dt_article_attribute_value.hongbao!=0)%>
+                <div class="mall-lottery" style='background:url("<%=albums.original_path%>") no-repeat center;'>
+                    <div class="lottery-left">
+                        红<br />包
+                    </div>
+                    <div class="lottery-right">
+                        <%if(b.title.Contains("100"))%>
+                        <span class="money-100">100</span>
+                        <span class="money-unit-100">元</span>
+                        <%else%>
+                        <span class="money"><%=b.title.Contains("60")?"60":"30"%></span>
+                        <span class="money-unit">元</span>
+                        <%/if%>                        
+                    </div>
+                </div>  
+                <%/if%>  
+                <%if(b.dt_article_attribute_value.jiaxijuan!=0)%>
+                <div class="mall-lottery-jiaxi" style='background:url("<%=albums.original_path%>") no-repeat center;'>
+                    <div class="lottery-left">
+                        加<br />息<br />券
+                    </div>
+                    <div class="lottery-right">
+                        <span class="money">1</span>
+                        <span class="money-unit">%</span>
+                    </div>
+                </div>
+                <%/if%>            
                 <%/if%>
             </a>
         </div>
