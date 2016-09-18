@@ -1242,6 +1242,8 @@
     <Content Include="templates\weChat\imgs\announce.png" />
     <Content Include="templates\weChat\imgs\newbie.png" />
     <Content Include="templates\weChat\imgs\right.png" />
+    <Content Include="templates\weChat\imgs\usercenter\lottery1.png" />
+    <Content Include="templates\weChat\imgs\usercenter\lottery2.png" />
     <Content Include="templates\weChat\js\init.js" />
     <Content Include="templates\weChat\js\raphael.js" />
     <Content Include="templates\weChat\js\register_tdlte.js" />

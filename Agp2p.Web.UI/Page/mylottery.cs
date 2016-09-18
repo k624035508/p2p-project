@@ -58,7 +58,8 @@ namespace Agp2p.Web.UI.Page
             }
             return query.AsEnumerable().Select(atr => new Dictionary<string, string>
             {
-                { "lottery-face-class", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting ? "lottery-face" : "lottery-face-grey" },
+                { "lottery-face-class", atr.status == (int) Agp2pEnums.ActivityTransactionStatusEnum.Acting ? 
+                        atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao ? "lottery-face-hongbao" : "lottery-face-jiaxi" : "lottery-face-grey" },
                 { "lottery-spec", "积分商城兑换" },
                 { "lottery-valid-time", "有效期至" + ((JObject)JsonConvert.DeserializeObject(atr.details)).Value<DateTime>("Deadline").ToString("yyyy-MM-dd") },
                 { "lottery-condition", atr.activity_type == (int) Agp2pEnums.ActivityTransactionActivityTypeEnum.HongBao ?
