@@ -25,6 +25,7 @@
         $("#btnEditRealAmount").click(function () { EditRealAmount(); }); //修改商品总金额
         $("#btnEditExpressFee").click(function () { EditExpressFee(); }); //修改配送费用
         $("#btnEditPaymentFee").click(function () { EditPaymentFee(); }); //修改支付手续费
+        $("#btnEditExpress").click(function () { EditExpress() }); //修改配送方式
     });
 
     //确认订单
@@ -221,6 +222,11 @@
             },
             $("#spanPaymentFeeValue").text()
         );
+    }
+
+    //修改配送方式
+    function EditExpress() {
+
     }
 
     //=================================工具类的JS函数====================================
@@ -468,7 +474,12 @@
         </tr>
         <tr>
           <th>配送方式</th>
-          <td><%=new Agp2p.BLL.express().GetTitle(model.express_id) %></td>
+          <td>
+              <div class="position">
+                <div id="divExpress"><%=new Agp2p.BLL.express().GetTitle(model.express_id) %></div>
+                <input id="btnEditExpress" runat="server" visible="true" type="button" class="ibtn" value="修改" />
+              </div>
+          </td>
         </tr>
         <tr>
           <th>用户留言</th>
@@ -517,7 +528,7 @@
           <td>
             <div class="position">
               <span id="spanExpressFeeValue"><%=model.express_fee %></span> 元
-              <input id="btnEditExpressFee" runat="server" visible="false" type="button" class="ibtn" value="调价" />
+              <input id="btnEditExpressFee" runat="server" visible="true" type="button" class="ibtn" value="调价" />
             </div>
           </td>
         </tr>
