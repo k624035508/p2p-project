@@ -283,6 +283,7 @@
     <Content Include="admin\users\sms_template_list.aspx" />
     <Content Include="admin\users\user_audit.aspx" />
     <Content Include="admin\users\user_edit.aspx" />
+    <Content Include="admin\users\user_invitations.aspx" />
     <Content Include="admin\users\user_list.aspx" />
     <Content Include="admin\users\user_config.aspx" />
     <Content Include="admin\users\user_sms.aspx" />
@@ -2434,6 +2435,13 @@
     </Compile>
     <Compile Include="admin\users\user_edit.aspx.designer.cs">
       <DependentUpon>user_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\users\user_invitations.aspx.cs">
+      <DependentUpon>user_invitations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\users\user_invitations.aspx.designer.cs">
+      <DependentUpon>user_invitations.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\users\user_list.aspx.cs">
       <DependentUpon>user_list.aspx</DependentUpon>
