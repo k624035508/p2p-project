@@ -64,6 +64,10 @@ namespace Agp2p.Core.ActivityLogic
                     userPointMsg.Point = -80;
                     userPointMsg.Remark = "积分抽奖消耗";
                     break;
+                case (int)Agp2pEnums.PointEnum.SignFifthDay:
+                    userPointMsg.Point = 100;
+                    userPointMsg.Remark = "第五天签到宝箱奖励";
+                    break;                
             }
 
             var context  = new Agp2pDataContext();

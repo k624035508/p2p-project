@@ -1767,7 +1767,8 @@ namespace Agp2p.Web.tools
             if (signLogs.Any())
             {
                 var count = Convert.ToInt32(signLogs.Single().sign_count)%5;
-                context.Response.Write("{\"status\":\""+count+"\", \"msg\":\"您今天已签到\"}");
+                var userPoint = model.point;
+                context.Response.Write("{\"status\":\""+count+"\", \"msg\":\"您今天已签到\", \"point\":\""+userPoint+"\"}");
             }
             else
             {
@@ -1792,7 +1793,8 @@ namespace Agp2p.Web.tools
                         Remark = "第一天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\"}");
+                    var userPoint = model.point + 28;
+                    context.Response.Write("{\"status\":1, \"msg\":\"第一天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
                 if (signCount % 5 == 2)
@@ -1802,7 +1804,8 @@ namespace Agp2p.Web.tools
                         Remark = "第二天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":2, \"msg\":\"第二天签到\"}");
+                    var userPoint = model.point + 38;
+                    context.Response.Write("{\"status\":2, \"msg\":\"第二天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
                 if (signCount % 5 == 3)
@@ -1812,7 +1815,8 @@ namespace Agp2p.Web.tools
                         Remark = "第三天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":3, \"msg\":\"第三天签到\"}");
+                    var userPoint = model.point + 68;
+                    context.Response.Write("{\"status\":3, \"msg\":\"第三天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
                 if (signCount % 5 == 4)
@@ -1822,7 +1826,8 @@ namespace Agp2p.Web.tools
                         Remark = "第四天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":4, \"msg\":\"第四天签到\"}");
+                    var userPoint = model.point + 88;
+                    context.Response.Write("{\"status\":4, \"msg\":\"第四天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
                 if (signCount % 5 == 0)
@@ -1832,7 +1837,10 @@ namespace Agp2p.Web.tools
                         Remark = "第五天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    context.Response.Write("{\"status\":5, \"msg\":\"第五天签到\"}");
+                    var msg2 = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.SignFifthDay);
+                    MessageBus.Main.Publish(msg2);
+                    var userPoint = model.point + 200;
+                    context.Response.Write("{\"status\":5, \"msg\":\"第五天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
             }

@@ -1012,7 +1012,7 @@
     <Content Include="templates\AnGuang\imgs\point\code.png" />
     <Content Include="templates\AnGuang\imgs\point\daySign.png" />
     <Content Include="templates\AnGuang\imgs\point\donghua.gif" />
-    <Content Include="templates\AnGuang\imgs\point\gift.png" />
+    <Content Include="templates\AnGuang\imgs\point\giftGrey.png" />
     <Content Include="templates\AnGuang\imgs\point\greyJinbi.png" />
     <Content Include="templates\AnGuang\imgs\point\jinbi.png" />
     <Content Include="templates\AnGuang\imgs\point\lottery2.gif" />
@@ -1026,6 +1026,7 @@
     <Content Include="templates\AnGuang\imgs\point\xiaomi1.png" />
     <Content Include="templates\AnGuang\imgs\point\xiaomi2.png" />
     <Content Include="templates\AnGuang\imgs\point\xiaomi3.png" />
+    <Content Include="templates\AnGuang\imgs\point\gift5.png" />
     <Content Include="templates\AnGuang\imgs\projects\001.png" />
     <Content Include="templates\AnGuang\imgs\projects\002.jpg" />
     <Content Include="templates\AnGuang\imgs\projects\003.png" />

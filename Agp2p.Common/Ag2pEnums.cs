@@ -1002,6 +1002,8 @@ namespace Agp2p.Common
             LotteryGet = 10,
             [Description("首次投资")]
             FirstInvest =11,
+            [Description("签到宝箱奖励")]
+            SignFifthDay = 12,
 
             [Description("积分兑换")]
             Exchange = 20,

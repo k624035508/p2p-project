@@ -180,15 +180,20 @@ body{
         }
         ul{ padding-top:56px; padding-left:37px; margin:0; height:216px; 
             li{ margin-right:15px; float:left;
-        .signTable{width:100px; height:100px; background:@white; border-radius:6px; border:1px solid @blue;
+        .signTable,.signBaoxiang{width:100px; height:100px; background:#fffff1; border-radius:6px; border:1px solid @blue;
                    .nojinbi{width:50px; height:50px; background:url("@{point}/greyJinbi.png"); margin-left:24px; margin-top:10px;}
+                   .nobaoxiang{width:50px; height:50px; background:url("@{point}/giftGrey.png"); margin-left:24px; margin-top:10px;}
                    .jinbi{width:50px; height:50px; background:url("@{point}/jinbi.png"); margin-left:24px; margin-top:10px;}
+                   .baoxiang{width:50px; height:50px; background:url("@{point}/gift5.png"); margin-left:24px; margin-top:10px;}
                    p{font-size:18px; color:#b25d06; font-weight:bold; text-align:right; margin-top:2px; margin-bottom:0; line-height:28px; height:28px; 
                      &>span{display:inline-block; height:28px; font-size:20px; float:right;margin-right:10px;}
                    }
                    span.signRight{width:20px; height:20px; display:none; background:url("@{point}/right.png");
                          margin-left:84px; margin-top:-6px;
                    }
+        }
+        .signBaoxiang{
+            background:url("@{point}/gift5.png");
         }
         &>p{font-size:22px; color:#b25d06;text-align:center; margin-top:15px;}
         }
