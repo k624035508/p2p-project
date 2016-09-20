@@ -176,7 +176,7 @@ namespace Agp2p.Web.admin.loaner
         {
             var model = context.li_loaners.First(q => q.id == id);
 
-            //model.name = txtName.Text.Trim();
+            model.dt_users.real_name = txtName.Text.Trim();
             //model.tel = txtTel.Text.Trim();
             model.age = Convert.ToInt16(txtAge.Text.Trim());
             //model.gender = Convert.ToByte(rblGender.SelectedValue);

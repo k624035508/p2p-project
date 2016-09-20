@@ -18,11 +18,11 @@ namespace Agp2p.Web.UI.Page
         {
         }
 
-        protected List<dt_advert_banner> QueryMallBanner()
+      /*  protected List<dt_advert_banner> QueryMallBanner()
         {
             var context = new Agp2pDataContext();
             var mallBanner = context.dt_advert_banner.Where(a => a.is_lock == 0 && a.dt_advert.title.Contains("商城") && a.end_time >= DateTime.Today).OrderBy(a => a.sort_id).ToList();
             return mallBanner;
-        }
+        } */
     }
 }

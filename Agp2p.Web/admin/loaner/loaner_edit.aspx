@@ -77,7 +77,7 @@
             <dl>
                 <dt>姓名</dt>
                 <dd>
-                    <asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="False" /><span class="Validform_checktip">用户姓名或账号</span></dd>
+                    <asp:TextBox ID="txtName" runat="server" CssClass="input normal" Enabled="True" /><span class="Validform_checktip">用户姓名或账号</span></dd>
             </dl>
             <dl>
                 <dt>性别</dt>
