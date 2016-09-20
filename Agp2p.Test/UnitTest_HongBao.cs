@@ -52,7 +52,7 @@ namespace Agp2p.Test
             Common.PublishProject("PT3", 2, 30000, 5);
 
             var investor = new Agp2pDataContext().dt_users.Single(u => u.user_name == UserA);
-            HongBaoActivity.GiveUser(investor.id);
+            HongBaoActivity.GiveUser(investor.id, 100, 10);
             Common.InvestProject(UserA, "PT3", 5000);
             Common.InvestProject(UserA, "PT3", 5000);
 

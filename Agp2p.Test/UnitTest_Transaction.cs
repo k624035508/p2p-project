@@ -355,6 +355,42 @@ namespace Agp2p.Test
         }
 
         [TestMethod]
+        public void GenerateClaimFromNoData()
+        {
+            // 修复没有创建的债权
+            var context = new Agp2pDataContext();
+
+            // 定期项目：每笔投资产生一个债权，已完成的项目的债权状态为已完成，其余为不可转让
+            var ptrs =
+                context.li_project_transactions.Where(
+                    ptr => ptr.type == (int)Agp2pEnums.ProjectTransactionTypeEnum.RepayToInvestor)
+                    .ToList();
+
+            int count = 0;
+            ptrs.ForEach(ptr =>
+            {
+                if (ptr.li_claims_invested.Where(l => l.status==(int)Agp2pEnums.ClaimStatusEnum.Completed).Any()) return;
+
+                var claimFromInvestment = new li_claims
+                {
+                    principal = ptr.principal,
+                    projectId = ptr.project,
+                    profitingProjectId = ptr.project,
+                    createFromInvestment = ptr.id,
+                    createTime = ptr.create_time,
+                    userId = ptr.investor,
+                    status = (byte)Agp2pEnums.ClaimStatusEnum.Completed,
+                    number = Utils.HiResNowString,
+                };
+                context.li_claims.InsertOnSubmit(claimFromInvestment);
+                count += 1;
+
+            });
+            context.SubmitChanges();
+            Debug.WriteLine("创建债权：" + count);
+        }
+
+        [TestMethod]
         public void TestHiResTimeTickUtil()
         {
             Enumerable.Range(0, 10)
