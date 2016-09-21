@@ -30,13 +30,13 @@
     <!--面包屑导航 end-->
     <div class="content-wrap consume">
         <ul>
-            <li class='<%=rootCategoryId==tickerCategoryId?"bluecon":""%> ticket-area-li' onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">定期专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
+            <li class="bluecon ticket-area-li" onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">票据专区 <p><%=FinancingProjectMap.GetValueOrDefault(tickerCategoryId,0)%></p><span></span> </li>
             <!--<li class='<%=rootCategoryId==claimsCategoryId?"bluecon":""%> zhaiquan-li' onclick="location.href='<%linkurl("projects",claimsCategoryId)%>'">债权转让<span></span></li>
-            <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li> -->
+            <li class='<%=rootCategoryId==huoqiCategoryId?"bluecon":""%> huoqibao-li' onclick="location.href='<%linkurl("projects",huoqiCategoryId)%>'">活期宝<span></span></li> 
             <li class="zhaiquan-li">债权转让<span></span></li>
             <li class="huoqibao-li">活期宝<span></span></li>
             <li class="wentibao-li">文体宝<span></span></li>
-            <li class="consumefin-li">消费金融<span></span></li>
+            <li class="consumefin-li">消费金融<span></span></li> -->
         </ul>
     </div>
 
@@ -65,9 +65,9 @@
                         <a href='<%linkurl("projects",0,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                            class='<%=0==category_id||rootCategoryId==category_id?"selected":""%>'>全部</a>
                     </li>
-                    <%foreach(var kvp in SubCategoryIdTitleMap)%>
-                    <!--隐藏天盈宝-->
-                    <%if(kvp.Key==60)%>
+
+                    <!--
+                    <%foreach(var kvp in SubCategoryIdTitleMap)%>                                        
                     <li>
                         <a href='<%linkurl("projects",kvp.Key,project_profit_rate_index,project_repayment_index,project_status_index,1)%>'
                            class='<%=kvp.Key==category_id?"selected":""%>'>
@@ -78,9 +78,22 @@
                             <%=FinancingProjectMap.ContainsKey(kvp.Key)?"<span style='color: white; padding: 0 1px'>("+FinancingProjectMap[kvp.Key]+")</span>":""%>
                             <%/if%>
                         </a>
-                    </li>
-                    <%/if%>
+                    </li>                    
                     <%/foreach%>
+                    -->
+
+                    <li>
+                        <a href='<%linkurl("projects",60,0,0,0,1)%>'
+                           class='<%=60==category_id?"selected":""%>'>
+                        银票宝</a>
+                    </li>
+
+                    <li>
+                        <a href='<%linkurl("projects",70,0,0,0,1)%>'
+                           class='<%=70==category_id?"selected":""%>'>
+                        新手标</a>
+                    </li>
+
                 </ul>
             </div>
             <div class="project-profit">

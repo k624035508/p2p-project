@@ -36,15 +36,15 @@ namespace Agp2p.Web.UI.Page
         protected Dictionary<int, string> SubCategoryIdTitleMap;
         protected Dictionary<int, int> FinancingProjectMap;
 
-        /// <summary>
-        /// 重写虚方法,此方法将在Init事件前执行
-        /// </summary>
-        protected override void ShowPage()
+            /// <summary>
+            /// 重写虚方法,此方法将在Init事件前执行
+            /// </summary>
+            protected override void ShowPage()
         {
             var caMap = context.dt_article_category.Where(
-                ca => ca.call_index == "piaojuzhuanqu" || ca.call_index == "claims" || ca.call_index == "huoqi" || ca.call_index == "newbie2")
+                ca => ca.call_index == "ypb" || ca.call_index == "claims" || ca.call_index == "huoqi" || ca.call_index == "newbie2")
                 .ToDictionary(ca => ca.call_index);
-            tickerCategoryId = caMap["piaojuzhuanqu"].id;
+            tickerCategoryId = caMap["ypb"].id;
             claimsCategoryId = caMap["claims"].id;
             huoqiCategoryId = caMap["huoqi"].id;
             newbie2CategoryId = caMap["newbie2"].id;
@@ -58,7 +58,7 @@ namespace Agp2p.Web.UI.Page
             category_id = DTRequest.GetQueryInt("category_id");
 
             if (category_id == 0)
-                category_id = context.dt_article_category.Single(ca => ca.call_index == "piaojuzhuanqu").id;
+                category_id = context.dt_article_category.Single(ca => ca.call_index == "ypb").id;
 
             var category = context.dt_article_category.Single(ca => ca.id == category_id);
             if (category.parent_id.GetValueOrDefault() == 0)

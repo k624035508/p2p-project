@@ -61,7 +61,7 @@ body { background: @body-color; }
 	}
 	/*公司简介*/
 	#company {
-		height: 515px;
+		height: 850px;
 		padding: 40px 0 60px 0;
 		background: @white;
 		.content-wrap {
@@ -70,16 +70,12 @@ body { background: @body-color; }
 				background: url("@{images}/company-title.png") no-repeat center;
 			}
 			.content-body {
-				height: 250px;
-				margin-top: 55px;
-				background: url("@{images}/agrh-bg.png") no-repeat left center;
-				.description {
-                    margin-top:22px;
-					width: 630px;
+				margin-top: 48px;					
 					color: @dark-grey;
 					font-size: 18px;
 					line-height: 39px;
-				}
+				img{margin-left:370px; margin-bottom:47px;}
+                p{text-indent:36px; margin-bottom:0;}
 			}
 		}
 	}
@@ -95,14 +91,19 @@ body { background: @body-color; }
 			}
 			.content-body {
 				height: 210px;
-				margin-top: 30px;
+				
 				padding-top: 35px;
-				background: url("@{images}/culture-icon.png") no-repeat right center;
+				background: url("@{images}/culture-icon2.png") no-repeat right center;
 				.description {
-					width: 420px;
+					width: 820px;
 					color: @white;
 					font-size: 17px;
 					line-height: 40px;
+                    p{
+                        span{
+                            display:inline-block; font-weight:bold; width:120px;
+                        }
+                    }
 				}
 			}
 		}
@@ -387,7 +388,7 @@ body { background: @body-color; }
 					width: 248px;
 					height: 350px;
 					cursor: pointer;
-					background: url("@{images}/license-bg3.jpg") no-repeat;
+					background: url("@{images}/license4-bg.jpg") no-repeat;
 				}
                 .business-beian {
                     margin-top:35px;

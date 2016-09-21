@@ -754,6 +754,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\contact-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-bg.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-icon.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\culture-icon2.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\culture-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\dynamic.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\emptyPic.jpg" />
@@ -770,6 +771,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\license.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\license3.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license4-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\license4.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\lixiangnan.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\manager-title2.png" />
