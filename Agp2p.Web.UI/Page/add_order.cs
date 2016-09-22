@@ -79,11 +79,11 @@ namespace Agp2p.Web.UI.Page
                 HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
                 return "请先登录";
             }
-            if (!new Regex(@"^\d{11,}$").IsMatch(orderPhone))
+            /*if (!new Regex(@"^\d{11,}$").IsMatch(orderPhone))
             {
                 HttpContext.Current.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return "手机号码格式不正确";
-            }
+            }*/
             var context= new Agp2pDataContext();
             var addressCount = context.dt_user_addr_book.Where(a => a.user_id == userInfo.id).Count();
             if (addressCount >= 2)

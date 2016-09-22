@@ -23,15 +23,15 @@
         <div class="banner-left">
             <div class="banner-gift">
                 <p>全部商品</p>
-                <p><span>虚拟商品</span><span>实物商品</span></p>
+                <p><a href="#xuni">虚拟商品</a><a href="#shiwu">实物商品</a></p>
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><span>红包</span></p>
+                <p><a href="#xuni">红包</a></p>
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><span>加息券</span></p>
+                <p><a href="#xuni">加息券</a></p>
             </div>
             <div class="banner-code">
                 <p>关注微信公众号</p>
@@ -161,7 +161,7 @@
     </ul>
 </div>
 
-<div class="xuni-goods">
+<div class="xuni-goods" id="xuni">
     <p>虚拟商品</p>
     <div class="xuni-img">
         <span>1%加息券</span>
@@ -212,7 +212,7 @@
     </div>
 </div>
 
-    <div class="shiwu-goods">
+    <div class="shiwu-goods" id="shiwu">
         <p>实物商品</p>
         <%set var shiwu=GetArticles(73,5)%>
         <%set var shiwuFirst=shiwu.FirstOrDefault()%>
