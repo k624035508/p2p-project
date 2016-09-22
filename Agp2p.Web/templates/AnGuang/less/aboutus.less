@@ -90,16 +90,16 @@ body { background: @body-color; }
 				background: url("@{images}/culture-title.png") no-repeat center;
 			}
 			.content-body {
-				height: 210px;
+				height: 220px; width:1000px;
+				margin-top:30px; padding-left:40px;
 				
-				padding-top: 35px;
 				background: url("@{images}/culture-icon2.png") no-repeat right center;
 				.description {
 					width: 820px;
 					color: @white;
 					font-size: 17px;
 					line-height: 40px;
-                    p{
+                    p{ margin-bottom:8px;
                         span{
                             display:inline-block; font-weight:bold; width:120px;
                         }
@@ -359,7 +359,7 @@ body { background: @body-color; }
 							padding: 0 .5px;
 							a, a span { width: 270px;  }
 						}
-						.office01 { background: url("@{picWall}/office07-bg.jpg") center; }
+						.office01 { background: url("@{picWall}/office08-bg.jpg") center; }
 						.office02 { background: url("@{picWall}/office02-bg.png") center; }
 						.office03 { background: url("@{picWall}/office03-bg.png") center; }
 						.office04 { background: url("@{picWall}/office04-bg.png") center; }
@@ -448,7 +448,7 @@ body { background: @body-color; }
 					float: left;
 				}
 				.add-wrap {
-					width:600px;
+					width:520px; margin-right:80px;
 					address {
 						color: @white;
 						font-size: @font20;
@@ -458,6 +458,7 @@ body { background: @body-color; }
 							width: 80px;
 							text-align: right;
 						}
+                        span{float:right; display:inline-block; width:420px;}
 					}
 				}
 				.qrCode {

@@ -127,10 +127,7 @@ namespace Agp2p.Core.ActivityLogic
             {
                 if (rp.GetInvestUntil() <= investAmount) // 投资足够激活红包
                 {
-                    investAmount -= rp.GetInvestUntil();
-
-                    // 红包激活，发放奖金，更改状态
-                    rp.Activate(investTime);
+                    
 
                     //丰付支付
                     var msg = new HongbaoPayReqMsg(rp.atr.user_id, rp.atr.value);
@@ -140,6 +137,10 @@ namespace Agp2p.Core.ActivityLogic
 
                     if (msgResp.HasHandle)
                     {
+                        investAmount -= rp.GetInvestUntil();
+
+                        // 红包激活，发放奖金，更改状态
+                        rp.Activate(investTime);
                         var curr = rp.atr;
 
 

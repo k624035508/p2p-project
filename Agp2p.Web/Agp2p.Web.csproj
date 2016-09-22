@@ -797,6 +797,8 @@
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office06.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office07-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\office07.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\office08-bg.jpg" />
+    <Content Include="templates\AnGuang\imgs\aboutus\picWall\office08.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01-bg.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\picWall\staff01B-bg .png" />
@@ -822,6 +824,7 @@
     <Content Include="templates\AnGuang\imgs\aboutus\product.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\qualification-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\reports.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\rongtongbao.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\staff-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\strategy-title.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\subscription-code.png" />
@@ -834,7 +837,10 @@
     <Content Include="templates\AnGuang\imgs\aboutus\team5.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\top.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\wechat-code.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\xiaodaibao.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\xing.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\xuanjinghui.png" />
+    <Content Include="templates\AnGuang\imgs\aboutus\yinpiaobao.png" />
     <Content Include="templates\AnGuang\imgs\aboutus\员工明细表2.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\计提明细表.jpg" />
     <Content Include="templates\AnGuang\imgs\aboutus\赔付流程.jpg" />
