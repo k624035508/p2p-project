@@ -1252,8 +1252,11 @@
     <Content Include="templates\weChat\imgs\album2.png" />
     <Content Include="templates\weChat\imgs\album3.png" />
     <Content Include="templates\weChat\imgs\announce.png" />
+    <Content Include="templates\weChat\imgs\bottom.png" />
     <Content Include="templates\weChat\imgs\newbie.png" />
     <Content Include="templates\weChat\imgs\right.png" />
+    <Content Include="templates\weChat\imgs\settings\safe-defence.png" />
+    <Content Include="templates\weChat\imgs\top.png" />
     <Content Include="templates\weChat\imgs\usercenter\lottery1.png" />
     <Content Include="templates\weChat\imgs\usercenter\lottery2.png" />
     <Content Include="templates\weChat\js\init.js" />

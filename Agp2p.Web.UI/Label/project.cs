@@ -292,6 +292,12 @@ namespace Agp2p.Web.UI
             var context = new Agp2pDataContext();
             var projectQuerying = QueryingProjects(context, categoryId, profitRateIndex, repaymentIndex, statusIndex);
 
+            //projects全部要混合新手标(银票宝+新手标)
+            if (categoryId == 67)
+            {
+                projectQuerying = QueryingProjects(context, 60, profitRateIndex, repaymentIndex, statusIndex).Concat(QueryingProjects(context, 70, profitRateIndex, repaymentIndex, statusIndex));
+            }
+
             var claimsCategory = context.dt_article_category.Single(ca => ca.call_index == "claims");
 
 

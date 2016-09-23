@@ -31,7 +31,7 @@ namespace Agp2p.Web.UI.Page
 
         protected Agp2pDataContext context = new Agp2pDataContext();
 
-        protected int tickerCategoryId, claimsCategoryId, huoqiCategoryId, newbie2CategoryId; 
+        protected int piaojuCategoryId, tickerCategoryId, claimsCategoryId, huoqiCategoryId, newbie2CategoryId; 
 
         protected Dictionary<int, string> SubCategoryIdTitleMap;
         protected Dictionary<int, int> FinancingProjectMap;
@@ -42,8 +42,9 @@ namespace Agp2p.Web.UI.Page
             protected override void ShowPage()
         {
             var caMap = context.dt_article_category.Where(
-                ca => ca.call_index == "ypb" || ca.call_index == "claims" || ca.call_index == "huoqi" || ca.call_index == "newbie2")
+                ca => ca.call_index=="piaojuzhuanqu" || ca.call_index == "ypb" || ca.call_index == "claims" || ca.call_index == "huoqi" || ca.call_index == "newbie2")
                 .ToDictionary(ca => ca.call_index);
+            piaojuCategoryId = caMap["piaojuzhuanqu"].id;
             tickerCategoryId = caMap["ypb"].id;
             claimsCategoryId = caMap["claims"].id;
             huoqiCategoryId = caMap["huoqi"].id;
@@ -58,7 +59,7 @@ namespace Agp2p.Web.UI.Page
             category_id = DTRequest.GetQueryInt("category_id");
 
             if (category_id == 0)
-                category_id = context.dt_article_category.Single(ca => ca.call_index == "ypb").id;
+                category_id = context.dt_article_category.Single(ca => ca.call_index == "piaojuzhuanqu").id;
 
             var category = context.dt_article_category.Single(ca => ca.id == category_id);
             if (category.parent_id.GetValueOrDefault() == 0)
@@ -87,10 +88,10 @@ namespace Agp2p.Web.UI.Page
         }
 
         [WebMethod]
-        public static string AjaxQueryProjectList(int categoryId, short pageIndex, short pageSize)
+        public static string AjaxQueryProjectList(int categoryId, short pageIndex, short pageSize, int profitRateIndex, int repaymentIndex, int statusIndex)
         {
             int total = 0;
-            var projectList = get_project_list(pageSize, pageIndex + 1, out total, categoryId, 0, 0, 0);
+            var projectList = get_project_list(pageSize, pageIndex + 1, out total, categoryId, profitRateIndex, repaymentIndex, statusIndex);
             return JsonConvert.SerializeObject(projectList);
         }
 

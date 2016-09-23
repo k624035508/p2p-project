@@ -270,7 +270,11 @@
                             <span class="invest-list-icon xin-icon"></span>
                             <%/if%>
                         </span>
+                        <%if(p.dt_article_category.call_index=="newbie2")%>
+                        <span class="apr"><%=(inv.ProfitRateYearly*100).ToString("f2")%><i>%</i></span>
+                        <%else%>
                         <span class="apr"><%=(inv.ProfitRateYearly*100).ToString("f1")%><i>%</i></span>
+                        <%/if%>
                         <span class="sum"><%=inv.FinancingAmountStr%><i>元</i></span>
                         <%if(p.IsHuoqiProject())%>
                         <span class="deadline">--</span>

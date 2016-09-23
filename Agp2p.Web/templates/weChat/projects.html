@@ -58,7 +58,7 @@
         @{ }); }@
     </script>
     <script>
-        var categoryId = {category_id}, aspxPath = '{Request.FilePath}';
+        var categoryId = {category_id}, aspxPath = '{Request.FilePath}' ,profitRateIndex={project_profit_rate_index},repaymentIndex={project_repayment_index},statusIndex={project_status_index} ;
     </script>
     <script src="<%templateskin%>/build/commons.bundle.js"></script>
     <script src="<%templateskin%>/build/projects.bundle.js"></script>
@@ -66,12 +66,44 @@
 <body>
 <div class="height-100 flex flex--column flex--flex-grow-second">
     <div class="invest-nav">
-        <!--<a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>-->
-        <a href='<%linkurl("projects",0)%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部<span class="divider">|</span></a>
-        <!--<a href='<%linkurl("projects",claimsCategoryId)%>' class='<%=claimsCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
-        <a href='<%linkurl("projects",huoqiCategoryId)%>' class='<%=huoqiCategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a> -->
+        <!--<a href='<%linkurl("projects")%>' class='<%=0==category_id?"nav-active nav-border-active":""%>'>全部项目<span class="divider">|</span></a>
+        <a href='<%linkurl("projects")%>' class='<%=piaojuCategoryId==category_id?"nav-active nav-border-active":""%>'>全部<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",claimsCategoryId)%>' class='<%=claimsCategoryId==category_id?"nav-active nav-border-active":""%>'>债权转让<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",huoqiCategoryId)%>' class='<%=huoqiCategoryId==category_id?"nav-active nav-border-active":""%>'>活期宝<span class="divider">|</span></a>
         <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>定期专区<span class="divider">|</span></a>
-        <a href='<%linkurl("projects",newbie2CategoryId)%>' class='<%=newbie2CategoryId==category_id?"nav-active nav-border-active":""%>'>新手标<span class="divider">|</span></a>
+        <a href='<%linkurl("projects",newbie2CategoryId)%>' class='<%=newbie2CategoryId==category_id?"nav-active nav-border-active":""%>'>新手标<span class="divider">|</span></a> -->
+        <ul class="list-inline projects-top">
+            <li role="presentation" class="dropdown projects-one"> 项目类型 <span></span>
+                <ul class="dropdown-menu dropdown-menu-custom">
+                    <li onclick="location.href='<%linkurl("projects")%>'">全部</li>
+                    <li onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">定期专区</li>
+                    <li onclick="location.href='<%linkurl("projects",newbie2CategoryId)%>'">新手标</li>
+                </ul>  
+            </li>
+            <li role="presentation" class="dropdown projects-one">预期收益 <span></span> 
+                <ul class="dropdown-menu dropdown-menu-custom">
+                    <%set var interestRateTypeEnums=Utils.GetEnumValues<Agp2pEnums.InterestRateTypeEnum>()%>
+                    <%foreach(var en in interestRateTypeEnums)%>
+                    <!--隐藏10%以上利率-->
+                    <%if((int)en!=3)%>
+                        <li onclick="location.href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'">
+                        <%=Utils.GetAgp2pEnumDes(en)%></li>                    
+                    <%/if%>
+                    <%/foreach%>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown projects-one">项目期限 <span></span>
+                <ul class="dropdown-menu dropdown-menu-custom">
+                    <%set var repaymentTermEnums=Utils.GetEnumValues
+                    <Agp2pEnums.RepaymentTermEnum>
+                    ()%>
+                    <%foreach(var en in repaymentTermEnums)%>
+                        <li onclick="location.href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'">
+                        <%=Utils.GetAgp2pEnumDes(en)%></li>
+                    <%/foreach%>
+                </ul>
+            </li>
+        </ul>              
     </div>
     <div class="invest-page scroll" style="height: 0"> <!--/ ios flex box bug hack /-->
         <div id="pending">

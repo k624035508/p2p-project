@@ -39,7 +39,7 @@ class TransactionTable extends React.Component {
                     <thead>
                     <tr>
                         <th>项目名称</th>
-                        <th>年利率</th>
+                        <th>预期年利率</th>
                         <th>投资金额（元）</th>
                         <th>回款日期</th>
                         <th>支付本金（元）</th>

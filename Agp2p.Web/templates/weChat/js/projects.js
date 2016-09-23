@@ -28,7 +28,7 @@ function loadData(pageIndex, callback) {
     $.ajax({
         type: "POST",
         url: aspxPath + "/AjaxQueryProjectList",
-        data: JSON.stringify({ categoryId, pageIndex, pageSize }),
+        data: JSON.stringify({ categoryId, pageIndex, pageSize, profitRateIndex, repaymentIndex, statusIndex }),
         contentType: "application/json",
         dataType: "json",
         success: function (msg) {
@@ -85,5 +85,11 @@ $(function (){
                 processing = false;
             });
         }
+    });
+
+    //头部按钮
+    $(".projects-top .projects-one").click(function(){
+        $(this).find(".dropdown-menu").show().parent().siblings().find(".dropdown-menu").hide();
+        $(this).find("span").addClass("topping").parent().siblings().find("span").removeClass("topping");
     });
 });
