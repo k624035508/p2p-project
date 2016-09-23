@@ -36,6 +36,7 @@ $(function() {
                     $(".signDay:lt("+data.status+")").css("color", "#37aaf0");
                     $(".signTable .signRight:lt("+data.status+")").css("display", "inline-block");
                     $(".content-body .points").text(data.point);
+                    $("#signPoint").text("已签到");
                 }
             },
             error:function(xhr, status, error) {

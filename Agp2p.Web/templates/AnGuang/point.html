@@ -62,7 +62,14 @@
                         <span>每日签到</span>
                         <span>每天都有好运气</span>
                     </div>
-                    <a href="javascript:" id="signPoint">签到有礼</a>
+                    
+                        <%if(IsTodaySign())%>
+                        <a href="javascript:" id="signPoint" class="haveSign">已签到</a>
+                        <%else%>
+                        <a href="javascript:" id="signPoint">签到有礼</a>
+                        <%/if%>
+                    
+                    
                 </div>
                 <div class="banner-lottery">
                     <div><img src="<%templateskin%>/imgs/point/003.png"/>

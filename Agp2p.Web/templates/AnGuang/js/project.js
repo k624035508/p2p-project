@@ -111,7 +111,11 @@ $(function () {
             $("#investConfirm").modal();
             for(var i=0;i<$(".jiangquan ul li.interest-rate-ticket").length;i++){
                 if($("#investAmount-input").val() > $(".jiangquan ul li.interest-rate-ticket").eq(i).data()["qitou"])
-                    $(".jiangquan ul li.interest-rate-ticket").eq(i).addClass("hidden").siblings().removeClass("hidden");
+                    $(".jiangquan ul li.interest-rate-ticket").eq(i).addClass("hidden");
+            }
+            for(var i=0;i<$(".jiangquan ul li.hongbao").length;i++){
+                if($("#investAmount-input").val() < $(".jiangquan ul li.hongbao").eq(i).data()["qitou"])
+                    $(".jiangquan ul li.hongbao").eq(i).addClass("hidden");
             }
         });
 

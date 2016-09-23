@@ -1245,6 +1245,11 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0, \"msg\":\"对不起，查询兑换物详细信息出错！请联系客服。\"}");
                 return;
             }
+            if (goodFields.stock_quantity < goodCount)
+            {
+                context.Response.Write("{\"status\":0,\"msg\":\"对不起，库存不足。\"}");
+                return;
+            }
             if (goods.dt_article_category.call_index != "jiaxijuan" && goods.dt_article_category.call_index != "hongbao")
             {
                 if (userAddr == null)

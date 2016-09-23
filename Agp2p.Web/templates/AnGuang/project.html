@@ -124,7 +124,7 @@
                             <span class="profit">0.00</span>
                         </div>
                         <div class="jiangquan">
-                            <span>使用加息券&nbsp;/&nbsp;红包</span>
+                            <span>可用加息券&nbsp;/&nbsp;红包</span>
                             <ul class="list-unstyled list-inline">
                                 <%foreach(var act in actt)%>
                                 <%set var data=(JObject)JsonConvert.DeserializeObject(act.details)%>
@@ -138,7 +138,7 @@
                                     </div>
                                 </li>
                                 <%else%>
-                                <li class="hongbao" data-ticket-id="0">
+                                <li class="hongbao" data-ticket-id="0" data-qitou='<%=data["InvestUntil"]%>'>
                                     <div class="lottery-title">红包</div>
                                     <div class="lottery-face">
                                         <p class="lottery-value"><span><%=Convert.ToInt32(act.value)%></span><span>元</span></p>

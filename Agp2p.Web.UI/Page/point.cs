@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Agp2p.Common;
+using Agp2p.Linq2SQL;
+using System.Web;
 
 namespace Agp2p.Web.UI.Page
 {
@@ -24,6 +27,15 @@ namespace Agp2p.Web.UI.Page
            
         }
 
+        Agp2pDataContext context = new Agp2pDataContext();
+
+        //检查今天是否签到
+        protected bool IsTodaySign()
+        {
+            var userInfo = GetUserInfoByLinq();
+            var todaySign = context.dt_user_sign_log.Where(s => s.user_id == userInfo.id && s.sign_time == DateTime.Today);
+            return (todaySign == null);
+        }
 
     }
 }
