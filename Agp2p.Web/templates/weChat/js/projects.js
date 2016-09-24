@@ -90,6 +90,6 @@ $(function (){
     //头部按钮
     $(".projects-top .projects-one").click(function(){
         $(this).find(".dropdown-menu").toggle().parent().siblings().find(".dropdown-menu").hide();
-        $(this).find("span").toggleClass("topping").parent().siblings().find("span").removeClass("topping");
+        $(this).find(".pro-icon").toggleClass("topping").parent().siblings().find(".pro-icon").removeClass("topping");
     });
 });

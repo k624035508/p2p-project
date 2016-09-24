@@ -73,33 +73,33 @@
         <a href='<%linkurl("projects",tickerCategoryId)%>' class='<%=tickerCategoryId==category_id?"nav-active nav-border-active":""%>'>定期专区<span class="divider">|</span></a>
         <a href='<%linkurl("projects",newbie2CategoryId)%>' class='<%=newbie2CategoryId==category_id?"nav-active nav-border-active":""%>'>新手标<span class="divider">|</span></a> -->
         <ul class="list-inline projects-top">
-            <li role="presentation" class="dropdown projects-one"> 项目类型 <span></span>
+            <li role="presentation" class="dropdown projects-one"> 项目类型 <span class="pro-icon"></span>
                 <ul class="dropdown-menu dropdown-menu-custom">
-                    <li onclick="location.href='<%linkurl("projects")%>'">全部</li>
-                    <li onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'">定期专区</li>
-                    <li onclick="location.href='<%linkurl("projects",newbie2CategoryId)%>'">新手标</li>
+                    <li onclick="location.href='<%linkurl("projects")%>'"><span class="pro-con">全部</span></li>
+                    <li onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'"><span class="pro-con">定期专区</span></li>
+                    <li onclick="location.href='<%linkurl("projects",newbie2CategoryId)%>'"><span class="pro-con">新手标</span></li>
                 </ul>  
             </li>
-            <li role="presentation" class="dropdown projects-one">预期收益 <span></span> 
+            <li role="presentation" class="dropdown projects-one">预期收益 <span class="pro-icon"></span> 
                 <ul class="dropdown-menu dropdown-menu-custom">
                     <%set var interestRateTypeEnums=Utils.GetEnumValues<Agp2pEnums.InterestRateTypeEnum>()%>
                     <%foreach(var en in interestRateTypeEnums)%>
                     <!--隐藏10%以上利率-->
                     <%if((int)en!=3)%>
                         <li onclick="location.href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'">
-                        <%=Utils.GetAgp2pEnumDes(en)%></li>                    
+                        <span class="pro-con"><%=Utils.GetAgp2pEnumDes(en)%></span></li>                    
                     <%/if%>
                     <%/foreach%>
                 </ul>
             </li>
-            <li role="presentation" class="dropdown projects-one">项目期限 <span></span>
+            <li role="presentation" class="dropdown projects-one">项目期限 <span class="pro-icon"></span>
                 <ul class="dropdown-menu dropdown-menu-custom">
                     <%set var repaymentTermEnums=Utils.GetEnumValues
                     <Agp2pEnums.RepaymentTermEnum>
                     ()%>
                     <%foreach(var en in repaymentTermEnums)%>
                         <li onclick="location.href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'">
-                        <%=Utils.GetAgp2pEnumDes(en)%></li>
+                        <span class="pro-con"><%=Utils.GetAgp2pEnumDes(en)%></span></li>
                     <%/foreach%>
                 </ul>
             </li>
