@@ -40,7 +40,7 @@ class InvestRecordTable extends React.Component {
                     <thead>
                     <tr>
                         <th>项目名称</th>
-                        <th>预期年利率</th>
+                        <th>预期年化率</th>
                         <th>期限</th>
                         <th>投资金额（元）</th>
                         <th>利息（元）</th>
