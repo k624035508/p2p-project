@@ -100,7 +100,7 @@
                     ()%>
                     <%foreach(var en in repaymentTermEnums)%>
                         <li onclick="location.href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'"
-                            class='<%=project_status_index==(int)en?"nav-active":""%>'>
+                            class='<%=project_repayment_index==(int)en?"nav-active":""%>'>
                         <span class="pro-con"><%=Utils.GetAgp2pEnumDes(en)%></span></li>
                     <%/foreach%>
                 </ul>
