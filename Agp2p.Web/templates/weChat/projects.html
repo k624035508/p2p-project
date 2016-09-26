@@ -75,9 +75,9 @@
         <ul class="list-inline projects-top">
             <li role="presentation" class="dropdown projects-one"> 项目类型 <span class="pro-icon"></span>
                 <ul class="dropdown-menu dropdown-menu-custom">
-                    <li onclick="location.href='<%linkurl("projects")%>'"><span class="pro-con">全部</span></li>
-                    <li onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'"><span class="pro-con">定期专区</span></li>
-                    <li onclick="location.href='<%linkurl("projects",newbie2CategoryId)%>'"><span class="pro-con">新手标</span></li>
+                    <li onclick="location.href='<%linkurl("projects")%>'" class='<%=category_id==piaojuCategoryId?"nav-active":""%>'><span class="pro-con">全部</span></li>
+                    <li onclick="location.href='<%linkurl("projects",tickerCategoryId)%>'" class ='<%=category_id==tickerCategoryId?"nav-active":""%>'><span class="pro-con">定期专区</span></li>
+                    <li onclick="location.href='<%linkurl("projects",newbie2CategoryId)%>'" class='<%=category_id==newbie2CategoryId?"nav-active":""%>'><span class="pro-con">新手标</span></li>
                 </ul>  
             </li>
             <li role="presentation" class="dropdown projects-one">预期收益 <span class="pro-icon"></span> 
@@ -86,7 +86,8 @@
                     <%foreach(var en in interestRateTypeEnums)%>
                     <!--隐藏10%以上利率-->
                     <%if((int)en!=3)%>
-                        <li onclick="location.href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'">
+                        <li onclick="location.href='<%linkurl("projects",category_id,(int)en,project_repayment_index,project_status_index,1)%>'"
+                            class='<%=project_profit_rate_index==(int)en?"nav-active":""%>'>
                         <span class="pro-con"><%=Utils.GetAgp2pEnumDes(en)%></span></li>                    
                     <%/if%>
                     <%/foreach%>
@@ -98,7 +99,8 @@
                     <Agp2pEnums.RepaymentTermEnum>
                     ()%>
                     <%foreach(var en in repaymentTermEnums)%>
-                        <li onclick="location.href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'">
+                        <li onclick="location.href='<%linkurl("projects",category_id,project_profit_rate_index,(int)en,project_status_index,1)%>'"
+                            class='<%=project_status_index==(int)en?"nav-active":""%>'>
                         <span class="pro-con"><%=Utils.GetAgp2pEnumDes(en)%></span></li>
                     <%/foreach%>
                 </ul>
