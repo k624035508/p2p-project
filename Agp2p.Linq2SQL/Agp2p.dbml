@@ -636,6 +636,7 @@
       <Column Name="bond_fee_rate" Type="System.Decimal" DbType="Decimal(9,4)" CanBeNull="true" />
       <Column Name="contract_no" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="autoRepay" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Member="bonus_rate" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
       <Association Name="li_projects_li_company_inoutcome" Member="li_company_inoutcome" ThisKey="id" OtherKey="project_id" Type="li_company_inoutcome" />
       <Association Name="li_projects_li_repayment_tasks" Member="li_repayment_tasks" ThisKey="id" OtherKey="project" Type="li_repayment_tasks" />
       <Association Name="li_projects_li_claims" Member="li_claims" ThisKey="id" OtherKey="projectId" Type="li_claims" />

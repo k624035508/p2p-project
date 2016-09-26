@@ -14007,6 +14007,8 @@ namespace Agp2p.Linq2SQL
 		
 		private System.Nullable<bool> _autoRepay;
 		
+		private System.Nullable<decimal> _bonus_rate;
+		
 		private EntitySet<li_company_inoutcome> _li_company_inoutcome;
 		
 		private EntitySet<li_repayment_tasks> _li_repayment_tasks;
@@ -14091,6 +14093,8 @@ namespace Agp2p.Linq2SQL
     partial void Oncontract_noChanged();
     partial void OnautoRepayChanging(System.Nullable<bool> value);
     partial void OnautoRepayChanged();
+    partial void Onbonus_rateChanging(System.Nullable<decimal> value);
+    partial void Onbonus_rateChanged();
     #endregion
 		
 		public li_projects()
@@ -14769,6 +14773,26 @@ namespace Agp2p.Linq2SQL
 					this._autoRepay = value;
 					this.SendPropertyChanged("autoRepay");
 					this.OnautoRepayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bonus_rate", DbType="Decimal(5,2)")]
+		public System.Nullable<decimal> bonus_rate
+		{
+			get
+			{
+				return this._bonus_rate;
+			}
+			set
+			{
+				if ((this._bonus_rate != value))
+				{
+					this.Onbonus_rateChanging(value);
+					this.SendPropertyChanging();
+					this._bonus_rate = value;
+					this.SendPropertyChanged("bonus_rate");
+					this.Onbonus_rateChanged();
 				}
 			}
 		}

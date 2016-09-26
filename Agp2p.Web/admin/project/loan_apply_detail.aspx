@@ -167,6 +167,17 @@
                 <asp:Label ID="div_project_profit_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
+            <dl id="div_project_bonus_rate" runat="server">
+                <dt>
+                    <asp:Label ID="div_project_bonus_rate_title" runat="server" Text="额外奖励" />
+                </dt>
+                <dd>
+                    <asp:TextBox ID="txt_project_bonus_rate" runat="server" CssClass="input small" datatype="/`(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                        sucmsg=" "></asp:TextBox>
+                    %
+                    <asp:Label ID="div_project_bonus_rate_tip" runat="server" CssClass="Validform_checktip" />
+                </dd>
+            </dl>
             <dl id="div_project_repayment_number" runat="server">
                 <dt>
                     <asp:Label ID="div_project_repayment_number_title" runat="server" Text="还款期限" /></dt>
