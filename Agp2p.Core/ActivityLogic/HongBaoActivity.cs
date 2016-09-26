@@ -17,7 +17,7 @@ namespace Agp2p.Core.ActivityLogic
         {
             // MessageBus.Main.Subscribe<NewUserCreatedMsg>(m => NewUser(m.UserId, m.RegTime)); // 发放新用户的红包
             MessageBus.Main.Subscribe<UserInvestedMsg>(m => HandleUserInvestedMsg(m.ProjectTransactionId, m.InvestTime)); // 投资激活红包
-            //MessageBus.Main.Subscribe<UserLoginMsg>(m => HandleUserLoginMsg(m.UserId)); // 查出过期的奖券，将其设置为失效
+            MessageBus.Main.Subscribe<UserLoginMsg>(m => HandleUserLoginMsg(m.UserId)); // 查出过期的奖券，将其设置为失效
         }
 
         private static void HandleUserLoginMsg(int userId)
