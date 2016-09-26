@@ -935,6 +935,7 @@
     <Content Include="templates\AnGuang\imgs\index\qqIcon.png" />
     <Content Include="templates\AnGuang\imgs\index\register-btn.png" />
     <Content Include="templates\AnGuang\imgs\index\service-code.png" />
+    <Content Include="templates\AnGuang\imgs\index\shuiyin.png" />
     <Content Include="templates\AnGuang\imgs\index\slider-arrow.png" />
     <Content Include="templates\AnGuang\imgs\index\strategory1.jpg" />
     <Content Include="templates\AnGuang\imgs\index\strategory2.jpg" />
