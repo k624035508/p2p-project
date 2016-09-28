@@ -172,9 +172,10 @@
                     <asp:Label ID="div_project_bonus_rate_title" runat="server" Text="额外奖励" />
                 </dt>
                 <dd>
-                    <asp:TextBox ID="txt_project_bonus_rate" runat="server" CssClass="input small" datatype="/`(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
+                    <asp:TextBox ID="txt_project_bonus_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
-                    %
+                    % 没有额外奖励设置为0
+
                     <asp:Label ID="div_project_bonus_rate_tip" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>
@@ -227,7 +228,7 @@
                 <dd>
                     <asp:TextBox ID="txt_bond_fee_rate" runat="server" CssClass="input small" datatype="/^(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,4})?$/"
                         sucmsg=" "></asp:TextBox>
-                    %
+                    %   
                 <asp:Label ID="Label4" runat="server" CssClass="Validform_checktip" />
                 </dd>
             </dl>

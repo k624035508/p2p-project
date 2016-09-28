@@ -161,6 +161,7 @@ namespace Agp2p.Web.admin.project
                                       Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTermSpanEnum)_project.repayment_term_span); //借款期限
             spa_repayment_type.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectRepaymentTypeEnum)_project.repayment_type);//还款方式
             spa_profit_rate.InnerText = _project.profit_rate_year.ToString("N2");//年化利率
+            spa_bonus_rate.InnerText = _project.bonus_rate == null ? "0" : ((decimal)_project.bonus_rate).ToString("N2");
             
             if (_project.tag != null)
                 spa_tag.InnerText = Utils.GetAgp2pEnumDes((Agp2pEnums.ProjectTagEnum)_project.tag);

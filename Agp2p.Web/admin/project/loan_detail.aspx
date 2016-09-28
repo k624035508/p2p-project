@@ -116,6 +116,14 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>
+                                额外利率奖励(%)
+                            </th>
+                            <td>
+                                <span id="spa_bonus_rate" runat="server"></span>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>还款方式
                             </th>
                             <td>
