@@ -293,7 +293,7 @@ namespace Agp2p.Web.tools
             //string username = userConfig.regstatus == 2 ? Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim()) : Utils.ToHtml(DTRequest.GetFormString("txtUserName").Trim());
             string username = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string password = DTRequest.GetFormString("txtPassword").Trim();
-            //string password1 = DTRequest.GetFormString("txtPassword1").Trim();
+            string password1 = DTRequest.GetFormString("txtPassword1").Trim();
             string email = Utils.ToHtml(DTRequest.GetFormString("txtEmail").Trim());
             string mobile = Utils.ToHtml(DTRequest.GetFormString("txtMobile").Trim());
             string userip = DTRequest.GetIP();
