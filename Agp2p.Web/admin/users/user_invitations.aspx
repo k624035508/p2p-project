@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="user_invitations.aspx.cs" Inherits="Agp2p.Web.admin.users.user_invitations" %>
 <%@ Import namespace="Agp2p.Common" %>
-<%@ Import Namespace="Agp2p.Lin2SQL" %>
+<%@ Import Namespace="Agp2p.Linq2SQL" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -38,13 +38,16 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th align="left">邀请人</th>
-                        <th align="left">受邀请人</th>
+                        <th width="3%" align="left" style="padding-left:.5%;">序号</th>
+                        <th align="left" width="10">邀请人</th>
+                        <th align="left" width="10">受邀请人</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td></td>
+                    <td align="left" style="padding-left:.5%;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
+                    <td><%# Eval("user_id") %></td>
+                    <td><%# Eval("inviter") %>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
