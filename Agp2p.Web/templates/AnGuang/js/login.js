@@ -27,7 +27,14 @@ $(function(){
 				if(data.status == 1){
 					if (document.referrer !== "" && document.referrer.indexOf("/project/") != -1) {
 						location.href = document.referrer;
-					} else {
+					}
+					else if(document.referrer.indexOf("/point_detail/") != -1){
+					    location.href = document.referrer;
+					}
+					else if(document.referrer.indexOf("point") != -1){
+					    location.href = document.referrer;
+					}
+					else {
 						location.href = $("div.nav-bar li#myAccount > a").attr("href");
 					}
 				} else {

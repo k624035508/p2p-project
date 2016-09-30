@@ -38,16 +38,16 @@
             <HeaderTemplate>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
-                        <th width="3%" align="left" style="padding-left:.5%;">序号</th>
-                        <th align="left" width="10">邀请人</th>
-                        <th align="left" width="10">受邀请人</th>
+                        <th width="5%" align="left" style="padding-left:.5%;">序号</th>
+                        <th align="left" width="20%">邀请人</th>
+                        <th align="left" width="20%">受邀请人</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td align="left" style="padding-left:.5%;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
-                    <td><%# Eval("user_id") %></td>
-                    <td><%# Eval("inviter") %>
+                    <td><%# Eval("dt_users.user_name") %>(姓名:<%# Eval("dt_users.real_name") %>)</td>
+                    <td><%# Eval("inviter") %></td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

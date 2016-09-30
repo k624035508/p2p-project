@@ -34,7 +34,7 @@ namespace Agp2p.Web.admin.users
         {
             page = DTRequest.GetQueryInt("page", 1);
             txtKeywords2.Text = keywords;
-            var query = context.li_invitations;
+            var query = context.li_invitations.ToList();
             totalCount = query.Count();
             rptList.DataSource = query.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
