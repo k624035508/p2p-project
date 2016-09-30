@@ -38,6 +38,11 @@ namespace Agp2p.Web.admin.users
             totalCount = query.Count();
             rptList.DataSource = query.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
+
+            //绑定页码
+            txtPageNum.Text = pageSize.ToString();
+            string pageUrl = Utils.CombUrlTxt("user_invitations.aspx", "keywords={0}&page={1}", keywords, "__id__");
+            PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
         }
         #endregion
 
