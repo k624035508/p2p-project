@@ -39,15 +39,15 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
                     <tr>
                         <th width="5%" align="left" style="padding-left:.5%;">序号</th>
-                        <th align="left" width="20%">邀请人</th>
                         <th align="left" width="20%">受邀请人</th>
+                        <th align="left" width="20%">邀请人</th>
                     </tr>
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
                     <td align="left" style="padding-left:.5%;"><%# Container.ItemIndex + pageSize * (page - 1) + 1%></td>
                     <td><%# Eval("dt_users.user_name") %>(姓名:<%# Eval("dt_users.real_name") %>)</td>
-                    <td><%# Eval("inviter") %></td>
+                    <td><%# queryInviter((int)Eval("inviter")).user_name %>(姓名:<%# queryInviter((int)Eval("inviter")).real_name %>)</td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>

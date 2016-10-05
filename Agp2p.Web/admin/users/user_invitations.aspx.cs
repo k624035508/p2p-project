@@ -20,8 +20,7 @@ namespace Agp2p.Web.admin.users
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ChkAdminLevel("user_invitations", DTEnums.ActionEnum.View.ToString()); //检查权限
-            keywords = DTRequest.GetQueryString("keywords");
+            ChkAdminLevel("user_invitations", DTEnums.ActionEnum.View.ToString()); //检查权限            
             pageSize = GetPageSize(GetType().Name + "_page_size");
             if (!Page.IsPostBack)
             {
@@ -33,16 +32,33 @@ namespace Agp2p.Web.admin.users
         private void RptBind()
         {
             page = DTRequest.GetQueryInt("page", 1);
-            txtKeywords2.Text = keywords;
-            var query = context.li_invitations.ToList();
+            keywords = DTRequest.GetQueryString("keywords");
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                txtKeywords2.Text = keywords;
+            }
+
+            var query = QueryInvitations();
             totalCount = query.Count();
             rptList.DataSource = query.Skip(pageSize * (page - 1)).Take(pageSize).ToList();
             rptList.DataBind();
 
             //绑定页码
             txtPageNum.Text = pageSize.ToString();
-            string pageUrl = Utils.CombUrlTxt("user_invitations.aspx", "keywords={0}&page={1}", keywords, "__id__");
+            string pageUrl = Utils.CombUrlTxt("user_invitations.aspx", "keywords={0}&page={1}", txtKeywords2.Text, "__id__");
             PageContent.InnerHtml = Utils.OutPageList(pageSize, page, totalCount, pageUrl, 8);
+        }
+
+        private IQueryable<li_invitations> QueryInvitations()
+        {
+            IQueryable<li_invitations> query = context.li_invitations;
+            if (!string.IsNullOrWhiteSpace(txtKeywords2.Text))
+            {
+                query = query.Where(q => q.dt_users.user_name.Contains(txtKeywords2.Text) || q.dt_users.mobile.Contains(txtKeywords2.Text)
+                 || context.dt_users.Single(d => d.id == q.inviter).user_name.Contains(txtKeywords2.Text)
+                 || context.dt_users.Single(d => d.id == q.inviter).mobile.Contains(txtKeywords2.Text));
+            }
+            return query;
         }
         #endregion
 
@@ -57,6 +73,13 @@ namespace Agp2p.Web.admin.users
         {
             SetPageSize(GetType().Name + "_page_size", txtPageNum.Text.Trim());
             Response.Redirect(Utils.CombUrlTxt("user_invitations.aspx", "keywords={0}", txtKeywords2.Text));
+        }
+
+        //获取邀请人信息
+        protected dt_users queryInviter(int inviterId)
+        {
+            var inviter = context.dt_users.Single(u => u.id == inviterId);
+            return inviter;
         }
     }
 }
