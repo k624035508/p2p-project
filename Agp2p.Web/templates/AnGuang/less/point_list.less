@@ -1,0 +1,42 @@
+﻿@import "common-style";
+body{background:#f2f2f2;}
+.top-part{
+    background:@white; height:100px; border:@border; padding-left:35px;
+    & > div {
+				& > * { .inline-block; }
+				& > span:first-child { margin-right: 30px; font-size:@font15; color:@darker-grey;}
+				ul {
+					li {
+						display: inline-block;
+						min-width: 65px;
+						a {
+							text-decoration: none;
+							padding: 2px 8px;
+							color: @dark-grey; font-size:@font15;
+                            &:hover{color:@blue;}
+						}
+						.selected {
+							color: white;display:inline-block; height:25px;
+							background-color: @blue;
+                            &:hover{color:white;}
+						}
+                        
+					}
+				}
+			}
+    .products-type{margin-top:15px;}
+    .point-range{margin-top:18px;}
+}
+
+.products-list-all{ 
+    ul{   margin-left:0;
+          width:1150px;
+    .products-list{display:inline-block; width:265px; height:310px; border:@border; background:@white; margin-right:9px;
+        margin-top:15px;
+        p{text-align:center; font-size:18px; color:@darker-grey; }
+        a{display:inline-block; width:150px; height:30px; font-size:15px; color:@white; line-height:30px; text-decoration:none;
+          border-radius:5px; background:@blue; text-align:center; margin-left:50px;
+        }
+    }
+    }
+    }

@@ -1244,10 +1244,12 @@
     <Content Include="templates\AnGuang\js\point.js" />
     <None Include="templates\AnGuang\js\pointGoods-list.jsx" />
     <Content Include="templates\AnGuang\js\point_detail.js" />
+    <Content Include="templates\AnGuang\js\point_list.js" />
     <Content Include="templates\AnGuang\js\questionnaire.js" />
     <Content Include="templates\AnGuang\js\register-agreement.js" />
     <Content Include="templates\AnGuang\lottery.html" />
     <Content Include="templates\AnGuang\payment.html" />
+    <Content Include="templates\AnGuang\point_list.html" />
     <Content Include="templates\weChat\imgs\001.png" />
     <Content Include="templates\weChat\imgs\album1.png" />
     <Content Include="templates\weChat\imgs\album1.svg" />
@@ -1276,6 +1278,7 @@
     <None Include="templates\AnGuang\less\mypoints.less" />
     <Content Include="templates\AnGuang\less\point.less" />
     <Content Include="templates\AnGuang\less\payment.less" />
+    <Content Include="templates\AnGuang\less\point_list.less" />
     <None Include="templates\AnGuang\less\questionnaire.less" />
     <None Include="templates\weChat\less\register_tdlte.less" />
     <None Include="templates\AnGuang\less\point_detail.less" />

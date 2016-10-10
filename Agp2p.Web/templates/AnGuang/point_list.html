@@ -1,0 +1,70 @@
+﻿<%namespace "Newtonsoft.Json.Linq"%>
+<%namespace "Newtonsoft.Json"%>
+<%namespace "Agp2p.Core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>商品列表</title>
+	<meta charset="utf-8" />
+    <!--[if lt IE 9]>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-shim.min.js"></script>
+    <script src="<%templateskin%>/node_modules/es5-shim/es5-sham.min.js"></script>
+    <![endif]-->
+    <link href="<%templateskin%>/less/bootstrap.glyphicons.min.css" rel="stylesheet" />
+    <script src="<%templateskin%>/build/commons.bundle.js"></script>
+    <script src="<%templateskin%>/build/point_list.bundle.js"></script>
+</head>
+<body>
+    <%template src="_header.html"%>
+
+    <!--面包屑导航-->
+    <div class="breadcrumbs">
+        <a href='<%linkurl("index")%>'>首页</a>
+        <span> > </span>
+        <a href='<%linkurl("point")%>'>积分商城</a>
+        <span> > </span>
+        <span>全部商品</span>
+    </div>
+    <!--面包屑导航 end-->
+
+    <div class="top-part content-wrap">
+        <div class="products-type">
+            <span>商品分类</span>
+            <ul class="list-unstyled list-inline">
+                <%set var productTypeEnum=Utils.GetEnumValues<Agp2pEnums.MallProductsType>()%>
+                <%foreach(var en in productTypeEnum)%>
+                <li><a href='<%linkurl("point_list",(int)en,point_range,1)%>'
+                       class='<%=category_id==(int)en?"selected":""%>'>
+                    <%=Utils.GetAgp2pEnumDes(en)%></a></li>
+                <%/foreach%>
+            </ul>
+        </div>
+        <div class="point-range">
+            <span>积分范围</span>
+            <ul class="list-unstyled list-inline">
+                <%set var pointRangeEnum=Utils.GetEnumValues<Agp2pEnums.MallPointRange>()%>
+                <%foreach(var en in pointRangeEnum)%>
+                <li><a href='<%linkurl("point_list",category_id,(int)en,1)%>'
+                       class='<%=point_range==(int)en?"selected":""%>'>
+                    <%=Utils.GetAgp2pEnumDes(en)%></a></li>
+                <%/foreach%>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-wrap products-list-all">
+        <ul class="list-unstyled list-inline">
+        <%set var queryProducts=QueryMallProducts(category_id,point_range);%>
+        <%foreach(var inv in queryProducts)%>
+        <li class="products-list">
+            <p><%=inv.title%></p>        
+            <a href='<%linkurl("point_detail",inv.id)%>'><%=inv.dt_article_attribute_value.point%>积分</a>
+        </li>
+        <%/foreach%>
+            </ul>
+    </div>
+
+    <%template src="_footerSmall.html"%>
+</body>
+</html>

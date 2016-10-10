@@ -158,6 +158,9 @@
     <Compile Include="Page\payment.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Page\point_list.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Page\questionnaire.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -1036,5 +1036,31 @@ namespace Agp2p.Common
             [Description("投资")]
             Invest = 1,
         }
+
+        /// <sumary>
+        /// 积分商城商品分类
+        /// </sumary>
+        public enum MallProductsType
+        {
+            [Description("全部")]
+            All = 1,
+            [Description("虚拟商品")]
+            Xuni = 2,
+            [Description("实物商品")]
+            Shiwu = 3,
+        }
+
+        /// <summary>
+        /// 积分商城积分范围
+        /// </summary>
+        public enum MallPointRange
+        {
+            [Description("全部")]
+            All = 1,
+            [Description("50000积分以下")]
+            LessThanFive = 2,
+            [Description("50000-100000积分")]
+            LessThanTen = 3,
+        }
     }
 }
