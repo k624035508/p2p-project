@@ -220,7 +220,7 @@ namespace Agp2p.Core.ActivityLogic
         }
 
         public static int GiveUser(int userId, decimal interestRateBonusPercent, decimal minInvestValue,
-            int minProjectDayCount, int ticketExpireAfterDays = 30)
+            int minProjectDayCount, int ticketExpireAfterDays = 60)
         {
             var context = new Agp2pDataContext();
 

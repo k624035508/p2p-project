@@ -167,7 +167,7 @@ namespace Agp2p.Core.ActivityLogic
             {10m, 200m},
         };
 
-        public static void GiveUser(int userId, decimal hongbaoValue, decimal hongbaoLimit, int expireAfterDays = 15)
+        public static void GiveUser(int userId, decimal hongbaoValue, decimal hongbaoLimit, int expireAfterDays = 60)
         {
             var context = new Agp2pDataContext();
 

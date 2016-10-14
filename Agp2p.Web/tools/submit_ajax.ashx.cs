@@ -420,6 +420,7 @@ namespace Agp2p.Web.tools
             model.mobile = mobile;
             model.reg_ip = userip;
             model.reg_time = DateTime.Now;
+            model.point = 0;
             //设置对应的状态
             switch (userConfig.regverify)
             {
@@ -1837,14 +1838,12 @@ namespace Agp2p.Web.tools
                 }
                 if (signCount % 5 == 0)
                 {
-                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 100)
+                    var msg = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.Sign, 188)
                     {
                         Remark = "第五天签到"
                     };
                     MessageBus.Main.Publish(msg);
-                    var msg2 = new UserPointMsg(model.id, model.user_name, (int)Agp2pEnums.PointEnum.SignFifthDay);
-                    MessageBus.Main.Publish(msg2);
-                    var userPoint = model.point + 200;
+                    var userPoint = model.point + 188;
                     context.Response.Write("{\"status\":5, \"msg\":\"第五天签到\", \"point\":\"" + userPoint + "\"}");
                     return;
                 }
