@@ -23,8 +23,7 @@ $(function() {
                 } 
                 else if (data.status == 0 || data.status == 5) {
                     $("#signConfirm").modal();                    
-                    $(".signTable>div:lt(4)").addClass("jinbi").removeClass("nojinbi");
-                    $(".signTable").eq(4).find("div").hide().parent().find("p").hide().parent().addClass("signBaoxiang");
+                    $(".signTable>div:lt(5)").addClass("jinbi").removeClass("nojinbi");
                     $(".signDay:lt(5)").css("color", "#37aaf0");
                     $(".signTable .signRight:lt(5)").css("display", "inline-block");
                     $(".signTable .signRight").eq(4).css("marginTop", "84px");
