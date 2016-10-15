@@ -55,15 +55,18 @@
 
     <div class="content-wrap products-list-all">
         <ul class="list-unstyled list-inline">
-        <%set var queryProducts=QueryMallProducts(category_id,point_range);%>
+        <%set var queryProducts=QueryMallProducts(PAGE_SIZE,page-1,out totalcount,category_id,point_range);%>
         <%foreach(var inv in queryProducts)%>
         <li class="products-list">
+            <div class="products-img" style='background:url("<%=inv.img_url%>") no-repeat center;'></div>
             <p><%=inv.title%></p>        
             <a href='<%linkurl("point_detail",inv.id)%>'><%=inv.dt_article_attribute_value.point%>积分</a>
         </li>
         <%/foreach%>
             </ul>
     </div>
+    <!--取得分页页码列表-->
+    <div class="pages"><%=get_page_link(PAGE_SIZE,page,totalcount,linkurl("point_list",{category_id},{point_range},"__id__"))%></div>
 
     <%template src="_footerSmall.html"%>
 </body>

@@ -16,7 +16,7 @@ namespace Agp2p.Web.UI.Page
 {
     public partial class point_list : Web.UI.BasePage
     {
-        protected const int PAGE_SIZE = 15;
+        protected const int PAGE_SIZE = 12;
         protected int page;   //当前页码
         protected int totalcount;   //OUT数据总数
         protected string pagelist;  //分页页码
@@ -42,7 +42,8 @@ namespace Agp2p.Web.UI.Page
         }
 
        
-        public static IEnumerable<dt_article> QueryMallProducts(int categoryId = 0, int pointRange = 0)
+        public static IEnumerable<dt_article> QueryMallProducts(int pageSize, int pageIndex, out int total, 
+            int categoryId = 0, int pointRange = 0)
         {
             Agp2pDataContext context = new Agp2pDataContext();
             var query = context.dt_article.Where(a => a.channel_id == 16);
@@ -71,9 +72,10 @@ namespace Agp2p.Web.UI.Page
                         break;
                 }
             }
+            query.AsEnumerableAutoPartialQuery(out total, pageSize);
 
-            return query.OrderBy(q => q.add_time);
-
+            return query.OrderBy(q => q.add_time).Skip(pageSize*pageIndex).Take(pageSize);
         }
+
     }
 }

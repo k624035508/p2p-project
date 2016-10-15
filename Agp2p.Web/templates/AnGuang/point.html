@@ -23,15 +23,18 @@
         <div class="banner-left">
             <div class="banner-gift">
                 <p>全部商品</p>
-                <p><a href="#xuni">虚拟商品</a><a href="#shiwu">实物商品</a></p>
+                <p>
+                    <a href='<%linkurl("point_list",2,1,1)%>'>虚拟商品</a>
+                    <a href='<%linkurl("point_list",3,1,1)%>'>实物商品</a>
+                </p>
             </div>
             <div class="banner-gift">
                 <p>虚拟商品</p>
-                <p><a href="#xuni">红包</a></p>
+                <p><a href='<%linkurl("point_list",2,1,1)%>'>红包</a></p>
             </div>
             <div class="banner-gift">
                 <p>实物商品</p>
-                <p><a href="#shiwu">充电宝</a></p>
+                <p><a href='<%linkurl("point_list",3,1,1)%>'>充电宝</a></p>
             </div>
             <div class="banner-code">
                 <p>关注微信公众号</p>
@@ -52,7 +55,8 @@
                 <div>我的积分</div>
                 <p class="points"><%=_userModel.point%></p>
                 <a class="giftRecord" href='<%linkurl("usercenter","index")%>#/mypoints'>兑奖记录</a>
-                <%/if%>
+                <a class="jifenguize">积分规则</a>
+                <%/if%>                
             </div>
             <div class="banner-bottom">
                 <div class="banner-sign">
@@ -244,6 +248,7 @@
         </div>
     </div>
 <!--footer-->
+    <%template src="_floating.html"%>
     <%template src="_footer.html"%>
 <!--footer end-->
 
