@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace Lip2p.Web.admin.order {
+namespace Agp2p.Web.admin.order {
     
     
     public partial class express_list {

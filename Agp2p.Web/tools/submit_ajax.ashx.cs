@@ -1251,7 +1251,7 @@ namespace Agp2p.Web.tools
                 context.Response.Write("{\"status\":0,\"msg\":\"对不起，库存不足。\"}");
                 return;
             }
-            if (goods.dt_article_category.call_index != "jiaxijuan" && goods.dt_article_category.call_index != "hongbao")
+            if (goodFields.isVirtual.GetValueOrDefault(0) == 0)
             {
                 if (userAddr == null)
                 {
@@ -1284,10 +1284,21 @@ namespace Agp2p.Web.tools
                 return;
             }
 
+            //商品订单
+            var order_no = "";
+            if (goodFields.isVirtual.GetValueOrDefault(0) == 0)
+            {
+                order_no = "C" + Utils.GetOrderNumber(); //订单号C开头为实物商品订单
+            }
+            else
+            {
+                order_no = "B" + Utils.GetOrderNumber(); //订单号B开头为虚拟商品订单
+            }
+
             //保存订单
             Model.orders model = new Model.orders
-            {
-                order_no = "B" + Utils.GetOrderNumber(), //订单号B开头为商品订单
+            {             
+                order_no = order_no,
                 user_id = userModel.id,
                 user_name = userModel.user_name,
                 payment_id = 1,

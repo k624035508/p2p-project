@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="express_list.aspx.cs" Inherits="Lip2p.Web.admin.order.express_list" %>
-<%@ Import namespace="Lip2p.Common" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="express_list.aspx.cs" Inherits="Agp2p.Web.admin.order.express_list" %>
+<%@ Import namespace="Agp2p.Common" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

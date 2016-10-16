@@ -64,7 +64,7 @@ namespace Agp2p.Web.UI.Page
             {
                 order_type = DTEnums.AmountTypeEnum.Recharge.ToString().ToLower();
             }
-            else if (order_no.ToUpper().StartsWith("B")) //商品订单
+            else if (order_no.ToUpper().StartsWith("B") || order_no.ToUpper().StartsWith("C")) //商品订单
             {
                 order_type = DTEnums.AmountTypeEnum.BuyGoods.ToString().ToLower();
             }
@@ -93,7 +93,7 @@ namespace Agp2p.Web.UI.Page
                         userModel = new Model.users();
                     }
                     //检查订单的类型
-                    if (order_no.ToUpper().StartsWith("B")) //商品订单
+                    if (order_no.ToUpper().StartsWith("B") || order_no.ToUpper().StartsWith("C")) //商品订单
                     {
                         //检查订单是否存在
                         orderModel = new BLL.orders().GetModel(order_no);
@@ -144,7 +144,7 @@ namespace Agp2p.Web.UI.Page
                     break;
                 case "succeed":
                     //检查订单的类型
-                    if (order_no.ToUpper().StartsWith("B")) //商品订单
+                    if (order_no.ToUpper().StartsWith("B") || order_no.ToUpper().StartsWith("C")) //商品订单
                     {
                         orderModel = new BLL.orders().GetModel(order_no);
                         if (orderModel == null)

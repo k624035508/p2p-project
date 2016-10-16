@@ -154,6 +154,8 @@
     <Content Include="admin\manager\department_edit.aspx" />
     <Content Include="admin\manager\department_list.aspx" />
     <Content Include="admin\manager\department_select_member.aspx" />
+    <Content Include="admin\order\express_edit.aspx" />
+    <Content Include="admin\order\express_list.aspx" />
     <Content Include="admin\order\order_config.aspx" />
     <Content Include="admin\order\order_confirm.aspx" />
     <Content Include="admin\order\order_edit.aspx" />
@@ -1712,6 +1714,20 @@
     </Compile>
     <Compile Include="admin\manager\department_select_member.aspx.designer.cs">
       <DependentUpon>department_select_member.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\express_edit.aspx.cs">
+      <DependentUpon>express_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\express_edit.aspx.designer.cs">
+      <DependentUpon>express_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="admin\order\express_list.aspx.cs">
+      <DependentUpon>express_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\order\express_list.aspx.designer.cs">
+      <DependentUpon>express_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="admin\order\order_config.aspx.cs">
       <DependentUpon>order_config.aspx</DependentUpon>
